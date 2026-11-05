@@ -210,13 +210,13 @@ function filtered() {
   return R.filter(
     (r) =>
       (!filters.q ||
-        JSON.stringify(r).toLowerCase().includes(filters.q.toLowerCase())) &&
+        (window.AtlasI18n?.searchText(r)||JSON.stringify(r).toLowerCase()).includes(filters.q.toLowerCase())) &&
       (!filters.kind || r.kind === filters.kind) &&
       (!filters.origin || r.origin === filters.origin) &&
       (!filters.field || supportsField(r.fields?.[filters.field])) &&
       (!filters.task ||
         arr(r.tasks).some((t) =>
-          txt(t.name).toLowerCase().includes(filters.task.toLowerCase()),
+          (window.AtlasI18n?.searchText(t.name)||txt(t.name).toLowerCase()).includes(filters.task.toLowerCase()),
         )) &&
       (!filters.fav || favorites.has(r.id)),
   ).sort((a, b) =>
@@ -365,8 +365,7 @@ function sources(id) {
   let listS = S.filter(
     (s) =>
       (!sourceFilter.q ||
-        JSON.stringify(s)
-          .toLowerCase()
+        (window.AtlasI18n?.searchText(s)||JSON.stringify(s).toLowerCase())
           .includes(sourceFilter.q.toLowerCase())) &&
       (!sourceFilter.type || s.type === sourceFilter.type) &&
       (!sourceFilter.resource ||
@@ -804,7 +803,7 @@ function exportData(kind) {
         ...Object.keys(fieldNames),
         ...productionDimensions.map(([key])=>key),
       ];
-      let cell = (x) => '"' + txt(x).replace(/"/g, '""') + '"';
+      let cell = (x) => '"' + (window.AtlasI18n?.translate(txt(x))||txt(x)).replace(/"/g, '""') + '"';
       download(
         "atlas-comparison.csv",
         "\ufeff" +
@@ -854,6 +853,7 @@ function render() {
   if (anchor)
     setTimeout(() => document.getElementById(anchor)?.scrollIntoView(), 30);
   else window.scrollTo(0, 0);
+  window.AtlasI18n?.apply();
 }
 document.addEventListener("click", async (e) => {
   let b = e.target.closest("button");
@@ -1012,6 +1012,7 @@ document.addEventListener("input", (e) => {
   }, 180);
 });
 window.addEventListener("hashchange", render);
+
 render();
 
 if (ATLAS.meta?.checkedAt)

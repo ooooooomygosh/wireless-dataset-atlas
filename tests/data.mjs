@@ -110,6 +110,24 @@ for (const r of data.resources) {
 
 const { createRequire } = await import("node:module");
 const require = createRequire(import.meta.url);
+const {chooseAtlasLanguage,makeAtlasTranslator}=require('../src/i18n.js');
+assert.equal(chooseAtlasLanguage('auto',['zh-Hant-TW','en-AU']),'zh');
+assert.equal(chooseAtlasLanguage('auto',['en-AU','zh-CN']),'en');
+assert.equal(chooseAtlasLanguage('auto',['fr-FR','de-DE']),'en');
+assert.equal(chooseAtlasLanguage('zh',['en-US']),'zh');
+assert.equal(chooseAtlasLanguage('en',['zh-CN']),'en');
+const languageData=JSON.parse(fs.readFileSync(new URL('../data/i18n/en.json',import.meta.url),'utf8'));
+const translated={...languageData.content,...languageData.ui};
+function checkTranslation(value){
+  if(typeof value==='string'&&/[\u3400-\u9fff]/.test(value))assert(translated[value],`Missing English content: ${value}`);
+  else if(Array.isArray(value))value.forEach(checkTranslation);
+  else if(value&&typeof value==='object')Object.values(value).forEach(checkTranslation);
+}
+checkTranslation(data);
+Object.values(translated).forEach(value=>assert(value&&!/[\u3400-\u9fff]/.test(value),'English translation contains untranslated Chinese'));
+const translateSample=makeAtlasTranslator({'实际阅读范围：':'Reading scope: ','使用[V4]。':'Uses [V4].'});
+assert.equal(translateSample('实际阅读范围：使用[V4]。'),'Reading scope: Uses [V4].');
+console.log('Languages: browser detection, saved preference priority, complete English content and literal matching passed');
 const { supportsField, missingObservations } = require("../src/selection.js");
 for (const state of ["直接提供", "可计算", "需额外仿真"])
   assert(supportsField(state));

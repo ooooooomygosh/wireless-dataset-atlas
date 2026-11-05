@@ -2,6 +2,8 @@
 
 [在线网站](https://wireless-dataset-atlas.vercel.app) · [数据生产工作台](https://wireless-dataset-atlas.vercel.app/#pipelines) · [对比实验室](https://wireless-dataset-atlas.vercel.app/#compare) · [论文与官方材料](https://wireless-dataset-atlas.vercel.app/#library)
 
+[English website](https://wireless-dataset-atlas.vercel.app/?lang=en) · [中文网站](https://wireless-dataset-atlas.vercel.app/?lang=zh)
+
 面向波束管理与无线基础模型的在线研究知识库。资源卡将原始观测、数据生产流程、实验控制能力和研究结论连接到官方材料，帮助决定主数据源、验证源和需要补做的工作。
 
 ## 从实验问题进入
@@ -14,6 +16,10 @@
 DeepMIMO、Sionna RT、QuaDRiGa和DeepSense的流程与变更规则单独核验。软件支持、具体场景启用的机制、发布文件已有的字段分别记录。资源系列数、派生语料数和独立物理来源数采用各自口径。
 
 ## 本地开发与验证
+
+网站右上角提供 `Auto / 中文 / English`。首次访问按浏览器首选语言选择；手动选择保存在本地，刷新后继续生效。分享链接可使用 `?lang=en` 或 `?lang=zh`，链接指定的语言优先。自动模式在没有中英文偏好时使用英文。
+
+界面、资源正文、生产流程、研究路线、来源说明和材料索引均有英文映射，搜索支持中英文关键词。切换只改变显示，保持筛选、收藏、对比、研究约束和展开状态；原始JSON、代码与官方文件保持原文。CSV对比导出使用当前显示语言。
 
 需要Node.js 22+、Python 3.12；科学计算测试使用NumPy，完整结构验证使用jsonschema。前端使用原生HTML/CSS/JavaScript。
 
@@ -36,6 +42,8 @@ npm run serve
 5. 运行检查与构建，验证涉及的网页交互，然后提交PR。数据、模型权重和私人阅读缓存使用各自存储入口；`materials/local-reading/` 不提交。
 
 数据结构定义在 [data/schema.json](data/schema.json)。新增资源、来源、论文、材料与项目使用稳定ID关联。来源索引保留阅读层级和访问状态；网页可访问、字段说明核验、实际数据实验采用不同验证状态。
+
+`data/i18n/en.json` 保存英文正文与界面映射；`src/i18n.js` 负责浏览器语言识别和显示层切换。更新中文内容时同步更新英文条目，`npm test` 会检查正文覆盖和译文完整性。页面渲染后也要检查新增界面文字的英文显示。
 
 ## 教程与验证范围
 

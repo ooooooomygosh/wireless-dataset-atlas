@@ -55,7 +55,7 @@ function libraryPage(id) {
 }
 function matchesLibrary(x) {
   return (!libraryFilter.resource||x.resourceIds?.includes(libraryFilter.resource))&&
-    (!libraryFilter.query||JSON.stringify(x).toLowerCase().includes(libraryFilter.query.toLowerCase()));
+    (!libraryFilter.query||(window.AtlasI18n?.searchText(x)||JSON.stringify(x).toLowerCase()).includes(libraryFilter.query.toLowerCase()));
 }
 function libraryResults() {
   const materials=(ATLAS.officialMaterials||[]).filter(matchesLibrary),papers=(ATLAS.researchPapers||[]).filter(matchesLibrary).sort((a,b)=>b.year-a.year);
