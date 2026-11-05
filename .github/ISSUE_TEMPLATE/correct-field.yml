@@ -1,0 +1,16 @@
+name: Correct a field
+description: Report a wrong or outdated value
+labels: [correction]
+body:
+  - type: input
+    id: dataset
+    attributes: { label: Dataset page URL on the site }
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes: { label: Field, current value and correct value }
+    validations: { required: true }
+  - type: input
+    id: source
+    attributes: { label: Source for the correct value }
+    validations: { required: true }
