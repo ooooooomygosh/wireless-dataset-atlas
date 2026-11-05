@@ -3,7 +3,8 @@ import type { Dataset } from "../schema.ts";
 import { ORIGIN } from "../i18n/enums.ts";
 import { t, type Lang } from "../lib/data.ts";
 interface Props { lang: Lang; datasets: Dataset[] }
-const { lang, datasets } = Astro.props;
+const { lang, datasets: all } = Astro.props;
+const datasets = all.filter((d) => d.bands_ghz.length > 0);
 const lanes = Object.keys(ORIGIN);
 const W = 760, L = 120, R = 16, T = 8, laneH = 30, H = T + lanes.length * laneH + 28;
 const lo = Math.log10(0.1), hi = Math.log10(300);
