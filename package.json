@@ -1,0 +1,14 @@
+{
+  "name": "wireless-dataset-atlas",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node tests/data.mjs && python3 -m unittest discover -s tests -p 'test_*.py'",
+    "serve": "python3 -m http.server 8765 -d dist"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  }
+}

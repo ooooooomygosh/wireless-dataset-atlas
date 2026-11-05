@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Wireless Dataset Atlas",
+  "type": "object",
+  "required": [
+    "resources",
+    "sources",
+    "topics",
+    "tutorials",
+    "qa"
+  ],
+  "properties": {
+    "resources": {
+      "type": "array",
+      "minItems": 30,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "origin",
+          "summary",
+          "fields",
+          "tasks",
+          "sourceIds"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "enum": [
+                "直接提供",
+                "可计算",
+                "需额外仿真",
+                "不支持",
+                "未知"
+              ]
+            }
+          },
+          "sourceIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "status",
+                "reason"
+              ]
+            }
+          },
+          "scenarios": {
+            "type": "array"
+          },
+          "pairing": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "simultaneous_measured",
+                  "repeatable_trajectory",
+                  "colocated_separate_campaign",
+                  "simulated_shared_geometry",
+                  "unconfirmed"
+                ]
+              },
+              "frequenciesGHz": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "url",
+          "title",
+          "readScope",
+          "status",
+          "checkedAt"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "readScope": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "resourceIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "topics": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "tutorials": {
+      "type": "array",
+      "minItems": 6
+    },
+    "qa": {
+      "type": "array"
+    },
+    "researchPlaybooks": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "question",
+          "candidates",
+          "firstExperiment"
+        ],
+        "properties": {
+          "candidates": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "resourceId",
+                "role",
+                "why",
+                "whatCanProve",
+                "whatCannotProve",
+                "extraWork",
+                "scope",
+                "sourceIds"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

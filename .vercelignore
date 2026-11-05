@@ -1,0 +1,7 @@
+.git
+.github
+materials
+node_modules
+.venv*
+__pycache__
+*.zip
