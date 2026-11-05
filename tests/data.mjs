@@ -62,6 +62,21 @@ for (const p of data.relatedProjects) {
 }
 assert.equal(new Set(data.relatedProjects.map(p => p.id)).size, data.relatedProjects.length);
 console.log("Production contracts: all resources have detailed steps; project and source references resolve");
+for (const [kind, entries] of [["papers",data.researchPapers||[]],["materials",data.officialMaterials||[]]]) {
+  assert.equal(new Set(entries.map(x=>x.id)).size,entries.length,`${kind}: duplicate IDs`);
+  for (const x of entries) {
+    x.resourceIds.forEach(id=>assert(data.resources.some(r=>r.id===id),`${kind}: missing resource ${id}`));
+    x.sourceIds.forEach(id=>assert(sources.has(id),`${kind}: missing source ${id}`));
+    assert(x.readScope,`${kind}: reading scope required`);
+    if(kind==='materials') {
+      assert(x.filePath.startsWith('materials/official/')&&!x.filePath.includes('..'));
+      for(const file of [x.filePath,...x.licenseFiles])assert(fs.existsSync(new URL('../'+file,import.meta.url)),`official file missing: ${file}`);
+      assert(x.license&&x.attribution&&x.licenseUrl);
+    }
+  }
+}
+for(const r of data.resources)if(r.productionFacts)r.productionFacts.sourceIds.forEach(id=>assert(sources.has(id)));
+console.log("Research library: paper links, official files, licenses and production evidence resolve");
 const js = fs.readFileSync(new URL("../src/app.js", import.meta.url), "utf8");
 const css = fs.readFileSync(
   new URL("../src/style.css", import.meta.url),
@@ -73,7 +88,7 @@ const shell = fs.readFileSync(
 );
 assert(
   !/\bfetch\s*\(|\bXMLHttpRequest\b|\bimport\s*\(/.test(js),
-  "offline app must not fetch runtime resources",
+  "core page runtime must remain self-contained",
 );
 assert(
   !/@import|url\s*\(\s*["']?https?:/i.test(css),
@@ -84,7 +99,7 @@ assert(
   "no external runtime assets",
 );
 console.log(
-  "Offline contract: no fetch, imports, remote CSS or script dependencies",
+  "Static runtime contract: no fetch, imports, remote CSS or script dependencies",
 );
 for (const r of data.resources) {
   for (const p of r.papers || []) {
@@ -177,6 +192,10 @@ assert(
     (r) => r.id === "cfm-bench",
   ),
   "benchmark pretraining embargo remains enforced",
+);
+assert(
+  !selectResearchPlan(data.resources,book("foundation-pretrain")).others.some(r=>r.id==='wavesfm-suite'),
+  "evaluation suite must not be presented as a ready pretraining corpus",
 );
 assert(!isMeasuredSource({ origin: "实测参数化的统计模型" }));
 for (const id of ["deepmimo", "sionna-rt", "quadriga", "deepsense-6g"])

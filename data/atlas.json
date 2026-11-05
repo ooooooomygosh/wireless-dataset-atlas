@@ -3,7 +3,7 @@
     "title": "Wireless Dataset Atlas",
     "checkedAt": "2026-11-05",
     "rawDataDownloads": 0,
-    "version": "1.2.0",
+    "version": "1.3.0",
     "repository": "https://github.com/ooooooomygosh/wireless-dataset-atlas",
     "website": "https://wireless-dataset-atlas.vercel.app"
   },
@@ -123,7 +123,8 @@
         "source-007",
         "source-008",
         "source-132",
-        "source-133"
+        "source-133",
+        "source-v13-dm-dynamic"
       ],
       "productionPipeline": {
         "scope": "DeepMIMO v4路径格式与4.0.5信道生成器；源场景的RT配置另行固定。",
@@ -293,6 +294,64 @@
           "本图谱已验证4.0.5参数实例化与教程代码；没有下载全量场景或重跑其上游RT。"
         ],
         "controlScope": "controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。"
+      },
+      "productionFacts": {
+        "entryInput": [
+          "核心入口是已求出的RT路径库：各Tx/Rx链路的位置、逐路径功率、相位、时延、AoA/AoD，以及来源允许的交互点/场景元数据。",
+          "随后由ChannelParameters选择阵列、路径数、OFDM带宽/子载波和Doppler时间采样。DeepMIMO也有上游RT调用与转换组件，但Dataset.compute_channels本身从路径生成信道。"
+        ],
+        "physicalModel": [
+          "上游Wireless InSite、Sionna RT等决定哪些路径存在及其传播增益；DeepMIMO统一数据组织，沿用这些路径结果。",
+          "核验的v4.0.5标准生成器以AoA/AoD构造平面波阵列响应，再相干叠加路径。是否已有逐阵元RT信息与是否使用该信息，需要按实际生成接口分别确认。"
+        ],
+        "channelFormation": [
+          "compute_channels读取路径功率、相位、时延，乘Tx/Rx阵列响应；频域分支再乘子载波时延相位并沿路径求和。",
+          "启用Doppler时，对各路径追加exp(j2πfD·t)相位。显式times单位为秒；num_timestamps按OFDM的1/Δf间隔生成时间点。",
+          "单时刻频域输出为[用户,Rx阵元,Tx阵元,子载波]；多时刻追加时间轴。"
+        ],
+        "frequencyChange": [
+          "只改OFDM带宽、子载波数或采样索引：可复用原载频的路径库，重算基带频域响应；适用范围由原路径模型的带宽假设决定。",
+          "改RF中心频率：应取得目标频率的路径响应，或回到上游引擎重算频率相关材料、传播增益/相位和必要的路径搜索，然后重新转换并生成CSI。",
+          "v4.0.5的ChannelParameters没有载频项。只改rt_params.frequency会影响读取该值的计算（例如Doppler波长），不会自动重算已保存的路径功率与相位。"
+        ],
+        "arrayChange": [
+          "在标准角度响应模型内，只改阵元数、spacing、旋转或支持的方向图：保留RT路径，重算阵列响应和CSI。",
+          "spacing按波长归一化，代码使用kd=2π·spacing。比较不同载频时，需要明确固定的是0.5λ间距还是固定米制孔径。",
+          "若研究阵元间可见性差异、球面波或大孔径近场，单纯增加该生成器的阵元数不够；需使用匹配的逐阵元/球面波路径模型并重新验证。",
+          "使用步骤：只换码本且保留完整复CSI时，按同一信道约定重算码本响应和标签即可；只保留Top-K功率时无法补出任意新波束的响应。"
+        ],
+        "timeMeaning": [
+          "静态Dataset的不同用户位置是空间采样，时间顺序由所选移动轨迹和时间戳定义。",
+          "固定路径加Doppler是在既有功率、角度和时延上的局部相位演化；不会产生新反射路径或遮挡切换。",
+          "DynamicDataset保存逐场景快照；set_timestamps根据相邻位置差估计速度。官方动态RT示例对每个位置重新调用Sionna PathSolver再导出。已有静态路径网格可用于明确规定的轨迹采样。"
+        ],
+        "blockageChange": [
+          "改变车辆/建筑/人体位置并要求其改变可见路径：回到上游几何和RT层，重新求受影响快照的路径，再转换到DeepMIMO。",
+          "直接修改对象velocity或增加时间采样只生成既有路径的Doppler相位，不会执行碰撞、遮挡测试或路径出生/消失。",
+          "人为删除路径或缩放功率可以构造明确标注的扰动模型；它与重新求解移动遮挡的物理含义不同。"
+        ],
+        "costDrivers": [
+          "已有路径时，主要成本来自用户/链路数、保留路径数、Tx/Rx阵元数、子载波数和时间点数。输出尺寸按U×Nr×Nt×K×T增长。",
+          "v4.0.5按用户分块，并分开保存Tx/Rx阵列响应以控制中间内存。",
+          "重新生成频段或动态几何的成本由上游RT决定；重新采样OFDM和更换角度响应阵列通常只触发后处理。这里未测量实际耗时。"
+        ],
+        "artifacts": [
+          "保留来源场景/频段、RT版本与配置、统一路径矩阵、params.json及几何/材料元数据。",
+          "派生CSI需附ChannelParameters、维度、归一化、用户索引；动态数据还需快照顺序、对象身份和时间戳。",
+          "波束标签、SINR和调度效用由后续码本/功率/噪声/协议定义产生，不能只用场景名描述。"
+        ],
+        "commonMistake": [
+          "把“换子载波频率”“换RF载频”和“取得新频段传播数据”混为一项操作。",
+          "把空间网格、固定路径Doppler序列和重新追踪移动遮挡的快照都称为同一种动态信道。",
+          "在平面波合成器里增加阵元数后，直接声称验证了逐阵元近场传播。"
+        ],
+        "sourceIds": [
+          "source-003",
+          "source-006",
+          "source-007",
+          "source-008",
+          "source-v13-dm-dynamic"
+        ]
       }
     },
     {
@@ -406,7 +465,12 @@
         "source-157",
         "source-158",
         "source-rt-pipeline-scenebaker",
-        "source-rt-pipeline-mitsuba-blender"
+        "source-rt-pipeline-mitsuba-blender",
+        "source-v13-sionna-solver",
+        "source-v13-sionna-paths",
+        "source-v13-sionna-scene-frequency",
+        "source-v13-sionna-array",
+        "source-v13-sionna-object"
       ],
       "productionPipeline": {
         "scope": "Sionna RT 2.2.0；射频、RGB、几何扫描与RCS处理是共享场景上的不同分支。",
@@ -600,6 +664,68 @@
           "本卡给出可组成的生产流程；RGB、点云、RCS并非每次RF仿真自动输出。"
         ],
         "controlScope": "controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。"
+      },
+      "productionFacts": {
+        "entryInput": [
+          "输入是3D mesh/XML场景、RF材料、Tx/Rx位置与姿态、天线方向图/极化/阵列，以及求解器传播开关、深度和采样预算。",
+          "场景内同一几何还可供RGB或几何扫描使用；这些传感器各有独立配置和输出分支。"
+        ],
+        "physicalModel": [
+          "Sionna RT 2.2.0从几何搜索传播路径，再计算电磁场系数；支持LoS、镜面/漫反射、薄片透射以及一阶edge/wedge绕射，具体机制由开关决定。",
+          "薄片透射模型按材料厚度修正场，射线穿过表面时不作角度偏折。synthetic_array=True将每个设备作为单个几何端点，再合成阵列相位。"
+        ],
+        "channelFormation": [
+          "PathSolver调用顺序为候选路径生成→image method求解→field calculator计算系数/时延→构造Paths。",
+          "Paths.cir生成基带CIR；Paths.cfr在该CIR上按指定基带频偏求和。Paths保留求解时的频率、阵列和路径信息。",
+          "num_time_steps与sampling_frequency追加基于各路径Doppler的时间演化；波形、噪声和接收机处理属于后续链路层。"
+        ],
+        "frequencyChange": [
+          "只改同一载频周围的子载波采样：复用已求得Paths，重新调用cfr；该步骤没有重新评估RF材料。",
+          "改scene.frequency：setter会更新所有radio materials的频率相关参数。随后重跑PathSolver，重算波长相关场系数及新Paths；直接使用旧Paths仍对应原求解频率。",
+          "几何mesh可复用。2.2.0公开PathSolver调用会再次执行候选、image method和场计算；不能把内部步骤分层描述成已公开的跨频缓存复用API。",
+          "PlanarArray间距与normalized_positions以λ计。改载频而保持这些值，会改变实际米制孔径；固定物理阵列时需同步换算归一化坐标。"
+        ],
+        "arrayChange": [
+          "synthetic_array=True：路径几何以设备中心为端点，阵元通过相位合成；更换阵列后应生成新的Paths，公开调用也会重跑求解。",
+          "synthetic_array=False：每个阵元位置成为追踪端点。改变阵元位置/数量或设备位姿，需要重新求相应路径与场系数。",
+          "只改变已生成同一阵列信道上的数字/模拟波束权重，且不改变天线方向图或几何，可在CSI上做后处理。",
+          "使用步骤：只换码本且保留完整复CSI时，按同一信道约定重算码本响应和标签即可；只保留Top-K功率时无法补出任意新波束的响应。"
+        ],
+        "timeMeaning": [
+          "一次PathSolver对应当前几何状态。cir/cfr的Doppler时间轴在这组路径上施加相位演化，时延和可见性不随该时间轴重新追踪。",
+          "对象velocity用于Doppler；position/orientation才修改几何。长时间运动或路径拓扑变化需更新场景状态并逐快照求解。",
+          "时间步、轨迹、动态对象行为和多传感器同步规则由数据生产者定义。"
+        ],
+        "blockageChange": [
+          "移动或增加遮挡体后，更新其position/orientation/mesh，重跑PathSolver以检查遮挡、新路径及对应场系数。",
+          "只设置对象velocity不会自动沿时间推进对象，也不会使LoS随车辆经过而开关。",
+          "若保持几何只改材料，至少需要重新评估场系数；本版本公开调用仍通过PathSolver完成。"
+        ],
+        "costDrivers": [
+          "几何复杂度、Tx/Rx端点数、samples_per_src、max_depth、允许的交互类型和max_num_paths_per_src影响路径求解。",
+          "关闭synthetic_array会把端点扩展到各阵元；大阵列的几何追踪和存储成本因此上升。",
+          "逐帧移动遮挡增加场景更新与RT次数；同一Paths上增加子载波或Doppler采样主要增加CIR/CFR计算与张量存储。",
+          "硬件后端、JIT编译和批处理也影响耗时；本轮仅核验计算步骤，未给出速度排名。"
+        ],
+        "artifacts": [
+          "保留XML/mesh、RF材料、天线/位姿、Sionna/Mitsuba/DrJit版本、求解器参数和随机设置。",
+          "保存路径有效性、交互点/类型、时延、系数、角度与Doppler，以及CIR/CFR采样、归一化和轴定义。",
+          "动态数据保存每帧对象状态和时间；导出到其他格式时校验路径数、功率、相位约定及传播开关元数据。"
+        ],
+        "commonMistake": [
+          "把cfr的frequencies参数当作重新设置RF载频，或只改scene.frequency后继续使用旧Paths。",
+          "设置velocity后，认为几何遮挡已随时间移动。",
+          "以默认synthetic_array=True的结果直接代表逐阵元球面波/可见性变化。"
+        ],
+        "sourceIds": [
+          "source-v13-sionna-solver",
+          "source-v13-sionna-paths",
+          "source-v13-sionna-scene-frequency",
+          "source-v13-sionna-array",
+          "source-v13-sionna-object",
+          "source-012",
+          "source-154"
+        ]
       }
     },
     {
@@ -1126,7 +1252,13 @@
         "source-rt-pipeline-qd07",
         "source-rt-pipeline-qd08",
         "source-rt-pipeline-qd13",
-        "source-rt-pipeline-qd11"
+        "source-rt-pipeline-qd11",
+        "source-v13-qd-params",
+        "source-v13-qd-channels",
+        "source-v13-qd-array",
+        "source-v13-qd-fr",
+        "source-v13-qd-speed",
+        "source-v13-qd-site"
       ],
       "productionPipeline": {
         "scope": "QuaDRiGa官方MATLAB教程中的几何随机信道流程；site-specific模式需另列输入。",
@@ -1312,6 +1444,70 @@
           "代码许可与发布数据许可分别确认；共享随机模型不证明真实场景校准。"
         ],
         "controlScope": "controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。"
+      },
+      "productionFacts": {
+        "entryInput": [
+          "常规输入为场景统计参数集、BS/终端布局、qd_track轨迹与分段、qd_arrayant阵列及随机状态；生成器据此产生簇和传播参数。",
+          "2.8的site-specific扩展还可输入3D mesh，辅助判定LOS/NLOS、室内状态和轨迹场景分段。"
+        ],
+        "physicalModel": [
+          "核心是几何随机信道模型：相关大尺度参数→簇/子径时延、角度、功率、极化与散射位置→阵列信道。随机簇通常不是一张实景地图中的已追踪反射面。",
+          "drifting按散射几何更新运动中的路径时延、角度和相位；use_3GPP_baseline分支使用平面波近似。",
+          "官方site-specific教程通过mesh判传播状态，再调用对应统计场景；diff_trans的示例用于LOS/NLOS功率加权。它的作用层次与完整多径RT不同。"
+        ],
+        "channelFormation": [
+          "layout.init_builder建立生成器；gen_parameters产生相关LSP、SSF和散射位置；get_channels结合阵列方向图、几何与轨迹生成coeff/delay。",
+          "分段信道经merge处理过渡；qd_channel.fr再把系数和时延投影到指定基带频率。",
+          "gen_parameters的usage可控制复用随机场、LSP、SSF或仅补缺参数；用于受控对比时应保留同一传播实现，避免每次改阵列都重抽随机环境。"
+        ],
+        "frequencyChange": [
+          "只改fr的bandwidth/carriers：复用已有coeff/delay，重新进行基带频域投影；没有改变传播场景的中心频率。",
+          "改中心频率：重新生成匹配目标频段的统计传播参数、路径损耗、阵列响应和信道系数；同时检查轨迹的空间采样密度。",
+          "官方多频教程用center_frequency向量在共同布局上生成相关输出。LOS/NLOS、节点位置、簇时延/角度等共享；路径损耗、路径功率、天线、扩展统计量、K-factor和XPR按频率变化。",
+          "这是一种显式设定的跨频联合模型。独立运行两个频段与共享模型生成的配对数据，应分别标注。"
+        ],
+        "arrayChange": [
+          "固定布局、频率和已生成的LSP/SSF/散射位置时，更新builder中的Tx/Rx阵列，再运行get_channels和fr即可得到新阵列的信道。",
+          "get_channels重新计算方向图、极化、阵元相位，以及drifting模式下的逐阵元几何时延；不需要为单纯阵列对照重新随机生成簇。",
+          "qd_arrayant.element_position以米为单位。改变center_frequency时，若研究目标是固定λ间距，应重新构造或调整阵元位置；固定米制孔径则保留实际位置并更换适用的方向图。",
+          "使用步骤：只换码本且保留完整复CSI时，按同一信道约定重算码本响应和标签即可；只保留Top-K功率时无法补出任意新波束的响应。"
+        ],
+        "timeMeaning": [
+          "轨迹首先定义空间位置和分段；速度/运动profile将位置映射到时间，生成空间连续的信道。",
+          "drifting负责段内演化，merge负责相邻场景/簇的过渡。它表达模型设定的运动和统计非平稳性。",
+          "仅改同一路径的速度profile，在原信道空间采样足够时可按官方教程用interpolate_movement和channel.interpolate重新映射时间；改变轨迹形状、场景分段或传播状态则需重算相关信道。"
+        ],
+        "blockageChange": [
+          "常规统计模型中，遮挡变化需要明确更新LOS/NLOS场景序列、簇/功率或另设遮挡模型，再生成并合并信道；终端移动本身不等于仿真了一个独立移动blocker。",
+          "使用site-specific mesh时，几何变化后应重新进行intersect_mesh状态检测或diff_trans计算，并更新受影响轨迹的场景分段/信道。",
+          "若要求某辆车移动后产生的特定反射、绕射及路径出生/消失，需另接逐几何RT或经过验证的专门模型；仅靠该site-specific教程不能提供这些逐径真值。"
+        ],
+        "costDrivers": [
+          "链路数、簇/子径数、阵元对数、轨迹快照数与频段数决定参数生成和系数合成工作量。",
+          "drifting、逐阵元时延及双端移动增加计算；轨迹空间采样越密，直接生成的快照越多。",
+          "在满足采样要求时，官方教程用稀一些的空间信道采样再插值以减少重复生成；FR阶段成本另随频点数增长。"
+        ],
+        "artifacts": [
+          "保留simpar、场景参数及修改项、layout/track/segment、随机状态和阵列（含米制阵元坐标）。",
+          "受控实验宜保留builder中的实现参数，以及qd_channel coeff/delay、位置和时间映射；由fr生成的CFR还需附频点/带宽。",
+          "site-specific模式另保留mesh、LOS判定/分段规则；多频数据记录共享与逐频变化的参数。"
+        ],
+        "commonMistake": [
+          "把随机簇坐标解释成真实城市的RT反射点，或把mesh辅助LOS分段等同完整站点多径追踪。",
+          "只改fr的频率网格就声称获得了另一RF频段的传播样本。",
+          "每次改阵列同时重抽LSP/SSF，使阵列差异与随机环境差异混在一起；或给独立drop加时间索引后称为连续移动。"
+        ],
+        "sourceIds": [
+          "source-v13-qd-params",
+          "source-v13-qd-channels",
+          "source-v13-qd-array",
+          "source-v13-qd-fr",
+          "source-v13-qd-speed",
+          "source-v13-qd-site",
+          "source-rt-pipeline-qd08",
+          "source-rt-pipeline-qd11",
+          "source-rt-pipeline-qd13"
+        ]
       }
     },
     {
@@ -4629,6 +4825,43 @@
           "本流程根据已读论文与场景页面整理；未执行硬件采集或下载原始场景。",
           "复现检查是使用建议，不表示发布者已完成这些检验。",
           "应同时固定Scenario、文件版本、码本和许可；全系列不存在一套通用字段。"
+        ]
+      },
+      "productionFacts": {
+        "entryInput": [
+          "具体Scenario及其CSV/数据文件",
+          "该场景的硬件、码本、传感器与时间说明"
+        ],
+        "physicalModel": "真实传播和收发/传感硬件共同形成观测；校准、顺序扫束和时间对齐会影响记录。",
+        "channelFormation": "典型波束场景按固定码本逐束测接收功率，再用UTC将图像、定位、点云等关联到样本。42–44另提供波形与IQ，可按相应协议估计有效链路信道。",
+        "frequencyChange": "已发布记录的载频由硬件采集确定。新频段需要相应硬件重新采集或另选数据；对现有功率向量重新标载频不能得到新频段信道。",
+        "arrayChange": [
+          "在完整已测功率向量内可重选、裁剪已测波束并计算标签。",
+          "阵列/码本改变产生未测响应时需重新采集；beam power不包含重构任意数字预编码所需的完整相位信息。"
+        ],
+        "arrayNote": "具体Scenario的全部字段与观测窗单独核对。",
+        "blockageChange": "17–22可研究已记录车辆穿越造成的遮挡事件；新位置、新物体或未测动作的反事实要另做可控采集或配套仿真。",
+        "timeMeaning": "采样率和序列长度以Scenario为单位；一次顺序扫束有实际持续时间。按整段轨迹/事件划分，保留观测完成时间与预测目标时间。",
+        "costDrivers": [
+          "下载与解码所选Scenario、恢复时间/路径索引、校准和事件清理。",
+          "新采集还涉及硬件、场地、扫束时延与跨传感器同步；网站不估算未公布的采集工时。"
+        ],
+        "artifacts": [
+          "CSV样本索引及场景说明",
+          "所选场景的beam power、GPS、RGB、LiDAR或雷达文件",
+          "42–44的发送波形与接收IQ"
+        ],
+        "commonMistake": [
+          "用系列的模态并集代替一个Scenario实际拥有的字段。",
+          "把扫束功率当作阵列复数CSI，或把顺序扫束当成同时快照。",
+          "随机切相邻帧，让同一轨迹/事件跨训练测试。"
+        ],
+        "sourceIds": [
+          "source-127",
+          "source-056",
+          "source-057",
+          "source-058",
+          "source-138"
         ]
       }
     },
@@ -11138,6 +11371,580 @@
           "本次核查 loader 与文档；未下载处理后数据，未追溯四个原始采集链的全部步骤。"
         ]
       }
+    },
+    {
+      "id": "deepbeam",
+      "name": "DeepBeam mmWave I/Q Dataset",
+      "kind": "测量数据集",
+      "origin": "真实测量",
+      "year": 2021,
+      "institution": "Northeastern University",
+      "organization": "Institute for the Wireless Internet of Things, Northeastern University",
+      "authors": "Michele Polese, Francesco Restuccia, Tommaso Melodia",
+      "summary": "用真实毫米波接收I/Q识别正在使用的发射波束与离散AoA。四个SiBeam前端和Pi-Radio数字阵列提供硬件变化，可直接研究跨天线few-shot适配。",
+      "version": "MobiHoc 2021原始采集；作者仓库master分支核验于2026-11-05。",
+      "frequency": "NI/SiBeam：60.48 GHz；Pi-Radio：58 GHz。",
+      "scale": "作者README列出19个HDF5；NI使用12/24波束，Pi-Radio使用5波束；每个I/Q block有2048点。原论文报告总采集量超过4 TB。",
+      "license": "代码MIT；原始数据许可须以Northeastern馆藏条款为准，本次未取得其许可正文。",
+      "access": "代码与数据结构说明可公开读取；官方handle可解析到Northeastern馆藏，本环境馆藏返回403，原始文件下载未验证。",
+      "format": "HDF5：iq两列为I/Q，tx_beam、rx_beam、gain逐采样对应；AoA文件另有angle。作者加载器组装(batch,L,2048,2)。",
+      "evidenceLevel": "已核查作者README、关键加载/训练源码与原论文方法实验段；未下载原始HDF5。",
+      "fields": {
+        "csi": "不支持",
+        "paths": "不支持",
+        "position": "不支持",
+        "beam": "直接提供",
+        "rgb": "不支持",
+        "lidar": "不支持",
+        "radar": "不支持",
+        "time": "直接提供",
+        "multiuser": "不支持",
+        "multibs": "不支持",
+        "crossfreq": "不支持"
+      },
+      "fieldNotes": {
+        "csi": "原生输入是ADC后的I/Q波形；已公开四/五键结构不含校准复CSI或逐径参数。",
+        "beam": "tx_beam是采集时正在使用的TX beam类别；最佳通信波束还需结合各被观测波束的RSRP。",
+        "time": "提供有序基带采样及block组织；这一时间轴描述波形，不是带位置的连续移动轨迹。",
+        "position": "室内设备布局见原文图7/8；HDF5字段未给逐样本位置。",
+        "crossfreq": "58与60.48 GHz来自不同设备采集，不构成同步双频配对。",
+        "multiuser": "公开文件记录单TX/RX采集配置；邻居发现是系统用例，未提供同步多用户信道集合。"
+      },
+      "tasks": [
+        {
+          "name": "Channel Estimation / Prediction",
+          "status": "不支持",
+          "reason": "公开标签是beam/AoA/gain，未提供对应复CSI监督。"
+        },
+        {
+          "name": "Beam Selection / Prediction",
+          "status": "条件支持",
+          "reason": "原生标签是已发射TX beam类别和AoA；最优通信波束选择需结合各被观测波束的接收功率另建决策协议。"
+        },
+        {
+          "name": "Beam Tracking / Alignment",
+          "status": "条件支持",
+          "reason": "可研究TXB/AoA辅助对齐；移动追踪需另建连续时序或在线试验。"
+        },
+        {
+          "name": "Multi-User Precoding",
+          "status": "不支持",
+          "reason": "缺少同时多用户的校准复CSI。"
+        },
+        {
+          "name": "Sub-6-assisted mmWave Prediction",
+          "status": "不支持",
+          "reason": "本数据仅含毫米波I/Q采集。"
+        },
+        {
+          "name": "Cross-Frequency Generalisation",
+          "status": "不支持",
+          "reason": "两个频段与不同硬件绑定，缺少同链路双频配对。"
+        },
+        {
+          "name": "Localization / Positioning",
+          "status": "条件支持",
+          "reason": "有三类接收AoA，可验证离散角度识别；位置回归需要额外坐标标签。"
+        },
+        {
+          "name": "Few-shot Antenna Adaptation",
+          "status": "条件支持",
+          "reason": "ProtoBeam在测试时使用目标天线的带标签support构建原型；属于few-shot适配。"
+        },
+        {
+          "name": "Wireless Foundation Model Pretraining",
+          "status": "条件支持",
+          "reason": "原生I/Q可用于无标签表征学习；本原始发布不是预训练模型或统一FM Benchmark。"
+        },
+        {
+          "name": "Sim2Real / Digital Twin",
+          "status": "条件支持",
+          "reason": "可作为实测端验证；需要另建与之对应的仿真波形和硬件模型。"
+        },
+        {
+          "name": "Long-Horizon Environment Forecasting",
+          "status": "不支持",
+          "reason": "未提供跨季节场景演变或长期环境序列。"
+        }
+      ],
+      "provenance": [
+        "真实TX/RX阵列和固定室内配置",
+        "设置TX beam、增益及接收方向",
+        "ADC后I/Q连续采集",
+        "写入波形与配置标签",
+        "按block取样和按设备划分任务"
+      ],
+      "physics": [
+        "文献支持：NI使用模拟相移阵列，Pi-Radio在各RF链数字加权；硬件差异会改变I/Q分布。",
+        "文献支持：obstacle配置中的椅子未遮断LoS，不能将该配置直接标记为NLoS。"
+      ],
+      "risks": [
+        "文献支持：24-beam、L=1下同天线平均78.51%，跨天线16.97%；硬件留出是关键评估轴。",
+        "已确认：训练代码在每个gain/beam块内连续划分60/40；同次采集内划分与新设备测试须分别报告。",
+        "已确认：AoA标签只有−45°、0°、45°；可支持离散识别，连续角度精度需新增采样。"
+      ],
+      "history": [
+        "2021-06-07：原论文arXiv v2，后发表于MobiHoc 2021"
+      ],
+      "tutorial": [
+        "从作者README选择TXB或AoA、设备/阵列和12/24/5波束文件。",
+        "先读取少量iq及标签，按2048点重建block并核对标签常量段。",
+        "分别复现同设备60/40和跨天线留出；few-shot评估记录目标域support数量。",
+        "再将识别结果与接收功率、探测时间联系，评价对齐和初始接入收益。"
+      ],
+      "papers": [
+        {
+          "title": "DeepBeam: Deep Waveform Learning for Coordination-Free Beam Management in mmWave Networks",
+          "year": 2021,
+          "url": "https://doi.org/10.1145/3466772.3467035",
+          "venue": "ACM MobiHoc",
+          "role": "原始数据与方法",
+          "use": "I/Q到TXB/AoA分类、跨天线泛化、FPGA辅助延迟分析。",
+          "readScope": "Sec.2–5方法与实验；已读范围见来源。",
+          "evidenceStatus": "文献支持",
+          "usedForUsageTrend": false,
+          "locator": "Sec.2–5方法与实验；已读范围见来源。",
+          "fullMainTextRead": false,
+          "verificationLevel": "primary-section",
+          "checkedAt": "2026-11-05"
+        },
+        {
+          "title": "ProtoBeam: Generalizing Deep Beam Prediction to Unseen Antennas using Prototypical Networks",
+          "year": 2025,
+          "url": "https://arxiv.org/html/2501.03435v1",
+          "venue": "arXiv v1",
+          "role": "后续应用",
+          "use": "将原始DeepBeam按天线组织为few-shot迁移任务；测试使用目标域带标签support。",
+          "readScope": "III–V与公开Notebook测试函数。",
+          "evidenceStatus": "文献支持",
+          "usedForUsageTrend": false,
+          "locator": "III–V与公开Notebook测试函数。",
+          "fullMainTextRead": false,
+          "verificationLevel": "primary-section",
+          "checkedAt": "2026-11-05"
+        }
+      ],
+      "coverageNote": "本卡描述原始I/Q数据和公开加载接口；原始文件shape与数据许可待馆藏访问后核验。",
+      "checkedAt": "2026-11-05",
+      "sourceIds": [
+        "source-v13-deepbeam-readme",
+        "source-v13-deepbeam-license",
+        "source-v13-deepbeam-loader",
+        "source-v13-deepbeam-training",
+        "source-v13-deepbeam-paper",
+        "source-v13-deepbeam-data",
+        "source-v13-protobeam-paper",
+        "source-v13-protobeam-notebook"
+      ],
+      "productionPipeline": {
+        "scope": "原始DeepBeam实测采集与作者Keras加载流程；ProtoBeam是基于该数据的后续任务。",
+        "summary": "设置射频前端、波束和增益，记录ADC后的I/Q及硬件配置标签；按2048点block组织输入，再定义同天线或跨天线评估。",
+        "stages": [
+          {
+            "title": "固定设备、码本和采集条件",
+            "inputs": [
+              "NI/SiBeam或Pi-Radio硬件",
+              "室内TX/RX位置"
+            ],
+            "operation": "选择设备组合和TX码本；NI提供12/24波束，Pi-Radio提供5波束。RX beam固定在阵列boresight，AoA任务另外设置阵列转角。",
+            "outputs": [
+              "可识别的设备/位置/码本配置"
+            ],
+            "controls": [
+              "作者设置：不同前端和空间配置分别保存。"
+            ],
+            "checks": [
+              "核对文件名中的TX/RX编号及波束数，避免混合后丢失硬件身份。"
+            ],
+            "sourceIds": [
+              "source-v13-deepbeam-readme",
+              "source-v13-deepbeam-paper"
+            ],
+            "evidenceStatus": "已确认"
+          },
+          {
+            "title": "采集未均衡的基带I/Q",
+            "inputs": [
+              "正在发射的毫米波波形",
+              "TX beam与增益设置"
+            ],
+            "operation": "从接收ADC后获取I/Q，按2048点成块。NI对每个gain/beam采150000 blocks，Pi-Radio每组合50000 blocks；前者为RX gain，后者为TX gain。",
+            "outputs": [
+              "按配置排序的I/Q序列"
+            ],
+            "controls": [
+              "作者设置：本文路径位于频偏跟踪和均衡之前。"
+            ],
+            "checks": [
+              "确认gain在对应设备中的物理含义；不要把增益值直接当作SNR真值。"
+            ],
+            "sourceIds": [
+              "source-v13-deepbeam-readme",
+              "source-v13-deepbeam-paper"
+            ],
+            "evidenceStatus": "已确认"
+          },
+          {
+            "title": "将采集控制写成标签",
+            "inputs": [
+              "I/Q流",
+              "采集时的beam、gain与角度"
+            ],
+            "operation": "HDF5写iq、tx_beam、rx_beam、gain；AoA文件增加angle。NI数据依次按gain、TX beam排列，AoA数据进一步按角度排列。",
+            "outputs": [
+              "带配置标签的19个HDF5发布文件"
+            ],
+            "controls": [
+              "作者发布：TXB标签记录已发射的波束。"
+            ],
+            "checks": [
+              "抽查每个block标签一致性；区分“当前发射波束”与“最佳通信波束”。"
+            ],
+            "sourceIds": [
+              "source-v13-deepbeam-readme"
+            ],
+            "evidenceStatus": "已确认"
+          },
+          {
+            "title": "组装模型输入并定义划分",
+            "inputs": [
+              "指定HDF5",
+              "block索引与L"
+            ],
+            "operation": "DataGenerator按索引读取I/Q并形成(batch,L,2048,2)输入；DeepBeam.py在每个gain/beam内按连续索引划出前60%训练、后40%测试，默认验证比例为0。",
+            "outputs": [
+              "I/Q批次与TXB分类标签",
+              "明确的训练/测试索引"
+            ],
+            "controls": [
+              "作者代码：该加载路径不执行输入单位功率归一化。"
+            ],
+            "checks": [
+              "跨天线实验须整文件留出；将划分单位、硬件身份和连续块相邻性列入协议。"
+            ],
+            "sourceIds": [
+              "source-v13-deepbeam-loader",
+              "source-v13-deepbeam-training"
+            ],
+            "evidenceStatus": "已确认"
+          },
+          {
+            "title": "从分类结果进入通信决策",
+            "inputs": [
+              "TXB/AoA预测",
+              "每个观测波束的接收功率"
+            ],
+            "operation": "按被动观测建立TX beam与RSRP关联，利用AoA调整接收方向，再比较被观测候选。论文另外以采样等待和FPGA推理时间分析初始接入延迟。",
+            "outputs": [
+              "波束候选与对齐信息",
+              "分类准确率及延迟分析"
+            ],
+            "controls": [
+              "文献支持：延迟取决于业务发送顺序、观测覆盖与NR帧参数。"
+            ],
+            "checks": [
+              "复现建议：同时报告候选覆盖率、功率损失和总等待时间；稀疏业务条件单独测试。"
+            ],
+            "sourceIds": [
+              "source-v13-deepbeam-paper"
+            ],
+            "evidenceStatus": "已确认"
+          }
+        ],
+        "nativeOutputs": [
+          "未均衡I/Q波形",
+          "TX/RX beam与gain标签",
+          "离散接收AoA标签"
+        ],
+        "derivedOutputs": [
+          "固定长度I/Q模型输入",
+          "同/跨天线评估划分",
+          "TXB/AoA预测与后续RSRP排名"
+        ],
+        "reproductionNotes": [
+          "本轮核查文档和源码，未下载4 TB原始数据或运行训练。",
+          "Pi-Radio README存在“31”增益文字与三项列表不一致；采集数量以原论文Sec.4.3及文件内容核对，未把31写成确定配置。"
+        ]
+      }
+    },
+    {
+      "id": "wavesfm-suite",
+      "name": "WavesFM Evaluation Suite",
+      "kind": "AI 语料与 Benchmark",
+      "origin": "混合来源",
+      "year": 2026,
+      "institution": "University of Calgary",
+      "organization": "Waves Lab, University of Calgary",
+      "authors": "Ahmed Aboulfotouh, Hatem Abou-Zeid",
+      "summary": "将I/Q、频谱图、CSI与CIR任务接入统一预处理、HDF5缓存和适配评估接口。当前v1.0网站覆盖10个上游数据集、13个任务行；适合复现多表示模型评估和审计数据血缘。",
+      "version": "当前官网WavesFM v1.0；2025年Multimodal Wireless Foundation Models论文协议单独记录。",
+      "frequency": "随上游数据集变化：RF波形、Wi-Fi/NR CSI、UWB CIR与DeepMIMO派生CSI。统一载频不适用。",
+      "scale": "官网10个数据集、13个任务行，LP/FT2/LoRA各报告3 seeds；属于派生评估套件，不新增原始采集量。",
+      "license": "代码公开可读；本轮main完整文件树未见LICENSE/COPYING。原始数据与checkpoint分别依上游许可。",
+      "access": "作者GitHub提供预处理、加载器与评估脚本；官网链接原始数据源、协议、模型和评估命令。",
+      "format": "各任务HDF5缓存；图像式输入(C,H,W)，I/Q式输入(2,C,T)。DeepMIMO缓存含sample、label_los、label_beam_{n}、scenario及尺度元数据。",
+      "evidenceLevel": "官方协议、公开表格及关键预处理/划分源码核验；未下载上游数据或checkpoint。",
+      "fields": {
+        "csi": "可计算",
+        "paths": "不支持",
+        "position": "直接提供",
+        "beam": "可计算",
+        "rgb": "不支持",
+        "lidar": "不支持",
+        "radar": "不支持",
+        "time": "未知",
+        "multiuser": "不支持",
+        "multibs": "不支持",
+        "crossfreq": "不支持"
+      },
+      "fieldNotes": {
+        "csi": "CSI分支由上游发布物或DeepMIMO场景生成缓存；仓库本身提供预处理和评估接口，其他任务消费I/Q、频谱图或CIR。",
+        "position": "5G NR与UWB定位任务消费位置回归目标，坐标和单位按各自协议。",
+        "beam": "DeepMIMO子任务由指定码本产生label_beam_{n}；默认64波束，标签由相干跨频响应平均后选最大项。",
+        "rgb": "image-like指频谱图或CSI张量；未包含可见光RGB环境照片。",
+        "radar": "RADCOM用于雷达/通信信号类别识别；此接口没有目标检测用的距离-多普勒真值。",
+        "time": "时间维含义随I/Q、CIR和CSI任务变化；当前统一缓存不保证轨迹、事件或时间戳隔离。",
+        "scope": "字段描述各子任务提供的接口并集；不同数据集之间没有逐样本同步多模态配对。"
+      },
+      "tasks": [
+        {
+          "name": "Beam Selection / Prediction",
+          "status": "直接支持",
+          "reason": "提供DeepMIMO LoS/beam任务及码本标签和评估入口。"
+        },
+        {
+          "name": "Multi-User Precoding",
+          "status": "不支持",
+          "reason": "现有任务头与缓存没有同时多用户SINR或预编码评价。"
+        },
+        {
+          "name": "Sub-6-assisted mmWave Prediction",
+          "status": "不支持",
+          "reason": "已读DeepMIMO生成脚本由同一CSI产生beam标签；跨频辅助需明确另一个目标频段。"
+        },
+        {
+          "name": "Cross-Frequency Generalisation",
+          "status": "不支持",
+          "reason": "套件聚合不同频段任务，没有统一同链路跨频配对评测。"
+        },
+        {
+          "name": "RF Signal Classification / Wi-Fi Sensing",
+          "status": "直接支持",
+          "reason": "包括Wi-Fi人体活动与RF信号/干扰分类；完整ISAC资源联合优化需另建系统模型。"
+        },
+        {
+          "name": "Localization / Positioning",
+          "status": "直接支持",
+          "reason": "5G NR与两个UWB任务有回归接口和位置误差评估。"
+        },
+        {
+          "name": "Test-Time Adaptation",
+          "status": "不支持",
+          "reason": "当前公开LP/FT2/LoRA入口是有监督适配；没有建立部署时无标签TTA协议。"
+        },
+        {
+          "name": "Wireless Foundation Model Pretraining",
+          "status": "不支持",
+          "reason": "此条目定位公开评估套件；预训练应回到各上游数据单独构建语料并隔离评测集。论文的预训练方法见关联论文。"
+        },
+        {
+          "name": "Long-Horizon Environment Forecasting",
+          "status": "不支持",
+          "reason": "未建立长时间环境变化的统一任务。"
+        }
+      ],
+      "provenance": [
+        "分别取得上游测量或仿真数据",
+        "任务专用解析、变换与归一化",
+        "HDF5 cache保存输入和标签",
+        "任务注册及学习划分",
+        "LP/FT2/LoRA适配与多seed评价"
+      ],
+      "physics": [
+        "已确认：DeepMIMO仍依赖原始RT场景和DeepMIMOv3阵列/OFDM配置；统一ViT输入尺寸不统一物理分辨率。",
+        "已确认：共享模型接受不同无线表示；各数据集独立，不形成同步RGB/CSI/LiDAR观测。"
+      ],
+      "risks": [
+        "已确认：DeepMIMO预处理在划分前用全缓存均值/标准差归一化；严格OOD实验须按训练集重新拟合统计量。",
+        "已确认：缺省80/20随机样本划分；城市、设备、轨迹和采集事件外泛化需显式重建划分。",
+        "已确认：官网v1.0的任务数与LoRA alpha=64不同于2025论文设置，须冻结版本后比较。"
+      ],
+      "history": [
+        "2025-11-19：Multimodal Wireless Foundation Models预印本v1",
+        "2026-01-23：官网Detailed Evaluation标注更新日"
+      ],
+      "tutorial": [
+        "先从官网任务页定位上游数据、缓存键与标签语义。",
+        "运行对应preprocessing脚本，把输入尺度和划分单位记录到配置。",
+        "通过main_finetune.py选择task，并用独立val-data固定评测集合。",
+        "按run_finetune_all.py的seed与适配配置比较；波束任务另补归一化收益和通信效用。"
+      ],
+      "papers": [
+        {
+          "title": "Multimodal Wireless Foundation Models",
+          "year": 2025,
+          "url": "https://arxiv.org/html/2511.15162v1",
+          "venue": "arXiv v1",
+          "role": "方法论文",
+          "use": "I/Q与图像式无线表示的共享编码器、掩码预训练及下游适配。",
+          "readScope": "III–IV方法、数据与表I–III；当前网站扩展评估单独核查。",
+          "evidenceStatus": "文献支持",
+          "usedForUsageTrend": false,
+          "locator": "III–IV方法、数据与表I–III；当前网站扩展评估单独核查。",
+          "fullMainTextRead": false,
+          "verificationLevel": "primary-section",
+          "checkedAt": "2026-11-05"
+        }
+      ],
+      "coverageNote": "以当前公开评估代码和v1.0协议为主；原始数据字段与许可仍由上游发布物负责。",
+      "checkedAt": "2026-11-05",
+      "sourceIds": [
+        "source-v13-wavesfm-readme",
+        "source-v13-wavesfm-data",
+        "source-v13-wavesfm-deepmimo-code",
+        "source-v13-wavesfm-benchmark",
+        "source-v13-wavesfm-deepmimo-doc",
+        "source-v13-wavesfm-sweeper",
+        "source-v13-multimodal-wfm-paper"
+      ],
+      "productionPipeline": {
+        "scope": "WavesFM v1.0公开评估套件；用DeepMIMO分支展示可核验的生成细节，其他任务按各自预处理器运行。",
+        "summary": "原始数据经专用预处理器转成HDF5任务缓存，任务注册器加载输入/目标，随后指定划分与适配方式，输出统一的分类或定位指标。",
+        "stages": [
+          {
+            "title": "定位上游发布物和任务",
+            "inputs": [
+              "官方任务页",
+              "上游原始文件或场景"
+            ],
+            "operation": "按任务取得EfficientFi、CommRad、NR定位、UWB、RadCom、RML2022、POWDER、ICARUS或DeepMIMO数据；保留数据集身份和原始划分。",
+            "outputs": [
+              "独立的原始数据根目录",
+              "任务标识与标签定义"
+            ],
+            "controls": [
+              "作者发布：各任务的频率、设备和标签空间独立。"
+            ],
+            "checks": [
+              "核对原始许可、版本和采集单位；不同模态文件不按行号做虚构配对。"
+            ],
+            "sourceIds": [
+              "source-v13-wavesfm-readme",
+              "source-v13-wavesfm-benchmark"
+            ],
+            "evidenceStatus": "已确认"
+          },
+          {
+            "title": "执行任务专用解析与物理生成",
+            "inputs": [
+              "原始文件",
+              "对应preprocessing脚本"
+            ],
+            "operation": "各脚本将原始输入变为图像式或I/Q式张量。DeepMIMO分支使用DeepMIMOv3，在选定城市场景和BS上生成32天线、32子载波信道，过滤LoS=-1样本并乘10^6。",
+            "outputs": [
+              "任务输入张量",
+              "有效样本索引"
+            ],
+            "controls": [
+              "作者代码：DeepMIMO默认六城；阵列旋转、路径数和OFDM网格由脚本固定。"
+            ],
+            "checks": [
+              "复现建议：记录native shape及物理采样间隔，在变换前核验复信道幅度。"
+            ],
+            "sourceIds": [
+              "source-v13-wavesfm-readme",
+              "source-v13-wavesfm-deepmimo-code"
+            ],
+            "evidenceStatus": "已确认"
+          },
+          {
+            "title": "形成标签与可重建缓存",
+            "inputs": [
+              "输入张量",
+              "原始标签或码本"
+            ],
+            "operation": "DeepMIMO按码本计算beam响应，先对复响应跨频平均、取幅度，再选择beam；输入可bicubic resize至224×224并以全缓存统计标准化。写sample、label_los、label_beam_{n}和scenario。其他数据使用各任务原生标签。",
+            "outputs": [
+              "HDF5缓存",
+              "标签及mean/std等元数据"
+            ],
+            "controls": [
+              "作者代码：64 beam是默认值；缓存可同时保存多种beam数标签。"
+            ],
+            "checks": [
+              "复现建议：在训练域拟合统计量后应用到留出域；保留原始CSI以计算功率/SINR效用。"
+            ],
+            "sourceIds": [
+              "source-v13-wavesfm-deepmimo-code",
+              "source-v13-wavesfm-deepmimo-doc"
+            ],
+            "evidenceStatus": "已确认"
+          },
+          {
+            "title": "加载任务并固定评测划分",
+            "inputs": [
+              "HDF5缓存",
+              "task和可选val-data"
+            ],
+            "operation": "data.py按task选择加载器和输出头。提供独立val-data时直接使用；否则默认val_split=0.2进行随机样本划分，可选择分类分层。",
+            "outputs": [
+              "训练/验证Dataset",
+              "任务输出维度与标签类型"
+            ],
+            "controls": [
+              "作者代码：随机种子控制split；缺省划分不隔离城市或采集事件。"
+            ],
+            "checks": [
+              "复现建议：外推研究先按城市/设备/轨迹生成独立cache，再通过val-data接入。"
+            ],
+            "sourceIds": [
+              "source-v13-wavesfm-data"
+            ],
+            "evidenceStatus": "已确认"
+          },
+          {
+            "title": "适配模型并核对指标口径",
+            "inputs": [
+              "固定划分",
+              "预训练checkpoint或模型初始化",
+              "适配模式"
+            ],
+            "operation": "main_finetune.py执行任务适配；批量runner默认seeds 0/1/2，支持LP、FT2与LoRA，当前LoRA为rank=32、alpha=64。官网逐任务报告均值与标准差。",
+            "outputs": [
+              "分类或定位评价",
+              "适配成本与复现命令"
+            ],
+            "controls": [
+              "作者发布：当前网站版本与2025论文的alpha=32分别记录。"
+            ],
+            "checks": [
+              "复现建议：分类同时区分Top-1与mean per-class accuracy，定位保留米单位；任务效用另行计算。"
+            ],
+            "sourceIds": [
+              "source-v13-wavesfm-readme",
+              "source-v13-wavesfm-sweeper",
+              "source-v13-wavesfm-benchmark"
+            ],
+            "evidenceStatus": "已确认"
+          }
+        ],
+        "nativeOutputs": [
+          "各上游数据的任务专用加载与预处理接口",
+          "HDF5任务缓存schema",
+          "公开评估命令"
+        ],
+        "derivedOutputs": [
+          "resize/标准化后的无线表示",
+          "DeepMIMO LoS/beam派生标签",
+          "LP/FT2/LoRA结果与多seed指标"
+        ],
+        "reproductionNotes": [
+          "本套件与DeepMIMO、POWDER等共享上游来源，覆盖统计不重复计为新的测量。",
+          "本轮未下载原始数据、模型权重或运行训练；代码许可未明示，复用前应由作者明确授权范围。"
+        ]
+      },
+      "researchRole": "evaluation_suite",
+      "fieldScope": "WavesFM v1.0评估接口的任务并集；需先取得相应上游数据并生成缓存，不构成逐样本同步多模态观测。"
     }
   ],
   "sources": [
@@ -11236,7 +12043,7 @@
       "title": "DeepMIMO 4.0.5 信道接口",
       "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/deepmimo/datasets/dataset.py",
       "type": "官方源码",
-      "readScope": "已读 compute_channels、trim、阵列响应计算；核对返回张量轴",
+      "readScope": "已读 compute_channels、trim、阵列响应计算；核对返回张量轴；已读 compute_channels、trim、阵列响应计算；核对返回张量轴 本轮追加读取464–535行compute_channels显式times与num_timestamps、773–852行波长归一化阵列响应和缓存、1842–1904行Doppler、2600–2695行DynamicDataset时间/速度处理。",
       "status": "限定范围已读",
       "checkedAt": "2026-11-05",
       "id": "source-006",
@@ -11254,7 +12061,7 @@
       "title": "DeepMIMO 4.0.5 参数与OFDM生成",
       "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/deepmimo/generator/channel.py",
       "type": "官方源码",
-      "readScope": "已读 ChannelParameters、OFDMPathGenerator 和频域生成相关函数；未通读所有优化分支",
+      "readScope": "已读 ChannelParameters、OFDMPathGenerator 和频域生成相关函数；未通读所有优化分支；已读 ChannelParameters、OFDMPathGenerator 和频域生成相关函数；未通读所有优化分支 本轮追加读取DEFAULT_PARAMS、_generate_mimo_channel输入/返回轴及固定路径功率/相位/时延上的Doppler和OFDM合成；该ChannelParameters没有载频设置项。",
       "status": "限定范围已读",
       "checkedAt": "2026-11-05",
       "id": "source-007",
@@ -11272,7 +12079,7 @@
       "title": "DeepMIMO 4.0.5 阵列坐标",
       "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/deepmimo/generator/geometry.py",
       "type": "官方源码",
-      "readScope": "已读阵列响应与阵元索引函数，核对y-z平面及相位约定",
+      "readScope": "已读阵列响应与阵元索引函数，核对y-z平面及相位约定；已读阵列响应与阵元索引函数，核对y-z平面及相位约定 本轮复核_array_response/_array_response_batch使用角度和kd产生平面波相位、steering_vec的spacing以波长为单位。",
       "status": "限定范围已读",
       "checkedAt": "2026-11-05",
       "id": "source-008",
@@ -14477,6 +15284,643 @@
       ],
       "official": true,
       "access": "源码已读取；未执行完整生成器或下载原始数据"
+    },
+    {
+      "id": "source-v13-dm-dynamic",
+      "title": "DeepMIMO 4.0.5逐快照RT教程",
+      "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/docs/applications/5_dynamic_rt.py",
+      "type": "官方源码",
+      "readScope": "读取154–224行：移动Tx、每snapshot调用PathSolver、exporter与dm.convert、组装DynamicDataset、设置timestamps；未运行。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "deepmimo",
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-sionna-solver",
+      "title": "Sionna RT 2.2.0 PathSolver实现",
+      "url": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/src/sionna/rt/path_solvers/path_solver.py",
+      "type": "官方源码",
+      "readScope": "读取20–67行物理机制/薄片透射/synthetic array说明、163–201行参数、243–325行candidate→image method→field calculator→Paths生成；未执行。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-sionna-paths",
+      "title": "Sionna RT 2.2.0 CIR/CFR与Doppler实现",
+      "url": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/src/sionna/rt/path_solvers/paths.py",
+      "type": "官方源码",
+      "readScope": "读取构造函数保存scene.frequency及阵列、cir的基带相位与Doppler时间演化、cfr基于既有CIR和时延的频域求和。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-sionna-scene-frequency",
+      "title": "Sionna RT 2.2.0载频与阵列位置更新",
+      "url": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/src/sionna/rt/scene.py",
+      "type": "官方源码",
+      "readScope": "读取117–144行frequency setter/wavelength：更新所有材料；1155–1228行sources/targets按synthetic_array及波长构造设备或阵元端点。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-sionna-array",
+      "title": "Sionna RT 2.2.0阵列单位",
+      "url": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/src/sionna/rt/antenna_array.py",
+      "type": "官方源码",
+      "readScope": "读取AntennaArray normalized_positions、positions(wavelength)、rotate及PlanarArray间距和坐标生成。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-sionna-object",
+      "title": "Sionna RT 2.2.0对象速度与几何移动",
+      "url": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/src/sionna/rt/scene_object.py",
+      "type": "官方源码",
+      "readScope": "读取307–357行：velocity写入mesh速度属性，position setter通过平移变换修改几何；两者独立。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-qd-params",
+      "title": "QuaDRiGa参数生成与复用模式",
+      "url": "https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/quadriga_src/@qd_builder/gen_parameters.m",
+      "type": "官方源码",
+      "readScope": "读取函数说明和usage=0–5分支：SOS随机场、LSP、SSF、散射位置的生成、保留与重算关系。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "quadriga"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-qd-channels",
+      "title": "QuaDRiGa阵列信道合成",
+      "url": "https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/quadriga_src/@qd_builder/get_channels.m",
+      "type": "官方源码",
+      "readScope": "读取参数存在性/单频builder检查、波数和天线数量、逐snapshot天线方向图插值、drifting与平面波分支、coupling处理。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "quadriga"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-qd-array",
+      "title": "QuaDRiGa阵列坐标定义",
+      "url": "https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/quadriga_src/@qd_arrayant/qd_arrayant.m",
+      "type": "官方源码",
+      "readScope": "读取类说明与属性：element_position单位为米、center_frequency、方向图和coupling定义。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "quadriga"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-qd-fr",
+      "title": "QuaDRiGa fr基带频率变换",
+      "url": "https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/quadriga_src/@qd_channel/fr.m",
+      "type": "官方源码",
+      "readScope": "读取fr的bandwidth/carriers/i_snapshot定义、频率网格构造与coeff/delay投影；默认频点从中心频率向上排列。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "quadriga"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-qd-speed",
+      "title": "QuaDRiGa速度变化与信道插值教程",
+      "url": "https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/tutorials/t09_speed_profile_interpolation.m",
+      "type": "官方源码",
+      "readScope": "读取轨迹空间采样、Nyquist采样说明、先生成信道再用set_speed/interpolate_movement/qd_channel.interpolate映射不同速度的教程段落。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "quadriga"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-qd-site",
+      "title": "QuaDRiGa 2.8 site-specific教程",
+      "url": "https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/tutorials/t15_los_detection_and_diffraction.m",
+      "type": "官方源码",
+      "readScope": "完整读取教程代码与说明：qd_mesh加载3D模型、intersect_mesh判LOS/室内、diff_trans混合LOS/NLOS功率、轨迹分段及随机簇限制；未运行。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "quadriga"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-dm-sionna-exporter",
+      "title": "DeepMIMO 4.0.5 Sionna输出导出器",
+      "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/deepmimo/exporters/sionna_exporter.py",
+      "type": "官方源码",
+      "readScope": "读取export_paths、export_scene_rt_params和sionna_exporter：a/tau/角度/交互/几何导出、pkl文件列表、版本与求解参数；核对diffraction别名被固定False。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "deepmimo",
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-dm-sionna-converter",
+      "title": "DeepMIMO 4.0.5 Sionna格式转换器",
+      "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/deepmimo/converters/sionna_rt/sionna_converter.py",
+      "type": "官方源码",
+      "readScope": "读取转换器主函数、输入/输出、read_paths/read_materials/read_scene、lossless与deduplicate选项、params.json和场景保存；未执行。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "deepmimo",
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-dm-dependencies",
+      "title": "DeepMIMO 4.0.5可选Sionna依赖",
+      "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/pyproject.toml",
+      "type": "官方源码",
+      "readScope": "读取sionna/all extras依赖：sionna-rt>=2.0.1,<3.0.0，mitsuba==3.8.0，drjit==1.3.1；与Sionna2.2.0自身pin对照。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "resourceIds": [
+        "deepmimo",
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "已读取所列代码/教程范围；未执行生产仿真或下载论文、原始数据",
+      "httpStatus": 200,
+      "linkCheck": "可访问",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-materials-deepmimo-readme-v405",
+      "title": "DeepMIMO v4.0.5 README",
+      "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/README.md",
+      "type": "官方仓库",
+      "readScope": "完整README：Quickstart、场景加载、信道计算、转换器、目录、文档构建与引用。远程徽章和相对路径图像仅保留原链接，未抓取素材。",
+      "status": "完整文件已读",
+      "checkedAt": "2026-11-05",
+      "verification": "full-document",
+      "fullMainTextRead": true,
+      "resourceIds": [
+        "deepmimo"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-deepmimo-specs-v405",
+      "title": "DeepMIMO v4.0.5 格式规范源码",
+      "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/docs/resources/specs.md",
+      "type": "官方仓库",
+      "readScope": "完整specs.md：v4矩阵命名、主/派生字段、JSON和hull/mesh表示，以及v3/v2历史格式。未将说明文档替代具体数据包审计。",
+      "status": "完整文件已读",
+      "checkedAt": "2026-11-05",
+      "verification": "full-document",
+      "fullMainTextRead": true,
+      "resourceIds": [
+        "deepmimo"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-deepmimo-license-v405",
+      "title": "DeepMIMO v4.0.5 Apache许可",
+      "url": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/LICENSE",
+      "type": "官方仓库",
+      "readScope": "读取完整LICENSE；Apache-2.0包含documentation source，保留©2025 DeepMIMO。检查v4.0.5根目录及文档祖先目录，未见单独NOTICE或更窄许可。",
+      "status": "完整文件已读",
+      "checkedAt": "2026-11-05",
+      "verification": "full-document",
+      "fullMainTextRead": true,
+      "resourceIds": [
+        "deepmimo"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-sionna-readme-v220",
+      "title": "Sionna RT v2.2.0 README",
+      "url": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/README.md",
+      "type": "官方仓库",
+      "readScope": "完整README：依赖、CPU后端、安装、测试、文档构建、开发入口和v2.2.0引用。未下载notebook输出、场景资产或数据。",
+      "status": "完整文件已读",
+      "checkedAt": "2026-11-05",
+      "verification": "full-document",
+      "fullMainTextRead": true,
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-sionna-license-v220",
+      "title": "Sionna RT v2.2.0 Apache许可",
+      "url": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/LICENSE",
+      "type": "官方仓库",
+      "readScope": "读取完整LICENSE和README的SPDX Apache-2.0标记；检查v2.2.0根目录未见NOTICE。原LICENSE为声明文件，包内另附Apache官方完整许可文本。",
+      "status": "完整文件已读",
+      "checkedAt": "2026-11-05",
+      "verification": "full-document",
+      "fullMainTextRead": true,
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-deepsense-readme-2022",
+      "title": "DeepSense官方2022 Challenge README",
+      "url": "https://github.com/DeepSense6G/Multi-Modal-Beam-Prediction-Challenge-2022-Baseline/blob/main/README.md",
+      "type": "官方仓库",
+      "readScope": "完整README：脚本职责、依赖、70/20/10演示划分、NaN功率处理和示例指标。MIT范围是该仓库的软件及附属文档；不改变DeepSense原始数据或其他task许可。 官方官网公开前端包含该仓库链接。",
+      "status": "完整文件已读",
+      "checkedAt": "2026-11-05",
+      "verification": "full-document",
+      "fullMainTextRead": true,
+      "resourceIds": [
+        "deepsense-6g"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-deepsense-license-2022",
+      "title": "DeepSense官方2022 Challenge MIT许可",
+      "url": "https://github.com/DeepSense6G/Multi-Modal-Beam-Prediction-Challenge-2022-Baseline/blob/main/LICENSE",
+      "type": "官方仓库",
+      "readScope": "完整MIT LICENSE明示Copyright (c) 2022 DeepSense6G，授权范围含associated documentation files；仓库根目录未见NOTICE。该许可不外推原始无线数据。",
+      "status": "完整文件已读",
+      "checkedAt": "2026-11-05",
+      "verification": "full-document",
+      "fullMainTextRead": true,
+      "resourceIds": [
+        "deepsense-6g"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-apache-license",
+      "title": "Apache License 2.0 官方完整文本",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+      "type": "官方许可",
+      "readScope": "读取许可定义和Section 4再分发条件，保存官方完整文本作为Sionna的许可附件。",
+      "status": "完整文件已读",
+      "checkedAt": "2026-11-05",
+      "verification": "full-document",
+      "fullMainTextRead": true,
+      "resourceIds": [
+        "deepmimo",
+        "sionna-rt"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-deepsense-paper-license-v2",
+      "title": "DeepSense arXiv v2论文许可标记",
+      "url": "https://arxiv.org/html/2211.09769v2",
+      "type": "论文许可页面",
+      "readScope": "本轮直接读取HTML顶部：arXiv:2211.09769v2、20 Mar 2023、作者和License: CC BY-NC-SA 4.0；论文正文完整阅读证据见source-127。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "verification": "primary-section",
+      "fullMainTextRead": false,
+      "resourceIds": [
+        "deepsense-6g"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-materials-cc-by-nc-sa40",
+      "title": "CC BY-NC-SA 4.0 官方许可文本",
+      "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en",
+      "type": "官方许可",
+      "readScope": "直接读取Section 2–3的非商业分享、归属及相同方式共享条件；下载官方Plain Text作为论文附件。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "verification": "primary-section",
+      "fullMainTextRead": false,
+      "resourceIds": [
+        "deepsense-6g"
+      ],
+      "official": true,
+      "access": "本轮直接读取官方文本；仅保存本manifest所列小材料，未下载无线原始数据"
+    },
+    {
+      "id": "source-v13-deepbeam-readme",
+      "title": "DeepBeam：原始数据组织与复现入口",
+      "url": "https://github.com/wineslab/deepbeam/blob/master/README.md",
+      "type": "官方文档",
+      "readScope": "README全文：19个HDF5、NI/Pi-Radio设备、字段、按gain/beam的存储顺序及训练/测试脚本。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepbeam"
+      ]
+    },
+    {
+      "id": "source-v13-deepbeam-license",
+      "title": "DeepBeam代码MIT许可",
+      "url": "https://github.com/wineslab/deepbeam/blob/master/LICENSE",
+      "type": "官方文档",
+      "readScope": "LICENSE全文；仅用于代码许可判断。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepbeam"
+      ]
+    },
+    {
+      "id": "source-v13-deepbeam-loader",
+      "title": "DeepBeam I/Q批次加载器",
+      "url": "https://github.com/wineslab/deepbeam/blob/master/keras_code/DataGenerator.py",
+      "type": "官方文档",
+      "readScope": "DataGenerator.py全文：HDF5读取、block索引、输入形状及标签读取。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepbeam"
+      ]
+    },
+    {
+      "id": "source-v13-deepbeam-training",
+      "title": "DeepBeam训练与索引划分",
+      "url": "https://github.com/wineslab/deepbeam/blob/master/keras_code/DeepBeam.py",
+      "type": "官方文档",
+      "readScope": "DeepBeam.py全文；重点核查每个gain/beam内训练和测试的连续索引分段及默认比例。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepbeam"
+      ]
+    },
+    {
+      "id": "source-v13-deepbeam-paper",
+      "title": "DeepBeam原论文：方法、采集与跨设备结果",
+      "url": "https://arxiv.org/pdf/2012.14350v2",
+      "type": "原始论文",
+      "readScope": "已读PDF Sec.2–5：TXB/AoA机制、延迟模型、硬件与采集、60/40划分及跨天线结果；另读Sec.5.4讨论。未复跑实验。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepbeam"
+      ]
+    },
+    {
+      "id": "source-v13-deepbeam-data",
+      "title": "DeepBeam官方数据馆藏入口",
+      "url": "https://hdl.handle.net/2047/D20409451",
+      "type": "官方文档",
+      "readScope": "已核对论文与作者README均指向此handle；HTTP重定向到Northeastern馆藏，本环境馆藏返回403，未读下载清单。",
+      "status": "入口核实，下载未验证",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepbeam"
+      ],
+      "access": "馆藏HTTP 403；代码与数据说明可公开读取",
+      "httpStatus": 403,
+      "finalUrl": "https://repository.library.northeastern.edu/collections/neu:ww72bh952",
+      "linkCheck": "受限",
+      "linkCheckedAt": "2026-11-05"
+    },
+    {
+      "id": "source-v13-protobeam-paper",
+      "title": "ProtoBeam：跨天线few-shot波束识别",
+      "url": "https://arxiv.org/html/2501.03435v1",
+      "type": "研究论文",
+      "readScope": "已读主文III–V、Algorithm 1、Table I及结果图注；核对16-shot和相邻波束容错口径。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepbeam"
+      ]
+    },
+    {
+      "id": "source-v13-protobeam-notebook",
+      "title": "ProtoBeam公开Notebook：目标域support与测试",
+      "url": "https://github.com/omarmshaal/ProtoBeam/blob/main/ProtoBeam.ipynb",
+      "type": "官方文档",
+      "readScope": "读取DeepBeamDataset、FewShotBatchSampler、ProtoNet、test_proto_net/test_proto_net2及调用单元；核查按样本I/Q归一化、目标域带标签support、测试时排除support。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepbeam"
+      ]
+    },
+    {
+      "id": "source-v13-wavesfm-readme",
+      "title": "WavesFM评估代码说明",
+      "url": "https://github.com/AhmedTarek62/wavesfm/blob/main/README.md",
+      "type": "官方文档",
+      "readScope": "README全文：任务注册、HDF5 cache、预处理、训练/评估CLI和上游数据引用。另核完整main文件树，未发现LICENSE/COPYING。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "wavesfm-suite"
+      ]
+    },
+    {
+      "id": "source-v13-wavesfm-data",
+      "title": "WavesFM数据划分与任务注册实现",
+      "url": "https://github.com/AhmedTarek62/wavesfm/blob/main/data.py",
+      "type": "官方文档",
+      "readScope": "data.py全文；核对build_datasets/_build_deepmimo_datasets：独立val cache优先，否则默认random_split 80/20，可选分类分层。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "wavesfm-suite"
+      ]
+    },
+    {
+      "id": "source-v13-wavesfm-deepmimo-code",
+      "title": "WavesFM DeepMIMO缓存生成源码",
+      "url": "https://github.com/AhmedTarek62/wavesfm/blob/main/preprocessing/preprocess_deepmimo.py",
+      "type": "官方文档",
+      "readScope": "源码全文：六城配置、DeepMIMOv3生成、过滤、beam标签、bicubic resize、全缓存均值/方差、HDF5键及元数据。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "wavesfm-suite",
+        "deepmimo"
+      ]
+    },
+    {
+      "id": "source-v13-wavesfm-benchmark",
+      "title": "WavesFM v1.0公开评估表",
+      "url": "https://wavesfm.waveslab.ai/benchmarks/",
+      "type": "官方文档",
+      "readScope": "v1.0表格13任务行、三种适配方式、3 seeds均值/标准差与协议/命令链接。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "wavesfm-suite"
+      ]
+    },
+    {
+      "id": "source-v13-wavesfm-deepmimo-doc",
+      "title": "WavesFM DeepMIMO任务协议",
+      "url": "https://wavesfm.waveslab.ai/docs/datasets/deepmimo/",
+      "type": "官方文档",
+      "readScope": "页面全文：上游场景、LoS与beam标签、缓存字段、默认随机划分和全数据统计归一化。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "wavesfm-suite",
+        "deepmimo"
+      ]
+    },
+    {
+      "id": "source-v13-wavesfm-sweeper",
+      "title": "WavesFM批量评估配置",
+      "url": "https://github.com/AhmedTarek62/wavesfm/blob/main/run_finetune_all.py",
+      "type": "官方文档",
+      "readScope": "读取批量runner；重点核对seeds=(0,1,2)、LP/FT2/LoRA与LoRA rank=32、alpha=64。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "wavesfm-suite"
+      ]
+    },
+    {
+      "id": "source-v13-multimodal-wfm-paper",
+      "title": "Multimodal Wireless Foundation Models",
+      "url": "https://arxiv.org/html/2511.15162v1",
+      "type": "研究论文",
+      "readScope": "已读主文III–IV：双输入表示、预训练数据、LP/FT2/LoRA定义、Table I–III及结果讨论；与当前官网评估版本分开记录。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "wavesfm-suite"
+      ]
+    },
+    {
+      "id": "source-v13-airfm-dda-paper",
+      "title": "AirFM-DDA：DDA表示与分层迁移评估",
+      "url": "https://arxiv.org/html/2605.00020v2",
+      "type": "研究论文",
+      "readScope": "已读III-B、IV-A、V-B、VI-A/B、VII-A/B/D/E相关正文与Table II–IX；核对城市隔离、few-shot、WAIR-D与LuViRA协议和延迟表。",
+      "status": "限定范围已读",
+      "checkedAt": "2026-11-05",
+      "official": true,
+      "resourceIds": [
+        "deepmimo",
+        "wair-d",
+        "luvira"
+      ]
     }
   ],
   "claims": [
@@ -18211,9 +19655,9 @@
       "detail": "测试390×844与1024×900物理视口设置（浏览器报告325与853 CSS像素宽）；首页无横向溢出，移动导航与深色切换正常。"
     },
     {
-      "name": "离线静态构建",
+      "name": "在线静态站点构建",
       "status": "静态检查通过",
-      "detail": "HTML内联CSS、代码与数据，无外部字体/CDN、运行时fetch或后端。自动浏览器安全策略仅允许HTTP/HTTPS，因此未完成file://实际浏览器验收；双击入口已提供。"
+      "detail": "Vercel托管静态HTML，CSS、交互代码和索引内联构建。网站提供官方来源、GitHub文件与教程入口，浏览无需登录。"
     },
     {
       "name": "打印与PDF",
@@ -18254,6 +19698,11 @@
       "name": "详细生产流程与相关项目（v1.2.0）",
       "status": "通过",
       "detail": "40张卡逐阶段列出输入、操作、输出、配置、复现检查和来源；共226阶段、9个关联项目。已区分原作者流程和研究者检查；新增项目按实际阅读范围收录。 浏览器验证展开/收起、流程JSON导出、9个项目、GitHub入口和手机390像素宽布局；控制台无错误。"
+    },
+    {
+      "name": "在线生产工作台与研究材料库（v1.3.0）",
+      "status": "通过",
+      "detail": "42个资源、224条来源、236个生产阶段；四视角对比、参数变更规则、7篇协议化论文和6份仓库官方文件。官方文件、许可和引用闭包检查；新增资源的原始下载与训练未执行。"
     }
   ],
   "coreGuides": {
@@ -18639,7 +20088,7 @@
         "primaryMetric": "扣除刷新成本的净效用、低分位波束收益和中断比例；事件分类指标作为辅助。",
         "successGate": "预设门槛：oracle 较最佳固定/周期策略提升约5–10%净效用，或相近效用下减少至少30%感知/探测成本；同时刷新动作不能退化为始终同一选择。",
         "killCondition": "主时域无收益时，只允许在有物理依据的强遮挡子集或更长可用 horizon 重算一次；仍无差距则停止预测策略分支。",
-        "budget": "先做CPU离线事件回放，feasibility≤60分钟；不训练视觉或时序大模型。",
+        "budget": "先做CPU事件回放，feasibility≤60分钟；不训练视觉或时序大模型。",
         "status": "建议实验，尚未运行",
         "sourceIds": [
           "source-057",
@@ -19385,7 +20834,7 @@
       "decision": "先选静态跨频波束任务检验表示价值；只有证据指向时间建模需求时再进入时空频预训练。",
       "availableInformation": "部署时的 Sub-6 观测、明确可用的预训练信道，以及不含目标测试单元的下游训练标签。",
       "missingInformation": "目标 mmWave 波束收益及新场景映射；预训练/测试的上游场景重叠需要先审计。",
-      "physicalCost": "统一 Sub-6 导频预算，报告在线推理延迟；离线预训练 GPU 时间与下游标签数量分开列出。",
+      "physicalCost": "统一 Sub-6 导频预算，报告在线推理延迟；预训练 GPU 时间与下游标签数量分开列出。",
       "defaultStart": "先取 ContraWiMAE 中一个可验证配对的下游小子集，对现有公开编码器做 frozen probe；暂不重训全量 foundation model。",
       "candidates": [
         {
@@ -19876,6 +21325,443 @@
         "source-related-cfm-catalog"
       ],
       "readScope": "主README与两份许可证；数据目录只作发现，不继承其全部事实声明。"
+    },
+    {
+      "id": "project-deepmimo-sionna-bridge",
+      "name": "DeepMIMO Sionna exporter / converter",
+      "category": "Sionna路径到DeepMIMO格式转换",
+      "officialRepo": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/deepmimo/exporters/sionna_exporter.py",
+      "license": "DeepMIMO代码Apache-2.0；输入场景/素材许可独立",
+      "pipelineRole": "连接Sionna RT的Paths/Scene与DeepMIMO路径库；把逐快照求解结果、几何、材料和求解参数转为可再生成阵列CSI的数据。",
+      "howToUse": [
+        "先用固定版本Sionna PathSolver生成Paths，显式保存本次求解参数。",
+        "调用sionna_exporter(scene,paths,solver_params,folder)，得到路径、材料、RT参数、顶点/面与对象等pkl中间文件。",
+        "调用dm.convert或sionna_rt_converter，生成DeepMIMO路径矩阵与params.json；需要三角mesh保真时核验lossless=True，默认几何表达为convex hull。",
+        "逐帧结果分别转换，再组合DynamicDataset并设置timestamps；最后以统一阵列/OFDM配置生成CSI。",
+        "小规模抽查导出前后路径数、总功率、相位、时延、对象/天线索引及元数据。"
+      ],
+      "limitations": [
+        "本轮只读源码和官方教程，未执行转换。",
+        "v4.0.5 export_scene_rt_params的aliases仍固定diffraction=False，会覆盖传入的同名True值；用于Sionna2.2绕射场景时必须核查并修正该元数据，不能以导出文件判断原求解未启用绕射。",
+        "v4.0.5的deepmimo[sionna] extra固定Mitsuba3.8.0/DrJit1.3.1，而SionnaRT2.2.0固定3.9.1/1.5.0；安装时需选定兼容组合，不能直接把两套pin拼在一起。",
+        "转换只组织已有RT结果；新的频段和遮挡几何仍需上游传播求解。"
+      ],
+      "resourceIds": [
+        "deepmimo",
+        "sionna-rt"
+      ],
+      "sourceIds": [
+        "source-v13-dm-sionna-exporter",
+        "source-v13-dm-sionna-converter",
+        "source-v13-dm-dynamic",
+        "source-v13-dm-dependencies",
+        "source-012"
+      ],
+      "readScope": "已读v4.0.5导出/转换主函数、动态RT教程相关段落及依赖声明；接入建议为基于代码的复现检查。"
+    },
+    {
+      "id": "project-deepbeam",
+      "name": "DeepBeam waveform-learning code",
+      "category": "I/Q波束识别与加载工具",
+      "officialRepo": "https://github.com/wineslab/deepbeam",
+      "license": "MIT（代码）；数据许可另查馆藏",
+      "pipelineRole": "DeepBeam采集数据的第3–5步",
+      "howToUse": [
+        "按README选择TXB或AoA加载器和对应HDF5。",
+        "先以DataGenerator验证block和label，再按设备划分进行复现。"
+      ],
+      "limitations": [
+        "当前标签识别已发射波束；最优通信波束需接收功率排名。",
+        "跨设备评估须保留原始前端身份。"
+      ],
+      "resourceIds": [
+        "deepbeam"
+      ],
+      "sourceIds": [
+        "source-v13-deepbeam-readme",
+        "source-v13-deepbeam-loader",
+        "source-v13-deepbeam-training",
+        "source-v13-deepbeam-license"
+      ],
+      "readScope": "作者README、MIT许可、DataGenerator.py与DeepBeam.py。"
+    },
+    {
+      "id": "project-protobeam",
+      "name": "ProtoBeam",
+      "category": "跨硬件few-shot适配",
+      "officialRepo": "https://github.com/omarmshaal/ProtoBeam",
+      "license": "公开Notebook；本轮仓库文件树未见LICENSE",
+      "pipelineRole": "DeepBeam第4步之后的跨天线任务",
+      "howToUse": [
+        "复用DeepBeam原始文件；按源/目标射频前端组织数据。",
+        "测试时从目标天线每类取k个带标签support构建原型，其余样本作query。"
+      ],
+      "limitations": [
+        "测试目标域support属于已获取标签；应计入适配成本。",
+        "论文训练设置与当前Notebook部分默认值不同；实验需冻结版本与配置。"
+      ],
+      "resourceIds": [
+        "deepbeam"
+      ],
+      "sourceIds": [
+        "source-v13-protobeam-paper",
+        "source-v13-protobeam-notebook"
+      ],
+      "readScope": "论文III–V；Notebook数据处理、原型和测试函数。"
+    },
+    {
+      "id": "project-wavesfm-suite",
+      "name": "WavesFM preprocessing and evaluation",
+      "category": "多表示评估与任务接入",
+      "officialRepo": "https://github.com/AhmedTarek62/wavesfm",
+      "license": "公开可读；当前文件树未发现LICENSE/COPYING",
+      "pipelineRole": "WavesFM第2–5步",
+      "howToUse": [
+        "使用preprocessing下对应脚本构建任务HDF5。",
+        "在data.py注册新任务，并通过独立val-data传入外推测试集。",
+        "以main_finetune.py或run_finetune_all.py运行固定协议。"
+      ],
+      "limitations": [
+        "原始数据和模型权重各有来源与许可。",
+        "默认随机划分和全缓存归一化须按严格外推协议改造。"
+      ],
+      "resourceIds": [
+        "wavesfm-suite",
+        "deepmimo"
+      ],
+      "sourceIds": [
+        "source-v13-wavesfm-readme",
+        "source-v13-wavesfm-data",
+        "source-v13-wavesfm-deepmimo-code",
+        "source-v13-wavesfm-sweeper"
+      ],
+      "readScope": "README、任务/划分模块、DeepMIMO预处理和多seed runner。"
+    }
+  ],
+  "researchPapers": [
+    {
+      "id": "deepmimo-2019",
+      "title": "DeepMIMO: A Generic Deep Learning Dataset for Millimeter Wave and Massive MIMO Applications",
+      "year": 2019,
+      "venue": "arXiv:1902.06435v1",
+      "url": "https://arxiv.org/html/1902.06435v1",
+      "resourceIds": [
+        "deepmimo"
+      ],
+      "system": "站点RT路径加阵列和OFDM参数，构成可复现的MIMO信道。",
+      "predictionTarget": "示例用多基站全向接收导频特征预测候选波束的可达速率。",
+      "decisionTarget": "每个协调基站的码本波束选择；下游评价回到可达速率。",
+      "protocol": "Sec.II–IV区分源RT场景、参数与生成代码；Sec.V/Table I固定O1、BS 3/4/5/6、阵列和路径等配置。",
+      "keyFinding": "数据由场景与参数共同定义；输入特征和速率标签是从同一CSI派生的任务层。",
+      "remainingGap": "复现当前Python v4时需重新对应接口；空间快照不能自动代表移动遮挡或独立跨频证据。",
+      "codeUrl": "https://github.com/DeepMIMO/DeepMIMO",
+      "readScope": "已读主文I–VII；本轮补核Sec.III–V、Table I、式(1)–(6)。原始数据与实验未复跑。",
+      "sourceIds": [
+        "source-004"
+      ]
+    },
+    {
+      "id": "sionna-rt-2023",
+      "title": "Sionna RT: Differentiable Ray Tracing for Radio Propagation Modeling",
+      "year": 2023,
+      "venue": "arXiv:2303.11103v2",
+      "url": "https://arxiv.org/html/2303.11103v2",
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "system": "Mitsuba几何与射线求交，加无线场传播与可微CIR计算。",
+      "predictionTarget": "示例以生成的CFR拟合材料参数；另优化发射阵列朝向。",
+      "decisionTarget": "材料校准与区域接收功率优化。",
+      "protocol": "Sec.II和Listings 1–3展示场景、设备、路径与CIR；Sec.III用同引擎生成的目标信道进行材料恢复。",
+      "keyFinding": "明确区分逐阵元RT与synthetic-array平面波近似，以及路径计算和短时Doppler演化。",
+      "remainingGap": "2023论文接口属于旧代；v2.2机制和API以当前源码为准。合成目标恢复实验还需实测校准来支持现实部署。",
+      "codeUrl": "https://github.com/NVlabs/diff-rt",
+      "readScope": "已读主文I–IV；本轮补核Sec.II与III-A/B、Listings 1–3及实验设定。",
+      "sourceIds": [
+        "source-013"
+      ]
+    },
+    {
+      "id": "deepsense-2023",
+      "title": "DeepSense 6G: A Large-Scale Real-World Multi-Modal Sensing and Communication Dataset",
+      "year": 2023,
+      "venue": "IEEE Communications Magazine；arXiv v2",
+      "url": "https://arxiv.org/html/2211.09769v2",
+      "resourceIds": [
+        "deepsense-6g"
+      ],
+      "system": "按Testbed和Scenario组织的真实通信与传感器采集。",
+      "predictionTarget": "示例融合视觉与位置预测毫米波波束。",
+      "decisionTarget": "已测码本内的波束选择。",
+      "protocol": "Sec.III–VI解释样本结构、UTC对齐、共同视场筛选和人工复核；Sec.VII分别做场景内与Scenario 1→5测试。",
+      "keyFinding": "真实采集的可用模态、时间和硬件条件以Scenario为单位；统一CSV结构不代表每个场景字段相同。",
+      "remainingGap": "需按轨迹或事件建立严格划分，并将扫束功率收益与获取成本联系；波束功率不支持任意相位预编码。",
+      "codeUrl": "https://deepsense6g.net/",
+      "readScope": "此前已读7页PDF主文I–VIII和表I/图4；本轮补读HTML V–VII及论文CC BY-NC-SA 4.0许可标签。",
+      "sourceIds": [
+        "source-127"
+      ]
+    },
+    {
+      "id": "deepbeam-2021",
+      "title": "DeepBeam: Deep Waveform Learning for Coordination-Free Beam Management in mmWave Networks",
+      "year": 2021,
+      "venue": "ACM MobiHoc 2021",
+      "url": "https://doi.org/10.1145/3466772.3467035",
+      "resourceIds": [
+        "deepbeam"
+      ],
+      "system": "真实毫米波I/Q，经CNN识别TXB与离散AoA，再结合接收功率辅助波束对齐。",
+      "predictionTarget": "正在使用的TX beam类别及−45°/0°/45°接收AoA。",
+      "decisionTarget": "候选TX beam排名、RX方向与初始接入等待时间。",
+      "protocol": "Sec.4/5：NI和Pi-Radio两平台；同设备60/40划分，以及跨射频前端测试。Sec.3用FPGA推理时间和NR帧模型分析接入延迟。",
+      "keyFinding": "24-beam、L=1时，同天线平均准确率78.51%，跨天线16.97%；硬件变化产生明确的适配需求。",
+      "remainingGap": "分类准确率仍需连接到最佳波束功率与在线获取成本；当前数据的空间布局为固定室内配置。",
+      "codeUrl": "https://github.com/wineslab/deepbeam",
+      "readScope": "已读Sec.2–5及讨论，核查采集、划分与跨设备实验；未运行原始训练。",
+      "sourceIds": [
+        "source-v13-deepbeam-paper",
+        "source-v13-deepbeam-readme",
+        "source-v13-deepbeam-training"
+      ]
+    },
+    {
+      "id": "protobeam-2025",
+      "title": "ProtoBeam: Generalizing Deep Beam Prediction to Unseen Antennas using Prototypical Networks",
+      "year": 2025,
+      "venue": "arXiv:2501.03435v1",
+      "url": "https://arxiv.org/html/2501.03435v1",
+      "resourceIds": [
+        "deepbeam"
+      ],
+      "system": "DeepBeam的24-beam实测I/Q；源天线训练编码器，目标天线带标签support建立类别原型。",
+      "predictionTarget": "目标射频前端上的TX beam类别。",
+      "decisionTarget": "跨硬件部署后的波束识别；论文以准确率和相邻beam容错评价。",
+      "protocol": "原文5-way/4-shot训练；TOTA以TX0训练，TX1/2/3测试。已核test_proto_net：目标域k-shot support与query分开、编码器不重训。",
+      "keyFinding": "论文16-shot跨天线平均准确率74.11%；这是使用目标域标注support的few-shot适配。",
+      "remainingGap": "仍需同编码器/同标签预算的强简单基线、采集块隔离和功率/速率评价；相邻beam容错准确率不等于通信收益。",
+      "codeUrl": "https://github.com/omarmshaal/ProtoBeam",
+      "readScope": "主文III–V、Algorithm 1与Table I；Notebook归一化、原型计算及两套测试函数。",
+      "sourceIds": [
+        "source-v13-protobeam-paper",
+        "source-v13-protobeam-notebook"
+      ]
+    },
+    {
+      "id": "multimodal-wfm-2025",
+      "title": "Multimodal Wireless Foundation Models",
+      "year": 2025,
+      "venue": "arXiv:2511.15162v1",
+      "url": "https://arxiv.org/html/2511.15162v1",
+      "resourceIds": [
+        "wavesfm-suite"
+      ],
+      "system": "I/Q与图像式无线表示用独立输入投影接入共享ViT；70%遮挡重建预训练。",
+      "predictionTarget": "RF身份、干扰、活动/信号类别及NR位置。",
+      "decisionTarget": "论文评价分类和定位任务；通信调度或净速率尚未评估。",
+      "protocol": "3200个频谱图和3200个I/Q样本预训练；5类下游任务、6个指标列。LP仍训练输入投影；论文LoRA rank/alpha均32。",
+      "keyFinding": "共享表示覆盖两类输入；Table II中FT2定位误差为1.27 m，单模态WavesFM为0.41 m，收益随任务和适配方式变化。",
+      "remainingGap": "模型参数量和预训练数据量不同，需要控制这两项再归因于多模态；论文协议与当前10数据集评估套件分开复现。",
+      "codeUrl": "https://github.com/AhmedTarek62/wavesfm",
+      "readScope": "已读III–IV、Table I–III；另核当前官网与关键评估源码。",
+      "sourceIds": [
+        "source-v13-multimodal-wfm-paper",
+        "source-v13-wavesfm-readme",
+        "source-v13-wavesfm-benchmark"
+      ]
+    },
+    {
+      "id": "airfm-dda-2026",
+      "title": "AirFM-DDA: Air-Interface Foundation Model in the Delay–Doppler–Angle Domain for AI-Native 6G",
+      "year": 2026,
+      "venue": "arXiv:2605.00020v2",
+      "url": "https://arxiv.org/html/2605.00020v2",
+      "resourceIds": [
+        "deepmimo",
+        "wair-d",
+        "luvira"
+      ],
+      "system": "部分STF域CSI变换到DDA域，以窗口注意力与帧结构编码恢复信道；冻结编码器接任务头。",
+      "predictionTarget": "时间/频率外推、导频信道估计、sub-6辅助28 GHz beam类别与LoS。",
+      "decisionTarget": "以NMSE、beam Top-1和LoS F1评估；尚缺最终通信效用。",
+      "protocol": "DeepMIMO 18城预训练、4城留出；WAIR-D按环境隔离。LuViRA为17条轨迹适配、70条轨迹测试，属于实测适配。",
+      "keyFinding": "论文将仿真留出与LuViRA实测适配分开；LuViRA结果使用目标域训练轨迹，属于实测域适配。当前公开HF资产只覆盖部分测试派生数据。",
+      "remainingGap": "用低阶物理预测器和最终速率检验NMSE收益；当前公开资产的覆盖范围不能按论文2.85M训练语料规模直接推定。",
+      "codeUrl": "",
+      "readScope": "III-B、IV-A、V-B、VI与VII相关方法/实验段及表格；未复跑模型。",
+      "sourceIds": [
+        "source-v13-airfm-dda-paper"
+      ]
+    }
+  ],
+  "officialMaterials": [
+    {
+      "id": "official-deepmimo-readme-v405",
+      "title": "DeepMIMO v4.0.5 官方入门与目录说明",
+      "resourceIds": [
+        "deepmimo"
+      ],
+      "sourceUrl": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/README.md",
+      "upstreamRepo": "https://github.com/DeepMIMO/DeepMIMO",
+      "upstreamRef": "v4.0.5",
+      "filePath": "materials/official/deepmimo/README.md",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/LICENSE",
+      "attribution": "Copyright 2025 DeepMIMO. 上游README原样保存；论文引用和上游链接保留。",
+      "readScope": "完整README：Quickstart、场景加载、信道计算、转换器、目录、文档构建与引用。远程徽章和相对路径图像仅保留原链接，未抓取素材。",
+      "kind": "官方README",
+      "sourceIds": [
+        "source-materials-deepmimo-readme-v405",
+        "source-materials-deepmimo-license-v405"
+      ],
+      "licenseFiles": [
+        "materials/official/deepmimo/LICENSE"
+      ],
+      "checkedAt": "2026-11-05",
+      "unchanged": true,
+      "sizeBytes": 10105,
+      "description": "安装、场景加载、CSI计算和转换器的官方起点。"
+    },
+    {
+      "id": "official-deepmimo-specs-v405",
+      "title": "DeepMIMO v4.0.5 官方格式规范",
+      "resourceIds": [
+        "deepmimo"
+      ],
+      "sourceUrl": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/docs/resources/specs.md",
+      "upstreamRepo": "https://github.com/DeepMIMO/DeepMIMO",
+      "upstreamRef": "v4.0.5",
+      "filePath": "materials/official/deepmimo/specs.md",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/LICENSE",
+      "attribution": "Copyright 2025 DeepMIMO. 文档源文件按v4.0.5标签原样保存。",
+      "readScope": "完整specs.md：v4矩阵命名、主/派生字段、JSON和hull/mesh表示，以及v3/v2历史格式。未将说明文档替代具体数据包审计。",
+      "kind": "官方格式说明",
+      "sourceIds": [
+        "source-materials-deepmimo-specs-v405",
+        "source-materials-deepmimo-license-v405"
+      ],
+      "licenseFiles": [
+        "materials/official/deepmimo/LICENSE"
+      ],
+      "checkedAt": "2026-11-05",
+      "unchanged": true,
+      "sizeBytes": 12305,
+      "description": "核对v2/v3/v4的字段、文件命名、路径矩阵和场景元数据。"
+    },
+    {
+      "id": "official-sionna-rt-readme-v220",
+      "title": "Sionna RT v2.2.0 官方安装与开发入口",
+      "resourceIds": [
+        "sionna-rt"
+      ],
+      "sourceUrl": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/README.md",
+      "upstreamRepo": "https://github.com/NVlabs/sionna-rt",
+      "upstreamRef": "v2.2.0",
+      "filePath": "materials/official/sionna-rt/README.md",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://github.com/NVlabs/sionna-rt/blob/v2.2.0/LICENSE",
+      "attribution": "Copyright (c) 2021–2026 NVIDIA CORPORATION & AFFILIATES. 原文件SPDX、作者引用和声明保留。",
+      "readScope": "完整README：依赖、CPU后端、安装、测试、文档构建、开发入口和v2.2.0引用。未下载notebook输出、场景资产或数据。",
+      "kind": "官方README",
+      "sourceIds": [
+        "source-materials-sionna-readme-v220",
+        "source-materials-sionna-license-v220",
+        "source-materials-apache-license"
+      ],
+      "licenseFiles": [
+        "materials/official/sionna-rt/LICENSE",
+        "materials/official/sionna-rt/APACHE-LICENSE-2.0.txt"
+      ],
+      "checkedAt": "2026-11-05",
+      "unchanged": true,
+      "sizeBytes": 3066,
+      "description": "安装依赖、运行后端及测试与文档的官方入口。"
+    },
+    {
+      "id": "official-quadriga-multifrequency-tutorial",
+      "title": "QuaDRiGa 官方双频仿真教程源码",
+      "resourceIds": [
+        "quadriga"
+      ],
+      "sourceUrl": "https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/tutorials/t11_multi_frequency_simulations.m",
+      "upstreamRepo": "https://github.com/fraunhoferhhi/QuaDRiGa",
+      "upstreamRef": "main",
+      "filePath": "materials/official/quadriga/t11_multi_frequency_simulations.m",
+      "license": "QuaDRiGa自定义非商业源码许可",
+      "licenseUrl": "https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/QuaDRiGa_License.txt",
+      "attribution": "© Copyright 2011–2019 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. 原样保存教程源码及完整QuaDRiGa许可。",
+      "readScope": "完整t11源码及说明：2.6/28 GHz联合参数、阵列、覆盖图与get_channels输出。仅复制此教程源文件，未执行仿真、未复制完整软件或手册PDF。",
+      "kind": "官方教程源码",
+      "sourceIds": [
+        "source-rt-pipeline-qd11",
+        "source-022"
+      ],
+      "licenseFiles": [
+        "materials/official/quadriga/QuaDRiGa_License.txt"
+      ],
+      "checkedAt": "2026-11-05",
+      "unchanged": true,
+      "sizeBytes": 7516,
+      "description": "以2.6/28 GHz演示联合参数与信道生成，理解统计相关的跨频仿真。"
+    },
+    {
+      "id": "official-deepsense-challenge2022-readme",
+      "title": "DeepSense 2022 官方挑战基线说明",
+      "resourceIds": [
+        "deepsense-6g"
+      ],
+      "sourceUrl": "https://github.com/DeepSense6G/Multi-Modal-Beam-Prediction-Challenge-2022-Baseline/blob/main/README.md",
+      "upstreamRepo": "https://github.com/DeepSense6G/Multi-Modal-Beam-Prediction-Challenge-2022-Baseline",
+      "upstreamRef": "main",
+      "filePath": "materials/official/deepsense-6g/challenge-2022/README.md",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/DeepSense6G/Multi-Modal-Beam-Prediction-Challenge-2022-Baseline/blob/main/LICENSE",
+      "attribution": "Copyright (c) 2022 DeepSense6G. 官方2022 Challenge仓库README原样保存。",
+      "readScope": "完整README：脚本职责、依赖、70/20/10演示划分、NaN功率处理和示例指标。MIT范围是该仓库的软件及附属文档；不改变DeepSense原始数据或其他task许可。",
+      "kind": "官方README",
+      "sourceIds": [
+        "source-060",
+        "source-materials-deepsense-readme-2022",
+        "source-materials-deepsense-license-2022"
+      ],
+      "licenseFiles": [
+        "materials/official/deepsense-6g/challenge-2022/LICENSE"
+      ],
+      "checkedAt": "2026-11-05",
+      "unchanged": true,
+      "sizeBytes": 3054,
+      "description": "挑战数据读取、基线脚本分工、划分与功率处理说明。"
+    },
+    {
+      "id": "official-deepsense-paper-v2",
+      "title": "DeepSense 6G 原论文（arXiv v2）",
+      "resourceIds": [
+        "deepsense-6g"
+      ],
+      "sourceUrl": "https://arxiv.org/pdf/2211.09769v2",
+      "upstreamRepo": null,
+      "upstreamRef": "arXiv:2211.09769v2",
+      "filePath": "materials/official/deepsense-6g/paper/deepsense-2211.09769v2.pdf",
+      "license": "CC-BY-NC-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "licenseEvidenceUrl": "https://arxiv.org/html/2211.09769v2",
+      "attribution": "Ahmed Alkhateeb, Gouranga Charan, Tawfik Osman, Andrew Hredzak, João Morais, Umut Demirhan, and Nikhil Srinivas. DeepSense 6G: A Large-Scale Real-World Multi-Modal Sensing and Communication Dataset. arXiv:2211.09769v2, 20 March 2023. 原版PDF，未修改，保留CC BY-NC-SA 4.0。",
+      "readScope": "完整阅读7页v2 PDF主文、表格与实验；直接核验同版本arXiv HTML的CC BY-NC-SA 4.0许可标记。原版PDF未修改。",
+      "kind": "获许可的原论文PDF",
+      "sourceIds": [
+        "source-127",
+        "source-materials-deepsense-paper-license-v2",
+        "source-materials-cc-by-nc-sa40"
+      ],
+      "licenseFiles": [
+        "materials/official/deepsense-6g/paper/CC-BY-NC-SA-4.0.txt"
+      ],
+      "attributionFile": "materials/official/deepsense-6g/paper/ATTRIBUTION.txt",
+      "checkedAt": "2026-11-05",
+      "unchanged": true,
+      "sizeBytes": 3885960,
+      "description": "真实采集平台、同步与筛选、Scenario结构和视觉＋位置选束实验。"
     }
   ]
 }

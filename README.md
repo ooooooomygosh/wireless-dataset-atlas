@@ -1,65 +1,52 @@
 # Wireless Dataset Atlas
 
-[在线网站](https://wireless-dataset-atlas.vercel.app) · [GitHub 源码与协作](https://github.com/ooooooomygosh/wireless-dataset-atlas) · [反馈问题](https://github.com/ooooooomygosh/wireless-dataset-atlas/issues)
+[在线网站](https://wireless-dataset-atlas.vercel.app) · [数据生产工作台](https://wireless-dataset-atlas.vercel.app/#pipelines) · [对比实验室](https://wireless-dataset-atlas.vercel.app/#compare) · [论文与官方材料](https://wireless-dataset-atlas.vercel.app/#library)
 
-直接双击 `index.html`（或 `dist/index.html`）即可离线浏览。无需安装前端依赖，无在线模型、字体或 CDN 依赖。外部论文、仓库与官方原文入口需要联网。
+面向波束管理与无线基础模型的在线研究知识库。资源卡将原始观测、数据生产流程、实验控制能力和研究结论连接到官方材料，帮助决定主数据源、验证源和需要补做的工作。
 
-## 构建与验证
+## 从实验问题进入
 
-要求 Node.js 22+、Python 3.12（教程测试需要 NumPy）。本次本机 Node 26.13.0、Python 3.12.3；通用测试在 NumPy 2.3.1 与隔离环境 2.2.6 均通过；前端不依赖 npm 包。
+- **数据怎样生产**：逐步查看输入、操作、输出、配置、复现检查与依据；点击阶段可跳转，流程支持JSON导出。
+- **不同资源怎样比较**：切换生产链、参数变更、研究用途和完整字段四个视角。区分改RF载频、改基带采样、改阵列、换码本、Doppler演化与移动遮挡。
+- **先用哪个资源**：6条研究路线给出少量主源／补充／验证建议、最小实验和继续／停止条件。
+- **读什么、下载什么**：论文卡列出系统、学习对象、最终决策、评估协议及阅读定位；[官方材料目录](materials/README.md)保存可再分发的原文件与许可。
+
+DeepMIMO、Sionna RT、QuaDRiGa和DeepSense的流程与变更规则单独核验。软件支持、具体场景启用的机制、发布文件已有的字段分别记录。资源系列数、派生语料数和独立物理来源数采用各自口径。
+
+## 本地开发与验证
+
+需要Node.js 22+、Python 3.12；科学计算测试使用NumPy，完整结构验证使用jsonschema。前端使用原生HTML/CSS/JavaScript。
 
 ```sh
+python3 -m pip install numpy==2.2.6 jsonschema==4.25.1
 npm test
+python3 scripts/validate_schema.py
 npm run build
 npm run serve
 ```
 
-HTTP 预览入口为 http://localhost:8765 。也支持 `file://` 双击运行。使用浏览器打印功能保存对比 PDF。
+预览地址为 `http://localhost:8765`。源文件在 `src/`，`data/atlas.json` 是内容唯一来源；构建生成 `dist/index.html`、根目录HTML、BibTeX来源索引及材料目录。直接修改源文件和结构化数据，再构建。
 
-## 数据维护
+## 内容与材料维护
 
-`data/atlas.json` 是唯一内容源；`data/schema.json` 说明结构。资源、来源、专题、教程、QA 分开组织在该文件中，通过稳定 ID 关联。来源记录阅读范围、核验日期和访问限制。`data/references.bib` 为派生的链接/引用索引，部分来源尚缺 DOI 或完整书目，不应直接替代正式投稿文献库。
+1. 阅读官方论文、文档或固定版本源码，记录实际范围与定位。
+2. 更新资源的字段、生产步骤、参数变更规则和关联来源；按具体版本／Scenario限定结论。
+3. 新增论文时填写输入、预测对象、决策目标、评估协议与尚需验证的研究问题。新增派生数据时说明上游来源和划分，合并预印本与正式版本。
+4. 将许可允许再分发的文件放进 `materials/official/<resource>/`，保留完整LICENSE／NOTICE和归属；在 `officialMaterials` 记录原URL、版本、文件路径、许可和阅读范围。其他材料使用官方链接。
+5. 运行检查与构建，验证涉及的网页交互，然后提交PR。数据、模型权重和私人阅读缓存使用各自存储入口；`materials/local-reading/` 不提交。
 
-1. 从官方材料读取事实，保存原文定位、实际阅读范围、适用版本与场景。
-2. 更新资源字段并关联来源；未核实的信息保持未知。
-3. 软件、数据、场景和模型版本分别记录；不要用最后提交时间代替发布日期。
-4. 执行测试与构建，浏览器检查修改涉及的页面。
+数据结构定义在 [data/schema.json](data/schema.json)。新增资源、来源、论文、材料与项目使用稳定ID关联。来源索引保留阅读层级和访问状态；网页可访问、字段说明核验、实际数据实验采用不同验证状态。
 
-`src/` 保存 HTML/CSS/JS。构建脚本把数据和资源内联到静态 HTML，解决本地文件协议的 fetch 限制。生成的两个 HTML 入口内容相同，便于浏览和分发；不要直接修改产物。
+## 教程与验证范围
 
-## 科研与核验范围
+`tutorials/` 包含DeepMIMO、Sionna RT、DeepSense解析、跨频配对、分组划分、通信基线和几何扫描点云示例。Sionna RT 2.2.0内置街谷的CFR与几何扫描检查已在Apple Silicon Metal后端运行；原始DeepMIMO／DeepSense数据端到端实验未运行。源码核验和未执行的研究建议在页面中分别标明。
 
-未下载任何原始数据。教程的真实数据入口为文档/源码核验，人工测试样本用于验证波束计算、解析和划分逻辑。测试通过不代表真实数据精度或吞吐量已复现。
+完整环境锁文件为 `tutorials/requirements-macos-py312.lock.txt`。DeepMIMO4.0.5要求NumPy<2.3，本项目共用验证环境使用2.2.6。详细检查结果见 [QUALITY.md](QUALITY.md)。
 
-网页的“覆盖与质量”和每条来源的阅读范围是交付状态的依据。部分站点只返回检索摘录或需要登录，这些资料明确标为部分阅读/待核验。已建立可用的研究索引和条件分析，但尚不能声称收集或全文读完了互联网全部官方资料；没有完成的历史版本、仓库文件与近期使用论文仍保留缺口。
+## 发布与协作
 
-## 教程
+Vercel关联本仓库 `main` 分支，推送后运行 `node scripts/build.mjs` 并部署 `dist/`。GitHub Actions检查数据契约、科学计算、JSON Schema与构建。
 
-运行 `tutorials/04_cross_frequency.py`、`05_splits.py`、`06_baselines.py` 可检查人工样本流程。`03_deepsense.py` 需要用户另行取得原始 CSV 和功率文件，并显式指定列名。DeepMIMO/Sionna 教程固定适用版本与来源。Sionna 2.2.0 内置街谷场景已在 Metal 后端跑通，CFR 形状、有限值和非零检查通过；DeepMIMO 原始场景未加载，但实际4.0.5包参数构造已验证。隔离环境完整锁文件为 `tutorials/requirements-macos-py312.lock.txt`。DeepMIMO4.0.5要求NumPy<2.3，共用环境采用2.2.6。论文、技术报告与代码文档允许下载用于核验，完整原始数据集不下载。
+通过 [Issues](https://github.com/ooooooomygosh/wireless-dataset-atlas/issues) 提交新来源、字段修正或复现问题；欢迎PR补充材料与协议。提交时附原始依据、适用版本和阅读范围。
 
-数据集及外部代码遵循各自上游许可，本项目未包含上游原始数据或模型权重。项目自身的索引、说明、界面与测试代码由本次工作生成。
-
-## 本地阅读资料
-
-`materials/local-reading/` 保留本次下载并阅读的四份论文/报告PDF。第三方材料遵循各自版权，作为本地研究缓存；分发ZIP保留来源索引而不附这些PDF。
-
-## v1.0.1：能力筛选口径
-
-选型向导与资源浏览器默认把“直接提供 / 可计算 / 需额外仿真”均视为支持，保留获取方式标签；“仅接受直接提供的字段”是可选严格模式。研究方向用于任务证据优先排序，不把标签未补全当作缺乏观测能力。全部匹配资源均展示，同步实测跨频仍要求独立配对证据。
-
-## v1.1.0：面向波束管理与基础模型的科研决策
-
-- `#core` 用研究控制能力、数据生成方式、时序含义和验证边界解释DeepMIMO/Sionna RT/QuaDRiGa/DeepSense。
-- `#wizard` 提供6条路线，默认最多展开3个主源/补充/验证角色。每项给出选择理由、可证明结论、边界、额外工作和原始依据；不是按字段数量评分。
-- 主数据源与外部验证角色分开。硬条件不满足时显示缺口；不会用部分跨频功率验证代替同步完整CSI，也不会把另一个Scenario的能力套到当前推荐场景。
-- 完整最小实验是待执行研究建议。可导出当前条件、推荐角色和实验协议JSON。
-- Sionna几何扫描点云已列为支持（需额外仿真），新增教程07；它使用底层Mitsuba求交，不等同真实LiDAR回波仿真。Multimodal-NF当前公开实现使用Open3D。
-- 内容仍由`data/atlas.json`维护，新增`coreGuides`与`researchPlaybooks`，前端不调用在线模型。
-
-## v1.2.0：逐阶段生产流程与公开协作
-
-40个资源均有详细生产流程，共226阶段；每步包含输入、处理操作、输出、配置、复现检查与来源。支持展开、收起和导出流程JSON。9个相关项目说明接入位置、输入输出、许可证和限制。
-
-补读源码后分别标明LWM论文与Challenge、ContraWiMAE论文与默认代码、RadioML版本与SenseFi各源预处理。Multimodal-NF当前代码的频点计算、第一频点写出、RGB/点云独立打包也已列明，发布文件需按实际shape核对。
-
-项目采用MIT许可证，第三方数据、代码与材料保留各自许可。Vercel关联本仓库`main`，推送后自动从源数据构建并部署；网站首页、侧栏、顶部和页脚均有仓库入口。
+项目代码与原创内容使用 [MIT](LICENSE)。`materials/official/` 下的第三方文件保留各自许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

@@ -1,0 +1,10 @@
+# Third-party materials
+
+The Atlas code and original content use the repository's MIT license. Files under `materials/official/` retain their individual upstream licenses and attribution. They are distributed unchanged. See [the material index](materials/README.md) for original URLs, versions and complete license files.
+
+- **DeepMIMO v4.0.5 官方入门与目录说明** — Apache-2.0. Copyright 2025 DeepMIMO. 上游README原样保存；论文引用和上游链接保留。 [Original](https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/README.md); [license](materials/official/deepmimo/LICENSE).
+- **DeepMIMO v4.0.5 官方格式规范** — Apache-2.0. Copyright 2025 DeepMIMO. 文档源文件按v4.0.5标签原样保存。 [Original](https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/docs/resources/specs.md); [license](materials/official/deepmimo/LICENSE).
+- **Sionna RT v2.2.0 官方安装与开发入口** — Apache-2.0. Copyright (c) 2021–2026 NVIDIA CORPORATION & AFFILIATES. 原文件SPDX、作者引用和声明保留。 [Original](https://github.com/NVlabs/sionna-rt/blob/v2.2.0/README.md); [license](materials/official/sionna-rt/LICENSE), [license](materials/official/sionna-rt/APACHE-LICENSE-2.0.txt).
+- **QuaDRiGa 官方双频仿真教程源码** — QuaDRiGa自定义非商业源码许可. © Copyright 2011–2019 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. 原样保存教程源码及完整QuaDRiGa许可。 [Original](https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/tutorials/t11_multi_frequency_simulations.m); [license](materials/official/quadriga/QuaDRiGa_License.txt).
+- **DeepSense 2022 官方挑战基线说明** — MIT. Copyright (c) 2022 DeepSense6G. 官方2022 Challenge仓库README原样保存。 [Original](https://github.com/DeepSense6G/Multi-Modal-Beam-Prediction-Challenge-2022-Baseline/blob/main/README.md); [license](materials/official/deepsense-6g/challenge-2022/LICENSE).
+- **DeepSense 6G 原论文（arXiv v2）** — CC-BY-NC-SA-4.0. Ahmed Alkhateeb, Gouranga Charan, Tawfik Osman, Andrew Hredzak, João Morais, Umut Demirhan, and Nikhil Srinivas. DeepSense 6G: A Large-Scale Real-World Multi-Modal Sensing and Communication Dataset. arXiv:2211.09769v2, 20 March 2023. 原版PDF，未修改，保留CC BY-NC-SA 4.0。 [Original](https://arxiv.org/pdf/2211.09769v2); [license](materials/official/deepsense-6g/paper/CC-BY-NC-SA-4.0.txt).

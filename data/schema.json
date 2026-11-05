@@ -198,6 +198,32 @@
                 }
               }
             }
+          },
+          "productionFacts": {
+            "type": "object",
+            "required": [
+              "entryInput",
+              "physicalModel",
+              "channelFormation",
+              "frequencyChange",
+              "arrayChange",
+              "timeMeaning",
+              "blockageChange",
+              "costDrivers",
+              "artifacts",
+              "commonMistake",
+              "sourceIds"
+            ],
+            "properties": {
+              "sourceIds": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
           }
         }
       }
@@ -296,6 +322,106 @@
         ],
         "properties": {
           "officialRepo": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "resourceIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "sourceIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "researchPapers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "year",
+          "venue",
+          "url",
+          "resourceIds",
+          "system",
+          "predictionTarget",
+          "decisionTarget",
+          "protocol",
+          "keyFinding",
+          "remainingGap",
+          "readScope",
+          "sourceIds"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "resourceIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "sourceIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "officialMaterials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "resourceIds",
+          "sourceUrl",
+          "upstreamRef",
+          "filePath",
+          "license",
+          "licenseUrl",
+          "attribution",
+          "readScope",
+          "kind",
+          "sourceIds"
+        ],
+        "properties": {
+          "filePath": {
+            "type": "string",
+            "pattern": "^materials/official/"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "licenseUrl": {
             "type": "string",
             "pattern": "^https://"
           },

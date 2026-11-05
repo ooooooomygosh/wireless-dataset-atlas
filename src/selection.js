@@ -57,6 +57,8 @@ function researchMissing(resource, constraints = {}, goal = "") {
       key: "protocol",
       reason: "CFM-Bench官方协议禁止将其所有splits用于基础模型预训练。",
     });
+  if(goal === "foundation-pretrain" && resource.researchRole === "evaluation_suite")
+    missing.push({key:"protocol",reason:"该条目是评估套件；预训练语料需从上游数据单独构建，并隔离评测样本。"});
   return missing;
 }
 function selectResearchPlan(resources, playbook, constraints = {}) {

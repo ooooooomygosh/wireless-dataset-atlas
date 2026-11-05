@@ -34,6 +34,7 @@ const fieldNames = {
 const navs = [
   ["home", "◈", "总览 Overview"],
   ["core", "◎", "四个核心资源怎么选"],
+  ["pipelines", "↳", "数据生产工作台"],
   ["browse", "▦", "数据资源浏览器"],
   ["compare", "⇄", "对比实验室"],
   ["wizard", "⌘", "研究任务选型"],
@@ -41,6 +42,7 @@ const navs = [
   ["topics", "◇", "深度研究专题"],
   ["tutorials", "▤", "教程与复现"],
   ["projects", "⚙", "相关项目与生产工具"],
+  ["library", "▣", "论文与官方材料"],
   ["sources", "↗", "资料与证据库"],
   ["coverage", "✓", "覆盖与质量"],
 ];
@@ -149,7 +151,7 @@ function home() {
               : "其他来源";
     origins[k] = (origins[k] || 0) + 1;
   });
-  return `<section class="hero"><div class="eyebrow">WIRELESS RESEARCH · EVIDENCE FIRST</div><h1>从研究问题出发，<br>找到可信的数据。</h1><p class="lead">了解无线数据从哪里来、包含什么、能验证什么。把传播机制、观测条件和实验边界，放在模型选择之前。</p><div class="row"><a class="task-tile" href="#core">先分清四个核心资源 →</a><a class="task-tile" href="#wizard">按研究任务选型 ↗</a><a class="task-tile" href="https://github.com/ooooooomygosh/wireless-dataset-atlas" target="_blank" rel="noreferrer">GitHub · 查看源码 / 参与维护 ↗</a></div></section><div class="stats">${[
+  return `<section class="hero"><div class="eyebrow">WIRELESS RESEARCH · EVIDENCE FIRST</div><h1>从研究问题出发，<br>找到可信的数据。</h1><p class="lead">了解无线数据从哪里来、包含什么、能验证什么。把传播机制、观测条件和实验边界，放在模型选择之前。</p><div class="row"><a class="task-tile" href="#core">先分清四个核心资源 →</a><a class="task-tile" href="#pipelines">看数据怎样生产 →</a><a class="task-tile" href="#wizard">按研究任务选型 ↗</a><a class="task-tile" href="https://github.com/ooooooomygosh/wireless-dataset-atlas" target="_blank" rel="noreferrer">GitHub · 查看源码 / 参与维护 ↗</a></div></section><div class="stats">${[
     [R.length, "资源系列", "场景与版本单独列为子项"],
     [S.length, "来源索引", "阅读范围与访问状态逐条记录"],
     [
@@ -311,7 +313,7 @@ function detail(id) {
             .join(""),
         )
       : ""
-  }${panel("数据生产：从原始输入到研究标签", productionMarkup(r))}${panel(
+  }${panel("数据生产：从原始输入到研究标签", productionMarkup(r)+relatedLiterature(r))}${panel(
     "公开字段与可得性",
     `<p class="callout">字段作用域：${esc(r.fieldScope || "资源系列摘要，具体场景与配置可能不同")}</p><div id="fields" class="table-wrap"><table><thead><tr><th>字段</th><th>可得性</th><th>适用范围与证据</th></tr></thead><tbody>${Object.entries(
       fieldNames,
@@ -497,32 +499,16 @@ function decisionComparison(rs, book) {
     )}<tr><td>原始依据</td>${rs.map((r) => `<td>${refs(sourceIds(r).slice(0, 2))}</td>`).join("")}</tr></tbody></table></div>`;
 }
 function compare() {
-  const rs = [...selected]
-      .map((id) => R.find((r) => r.id === id))
-      .filter(Boolean),
-    book = selectedBook();
-  const rows = [
-    ["类型", (r) => r.kind],
-    ["来源", (r) => r.origin],
-    ["字段作用域", (r) => r.fieldScope || "系列级摘要；见场景条件"],
-    ["版本", (r) => r.version],
-    ["频率", (r) => r.frequency],
-    ["规模", (r) => r.scale],
-    ["访问", (r) => r.access],
-    ["许可", (r) => r.license],
-    ...Object.entries(fieldNames).map(([k, v]) => [
-      v,
-      (r) => r.fields?.[k] || "未知",
-    ]),
+  const rs = [...selected].map(id=>R.find(r=>r.id===id)).filter(Boolean), book=selectedBook();
+  const technicalRows=[
+    ["类型",r=>r.kind],["来源",r=>r.origin],["字段作用域",r=>r.fieldScope||"系列级摘要；见场景条件"],
+    ["版本",r=>r.version],["频率",r=>r.frequency],["规模",r=>r.scale],["访问",r=>r.access],["许可",r=>r.license],
+    ...Object.entries(fieldNames).map(([k,v])=>[v,r=>r.fields?.[k]||"未知"])
   ];
-  return (
-    title(
-      "RESEARCH COMPARISON",
-      "这些差异会怎样改变你的实验？",
-      "先看实验角色、控制能力与验证边界。技术字段表用于确认具体接口。",
-    ) +
-    `<div class="filters row"><label>对比围绕的研究目标 <select id="compare-goal">${goalOptions(activeGoal)}</select></label><button data-core-compare>恢复四个核心资源</button><select id="compare-add"><option value="">添加资源（最多4个）</option>${R.map((r) => `<option value="${r.id}">${esc(r.name)}</option>`).join("")}</select><button data-export="compare-json">JSON</button><button data-export="compare-csv">CSV</button><button id="print">打印 / 保存PDF</button></div><div class="row">${rs.map((r) => `<button data-select="${r.id}">${esc(r.name)} ×</button>`).join("")}</div>${book ? `<section class="panel section"><div class="eyebrow">当前目标 · ${esc(book.title)}</div><h2>${esc(book.question || book.summary || "选择能支撑研究结论的数据组合")}</h2>${explain(book.firstExperiment)}<p class="small muted">本路线默认起点：${esc(R.find(r=>r.id===book.defaultStartId)?.name||book.defaultStartId)}。下表比较当前选中的资源，不要求它们都承担主实验角色。</p><a href="#wizard/${book.id}">生成本路线的少量推荐与排除理由 →</a></section>` : ""}${rs.length < 2 ? '<div class="empty">请选2–4个资源；也可以一键恢复四个核心资源。</div>' : `<section class="section"><h2>先看研究上的差别</h2>${decisionComparison(rs, book)}</section><details class="section"><summary>展开完整技术参数与能力字段</summary><div class="table-wrap"><table class="comparison"><thead><tr><th>技术维度</th>${rs.map((r) => `<th>${esc(r.name)}</th>`).join("")}</tr></thead><tbody>${rows.map(([label, fn]) => `<tr><td>${label}</td>${rs.map((r) => `<td>${esc(txt(fn(r)))}</td>`).join("")}</tr>`).join("")}</tbody></table></div></details>`}`
-  );
+  const technical=`<div class="table-wrap"><table class="comparison"><thead><tr><th>技术维度</th>${rs.map(r=>`<th>${esc(r.name)}</th>`).join("")}</tr></thead><tbody>${technicalRows.map(([label,fn])=>`<tr><th scope="row">${label}</th>${rs.map(r=>`<td>${esc(txt(fn(r)))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  const view = comparisonLens==='decision'?decisionComparison(rs,book):comparisonLens==='technical'?technical:productionComparison(rs,comparisonLens);
+  return title("RESEARCH COMPARISON","同一个实验，用不同资源要做哪些工作？","从生产链、参数变更、研究用途和具体字段四个视角比较；每个结论连到流程与原始依据。")+
+    `<div class="filters row"><label>研究目标 <select id="compare-goal">${goalOptions(activeGoal)}</select></label><select id="compare-add"><option value="">添加资源（最多4个）</option>${R.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join("")}</select><button data-export="compare-json">JSON</button><button data-export="compare-csv">CSV</button><button id="print">打印 / 保存PDF</button></div>${comparisonToolbar()}<div class="row selected-resources">${rs.map(r=>`<button data-select="${r.id}" aria-label="从对比移除${esc(r.name)}">${esc(r.name)} ×</button>`).join("")}</div>${rs.length<2?'<div class="empty">请选择2–4个资源，或点击上面的常用组合。</div>':view}${book?`<section class="panel section"><div class="eyebrow">当前研究目标 · ${esc(book.title)}</div><h2>${esc(book.question||book.summary)}</h2>${explain(book.firstExperiment)}<a href="#wizard/${book.id}">查看角色分工、最小实验和继续／停止条件 →</a></section>`:""}`;
 }
 function wizard(route = "") {
   activeGoal = goalRoute(route);
@@ -816,6 +802,7 @@ function exportData(kind) {
         "scale",
         "license",
         ...Object.keys(fieldNames),
+        ...productionDimensions.map(([key])=>key),
       ];
       let cell = (x) => '"' + txt(x).replace(/"/g, '""') + '"';
       download(
@@ -824,7 +811,7 @@ function exportData(kind) {
           [
             keys.map(cell).join(","),
             ...rs.map((r) =>
-              keys.map((k) => cell(r.fields?.[k] ?? r[k] ?? "未知")).join(","),
+              keys.map((k) => cell(r.fields?.[k] ?? r[k] ?? productionValue(r,k) ?? "见具体流程")).join(","),
             ),
           ].join("\r\n"),
         "text/csv;charset=utf-8",
@@ -857,6 +844,8 @@ function render() {
       topics,
       tutorials,
       projects: () => relatedProjectsPage(id),
+      pipelines: () => pipelinesPage(id),
+      library: () => libraryPage(id),
       coverage,
     }[page] || home
   )();
@@ -883,6 +872,13 @@ document.addEventListener("click", async (e) => {
     render();
   }
   if (b.dataset.export) exportData(b.dataset.export);
+  if (b.dataset.comparisonLens) { comparisonLens=b.dataset.comparisonLens; render(); }
+  if (b.dataset.comparePreset) {
+    const preset=comparePresets.find(p=>p.id===b.dataset.comparePreset);
+    selected=new Set(preset.ids.filter(id=>R.some(r=>r.id===id)));
+    comparisonLens="production";
+    render();
+  }
   if (b.id === "print") window.print();
   if (b.id === "reset") {
     clearTimeout(debounce);
@@ -906,6 +902,7 @@ document.addEventListener("click", async (e) => {
     selected.clear();
     render();
   }
+  if(b.dataset.stageOpen){const [id,step]=b.dataset.stageOpen.split('|');const stage=document.getElementById('stage-'+id+'-'+step);if(stage){stage.open=true;stage.scrollIntoView({behavior:'smooth',block:'start'});}}
   if(b.dataset.pipelineExpand)document.querySelectorAll('#pipeline-'+b.dataset.pipelineExpand+' .pipeline-stage').forEach(d=>d.open=true);
   if(b.dataset.pipelineCollapse)document.querySelectorAll('#pipeline-'+b.dataset.pipelineCollapse+' .pipeline-stage').forEach(d=>d.open=false);
   if(b.dataset.pipelineExport){const r=R.find(r=>r.id===b.dataset.pipelineExport);download(r.id+'-production-pipeline.json',JSON.stringify({resourceId:r.id,name:r.name,pipeline:r.productionPipeline,sources:S.filter(x=>r.productionPipeline.stages.some(s=>s.sourceIds.includes(x.id)))},null,2));}
@@ -956,6 +953,9 @@ document.addEventListener("click", async (e) => {
 });
 document.addEventListener("change", (e) => {
   let t = e.target;
+  if(t.id==='pipeline-resource')location.hash='pipelines/'+t.value;
+  if(t.id==='library-resource'){libraryFilter.resource=t.value;$('#library-results').innerHTML=libraryResults();}
+  if(t.id==='library-kind'){libraryFilter.kind=t.value;$('#library-results').innerHTML=libraryResults();}
   if (
     t.id === "w-task" ||
     t.id === "w-origin" ||
@@ -997,6 +997,7 @@ document.addEventListener("change", (e) => {
 let debounce;
 document.addEventListener("input", (e) => {
   let t = e.target;
+  if(t.id==='library-search'){libraryFilter.query=t.value;$('#library-results').innerHTML=libraryResults();return;}
   if (!["browse-q", "task-q", "source-q"].includes(t.id)) return;
   clearTimeout(debounce);
   let pos = t.selectionStart;

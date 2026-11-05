@@ -1,6 +1,6 @@
 .git
 .github
-materials
+materials/local-reading
 node_modules
 .venv*
 __pycache__
