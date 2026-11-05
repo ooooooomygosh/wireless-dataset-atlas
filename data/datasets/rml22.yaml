@@ -10,8 +10,49 @@ license: Not stated
 access: {url: 'https://github.com/venkateshsathya/RML22', type: open}
 code: ['https://github.com/venkateshsathya/RML22']
 paper: doi:10.1109/twc.2023.3254490
-used_in: ["doi:10.1109/tccn.2026.3683207","doi:10.1109/tccn.2026.3683189","doi:10.1109/tccn.2026.3685396","doi:10.1109/jiot.2026.3725259","doi:10.1109/iccc70295.2026.11680287"]
-citing: ["doi:10.1109/twc.2024.3450972","doi:10.1109/twc.2024.3412234","doi:10.1038/s41467-025-60921-z"]
+used_in: ['doi:10.1109/tccn.2026.3683207', 'doi:10.1109/tccn.2026.3683189', 'doi:10.1109/tccn.2026.3685396', 'doi:10.1109/jiot.2026.3725259', 'doi:10.1109/iccc70295.2026.11680287']
+citing: ['doi:10.1109/twc.2024.3450972', 'doi:10.1109/twc.2024.3412234', 'doi:10.1038/s41467-025-60921-z']
 summary: {en: 'A generator of I/Q frames for 10 modulation types (QAM16, QAM64, 8PSK, WBFM, BPSK, CPFSK, AM-DSB, GFSK, PAM4, QPSK) at SNR from -20 to 20 dB in 2 dB steps. Variants include clean, AWGN, clock-effect, fading and combined impairments.', zh: 用于生成 I/Q 帧的生成器，覆盖 10 种调制类型（QAM16、QAM64、8PSK、WBFM、BPSK、CPFSK、AM-DSB、GFSK、PAM4、QPSK），SNR 范围为 -20 至 20 dB，步长 2 dB。变体包括无损伤、AWGN、时钟效应、衰落以及组合损伤。}
 sources: ['https://github.com/venkateshsathya/RML22', 'https://raw.githubusercontent.com/venkateshsathya/RML22/main/code/RML22.ipynb', 'https://api.crossref.org/works/10.1109/TWC.2023.3254490']
 checked: '2026-11-06'
+overview: {en: 'RML22 is a synthetic I/Q dataset for modulation classification, published in IEEE Transactions on Wireless Communications in November 2023 by Venkatesh Sathyanarayanan, Peter Gerstoft and Aly El Gamal. A GNU Radio generator in the authors'' GitHub repository creates it from random bits for 8 digital modulations and from an audio recording for 2 analog modulations. The 10 modulation types are BPSK, QPSK, 8PSK, PAM4, QAM16, QAM64, GFSK, CPFSK, WBFM and AM-DSB. Each frame holds 128 complex I/Q samples stored as a 2 x 128 float32 array, and 2000 frames are generated for each modulation and SNR. SNR runs from -20 dB to 20 dB in 2 dB steps. The generator offers five variants (clean, AWGN only, clock effects only, fading only, and all impairments combined), and the default output is the combined variant named RML22. The data are written as a pickled Python dictionary keyed by modulation name and SNR. The GitHub repository links the generated data on Google Drive; its code folder
+    holds the generator, a CNN notebook and a trained model, not the dataset file.', zh: RML22 是用于调制分类的合成 I/Q 数据集，由 Venkatesh Sathyanarayanan、Peter Gerstoft 与 Aly El Gamal 于 2023 年 11 月发表于 IEEE Transactions on Wireless Communications。作者 GitHub 仓库中的 GNU Radio 生成器，以随机比特生成 8 种数字调制，以一段音频录音生成 2 种模拟调制。10 种调制类型为 BPSK、QPSK、8PSK、PAM4、QAM16、QAM64、GFSK、CPFSK、WBFM 与 AM-DSB。每帧含 128 个复数 I/Q 采样，存为 2 x 128 的 float32 数组；每种调制、每个 SNR 生成 2000 帧。SNR 范围为 -20 dB 至 20 dB，步长 2 dB。生成器提供五种变体（纯净、仅 AWGN、仅时钟效应、仅衰落，以及全部损伤叠加），默认输出为名为 RML22 的组合变体。数据以按调制名与 SNR 为键的 Python 字典形式写入 pickle 文件。GitHub 仓库通过 Google Drive 链接提供生成好的数据；代码目录包含生成器、CNN notebook 与训练后的模型，不含数据文件本身。}
+signal_details:
+- signal: iq
+  text: {en: 'Complex baseband I/Q, 128 samples per frame, stored as real and imaginary arrays in float32. Centre frequency 1 GHz. 2 samples per symbol for the digital modulations; linear types use root-raised-cosine pulse shaping with excess bandwidth 0.35. SNR from -20 dB to 20 dB in 2 dB steps.', zh: 复数基带 I/Q，每帧 128 个采样，以 float32 的实部与虚部两个数组存储。中心频率 1 GHz。数字调制每个符号 2 个采样点；线性调制使用根升余弦脉冲成形，超额带宽（excess bandwidth）为 0.35。SNR 从 -20 dB 到 20 dB，步长 2 dB。}
+pipeline:
+  summary: {en: 'A GNU Radio 3.8.3 flowgraph takes random bits and recorded audio, applies modulation, channel artifacts and frame carving, and writes one pickle file.', zh: GNU Radio 3.8.3 流图以随机比特与录制音频为输入，依次完成调制、信道损伤与帧截取，并写出一个 pickle 文件。}
+  stages:
+  - title: {en: Draw source bits and audio, zh: 生成源比特与音频}
+    detail: {en: Digital sources draw random bits with numpy and a fixed seed. Analog sources read Podcast.wav at an audio rate of 44.1 kHz and use its real-valued samples., zh: 数字源用 numpy 并以固定种子生成随机比特。模拟源读取 Podcast.wav，音频速率 44.1 kHz，使用其实值采样。}
+    inputs:
+    - {en: Random bit streams (digital), zh: 随机比特流（数字）}
+    - {en: Podcast.wav audio (analog), zh: Podcast.wav 音频（模拟）}
+    outputs:
+    - {en: Symbol streams, zh: 符号流}
+    - {en: Audio sample streams, zh: 音频采样流}
+  - title: {en: Modulate and pulse-shape, zh: 调制与脉冲成形}
+    detail: {en: 'The transmitter blocks come from GNU Radio 3.8.3 with 2 samples per symbol. Linear digital types use a root-raised-cosine filter with excess bandwidth 0.35. GFSK uses BT 0.3 and sensitivity 1.57, CPFSK uses modulation index 0.5, WBFM uses 75 kHz maximum deviation and 75 us pre-emphasis, and AM-DSB modulates the audio.', zh: 发射端模块来自 GNU Radio 3.8.3，每符号 2 个采样点。线性数字调制使用超额带宽 0.35 的根升余弦滤波器。GFSK 使用 BT 0.3、灵敏度 1.57；CPFSK 使用调制指数 0.5；WBFM 使用 75 kHz 最大频偏与 75 us 预加重；AM-DSB 对音频进行调制。}
+    inputs:
+    - {en: Symbol and audio streams, zh: 符号流与音频流}
+    outputs:
+    - {en: Complex baseband samples, zh: 复数基带采样}
+  - title: {en: Apply channel artifacts per variant, zh: 按变体施加信道损伤}
+    detail: {en: 'AWGN noise amplitude is 10 to the power of minus SNR over 20. Clock effects use a 10 MHz crystal model with standard deviation 1e-4, maximum deviation 5 and a 100 MHz clock rate, producing sample rate offset (SRO), carrier frequency offset (CFO) and a random phase offset from 0 to 2 pi. Fading is a Rayleigh selective model with a 70 Hz Doppler frequency and delays from 0 to 5000 ns. In the combined variant the order is SRO, fading, CFO, phase offset, then AWGN.', zh: AWGN 的噪声幅度为 10 的 (-SNR/20) 次方。时钟效应采用 10 MHz 晶振模型，标准差 1e-4，最大偏差 5，时钟速率 100 MHz，产生采样率偏移（SRO）、载波频偏（CFO）以及 0 到 2π 之间的随机相位偏移。衰落为瑞利选择性衰落模型，多普勒频率 70 Hz，时延从 0 到 5000 ns。组合变体的顺序为 SRO、衰落、CFO、相位偏移，最后加 AWGN。}
+    inputs:
+    - {en: Clean modulated samples, zh: 纯净调制采样}
+    - {en: SNR grid from -20 to 20 dB, zh: -20 至 20 dB 的 SNR 网格}
+    outputs:
+    - {en: Impaired complex samples, zh: 损伤后的复数采样}
+  - title: {en: Carve and normalise frames, zh: 截取帧并归一化}
+    detail: {en: 'The first 1000 samples are dropped as transients. 128-sample frames start at random offsets, with each offset increment drawn below 5 percent of the stream length. Each frame is divided by the sum of its magnitudes and split into real and imaginary parts.', zh: 前 1000 个采样作为瞬态被丢弃。128 采样帧从随机位置开始截取，每次起点增量取自小于流长 5% 的随机数。每帧除以其幅度之和，再拆分为实部与虚部。}
+    inputs:
+    - {en: Impaired sample streams, zh: 损伤后采样流}
+    outputs:
+    - {en: Normalised 2 x 128 frames, zh: 归一化的 2 x 128 帧}
+  - title: {en: Write one pickle file, zh: 写入单个 pickle 文件}
+    detail: {en: 'Frames are stored as float32 arrays of shape 2000 x 2 x 128 for each (modulation, SNR) key. The file is saved as RML22 in the working directory. Fixed seeds, starting at 1680000, are set in the code.', zh: 每个（调制，SNR）键对应一个 float32 数组，形状为 2000 x 2 x 128。文件以 RML22 为名保存在当前目录；代码中设置了从 1680000 起的固定随机种子。}
+    inputs:
+    - {en: Frame arrays for each key, zh: 各键对应的帧数组}
+    outputs:
+    - {en: RML22 pickle file, zh: RML22 pickle 文件}

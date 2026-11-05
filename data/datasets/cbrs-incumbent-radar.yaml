@@ -14,7 +14,12 @@ access: {url: 'https://data.nist.gov/od/id/mds2-2116', type: open}
 code: []
 paper: doi:10.6028/jres.124.038
 used_in: []
-citing: ["doi:10.1109/ojcoms.2023.3238569","doi:10.1109/tccn.2022.3153004","doi:10.1109/tccn.2024.3519315"]
+citing: ['doi:10.1109/ojcoms.2023.3238569', 'doi:10.1109/tccn.2022.3153004', 'doi:10.1109/tccn.2024.3519315']
 summary: {en: 'Synthetic radar waveforms for the 3.5 GHz CBRS band with added white Gaussian noise and randomized waveform parameters, intended for radar presence detection. The waveforms are distributed as .mat files in four groups.', zh: 面向 3.5 GHz CBRS 频段的合成雷达波形，叠加高斯白噪声并随机化波形参数，用于雷达存在性检测。波形以 .mat 文件形式分为四组发布。}
 sources: ['https://data.nist.gov/od/id/mds2-2116', 'https://data.nist.gov/od/ds/ark:/88434/mds2-2116/SimulatedRadarWaveforms/License.txt', 'https://data.nist.gov/od/ds/ark:/88434/mds2-2116/SimulatedRadarWaveforms/ReadMe.txt', 'https://www.nist.gov/open/license', 'https://doi.org/10.6028/jres.124.038', 'https://nvlpubs.nist.gov/nistpubs/jres/124/jres.124.038.pdf']
 checked: '2026-11-06'
+overview: {en: 'This is a synthetic RF dataset of incumbent radar waveforms in the 3.5 GHz CBRS band, hosted by NIST and described in a NIST J. Research data article by Caromi, Souryal and Hall. The waveforms are generated synthetically, with white Gaussian noise added to each one, and the radar signals span a range of modulation types and parameters. The start time and center frequency of each radar signal are randomized within the waveform. The task is binary: decide whether a radar is present, regardless of its signal type. The authors note that an energy detector is a naive baseline. The waveforms are distributed as MAT files split into groups, and the group and file numbers serve to track waveform records during generation and algorithm development. The dataset is intended for training and testing machine learning and deep learning detectors. The data are released under the NIST open license.', zh: 这是一个合成射频数据集，包含 3.5 GHz CBRS 频段内的在役雷达波形，由 NIST 发布，并附有 Caromi、Souryal 与 Hall 撰写的 NIST Journal
+    of Research 数据论文。波形以合成方式生成，每条波形叠加高斯白噪声，雷达信号涵盖多种调制类型与参数。每个雷达信号的起始时间与中心频率在波形内随机化。任务为二分类：判断雷达是否存在，与信号类型无关。作者指出能量检测器是一个简单的基线方法。波形以 MAT 文件形式分组发布，组号与文件号用于在生成与算法开发过程中追踪波形记录。数据集用于训练与测试机器学习及深度学习检测器。数据以 NIST 开放许可发布。}
+signal_details:
+- signal: radar
+  text: {en: 'Synthetic radar waveforms in the 3.5 GHz CBRS band with added white Gaussian noise. Modulation types and waveform parameters are randomized over wide ranges, and the start time and center frequency of each radar signal are randomized within the waveform. Distributed as .mat files in groups.', zh: 3.5 GHz CBRS 频段内的合成雷达波形，叠加高斯白噪声。调制类型与波形参数在较宽范围内随机化，每个雷达信号的起始时间与中心频率在波形内随机化。以 .mat 文件分组发布。}

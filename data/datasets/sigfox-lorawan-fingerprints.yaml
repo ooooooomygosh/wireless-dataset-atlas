@@ -15,7 +15,41 @@ access: {url: 'https://zenodo.org/record/3342253', type: open}
 code: []
 paper: doi:10.3390/data3020013
 used_in: []
-citing: ["doi:10.1109/jiot.2020.3019199","doi:10.1109/tvt.2019.2940272","doi:10.1109/infocom42981.2021.9488784"]
+citing: ['doi:10.1109/jiot.2020.3019199', 'doi:10.1109/tvt.2019.2940272', 'doi:10.1109/infocom42981.2021.9488784']
 summary: {en: 'GPS-tagged Sigfox and LoRaWAN messages with per-base-station RSSI and network metadata, collected over three months from devices that periodically reported their GPS location. Sigfox data cover urban Antwerp and a rural area between Antwerp and Ghent; LoRaWAN data cover urban Antwerp.', zh: 带有 GPS 位置标签的 Sigfox 与 LoRaWAN 报文，包含各基站的 RSSI 及网络元数据，采集周期为三个月，设备周期性上报其 GPS 位置。Sigfox 数据覆盖安特卫普市区以及安特卫普与根特之间的农村地区；LoRaWAN 数据覆盖安特卫普市区。}
 sources: ['https://zenodo.org/record/3342253', 'https://zenodo.org/api/records/3342253', 'https://api.crossref.org/works/10.3390/data3020013']
 checked: '2026-11-06'
+overview: {en: 'Sigfox and LoRaWAN Fingerprint Localization Datasets are measured LPWAN datasets published by the University of Antwerp in 2018 (doi:10.3390/data3020013) and hosted on Zenodo under CC BY 4.0. GPS-equipped mobile devices periodically reported their position in Sigfox or LoRaWAN messages over about three months. Each record holds the message receive time, the IDs of all receiving base stations, the RSSI at each base station, and the device''s GPS position. The Sigfox data cover urban Antwerp (14,378 messages) and a rural area between Antwerp and Ghent (25,638 messages). The LoRaWAN data cover urban Antwerp (130,430 messages in the current version 1.2). The files are CSV, the LoRaWAN data also come as a JSON file, and a base-station mapping file links the two Sigfox areas. The data target fingerprint localization; the 2018 paper reports a mean error of 214.58 m for rural Sigfox, 688.97 m for urban Sigfox and 398.40 m for urban LoRaWAN. The page does not state the number of devices
+    or base stations, the collection dates, or the area coordinates.', zh: 'Sigfox 与 LoRaWAN 指纹定位数据集是安特卫普大学于 2018 年发布的 LPWAN 实测数据集（doi:10.3390/data3020013），托管于 Zenodo，采用 CC BY 4.0 许可。配备 GPS 的移动设备在约三个月内周期性地通过 Sigfox 或 LoRaWAN 报文上报自身位置。每条记录包含报文接收时间、所有接收基站的 ID、各基站的 RSSI，以及设备的 GPS 位置。Sigfox 数据覆盖安特卫普市区（14,378 条报文）和安特卫普与根特之间的农村地区（25,638 条报文）。LoRaWAN 数据覆盖安特卫普市区（当前 1.2 版中为 130,430 条报文）。文件为 CSV 格式，LoRaWAN 数据另有 JSON 文件，并提供一个基站映射文件用于关联两个 Sigfox 区域。数据面向指纹定位任务；2018 年论文报告的平均定位误差为：农村 Sigfox 214.58 m，市区 Sigfox 688.97 m，市区 LoRaWAN 398.40 m。'}
+signal_details:
+- signal: rssi
+  text: {en: 'RSSI at each receiving base station, recorded per message. The Sigfox CSV files use base-station columns, and the urban and rural Sigfox sets use separate IDs that sigfox_bs_mapping.csv links. In LoRaWAN version 1.2 each message lists all receiving gateways; the earlier version listed up to three. Four gateways were added in version 1.2, with RSSI in columns BS 69 to BS 72. The LoRaWAN JSON stores per gateway: rssi, esp (estimated signal power), snr, timestamp type, time of arrival and gateway id. Some gateways report nanosecond-precision timestamps (timestamp type GPS_RADIO).', zh: 每条报文记录各接收基站的 RSSI。Sigfox CSV 文件以基站列保存数据，市区与农村两个 Sigfox 数据集使用不同的基站 ID，由 sigfox_bs_mapping.csv 进行对应。LoRaWAN 1.2 版中每条报文列出所有接收网关的数据，早期版本最多列出三个。1.2 版新增四个网关，其 RSSI 位于 BS 69 至 BS 72 列。LoRaWAN JSON 文件为每个网关保存 rssi、esp（估计信号功率）、snr、timestamp 类型、到达时间和 gateway id。部分网关提供纳秒精度时间戳（timestamp 类型为 GPS_RADIO）。}
+- signal: gps
+  text: {en: 'Device location reported by GPS in the Sigfox and LoRaWAN messages. The LoRaWAN JSON file stores it as top-level latitude and longitude fields, which the page labels as ground truth. Ground-truth accuracy is not discussed on the page.', zh: 设备通过 GPS 在 Sigfox 与 LoRaWAN 报文中上报的位置。LoRaWAN JSON 文件将其保存为顶层 latitude 与 longitude 字段，页面将其标注为真值（ground truth）。页面未讨论真值的精度。}
+pipeline:
+  summary: {en: 'GPS-equipped devices send their position in LPWAN messages, base stations record each reception, and a local data server stores the records as CSV and JSON files.', zh: 配备 GPS 的设备通过 LPWAN 报文发送位置，基站记录每次接收，本地数据服务器将记录保存为 CSV 与 JSON 文件。}
+  stages:
+  - title: {en: Position reporting, zh: 位置上报}
+    detail: {en: 'Many GPS-equipped devices periodically reported their location over about three months, in Sigfox or LoRaWAN messages.', zh: 在约三个月内，大量配备 GPS 的设备周期性地通过 Sigfox 或 LoRaWAN 报文上报位置。}
+    inputs:
+    - {en: GPS position of each device, zh: 各设备的 GPS 位置}
+    outputs:
+    - {en: Sigfox and LoRaWAN uplink messages, zh: Sigfox 与 LoRaWAN 上行报文}
+  - title: {en: Reception by base stations, zh: 基站接收}
+    detail: {en: Base stations that receive a message record their IDs and the RSSI at each base station. LoRaWAN version 1.2 reports metadata from all receiving gateways for each message., zh: 接收到报文的基站记录其 ID 以及各基站的 RSSI。LoRaWAN 1.2 版为每条报文报告所有接收网关的元数据。}
+    inputs:
+    - {en: Uplink messages, zh: 上行报文}
+    outputs:
+    - {en: Base station IDs and RSSI per message, zh: 每条报文的基站 ID 与 RSSI}
+  - title: {en: Storage on a local data server, zh: 本地数据服务器存储}
+    detail: {en: 'The local data server stores, for each message, the receive time, the IDs of all receiving base stations, the RSSI at each base station, and the device''s GPS location.', zh: 本地数据服务器为每条报文保存接收时间、所有接收基站的 ID、各基站的 RSSI，以及设备的 GPS 位置。}
+    inputs:
+    - {en: Reception records and GPS positions, zh: 接收记录与 GPS 位置}
+    outputs:
+    - {en: Per-message records, zh: 逐条报文记录}
+  - title: {en: Export as files, zh: 导出为文件}
+    detail: {en: 'The records are published as sigfox_dataset_antwerp.csv (14,378 messages), sigfox_dataset_rural.csv (25,638 messages), lorawan_antwerp_2019_dataset.csv (130,430 messages) and lorawan_antwerp_2019_dataset.json.txt, with sigfox_bs_mapping.csv for base station IDs. The .txt suffix on the JSON file was added because Zenodo would not accept the original extension.', zh: '记录以 sigfox_dataset_antwerp.csv（14,378 条报文）、sigfox_dataset_rural.csv（25,638 条报文）、lorawan_antwerp_2019_dataset.csv（130,430 条报文）和 lorawan_antwerp_2019_dataset.json.txt 发布，基站 ID 对应关系见 sigfox_bs_mapping.csv。JSON 文件的 .txt 后缀是因为 Zenodo 不接受原扩展名而添加的。'}
+    inputs:
+    - {en: Stored per-message records, zh: 已存储的逐条记录}
+    outputs:
+    - {en: CSV and JSON files on Zenodo, zh: Zenodo 上的 CSV 与 JSON 文件}

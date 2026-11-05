@@ -13,7 +13,51 @@ access: {url: 'https://ieee-dataport.org/open-access/berlin-v2x', type: restrict
 code: ['https://github.com/fraunhoferhhi/BerlinV2X']
 paper: doi:10.1109/vtc2023-spring57618.2023.10200750
 used_in: []
-citing: ["doi:10.1109/comst.2024.3372083","doi:10.1109/mcom.001.2300494","doi:10.1109/tmlcn.2025.3564239"]
+citing: ['doi:10.1109/comst.2024.3372083', 'doi:10.1109/mcom.001.2300494', 'doi:10.1109/tmlcn.2025.3564239']
 summary: {en: 'Drive-test measurements from up to four cars in Berlin covering LTE cellular and sidelink links, with signal strength and quality, cellular resource and QoS metrics, GPS positions, and traffic and weather side information. The data is provided as two Parquet tables.', zh: 柏林市区的路测数据，涵盖 LTE 蜂窝链路和 sidelink 链路，最多使用4辆汽车采集。数据包括信号强度与质量、蜂窝资源与 QoS 指标、GPS 位置以及交通和天气辅助信息，以两个 Parquet 表格提供。}
 sources: ['https://ieee-dataport.org/open-access/berlin-v2x', 'https://github.com/fraunhoferhhi/BerlinV2X', 'https://api.crossref.org/works?query.title=Berlin+V2X%3A+A+Machine+Learning+Dataset+from+Multiple+Vehicles+and+Radio+Access+Technologies&rows=3&select=DOI,title,issued']
 checked: '2026-11-06'
+overview: {en: 'Berlin V2X is a drive-test dataset of cellular (LTE) and sidelink radio measurements in urban Berlin, collected by the Fraunhofer Heinrich Hertz Institute with up to four cars over three days. The measurements are GPS-located. The README lists cellular and sidelink radio measurements, QoS measurements from ping and iperf, and side information from a traffic service and a weather service. Cellular data come from MobileInsight traces of the LTE modem, and sidelink data come from an SDR sidelink UE with tcpdump on the receiving side. The data are provided as two Parquet tables, cellular_dataframe.parquet and sidelink_dataframe.parquet, merged and resampled to 1 s, with CSV metadata that defines the columns. The dataset page names QoS prediction and radio resource allocation as machine learning tasks. The sources give no measurement dates, routes, row counts or column schema. The reference paper is Hernangómez et al., VTC2023-Spring.', zh: Berlin V2X 是在柏林市区进行的路测数据集，涵盖 LTE 蜂窝与
+    sidelink 两种无线接入，由 Fraunhofer Heinrich Hertz Institute 采集，最多使用 4 辆汽车，采集时长为 3 天。测量数据带有 GPS 定位。README 列出的内容包括蜂窝与 sidelink 无线测量、基于 ping 与 iperf 的 QoS 测量，以及来自交通服务和天气服务的辅助信息。蜂窝数据来自 MobileInsight 对 LTE 调制解调器的记录，sidelink 数据来自基于 SDR 的 sidelink UE 与接收端的 tcpdump。数据以两个 Parquet 表格提供，即 cellular_dataframe.parquet 和 sidelink_dataframe.parquet，已合并并重采样至 1 s，CSV 元数据文件定义了各列。数据集页面将 QoS 预测和无线资源分配列为机器学习任务。参考论文为 Hernangómez 等人发表于 VTC2023-Spring 的论文。}
+signal_details:
+- signal: rssi
+  text: {en: 'Cellular: MobileInsight PHY measurements every 10 ms, giving SNR, RSRP, RSRQ and RSSI. Sidelink: an SDR sidelink UE with tcpdump, event-based, giving SNR, RSRP, RSRQ, RSSI, noise power, Rx power and Rx gain.', zh: 蜂窝：MobileInsight PHY 测量，每 10 ms 一次，包含 SNR、RSRP、RSRQ 和 RSSI。Sidelink：基于 SDR 的 sidelink UE 与 tcpdump，事件触发，包含 SNR、RSRP、RSRQ、RSSI、噪声功率、Rx power 和 Rx gain。}
+- signal: kpi
+  text: {en: 'QoS from ping (delay, 1 s) and iperf (downlink datarate and jitter at each car, uplink datarate and jitter at the server, 1 s). Cellular scheduling from MobileInsight PDSCH and PUSCH reports every 20 ms: assigned resource blocks, transport block size, downlink MCS and uplink Tx power. Serving-cell information on events: cell identity, DL and UL frequency, and bandwidth. Sidelink packet error rate aggregated to 1 s.', zh: QoS 来自 ping（时延，1 s）与 iperf（每辆车的下行速率与抖动，服务器端的上行速率与抖动，1 s）。蜂窝调度来自 MobileInsight 的 PDSCH 与 PUSCH 报告，每 20 ms 一次，包含分配的资源块、传输块大小、下行 MCS 和上行发射功率。服务小区信息按事件记录，包括小区标识、DL 与 UL 频率及带宽。Sidelink 包错误率按 1 s 聚合。}
+- signal: gps
+  text: {en: 'GPS data from each device at 1 s granularity: latitude, longitude, altitude, velocity and heading.', zh: 每台设备的 GPS 数据，粒度为 1 s，包括纬度、经度、海拔、速度和航向。}
+pipeline:
+  summary: {en: 'Up to four cars log LTE, sidelink, ping, iperf and GPS traces. These are merged with HERE traffic and DarkSky weather data and resampled to 1 s into two Parquet tables.', zh: 最多四辆汽车记录 LTE、sidelink、ping、iperf 和 GPS 轨迹。这些数据与 HERE 交通数据及 DarkSky 天气数据合并，并重采样至 1 s，输出为两个 Parquet 表格。}
+  stages:
+  - title: {en: Vehicle logging, zh: 车载记录}
+    detail: {en: 'Each car records ping traces, iperf downlink traces, and GPS at 1 s. It also records MobileInsight traces of LTE messages: PHY at 10 ms, PDSCH and PUSCH at 20 ms, and RRC events. The iperf server records the uplink.', zh: 每辆车记录 ping 轨迹、iperf 下行轨迹和 1 s 粒度的 GPS。同时记录 LTE 消息的 MobileInsight 轨迹：PHY 每 10 ms 一次，PDSCH 与 PUSCH 每 20 ms 一次，RRC 按事件记录。上行由 iperf 服务器端记录。}
+    inputs:
+    - {en: LTE link, zh: LTE 链路}
+    - {en: GPS signal, zh: GPS 信号}
+    outputs:
+    - {en: 'ping, iperf, GPS and MobileInsight traces per car', zh: 每辆车的 ping、iperf、GPS 与 MobileInsight 轨迹}
+  - title: {en: Sidelink traffic generation, zh: Sidelink 流量生成}
+    detail: {en: 'Sidelink packets are sent with the RUDE and CRUDE tools. Scenario S1 sends 69-byte CAM messages at 20 Hz with MCS 8 on two sub-channels. Scenario S2 sends 1000-byte CPM messages, including the IP header, at 50 Hz with MCS 12 on ten sub-channels.', zh: Sidelink 数据包使用 RUDE 与 CRUDE 工具发送。场景 S1 以 20 Hz 发送 69 字节的 CAM 消息，MCS 为 8，使用两个子信道。场景 S2 以 50 Hz 发送 1000 字节（含 IP 头）的 CPM 消息，MCS 为 12，使用十个子信道。}
+    inputs:
+    - {en: CAM and CPM message traffic, zh: CAM 与 CPM 消息流量}
+    outputs:
+    - {en: sidelink transmissions received by each car, zh: 各车接收到的 sidelink 传输}
+  - title: {en: Sidelink packet decoding, zh: Sidelink 数据包解码}
+    detail: {en: Received packets are decoded with tcpdump and parsed into per-receiver Parquet files. The packet error rate is aggregated to 1 s., zh: 接收到的数据包由 tcpdump 解码，并解析为按接收端划分的 Parquet 文件。包错误率按 1 s 聚合。}
+    inputs:
+    - {en: tcpdump captures, zh: tcpdump 抓包数据}
+    outputs:
+    - {en: per-receiver Parquet files and 1 s packet error rate, zh: 按接收端划分的 Parquet 文件与 1 s 包错误率}
+  - title: {en: Side information download, zh: 辅助信息下载}
+    detail: {en: 'HERE Traffic API data are downloaded every 5 minutes, with Traffic Jam Factor, street name and distance. DarkSky weather data are downloaded hourly at 0.01 degree latitude and longitude granularity, with cloud cover, humidity, precipitation, temperature, pressure and wind speed.', zh: HERE 交通数据每 5 分钟下载一次，包括 Traffic Jam Factor、街道名称和距离。DarkSky 天气数据每小时下载一次，经纬度粒度为 0.01 度，包括云量、湿度、降水、温度、气压和风速。}
+    inputs:
+    - {en: HERE Traffic API, zh: HERE Traffic API}
+    - {en: DarkSky API, zh: DarkSky API}
+    outputs:
+    - {en: traffic and weather tables, zh: 交通与天气数据表}
+  - title: {en: Resampling and merging, zh: 重采样与合并}
+    detail: {en: 'MobileInsight messages are preprocessed in the mi folder, and merged, labelled frames are resampled to 1 s. The notebook add_pos_in_ref_round derives Pos in Ref Round, a one-dimensional distance along a reference drive, after converting coordinates to planar form.', zh: MobileInsight 消息在 mi 文件夹中预处理，合并后的带标签帧重采样至 1 s。Notebook add_pos_in_ref_round 在将坐标转换为平面坐标后，推导出 Pos in Ref Round，即沿参考路线的一维距离。}
+    inputs:
+    - {en: per-car traces and side information, zh: 各车轨迹与辅助信息}
+    outputs:
+    - {en: cellular_dataframe.parquet and sidelink_dataframe.parquet, zh: cellular_dataframe.parquet 与 sidelink_dataframe.parquet}

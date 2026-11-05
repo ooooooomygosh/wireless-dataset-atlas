@@ -8,7 +8,7 @@ const ds = await allDatasets();
 type Entry = { id: string; kind: "dataset" | "study" | "citing"; datasets: { id: string; name: string }[] };
 const map = new Map<string, Entry>();
 for (const d of ds) {
-  const refs: [string, Entry["kind"]][] = [[d.paper, "dataset"], ...d.used_in.map((x): [string, Entry["kind"]] => [x, "study"]), ...d.citing.map((x): [string, Entry["kind"]] => [x, "citing"])];
+  const refs: [string, Entry["kind"]][] = [...(d.paper ? [[d.paper, "dataset"] as [string, Entry["kind"]]] : []), ...d.used_in.map((x): [string, Entry["kind"]] => [x, "study"]), ...d.citing.map((x): [string, Entry["kind"]] => [x, "citing"])];
   for (const [id, kind] of refs) {
     const e: Entry = map.get(id) ?? { id, kind, datasets: [] };
     if (kind === "dataset" || (kind === "study" && e.kind === "citing")) e.kind = kind;

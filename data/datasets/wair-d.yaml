@@ -14,8 +14,137 @@ license: Not stated
 access: {url: 'https://www.mobileai-dataset.com/html/default/yingwen/DateSet/1590994253188792322.html?index=1', type: registration}
 code: []
 paper: arxiv:2212.02159
-used_in: ["doi:10.1109/lwc.2025.3578370"]
-citing: ["doi:10.1109/lwc.2024.3402102","doi:10.1109/jstsp.2024.3453548"]
+used_in: ['doi:10.1109/lwc.2025.3578370']
+citing: ['doi:10.1109/lwc.2024.3402102', 'doi:10.1109/jstsp.2024.3453548']
 summary: {en: 'WAIR-D contains ray-traced radio propagation paths and path responses on real city maps for two scenarios: 10,000 environments with 5 base stations and 30 UEs each, and 100 environments with 1 base station and 10,000 UEs each. Path responses are provided at 2.6, 6, 28, 60 and 100 GHz.', zh: 'WAIR-D 包含基于真实城市地图、由射线追踪生成的无线传播路径与路径响应数据，共两个场景：10,000 个环境（每个环境 5 个基站、30 个用户）和 100 个环境（每个环境 1 个基站、10,000 个用户）。路径响应提供 2.6、6、28、60 和 100 GHz 五个载频。'}
 sources: ['https://arxiv.org/abs/2212.02159', 'https://arxiv.org/pdf/2212.02159', 'https://www.mobileai-dataset.com/html/default/yingwen/DateSet/1590994253188792322.html?index=1']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Extract environments from real maps, generate omnidirectional per-path data with PyLayers, then construct CSI using array and OFDM configurations. Map sources are real; propagation outputs are simulated.', zh: 从真实地图提取环境，用PyLayers生成全向逐路径数据，再按阵列和OFDM配置构造CSI。地图来源真实，传播输出为模拟。}
+  stages:
+  - title: {en: Build environments from OSM, zh: 从OSM建立环境}
+    detail: {en: Extract regional geometry and organize it into separate environments for subsequent path tracing., zh: 提取区域几何并组织成独立环境，供后续路径追踪。}
+    inputs:
+    - {en: OSM buildings and streets from more than 40 cities, zh: 40多个城市的OSM建筑与街道}
+    - {en: Target regions and environment scales, zh: 目标区域与环境尺度}
+    outputs:
+    - {en: Environment maps and geometric descriptions, zh: 环境地图和几何描述}
+    controls:
+    - {en: 'Paper configuration: 10,000 environments in Scenario 1 and 100 in Scenario 2', zh: '论文配置：Scenario1为10,000环境，Scenario2为100环境'}
+    - {en: 'For reproduction, fix map dates, boundaries, and material settings', zh: 研究者复现时固定地图日期、边界和材料设置}
+    checks:
+    - {en: Check whether duplicate or adjacent maps cross train/test splits, zh: 检查重复或相邻地图是否跨训练/测试}
+    - {en: Verify scale conversion from maps to RT coordinates, zh: 核验地图到RT坐标的尺度}
+  - title: {en: Sample BSs and UEs, zh: 采样BS和UE}
+    detail: {en: 'Scenario 1 uses 5 BSs/30 UEs per environment; Scenario 2 uses 1 BS/10,000 UEs; the original paper sets BS height to 6 m and UE height to 1.5 m.', zh: 'Scenario1每环境设置5BS/30UE，Scenario2设置1BS/10,000UE；原文BS高6m、UE高1.5m。'}
+    inputs:
+    - {en: Environment geometry, zh: 环境几何}
+    - {en: Scenario grouping and placement rules, zh: 场景分组及位置规则}
+    outputs:
+    - {en: Node coordinates and link list, zh: 节点坐标和链路清单}
+    controls:
+    - {en: 'Paper configuration: omnidirectional antennas during RT', zh: 论文配置：RT阶段全向天线}
+    - {en: 'For reproduction, fix placement distributions and seeds', zh: 研究者复现时固定位置分布与seed}
+    checks:
+    - {en: The original generation workflow resamples UEs with no propagation paths, zh: 原生成流程会重采没有传播路径的UE}
+    - {en: Outage tasks require reconstructing a distribution that includes locations with no paths, zh: outage任务需重建包含无路径位置的分布}
+  - title: {en: Solve paths with PyLayers, zh: 用PyLayers求路径}
+    detail: {en: 'Compute direct, reflected, diffracted, and other propagation paths, saving path responses and associated angles and delays.', zh: 计算直达、反射和绕射等传播路径，保存路径响应及相关角度、时延信息。}
+    inputs:
+    - {en: 'Maps, materials, and omnidirectional Tx/Rx nodes', zh: 地图、材料和全向收发节点}
+    - {en: The original paper's five-band configuration, zh: 原文五频段配置}
+    outputs:
+    - {en: Per-link path parameters, zh: 逐链路路径参数}
+    - {en: Multifrequency path-response files such as H_cf_G.npy, zh: 多频路径响应H_cf_G.npy等文件}
+    controls:
+    - {en: 'Researcher specifies: frequencies, interaction budget, materials, and path filtering', zh: 研究者固定：频点、交互预算、材料与路径筛选}
+    - {en: Use the five specific frequencies documented in the downloaded package, zh: 具体五频点沿用所下载包说明}
+    checks:
+    - {en: Check cross-frequency indices and matching BS/UE coordinates, zh: 核对跨频索引和同一BS/UE坐标}
+    - {en: Confirm per-frequency handling of materials and path sets, zh: 确认材料和路径集合的逐频处理方式}
+  - title: {en: Synthesize array and OFDM channels, zh: 合成阵列与OFDM信道}
+    detail: {en: Synthesize complex CSI using array responses and subcarrier phases; selected arrays/bandwidth determine the final training tensors., zh: 以阵列响应和子载波相位合成复数CSI；所选阵列/带宽决定最终训练张量。}
+    inputs:
+    - {en: 'Per-path responses, angles, and delays', zh: 逐路径响应、角度与时延}
+    - {en: Array and OFDM configuration, zh: 阵列和OFDM配置}
+    outputs:
+    - {en: MIMO-OFDM CSI for the configuration, zh: 配置对应的MIMO-OFDM CSI}
+    controls:
+    - {en: 'Researcher specifies: antenna count, spacing, orientation, subcarriers, and normalization', zh: 研究者固定：天线数、间距、朝向、子载波与归一化}
+    checks:
+    - {en: Check antenna and subcarrier axes, zh: 核对天线和子载波轴}
+    - {en: Label carrier-frequency postprocessing separately from original per-frequency path outputs, zh: 改载频后处理与原始逐频路径输出分别标注}
+  - title: {en: 'Create localization, beam, or network tasks', zh: 制作定位、波束或网络任务}
+    detail: {en: 'Generate labels and split by environment/city, preserving maps and original link indices.', zh: 研究者生成标签并按环境/城市切分，保留地图和原始链路索引。}
+    inputs:
+    - {en: 'CSI, positions, and environment metadata', zh: CSI、位置和环境元数据}
+    - {en: Codebook or decision rules, zh: 码本或决策规则}
+    outputs:
+    - {en: Task inputs/labels, zh: 任务输入/标签}
+    - {en: Evaluation sets separated by environment or city, zh: 环境或城市隔离的评估集}
+    controls:
+    - {en: 'Researcher specifies: labels, noise, splits, and units', zh: 研究者固定：标签、噪声、切分和单位}
+    checks:
+    - {en: Confirm headroom using an oracle and strong simple baselines, zh: 用oracle和强简单基线确认headroom}
+    - {en: 'For multiuser coexistence, use channels from the same environment and an explicit interference model', zh: 多用户共存使用同环境信道及明确干扰模型}
+  scope: {en: Generation workflow from WAIR-D's original paper §II and Table 1; portal file licensing and current package structure must be checked against actual downloads., zh: WAIR-D原论文§II与Table1中的生成流程；门户文件许可与当前包结构仍以实际下载为准。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Simulated paths, per-frequency data such as H_cf_G.npy, and BS/UE positions', zh: • 模拟路径、H_cf_G.npy等逐频数据及BS/UE位置}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• MIMO-OFDM CSI
+
+      • Beam/localization labels and multiuser utility', zh: '• MIMO-OFDM CSI
+
+      • 波束/定位标签和多用户utility'}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• Relevant paper sections verified; the download portal returned only a page template, so raw packages were not audited.
+
+      • Regeneration requires material settings, interaction limits, and software configuration; details not specified in the paper remain unverified.', zh: '• 已核验论文相关章节；下载门户只返回页面模板，未审计原始包。
+
+      • 重新生成需补齐材料、交互上限与软件配置，论文未明确项保持待核验。'}
+provenance:
+- {en: OSM buildings and streets from 40+ cities, zh: 40+ 城市 OSM 建筑与街道}
+- {en: Place BSs/UEs, zh: 放置 BS/UE}
+- {en: PyLayers path tracing, zh: PyLayers 路径追踪}
+- {en: 'Five-band path responses: H_cf_G.npy', zh: 五频段路径响应 H_cf_G.npy}
+- {en: Array and subcarrier responses, zh: 阵列与子载波响应}
+- {en: Derived CSI/localization/beam labels, zh: 派生 CSI/定位/波束标签}
+technical_notes:
+- {en: 'Supported by the literature: the original text describes direct, reflected, and diffracted paths; diffuse scattering was not inferred from this.', zh: 文献支持：原文说明直达、反射、绕射路径；未据此推断漫散射启用。}
+- {en: 'Supported by the literature: BS height is 6 m and UE height is 1.5 m, with omnidirectional antennas during RT.', zh: 文献支持：BS 高 6 m、UE 高 1.5 m，RT 阶段使用全向天线。}
+- {en: 'Supported by the literature: UE positions are resampled when no propagation paths exist.', zh: 文献支持：无传播路径的 UE 会重新抽取位置。}
+- {en: 'Inference: this selection biases samples toward connected links; outage studies need regeneration that retains empty-path cases.', zh: 推断：上述选择条件使样本偏向可连接链路，outage 研究需要重新生成保留空路径。}
+limitations:
+- {en: A frequency-response generation formula does not turn 2.6 GHz into publicly released 3.5 GHz data., zh: 不能用频率响应生成公式将 2.6 GHz 标成已公开 3.5 GHz。}
+- {en: Map extent and shared regions within a city affect the strength of OOD evaluation., zh: 地图范围与同城区域共享会影响 OOD 强度。}
+- {en: Mark unverified material parameters and cross-frequency path-set relationships as unknown., zh: 材料参数与路径集合跨频关系未核实应显示未知。}
+history:
+- {en: '2022: the original paper defines two scenarios and five-band responses.', zh: 2022：原论文定义两个场景及五频段响应。}
+usage:
+- {en: 'Obtain files through the original paper''s access route; first check layouts, BS/UE IDs, and H_cf_G.npy.', zh: 从原论文入口取得文件，先核查布局、BS/UE IDs 和 H_cf_G.npy。}
+- {en: Fix array responses and subcarriers to generate complex CSI; retain same-link IDs across all five frequencies., zh: 固定阵列响应和子载波，生成复数 CSI；保留五频同链路 ID。}
+- {en: Separate environments/cities; do not call random UE splits generalization to new sites., zh: 按环境/城市隔离；不要把随机 UE 划分称作新站点泛化。}
+paper_summary:
+- label: {en: System, zh: 系统}
+  text: {en: 'Transforms partial STF-domain CSI into the DDA domain, reconstructing channels with windowed attention and frame-structure encoding; task heads use a frozen encoder.', zh: 部分STF域CSI变换到DDA域，以窗口注意力与帧结构编码恢复信道；冻结编码器接任务头。}
+- label: {en: Prediction target, zh: 预测对象}
+  text: {en: 'Time/frequency extrapolation, pilot-based channel estimation, sub-6-assisted 28 GHz beam classes, and LoS.', zh: 时间/频率外推、导频信道估计、sub-6辅助28 GHz beam类别与LoS。}
+- label: {en: Decision target, zh: 决策目标}
+  text: {en: 'Evaluated with NMSE, beam Top-1, and LoS F1; final communication utility is still missing.', zh: 以NMSE、beam Top-1和LoS F1评估；尚缺最终通信效用。}
+- label: {en: Protocol, zh: 评估协议}
+  text: {en: 'DeepMIMO pretraining uses 18 cities with 4 held out; WAIR-D is split by environment. LuViRA uses 17 trajectories for adaptation and 70 for testing, constituting adaptation to measured data.', zh: DeepMIMO 18城预训练、4城留出；WAIR-D按环境隔离。LuViRA为17条轨迹适配、70条轨迹测试，属于实测适配。}
+- label: {en: Key finding, zh: 主要发现}
+  text: {en: The paper separates simulation holdouts from LuViRA measurement adaptation; LuViRA results use target-domain training trajectories and therefore represent measured-domain adaptation. Current public HF assets cover only part of the derived test data., zh: 论文将仿真留出与LuViRA实测适配分开；LuViRA结果使用目标域训练轨迹，属于实测域适配。当前公开HF资产只覆盖部分测试派生数据。}
+- label: {en: Remaining gap, zh: 尚未解决的问题}
+  text: {en: Test NMSE gains against low-order physics-based predictors and final rates; do not infer current public-asset coverage from the paper's 2.85M-sample training corpus., zh: 用低阶物理预测器和最终速率检验NMSE收益；当前公开资产的覆盖范围不能按论文2.85M训练语料规模直接推定。}
+overview: {en: 'WAIR-D (Wireless AI Research Dataset) is a simulated dataset of radio propagation paths and channel responses. Huawei Wireless Technology Laboratory and Zhejiang University published it in 2022 (arXiv:2212.02159). Scenario 1 has 10,000 environments with 5 base stations and 30 UEs in each, giving 1.5 million radio links. Scenario 2 has 100 environments with 1 base station and 10,000 UEs in each, giving 1 million radio links. The environments come from OpenStreetMap building and street data for more than 40 cities. The authors place base stations and UEs at random and trace the propagation paths with the PyLayers 3D ray tracer. Every BS-UE link keeps at least one propagation path, because a UE without a path is placed again. The files contain no measured channels. Channel matrices are computed from the stored paths for the bandwidth, subcarrier and antenna settings chosen by the user. The paper demonstrates environment reconstruction from channel data and spatial beam prediction,
+    in which 16 of 64 beams are measured.', zh: 'WAIR-D（Wireless AI Research Dataset）是无线传播路径与信道响应的仿真数据集，由华为无线技术实验室与浙江大学于 2022 年发布（arXiv:2212.02159）。场景 1 包含 10,000 个环境，每个环境 5 个基站、30 个 UE，共 150 万条无线链路。场景 2 包含 100 个环境，每个环境 1 个基站、10,000 个 UE，共 100 万条无线链路。环境取自 OpenStreetMap 中 40 多个城市的建筑与街道数据。作者在每个环境中随机放置基站与 UE，并使用 PyLayers 三维射线追踪器计算传播路径。每条 BS-UE 链路至少保留一条传播路径，没有路径的 UE 会被重新放置。文件中不含实测信道。信道矩阵由存储的路径，按用户选定的带宽、子载波与天线设置计算得到。论文演示了基于信道数据的环境重建，以及空间波束预测（64 个波束中测量 16 个）。'}
+signal_details:
+- signal: paths
+  text: {en: 'Path.npy stores the delay, angle of arrival (AoA) and angle of departure (AoD) of each propagation path of every radio link in an environment. Path responses at five carrier frequencies, 2.6, 6, 28, 60 and 100 GHz, are stored in H_cf_G.npy files, where cf is the carrier frequency. The paths are computed with PyLayers on OSM maps with omnidirectional antennas at 6 m (BS) and 1.5 m (UE). The paper states that direct, reflected and diffracted paths are included, and that the LOS or NLOS label of each path can be read from the data.', zh: Path.npy 存储每个环境中所有无线链路的每条传播路径的时延、到达角（AoA）和离开角（AoD）。五个载频 2.6、6、28、60 和 100 GHz 的路径响应分别存于 H_cf_G.npy 文件中，cf 为载频。路径由 PyLayers 基于 OSM 地图计算，基站高 6 m、UE 高 1.5 m，均采用全向天线。论文指出结果包含直达、反射与绕射路径，每条路径的 LOS 或 NLOS 标签可根据数据判定。}
+- signal: csi
+  text: {en: 'The channel frequency response of a link is the sum over paths of the path response times exp(-j2 pi f tau), where tau is the path delay and f is a frequency vector set by the user. For OFDM, the subcarrier frequencies follow from bandwidth, subcarrier spacing and carrier frequency. The antenna dimension comes from UPA or other response matrices computed from AoA and AoD. The generation code is supplied as generator.py, parameters.py and util.py. Table 1 of the paper gives two settings. Environment reconstruction uses 6 GHz, 31.25 MHz bandwidth, 64 OFDM subcarriers and 16T4R antennas. Spatial beam prediction uses 28 GHz, 46.08 MHz bandwidth, 384 OFDM subcarriers and 64T1R antennas. Both use half-wavelength antenna spacing.', zh: 链路的信道频率响应，是各路径响应乘以 exp(-j2πfτ) 后求和得到，其中 τ 为路径时延，f 为用户设定的频率向量。对于 OFDM，子载波频率由带宽、子载波间隔和载频确定。天线维度由 UPA 或其他天线响应矩阵依据 AoA 与 AoD 计算得到。生成代码为 generator.py、parameters.py 和 util.py。论文表 1 给出两组设置：环境重建采用 6 GHz、31.25 MHz 带宽、64 个 OFDM 子载波和 16T4R 天线；空间波束预测采用 28 GHz、46.08
+      MHz 带宽、384 个 OFDM 子载波和 64T1R 天线。两组天线间距均为半波长。}

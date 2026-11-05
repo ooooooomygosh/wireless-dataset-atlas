@@ -17,3 +17,33 @@ citing: []
 summary: {en: 'Six labeled mmWave ISAC datasets for human sensing (gesture recognition, pose estimation, gait identification and localization), collected with IEEE 802.11ad/ay Wi-Fi hardware and custom 5G mmWave OFDM systems in bi-static, multi-static and distributed setups. The 5GmmGesture subset contains 34,496 samples.', zh: '六个带标签的 mmWave ISAC 人体感知数据集，涵盖手势识别、姿态估计、步态身份识别和定位，采用 IEEE 802.11ad/ay Wi-Fi 商用硬件与自定义 5G mmWave OFDM 系统，以双站、多站和分布式方式采集。5GmmGesture 子集包含 34,496 个样本。'}
 sources: ['https://ieee-dataport.org/documents/mmhsense-multi-modal-and-distributed-mmwave-isac-datasets-human-sensing', 'https://arxiv.org/abs/2509.21396', 'https://arxiv.org/html/2509.21396', 'https://github.com/nisarnabeel/Multi-Modal-and-Distributed-mmWave-ISAC-Datasets-for-Human-Sensing', 'https://api.crossref.org/works/10.1109/ACCESS.2026.3691174']
 checked: '2026-11-06'
+overview: {en: 'mmHSense is a set of six labeled mmWave datasets for human sensing, published on IEEE DataPort and GitHub with an arXiv preprint dated 24 Sep 2025. The authors are from the University of Antwerp and imec, IMDEA Networks Institute, and Qamcom Research. The data were recorded in campaigns in Spain, Belgium, and Sweden with IEEE 802.11ad/ay devices and a custom 5G NR OFDM system at 60 GHz, plus 5 GHz IEEE 802.11ac routers as a reference. The six subsets cover gesture recognition, pose estimation, gait-based person identification, and localization, in bi-static, two-pair, and multi-static (1 Tx, 4 Rx) setups. Sample counts are 854 (mmWGesture), 2904 (mmWPose), 1318 (mmW-GaitID), 2177 (mmW-Loc), 34,496 (5GmmGesture), and 32,480 (DISAC-mmVRPose). Each subset is stored as PyTorch .pth data and label files in its own subfolder.', zh: 'mmHSense 是一组包含六个带标签 mmWave 数据集的人体感知资源，发布于 IEEE DataPort 与 GitHub，并附有 2025 年 9 月 24 日日期的 arXiv 预印本。作者来自比利时安特卫普大学与 imec、西班牙 IMDEA Networks 研究所以及瑞典 Qamcom
+    Research。数据采集于西班牙、比利时和瑞典，使用 IEEE 802.11ad/ay 设备和自定义的 60 GHz 5G NR OFDM 系统，另有 5 GHz IEEE 802.11ac 路由器作为参考。六个子集涵盖手势识别、姿态估计、基于步态的身份识别和定位，采用双站、两对收发器和多站（1 Tx、4 Rx）配置。各子集样本数为：mmWGesture 854、mmWPose 2904、mmW-GaitID 1318、mmW-Loc 2177、5GmmGesture 34,496、DISAC-mmVRPose 32,480。每个子集以 PyTorch .pth 数据文件和标签文件的形式保存在独立的子文件夹中。'}
+signal_details:
+- signal: csi
+  text: {en: 'mmWPose: CSI amplitude over 30 antenna elements from a MikroTik wAP 60Gx3 (IEEE 802.11ad), 22 Hz, reshaped to 2904×30×50. mmW-GaitID and mmW-Loc: 60 GHz CSI at 10 Hz, 30 elements per pair, reshaped to 1318×60×20 and 2177×60×20; 5 GHz CSI from two ASUS RT-AC86U routers (IEEE 802.11ac, Nexmon CSI extraction, 52 subcarriers). DISAC-mmVRPose: channel impulse response at 2775 Hz on a Sivers EVK06002 link at 60.48 GHz (IEEE 802.11ay, Mimorph testbed), 1 Tx and 4 Rx, sample shape 4×67×1536 where 1536 = 12 beams × 128 range bins.', zh: mmWPose：来自 MikroTik wAP 60Gx3（IEEE 802.11ad）的 30 个天线单元 CSI 幅度，速率 22 Hz，重排为 2904×30×50。mmW-GaitID 与 mmW-Loc：60 GHz CSI，速率 10 Hz，每对收发器 30 个单元，重排为 1318×60×20 与 2177×60×20；5 GHz CSI 来自两台 ASUS RT-AC86U 路由器（IEEE 802.11ac，Nexmon CSI 提取，52 个子载波）。DISAC-mmVRPose：Sivers EVK06002 链路在 60.48 GHz 上的信道冲激响应，速率 2775 Hz（IEEE 802.11ay，Mimorph 测试平台），1 个 Tx、4 个 Rx，样本形状 4×67×1536，其中 1536 = 12 个波束 × 128 个距离单元。}
+- signal: beam-power
+  text: {en: '5GmmGesture: power per beam pair on a 50 Tx × 56 Rx beam grid, 1540 Hz (PPBP), from a 5G NR OFDM system at 57–71 GHz with about 760 MHz bandwidth, 792 subcarriers at 960 kHz spacing, 1024-point FFT and 10 ms frames; arrays of shape 34,496×20×50×56. mmWGesture: beam SNR over 36 sectors at 10 Hz from a TP-Link Talon AD7200 (IEEE 802.11ad), sampled against a 102.4 ms beacon interval.', zh: '5GmmGesture：50 个 Tx 波束 × 56 个 Rx 波束网格上的逐波束对功率，速率 1540 Hz（PPBP），来自 57–71 GHz 的 5G NR OFDM 系统，带宽约 760 MHz，792 个子载波、间隔 960 kHz，1024 点 FFT，帧长 10 ms；数组形状为 34,496×20×50×56。mmWGesture：TP-Link Talon AD7200（IEEE 802.11ad）在 36 个扇区上的波束 SNR，速率 10 Hz，采样与 102.4 ms 信标间隔对齐。'}
+pipeline:
+  summary: {en: 'Each subset is captured with a radio link that sweeps beams, and the per-beam features are stored as labeled PyTorch arrays.', zh: 每个子集由扫描波束的无线链路采集，逐波束特征以带标签的 PyTorch 数组形式保存。}
+  stages:
+  - title: {en: Radio hardware setup, zh: 无线硬件配置}
+    detail: {en: 'The subsets use TP-Link Talon AD7200 and MikroTik wAP 60Gx3 IEEE 802.11ad devices, a 5G NR OFDM system built from two Sivers EVK06002 kits with an RFSoC (57–71 GHz, about 760 MHz bandwidth), and a Mimorph testbed with IEEE 802.11ay at 60.48 GHz. The 5 GHz reference uses two ASUS RT-AC86U routers with Nexmon CSI extraction.', zh: 各子集使用 TP-Link Talon AD7200 与 MikroTik wAP 60Gx3 两种 IEEE 802.11ad 设备，由两块 Sivers EVK06002 套件与 RFSoC 组成的 5G NR OFDM 系统（57–71 GHz，带宽约 760 MHz），以及 Mimorph 测试平台上 60.48 GHz 的 IEEE 802.11ay 系统。5 GHz 参考采用两台 ASUS RT-AC86U 路由器，并使用 Nexmon CSI 提取。}
+    outputs:
+    - {en: Raw radio measurements per subset, zh: 各子集的原始无线电测量}
+  - title: {en: Beam sweep and feature extraction, zh: 波束扫描与特征提取}
+    detail: {en: '5GmmGesture sweeps 50 Tx and 56 Rx beams in each 10 ms frame and stores the power per beam pair. mmWGesture records beam SNR over 36 sectors at 10 Hz, aligned to a 102.4 ms beacon interval. DISAC-mmVRPose sweeps training fields from −45° to +45° azimuth with 0.3 ms inter-frame spacing.', zh: 5GmmGesture 在每个 10 ms 帧内扫描 50 个 Tx 波束与 56 个 Rx 波束，并保存逐波束对功率。mmWGesture 记录 36 个扇区上的波束 SNR，速率 10 Hz，与 102.4 ms 信标间隔对齐。DISAC-mmVRPose 以 0.3 ms 帧间隔扫描方位角 −45° 至 +45° 的训练字段。}
+    inputs:
+    - {en: Beam-level measurements, zh: 波束级测量}
+    outputs:
+    - {en: 'Beam SNR, power per beam pair, and channel impulse response', zh: 波束 SNR、逐波束对功率与信道冲激响应}
+  - title: {en: Ground-truth reference, zh: 真值参考}
+    detail: {en: 'Ground truth comes from a synchronized Kinect, which provides 25 joints for mmWPose. Per Figure 1 of the paper, skeleton data and manual labels are used only in training.', zh: 真值来自同步的 Kinect，mmWPose 使用其 25 个关节点。按论文图 1，骨架数据与人工标注仅用于训练。}
+    inputs:
+    - {en: Kinect skeleton stream, zh: Kinect 骨架数据流}
+    outputs:
+    - {en: Pose labels for regression, zh: 用于回归的姿态标签}
+  - title: {en: Array assembly, zh: 数组整理}
+    detail: {en: 'Samples are reshaped into fixed-size arrays. mmWPose goes from 145200×30 to 2904×30×50, and mmWGesture from 427000×36 to 854×36×500. Each subset is saved as PyTorch .pth data and label files, as listed in the GitHub README.', zh: 样本被重排为固定尺寸的数组：mmWPose 由 145200×30 变为 2904×30×50，mmWGesture 由 427000×36 变为 854×36×500。每个子集保存为 PyTorch .pth 数据文件与标签文件，依据 GitHub README 所列。}
+    outputs:
+    - {en: Data and label .pth files per subset, zh: 每个子集的数据与标签 .pth 文件}

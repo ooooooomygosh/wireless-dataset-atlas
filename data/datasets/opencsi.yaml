@@ -17,7 +17,43 @@ access: {url: 'https://figshare.com/articles/dataset/openCSI/19596379', type: op
 code: ['https://github.com/arthurgassner/thymio-radio-map', 'https://github.com/arthurgassner/srsLTE']
 paper: arxiv:2104.07963
 used_in: []
-citing: ["doi:10.1109/ojcoms.2025.3560153"]
+citing: ['doi:10.1109/ojcoms.2025.3560153']
 summary: {en: 'CSI and RSSI fingerprints from an indoor LTE eNodeB with 20 MHz bandwidth and 1200 subcarriers, recorded by a software-defined radio on a wheeled robot. Reference points lie on eight parallel lines, with roughly 1,000 consecutive fingerprints recorded at each point.', zh: 室内 LTE eNodeB 的 CSI 与 RSSI 指纹，链路带宽 20 MHz，包含 1200 个子载波，由软件无线电安装在轮式机器人上采集。参考点分布于八条平行线上，每个参考点记录约 1000 条连续指纹。}
 sources: ['https://arxiv.org/abs/2104.07963', 'https://arxiv.org/pdf/2104.07963', 'https://figshare.com/articles/dataset/openCSI/19596379', 'https://api.figshare.com/v2/articles/19596379', 'https://github.com/arthurgassner/thymio-radio-map', 'https://api.github.com/repos/arthurgassner/srsLTE']
 checked: '2026-11-06'
+overview: {en: 'OpenCSI is a radio map for indoor localization that holds LTE channel state information (CSI) and RSSI fingerprints. Arthur Gassner released it on figshare on 14 April 2022, together with the software-defined radio (SDR) and robot tool that recorded it. A USRP B200mini on a Thymio II wheeled robot ran a modified srsLTE stack that connected to an indoor Ericsson Radio Dot System with 20 MHz bandwidth and 1200 subcarriers over four antenna ports. The robot followed eight straight lines, each 5 m long and spaced 50 cm apart, and reference points were placed 1 cm apart, with about 1000 consecutive fingerprints recorded at each reference point. Channel estimates were produced every millisecond (one TTI), and the same records hold RSRP, RSSI, RSRQ, SNR, CFO and noise estimate. The archive is openCSI.zip, 2.03 GB, under CC BY 4.0; the figshare record lists one zip file and no folder structure. The authors train a CNN to regress (x, y) location from the fingerprints, and the robot
+    positions come from dead reckoning, with odometry error of up to 25 cm over 10 runs on a 5 m line.', zh: 'OpenCSI 是一个用于室内定位的无线电地图，包含 LTE 信道状态信息（CSI）与 RSSI 指纹。作者 Arthur Gassner 于 2022 年 4 月 14 日在 figshare 发布该数据集，同时发布了用于采集数据的软件无线电（SDR）与机器人工具。USRP B200mini 安装在 Thymio II 轮式机器人上，运行经过修改的 srsLTE 协议栈，连接室内 Ericsson Radio Dot System，链路带宽 20 MHz，包含 1200 个子载波，使用四个天线端口。机器人沿八条平行直线行进，每条长 5 m，间距 50 cm；参考点间距 1 cm，每个参考点记录约 1000 条连续指纹。信道估计每毫秒（一个 TTI）生成一次，同一记录中还包含 RSRP、RSSI、RSRQ、SNR、CFO 和噪声估计。压缩包为 openCSI.zip，大小 2.03 GB，采用 CC BY 4.0 许可；figshare 记录中只有一个 zip 文件，没有目录结构说明。作者使用指纹训练 CNN 回归 (x, y) 位置；机器人位置由航迹推算得到，在 5 m 长的直线上 10 次运行的里程计误差最高为 25 cm。'}
+signal_details:
+- signal: csi
+  text: {en: 'Complex frequency-domain channel estimate with one value per subcarrier: 1200 complex values per antenna port, 4 ports, one estimate every 1 ms (one TTI). The paper defines each value H_i by its magnitude and phase. The modified srsLTE writes the estimate array (ports x Rx antennas x subcarriers) to file during recording.', zh: 复数形式的频域信道估计，每个子载波一个值：每个天线端口 1200 个复数值，共 4 个端口，每 1 ms（一个 TTI）生成一次。论文中每个值 H_i 由幅度与相位定义。经过修改的 srsLTE 在采集时将估计数组（端口数 x Rx 天线数 x 子载波数）写入文件。}
+- signal: rssi
+  text: {en: 'Signal metrics saved with each TTI: RSRP (dBm), RSSI (dB), RSRQ (dB), SNR (dB), CFO (kHz) and noise estimate (dBm). Connection info saved per TTI: physical cell ID, number of PRBs, number of ports and number of Rx antennas.', zh: 每个 TTI 同时保存的信号指标：RSRP（dBm）、RSSI（dB）、RSRQ（dB）、SNR（dB）、CFO（kHz）和噪声估计（dBm）。每个 TTI 保存的连接信息包括物理小区 ID、PRB 数、端口数和 Rx 天线数。}
+pipeline:
+  summary: {en: 'A robot-mounted SDR records CSI and signal metrics from a live LTE link at each stop of a line-following run, and Python scripts organise and clean the files.', zh: 安装在机器人上的软件无线电在沿线停靠时记录实时 LTE 链路的 CSI 与信号指标，随后由 Python 脚本整理和清洗文件。}
+  stages:
+  - title: {en: Robot and SDR setup, zh: 机器人与 SDR 搭建}
+    detail: {en: 'A Thymio II robot carries a USRP B200mini SDR, connected by USB 3.0 to a PC running Ubuntu 18.04. A PC/SC reader with a SIM card authenticates the SDR to the eNodeB. The robot follows a black line with IR proximity sensors, stops at fixed distances set in run_continuous.py, and dead reckoning gives its position.', zh: Thymio II 机器人搭载 USRP B200mini 软件无线电（SDR），通过 USB 3.0 连接运行 Ubuntu 18.04 的 PC。PC/SC 读卡器与 SIM 卡为 SDR 提供接入 eNodeB 的认证。机器人借助红外接近传感器沿黑线行进，在 run_continuous.py 中设定的固定距离处停止，并通过航迹推算获得位置。}
+    inputs:
+    - {en: Thymio II robot, zh: Thymio II 机器人}
+    - {en: USRP B200mini SDR, zh: USRP B200mini SDR}
+    - {en: SIM card in PC/SC reader, zh: 插入 PC/SC 读卡器的 SIM 卡}
+    outputs:
+    - {en: Robot position estimates, zh: 机器人位置估计}
+  - title: {en: LTE link recording, zh: LTE 链路记录}
+    detail: {en: 'A modified srsLTE fork (srsue) attaches to the eNodeB, with dl_earfcn set in ue.conf (EARFCN 203 in the paper). Every millisecond the channel-estimate array and the metrics are written to ce.txt, else.txt and info.txt. In continuous mode the connection is kept alive by pinging the UE IP address.', zh: 经过修改的 srsLTE 分支（srsue）接入 eNodeB，ue.conf 中设置 dl_earfcn（论文中 EARFCN 为 203）。每毫秒将信道估计数组与指标写入 ce.txt、else.txt 与 info.txt。在连续模式下，通过对 UE 的 IP 地址执行 ping 保持连接。}
+    inputs:
+    - {en: 'Indoor LTE eNodeB, 20 MHz', zh: 室内 LTE eNodeB，20 MHz}
+    outputs:
+    - {en: 'ce.txt, else.txt, info.txt', zh: ce.txt、else.txt、info.txt}
+  - title: {en: Organising the fingerprints, zh: 整理指纹文件}
+    detail: {en: 'move_fingerprint.py moves the three recorded files into ce, else and info folders for each location and writes each (x, y) position to locations.json. offset_origin_locations.py shifts the coordinate origin after the recording.', zh: 'move_fingerprint.py 将三个记录文件移入各位置对应的 ce、else 与 info 文件夹，并将每个 (x, y) 位置写入 locations.json。offset_origin_locations.py 在记录结束后平移坐标原点。'}
+    inputs:
+    - {en: 'ce.txt, else.txt, info.txt', zh: ce.txt、else.txt、info.txt}
+    outputs:
+    - {en: locations.json, zh: locations.json}
+  - title: {en: Cleaning and storage formats, zh: 清洗并转换存储格式}
+    detail: {en: clean_fingerprints.py converts ce_0_raw.txt to ce_0.parquet and the else and info files to .pkl files. plot_fingerprints.py plots the amplitude and phase of the cleaned CSI., zh: clean_fingerprints.py 将 ce_0_raw.txt 转换为 ce_0.parquet，将 else 与 info 文件转换为 .pkl 文件。plot_fingerprints.py 绘制清洗后 CSI 的幅度与相位。}
+    inputs:
+    - {en: Raw fingerprint text files, zh: 原始指纹文本文件}
+    outputs:
+    - {en: 'ce_0.parquet, else_0.pkl, info_0.pkl', zh: ce_0.parquet、else_0.pkl、info_0.pkl}

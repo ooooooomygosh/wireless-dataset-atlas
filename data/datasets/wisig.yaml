@@ -13,8 +13,47 @@ license: CC BY-NC-SA 4.0
 access: {url: 'https://cores.ee.ucla.edu/downloads/datasets/wisig/', type: open}
 code: ['https://github.com/WiSig-dataset/wisig-examples', 'https://github.com/WiSig-dataset/wisig-process-raw']
 paper: arxiv:2112.15363
-used_in: ["doi:10.1109/twc.2025.3528568","doi:10.1109/jiot.2025.3573713","doi:10.1109/jiot.2025.3598480","doi:10.1109/lcomm.2025.3588073","doi:10.1109/iccc62479.2024.10681757"]
-citing: ["doi:10.1109/tmc.2023.3340039","doi:10.1109/twc.2024.3463740","doi:10.1109/twc.2024.3450972"]
+used_in: ['doi:10.1109/twc.2025.3528568', 'doi:10.1109/jiot.2025.3573713', 'doi:10.1109/jiot.2025.3598480', 'doi:10.1109/lcomm.2025.3588073', 'doi:10.1109/iccc62479.2024.10681757']
+citing: ['doi:10.1109/tmc.2023.3340039', 'doi:10.1109/twc.2024.3463740', 'doi:10.1109/twc.2024.3450972']
 summary: {en: 'About 10 million Wi-Fi packets from 174 off-the-shelf transmitters, recorded by 41 USRP receivers over four captures spanning about a month on the ORBIT testbed. Raw captures and pre-processed subsets are both provided.', zh: 来自174台商用现成（off-the-shelf）Wi-Fi发射机的约1000万个数据包，由41台USRP接收机在ORBIT测试平台上分四次采集，历时约一个月。同时提供原始采集数据和预处理子集。}
 sources: ['https://cores.ee.ucla.edu/downloads/datasets/wisig/', 'https://arxiv.org/abs/2112.15363', 'https://github.com/WiSig-dataset/wisig-examples', 'https://github.com/WiSig-dataset/wisig-process-raw', 'https://raw.githubusercontent.com/WiSig-dataset/wisig-process-raw/master/matlab_detection_screening/read_complex_binary.m']
 checked: '2026-11-06'
+overview: {en: 'WiSig is a WiFi signal dataset from the UCLA CORES Lab for RF fingerprinting, described in an arXiv preprint in 2021 and in IEEE Access in 2022. It contains about 10 million WiFi packets sent by 174 off-the-shelf transmitters and recorded by 41 USRP receivers. The captures were made on the ORBIT testbed, a 20 × 20 grid of nodes, where each transmitter sent random UDP bytes to a WiFi access point on channel 13 (2462 MHz, 20 MHz). Four captures were made on 1, 8, 15 and 23 March 2021, and the receivers ran without time or frequency synchronization. The raw captures total about 1.4 TB and contain idle time and ACK responses, while the processed identification signals are 256 IQ samples per packet in equalized and non-equalized versions, forming Full WiSig at 76.9 GB. Four compact subsets (ManySig, ManyTx, ManyRx and SingleDay) are published as separate zip files and share some transmitters, receivers and signals. The authors intend the data for transmitter fingerprinting methods
+    that work regardless of receiver or channel, and Full WiSig is not balanced across Tx-Rx pairs.', zh: WiSig是UCLA CORES Lab发布的WiFi信号数据集，用于RF指纹识别，2021年发布arXiv预印本，2022年刊于IEEE Access。数据包含174台商用现成（off-the-shelf）WiFi发射机发送的约1000万个数据包，由41台USRP接收机记录。采集在ORBIT测试平台上进行，该平台为20 × 20节点网格；发射机向WiFi接入点发送随机UDP字节，使用信道13（2462 MHz，20 MHz带宽）。采集分四次进行，日期为2021年3月1日、8日、15日和23日，各接收机之间不做时间或频率同步。原始数据约1.4 TB，包含空闲时间和ACK响应；标识信号（Id signal）为每个数据包的前256个IQ采样，分为未均衡与均衡两个版本，合称Full WiSig，共76.9 GB。ManySig、ManyTx、ManyRx和SingleDay四个压缩子集以独立zip文件发布，彼此共享部分发射机、接收机和信号。作者希望该数据支持不依赖接收机和信道的发射机指纹识别方法，Full WiSig中各Tx-Rx对的信号数量不均衡。}
+signal_details:
+- signal: iq
+  text: {en: 'Raw IQ samples from USRP B210, X310 and N210 receivers at 25 Msps and a 2462 MHz center frequency (WiFi 802.11a/g, channel 13, 20 MHz), captured for 0.512 s per transmission. The transmitters use Atheros 5212, 9220, 9280 and 9580 WiFi modules. The MATLAB reader in wisig-process-raw reads the raw files as 32-bit complex values. Identification signals contain the first 256 IQ samples of each packet, in a non-equalized and an equalized version.', zh: 来自USRP B210、X310和N210接收机的原始IQ采样，采样率25 Msps，中心频率2462 MHz（WiFi 802.11a/g，信道13，20 MHz），每次发射采集0.512 s。发射端WiFi模块为Atheros 5212、9220、9280和9580。wisig-process-raw中的MATLAB读取函数将原始文件按32位复数读取。标识信号为每个数据包的前256个IQ采样，分为未均衡和均衡两个版本。}
+pipeline:
+  summary: {en: 'Transmitters send WiFi traffic to an access point while USRP receivers record IQ, after which packets are detected, optionally equalized, and cut to 256-sample identification signals.', zh: 发射机向WiFi接入点发送流量，USRP接收机同时记录IQ；之后检测数据包，可选均衡，并截取为256采样的标识信号。}
+  stages:
+  - title: {en: Capture raw IQ during WiFi transmissions, zh: 采集WiFi发射期间的原始IQ}
+    detail: {en: 'Transmitters send random bytes over UDP to a WiFi access point on channel 13, one transmitter at a time. The USRP receivers record IQ at 25 Msps for 0.512 s per transmission, without time or frequency synchronization. The raw captures total 1.4 TB and include idle time and ACK responses.', zh: 发射机逐一向WiFi接入点发送UDP随机字节流（信道13，2462 MHz，20 MHz）。USRP接收机以25 Msps采集IQ，每次发射0.512 s，各接收机之间不做时间或频率同步。原始采集共1.4 TB，包含空闲时间和ACK响应。}
+    inputs:
+    - {en: 174 WiFi transmitters (Atheros 802.11a/g modules), zh: 174台WiFi发射机（Atheros 802.11a/g模块）}
+    - {en: '41 USRP receivers (B210, X310, N210)', zh: 41台USRP接收机（B210、X310、N210）}
+    outputs:
+    - {en: 'Raw WiSig captures, 1.4 TB', zh: 原始WiSig采集数据，1.4 TB}
+  - title: {en: Detect packets and remove ACK responses, zh: 检测数据包并去除ACK响应}
+    detail: {en: 'A window of Nw = 100 IQ samples is compared with a fixed threshold Lw = 0.005 to detect signals. A valid packet is a signal longer than Npkt = 1000 followed by a signal shorter than Nack = 2000, and transmitters with fewer than 10 packets are removed. The MATLAB scripts in matlab_detection_screening take about 5 hours per day of data and save whole packets as .mat files.', zh: 以Nw = 100个IQ采样为窗口，与固定门限Lw = 0.005比较以检测信号。有效数据包为长度大于Npkt = 1000、随后紧跟长度小于Nack = 2000的信号段，发包少于10个的发射机被剔除。matlab_detection_screening中的MATLAB脚本每天数据约需5小时，并将完整数据包保存为.mat文件。}
+    inputs:
+    - {en: Raw IQ files for one day, zh: 单日原始IQ文件}
+    outputs:
+    - {en: Whole packets per Tx-Rx pair (.mat), zh: 每个Tx-Rx对的完整数据包（.mat）}
+  - title: {en: Equalize preambles (optional), zh: 均衡前导码（可选）}
+    detail: {en: 'Packets are resampled from 25 Msps to 20 Msps, then L-STF autocorrelation finds the packet start and the frequency offset is corrected. The channel is estimated from the L-LTF, the packet is equalized with MMSE, and the result is resampled back to 25 Msps. The steps use the default parameters of the MATLAB R2019b WLAN toolbox.', zh: 数据包从25 Msps重采样到20 Msps，L-STF自相关定位包起始并校正频偏。利用L-LTF估计信道，采用MMSE均衡，再重采样回25 Msps。上述步骤使用MATLAB R2019b WLAN toolbox的默认参数。}
+    inputs:
+    - {en: Whole packets (.mat), zh: 完整数据包（.mat）}
+    outputs:
+    - {en: Equalized preamble file per Tx-Rx pair (.mat), zh: 每个Tx-Rx对的均衡前导码文件（.mat）}
+  - title: {en: Select the first 256 IQ samples, zh: 选取前256个IQ采样}
+    detail: {en: 'The first 256 IQ samples of each packet are kept with transmitter, receiver and day labels, in a non-equalized and an equalized version. Transmitters with few packets are removed again after equalization.', zh: 保留每个数据包的前256个IQ采样，并附带发射机、接收机和日期标签，分为未均衡和均衡两个版本。均衡后发包过少的发射机会再次被剔除。}
+    inputs:
+    - {en: Whole packets and equalized preambles, zh: 完整数据包和均衡后前导码}
+    outputs:
+    - {en: 'Identification signals with Tx, Rx and day labels', zh: 带有发射机、接收机和日期标签的标识信号}
+  - title: {en: Assemble one pkl file per receiver, zh: 按接收机组装pkl文件}
+    detail: {en: 'A Jupyter notebook in python_pkl_creation builds one pkl file for each receiver from the identification signals, and it can be applied to the non-equalized or the equalized data. The assembled Full WiSig dataset is 76.9 GB and is not balanced across Tx-Rx pairs.', zh: python_pkl_creation中的Jupyter notebook将标识信号按接收机生成一个pkl文件，可用于未均衡或均衡数据。组装后的Full WiSig为76.9 GB，各Tx-Rx对的信号数量不均衡。}
+    inputs:
+    - {en: Identification signals per receiver, zh: 每个接收机的标识信号}
+    outputs:
+    - {en: Full WiSig pkl file per receiver (76.9 GB in total), zh: 每个接收机一个Full WiSig pkl文件（合计76.9 GB）}

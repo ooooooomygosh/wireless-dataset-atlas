@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ params }) => {
   }
   for (const x of tasks) out.push({ k: "task", n: x.name[lang], s: "", u: `/${lang}/tasks/${x.id}/`, x: [x.name.en, x.name.zh].join(" ").toLowerCase() });
   const seen = new Set<string>();
-  for (const d of ds) for (const id of [d.paper, ...d.used_in]) {
+  for (const d of ds) for (const id of [d.paper, ...d.used_in].filter((x): x is string => !!x)) {
     if (seen.has(id) || !papers[id]) continue;
     seen.add(id);
     const p = paperOf(id);

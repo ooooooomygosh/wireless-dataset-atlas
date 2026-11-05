@@ -14,7 +14,35 @@ access: {url: 'https://ieee-dataport.org/documents/data-set-time-varying-industr
 code: []
 paper: doi:10.1109/wcnc49053.2021.9417520
 used_in: []
-citing: ["doi:10.1109/tcomm.2025.3593660","doi:10.1109/tvt.2024.3480528","doi:10.1109/tvt.2024.3393630"]
+citing: ['doi:10.1109/tcomm.2025.3593660', 'doi:10.1109/tvt.2024.3480528', 'doi:10.1109/tvt.2024.3393630']
 summary: {en: 'Time-varying industrial radio channel measurements taken at a 1 kHz measurement frequency from a moving setup on a constant vehicle trajectory. The record describes 10 measurement scenarios, with obstacles added between repetitions.', zh: 在工业环境中，沿固定车辆轨迹运动的测量装置以 1 kHz 测量频率采集的时变无线信道数据。记录描述了 10 个测量场景，重复测量之间加入了障碍物。}
 sources: ['https://ieee-dataport.org/documents/data-set-time-varying-industrial-radio-channels-varying-environment', 'https://api.crossref.org/works/10.1109/wcnc49053.2021.9417520', 'https://api.openalex.org/works/doi:10.1109/wcnc49053.2021.9417520']
 checked: '2026-11-06'
+overview: {en: 'Time-Varying Industrial Radio Channels is a measured channel dataset from TU Dresden. It was published on IEEE DataPort in September 2023 (DOI 10.21227/htgs-jp87) and is linked to a 2021 WCNC paper. A moving measurement setup records the radio channel over time at a 1 kHz measurement frequency. The setup is moved by automated guided vehicles (AGVs) along a constant vehicle trajectory, and obstacles are added between measurement repetitions. The campaign comprises 10 measurement scenarios that represent a time-varying environment. The data are provided as MATLAB .mat arrays, packaged as preprocessed_data.zip (1.11 GB), with a Data_Description.pdf document. Access requires an IEEE DataPort subscription.', zh: 工业时变无线信道数据集（Time-Varying Industrial Radio Channels）是德累斯顿工业大学（TU Dresden）的实测信道数据集。数据于2023年9月发布在IEEE DataPort上（DOI 10.21227/htgs-jp87），与一篇2021年WCNC会议论文相关联。移动测量装置以1 kHz测量频率随时间记录无线信道。该装置由自动导引车（AGV）沿固定车辆轨迹驱动，两次重复测量之间加入障碍物。测量活动包含10个测量场景，用于反映时变环境。数据以MATLAB .mat数组形式提供，打包为preprocessed_data.zip（1.11
+    GB），并附Data_Description.pdf文档。访问需要IEEE DataPort订阅。}
+signal_details:
+- signal: csi
+  text: {en: Channel measurements taken at a 1 kHz measurement frequency and stored as MATLAB .mat arrays. The dataset page describes the stored quantity as channel frequency responses. The paper abstract describes impulse responses captured every millisecond., zh: 以1 kHz测量频率采集的信道测量数据，以MATLAB .mat数组存储。数据集页面将存储的量描述为信道频率响应（channel frequency responses）。论文摘要描述的是每毫秒采集一次的冲激响应（impulse responses）。}
+pipeline:
+  summary: {en: 'A measurement setup moved by AGVs records the industrial channel at 1 kHz along constant trajectories while obstacles are varied, and the data are delivered as MATLAB arrays.', zh: 测量装置由AGV驱动，沿固定轨迹、在障碍物变化的条件下以1 kHz记录工业信道，数据以MATLAB数组交付。}
+  stages:
+  - title: {en: Mount the measurement setup on AGVs, zh: 将测量装置安装在AGV上}
+    detail: {en: The measurement setup moves on automated guided vehicles that represent device-to-device (D2D) nodes in an industrial environment. The paper abstract describes the case as D2D communication between moving AGVs., zh: 测量装置安装在自动导引车（AGV）上运动，AGV代表工业环境中的设备到设备（D2D）节点。论文摘要将该场景描述为移动AGV之间的D2D通信。}
+    inputs:
+    - {en: Industrial test environment, zh: 工业测试环境}
+    outputs:
+    - {en: Moving measurement setup, zh: 移动测量装置}
+  - title: {en: Run repeated trajectories with obstacles, zh: 沿轨迹重复测量并改变障碍物}
+    detail: {en: 'An AGV drives the setup along a constant vehicle trajectory, which makes the runs reproducible. Metallic obstacles are added between measurement repetitions. The campaign covers 10 measurement scenarios in total.', zh: AGV沿固定车辆轨迹驱动测量装置，使测量可重复。两次重复测量之间加入金属障碍物。整个测量活动共包含10个测量场景。}
+    inputs:
+    - {en: Constant vehicle trajectory, zh: 固定车辆轨迹}
+    - {en: Metallic obstacles, zh: 金属障碍物}
+    outputs:
+    - {en: 10 measurement scenarios, zh: 10个测量场景}
+  - title: {en: Record the channel at 1 kHz, zh: 以1 kHz记录信道}
+    detail: {en: The channel is recorded over time at a 1 kHz measurement frequency. The recorded data are packaged as preprocessed_data.zip (1.11 GB) with MATLAB .mat arrays and a Data_Description.pdf document., zh: 以1 kHz测量频率随时间记录信道。记录数据打包为preprocessed_data.zip（1.11 GB），内含MATLAB .mat数组，并附Data_Description.pdf文档。}
+    inputs:
+    - {en: Channel measurements, zh: 信道测量数据}
+    outputs:
+    - {en: preprocessed_data.zip, zh: preprocessed_data.zip}
+    - {en: .mat arrays, zh: .mat数组}

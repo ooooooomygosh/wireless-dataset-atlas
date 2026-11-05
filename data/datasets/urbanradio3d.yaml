@@ -9,7 +9,41 @@ license: MIT
 access: {url: 'https://github.com/UNIC-Lab/UrbanRadio3D', type: registration}
 paper: doi:10.1109/TNSE.2025.3590545
 used_in: []
-citing: ["doi:10.1109/tccn.2025.3641513","doi:10.1109/tmc.2026.3692307","doi:10.1109/tccn.2026.3685413"]
+citing: ['doi:10.1109/tccn.2025.3641513', 'doi:10.1109/tmc.2026.3692307', 'doi:10.1109/tccn.2026.3685413']
 summary: {en: 'Ray-traced 3D radio maps of urban environments with pathloss, direction-of-arrival and time-of-arrival layers, together with building height information. The repository provides the maps as PNG files and a building height archive, and the download code is obtained through a questionnaire.', zh: 基于光线追踪生成的城市环境三维无线电地图，包含路径损耗、到达方向（DoA）和到达时间（ToA）等层，并附带建筑高度信息。仓库以 PNG 文件提供地图，并附有建筑高度压缩包，下载需通过问卷获取解压码。}
 sources: ['https://arxiv.org/abs/2507.12166', 'https://github.com/UNIC-Lab/UrbanRadio3D', 'https://api.github.com/repos/UNIC-Lab/UrbanRadio3D/license', 'https://api.crossref.org/works/10.1109/TNSE.2025.3590545']
 checked: '2026-11-06'
+overview: {en: 'UrbanRadio3D is a simulated dataset of 3D radio maps for urban environments, released with the RadioDiff-3D paper in IEEE TNSE 2025 by the UNIC Lab at Xidian University. It contains 701 urban regions from six cities, each 256 m x 256 m at 1 m per pixel, with building heights from 6.6 m to 19.8 m. The maps were simulated with Altair WinProp''s Dominant Path Model, with isotropic transmitters at 23 dBm/Hz and a 5.9 GHz center carrier. Each region has 200 transmitter locations, and observation heights run from 1.0 m to 20.0 m in 1 m steps. The layers are pathloss, direction of arrival (azimuth and elevation), time of arrival, and propagation ray data, together with building masks and height maps. The maps are distributed as PNG files through Baidu and OneDrive links, and the extraction code is obtained by a questionnaire.', zh: UrbanRadio3D 是城市环境三维无线电地图的仿真数据集，随 RadioDiff-3D 论文于 2025 年发表在 IEEE TNSE，由 Xidian University 的 UNIC Lab 发布。数据集包含来自六个城市的 701 个城区，每个区域为 256 m x 256 m，分辨率
+    1 m/像素，建筑高度为 6.6 m 至 19.8 m。地图由 Altair WinProp 的 Dominant Path Model 仿真，发射机为全向天线，发射功率 23 dBm/Hz，中心载频 5.9 GHz。每个区域有 200 个发射机位置，观测高度从 1.0 m 到 20.0 m，步长 1 m。数据层包括路径损耗、到达方向（方位角与俯仰角）、到达时间和传播射线数据，并附带建筑掩膜与高度图。地图以 PNG 文件形式通过百度网盘和 OneDrive 链接分发，解压码需通过问卷获取。}
+signal_details:
+- signal: pathloss
+  text: {en: 'Pathloss maps from DPM simulation at a 5.9 GHz center carrier, stored as PNG images in the pathLoss folder, with subfolders h1 to h20 for observation heights 1.0 m to 20.0 m. Each map is 256 m x 256 m at 1 m per pixel. Values are thresholded between -169.0 dB and -92.0 dB and min-max scaled with clipping at zero. Files are named BID_X_Y, where BID is the building map index and X, Y are the transmitter coordinates.', zh: 由 DPM 仿真得到的路径损耗地图，中心载频 5.9 GHz，以 PNG 图像保存在 pathLoss 目录下，子目录 h1 至 h20 对应观测高度 1.0 m 至 20.0 m。每张地图为 256 m x 256 m，分辨率 1 m/像素。数值截断在 -169.0 dB 至 -92.0 dB 之间，并做 min-max 缩放，负值截为零。文件命名为 BID_X_Y，其中 BID 为建筑地图编号，X、Y 为发射机坐标。}
+pipeline:
+  summary: {en: 'Ray-traced simulation in Altair WinProp produces per-height propagation results for building maps, which are thresholded, scaled and stored as PNG files for pathloss, DoA, ToA and ray layers.', zh: Altair WinProp 光线追踪仿真为建筑地图生成各高度的传播结果，经截断、缩放后以 PNG 文件保存为路径损耗、DoA、ToA 和射线层。}
+  stages:
+  - title: {en: Assemble building maps from six cities, zh: 整理六个城市的建筑地图}
+    detail: {en: 'The dataset uses 701 urban regions from six cities, each 256 m x 256 m at 1 m per pixel. Building masks and building heights (6.6 m to 19.8 m, varying across cities) form the geometry. The paper does not name the source of the map data or of the building heights.', zh: 数据集使用来自六个城市的 701 个城区，每个为 256 m x 256 m，分辨率 1 m/像素。建筑掩膜与建筑高度（6.6 m 至 19.8 m，随城市变化）构成几何信息。论文未说明地图数据与建筑高度的来源。}
+    inputs:
+    - {en: Urban building geometry, zh: 城市建筑几何}
+    outputs:
+    - {en: Building masks and height maps, zh: 建筑掩膜与高度图}
+  - title: {en: Simulate propagation with the Dominant Path Model, zh: 用 Dominant Path Model 仿真传播}
+    detail: {en: Altair WinProp's Dominant Path Model simulates isotropic transmitters at 23 dBm/Hz with a 5.9 GHz center carrier. Each map has 200 random transmitter locations. Observation heights run from 1.0 m to 20.0 m., zh: Altair WinProp 的 Dominant Path Model 仿真全向发射机，发射功率 23 dBm/Hz，中心载频 5.9 GHz。每张地图有 200 个随机发射机位置，观测高度从 1.0 m 到 20.0 m。}
+    inputs:
+    - {en: Building maps, zh: 建筑地图}
+    - {en: Transmitter locations, zh: 发射机位置}
+    outputs:
+    - {en: Propagation results per observation height, zh: 各观测高度的传播结果}
+  - title: {en: Derive and threshold radio map layers, zh: 生成并截断无线电地图层}
+    detail: {en: 'Pathloss is limited to -169.0 dB to -92.0 dB, ToA to 0.0 ns to 1180.0 ns, DoA azimuth to 0.0 to 6.3 rad, and DoA elevation to 0.5 to 2.25 rad. Each layer is min-max scaled with clipping at zero, using these global thresholds.', zh: 路径损耗截断在 -169.0 dB 至 -92.0 dB，ToA 截断在 0.0 ns 至 1180.0 ns，DoA 方位角截断在 0.0 至 6.3 rad，DoA 俯仰角截断在 0.5 至 2.25 rad。各层使用这些全局阈值做 min-max 缩放，负值截为零。}
+    inputs:
+    - {en: Propagation results, zh: 传播结果}
+    outputs:
+    - {en: 'Pathloss, DoA azimuth, DoA elevation and ToA layers', zh: 路径损耗、DoA 方位角、DoA 俯仰角和 ToA 层}
+  - title: {en: Store and split the maps, zh: 保存地图并划分数据}
+    detail: {en: 'Maps are stored as PNG images in the pathLoss, Doa_Azi, Doa_Ele, ToA and propagation_ray folders, each with subfolders h1 to h20. The train/test split is random per file, with 90% for training and 10% for testing, computed as floor(0.9 x N).', zh: 地图以 PNG 图像保存在 pathLoss、Doa_Azi、Doa_Ele、ToA 和 propagation_ray 目录中，各目录下有 h1 至 h20 子目录。训练/测试划分按文件随机进行，90% 用于训练，10% 用于测试，数量为 floor(0.9 x N)。}
+    inputs:
+    - {en: Radio map layers, zh: 无线电地图层}
+    outputs:
+    - {en: PNG maps for each layer and height, zh: 各层各高度的 PNG 地图}
+    - {en: Train and test file splits, zh: 训练与测试文件划分}

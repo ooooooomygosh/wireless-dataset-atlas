@@ -16,7 +16,45 @@ access: {url: 'https://datasets.simula.no/hsdpa/', type: open}
 code: []
 paper: doi:10.1145/2483977.2483991
 used_in: []
-citing: ["doi:10.1145/3098822.3098843","doi:10.1109/infocom.2016.7524428","doi:10.1109/tnet.2020.2996964"]
+citing: ['doi:10.1145/3098822.3098843', 'doi:10.1109/infocom.2016.7524428', 'doi:10.1109/tnet.2020.2996964']
 summary: {en: 'Logs of TCP streaming sessions on Telenor''s 3G/HSDPA network in Norway, with GPS positions and bytes received per measurement interval, recorded on bus, metro, tram, car, train and ferry routes. The test period is 2010-09-13 to 2011-04-21.', zh: 挪威 Telenor 3G/HSDPA 网络上 TCP 流媒体会话的日志，包含 GPS 位置和每个测量间隔接收的字节数，记录路线涵盖公交、地铁、有轨电车、汽车、火车和渡轮。测试时间为 2010-09-13 至 2011-04-21。}
 sources: ['https://datasets.simula.no/hsdpa/', 'https://api.crossref.org/works/10.1145/2483977.2483991']
 checked: '2026-11-06'
+overview: {en: 'The HSDPA commute-path bandwidth traces are logs of TCP streaming sessions on Telenor''s 3G/HSDPA mobile network in Norway, published by Simula Research Laboratory with the MMSys 2013 paper ''Commute path bandwidth traces from 3G networks'' by Riiser, Vigmostad, Griwodz and Halvorsen. In each test, adaptive video streams were downloaded at maximum speed, with no throttling or buffer limit, and the video segment duration was fixed at 2 seconds. The tests were run from 2010-09-13 to 2011-04-21. The logs are grouped into 11 routes across six transport types: bus, metro, tram, ferry, car and train. Each log line gives a Unix timestamp, a millisecond counter, the GPS latitude and longitude in decimal degrees, the bytes received since the previous line, and the milliseconds elapsed since the previous line. The archive also contains an Apache throttling module, httpthrottle, that replays a bandwidth log as a per-second kbit/s limit on the web server. The page names time-series forecasting
+    as the task. The log format has six columns and contains no radio measurement fields such as signal strength.', zh: HSDPA 通勤路径带宽轨迹是 Telenor 挪威 3G/HSDPA 移动网络上 TCP 流媒体会话的日志，由 Simula Research Laboratory 发布，对应 MMSys 2013 论文《Commute path bandwidth traces from 3G networks》（作者 Riiser、Vigmostad、Griwodz 和 Halvorsen）。每次测试中，自适应视频流以最高速度下载，不做限速或缓冲限制，视频分段时长固定为 2 秒。测试时间为 2010 年 9 月 13 日至 2011 年 4 月 21 日。日志按路线分组，共 11 条路线，覆盖公交、地铁、有轨电车、渡轮、汽车和火车六种交通方式。每行日志包含 Unix 时间戳、毫秒计数器、以十进制度表示的 GPS 纬度和经度、距上一行接收的字节数，以及距上一行经过的毫秒数。压缩包还包含 Apache 限速模块 httpthrottle，可将带宽日志以每秒 kbit/s 的限速回放。页面给出的任务为时间序列预测。日志格式共六列，不含信号强度等无线测量字段。}
+signal_details:
+- signal: traffic
+  text: {en: 'Bytes received since the previous measurement in column 5 of each log line. Column 6 gives the milliseconds elapsed since the previous line, so dividing column 5 by column 6 gives the bandwidth in kilobytes per second, as the page states.', zh: 每行日志第 5 列为距上一次测量接收的字节数，第 6 列为距上一行经过的毫秒数。第 5 列除以第 6 列即得到以 kB/s 计的带宽，页面如此说明。}
+- signal: gps
+  text: {en: 'Latitude in decimal degrees in column 3 and longitude in decimal degrees in column 4 of each log line, giving the position for each measurement along the route.', zh: 每行日志第 3 列为十进制度表示的纬度，第 4 列为十进制度表示的经度，给出路线上每次测量对应的位置。}
+pipeline:
+  summary: {en: 'Adaptive video streams were downloaded over TCP on bus, metro, tram, ferry, car and train routes, and each measurement was logged with GPS position and byte counts.', zh: 在公交、地铁、有轨电车、渡轮、汽车和火车路线上通过 TCP 下载自适应视频流，每次测量记录 GPS 位置与字节计数。}
+  stages:
+  - title: {en: Streaming tests on the move, zh: 移动中的流媒体测试}
+    detail: {en: 'Adaptive video streams with 2-second segments were downloaded at maximum speed, with no throttling or buffer limit, on Telenor''s 3G/HSDPA network in Norway between 2010-09-13 and 2011-04-21.', zh: 2010 年 9 月 13 日至 2011 年 4 月 21 日期间，在挪威 Telenor 3G/HSDPA 网络上以最高速度下载分段时长为 2 秒的自适应视频流，不做限速或缓冲限制。}
+    inputs:
+    - {en: adaptive video streams, zh: 自适应视频流}
+    - {en: Telenor 3G/HSDPA network, zh: Telenor 3G/HSDPA 网络}
+    outputs:
+    - {en: TCP streaming session logs, zh: TCP 流媒体会话日志}
+  - title: {en: Per-line logging, zh: 逐行记录}
+    detail: {en: 'Each line records a Unix timestamp in seconds, a monotonic millisecond counter, GPS latitude and longitude, the bytes received since the previous line, and the milliseconds since the previous line.', zh: 每行记录以秒计的 Unix 时间戳、单调递增的毫秒计数器、GPS 纬度与经度、距上一行接收的字节数，以及距上一行经过的毫秒数。}
+    inputs:
+    - {en: GPS positions, zh: GPS 位置}
+    - {en: received byte counts, zh: 接收字节计数}
+    outputs:
+    - {en: six-column space-separated log, zh: 六列、空格分隔的日志}
+  - title: {en: Bandwidth derivation, zh: 带宽计算}
+    detail: {en: 'The bandwidth of a sample is bytes received (column 5) divided by elapsed milliseconds (column 6), which gives kilobytes per second. Logs are grouped by route and transport type.', zh: 某个采样的带宽为接收字节数（第 5 列）除以经过毫秒数（第 6 列），结果单位为 kB/s。日志按路线与交通方式分组。}
+    inputs:
+    - {en: log lines, zh: 日志行}
+    outputs:
+    - {en: per-sample bandwidth, zh: 逐采样带宽}
+    - {en: route logs, zh: 路线日志}
+  - title: {en: Replay with Apache throttling, zh: 使用 Apache 限速回放}
+    detail: {en: 'The httpthrottle module for Apache, which requires Apache and mod_python, reads a bandwidth log converted to a pure kbit/s log by make_pure_bwlog.pl, with one value per second. At time T the server''s maximum throughput for the next second is B(T).', zh: Apache 的 httpthrottle 模块（需要 Apache 与 mod_python）读取由 make_pure_bwlog.pl 转换得到的纯 kbit/s 日志，每秒一个数值。在时刻 T，服务器下一秒的最大吞吐量为 B(T)。}
+    inputs:
+    - {en: pure kbit/s bandwidth log, zh: 纯 kbit/s 带宽日志}
+    - {en: httpthrottle.conf, zh: httpthrottle.conf}
+    outputs:
+    - {en: bandwidth-limited HTTP transfers, zh: 受带宽限制的 HTTP 传输}

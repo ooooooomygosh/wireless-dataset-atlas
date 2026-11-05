@@ -1,0 +1,59 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../../layouts/Base.astro";
+import { allDatasets, tools, tutorials, t, LANGS, type Lang } from "../../../lib/data.ts";
+export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+const lang = Astro.params.lang as Lang;
+const ds = await allDatasets();
+const name = (id: string) => ds.find((d) => d.id === id)?.name ?? id;
+const pre = (s: string) => s.split("\n");
+---
+<Base lang={lang} nav="tools" title={t(lang, "tools.title")} description={t(lang, "tools.lead")}>
+  <div class="page-head"><h1>{t(lang, "tools.title")}</h1><p>{t(lang, "tools.lead")}</p></div>
+  <nav class="row" style="gap:8px;margin-bottom:8px"><a class="tag" href="#tools">{t(lang, "tools.tools")} ({tools.length})</a><a class="tag" href="#examples">{t(lang, "tools.examples")} ({tutorials.length})</a></nav>
+
+  <section id="tools" class="section" style="scroll-margin-top:76px">
+    <h2>{t(lang, "tools.tools")}</h2>
+    <div class="tool-list">
+      {tools.map((x) => (
+        <article class="tool" id={x.id}>
+          <div class="row between"><h3>{x.name}</h3><span class="tag">{x.category[lang]}</span></div>
+          <dl class="spec" style="margin-top:8px">
+            <dt>{t(lang, "tools.repo")}</dt><dd><a href={x.repo} rel="noopener">{x.repo.replace("https://github.com/", "")} ↗</a></dd>
+            <dt>{t(lang, "tools.license")}</dt><dd>{x.license[lang]}</dd>
+            <dt>{t(lang, "tools.role")}</dt><dd>{x.role[lang]}</dd>
+            <dt>{t(lang, "tools.datasets")}</dt><dd>{x.datasets.map((id, i) => (<><a href={`/${lang}/datasets/${id}/`}>{name(id)}</a>{i < x.datasets.length - 1 ? ", " : ""}</>))}</dd>
+          </dl>
+          <div class="two" style="margin-top:12px">
+            <div><h3 class="sub">{t(lang, "tools.howto")}</h3><ol class="plain">{x.how_to_use.map((s) => <li>{s[lang]}</li>)}</ol></div>
+            <div><h3 class="sub">{t(lang, "tools.limits")}</h3><ul class="plain">{x.limitations.map((s) => <li>{s[lang]}</li>)}</ul></div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="examples" class="section" style="scroll-margin-top:76px">
+    <h2>{t(lang, "tools.examples")}</h2>
+    <div class="tool-list">
+      {tutorials.map((x) => (
+        <article class="tool" id={`tut-${x.id}`}>
+          <div class="row between"><h3>{x.title[lang]}</h3><button class="btn copy" type="button" data-copy={x.id} data-done={t(lang, "tools.copied")}>{t(lang, "tools.copy")}</button></div>
+          <p class="muted" style="margin-top:6px">{x.description[lang]}</p>
+          <dl class="spec" style="margin-top:8px">
+            <dt>{t(lang, "tools.env")}</dt><dd>{x.environment[lang]}</dd>
+            <dt>{t(lang, "tools.status")}</dt><dd>{x.status[lang]}</dd>
+            <dt>{t(lang, "tools.steps")}</dt><dd><ol class="plain">{x.steps.map((s) => <li>{s[lang]}</li>)}</ol></dd>
+          </dl>
+          <details style="margin-top:10px"><summary>{x.file}</summary><pre class="bib code" id={`code-${x.id}`}>{x.code}</pre></details>
+        </article>
+      ))}
+    </div>
+  </section>
+  <script>
+    document.querySelectorAll<HTMLButtonElement>("button.copy").forEach((b) => b.addEventListener("click", async () => {
+      const code = document.getElementById("code-" + b.dataset.copy)?.textContent ?? "";
+      try { await navigator.clipboard.writeText(code); const o = b.textContent; b.textContent = b.dataset.done!; setTimeout(() => (b.textContent = o), 1400); } catch {}
+    }));
+  </script>
+</Base>

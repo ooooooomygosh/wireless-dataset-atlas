@@ -9,7 +9,7 @@ const attrs = (d: Dataset) => ({
   "data-name": [d.name, ...d.aliases].join(" ").toLowerCase(),
   "data-sortname": d.name.toLowerCase(),
   "data-year": d.year,
-  "data-cited": paperOf(d.paper).cited_by,
+  "data-cited": d.paper ? paperOf(d.paper).cited_by : 0,
   "data-task": d.tasks.join(" "),
   "data-origin": d.origin,
   "data-signal": d.signals.join(" "),
@@ -28,6 +28,7 @@ const attrs = (d: Dataset) => ({
         <th class="num">{t(lang, "col.year")}</th>
         <th>{t(lang, "col.origin")}</th>
         <th>{t(lang, "col.tasks")}</th>
+        <th>{t(lang, "col.signals")}</th>
         <th>{t(lang, "col.band")}</th>
         <th>{t(lang, "col.access")}</th>
       </tr>
@@ -40,6 +41,7 @@ const attrs = (d: Dataset) => ({
           <td class="num">{d.year}</td>
           <td><span class="tag"><i class={`dot ${d.origin}`}></i>{label(labels.origin, d.origin, lang)}</span></td>
           <td>{tasksText(d, lang).join(", ")}</td>
+          <td>{d.signals.map((s) => label(labels.signal, s, lang)).join(", ")}</td>
           <td class="num">{formatBands(d.bands_ghz)} <span class="faint">{t(lang, "unit.ghz")}</span></td>
           <td>{label(labels.access, d.access.type, lang)}</td>
         </tr>

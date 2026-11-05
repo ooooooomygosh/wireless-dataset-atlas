@@ -15,7 +15,12 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/documents/v2v-mmwave-channel-measurements', type: restricted}
 paper: doi:10.1109/vtcfall.2019.8891543
 used_in: []
-citing: ["doi:10.1109/mcom.004.2200723"]
+citing: ['doi:10.1109/mcom.004.2200723']
 summary: {en: 'Channel impulse response recordings of a vehicle-to-vehicle link at about 60 GHz with 8 GHz bandwidth, with two oncoming cars on a campus road. The data consists of almost 1000 CIR recordings in MAT files.', zh: 两辆相向行驶汽车在校园道路上的车对车链路信道冲激响应（CIR）记录，中心频率约60 GHz，带宽8 GHz。数据为MAT文件，共近1000条CIR记录。}
 sources: ['https://ieee-dataport.org/documents/v2v-mmwave-channel-measurements', 'https://api.crossref.org/works/10.1109/vtcfall.2019.8891543']
 checked: '2026-11-06'
+overview: {en: 'The V2V Millimeter-Wave Channel Measurements at 56-64 GHz dataset holds channel impulse response (CIR) recordings of a vehicle-to-vehicle link, from Brno University of Technology. The campaign used a center frequency of about 60 GHz and 8 GHz of bandwidth. The scenario is two oncoming cars on a two-lane road on the campus of the university. The data consist of two independent runs with 468 CIR realizations each, almost 1,000 recordings in total, stored in run1.mat and run2.mat with a time vector in t.MAT. The related paper, Vehicle-to-Vehicle Millimeter-Wave Channel Measurements at 56-64 GHz, was presented at VTC2019-Fall. The archive is 113.6 MB under CC BY 4.0 and requires an IEEE DataPort subscription.', zh: 56-64 GHz V2V 毫米波信道测量数据集包含一条车对车（V2V）链路的信道冲激响应（CIR）记录，由布尔诺理工大学（Brno University of Technology）提供。中心频率约 60 GHz，带宽 8 GHz。场景为校园双车道道路上两辆相向行驶的汽车。数据包含两次独立测量，每次 468 条 CIR 实现，共近 1000 条记录，分别存于 run1.mat 与 run2.mat，时间向量存于 t.MAT。相关论文为 Vehicle-to-Vehicle Millimeter-Wave Channel Measurements
+    at 56-64 GHz，发表于 VTC2019-Fall。压缩包为 113.6 MB，许可协议为 CC BY 4.0，访问需要 IEEE DataPort 订阅。}
+signal_details:
+- signal: cir
+  text: {en: 'Channel impulse response realizations, 468 per run, from two runs, stored as MAT files run1.mat and run2.mat, with a time vector in t.MAT. Center frequency about 60 GHz with 8 GHz bandwidth, as stated on the data page.', zh: 信道冲激响应（CIR）实现，每次测量 468 条，共两次测量，以 MAT 文件 run1.mat 与 run2.mat 存储，时间向量存于 t.MAT。中心频率约 60 GHz，带宽 8 GHz。}

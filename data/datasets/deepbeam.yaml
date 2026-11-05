@@ -1,0 +1,172 @@
+id: deepbeam
+name: DeepBeam
+year: 2021
+organization: Institute for the Wireless Internet of Things, Northeastern University
+origin: measured
+tasks: [beam-management]
+signals: [iq, beam-power]
+bands_ghz: [58, 60.48]
+environment: [lab]
+format: HDF5 (I/Q with tx_beam, rx_beam, gain)
+license: Code MIT; data terms per Northeastern repository
+access: {url: 'http://hdl.handle.net/2047/D20409451', type: registration}
+code: ['https://github.com/wineslab/deepbeam']
+paper: doi:10.1145/3466772.3467035
+sources: ['https://github.com/wineslab/deepbeam/blob/master/README.md', 'https://arxiv.org/pdf/2012.14350v2']
+aliases: []
+used_in: []
+citing: ["doi:10.1109/infocom48880.2022.9796744","doi:10.1109/mcom.002.2200079","doi:10.1109/tmc.2023.3342711"]
+summary: {en: Identifies the active transmit beam and discrete AoA from actual received mmWave I/Q. Four SiBeam frontends and Pi-Radio digital arrays introduce hardware variation for direct study of cross-antenna few-shot adaptation., zh: 用真实毫米波接收I/Q识别正在使用的发射波束与离散AoA。四个SiBeam前端和Pi-Radio数字阵列提供硬件变化，可直接研究跨天线few-shot适配。}
+checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Configure RF front ends, beams, and gains; record post-ADC I/Q with hardware configuration labels; organize inputs into 2048-sample blocks; then define within-antenna or cross-antenna evaluation.', zh: 设置射频前端、波束和增益，记录ADC后的I/Q及硬件配置标签；按2048点block组织输入，再定义同天线或跨天线评估。}
+  stages:
+  - title: {en: 'Fix devices, codebooks, and acquisition conditions', zh: 固定设备、码本和采集条件}
+    detail: {en: 'Choose device combinations and TX codebooks. NI provides 12/24 beams; Pi-Radio provides 5. The RX beam is fixed at array boresight, with additional array rotation settings for the AoA task.', zh: 选择设备组合和TX码本；NI提供12/24波束，Pi-Radio提供5波束。RX beam固定在阵列boresight，AoA任务另外设置阵列转角。}
+    inputs:
+    - {en: NI/SiBeam or Pi-Radio hardware, zh: NI/SiBeam或Pi-Radio硬件}
+    - {en: Indoor TX/RX locations, zh: 室内TX/RX位置}
+    outputs:
+    - {en: Identifiable device/location/codebook configurations, zh: 可识别的设备/位置/码本配置}
+    controls:
+    - {en: 'Author setup: different front ends and spatial configurations are stored separately.', zh: 作者设置：不同前端和空间配置分别保存。}
+    checks:
+    - {en: Check TX/RX identifiers and beam counts in filenames to retain hardware identity when combining data., zh: 核对文件名中的TX/RX编号及波束数，避免混合后丢失硬件身份。}
+  - title: {en: Acquire unequalized baseband I/Q, zh: 采集未均衡的基带I/Q}
+    detail: {en: Acquire I/Q after the receive ADC in 2048-sample blocks. NI records 150000 blocks per gain/beam combination; Pi-Radio records 50000. Gain refers to RX gain for NI and TX gain for Pi-Radio., zh: 从接收ADC后获取I/Q，按2048点成块。NI对每个gain/beam采150000 blocks，Pi-Radio每组合50000 blocks；前者为RX gain，后者为TX gain。}
+    inputs:
+    - {en: Transmitted mmWave waveform, zh: 正在发射的毫米波波形}
+    - {en: TX beam and gain settings, zh: TX beam与增益设置}
+    outputs:
+    - {en: I/Q sequences ordered by configuration, zh: 按配置排序的I/Q序列}
+    controls:
+    - {en: 'Author setup: this acquisition path precedes frequency-offset tracking and equalization.', zh: 作者设置：本文路径位于频偏跟踪和均衡之前。}
+    checks:
+    - {en: Verify the physical meaning of gain for each device; gain values are not SNR ground truth., zh: 确认gain在对应设备中的物理含义；不要把增益值直接当作SNR真值。}
+  - title: {en: Record acquisition controls as labels, zh: 将采集控制写成标签}
+    detail: {en: 'HDF5 stores iq, tx_beam, rx_beam, and gain; AoA files also contain angle. NI data are ordered by gain, then TX beam; AoA data are additionally ordered by angle.', zh: HDF5写iq、tx_beam、rx_beam、gain；AoA文件增加angle。NI数据依次按gain、TX beam排列，AoA数据进一步按角度排列。}
+    inputs:
+    - {en: I/Q stream, zh: I/Q流}
+    - {en: 'Beam, gain, and angle at acquisition', zh: 采集时的beam、gain与角度}
+    outputs:
+    - {en: 19 released HDF5 files with configuration labels, zh: 带配置标签的19个HDF5发布文件}
+    controls:
+    - {en: 'Author release: TXB labels identify the beam that was transmitted.', zh: 作者发布：TXB标签记录已发射的波束。}
+    checks:
+    - {en: Spot-check label consistency within each block; distinguish the currently transmitted beam from the best communication beam., zh: 抽查每个block标签一致性；区分“当前发射波束”与“最佳通信波束”。}
+  - title: {en: Assemble model inputs and define splits, zh: 组装模型输入并定义划分}
+    detail: {en: 'DataGenerator reads I/Q by index to form (batch,L,2048,2) inputs. DeepBeam.py uses contiguous indices within each gain/beam group: the first 60% for training and the last 40% for testing, with a default validation fraction of 0.', zh: 'DataGenerator按索引读取I/Q并形成(batch,L,2048,2)输入；DeepBeam.py在每个gain/beam内按连续索引划出前60%训练、后40%测试，默认验证比例为0。'}
+    inputs:
+    - {en: Selected HDF5 file, zh: 指定HDF5}
+    - {en: Block indices and L, zh: block索引与L}
+    outputs:
+    - {en: I/Q batches and TXB classification labels, zh: I/Q批次与TXB分类标签}
+    - {en: Explicit training/test indices, zh: 明确的训练/测试索引}
+    controls:
+    - {en: 'Author code: this loading path does not normalize inputs to unit power.', zh: 作者代码：该加载路径不执行输入单位功率归一化。}
+    checks:
+    - {en: 'Cross-antenna experiments must hold out entire files; specify the split unit, hardware identity, and adjacency of consecutive blocks in the protocol.', zh: 跨天线实验须整文件留出；将划分单位、硬件身份和连续块相邻性列入协议。}
+  - title: {en: Translate classification outputs into communication decisions, zh: 从分类结果进入通信决策}
+    detail: {en: 'Associate TX beams with RSRP through passive observation, adjust the receive direction using AoA, and compare observed candidates. The paper also analyzes initial-access latency using sampling wait time and FPGA inference time.', zh: 按被动观测建立TX beam与RSRP关联，利用AoA调整接收方向，再比较被观测候选。论文另外以采样等待和FPGA推理时间分析初始接入延迟。}
+    inputs:
+    - {en: TXB/AoA predictions, zh: TXB/AoA预测}
+    - {en: Received power for each observed beam, zh: 每个观测波束的接收功率}
+    outputs:
+    - {en: Beam candidates and alignment information, zh: 波束候选与对齐信息}
+    - {en: Classification accuracy and latency analysis, zh: 分类准确率及延迟分析}
+    controls:
+    - {en: 'Literature-supported: latency depends on traffic transmission order, observation coverage, and NR frame parameters.', zh: 文献支持：延迟取决于业务发送顺序、观测覆盖与NR帧参数。}
+    checks:
+    - {en: 'Reproduction recommendation: report candidate coverage, power loss, and total waiting time together; test sparse traffic separately.', zh: 复现建议：同时报告候选覆盖率、功率损失和总等待时间；稀疏业务条件单独测试。}
+  scope: {en: Original DeepBeam measurements and the authors' Keras loading pipeline; ProtoBeam is a subsequent task built on these data., zh: 原始DeepBeam实测采集与作者Keras加载流程；ProtoBeam是基于该数据的后续任务。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Unequalized I/Q waveforms
+
+      • TX/RX beam and gain labels
+
+      • Discrete receive AoA labels', zh: '• 未均衡I/Q波形
+
+      • TX/RX beam与gain标签
+
+      • 离散接收AoA标签'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Fixed-length I/Q model inputs
+
+      • Within-antenna/cross-antenna evaluation splits
+
+      • TXB/AoA predictions followed by RSRP ranking', zh: '• 固定长度I/Q模型输入
+
+      • 同/跨天线评估划分
+
+      • TXB/AoA预测与后续RSRP排名'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• This review checked documentation and source code; it did not download the 4 TB raw dataset or run training.
+
+      • The Pi-Radio README mentions ''31'' gains but lists three values. Acquisition counts require checking against Sec. 4.3 of the original paper and the files; 31 is not treated as a confirmed configuration.', zh: '• 本轮核查文档和源码，未下载4 TB原始数据或运行训练。
+
+      • Pi-Radio README存在“31”增益文字与三项列表不一致；采集数量以原论文Sec.4.3及文件内容核对，未把31写成确定配置。'}
+provenance:
+- {en: Actual TX/RX arrays and fixed indoor configurations, zh: 真实TX/RX阵列和固定室内配置}
+- {en: 'Set TX beams, gains, and receive directions', zh: 设置TX beam、增益及接收方向}
+- {en: Continuous post-ADC I/Q acquisition, zh: ADC后I/Q连续采集}
+- {en: Write waveforms and configuration labels, zh: 写入波形与配置标签}
+- {en: Sample by block and partition tasks by device, zh: 按block取样和按设备划分任务}
+technical_notes:
+- {en: 'Literature-supported: NI uses analog phase-shifter arrays; Pi-Radio applies digital weights to individual RF chains. Hardware differences change I/Q distributions.', zh: 文献支持：NI使用模拟相移阵列，Pi-Radio在各RF链数字加权；硬件差异会改变I/Q分布。}
+- {en: 'Literature-supported: the chair in the obstacle configuration did not block LoS; this configuration cannot directly be labeled NLoS.', zh: 文献支持：obstacle配置中的椅子未遮断LoS，不能将该配置直接标记为NLoS。}
+limitations:
+- {en: 'Literature-supported: for 24 beams and L=1, mean accuracy is 78.51% on the same antenna and 16.97% across antennas. Hardware holdout is a key evaluation dimension.', zh: 文献支持：24-beam、L=1下同天线平均78.51%，跨天线16.97%；硬件留出是关键评估轴。}
+- {en: 'Verified: training code uses contiguous 60/40 splits within each gain/beam block. Splits within one acquisition and tests on new devices must be reported separately.', zh: 已确认：训练代码在每个gain/beam块内连续划分60/40；同次采集内划分与新设备测试须分别报告。}
+- {en: 'Verified: AoA labels are only −45°, 0°, and 45°. They support discrete recognition; continuous-angle precision requires new samples.', zh: 已确认：AoA标签只有−45°、0°、45°；可支持离散识别，连续角度精度需新增采样。}
+history:
+- {en: '2021-06-07: original-paper arXiv v2, subsequently published at MobiHoc 2021.', zh: 2021-06-07：原论文arXiv v2，后发表于MobiHoc 2021}
+usage:
+- {en: 'Use the author''s README to select TXB or AoA, devices/arrays, and 12/24/5-beam files.', zh: 从作者README选择TXB或AoA、设备/阵列和12/24/5波束文件。}
+- {en: 'Read a small amount of iq and labels first, reconstruct 2048-point blocks, and verify constant-label segments.', zh: 先读取少量iq及标签，按2048点重建block并核对标签常量段。}
+- {en: Reproduce same-device 60/40 and cross-antenna holdout separately; record the target-domain support count for few-shot evaluation., zh: 分别复现同设备60/40和跨天线留出；few-shot评估记录目标域support数量。}
+- {en: Then connect recognition results to received power and probing time to evaluate alignment and initial-access gains., zh: 再将识别结果与接收功率、探测时间联系，评价对齐和初始接入收益。}
+field_notes:
+- label: {en: CSI, zh: CSI}
+  text: {en: Native inputs are post-ADC I/Q waveforms. The public four-/five-key structure contains neither calibrated complex CSI nor per-path parameters., zh: 原生输入是ADC后的I/Q波形；已公开四/五键结构不含校准复CSI或逐径参数。}
+- label: {en: Beam labels, zh: 波束标签}
+  text: {en: tx_beam is the TX beam class active during acquisition. Selecting the best communication beam also requires the RSRP associated with each observed beam., zh: tx_beam是采集时正在使用的TX beam类别；最佳通信波束还需结合各被观测波束的RSRP。}
+- label: {en: Time, zh: 时间}
+  text: {en: 'Ordered baseband samples and block organization are provided. This time axis describes waveforms, not continuous mobile trajectories with positions.', zh: 提供有序基带采样及block组织；这一时间轴描述波形，不是带位置的连续移动轨迹。}
+- label: {en: Position, zh: 位置}
+  text: {en: See original Figures 7/8 for indoor device layouts. HDF5 fields do not provide per-sample positions., zh: 室内设备布局见原文图7/8；HDF5字段未给逐样本位置。}
+- label: {en: Cross-frequency pairing, zh: 跨频配对}
+  text: {en: 58 and 60.48 GHz come from different hardware acquisitions and do not form synchronized dual-band pairs., zh: 58与60.48 GHz来自不同设备采集，不构成同步双频配对。}
+- label: {en: Multi-user, zh: 多用户}
+  text: {en: Public files record single-TX/RX acquisition configurations. Neighbor discovery is a system use case; synchronized multiuser channel sets are not provided., zh: 公开文件记录单TX/RX采集配置；邻居发现是系统用例，未提供同步多用户信道集合。}
+paper_summary:
+- label: {en: 'System (DeepBeam: Deep Waveform Learning for Coordinatio…)', zh: '系统（DeepBeam: Deep Waveform Learning for…）'}
+  text: {en: 'Real millimeter-wave I/Q is used by a CNN to identify TXB and discrete AoA, then combined with received power to assist beam alignment.', zh: 真实毫米波I/Q，经CNN识别TXB与离散AoA，再结合接收功率辅助波束对齐。}
+- label: {en: 'Prediction target (DeepBeam: Deep Waveform Learning for Coordinatio…)', zh: '预测对象（DeepBeam: Deep Waveform Learning for…）'}
+  text: {en: The active TX-beam class and receive AoA of −45°/0°/45°., zh: 正在使用的TX beam类别及−45°/0°/45°接收AoA。}
+- label: {en: 'Decision target (DeepBeam: Deep Waveform Learning for Coordinatio…)', zh: '决策目标（DeepBeam: Deep Waveform Learning for…）'}
+  text: {en: 'Candidate TX-beam ranking, RX orientation, and initial-access waiting time.', zh: 候选TX beam排名、RX方向与初始接入等待时间。}
+- label: {en: 'Protocol (DeepBeam: Deep Waveform Learning for Coordinatio…)', zh: '评估协议（DeepBeam: Deep Waveform Learning for…）'}
+  text: {en: 'Sec. 4/5: NI and Pi-Radio platforms, a 60/40 within-device split, and cross-RF-front-end tests. Sec. 3 analyzes access latency using FPGA inference time and an NR frame model.', zh: Sec.4/5：NI和Pi-Radio两平台；同设备60/40划分，以及跨射频前端测试。Sec.3用FPGA推理时间和NR帧模型分析接入延迟。}
+- label: {en: 'Key finding (DeepBeam: Deep Waveform Learning for Coordinatio…)', zh: '主要发现（DeepBeam: Deep Waveform Learning for…）'}
+  text: {en: 'With 24 beams and L=1, mean accuracy is 78.51% on the same antenna and 16.97% across antennas; hardware changes create a clear adaptation need.', zh: 24-beam、L=1时，同天线平均准确率78.51%，跨天线16.97%；硬件变化产生明确的适配需求。}
+- label: {en: 'Remaining gap (DeepBeam: Deep Waveform Learning for Coordinatio…)', zh: '尚未解决的问题（DeepBeam: Deep Waveform Learning for…）'}
+  text: {en: Classification accuracy still needs to be connected to optimal-beam power and online acquisition cost; the current data use a fixed indoor spatial layout., zh: 分类准确率仍需连接到最佳波束功率与在线获取成本；当前数据的空间布局为固定室内配置。}
+- label: {en: 'System (ProtoBeam: Generalizing Deep Beam Prediction to …)', zh: '系统（ProtoBeam: Generalizing Deep Beam Pr…）'}
+  text: {en: DeepBeam's measured 24-beam I/Q; train an encoder on a source antenna and use labeled support from a target antenna to construct class prototypes., zh: DeepBeam的24-beam实测I/Q；源天线训练编码器，目标天线带标签support建立类别原型。}
+- label: {en: 'Prediction target (ProtoBeam: Generalizing Deep Beam Prediction to …)', zh: '预测对象（ProtoBeam: Generalizing Deep Beam Pr…）'}
+  text: {en: TX-beam classes on the target RF front end., zh: 目标射频前端上的TX beam类别。}
+- label: {en: 'Decision target (ProtoBeam: Generalizing Deep Beam Prediction to …)', zh: '决策目标（ProtoBeam: Generalizing Deep Beam Pr…）'}
+  text: {en: Beam identification after deployment across hardware; the paper evaluates accuracy and adjacent-beam tolerance., zh: 跨硬件部署后的波束识别；论文以准确率和相邻beam容错评价。}
+- label: {en: 'Protocol (ProtoBeam: Generalizing Deep Beam Prediction to …)', zh: '评估协议（ProtoBeam: Generalizing Deep Beam Pr…）'}
+  text: {en: 'The paper uses 5-way/4-shot training; TOTA trains on TX0 and tests on TX1/2/3. Verified test_proto_net: target-domain k-shot support and queries are separated, with no encoder retraining.', zh: 原文5-way/4-shot训练；TOTA以TX0训练，TX1/2/3测试。已核test_proto_net：目标域k-shot support与query分开、编码器不重训。}
+- label: {en: 'Key finding (ProtoBeam: Generalizing Deep Beam Prediction to …)', zh: '主要发现（ProtoBeam: Generalizing Deep Beam Pr…）'}
+  text: {en: The paper reports 74.11% mean cross-antenna accuracy with 16 shots; this is few-shot adaptation using labeled target-domain support., zh: 论文16-shot跨天线平均准确率74.11%；这是使用目标域标注support的few-shot适配。}
+- label: {en: 'Remaining gap (ProtoBeam: Generalizing Deep Beam Prediction to …)', zh: '尚未解决的问题（ProtoBeam: Generalizing Deep Beam Pr…）'}
+  text: {en: 'Still requires strong simple baselines with the same encoder/label budget, acquisition-block separation, and power/rate evaluation; adjacent-beam-tolerant accuracy is not communication gain.', zh: 仍需同编码器/同标签预算的强简单基线、采集块隔离和功率/速率评价；相邻beam容错准确率不等于通信收益。}
+tools: [project-deepbeam, project-protobeam]
+overview: {en: 'DeepBeam is a mmWave waveform dataset for beam management, released with the DeepBeam paper by Polese, Restuccia and Melodia (ACM MobiHoc 2021). Measurements were taken with an NI mmWave transceiver system carrying four SiBeam 60 GHz radio heads and with two Pi-Radio digital 60 GHz radios, which operate at 58 GHz. The NI data cover TX-beam codebooks of 24 and 12 beams and three receiver gains of 40, 50 and 60 dB, and the AoA files use three angles of arrival at -45, 0 and 45 degrees. The public release contains 19 HDF5 files: 12 TX-beam files and 6 AoA files for the NI system, and one file for the Pi-Radio. Each file stores I/Q waveform samples with labels for the transmit beam, receive beam and gain. The authors report more than 4 TB of mmWave waveforms. The HDF5 fields hold only I/Q samples and the tx_beam, rx_beam, gain and angle labels.', zh: DeepBeam 是一个用于波束管理的毫米波波形数据集，随 Polese、Restuccia 与 Melodia 的 DeepBeam 论文（ACM MobiHoc 2021）发布。测量使用一套 NI 毫米波收发系统（配备四个 SiBeam 60 GHz
+    射频头）以及两台工作在 58 GHz 的 Pi-Radio 数字 60 GHz 无线电。NI 数据覆盖 24 波束与 12 波束的发射波束码本，以及 40、50、60 dB 三档接收增益；AoA 文件使用 -45、0、45 度三个到达角。公开版本共 19 个 HDF5 文件：NI 系统的 12 个 TX 波束文件和 6 个 AoA 文件，以及 Pi-Radio 的 1 个文件。每个文件存储 I/Q 波形采样，并带有发射波束、接收波束和增益标签。作者报告的毫米波波形数据超过 4 TB。HDF5 字段仅包含 I/Q 采样以及 tx_beam、rx_beam、gain 和 angle 标签。}
+signal_details:
+- signal: iq
+  text: {en: 'I/Q samples are stored in the iq dataset, with one column for I and one for Q. The tx_beam, rx_beam and gain labels are stored entry by entry alongside iq. The NI TX-beam files contain 10,000 frames per (gain, TX beam) pair with 15 blocks per frame, and the README states 2,048 I/Q samples per frame. The Pi-Radio file holds five TX beams, 10,000 frames per (gain, TX beam) pair, 5 blocks per frame and 2,048 samples per frame. The NI system acquires at 60.48 GHz and the Pi-Radio at 58 GHz. The AoA files add an angle dataset with the values -45, 0 and 45.', zh: 'I/Q 采样存储在 iq 数据集中，I 与 Q 各占一列。tx_beam、rx_beam 和 gain 标签与 iq 逐条对应存储。NI 发射波束文件中，每个（增益，TX 波束）组合包含 10,000 帧，每帧 15 个 block，README 标明每帧 2,048 个 I/Q 采样。Pi-Radio 文件包含五个 TX 波束，每个（增益，TX 波束）组合 10,000 帧，每帧 5 个 block、2,048 个采样。NI 系统工作在 60.48 GHz，Pi-Radio 工作在 58 GHz。AoA 文件增加一个 angle 数据集，取值为 -45、0、45。'}

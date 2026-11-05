@@ -16,3 +16,152 @@ citing: []
 summary: {en: 'Evaluation suite whose benchmark tasks use CSI, CIR and IQ data from DeepMIMO, RadioML, POWDER, ICARUS, RadCom, EfficientFi and UWB datasets. The repository includes preprocessing scripts that convert these datasets into HDF5 cache files and fine-tuning code for a ViT-based model.', zh: 评测套件，其基准任务使用来自 DeepMIMO、RadioML、POWDER、ICARUS、RadCom、EfficientFi 和 UWB 数据集的 CSI、CIR 和 IQ 数据。代码仓库包含将这些数据集转换为 HDF5 缓存文件的预处理脚本，以及基于 ViT 模型的微调代码。}
 sources: ['https://github.com/AhmedTarek62/wavesfm/blob/main/README.md', 'https://wavesfm.waveslab.ai/benchmarks/', 'https://wavesfm.waveslab.ai/docs/datasets/deepmimo/', 'https://arxiv.org/abs/2511.15162']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: Task-specific preprocessors convert raw data into HDF5 caches. The task registry loads inputs and targets; specified splits and adaptation methods then produce standardized classification or localization metrics., zh: 原始数据经专用预处理器转成HDF5任务缓存，任务注册器加载输入/目标，随后指定划分与适配方式，输出统一的分类或定位指标。}
+  stages:
+  - title: {en: Identify upstream releases and tasks, zh: 定位上游发布物和任务}
+    detail: {en: 'Obtain EfficientFi, CommRad, NR localization, UWB, RadCom, RML2022, POWDER, ICARUS, or DeepMIMO data as required by the task; preserve dataset identity and original splits.', zh: 按任务取得EfficientFi、CommRad、NR定位、UWB、RadCom、RML2022、POWDER、ICARUS或DeepMIMO数据；保留数据集身份和原始划分。}
+    inputs:
+    - {en: Official task page, zh: 官方任务页}
+    - {en: Upstream raw files or scenes, zh: 上游原始文件或场景}
+    outputs:
+    - {en: Separate raw-data root directories, zh: 独立的原始数据根目录}
+    - {en: Task identifiers and label definitions, zh: 任务标识与标签定义}
+    controls:
+    - {en: 'Author release: tasks have independent frequencies, devices, and label spaces.', zh: 作者发布：各任务的频率、设备和标签空间独立。}
+    checks:
+    - {en: 'Check original licenses, versions, and acquisition units; do not create fictitious pairings by matching row numbers across modality files.', zh: 核对原始许可、版本和采集单位；不同模态文件不按行号做虚构配对。}
+  - title: {en: Run task-specific parsing and physical generation, zh: 执行任务专用解析与物理生成}
+    detail: {en: 'Each script converts raw inputs into image-like or I/Q-like tensors. The DeepMIMO branch uses DeepMIMOv3 to generate 32-antenna, 32-subcarrier channels for selected city scenes and BSs, filters samples with LoS=-1, and multiplies channels by 10^6.', zh: 各脚本将原始输入变为图像式或I/Q式张量。DeepMIMO分支使用DeepMIMOv3，在选定城市场景和BS上生成32天线、32子载波信道，过滤LoS=-1样本并乘10^6。}
+    inputs:
+    - {en: Raw files, zh: 原始文件}
+    - {en: Corresponding preprocessing script, zh: 对应preprocessing脚本}
+    outputs:
+    - {en: Task input tensors, zh: 任务输入张量}
+    - {en: Valid sample indices, zh: 有效样本索引}
+    controls:
+    - {en: 'Author code: DeepMIMO uses six cities by default; the script fixes array rotation, path count, and OFDM grid.', zh: 作者代码：DeepMIMO默认六城；阵列旋转、路径数和OFDM网格由脚本固定。}
+    checks:
+    - {en: 'Reproduction recommendation: record native shapes and physical sampling intervals; verify complex channel amplitudes before transformation.', zh: 复现建议：记录native shape及物理采样间隔，在变换前核验复信道幅度。}
+  - title: {en: Generate labels and reproducible caches, zh: 形成标签与可重建缓存}
+    detail: {en: 'DeepMIMO computes codebook beam responses, averages complex responses across frequencies, takes magnitudes, and selects the beam. Inputs can be resized bicubically to 224×224 and standardized using full-cache statistics. It writes sample, label_los, label_beam_{n}, and scenario. Other datasets use task-native labels.', zh: 'DeepMIMO按码本计算beam响应，先对复响应跨频平均、取幅度，再选择beam；输入可bicubic resize至224×224并以全缓存统计标准化。写sample、label_los、label_beam_{n}和scenario。其他数据使用各任务原生标签。'}
+    inputs:
+    - {en: Input tensors, zh: 输入张量}
+    - {en: Original labels or codebook, zh: 原始标签或码本}
+    outputs:
+    - {en: HDF5 cache, zh: HDF5缓存}
+    - {en: Labels and metadata such as mean/std, zh: 标签及mean/std等元数据}
+    controls:
+    - {en: 'Author code: 64 beams is the default; a cache can store labels for multiple beam counts.', zh: 作者代码：64 beam是默认值；缓存可同时保存多种beam数标签。}
+    checks:
+    - {en: 'Reproduction recommendation: fit statistics on the training domain and apply them to held-out domains; retain raw CSI for power/SINR utility calculations.', zh: 复现建议：在训练域拟合统计量后应用到留出域；保留原始CSI以计算功率/SINR效用。}
+  - title: {en: Load the task and fix evaluation splits, zh: 加载任务并固定评测划分}
+    detail: {en: 'data.py selects loaders and output heads by task. Independent val-data is used directly when provided; otherwise, val_split=0.2 produces a random sample split, with optional class stratification.', zh: data.py按task选择加载器和输出头。提供独立val-data时直接使用；否则默认val_split=0.2进行随机样本划分，可选择分类分层。}
+    inputs:
+    - {en: HDF5 cache, zh: HDF5缓存}
+    - {en: task and optional val-data, zh: task和可选val-data}
+    outputs:
+    - {en: Training/validation Dataset objects, zh: 训练/验证Dataset}
+    - {en: Task output dimensions and label types, zh: 任务输出维度与标签类型}
+    controls:
+    - {en: 'Author code: a random seed controls the split; the default split does not isolate cities or acquisition events.', zh: 作者代码：随机种子控制split；缺省划分不隔离城市或采集事件。}
+    checks:
+    - {en: 'Reproduction recommendation: for extrapolation studies, create independent caches by city/device/trajectory and connect them through val-data.', zh: 复现建议：外推研究先按城市/设备/轨迹生成独立cache，再通过val-data接入。}
+  - title: {en: Adapt the model and verify metric definitions, zh: 适配模型并核对指标口径}
+    detail: {en: 'main_finetune.py performs task adaptation. The batch runner defaults to seeds 0/1/2 and supports LP, FT2, and LoRA; current LoRA settings are rank=32 and alpha=64. The website reports means and standard deviations per task.', zh: main_finetune.py执行任务适配；批量runner默认seeds 0/1/2，支持LP、FT2与LoRA，当前LoRA为rank=32、alpha=64。官网逐任务报告均值与标准差。}
+    inputs:
+    - {en: Fixed split, zh: 固定划分}
+    - {en: Pretrained checkpoint or model initialization, zh: 预训练checkpoint或模型初始化}
+    - {en: Adaptation mode, zh: 适配模式}
+    outputs:
+    - {en: Classification or localization evaluation, zh: 分类或定位评价}
+    - {en: Adaptation cost and reproduction commands, zh: 适配成本与复现命令}
+    controls:
+    - {en: 'Author release: the current website version and alpha=32 from the 2025 paper are recorded separately.', zh: 作者发布：当前网站版本与2025论文的alpha=32分别记录。}
+    checks:
+    - {en: 'Reproduction recommendation: distinguish Top-1 accuracy from mean per-class accuracy; retain meters for localization and compute task utility separately.', zh: 复现建议：分类同时区分Top-1与mean per-class accuracy，定位保留米单位；任务效用另行计算。}
+  scope: {en: 'The WavesFM v1.0 public evaluation suite; the DeepMIMO branch illustrates verifiable generation details, while other tasks use their respective preprocessors.', zh: WavesFM v1.0公开评估套件；用DeepMIMO分支展示可核验的生成细节，其他任务按各自预处理器运行。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Task-specific loading and preprocessing interfaces for upstream datasets
+
+      • HDF5 task-cache schema
+
+      • Public evaluation commands', zh: '• 各上游数据的任务专用加载与预处理接口
+
+      • HDF5任务缓存schema
+
+      • 公开评估命令'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Resized/standardized wireless representations
+
+      • Derived DeepMIMO LoS/beam labels
+
+      • LP/FT2/LoRA results and metrics across multiple seeds', zh: '• resize/标准化后的无线表示
+
+      • DeepMIMO LoS/beam派生标签
+
+      • LP/FT2/LoRA结果与多seed指标'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• This suite shares upstream sources with DeepMIMO, POWDER, and others; coverage statistics do not count them again as new measurements.
+
+      • This review did not download raw data or model weights, or run training. The code license is not explicitly stated; the authors should clarify the authorized scope before reuse.', zh: '• 本套件与DeepMIMO、POWDER等共享上游来源，覆盖统计不重复计为新的测量。
+
+      • 本轮未下载原始数据、模型权重或运行训练；代码许可未明示，复用前应由作者明确授权范围。'}
+provenance:
+- {en: Obtain each upstream measurement or simulation dataset, zh: 分别取得上游测量或仿真数据}
+- {en: 'Task-specific parsing, transformation, and normalization', zh: 任务专用解析、变换与归一化}
+- {en: Store inputs and labels in HDF5 caches, zh: HDF5 cache保存输入和标签}
+- {en: Task registration and learning splits, zh: 任务注册及学习划分}
+- {en: LP/FT2/LoRA adaptation and evaluation across multiple seeds, zh: LP/FT2/LoRA适配与多seed评价}
+technical_notes:
+- {en: 'Confirmed: DeepMIMO still depends on original RT scenes and DeepMIMOv3 array/OFDM configurations; a shared ViT input size does not imply shared physical resolution.', zh: 已确认：DeepMIMO仍依赖原始RT场景和DeepMIMOv3阵列/OFDM配置；统一ViT输入尺寸不统一物理分辨率。}
+- {en: 'Confirmed: the shared model accepts different wireless representations. Datasets remain independent and do not form synchronized RGB/CSI/LiDAR observations.', zh: 已确认：共享模型接受不同无线表示；各数据集独立，不形成同步RGB/CSI/LiDAR观测。}
+limitations:
+- {en: 'Confirmed: DeepMIMO preprocessing normalizes using the mean/standard deviation of the full cache before splitting; strict OOD experiments must refit these statistics on training data only.', zh: 已确认：DeepMIMO预处理在划分前用全缓存均值/标准差归一化；严格OOD实验须按训练集重新拟合统计量。}
+- {en: 'Confirmed: the default is an 80/20 random sample split; generalization to unseen cities, devices, trajectories, or acquisition events requires explicitly rebuilding splits.', zh: 已确认：缺省80/20随机样本划分；城市、设备、轨迹和采集事件外泛化需显式重建划分。}
+- {en: 'Confirmed: the task count and LoRA alpha=64 on the v1.0 website differ from the 2025 paper settings; freeze the version before comparison.', zh: 已确认：官网v1.0的任务数与LoRA alpha=64不同于2025论文设置，须冻结版本后比较。}
+history:
+- {en: '2025-11-19: Multimodal Wireless Foundation Models preprint v1', zh: 2025-11-19：Multimodal Wireless Foundation Models预印本v1}
+- {en: '2026-01-23: update date shown on the official Detailed Evaluation page', zh: 2026-01-23：官网Detailed Evaluation标注更新日}
+usage:
+- {en: 'Start with the official task page to identify upstream data, cache keys, and label semantics.', zh: 先从官网任务页定位上游数据、缓存键与标签语义。}
+- {en: Run the corresponding preprocessing script and record input scales and split units in the configuration., zh: 运行对应preprocessing脚本，把输入尺度和划分单位记录到配置。}
+- {en: Select a task through main_finetune.py and use independent val-data to fix the evaluation set., zh: 通过main_finetune.py选择task，并用独立val-data固定评测集合。}
+- {en: 'Compare seeds and adaptation configurations from run_finetune_all.py; for beam tasks, also report normalized gain and communication utility.', zh: 按run_finetune_all.py的seed与适配配置比较；波束任务另补归一化收益和通信效用。}
+field_notes:
+- label: {en: CSI, zh: CSI}
+  text: {en: 'CSI branches build caches from upstream releases or DeepMIMO scenarios. The repository supplies preprocessing and evaluation interfaces; other tasks consume I/Q, spectrograms, or CIR.', zh: CSI分支由上游发布物或DeepMIMO场景生成缓存；仓库本身提供预处理和评估接口，其他任务消费I/Q、频谱图或CIR。}
+- label: {en: Position, zh: 位置}
+  text: {en: '5G NR and UWB localization tasks use position-regression targets, with coordinates and units defined by their respective protocols.', zh: 5G NR与UWB定位任务消费位置回归目标，坐标和单位按各自协议。}
+- label: {en: Beam labels, zh: 波束标签}
+  text: {en: 'The DeepMIMO subtask generates label_beam_{n} using a specified codebook, with 64 beams by default. Labels select the largest response after coherent averaging across frequencies.', zh: 'DeepMIMO子任务由指定码本产生label_beam_{n}；默认64波束，标签由相干跨频响应平均后选最大项。'}
+- label: {en: RGB, zh: RGB}
+  text: {en: Image-like refers to spectrograms or CSI tensors; visible-light RGB environment photographs are not included., zh: image-like指频谱图或CSI张量；未包含可见光RGB环境照片。}
+- label: {en: Radar, zh: 雷达}
+  text: {en: RADCOM classifies radar/communication signals; this interface provides no range-Doppler ground truth for target detection., zh: RADCOM用于雷达/通信信号类别识别；此接口没有目标检测用的距离-多普勒真值。}
+- label: {en: Time, zh: 时间}
+  text: {en: 'The temporal dimension has different meanings across I/Q, CIR, and CSI tasks. The current shared cache format does not guarantee isolation by trajectory, event, or timestamp.', zh: 时间维含义随I/Q、CIR和CSI任务变化；当前统一缓存不保证轨迹、事件或时间戳隔离。}
+paper_summary:
+- label: {en: System, zh: 系统}
+  text: {en: 'I/Q and image-based wireless representations use separate input projections into a shared ViT, pretrained through reconstruction with 70% masking.', zh: I/Q与图像式无线表示用独立输入投影接入共享ViT；70%遮挡重建预训练。}
+- label: {en: Prediction target, zh: 预测对象}
+  text: {en: 'RF identity, interference, activity/signal classes, and NR position.', zh: RF身份、干扰、活动/信号类别及NR位置。}
+- label: {en: Decision target, zh: 决策目标}
+  text: {en: The paper evaluates classification and localization; communication scheduling and net rate have not been evaluated., zh: 论文评价分类和定位任务；通信调度或净速率尚未评估。}
+- label: {en: Protocol, zh: 评估协议}
+  text: {en: Pretraining uses 3200 spectrograms and 3200 I/Q samples; 5 downstream task types and 6 metric columns. LP still trains input projections; the paper sets both LoRA rank and alpha to 32., zh: 3200个频谱图和3200个I/Q样本预训练；5类下游任务、6个指标列。LP仍训练输入投影；论文LoRA rank/alpha均32。}
+- label: {en: Key finding, zh: 主要发现}
+  text: {en: 'The shared representation covers two input types; Table II reports FT2 localization error of 1.27 m versus 0.41 m for single-modality WavesFM, with gains varying by task and adaptation method.', zh: 共享表示覆盖两类输入；Table II中FT2定位误差为1.27 m，单模态WavesFM为0.41 m，收益随任务和适配方式变化。}
+- label: {en: Remaining gap, zh: 尚未解决的问题}
+  text: {en: Model parameter counts and pretraining data volumes differ; control both before attributing gains to multimodality. Reproduce the paper's protocol separately from the current 10-dataset evaluation suite., zh: 模型参数量和预训练数据量不同，需要控制这两项再归因于多模态；论文协议与当前10数据集评估套件分开复现。}
+tools: [project-wavesfm-suite]
+overview: {en: 'WavesFM is the evaluation and fine-tuning code for the multimodal wireless foundation model in arXiv:2511.15162 by Aboulfotouh and Abou-Zeid (2025). The repository converts each upstream dataset into an HDF5 cache for one task and trains a shared ViT with a task-specific head. The v1.0 benchmark page lists 10 upstream datasets in 13 task rows: 5G NR positioning, CommRad RF, DeepMIMO beam prediction and LoS/NLoS, EfficientFi WiFi sensing, ICARUS interference detection and classification, POWDER RF fingerprinting, RADCOM, RML2022, and UWB indoor and industrial localization. Each row is evaluated with linear probing (LP), partial fine-tuning (FT2) and LoRA (R=32, alpha=64) over 3 seeds, reported as mean and standard deviation. The caches are built from the upstream releases, and the README asks users to credit each dataset''s owners. The DeepMIMO subset is generated from DeepMIMOv3 scenarios. The paper''s model takes IQ streams and image-like inputs through separate embeddings
+    and is pretrained with masked modeling at a 70% mask ratio.', zh: 'WavesFM 是 arXiv:2511.15162 多模态无线基础模型的评测与微调代码，作者为 Aboulfotouh 与 Abou-Zeid（2025）。仓库将每个上游数据集转换为一个任务对应的 HDF5 缓存，并训练共享的 ViT 加任务专用头。v1.0 基准页面列出 10 个上游数据集、13 个任务行：5G NR 定位、CommRad RF、DeepMIMO 波束预测与 LoS/NLoS、EfficientFi WiFi 感知、ICARUS 干扰检测与分类、POWDER RF 指纹识别、RADCOM、RML2022，以及 UWB 室内与工业定位。每行在线性探测（LP）、部分微调（FT2）和 LoRA（R=32，alpha=64）下评测，基于 3 个随机种子报告均值与标准差。缓存由上游发布的数据构建，README 要求注明各数据集的所有者。DeepMIMO 子集由 DeepMIMOv3 场景生成。论文模型通过独立嵌入接收 IQ 流与类图像输入，并以 70% 掩码比例进行掩码建模预训练。'}
+signal_details:
+- signal: csi
+  text: {en: 'CSI caches come from DeepMIMO scenarios generated with DeepMIMOv3, and from the 5G NR and WiFi sets. DeepMIMO channels are scaled by 1e6, filtered for invalid users, and converted from complex values to real and imaginary channels. Beam labels label_beam_{n} use a codebook of n beams over a 180-degree field of view, with n set to 16, 32 or 64 (default 64). The 5G NR positioning task regresses UE location from CSI obtained with sounding reference signals. The EfficientFi task uses Wi-Fi CSI recorded between two access points with three antennas each while subjects perform six activities.', zh: 'CSI 缓存来自 DeepMIMOv3 生成的 DeepMIMO 场景，以及 5G NR 与 WiFi 数据集。DeepMIMO 信道乘以 1e6 缩放，剔除无效用户，并将复数 CSI 转换为实部与虚部通道。波束标签 label_beam_{n} 基于 180 度视场内的 n 个波束码本生成，n 可取 16、32 或 64（默认 64）。5G NR 定位任务使用探测参考信号获得的 CSI 回归 UE 位置。EfficientFi 任务使用两个接入点之间、各带三根天线的 Wi-Fi CSI，记录受试者执行六种活动时的数据。'}
+- signal: cir
+  text: {en: 'CIR tensors feed the two UWB localization tasks, UWB indoor positioning and tracking and UWB industrial localization. The README lists both as position regression on IQ-like CIR tensors. The industrial task uses an official train/test split, and its data are linked from the channel impulse response page of cmutschler.de.', zh: CIR 张量用于两个 UWB 定位任务：UWB 室内定位与跟踪，以及 UWB 工业定位。README 将两者都列为基于类 IQ 形式 CIR 张量的位置回归。工业定位任务使用官方的训练/测试划分，其数据链接至 cmutschler.de 的信道冲激响应页面。}
+- signal: iq
+  text: {en: 'IQ-style caches store (2,C,T) tensors with an integer class label or a vector target. They serve RML2022 modulation classification, RADCOM classification from IQ, POWDER RF fingerprinting, and ICARUS interference detection and classification.', zh: 'IQ 类缓存以 (2,C,T) 张量存储，标签为整数类别或向量目标。用于 RML2022 调制分类、基于 IQ 的 RADCOM 分类、POWDER RF 指纹识别，以及 ICARUS 干扰检测与分类。'}

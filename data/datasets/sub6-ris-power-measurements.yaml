@@ -14,7 +14,43 @@ access: {url: 'https://github.com/marcantonio14/RIS-Power-Measurements-Dataset',
 code: []
 paper: arxiv:2404.01796
 used_in: []
-citing: ["doi:10.1109/iccworkshops67674.2025.11162261","doi:10.1109/ojcoms.2025.3572723"]
+citing: ['doi:10.1109/iccworkshops67674.2025.11162261', 'doi:10.1109/ojcoms.2025.3572723']
 summary: {en: 'Received-power (RSRP) measurements of an OFDM link through a 10 × 10-element RIS prototype at 5.3 GHz, collected in a 5 × 8 m anechoic chamber. The beampattern set sweeps 1891 main-beam codebook configurations while a turntable rotates from -90° to 90°, and the absorption-mode set varies the number of active RIS elements.', zh: 在 5 × 8 m 消声暗室中，通过 10 × 10 单元 RIS 原型的 OFDM 链路，于 5.3 GHz 测得接收功率（RSRP）。波束方向图数据集包含 1891 个主波束码本配置，转台在 -90° 至 90° 之间旋转；吸收模式数据集则改变有效 RIS 单元数量。}
 sources: ['https://arxiv.org/abs/2404.01796', 'https://arxiv.org/html/2404.01796', 'https://github.com/marcantonio14/RIS-Power-Measurements-Dataset', 'https://raw.githubusercontent.com/marcantonio14/RIS-Power-Measurements-Dataset/main/README.md', 'https://api.github.com/repos/marcantonio14/RIS-Power-Measurements-Dataset']
 checked: '2026-11-06'
+overview: {en: 'This dataset contains received-power measurements of an OFDM link reflected by a reconfigurable intelligent surface (RIS) prototype at 5.3 GHz. The RIS is a 10 × 10 array of unit cells that uses RF switches for phase shifting, and the measurements were taken in a 5 × 8 m anechoic chamber at TU Darmstadt, where the channel is line-of-sight only. The work comes from NEC Laboratories Europe, TU Darmstadt and i2CAT Foundation and was published in 2024 (arXiv:2404.01796). The recorded quantity is the reference signal received power (RSRP), averaged over the signal bandwidth, at the receiver. The data form two sets: the beampattern set covers 1891 main-beam codebook configurations, with a turntable that rotates from -90° to 90°, and the absorption-mode set varies the number of active RIS elements over 4, 16, 64 and 100. The authors use the data to learn the radiation pattern, to model half-power beamwidth against element count, and to estimate angles of arrival and departure. Each
+    matrix cell holds one averaged power value in dBm, so the release contains no channel responses or IQ samples.', zh: '该数据集包含一个 5.3 GHz 可重构智能表面（RIS）原型对 OFDM 链路反射后的接收功率测量结果。RIS 由 10 × 10 个单元组成，相移通过 RF 开关实现。测量在 TU Darmstadt 的 5 × 8 m 消声暗室中进行，信道仅为视距（LOS）。工作由 NEC Laboratories Europe、TU Darmstadt 和 i2CAT Foundation 完成，发表于 2024 年（arXiv:2404.01796）。记录的量是接收端的参考信号接收功率（RSRP），在信号带宽上取平均。数据分为两组。波束方向图组包含 1891 个主波束码本配置，转台在 -90° 至 90° 之间旋转。吸收模式组改变有效 RIS 单元数，取值为 4、16、64 和 100。作者用这些数据学习辐射方向图、拟合半功率波束宽度与单元数的关系，并估计到达角和离开角。每个矩阵单元仅存放一个以 dBm 为单位的平均功率值，因此发布内容中不含信道响应或 IQ 采样。'}
+signal_details:
+- signal: beam-power
+  text: {en: 'Reference signal received power (RSRP) in dBm, averaged over the signal bandwidth and recorded at the receiver. The OFDM signal is QPSK-modulated, has a 5 MHz bandwidth and LTE-like numerology, with -30 dBm transmit power per subcarrier. The noise floor is -90 dBm. The beampattern codebook covers azimuth -90° to 90° and elevation -45° to 45° in 3° steps, for transmitter angles of 20° and 90°. The absorption-mode measurements use 4, 16, 64 or 100 active elements.', zh: 以 dBm 为单位的参考信号接收功率（RSRP），在信号带宽上取平均，在接收端记录。OFDM 信号采用 QPSK 调制，带宽 5 MHz，采用类 LTE numerology，每子载波发射功率为 -30 dBm。噪声基底为 -90 dBm。波束方向图码本覆盖方位角 -90° 至 90°、俯仰角 -45° 至 45°，步长 3°，发射端角度分别为 20° 和 90°。吸收模式测量使用 4、16、64 或 100 个有效单元。}
+pipeline:
+  summary: {en: 'Measurements are taken by stepping RIS configurations and the turntable angle in an anechoic chamber, with RSRP logged by two USRP B210 radios running srsRAN.', zh: 在消声暗室中逐步切换 RIS 配置并旋转转台进行测量，由两台运行 srsRAN 的 USRP B210 射频设备记录 RSRP。}
+  stages:
+  - title: {en: RIS prototype and configuration, zh: RIS 原型与配置}
+    detail: {en: 'A 10 × 10 grid of 100 patch antennas on a 0.6 mm thick PCB, spaced at λ/2, operates at 5.3 GHz with 100 MHz bandwidth. Phase shifting uses RF switches with 8 outputs feeding delay lines, and configuring one unit cell takes 0.35 ms at 62 mW. The RIS sits on a vertical pole on a turntable.', zh: 由 100 个贴片天线组成的 10 × 10 网格印制在 0.6 mm 厚的 PCB 上，间距为 λ/2，工作频率 5.3 GHz，带宽 100 MHz。相移由 RF 开关实现，开关有 8 个输出并接延迟线，配置一个单元需要 0.35 ms，功耗 62 mW。RIS 竖直安装在转台上的立杆上。}
+    inputs:
+    - {en: RIS configuration codebook, zh: RIS 配置码本}
+    outputs:
+    - {en: reflected OFDM link, zh: 经 RIS 反射的 OFDM 链路}
+  - title: {en: OFDM transmit and receive chain, zh: OFDM 收发链路}
+    detail: {en: 'Two USRP B210 radios run srsRAN and send a QPSK OFDM signal with 5 MHz bandwidth at -30 dBm per subcarrier. Two TBMA4 double-ridged horn antennas (1–8 GHz, 13.5 dBi gain, 50 Ω) are used, with the TX 1.1 m from the RIS and the RX 6.3 m from the RIS at azimuth 90° and elevation -3°.', zh: 两台 USRP B210 运行 srsRAN，发送带宽 5 MHz 的 QPSK OFDM 信号，每子载波 -30 dBm。使用两个 TBMA4 双脊喇叭天线（1–8 GHz，13.5 dBi 增益，50 Ω），发射端距 RIS 1.1 m，接收端距 RIS 6.3 m，位于方位角 90°、俯仰角 -3°。}
+    inputs:
+    - {en: 'QPSK OFDM signal, 5 MHz', zh: QPSK OFDM 信号，5 MHz}
+    outputs:
+    - {en: received OFDM signal at RX, zh: 接收端 OFDM 信号}
+  - title: {en: Configuration and angle sweeps, zh: 配置与角度扫描}
+    detail: {en: 'The beampattern set uses a codebook of 1891 main-beam configurations, with the turntable rotating from -90° to 90° in 3° steps. The campaign was run for transmitter angles θt = 20° and 90° and took 99 hours in total. The absorption-mode set uses subarrays of 4, 16, 64 and 100 active elements in the top-left of the RIS, with TX, RX and RIS aligned at θr = 0°.', zh: 波束方向图组使用 1891 个主波束码本配置，转台以 3° 步进从 -90° 旋转到 90°。测量在发射端角度 θt = 20° 和 90° 下进行，总时长 99 小时。吸收模式组在 RIS 左上角使用 4、16、64 和 100 个有效单元的子阵列，发射端、接收端和 RIS 对准，θr = 0°。}
+    inputs:
+    - {en: codebook configurations, zh: 码本配置}
+    - {en: turntable angle θr, zh: 转台角度 θr}
+  - title: {en: RSRP logging, zh: RSRP 记录}
+    detail: {en: 'The receiver software is modified to dump RSRP values to a file. The final campaign takes 30 samples per measurement, chosen to keep the average error below 1%. An earlier test covered 3721 configurations with 80 samples each.', zh: 接收端软件经过修改，将 RSRP 数值写入文件。最终测量每次取 30 个样本，选取该数量是为了使平均误差低于 1%。早期测试覆盖 3721 个配置，每个配置取 80 个样本。}
+    outputs:
+    - {en: RSRP sample files, zh: RSRP 采样文件}
+  - title: {en: Smoothing and matrix output, zh: 平滑与矩阵输出}
+    detail: {en: 'RSRP values are post-processed with a Savitzky–Golay filter (window 7, order 4). Values are averaged per configuration and stored in dBm. In the beampattern files, rows are beam directions (θn, ϕn) and columns are turntable angles θr, with one file per θt; in the absorption-mode files, columns are active element counts N.', zh: 'RSRP 数值经 Savitzky–Golay 滤波器处理（窗口 7，阶数 4）。数值按配置取平均并以 dBm 存储。在波束方向图文件中，行为波束方向（θn, ϕn），列为转台角度 θr，每个 θt 一个文件；在吸收模式文件中，列为有效单元数 N。'}
+    inputs:
+    - {en: RSRP sample files, zh: RSRP 采样文件}
+    outputs:
+    - {en: beampattern matrix (dBm), zh: 波束方向图矩阵（dBm）}
+    - {en: absorption-mode matrix (dBm), zh: 吸收模式矩阵（dBm）}

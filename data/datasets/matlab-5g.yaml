@@ -1,0 +1,133 @@
+id: matlab-5g
+name: MATLAB 5G Toolbox
+year: 2018
+organization: MathWorks
+origin: simulation
+tasks: [channel-modeling, channel-estimation]
+signals: [iq, cir, csi]
+bands_ghz: []
+environment: []
+standard: 5G NR
+license: Commercial MATLAB and toolbox licenses
+access: {url: 'https://www.mathworks.com/help/5g/index.html', type: request}
+code: []
+sources: ['https://www.mathworks.com/help/5g/index.html', 'https://www.mathworks.com/help/5g/ref/nrcdlchannel-system-object.html']
+aliases: []
+used_in: []
+citing: []
+summary: {en: '5G NR waveforms, coding, link simulation, and channel-model implementations including CDL/TDL. Outputs can form training data, but the Toolbox does not define a unique data distribution.', zh: 5G NR 波形、编码、链路仿真与 CDL/TDL 等信道模型实现。其输出可构成训练数据，但 Toolbox 不对应唯一数据分布。}
+checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Define the NR transmitter configuration and channel, then filter waveforms or generate channel outputs directly; use receiver processing to measure errors/throughput. The toolbox is not a unified dataset.', zh: 先定义NR发送配置和信道，再过滤波形或直接生成信道输出，最后经接收处理统计误码/吞吐。工具箱不是统一数据集。}
+  stages:
+  - title: {en: Configure the NR link and transmit signal, zh: 配置NR链路与发送信号}
+    detail: {en: Generate transmit resource grids and waveforms for the research task; transmitter settings determine what the receiver estimates and decodes., zh: 根据研究任务生成发送资源栅格和波形；发送端设置决定接收端估计和解码对象。}
+    inputs:
+    - {en: NR carrier/resource configuration, zh: NR载波/资源配置}
+    - {en: 'Coding, modulation, reference signals, and payload bits', zh: 编码、调制、参考信号与业务比特}
+    outputs:
+    - {en: 'Transmit bits, resource grids, and time-domain waveforms', zh: 发送比特、资源栅格和时域波形}
+    controls:
+    - {en: 'Researcher specifies: numerology, bandwidth/resources, modulation and coding, DM-RS, and frame count', zh: 研究者固定：numerology、带宽/资源、调制编码、DM-RS与帧数}
+    checks:
+    - {en: Check that inputs and labels correspond to the same frame and resource locations, zh: 检查输入/标签对应同一帧与资源位置}
+    - {en: Retain transmitted reference signals to distinguish estimated CSI from ground truth, zh: 保留发送参考信号以区分估计CSI与真值}
+  - title: {en: Instantiate channels such as CDL/TDL, zh: 实例化CDL/TDL等信道}
+    detail: {en: Configure nrCDLChannel or nrTDLChannel; handle CDL angle/array information and TDL use cases according to the respective objects., zh: 配置nrCDLChannel或nrTDLChannel；CDL的角度/阵列与TDL的用途区别按对应对象处理。}
+    inputs:
+    - {en: Channel profile, zh: 信道profile}
+    - {en: 'Antenna, delay-spread, Doppler, and related parameters', zh: 天线、delay spread、Doppler等参数}
+    outputs:
+    - {en: Channel System object and configuration, zh: 信道System object及配置}
+    controls:
+    - {en: 'Researcher specifies: profile, DelaySpread, MaximumDopplerShift, SampleRate, and seed', zh: 研究者固定：profile、DelaySpread、MaximumDopplerShift、SampleRate与seed}
+    checks:
+    - {en: Check object-supported options against the selected release, zh: 核对对象支持的选项与所用release}
+    - {en: Do not assume single-link CDL is a complete multisite spatially consistent model, zh: 不要把单链路CDL默认成完整多站点空间一致模型}
+  - title: {en: Filter waveforms or output channels, zh: 过滤波形或输出信道}
+    detail: {en: Apply the channel to waveforms and output path gains/sample times; disabling ChannelFiltering generates channels only. Direct OFDM-response support from R2024b requires version-appropriate calls., zh: 可对波形施加信道并输出path gains/sample times；关闭ChannelFiltering可只生成信道。R2024b起的直接OFDM response能力需按版本调用。}
+    inputs:
+    - {en: Transmit waveform or configuration with ChannelFiltering disabled, zh: 发送波形或ChannelFiltering关闭配置}
+    outputs:
+    - {en: Received waveforms, zh: 接收波形}
+    - {en: 'Path gains, time samples, or OFDM channel responses', zh: path gains、时间采样或OFDM信道响应}
+    controls:
+    - {en: 'Researcher specifies: ChannelFiltering, output format, channel sampling, and normalization', zh: 研究者固定：ChannelFiltering、输出格式、信道采样与归一化}
+    checks:
+    - {en: Check filter delays and time alignment, zh: 核对滤波器时延与时间对齐}
+    - {en: 'Distinguish output path gains, ideal CSI, and receiver-estimated CSI', zh: 区分输出路径增益、理想CSI与接收估计CSI}
+  - title: {en: Add the receiver and error sources, zh: 加入接收机和误差来源}
+    detail: {en: 'Run the receiver chain required by the task to obtain estimated channels, soft bits, and decoded results; ideal synchronization/estimation are optional baseline assumptions.', zh: 执行研究任务所需接收链，得到估计信道、软比特和解码结果；理想同步/估计是可选基线假设。}
+    inputs:
+    - {en: Channel-affected waveforms, zh: 受信道影响的波形}
+    - {en: Noise and synchronization/channel-estimation/equalization configuration, zh: 噪声及同步/信道估计/均衡配置}
+    outputs:
+    - {en: Estimated CSI, zh: 估计CSI}
+    - {en: Decoded data and error statistics, zh: 解码数据和错误统计}
+    controls:
+    - {en: 'Researcher specifies: SNR definition, synchronization assumptions, estimator, HARQ, and receiver algorithm', zh: 研究者固定：SNR定义、同步假设、估计器、HARQ与接收算法}
+    checks:
+    - {en: Compare ideal and practical estimation branches, zh: 比较理想与实际估计分支}
+    - {en: Check noise-power consistency with antenna/FFT normalization, zh: 检查噪声功率与天线/FFT归一化一致}
+  - title: {en: Save training samples and link metrics, zh: 保存训练样本与链路指标}
+    detail: {en: 'Save samples with task configuration and compute BLER/throughput; for AI, explicitly define visible pilots, historical quantities, and label times.', zh: 按任务保存带配置的样本并统计BLER/吞吐；用于AI时显式限定可见导频、历史量和标签时间。}
+    inputs:
+    - {en: 'Channel ground truth, estimates, and decoding results', zh: 信道真值、估计量和解码结果}
+    outputs:
+    - {en: MAT arrays or researcher-defined formats, zh: MAT数组或研究者定义格式}
+    - {en: 'BLER, throughput, and model samples', zh: BLER、吞吐与模型样本}
+    controls:
+    - {en: 'Researcher specifies: sampling windows, train/test profiles, SNR, and seed grouping', zh: 研究者固定：采样窗口、训练/测试profile、SNR和seed分组}
+    checks:
+    - {en: Avoid placing the same random channel trajectory in multiple splits, zh: 避免同一随机信道轨迹跨切分}
+    - {en: Report decoding/throughput impact beyond prediction accuracy, zh: 预测准确率之外报告解码/吞吐影响}
+  scope: {en: MathWorks 5G Toolbox link simulation and nrCDLChannel interfaces; outputs vary by MATLAB release., zh: MathWorks 5G Toolbox链路仿真与nrCDLChannel接口；输出随MATLAB release变化。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• NR waveforms, channel outputs, and receiver results generated during a run', zh: • 运行后生成的NR波形、信道输出和接收机结果}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• CSI estimation/prediction samples
+
+      • BLER/throughput and AI decision labels', zh: '• CSI估计/预测样本
+
+      • BLER/吞吐与AI决策标签'}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• MATLAB was not run in this round; version-specific features are based on official documentation.
+
+      • Specify ChannelFiltering and OFDM-response options separately; do not mix return axes from different releases.', zh: '• 本轮未运行MATLAB；版本特性依据官方文档。
+
+      • 需单独说明ChannelFiltering和OFDM response选项，不能混合不同release的返回轴。'}
+provenance:
+- {en: NR physical parameters and waveforms, zh: NR 物理参数和 waveform}
+- {en: nrCDLChannel/nrTDLChannel or external channels, zh: nrCDLChannel/nrTDLChannel 或外部信道}
+- {en: 'Channel filtering, noise, and estimation', zh: 信道滤波、噪声和估计}
+- {en: Decoding/HARQ, zh: 解码/HARQ}
+- {en: 'BLER, throughput, and exportable channels', zh: BLER、吞吐量及可导出信道}
+technical_notes:
+- {en: 'Confirmed: nrCDLChannel supports path-gain and time-sample outputs; ChannelFiltering can be disabled to generate channels only.', zh: 已确认：nrCDLChannel 支持路径增益与时间采样输出，并可关闭 ChannelFiltering 只生成信道。}
+- {en: 'Confirmed: direct OFDM-response output is supported from R2024b; R2026a adds NTN CDL and conditional GPU support.', zh: 已确认：R2024b 起支持直接 OFDM response 输出；R2026a 有 NTN CDL 与条件 GPU 支持。}
+limitations:
+- {en: Fixing code without pinning the MATLAB release may change defaults and APIs., zh: 固定代码但不固定 MATLAB release 可能改变默认值与 API。}
+- {en: Separate perfect channel responses from practical pilot-based estimates., zh: perfect channel response 和实际 pilot-based estimate 要分开。}
+history:
+- {en: 'R2023b: nrCDLChannel dual mobility.', zh: R2023b：nrCDLChannel 双端移动。}
+- {en: 'R2024b: direct OFDM response.', zh: R2024b：直接 OFDM response。}
+- {en: 'R2026a: NTN CDL and partial GPU generation support.', zh: R2026a：NTN CDL 与部分 GPU 生成能力。}
+- {en: 'R2026b: current documentation version.', zh: R2026b：当前文档版本。}
+usage:
+- {en: Record version and the toolbox list at the top of the script., zh: 在脚本头部记录 version 与 toolbox 列表。}
+- {en: 'Set DelayProfile, DelaySpread, Doppler, arrays, and random source.', zh: 设置 DelayProfile、DelaySpread、Doppler、数组和随机源。}
+- {en: Save pathGains/sampleTimes or OFDM responses; specify normalization., zh: 保存 pathGains/sampleTimes 或 OFDM response；明确归一化。}
+- {en: 'Compare BLER/SE for perfect-CSI receivers, LS/LMMSE, and learned estimators.', zh: 对比 perfect-CSI 接收机、LS/LMMSE 和学习估计器的 BLER/SE。}
+tools: [project-colosseum-scenario-generator]
+overview: {en: 'The MATLAB 5G Toolbox is a MathWorks toolbox for generating and simulating 5G NR signals, with standard-compliant functions and reference examples for the 3GPP 5G New Radio specifications. It covers waveform generation, link-level and system-level simulation with BLER as a link metric, golden reference verification, and conformance testing that includes O-RAN tests. The channel model nrCDLChannel implements the TR 38.901 CDL clustered delay line models, and for non-terrestrial networks it follows TR 38.811. Its outputs depend on the chosen configuration: the channel-impaired signal, path gains with sample times, or an OFDM channel response with a timing offset when a carrier configuration is passed. The documented defaults are the CDL-A delay profile, a 30 ns delay spread, a 4 GHz carrier frequency, a 5 Hz maximum Doppler shift and a 30.72 MHz sample rate. The toolbox is a generator, and the sources describe no fixed corpus or dataset. The release notes date the OFDM channel-response
+    output to R2024b and the NTN delay profiles and GPU processing to R2026a.', zh: MATLAB 5G Toolbox 是 MathWorks 的工具箱，用于生成和仿真 5G NR 信号，提供符合 3GPP 5G New Radio 规范的标准兼容函数和参考示例。其功能包括波形生成、链路级与系统级仿真（以 BLER 作为链路指标）、黄金参考验证，以及包含 O-RAN 测试的一致性测试。信道模型 nrCDLChannel 实现 TR 38.901 的 CDL 簇延迟线模型，非地面网络场景遵循 TR 38.811。输出取决于所选配置：信道损伤后的信号、带采样时刻的路径增益，或在传入载波配置时输出带定时偏移的 OFDM 信道响应。文档给出的默认值为 CDL-A 时延分布、30 ns 时延扩展、4 GHz 载频、5 Hz 最大多普勒频移和 30.72 MHz 采样率。发行说明中，OFDM 信道响应输出见于 R2024b，NTN 时延分布和 GPU 处理见于 R2026a。}
+signal_details:
+- signal: iq
+  text: {en: 'Waveforms are generated with the Wireless Waveform Generator app, and their analysis uses the Wireless Waveform Analyzer. nrCDLChannel takes an input signal (signalIn) and returns the channel-impaired output signal (signalOut); the default SampleRate is 30.72 MHz.', zh: 波形可用 Wireless Waveform Generator 应用生成，并用 Wireless Waveform Analyzer 分析。nrCDLChannel 接收输入信号 (signalIn)，返回经信道损伤后的输出信号 (signalOut)；默认 SampleRate 为 30.72 MHz。}
+- signal: cir
+  text: {en: 'With ChannelResponseOutput set to path-gains (the default), nrCDLChannel returns pathGains and sampleTimes, the fading path gains and the sample times of the channel snapshots. The getPathFilters object function returns the path filter impulse responses.', zh: 当 ChannelResponseOutput 设为 path-gains（默认值）时，nrCDLChannel 返回 pathGains 和 sampleTimes，即衰落路径增益与信道快照的采样时刻。getPathFilters 对象函数返回路径滤波器冲激响应。}
+- signal: csi
+  text: {en: 'With ChannelResponseOutput set to ofdm-response and an nrCarrierConfig object passed as input, nrCDLChannel returns ofdmResponse and timingOffset. The release notes date this option to R2024b. The toolbox page lists channel estimation as part of signal reception and recovery.', zh: 当 ChannelResponseOutput 设为 ofdm-response 并传入 nrCarrierConfig 对象时，nrCDLChannel 返回 ofdmResponse 和 timingOffset。发行说明中该选项的引入版本为 R2024b。工具箱页面将信道估计列为信号接收与恢复的一部分。}

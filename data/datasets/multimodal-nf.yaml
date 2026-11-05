@@ -21,3 +21,143 @@ citing: []
 summary: {en: 'Ray-traced near-field CSI at 7 GHz from a 64×64 UPA base station, synchronized with RGB images, LiDAR point clouds, noisy GPS, LoS labels and Top-5 beam indices for UAVs in 30 OSM-based urban scenes. An open-source generator produces the data, and the released set has 215,400 samples from 10,770 trajectories.', zh: '基于光线追踪的 7 GHz 近场 CSI，来自 64×64 UPA 基站，与 RGB 图像、LiDAR 点云、带噪声的 GPS、LoS 标签及 Top-5 波束索引同步，场景为 30 个基于 OSM 的城市三维场景中的无人机。数据由开源生成器产生，发布的数据集包含来自 10,770 条轨迹的 215,400 个样本。'}
 sources: ['https://arxiv.org/abs/2603.28280', 'https://github.com/Lmyxxn/Multimodal-NF', 'https://raw.githubusercontent.com/Lmyxxn/Multimodal-NF/main/README.md', 'https://huggingface.co/datasets/lmyxxn/MultimodalNF', 'https://api.crossref.org/works/10.1109/LWC.2026.3702704']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'The same city geometry and UAV trajectory drive radio, images, and geometric point clouds, which are then aligned and packaged using the retained channel-sample indices.', zh: 同一城市几何和UAV轨迹驱动无线、图像与几何点云，再按保留下来的信道样本索引对齐打包。}
+  stages:
+  - title: {en: City geometry and motion trajectories, zh: 城市几何与运动轨迹}
+    detail: {en: 'The notebook constructs city meshes and places the UAV frame by frame, saving trajectory CSVs, RF-scene XML, and sensor geometry.', zh: notebook构造城市网格并逐帧放置UAV，保存轨迹CSV、RF场景XML和传感器几何。}
+    inputs:
+    - {en: 'OSM scenes, materials, and base-station positions', zh: OSM场景、材质、基站位置}
+    - {en: Motion modes and random seeds, zh: 运动模式与随机种子}
+    outputs:
+    - {en: mesh/XML, zh: mesh/XML}
+    - {en: Trajectory CSVs and frame directories, zh: 轨迹CSV与帧目录}
+    controls:
+    - {en: 'Fix cities, units, coordinates, trajectories, and camera orientation', zh: 固定城市、单位、坐标、轨迹和相机朝向}
+    checks:
+    - {en: 'Reproduction check: city/trajectory/frame identities must match across modalities', zh: 复现检查：城市/轨迹/帧身份跨模态一致}
+  - title: {en: Per-element radio propagation, zh: 逐阵元无线传播}
+    detail: {en: 'The current code removes the UAV mesh and positions Tx using the trajectory. It uses 7 GHz, synthetic_array=False, LoS and specular reflection, and maximum depth 3.', zh: 当前代码移除UAV网格，用轨迹位置设置Tx；7 GHz、synthetic_array=False，启用LoS与镜面反射，最大深度3。}
+    inputs:
+    - {en: Static urban scene, zh: 城市静态场景}
+    - {en: Single-antenna UAV Tx and 64×64 base-station Rx, zh: 单天线UAV Tx与64×64基站Rx}
+    outputs:
+    - {en: Path objects and CFR, zh: 路径对象与CFR}
+    controls:
+    - {en: 'Fix the Sionna version, antenna patterns, and propagation switches', zh: 固定Sionna版本、方向图和传播开关}
+    checks:
+    - {en: 'Reproduction check: zero paths or near-zero CFR cause the whole trajectory to be discarded; record this filtering in outage analysis', zh: 复现检查：零路径或近零CFR会丢弃整条轨迹，outage分析须记录筛除}
+  - title: {en: Channel frequency points and near-field labels, zh: 信道频点与近场标签}
+    detail: {en: 'Current source code uses K=1024, but H_t_structured[0,:,0,:] extracts only the first frequency point and writes [4096,1,2]. The same vector and conjugated codebook produce Top-5 powers, with theta/phi/r indices decoded afterward.', zh: '当前源码K=1024，但H_t_structured[0,:,0,:]只抽取第一频点并写为[4096,1,2]。用同一向量与共轭码本求功率Top-5，并解码theta/phi/r索引。'}
+    inputs:
+    - {en: CFR and codebook PKL, zh: CFR、码本PKL}
+    - {en: Positions and Rayleigh-distance rules, zh: 位置与Rayleigh距离规则}
+    outputs:
+    - {en: H、BeamIdx、BeamPower, zh: H、BeamIdx、BeamPower}
+    - {en: 'Angle, Is_NF, LoS, and motion modes', zh: Angle、Is_NF、LoS与模式}
+    controls:
+    - {en: Record the README's 128 frequency points separately from the current code's 1024 computed/1 saved frequency point, zh: README的128频点与当前代码的1024计算/1频点写出分开记录}
+    checks:
+    - {en: 'Reproduction check: inspect actual HDF5 shapes and recompute labels on a sample; codebook dimensions and decoding order must match', zh: 复现检查：读取实际HDF5 shape并抽样重算标签；码本尺寸和解码顺序必须匹配}
+  - title: {en: Synchronized RGB rendering, zh: 同步RGB渲染}
+    detail: {en: Mitsuba renders PNGs from separate visual XML; radio materials and visual reflection parameters are configured separately., zh: Mitsuba根据独立视觉XML渲染PNG；无线材质和视觉反射参数分别配置。}
+    inputs:
+    - {en: Static mesh and UAV position for the same frame, zh: 同一帧静态mesh与UAV位置}
+    - {en: Base-station camera and visual materials, zh: 基站相机与视觉材质}
+    outputs:
+    - {en: bs_rgb frame images, zh: bs_rgb帧图像}
+    controls:
+    - {en: 'Fix field of view, resolution, lighting, and orientation', zh: 固定视场、分辨率、光照与朝向}
+    checks:
+    - {en: 'Reproduction check: the camera must cover the target; visual materials do not replace RF dielectric parameters', zh: 复现检查：相机覆盖目标；视觉材质不替代RF介电参数}
+  - title: {en: Point-cloud scanning of the same geometry, zh: 同几何点云扫描}
+    detail: {en: 'Open3D RaycastingScene computes nearest intersections, retains finite hits, and samples them for PLY output.', zh: Open3D RaycastingScene求最近交点，保留有限命中并抽样保存PLY。}
+    inputs:
+    - {en: Static mesh and current UAV mesh, zh: 静态mesh与当前UAV网格}
+    - {en: Base-station origin and random ray directions, zh: 基站原点和随机射线方向}
+    outputs:
+    - {en: bs_lidar point clouds, zh: bs_lidar点云}
+    controls:
+    - {en: 'Fix ray count, random seed, coordinates, and scan-direction distribution', zh: 固定射线数、随机种子、坐标与扫描方向分布}
+    checks:
+    - {en: 'Reproduction check: this is a geometric scan; sensor intensity and hardware errors require custom models', zh: 复现检查：这是几何扫描；传感器强度和硬件误差需自定义模型}
+  - title: {en: Package sensors using retained channel indices, zh: 按信道保留索引打包传感器}
+    detail: {en: 'Two scripts match by trajectory and sequential frame number. RGB is resized to 224×224 and blacked out with 5% probability. Point clouds are fixed at 10000 points by sampling or repetition, with distance-dependent Gaussian perturbations added with 5% probability.', zh: 两脚本按轨迹和顺序帧号匹配。RGB缩至224×224，5%概率置黑；点云固定10000点，采样或重复补点，5%概率叠加距离相关高斯扰动。}
+    inputs:
+    - {en: Channel HDF5 Metadata, zh: 信道HDF5 Metadata}
+    - {en: PNG and PLY frame files, zh: PNG、PLY帧文件}
+    outputs:
+    - {en: Separate image/points HDF5 files, zh: 独立image/points HDF5}
+    - {en: 'traj_id, frame_id, and perturbation masks', zh: traj_id、frame_id和扰动mask}
+    controls:
+    - {en: Fix random seeds and retain night/weather masks, zh: 固定随机种子并保留night/weather mask}
+    checks:
+    - {en: 'Reproduction check: missing files can also produce zero arrays, so report missing-data rates separately; blackout/Gaussian perturbations are simplified models', zh: 复现检查：缺文件也可产生零数组，需另报缺失率；置黑/高斯扰动是简化模型}
+  - title: {en: Construct beam and selective-sensing tasks, zh: 构建波束与选择性感知任务}
+    detail: {en: 'Isolate cities and trajectories, compare fixed modalities with an oracle first, then design policies with age and acquisition costs.', zh: 研究者按城市和轨迹隔离，先比较固定模态与oracle，再设计带age和采集成本的策略。}
+    inputs:
+    - {en: 'Aligned CSI, positions, RGB, and point clouds', zh: 已对齐CSI、位置、RGB与点云}
+    - {en: City/trajectory identities, zh: 城市/轨迹身份}
+    outputs:
+    - {en: Training/validation/test protocol, zh: 训练/验证/测试协议}
+    - {en: 'Goodput, outage, and sensing costs', zh: goodput、outage和感知成本}
+    controls:
+    - {en: Fix the codebook and costs; current unpurchased modalities must not enter the policy, zh: 固定码本与成本；当前未购买模态不可进入策略}
+    checks:
+    - {en: 'Reproduction check: independent trajectories can form multiuser sets only at the channel level; shared visual scenes must be regenerated', zh: 复现检查：独立轨迹仅可在信道层组multiuser；共享视觉需重新生成}
+  scope: {en: The current public generator and README are recorded separately; actual configurations of released HDF5 files remain file-specific., zh: 当前公开生成器与README分别记录；已发布HDF5的实际配置仍以文件为准。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Near-field CSI and Top-5 labels, position/mode/LoS
+
+      • Separately packaged, sample-aligned RGB and geometric point clouds', zh: '• 近场CSI和Top-5标签、位置/模式/LoS
+
+      • 单独打包且按样本对齐的RGB和几何点云'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Policy data with age and sensing costs
+
+      • Multiuser SINR and scheduling utility (defined separately)', zh: '• 带age与感知成本的策略数据
+
+      • 多用户SINR与调度效用（另行定义）'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The current source and README differ in frequency points and output shapes; released files require a separate audit.
+
+      • Code was read but the complete generator was not run in this audit; upstream defaults and researcher reproduction checks are distinguished.', zh: '• 当前源码与README已有频点和输出shape差异；发布文件必须单独审计。
+
+      • 本次读取代码而未运行完整生成器；上游默认和研究者复现检查已分开。'}
+provenance:
+- {en: OpenStreetMap scene geometry → urban scenes and UAV trajectories, zh: OpenStreetMap场景几何 → 城市场景与UAV轨迹}
+- {en: Sionna RT + array/material configuration → near-field channels, zh: Sionna RT + 阵列/材料配置 → 近场信道}
+- {en: 'Synchronized RGB/LiDAR rendering, GPS generation, and near-field codebook labels → HDF5', zh: 同步渲染RGB/LiDAR、生成GPS和近场码本标签 → HDF5}
+technical_notes:
+- {en: 'Verified: the README enables LoS and specular reflection by default, with maximum interaction depth 3. There is no evidence that released data include diffraction/diffuse scattering.', zh: 已确认：README 默认启用 LoS 和镜面反射，最大交互深度3；没有证据表明发布数据含绕射/漫散射。}
+- {en: 'Verified: current channel_generation.py directly saves trajectory positions. Image and point-cloud packaging separately adds simplified nighttime/weather perturbations; GPS-error experiments must specify their noise-injection rules.', zh: 已确认：当前channel_generation.py直接保存轨迹位置；图像与点云打包另加简化夜间/天气扰动；GPS误差实验需明确其加噪规则。}
+- {en: 'Inference: geometry and modalities are highly consistent within one scene pipeline; Sim2Real requires additional validation.', zh: 推断：同一场景管线下几何与模态高度一致，Sim2Real需额外验证。}
+limitations:
+- {en: Cameras/point clouds from different trajectories cannot be combined into a synchronized multi-UAV observation., zh: 不能把不同轨迹的相机/点云拼成同步 multi-UAV observation。}
+- {en: City splits avoid repeated locations but do not establish cross-engine generalization., zh: 城市划分避免位置重复，但不构成跨引擎泛化。}
+- {en: First recompute 100–1000 beam labels; stop experiments if codebook/channel versions do not match., zh: 先复算100–1000个 beam labels；码本/信道版本不一致时停止实验。}
+history:
+- {en: '2026-03-30: first arXiv submission.', zh: 2026-03-30：arXiv首次提交。}
+- {en: '2026: the repository cites WCL early access, DOI 10.1109/LWC.2026.3702704.', zh: 2026：仓库引用 WCL early access，DOI 10.1109/LWC.2026.3702704。}
+usage:
+- {en: 'Inspect HDF5 H, position, trajectory, LoS, and beam fields; load them according to the actual shapes in the release.', zh: 核对 HDF5 的 H、位置、轨迹、LoS与beam字段，按发布文件实际shape读取。}
+- {en: 'Fix the near-field codebook, reconstruct Top-k gains from complex channels, and compare against stored labels.', zh: 固定 near-field codebook，用复数信道重建Top-k增益并核对已存标签。}
+- {en: Isolate cities and trajectories; compare persistence/position rules with a perfect-information oracle before deciding whether to train., zh: 按城市和轨迹隔离；先比较 persistence/位置规则与 perfect-information oracle，再决定是否训练。}
+field_notes:
+- label: {en: Paths, zh: 路径}
+  text: {en: 'The code internally calls paths.cir() to obtain path gains/delays, but the final HDF5 output list does not save per-path a/tau/interaction information. Export changes and a generator rerun are required; a path-statistics table does not establish that per-sample paths are released.', zh: 代码内部调用paths.cir()得到路径增益/时延，但最终HDF5写出清单未保存逐路径a/tau/交互信息。需要修改导出并重跑生成器；不能用路径统计表推定逐样本路径已发布。}
+tools: [project-open3d-raycasting]
+overview: {en: 'Multimodal-NF is a ray-traced dataset and open-source generator for near-field XL-MIMO sensing and communication with low-altitude UAVs. The data cover 30 OpenStreetMap-based urban scenes, each with a 120 m × 120 m observation region and buildings 20–60 m high. The base station is a 64×64 UPA at (0, 0, 65) m operating at 7 GHz, and Sionna RT computes LoS and specular reflections up to interaction depth 3. The released set contains 215,400 samples from 10,770 trajectories of 20 frames each, with a 0.1 s sampling interval, across 10 UAV kinematic modes with horizontal speeds up to 25 m/s. Each sample pairs the CSI tensor with a LoS label, Top-5 beam indices, normalized beamforming gains, a 512×512 RGB image, a 10,000-point LiDAR cloud and noisy GPS coordinates. The split is by city: 22 cities for training, 4 for validation and 4 for testing, with 93.35% of samples labelled LoS. The paper is by M. Li, Q. Lu, J. Tian, H. Hu, Y. Han, X. Li, C.-K. Wen and S. Jin, published as early
+    access in IEEE Wireless Communications Letters in 2026 (DOI 10.1109/LWC.2026.3702704). The data are simulated only, with no diffraction or diffuse scattering, no array hardware effects and no weather degradation of the RGB or LiDAR data.', zh: 'Multimodal-NF 是一个基于光线追踪的数据集，并提供开源生成器，面向低空无人机的近场 XL-MIMO 感知与通信。数据覆盖 30 个基于 OSM 的城市场景，每个场景的观测区域为 120 m × 120 m，建筑高度为 20–60 m。基站为位于 (0, 0, 65) m 的 64×64 UPA，工作频率 7 GHz，Sionna RT 计算视距（LoS）和镜面反射，最大交互深度为 3。发布的数据包含 10,770 条轨迹的 215,400 个样本，每条轨迹 20 帧，采样间隔 0.1 s，覆盖 10 种无人机运动模式，水平速度最高 25 m/s。每个样本包含 CSI 张量、LoS 标签、Top-5 波束索引、归一化波束成形增益、512×512 RGB 图像、10,000 点 LiDAR 点云和带噪声的 GPS 坐标。数据按城市划分：训练集 22 个城市，验证集 4 个城市，测试集 4 个城市；LoS 样本占 93.35%。论文作者为 M. Li、Q. Lu、J. Tian、H. Hu、Y. Han、X. Li、C.-K. Wen 和 S. Jin，以早期访问形式发表于 IEEE Wireless Communications Letters（2026，DOI 10.1109/LWC.2026.3702704）。数据仅为仿真结果，不含绕射或漫散射、阵列硬件效应，RGB 与 LiDAR 数据也不包含天气造成的退化。'}
+signal_details:
+- signal: csi
+  text: {en: 'Ray-traced complex channel for a 64×64 UPA (4,096 antennas, vertically polarized) at 7 GHz, with 128 subcarriers at 30 kHz spacing. The paper gives the tensor as M × K × T × 2 with M = 4096, K = 128 and T = 20 frames, with real and imaginary parts stacked on the last axis. The channel is computed per antenna (synthetic array disabled).', zh: '基于光线追踪的复数信道，基站为 64×64 UPA（4,096 根天线，垂直极化），工作频率 7 GHz，128 个子载波，子载波间隔 30 kHz。论文给出的张量形式为 M × K × T × 2，其中 M = 4096、K = 128、T = 20 帧，实部与虚部位于最后一维。信道按天线逐个计算（未使用合成阵列）。'}
+- signal: beam-power
+  text: {en: 'Top-5 beam indices and normalized beamforming gain |wᴴh|² / |w_optᴴh|², defined on a near-field polar codebook of 4,000 beams (20 × 20 × 10 over θ in [−72°, 72°], φ in [60°, 150°] and range 20–155 m). The README also lists a dense 90 × 45 × 16 codebook file.', zh: 'Top-5 波束索引与归一化波束成形增益 |wᴴh|² / |w_optᴴh|²，基于 4,000 个波束的近场极坐标码本（20 × 20 × 10，θ ∈ [−72°, 72°]，φ ∈ [60°, 150°]，距离 20–155 m）。README 另列出一个 90 × 45 × 16 的密集码本文件。'}
+- signal: rgb
+  text: {en: '512 × 512 pixel camera image with a 90° field of view, rendered from the base-station-side viewpoint and co-located with the LiDAR cloud.', zh: 512 × 512 像素相机图像，视场角 90°，从基站侧视角渲染，与 LiDAR 点云同位采集。}
+- signal: lidar
+  text: {en: '10,000-point cloud per sample, co-located with the RGB camera and simulated with Open3D.', zh: '每个样本 10,000 点的点云，与 RGB 相机同位，使用 Open3D 仿真生成。'}
+- signal: gps
+  text: {en: 'Noisy 3D UAV coordinates ũ_t = u_t + z_t, with Gaussian noise z_t ~ N(0, σ²I) added to the ground truth.', zh: '带噪声的三维无人机坐标 ũ_t = u_t + z_t，在真值上叠加高斯噪声 z_t ~ N(0, σ²I)。'}

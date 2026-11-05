@@ -13,7 +13,41 @@ access: {url: 'https://ieee-dataport.org/documents/indoor-radio-map-dataset', ty
 code: []
 paper: arxiv:2501.13698
 used_in: []
-citing: ["doi:10.1109/icc59461.2026.11587950","doi:10.1109/icc59461.2026.11587244","doi:10.1109/twc.2026.3731526"]
+citing: ['doi:10.1109/icc59461.2026.11587950', 'doi:10.1109/icc59461.2026.11587244', 'doi:10.1109/twc.2026.3731526']
 summary: {en: 'Ray-traced indoor pathloss radio maps of 25 indoor environments at 868 MHz, 1.8 GHz and 3.5 GHz, sampled every 0.25 m. The test set of the ICASSP 2025 challenge is not part of the published data.', zh: 基于射线追踪生成的室内路径损耗无线电地图，覆盖25个室内环境，频率为868 MHz、1.8 GHz和3.5 GHz，采样间距为0.25 m。ICASSP 2025挑战赛的测试集未包含在已发布数据中。}
 sources: ['https://ieee-dataport.org/documents/indoor-radio-map-dataset', 'https://dx.doi.org/10.21227/c0ec-cw74', 'https://arxiv.org/abs/2501.13698', 'https://arxiv.org/html/2501.13698']
 checked: '2026-11-06'
+overview: {en: 'The ICASSP 2025 Indoor Pathloss Radio Map Dataset provides ray-traced indoor pathloss radio maps, prepared for the ICASSP 2025 Indoor Path Loss Prediction Challenge. Bakirtzis et al. created the dataset in August 2024, and the IEEE DataPort page was last updated in February 2026. The maps cover 25 indoor environments of different sizes and complexity, built from materials such as concrete, plasterboard, wood, glass and metal. Each environment is simulated at 868 MHz, 1.8 GHz and 3.5 GHz, with five antenna radiation patterns, one of which is isotropic. The transmitter sits 1.5 m above the floor, and pathloss is sampled every 0.25 m on a receiving plane at the same height. The data are stored as PNG and CSV files, with pathloss values from 13 dB to 160 dB. The paper states that the challenge test set is not published, and the separate test archive on the page contains inputs only. Downloading requires an IEEE DataPort subscription.', zh: ICASSP 2025 室内路径损耗无线电地图数据集提供基于射线追踪生成的室内路径损耗地图，为
+    ICASSP 2025 室内路径损耗预测挑战赛准备。数据集由 Bakirtzis 等人于 2024 年 8 月创建，IEEE DataPort 页面最后更新于 2026 年 2 月。地图覆盖 25 个室内环境，环境尺寸与复杂程度各不相同，墙体材料包括混凝土、石膏板、木材、玻璃和金属。每个环境在 868 MHz、1.8 GHz 和 3.5 GHz 下仿真，使用五种天线辐射方向图，其中一种为全向（isotropic）。发射机位于地面以上 1.5 m，路径损耗在同一高度的接收平面上以 0.25 m 为间隔采样。数据以 PNG 和 CSV 格式存储，路径损耗值范围为 13 dB 至 160 dB。论文称挑战赛测试集未公开，页面上的单独测试压缩包仅包含输入数据。下载需要 IEEE DataPort 订阅。}
+signal_details:
+- signal: pathloss
+  text: {en: 'Pathloss radio maps in dB, one map per simulation, stored as PNG and CSV. Each input is an RGB image: the first channel is normal-incidence reflectance, the second is incidence transmittance (both 0 for air), and the third is the Tx-to-point distance. Each target is a grayscale image in which each pixel holds the pathloss value, with values from 13 dB to 160 dB on a 0.25 m grid. Each sample is named B(ID)_Ant(ID)_f(ID)_S(ID), and the Position folder gives transmitter positions for every building, frequency and antenna.', zh: 以 dB 表示的路径损耗无线电地图，每次仿真一幅，以 PNG 和 CSV 格式存储。每个输入为 RGB 图像：第一通道为法向入射反射率，第二通道为入射透射率（空气中均为 0），第三通道为发射机到各点的距离。每个标签为灰度图像，每个像素存储路径损耗值，取值范围为 13 dB 至 160 dB，网格间距 0.25 m。样本以 B(ID)_Ant(ID)_f(ID)_S(ID) 命名，Position 文件夹给出每个建筑、频率与天线组合下的发射机位置。}
+pipeline:
+  summary: {en: Ranplan Wireless ray tracing produces indoor pathloss maps on a 0.25 m grid for 25 simulated environments at three frequencies., zh: Ranplan Wireless 射线追踪软件在 0.25 m 网格上为 25 个仿真室内环境生成三个频点的路径损耗地图。}
+  stages:
+  - title: {en: Scene and antenna definition, zh: 场景与天线定义}
+    detail: {en: 'The training set has 25 indoor environments of different sizes and complexity, built from materials such as concrete, plasterboard, wood, glass and metal. Five antenna radiation patterns are used, one of them isotropic. Frequencies are 868 MHz, 1.8 GHz and 3.5 GHz.', zh: 训练集包含 25 个室内环境，尺寸与复杂程度各不相同，由混凝土、石膏板、木材、玻璃和金属等材料构成。使用五种天线辐射方向图，其中一种为全向（isotropic）。频率为 868 MHz、1.8 GHz 和 3.5 GHz。}
+    inputs:
+    - {en: Building layouts with material properties, zh: 带材料属性的建筑布局}
+    - {en: Antenna radiation patterns, zh: 天线辐射方向图}
+    outputs:
+    - {en: 25 training environments, zh: 25 个训练环境}
+  - title: {en: Ray tracing, zh: 射线追踪}
+    detail: {en: 'Ranplan Wireless ray-tracing software computes the pathloss radio maps. Ray paths are traced up to 8 reflections, 10 transmissions and 2 diffractions. The transmitter is 1.5 m above the floor. The software version is not stated.', zh: Ranplan Wireless 射线追踪软件计算路径损耗无线电地图。射线路径最多追踪 8 次反射、10 次透射和 2 次绕射。发射机位于地面以上 1.5 m。论文未给出软件版本。}
+    inputs:
+    - {en: Environment geometry and transmitter at 1.5 m, zh: 环境几何与 1.5 m 高的发射机}
+    outputs:
+    - {en: Pathloss values at receiving points, zh: 接收点的路径损耗值}
+  - title: {en: Grid sampling, zh: 网格采样}
+    detail: {en: Pathloss is sampled on a receiving plane at 1.5 m height on a 0.25 m grid. The paper does not state transmit power or bandwidth., zh: 路径损耗在 1.5 m 高的接收平面上以 0.25 m 网格采样。论文未给出发射功率与带宽。}
+    inputs:
+    - {en: Ray-traced pathloss values, zh: 射线追踪得到的路径损耗值}
+    outputs:
+    - {en: Pathloss grid in dB, zh: 以 dB 表示的路径损耗网格}
+  - title: {en: Input and target encoding, zh: 输入与标签编码}
+    detail: {en: 'Each simulation yields an RGB input image with reflectance, transmittance and Tx-to-point distance channels, plus a grayscale target image in which each pixel holds the pathloss in dB. The files are PNG and CSV, and the naming pattern B(ID)_Ant(ID)_f(ID)_S(ID) indexes each sample.', zh: 每次仿真生成一幅 RGB 输入图像（包含反射率、透射率与发射机到各点距离三个通道）和一幅灰度标签图像（每个像素为以 dB 表示的路径损耗）。文件格式为 PNG 与 CSV，样本由 B(ID)_Ant(ID)_f(ID)_S(ID) 命名规则索引。}
+    inputs:
+    - {en: Pathloss grid in dB, zh: 以 dB 表示的路径损耗网格}
+    outputs:
+    - {en: PNG and CSV files, zh: PNG 与 CSV 文件}
+    - {en: 'Position, Radiation_Patterns and Building_Details folders', zh: Position、Radiation_Patterns 与 Building_Details 文件夹}

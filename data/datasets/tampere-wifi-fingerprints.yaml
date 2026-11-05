@@ -11,7 +11,12 @@ license: MIT
 access: {url: 'https://zenodo.org/records/889798', type: open}
 paper: doi:10.3390/data2040032
 used_in: []
-citing: ["doi:10.1109/tmc.2020.3017176","doi:10.1109/jiot.2024.3430087","doi:10.1109/jiot.2023.3298603"]
+citing: ['doi:10.1109/tmc.2020.3017176', 'doi:10.1109/jiot.2024.3430087', 'doi:10.1109/jiot.2023.3298603']
 summary: {en: 'The dataset contains 687 training and 3,951 test Wi-Fi fingerprints, recorded as MAC addresses and RSS values with 21 devices in a four-floor university building in Tampere, Finland, from January to August 2017. MATLAB and Python benchmark software for Wi-Fi indoor positioning is included.', zh: '数据集包含687条训练Wi-Fi指纹和3,951条测试Wi-Fi指纹，由21台设备在芬兰坦佩雷一栋四层大学建筑中于2017年1月至8月采集，记录MAC地址和RSS值。数据集同时包含用于Wi-Fi室内定位的MATLAB和Python基准测试软件。'}
 sources: ['https://zenodo.org/records/889798', 'https://api.crossref.org/works/10.3390/data2040032']
 checked: '2026-11-06'
+overview: {en: 'This dataset is a crowdsourced Wi-Fi fingerprint database for indoor positioning, collected in a four-floor university building in Tampere, Finland, from January to August 2017. E.S. Lohan and co-authors from Tampere University of Technology and Universitat Jaume I released it on Zenodo on 12 September 2017 (DOI 10.5281/zenodo.889798). A related article in MDPI Data (DOI 10.3390/data2040032) describes the same data. The fingerprints were recorded with 21 different devices used by different users. The database has two parts: 687 training fingerprints and 3951 test or estimation fingerprints. The package also contains benchmark software in Matlab and Python that runs indoor positioning based only on Wi-Fi information. The data are distributed as one archive, DISTRIBUTED_OPENSOURCE.zip, under the MIT license.', zh: 该数据集是一个用于室内定位的众包 Wi-Fi 指纹数据库，采集地点为芬兰坦佩雷一栋四层大学建筑，时间为 2017 年 1 月至 8 月。作者为 E.S. Lohan 及其合作者，所属机构为 Tampere University of Technology 和 Universitat Jaume I，数据于 2017 年 9
+    月 12 日发布在 Zenodo 上（DOI 10.5281/zenodo.889798）。MDPI Data 期刊上的相关文章（DOI 10.3390/data2040032）描述了同一数据。指纹由 21 台不同设备采集，设备由不同用户使用。数据库分为两部分：687 条训练指纹和 3951 条测试或估计指纹。数据包还包含 Matlab 和 Python 基准软件，用于仅基于 Wi-Fi 信息的室内定位。数据以单个压缩包 DISTRIBUTED_OPENSOURCE.zip 分发，采用 MIT 许可证。}
+signal_details:
+- signal: rssi
+  text: {en: 'Wi-Fi received signal strength (RSS) values, each recorded together with the MAC address of the access point, stored as fingerprints. The training and test databases hold 687 and 3951 fingerprints. The data were collected in crowdsourced mode with 21 devices and different users.', zh: Wi-Fi 接收信号强度（RSS）值，每个值与接入点的 MAC 地址一同记录，以指纹形式存储。训练数据库和测试数据库分别包含 687 条和 3951 条指纹。数据以众包模式采集，使用 21 台设备和不同用户。压缩包大小为 644.8 kB。}

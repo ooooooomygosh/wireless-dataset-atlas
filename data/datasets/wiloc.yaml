@@ -19,3 +19,44 @@ citing: []
 summary: {en: 'Wi-Fi CSI measured over three months from campus access points at the University of Southern California, covering more than 12 million UE locations, more than 3,000 access points, 16 buildings and more than 30 outdoor streets. Measurements use 20 MHz channels in the 2.4 GHz ISM band, captured with a USRP at the UE side.', zh: '在南加州大学（USC）校园 Wi-Fi 接入点上三个月内采集的 Wi-Fi CSI，覆盖超过 1,200 万个 UE 位置、3,000 多个接入点、16 栋建筑及 30 余条户外街道。测量使用 2.4 GHz ISM 频段的 20 MHz 信道，UE 端采用 USRP 采集。'}
 sources: ['https://arxiv.org/abs/2602.09115', 'https://arxiv.org/pdf/2602.09115', 'https://wides.usc.edu/programs-and-data.html']
 checked: '2026-11-06'
+overview: {en: 'WiLoc is a Wi-Fi CSI dataset with location labels, measured on the University of Southern California (USC) campus and described in arXiv:2602.09115 by Zhang, Chu, Serbetci, Gomez-Ponce and Molisch (2026). The campaigns took about 400 hours over three months, with a USRP-based receiver on a cart that followed straight, marked tracks. Table I of the paper lists 6,029,581 UE locations indoors in 16 buildings along 180 corridor trajectories (4,560 m in total), and 6,555,588 UE locations outdoors on more than 30 streets (5,263 m in total). Table I counts 3,293 available indoor APs and 24 outdoor APs; the measurements use campus Wi-Fi APs on channels 1, 6 and 11 of the 2.4 GHz band, with 20 MHz channels. Each building and the outdoor set has one metadata file and one CSI file, and each CSI record carries 14 metadata fields: channel index, timestamp, distance, speed, heading, AP label, X, Y, floor, RSSI, noise and interference, SINR, repetition index and measurement index. The CSI
+    is raw, so AP RF distortions are not compensated, and BSSIDs are withheld from the public data. The stated task is ML-based localization, including supervised learning and transfer learning, and all locations lie on straight lines rather than on a grid.', zh: 'WiLoc 是一个带位置标签的 Wi-Fi CSI 数据集，测量地点为南加州大学（USC）校园，相关论文为 arXiv:2602.09115（Zhang、Chu、Serbetci、Gomez-Ponce 与 Molisch，2026 年）。测量耗时约 400 小时，历时三个月，接收端为装在推车上的 USRP 系统，推车沿画有标记的直线轨迹移动。论文 Table I 列出室内 UE 位置 6,029,581 个，分布于 16 栋建筑的 180 条走廊轨迹（总长 4,560 m）；室外 UE 位置 6,555,588 个，分布于 30 余条街道（总长 5,263 m）。Table I 统计的可用 AP 数，室内为 3,293 个，室外为 24 个。测量使用校园 Wi-Fi AP，在 2.4 GHz 频段的信道 1、6 和 11 上进行，信道带宽为 20 MHz。每栋建筑与室外数据各含一个元数据文件和一个 CSI 文件；每条 CSI 记录带有 14 个元数据字段，包括信道索引、时间戳、距离、速度、朝向、AP 标签、X、Y、楼层、RSSI、噪声与干扰、SINR、重复索引和测量索引。CSI 为原始数据，未补偿 AP 的射频失真，公开数据中不提供 BSSID。任务为基于机器学习的定位，包括监督学习与迁移学习；所有位置均位于直线轨迹上，而非网格。'}
+signal_details:
+- signal: csi
+  text: {en: 'Complex CSI extracted from the beacon frames of campus APs on channels 1, 6 and 11 (2.4 GHz, 20 MHz). The USRP digitises the band at 100 MSamp/s at baseband, and the selected channel is downsampled to 20 MSamp/s. Table I gives a location sampling rate of 10 Hz per AP. The nominal beacon interval is 102.4 ms; on several LOS trajectories, about 85% of beacon spacings were nominal and fewer than 5% contained more than one lost beacon. The authors state that phase is considerably less reliable than amplitude because of AP phase noise and beacon timing jitter, although the complex values are provided.', zh: 从校园 AP 的 beacon 帧中提取的复数 CSI，使用信道 1、6 和 11（2.4 GHz，20 MHz）。USRP 以 100 MSamp/s 的基带速率数字化该频段，所选信道再降采样至 20 MSamp/s。Table I 给出每个 AP 的位置采样率为 10 Hz。beacon 的标称间隔为 102.4 ms；在若干 LOS 轨迹上，约 85% 的间隔为标称值，少于 5% 的间隔丢失了一个以上的 beacon。论文指出，由于 AP 相位噪声与 beacon 发送的时间抖动，相位的可靠性远低于幅度，但数据中仍提供复数值。}
+pipeline:
+  summary: {en: 'Beacons from campus Wi-Fi APs are captured by a USRP on a tracked cart, separated by channel, decoded, filtered to campus APs, and matched to encoder-based UE positions to form CSI, location and AP triplets.', zh: 由装有编码器的推车搭载 USRP 采集校园 Wi-Fi AP 的 beacon，经信道分离、解码和校园 AP 过滤后，与编码器记录的 UE 位置匹配，形成 CSI、位置与 AP 三元组。}
+  stages:
+  - title: {en: Record beacons with a USRP on a tracked cart, zh: 在推车上用 USRP 记录 beacon}
+    detail: {en: 'A USRP digitises the 2.4 GHz signal at 100 MSamp/s at baseband through an omnidirectional antenna on the cart, 1.7 to 2.1 m above the ground. A dual-phase optical encoder with 1.5 mm resolution, sampled at 5 kSamp/s, records cart distance, and the cart moves on straight marked lines at an average of 0.45 m/s (0.15 m/s in Building 2).', zh: USRP 通过推车上距地面 1.7 至 2.1 m 的全向天线，以 100 MSamp/s 的基带速率数字化 2.4 GHz 信号。双相光学编码器分辨率为 1.5 mm，采样率为 5 kSamp/s，记录推车移动距离；推车沿带标记的直线以平均 0.45 m/s 移动（2 号楼为 0.15 m/s）。}
+    inputs:
+    - {en: 'Campus Wi-Fi AP beacons on channels 1, 6 and 11', zh: 信道 1、6、11 上的校园 Wi-Fi AP beacon}
+    - {en: Straight marked tracks, zh: 带标记的直线轨迹}
+    outputs:
+    - {en: Wideband baseband recordings, zh: 宽带基带记录}
+    - {en: Timestamped encoder distance, zh: 带时间戳的编码器距离}
+  - title: {en: Separate channels and downsample, zh: 分离信道并降采样}
+    detail: {en: 'The baseband data are frequency-shifted so that the target channel sits at 0 Hz, then low-pass filtered to suppress the other channels. The selected channel is downsampled to 20 MSamp/s to match the 20 MHz IEEE 802.11 bandwidth.', zh: 基带数据先做频移，使目标信道位于 0 Hz，再经低通滤波抑制其他信道。所选信道降采样至 20 MSamp/s，与 IEEE 802.11 的 20 MHz 带宽相匹配。}
+    inputs:
+    - {en: Wideband baseband recordings, zh: 宽带基带记录}
+    outputs:
+    - {en: Single-channel 20 MSamp/s streams, zh: 单信道 20 MSamp/s 数据流}
+  - title: {en: Detect packets and decode MAC fields, zh: 检测数据包并解码 MAC 字段}
+    detail: {en: 'The IEEE 802.11 L-STF and L-LTF fields locate the start of each packet. The decoded MAC data give the BSSID, ESSID and packet type, and CSI is extracted from the packets.', zh: IEEE 802.11 的 L-STF 与 L-LTF 字段用于定位每个数据包的起始位置。解码后的 MAC 数据给出 BSSID、ESSID 和数据包类型，并从数据包中提取 CSI。}
+    inputs:
+    - {en: Single-channel 20 MSamp/s streams, zh: 单信道 20 MSamp/s 数据流}
+    outputs:
+    - {en: Decoded packets with CSI and MAC fields, zh: 带 CSI 与 MAC 字段的解码数据包}
+  - title: {en: Keep campus-AP beacons, zh: 保留校园 AP 的 beacon}
+    detail: {en: 'Non-beacon packets are discarded first. ESSIDs then remove packets from APs outside the campus network, leaving CSI from campus APs only.', zh: 首先丢弃非 beacon 数据包，随后依据 ESSID 去除非校园 AP 的数据包，仅保留校园 AP 的 CSI。}
+    inputs:
+    - {en: Decoded packets with CSI and MAC fields, zh: 带 CSI 与 MAC 字段的解码数据包}
+    outputs:
+    - {en: Campus-AP beacon CSI, zh: 校园 AP beacon 的 CSI}
+  - title: {en: Match CSI to locations and write files, zh: 将 CSI 与位置匹配并写入文件}
+    detail: {en: 'CSI records are assigned UE positions by timestamp matching, giving CSI, location and AP triplets. The slowdown and drive-back segments of each line are removed. Each building and the outdoor set is written as one metadata file and one CSI file.', zh: CSI 记录按时间戳匹配到 UE 位置，形成 CSI、位置与 AP 三元组。每条测量线的减速段与返回段被去除。每栋建筑和室外数据分别写为一个元数据文件和一个 CSI 文件。}
+    inputs:
+    - {en: Campus-AP beacon CSI, zh: 校园 AP beacon 的 CSI}
+    - {en: Timestamped encoder distance, zh: 带时间戳的编码器距离}
+    outputs:
+    - {en: 'CSI, location and AP triplets with metadata files', zh: 带元数据文件的 CSI、位置与 AP 三元组}

@@ -19,6 +19,10 @@
 
 6. 提交 Pull Request 并按模板填写。
 
+## 详细字段
+
+除必填字段外，记录还可以包含 `overview`（详细简介）、`signal_details`（各信号的采集方式）、`pipeline`（从来源到标签的有序阶段，每阶段含输入、输出和检查项）、`facts`、`variants`、`limitations`、`history` 和 `usage`。每段文字都是 `en` 与 `zh` 一对，每条陈述都必须有来源。来源没有说明的字段不要填写。
+
 ## 字段
 
 | 字段 | 含义 |

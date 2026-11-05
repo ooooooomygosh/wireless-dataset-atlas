@@ -18,3 +18,36 @@ citing: []
 summary: {en: 'Indoor vector network analyzer MIMO S21 measurements from 6 to 24 GHz, with 6001 frequency points, 9 Tx and 9 Rx virtual ULA ports, six Rx positions and nine far-field factors. Noise measurements with 200 repetitions are provided in the same format.', zh: 室内矢量网络分析仪测得的 MIMO S21 数据，频率范围 6 至 24 GHz，共 6001 个频点，使用 9 个发射和 9 个接收虚拟 ULA 端口，包含 6 个接收位置和 9 个远场因子。另提供格式相同的噪声测量数据，共 200 次重复。}
 sources: ['https://researchdata.tuwien.ac.at/doi/10.48436/hzn2f-hbb79', 'https://api.datacite.org/dois/10.48436/hzn2f-hbb79', 'https://api.crossref.org/works/10.23919/eucap63536.2025.11000050']
 checked: '2026-11-06'
+overview: {en: 'The TU Wien FR3 Indoor MIMO Channel Dataset contains indoor MIMO channel measurements in the 6 GHz to 24 GHz range. TU Wien published it on 15 October 2024 as version 1.0.0. The authors are Richard Prüller, Robert Langwieser and Markus Rupp, and the work was funded by the Christian Doppler Laboratory for Digital Twin assisted AI for Sustainable Radio Access Networks. A vector network analyzer recorded the channel as S21 parameters at 6001 frequency points, using virtual uniform linear arrays with 9 Tx and 9 Rx ports. The data cover 6 Rx positions and 9 far-field factors from 0.1 to 10, which describe the transition from the near field to the far field. A separate noise file contains 200 repetitions of noise measurements on a 3 by 3 port setup.', zh: TU Wien FR3 Indoor MIMO Channel Dataset 包含 6 GHz 至 24 GHz 频段的室内 MIMO 信道测量数据，由 TU Wien 发布，于 2024 年 10 月 15 日以 1.0.0 版发布。作者为 Richard Prüller、Robert Langwieser 和 Markus Rupp，工作由 Christian Doppler Laboratory for Digital Twin assisted
+    AI for Sustainable Radio Access Networks 资助。矢量网络分析仪以 S21 参数记录信道，频点数为 6001，收发端分别采用 9 个端口的虚拟均匀线阵（ULA）。数据覆盖 6 个接收位置和 9 个远场因子（取值 0.1 至 10），用于刻画从近场到远场的过渡。单独的噪声文件包含 200 次重复的噪声测量，端口配置为 3×3。}
+signal_details:
+- signal: csi
+  text: {en: 'Complex channel transfer matrices recorded as S21 over frequency by a vector network analyzer. Frequency range 6 GHz to 24 GHz with 6001 points, given in Hz. The channel_real and channel_imag arrays have dimensions [6, 9, 6001, 9, 9], for Rx positions, far-field factors, frequency points, Rx ports and Tx ports. Stored in channel.json.gz (440.7 MiB), a gzip-compressed UTF-8 JSON file. Antenna positions are given in m in room coordinates. The noise file noise.json.gz (186.1 MiB) holds 200 repetitions on a 3x3 port setup.', zh: '由矢量网络分析仪记录的复数信道传递矩阵，以随频率变化的 S21 表示。频率范围 6 GHz 至 24 GHz，共 6001 个点，频率单位为 Hz。channel_real 与 channel_imag 数组维度为 [6, 9, 6001, 9, 9]，依次对应接收位置、远场因子、频点、接收端口和发射端口。数据存储于 channel.json.gz（440.7 MiB），为 gzip 压缩的 UTF-8 JSON 文件。天线位置以 m 为单位，采用房间坐标。噪声文件 noise.json.gz（186.1 MiB）包含 200 次重复测量，端口配置为 3x3。'}
+pipeline:
+  summary: {en: 'Channel sounding with a vector network analyzer on virtual ULA arrays, with the traces stored as gzip-compressed JSON.', zh: 使用矢量网络分析仪在虚拟 ULA 阵列上进行信道探测，测量迹线以 gzip 压缩的 JSON 格式存储。}
+  stages:
+  - title: {en: Virtual array configuration, zh: 虚拟阵列配置}
+    detail: {en: 'Tx and Rx are virtual uniform linear arrays. The vector network analyzer records M x N channel matrices, with 9 Rx and 9 Tx ports in the channel data and 3 and 3 in the noise data, over 6001 frequency points from 6 GHz to 24 GHz.', zh: 收发端均为虚拟均匀线阵。矢量网络分析仪记录 M x N 信道矩阵，信道数据中接收端口和发射端口各为 9，噪声数据中各为 3，频点数为 6001，频率范围 6 GHz 至 24 GHz。}
+    inputs:
+    - {en: Indoor measurement room, zh: 室内测量房间}
+    outputs:
+    - {en: S21 traces over 6001 frequency points, zh: 6001 个频点的 S21 迹线}
+  - title: {en: Position and far-field sweep, zh: 位置与远场因子扫描}
+    detail: {en: 'Channel data are taken at 6 Rx positions, with higher indices closer to the Tx, and at 9 far-field factors from 0.1 to 10. Antenna positions are recorded in room coordinates in m, with a rotation matrix for the Tx and the Rx that maps room to local antenna coordinates.', zh: 信道数据在 6 个接收位置采集，编号越大越靠近发射端，并覆盖 9 个远场因子（0.1 至 10）。天线位置以 m 为单位记录在房间坐标系中，并为收发端分别给出从房间坐标到天线局部坐标的旋转矩阵。}
+    inputs:
+    - {en: Rx positions and far-field factors, zh: 接收位置与远场因子}
+    outputs:
+    - {en: Channel matrices with antenna positions, zh: 带天线位置的信道矩阵}
+  - title: {en: Noise measurement, zh: 噪声测量}
+    detail: {en: The noise file holds 200 repetitions of noise traces with 3 Rx and 3 Tx ports on the same frequency points. The demo script estimates SNR over frequency from these data., zh: 噪声文件包含 200 次重复的噪声迹线，接收端口和发射端口各为 3，频点与信道数据相同。demo.py 利用这些数据估计随频率变化的 SNR。}
+    inputs:
+    - {en: Repeated noise traces (R = 200), zh: 重复噪声迹线（R = 200）}
+    outputs:
+    - {en: noise.json.gz, zh: noise.json.gz}
+  - title: {en: JSON packaging, zh: JSON 打包}
+    detail: {en: Complex values are split into channel_real and channel_imag arrays. The key/value pairs are written as UTF-8/ASCII JSON and gzip-compressed. Frequency is given in Hz and positions in m., zh: 复数值拆分为 channel_real 与 channel_imag 两个数组。键值对以 UTF-8/ASCII JSON 写入并进行 gzip 压缩。频率单位为 Hz，位置单位为 m。}
+    inputs:
+    - {en: Complex channel traces, zh: 复数信道迹线}
+    outputs:
+    - {en: channel.json.gz, zh: channel.json.gz}
+    - {en: noise.json.gz, zh: noise.json.gz}

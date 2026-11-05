@@ -687,6 +687,27 @@
   "url": "https://arxiv.org/abs/2606.02102",
   "fetched": "2026-11-05"
  },
+ "arxiv:2606.24476": {
+  "title": "WiWorld-RealData: A Real-World Multi-Modal Dataset for 6G Wireless World Models",
+  "authors": [
+   "Yinyin Jiao",
+   "Huixin Xu",
+   "Jianhua Zhang",
+   "Yuelong Qiu",
+   "Jingjing Wang",
+   "Liu S",
+   "Yuxiang Zhang",
+   "Li Yu",
+   "Xuebin Sun",
+   "Guangyi Liu"
+  ],
+  "venue": "arXiv (Cornell University)",
+  "year": 2026,
+  "cited_by": 0,
+  "oa": "W7165734148",
+  "url": "https://arxiv.org/abs/2606.24476",
+  "fetched": "2026-11-05"
+ },
  "arxiv:2607.14975": {
   "title": "CFM-Bench: A Unified Multi-Domain, Multi-Task Benchmark for Channel Foundation Models",
   "authors": [
@@ -1005,6 +1026,23 @@
   "cited_by": 566,
   "oa": "W2190432600",
   "url": "https://doi.org/10.1038/sdata.2015.55",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1093/nsr/nwag500": {
+  "title": "WiFo-2: a generalist foundation model unifies heterogeneous wireless system design",
+  "authors": [
+   "Boxun Liu",
+   "Xuanyu Liu",
+   "Shijian Gao",
+   "Xuesong Cai",
+   "Xiang Cheng",
+   "Liuqing Yang"
+  ],
+  "venue": "National Science Review",
+  "year": 2026,
+  "cited_by": 1,
+  "oa": "W4416943846",
+  "url": "https://doi.org/10.1093/nsr/nwag500",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/access.2021.3121606": {
@@ -2997,6 +3035,29 @@
   "url": "https://doi.org/10.1109/jsac.2019.2904363",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/jsac.2023.3276057": {
+  "title": "Experimental Performance Evaluation of Cell-Free Massive MIMO Systems Using COTS RRU With OTA Reciprocity Calibration and Phase Synchronization",
+  "authors": [
+   "Yang Cao",
+   "Pan Wang",
+   "Kang Zheng",
+   "Xianghu Liang",
+   "Dongjie Liu",
+   "Mengting Lou",
+   "Jing Jin",
+   "Qixing Wang",
+   "Dongming Wang",
+   "Yongming Huang",
+   "Xiaohu You",
+   "Jiangzhou Wang"
+  ],
+  "venue": "IEEE Journal on Selected Areas in Communications",
+  "year": 2023,
+  "cited_by": 48,
+  "oa": "W4382888720",
+  "url": "https://doi.org/10.1109/jsac.2023.3276057",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/jsac.2023.3310097": {
   "title": "Digital Twin Empowered Wireless Healthcare Monitoring for Smart Home",
   "authors": [
@@ -3772,6 +3833,22 @@
   "url": "https://doi.org/10.1109/mcom.002.2200028",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/mcom.002.2200079": {
+  "title": "dApps: Distributed Applications for Real-Time Inference and Control in O-RAN",
+  "authors": [
+   "Salvatore D’Oro",
+   "Michele Polese",
+   "Leonardo Bonati",
+   "Hai Cheng",
+   "Tommaso Melodia"
+  ],
+  "venue": "IEEE Communications Magazine",
+  "year": 2022,
+  "cited_by": 118,
+  "oa": "W4221145084",
+  "url": "https://doi.org/10.1109/mcom.002.2200079",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/mcom.002.2200682": {
   "title": "Detection of Co- Existing RF Signals in CBRS Using ML: Dataset and API-Based Collection Testbed",
   "authors": [
@@ -3893,6 +3970,21 @@
   "cited_by": 334,
   "oa": "W3107377953",
   "url": "https://doi.org/10.1109/mcom.101.2001120",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/mcom.2014.6736761": {
+  "title": "Massive MIMO for next generation wireless systems",
+  "authors": [
+   "Erik G. Larsson",
+   "Ove Edfors",
+   "Fredrik Tufvesson",
+   "Thomas L. Marzetta"
+  ],
+  "venue": "IEEE Communications Magazine",
+  "year": 2014,
+  "cited_by": 6711,
+  "oa": "W2141682101",
+  "url": "https://doi.org/10.1109/mcom.2014.6736761",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/mcom.2017.1700082": {
@@ -4949,6 +5041,21 @@
   "url": "https://doi.org/10.1109/tcomm.2025.3615778",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/tit.2014.2354403": {
+  "title": "Massive MIMO Systems With Non-Ideal Hardware: Energy Efficiency, Estimation, and Capacity Limits",
+  "authors": [
+   "Emil Björnson",
+   "Jakob Hoydis",
+   "Marios Kountouris",
+   "Merouane Abdelkader Debbah"
+  ],
+  "venue": "IEEE Transactions on Information Theory",
+  "year": 2014,
+  "cited_by": 1026,
+  "oa": "W2142238976",
+  "url": "https://doi.org/10.1109/tit.2014.2354403",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/tmc.2018.2878233": {
   "title": "WiFi CSI Based Passive Human Activity Recognition Using Attention Based BLSTM",
   "authors": [
@@ -5095,6 +5202,21 @@
   "cited_by": 77,
   "oa": "W4389371084",
   "url": "https://doi.org/10.1109/tmc.2023.3340039",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tmc.2023.3342711": {
+  "title": "OrchestRAN: Orchestrating Network Intelligence in the Open RAN",
+  "authors": [
+   "Salvatore D’Oro",
+   "Leonardo Bonati",
+   "Michele Polese",
+   "Tommaso Melodia"
+  ],
+  "venue": "IEEE Transactions on Mobile Computing",
+  "year": 2023,
+  "cited_by": 40,
+  "oa": "W4389664657",
+  "url": "https://doi.org/10.1109/tmc.2023.3342711",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tmc.2024.3359596": {
@@ -5810,6 +5932,21 @@
   "url": "https://doi.org/10.1109/twc.2013.010413.120620",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/twc.2015.2400437": {
+  "title": "Optimal Design of Energy-Efficient Multi-User MIMO Systems: Is Massive MIMO the Answer?",
+  "authors": [
+   "Emil Björnson",
+   "Luca Sanguinetti",
+   "Jakob Hoydis",
+   "Merouane Abdelkader Debbah"
+  ],
+  "venue": "IEEE Transactions on Wireless Communications",
+  "year": 2015,
+  "cited_by": 822,
+  "oa": "W2147056723",
+  "url": "https://doi.org/10.1109/twc.2015.2400437",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/twc.2016.2628795": {
   "title": "A Non-Stationary IMT-Advanced MIMO Channel Model for High-Mobility Wireless Communication Systems",
   "authors": [
@@ -5927,6 +6064,22 @@
   "cited_by": 26,
   "oa": "W4315630715",
   "url": "https://doi.org/10.1109/twc.2022.3232379",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/twc.2023.3235355": {
+  "title": "Spanning Tree Method for Over-the-Air Channel Calibration in 6G Cell-Free Massive MIMO",
+  "authors": [
+   "Shu Xu",
+   "Yang Cao",
+   "Chunguo Li",
+   "Dongming Wang",
+   "Lüxi Yang"
+  ],
+  "venue": "IEEE Transactions on Wireless Communications",
+  "year": 2023,
+  "cited_by": 32,
+  "oa": "W4317038426",
+  "url": "https://doi.org/10.1109/twc.2023.3235355",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/twc.2023.3241841": {
@@ -6497,6 +6650,24 @@
   "url": "https://doi.org/10.1109/wcnc65185.2026.11555043",
   "fetched": "2026-11-05"
  },
+ "doi:10.1145/2348543.2348553": {
+  "title": "Argos: practical many-antenna base stations",
+  "authors": [
+   "Clayton W. Shepard",
+   "Hang Yu",
+   "Narendra Anand",
+   "Erran Li",
+   "Thomas L. Marzetta",
+   "Richard Hsin-Hsyong Yang",
+   "Lin Zhong"
+  ],
+  "venue": "ACM Annual International Conference on Mobile Computing and Networking (MobiCom)",
+  "year": 2012,
+  "cited_by": 654,
+  "oa": "W2171342189",
+  "url": "https://doi.org/10.1145/2348543.2348553",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1145/2483977.2483991": {
   "title": "Commute path bandwidth traces from 3G networks: analysis and applications",
   "authors": [
@@ -6510,6 +6681,34 @@
   "cited_by": 362,
   "oa": "W2055165550",
   "url": "https://doi.org/10.1145/2483977.2483991",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1145/2500423.2505302": {
+  "title": "ArgosV2: a flexible many-antenna research platform",
+  "authors": [
+   "Clayton W. Shepard",
+   "Hang Yu",
+   "Lin Zhong"
+  ],
+  "venue": "ACM Annual International Conference on Mobile Computing and Networking (MobiCom)",
+  "year": 2013,
+  "cited_by": 74,
+  "oa": "W1974956497",
+  "url": "https://doi.org/10.1145/2500423.2505302",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1145/2789168.2790120": {
+  "title": "Control Channel Design for Many-Antenna MU-MIMO",
+  "authors": [
+   "Clayton W. Shepard",
+   "Abeer Javed",
+   "Lin Zhong"
+  ],
+  "venue": "ACM Annual International Conference on Mobile Computing and Networking (MobiCom)",
+  "year": 2015,
+  "cited_by": 28,
+  "oa": "W2066865428",
+  "url": "https://doi.org/10.1145/2789168.2790120",
   "fetched": "2026-11-05"
  },
  "doi:10.1145/3098822.3098843": {
@@ -6698,6 +6897,20 @@
   "cited_by": 51,
   "oa": "W3188399836",
   "url": "https://doi.org/10.1145/3452296.3472924",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1145/3466772.3467035": {
+  "title": "DeepBeam: Deep Waveform Learning for Coordination-Free Beam Management in mmWave Networks",
+  "authors": [
+   "Michele Polese",
+   "Francesco Restuccia",
+   "Tommaso Melodia"
+  ],
+  "venue": "ACM International Symposium on Theory, Algorithmic Foundations, and Protocol Design for Mobile Networks and Mobile Computing (MobiHoc)",
+  "year": 2021,
+  "cited_by": 50,
+  "oa": "W3117793311",
+  "url": "https://doi.org/10.1145/3466772.3467035",
   "fetched": "2026-11-05"
  },
  "doi:10.1145/3485730.3485937": {

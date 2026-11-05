@@ -17,3 +17,37 @@ citing: []
 summary: {en: 'Raw RF IQ recordings of 37 UAV types captured with USRP hardware in real-world environments, totalling about 1.3 TB. The release also includes spectrogram images and XML metadata files.', zh: 来自37种无人机类型的原始射频IQ录制数据，使用USRP采集，录制于真实环境，总量约1.3 TB。数据集还包含频谱图和XML元数据文件。}
 sources: ['https://github.com/kitoweeknd/RFUAV', 'https://huggingface.co/datasets/kitofrank/RFUAV', 'https://raw.githubusercontent.com/kitoweeknd/RFUAV/main/LICENSE', 'https://arxiv.org/abs/2503.09033', 'https://arxiv.org/html/2503.09033']
 checked: '2026-11-06'
+overview: {en: 'RFUAV is a set of raw RF recordings of 37 UAV types, described in arXiv:2503.09033 and licensed under Apache-2.0. The raw data were captured with USRP X310 units at a 100 MHz sampling rate in a real-world environment, with the center frequency tuned for each drone and the SNR between 10 dB and 48 dB per drone type. The raw data total about 1.3 TB and are stored as binary interleaved IQ streams, with one XML file of acquisition parameters per recording. The Hugging Face release is described as a public subset: it holds 37 raw data clips, spectrogram images in train and validation folders, and model weights. The GitHub repository contains MATLAB and Python code that converts raw files to spectrograms and runs the detection and classification models. The authors target UAV signal detection, UAV type identification, SNR estimation and benchmarking across SNR levels.', zh: 'RFUAV 是 37 种无人机类型的原始射频录制数据，见 arXiv:2503.09033，采用 Apache-2.0 许可证。原始数据使用 USRP X310 在真实环境中采集，采样率为 100 MHz，每种无人机分别调整中心频率，每种类型的
+    SNR 为 10 dB 至 48 dB。原始数据总量约 1.3 TB，以二进制交错 IQ 流存储，每段录制附带一个采集参数 XML 文件。Hugging Face 发布的是公开子集，包含 37 个原始数据片段、训练集与验证集中的频谱图图像以及模型权重。GitHub 仓库提供将原始文件转换为频谱图的 MATLAB 与 Python 代码，以及检测与分类模型的运行代码。作者的目标任务包括无人机信号检测、无人机类型识别、SNR 估计，以及在不同 SNR 水平下的基准测试。'}
+signal_details:
+- signal: iq
+  text: {en: 'Binary interleaved IQ streams, each sample stored as two fp32 values. Captured with two USRP X310 units: USRPI records the raw data to a collector PC running Ubuntu 22.04 and GNU Radio v3.9.10, connected over a 10GbE link. Sampling rate 100 MHz. Center frequencies 2.41 to 5.8 GHz, tuned per drone. Raw file size per drone type from 15.71 GB to 127.71 GB. Each recording has an XML file with the USRP parameters: CenterFrequency, SampleRate, IFBandwidth, ScaleFactor in dB, and ReferenceSNRLevel.', zh: 二进制交错 IQ 流，每个采样点以两个 fp32 数值存储。使用两台 USRP X310 采集，USRPI 将原始数据录制到运行 Ubuntu 22.04 与 GNU Radio v3.9.10 的采集 PC，两者通过 10GbE 链路连接。采样率 100 MHz。中心频率 2.41 至 5.8 GHz，按无人机分别调谐。每种无人机类型的原始文件大小为 15.71 GB 至 127.71 GB。每段录制附带一个 XML 文件，记录 USRP 参数：CenterFrequency、SampleRate、IFBandwidth、以 dB 计的 ScaleFactor 以及 ReferenceSNRLevel。}
+- signal: spectrum
+  text: {en: 'Spectrograms computed from the raw IQ with STFT. The conversion function defaults to 1024 FFT points and 0.1 s per image at a 100 MHz sample rate, and writes PNG images; a second function writes spectrogram video at 5 fps. The Hugging Face release contains spectrogram image sets split into train and validation folders, one folder per drone model.', zh: 由原始 IQ 数据经 STFT 计算得到的频谱图。转换函数默认使用 1024 点 FFT、每幅图 0.1 s、100 MHz 采样率，输出 PNG 图像；另一函数以 5 fps 输出频谱视频。Hugging Face 发布的频谱图图像按训练集与验证集划分，每种无人机型号一个文件夹。}
+pipeline:
+  summary: {en: 'Raw IQ is recorded with USRP hardware, cut into segments, converted to spectrograms, and augmented with AWGN to cover lower SNR levels.', zh: 原始 IQ 由 USRP 硬件录制，切分为片段，转换为频谱图，并通过 AWGN 增广以覆盖较低的 SNR 水平。}
+  stages:
+  - title: {en: Signal capture, zh: 信号采集}
+    detail: {en: 'USRPI records each drone''s signal to a collector PC, with the transmitter connected directly to USRPI or placed nearby. USRPO replays packets to a spectrum analyzer covering 9 kHz to 13.2 GHz for quality checks. The sampling rate is 100 MHz, and the gain is set to keep the SNR high.', zh: USRPI 将每种无人机的信号录制到采集 PC，发射机直接连接 USRPI 或放置在附近。USRPO 将数据包回放至频谱分析仪（覆盖 9 kHz 至 13.2 GHz）以检查质量。采样率为 100 MHz，增益设置以保持较高的 SNR。}
+    inputs:
+    - {en: UAV transmitter, zh: 无人机发射机}
+    outputs:
+    - {en: Raw binary IQ files and XML parameter files, zh: 原始二进制 IQ 文件与 XML 参数文件}
+  - title: {en: Segmentation, zh: 分段切割}
+    detail: {en: The MATLAB tool rawdata_crop.m cuts raw recordings into smaller data packets at a set segment interval; 2 s is the example value., zh: MATLAB 工具 rawdata_crop.m 按设定的分段间隔将原始录制切割为较小的数据包，示例间隔为 2 s。}
+    inputs:
+    - {en: Raw IQ recordings, zh: 原始 IQ 录制数据}
+    outputs:
+    - {en: Segmented data packets, zh: 分段数据包}
+  - title: {en: Spectrogram conversion, zh: 频谱图转换}
+    detail: {en: 'The conversion function applies STFT to each IQ segment at a 100 MHz sample rate, with 1024 FFT points and 0.1 s per image by default, and writes PNG images. A second function writes the same spectrograms as video at 5 fps.', zh: 转换函数对每段 IQ 数据应用 STFT，默认采样率为 100 MHz，默认 1024 点 FFT，每幅图 0.1 s，并输出 PNG 图像。另一函数以 5 fps 将频谱图输出为视频。}
+    inputs:
+    - {en: IQ segments with sample rate and STFT size, zh: 带采样率与 STFT 长度的 IQ 片段}
+    outputs:
+    - {en: PNG spectrogram images and spectrogram video, zh: PNG 频谱图与频谱视频}
+  - title: {en: SNR augmentation, zh: SNR 增广}
+    detail: {en: 'The awgn1 function adds noise to reach target SNRs from -20 dB to 20 dB, in 2 dB steps by default, using an SNR estimate of the input. The data_augmentation function uses these versions to address the SNR mismatch between training and benchmark data.', zh: awgn1 函数根据输入数据的 SNR 估计值添加噪声，使其达到 -20 dB 至 20 dB 的目标 SNR，默认步长为 2 dB，也允许自定义。data_augmentation 函数利用这些版本解决训练数据与基准数据之间的 SNR 不一致问题。}
+    inputs:
+    - {en: Raw IQ with SNR estimate, zh: 带 SNR 估计值的原始 IQ}
+    outputs:
+    - {en: Noise-adjusted IQ at target SNRs, zh: 目标 SNR 下的加噪 IQ 数据}

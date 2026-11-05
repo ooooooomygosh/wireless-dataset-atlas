@@ -11,7 +11,45 @@ license: Not stated
 access: {url: 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public', type: open}
 paper: doi:10.1109/TMLCN.2025.3564239
 used_in: []
-citing: ["doi:10.1109/infocom59046.2026.11571614","doi:10.1109/ojcoms.2026.3657799"]
+citing: ['doi:10.1109/infocom59046.2026.11571614', 'doi:10.1109/ojcoms.2026.3657799']
 summary: {en: 'Active and passive measurements of 2G, 4G, 5G NSA and 5G SA mobile networks in Dortmund, Germany, collected in vehicles and at static locations. The CSV data contains signal metrics (RSRP, RSRQ, RSSI, SINR), cell and location fields, latency, and data rate with TCP congestion window and RTT.', zh: 在德国多特蒙德采集的移动网络主动与被动测量数据，包括车载测量和静态测量，覆盖 2G、4G、5G NSA 和 5G SA 网络。数据为 CSV 格式，包含 RSRP、RSRQ、RSSI、SINR 等信号指标、小区与位置字段、时延，以及带 TCP 拥塞窗口和 RTT 的数据速率。}
 sources: ['https://api.crossref.org/works/10.1109/TMLCN.2025.3564239', 'https://comnets.etit.tu-dortmund.de/research/open-source-open-data/', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/raw/main/README.md']
 checked: '2026-11-06'
+overview: {en: 'DoNext is an open measurement dataset of mobile networks in Dortmund, Germany, produced by the Communication Networks Institute (CNI) at TU Dortmund University and described in an IEEE TMLCN article in 2025 (vol. 3, pp. 585–604). It combines active and passive measurements made with Android phones in vehicles, a dedicated modem on a suspension railway track at TU Dortmund, and static measurements at fixed locations taken over an extended period covering all times of day. Passive measurements record cell radio values for 2G, 4G, 5G NSA and 5G SA networks, including RSRP, RSRQ, RSSI and SINR. Active measurements run iperf3 data-rate tests over TCP or UDP and ICMP latency pings. Usernames and exact timestamps are removed from the mobile data for privacy reasons. The files are compressed CSV files separated by semicolons, grouped into the folders mobile, mobile hbahn and static.', zh: DoNext 是在德国多特蒙德采集的移动网络测量开放数据集，由多特蒙德工业大学通信网络研究所（CNI）制作，并在 2025 年的 IEEE TMLCN 文章中发表（第 3 卷，第 585–604
+    页）。数据结合了车载 Android 手机的主动与被动测量、多特蒙德工业大学悬挂式铁路轨道上的专用调制解调器测量，以及在固定地点进行的静态测量，静态测量持续较长时间，覆盖全天各时段。被动测量记录 2G、4G、5G NSA 和 5G SA 网络的无线指标，包括 RSRP、RSRQ、RSSI 和 SINR。主动测量包括基于 TCP 或 UDP 的 iperf3 数据速率测试，以及 ICMP 时延 ping。出于隐私原因，移动数据中的用户名和精确时间戳已被删除。文件为压缩的 CSV 格式，以分号分隔，分别放在 mobile、mobile hbahn 和 static 三个文件夹中。}
+signal_details:
+- signal: kpi
+  text: {en: 'Latency measurements from ICMP round-trip tests to a server (server_ip): mean, minimum, maximum and standard deviation of the round-trip time over all pings (mean_latency, min_latency, max_latency, mean_dev_latency), packet loss in percent (packet_loss), and the number of pings (no_pings).', zh: 通过 ICMP 往返测试得到的时延测量，测试目标为服务器（server_ip）。字段包括所有 ping 往返时间的均值、最小值、最大值和标准差（mean_latency、min_latency、max_latency、mean_dev_latency）、丢包率（单位 %，packet_loss）以及 ping 次数（no_pings）。}
+- signal: rssi
+  text: {en: 'Radio measurements of the connected cell, with neighbouring-cell columns marked by the suffix _neighboring. Values include rsrp [dBm], rsrq [dB], rssi [dBm], sinr [dB], ss_rsrp (5G RSRP for 5G NSA) [dBm], ss_sinr [dB] and ss_rsrq [dB]. Other columns are cqi, ta (timing advance), earfcn, physical_cellid, cell_index (E-UTRAN Cell Identifier), tracking_area_code, network (2G, 4G, 5G NSA or 5G SA), and the primary and uplink bandwidths in kHz.', zh: 所连小区的无线测量值，邻区字段以后缀 _neighboring 标识。数值字段包括 rsrp（dBm）、rsrq（dB）、rssi（dBm）、sinr（dB）、ss_rsrp（5G NSA 时为 5G RSRP，单位 dBm）、ss_sinr（dB）和 ss_rsrq（dB）。其他字段包括 cqi、ta（定时提前量）、earfcn、physical_cellid、cell_index（E-UTRAN 小区标识 ECI）、tracking_area_code、network（2G、4G、5G NSA 或 5G SA），以及主带宽和上行带宽（单位 kHz）。}
+- signal: traffic
+  text: {en: 'iperf3 data-rate tests: protocol (TCP or UDP), direction (1 for downlink, 0 for uplink), duration [s], filesize [Byte], datarate [bit/s], packet_error_rate [%], retransmissions (TCP), parallel_streams, tcp_max_cwnd_0 (maximum congestion window of stream 0) and tcp_mean_rtt_0 (mean RTT in microseconds).', zh: iperf3 数据速率测试字段：协议（TCP 或 UDP）、方向（下行为 1，上行为 0）、持续时间（s）、传输文件大小（Byte）、数据速率（bit/s）、包错误率（%，packet_error_rate）、重传次数（TCP，retransmissions）、并行流数（parallel_streams）、流 0 的最大拥塞窗口（tcp_max_cwnd_0）以及流 0 的平均 RTT（tcp_mean_rtt_0，单位 μs）。}
+pipeline:
+  summary: {en: 'Android phones in vehicles, a dedicated modem and static measurement sites produce passive, latency and data-rate records, which are exported as semicolon-separated CSV files.', zh: 车载 Android 手机、专用调制解调器和静态测量点采集被动、时延和数据速率记录，并导出为以分号分隔的 CSV 文件。}
+  stages:
+  - title: {en: Mobile measurements in vehicles, zh: 车载移动测量}
+    detail: {en: 'Android phones in vehicles around Dortmund record passive cell measurements, iperf3 data-rate tests and ICMP latency. The README names the ConMon Android application together with the dataset.', zh: 多特蒙德周边车辆中的 Android 手机记录被动小区测量、iperf3 数据速率测试和 ICMP 时延。README 将 ConMon Android 应用与该数据集一并列出。}
+    inputs:
+    - {en: Android phones in vehicles, zh: 车载 Android 手机}
+    outputs:
+    - {en: 'passive, latency and data-rate records', zh: 被动、时延和数据速率记录}
+  - title: {en: Dedicated modem on the railway track, zh: 铁路轨道上的专用调制解调器}
+    detail: {en: A dedicated modem on a suspension railway track at TU Dortmund University provides the mobile measurements stored in the mobile hbahn folder., zh: 多特蒙德工业大学悬挂式铁路轨道上的专用调制解调器提供存放于 mobile hbahn 文件夹中的移动测量数据。}
+    inputs:
+    - {en: modem on a suspension railway track, zh: 悬挂式铁路轨道上的调制解调器}
+    outputs:
+    - {en: mobile hbahn measurements, zh: mobile hbahn 测量数据}
+  - title: {en: Static measurements, zh: 静态测量}
+    detail: {en: 'Passive and latency measurements at fixed locations, taken over an extended period covering all times of day. A separate table gives the location of each static measurement.', zh: 在固定地点进行被动和时延测量，持续较长时间，覆盖全天各时段。单独的表格给出每次静态测量的位置。}
+    outputs:
+    - {en: static folder and location table, zh: static 文件夹与位置表}
+  - title: {en: Privacy processing, zh: 隐私处理}
+    detail: {en: Usernames and exact timestamps are removed from the mobile data for privacy reasons., zh: 出于隐私原因，移动数据中的用户名和精确时间戳被删除。}
+    outputs:
+    - {en: anonymised mobile records, zh: 匿名化的移动数据记录}
+  - title: {en: CSV export, zh: CSV 导出}
+    detail: {en: Files are compressed for space reasons and stored as human-readable CSV with semicolon separators. The README loads them with pandas using sep=';'., zh: 文件因存储空间原因被压缩，并以便于阅读的 CSV 格式保存，分隔符为分号。README 示例使用 pandas 并设置 sep=';' 读取。}
+    inputs:
+    - {en: measurement records, zh: 测量记录}
+    outputs:
+    - {en: compressed semicolon-separated CSV files, zh: 压缩的分号分隔 CSV 文件}

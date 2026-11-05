@@ -13,7 +13,51 @@ access: {url: 'https://github.com/clarkzjw/LENS', type: open}
 code: ['https://github.com/clarkzjw/LENS']
 paper: doi:10.1145/3625468.3652170
 used_in: []
-citing: ["doi:10.1109/infocom59046.2026.11571189"]
+citing: ['doi:10.1109/infocom59046.2026.11571189']
 summary: {en: 'Ping round-trip time and IRTT one-way delay measurements from 20 Starlink dish locations across North America, Europe, Africa, Asia and Oceania, released as monthly Zenodo snapshots from 2023-11 to 2025-03.', zh: 来自北美、欧洲、非洲、亚洲和大洋洲 20 个 Starlink 终端站点的 ping RTT 与 IRTT 单向时延测量数据，以月度快照形式发布于 Zenodo，时间范围为 2023 年 11 月至 2025 年 3 月。}
 sources: ['https://github.com/clarkzjw/LENS', 'https://zenodo.org/records/15331299', 'https://api.crossref.org/works/10.1145/3625468.3652170']
 checked: '2026-11-06'
+overview: {en: 'LENS is a dataset of ping round-trip time (RTT) and IRTT one-way delay measurements from Starlink user terminals. Jinwei Zhao and Jianping Pan (University of Victoria) describe it in the ACM MMSys 2024 Open-Source Software and Dataset track, with DOI 10.1145/3625468.3652170. The probes ran from 20 Starlink dishes in 7 countries (Canada, United States, Belgium, Germany, Seychelles, Japan and Australia), with measurements taken from the user side of each terminal. The data are released as monthly snapshots; Zenodo holds the 2023-11 to 2025-03 snapshots, and later data are published on a separate site. Each snapshot is a zstd-compressed tar archive split into parts, and the RAW snapshots contain IRTT JSON and ping text output while selected months also include processed CSV files. The authors note that some one-way delay values are inaccurate or negative, because client and server clocks are synchronized by NTP on a best-effort basis, and that some dishes were inactive or paused
+    for parts of the period.', zh: LENS 是 Starlink 用户终端的 ping 往返时延（RTT）与 IRTT 单向时延测量数据集。作者为 Jinwei Zhao 与 Jianping Pan（University of Victoria），论文发表于 ACM MMSys 2024 开源软件与数据集（ODS）专题，DOI 为 10.1145/3625468.3652170。探测来自 20 个 Starlink 终端，分布于 7 个国家（加拿大、美国、比利时、德国、塞舌尔、日本和澳大利亚），测量从各终端的用户侧进行。数据以月度快照形式发布，Zenodo 保存 2023-11 至 2025-03 的快照，之后的数据发布于另一站点。每个快照为经 zstd 压缩并分割为多个部分的 tar 归档；RAW 快照包含 IRTT JSON 与 ping 文本输出，部分月份还提供处理后的 CSV 文件。作者指出，由于客户端与服务器时钟仅以尽力而为的方式通过 NTP 同步，部分单向时延值不准确或为负值；部分终端在该时段内处于非活动或暂停状态。}
+signal_details:
+- signal: kpi
+  text: {en: 'Ping: ICMP echo RTT in ms. The processed CSV has two columns, timestamp (Unix seconds with a fractional part) and rtt (ms, one decimal place). Raw ping lines have the form [unix_ts] 64 bytes from <addr>: icmp_seq=N ttl=63 time=X ms. IRTT: raw output is JSON with per-packet round_trips entries holding client and server wall and monotonic timestamps, plus delay and IPDV values. Processed IRTT CSV columns are timestamp (ns), rtt, uplink and downlink, and the value -1 marks a lost packet.', zh: 'Ping：ICMP echo 的 RTT，单位 ms。处理后的 CSV 含两列，timestamp（带小数部分的 Unix 秒）与 rtt（ms，保留一位小数）。原始 ping 行格式为 [unix_ts] 64 bytes from <addr>: icmp_seq=N ttl=63 time=X ms。IRTT：原始输出为 JSON，逐包记录 round_trips，包含客户端与服务器的墙钟时间和单调时间戳，以及 delay 与 IPDV 值。处理后的 IRTT CSV 列为 timestamp（ns）、rtt、uplink 与 downlink，取值 -1 表示丢包。'}
+pipeline:
+  summary: {en: 'IRTT and ping probes run on each Starlink dish, the raw output is converted to CSV, and the results are packaged as monthly zstd archives.', zh: 每个 Starlink 终端运行 IRTT 与 ping 探测，原始输出转换为 CSV，结果打包为月度 zstd 归档。}
+  stages:
+  - title: {en: Dish-side probing, zh: 终端侧探测}
+    detail: {en: 'Each user-side Starlink dish runs IRTT (version 0.9.1, a custom build labelled 0.9.1-clarkzjw) and ICMP ping. The example IRTT run uses a 5 s duration, a 1 s interval and a 60-byte payload. Client and server clocks are synchronized with NTP pool servers on a best-effort basis.', zh: 每个用户侧 Starlink 终端运行 IRTT（版本 0.9.1，作者自定义构建，标记为 0.9.1-clarkzjw）与 ICMP ping。示例 IRTT 运行采用 5 s 持续时间、1 s 间隔与 60 字节负载。客户端与服务器时钟以尽力而为的方式与 NTP pool 服务器同步。}
+    inputs:
+    - {en: Starlink dish, zh: Starlink 终端}
+    outputs:
+    - {en: IRTT output, zh: IRTT 输出}
+    - {en: ping output, zh: ping 输出}
+  - title: {en: Raw result storage, zh: 原始结果存储}
+    detail: {en: 'IRTT results are written as JSON with per-packet round-trip timestamps. Ping results are written as text lines that hold a Unix timestamp, the ICMP sequence number, TTL and time in ms.', zh: IRTT 结果以 JSON 格式写入，记录逐包往返时间戳。Ping 结果以文本行写入，包含 Unix 时间戳、ICMP 序号、TTL 与以 ms 计的时间。}
+    inputs:
+    - {en: IRTT output, zh: IRTT 输出}
+    - {en: ping output, zh: ping 输出}
+    outputs:
+    - {en: RAW IRTT JSON files, zh: RAW IRTT JSON 文件}
+    - {en: RAW ping TXT files, zh: RAW ping TXT 文件}
+  - title: {en: CSV conversion, zh: CSV 转换}
+    detail: {en: 'Raw results are converted to CSV. IRTT rows hold timestamp (ns), rtt, uplink and downlink, and a lost flag sets rtt to -1, while the true_up and true_down flags set uplink and downlink to -1. Ping rows hold a Unix timestamp and rtt in ms with one decimal place.', zh: 原始结果转换为 CSV。IRTT 行包含 timestamp（ns）、rtt、uplink 与 downlink；lost 标记将 rtt 置为 -1，true_up 与 true_down 标记分别将 uplink 与 downlink 置为 -1。Ping 行包含 Unix 时间戳与以 ms 计、保留一位小数的 rtt。}
+    inputs:
+    - {en: RAW IRTT JSON files, zh: RAW IRTT JSON 文件}
+    - {en: RAW ping TXT files, zh: RAW ping TXT 文件}
+    outputs:
+    - {en: processed IRTT CSV, zh: 处理后的 IRTT CSV}
+    - {en: processed ping CSV, zh: 处理后的 ping CSV}
+  - title: {en: Monthly snapshot packaging, zh: 月度快照打包}
+    detail: {en: 'Each monthly snapshot is archived with tar and compressed with zstd (the README example uses zstd -T24 -8), then split with split into parts of 40 GB. A snapshot is restored by concatenating the parts and extracting with tar --zstd.', zh: 每个月度快照以 tar 归档并用 zstd 压缩（README 示例为 zstd -T24 -8），再用 split 按 40 GB 分割。恢复时先拼接各分块，再用 tar --zstd 解压。}
+    inputs:
+    - {en: monthly RAW and CSV data, zh: 月度 RAW 与 CSV 数据}
+    outputs:
+    - {en: zstd tar archive parts, zh: zstd tar 归档分块}
+  - title: {en: Publication, zh: 发布}
+    detail: {en: 'Snapshots from 2023-11 to 2025-03 are deposited on Zenodo. From 2025-11, archives are uploaded to lens-starlink.jinwei.me when each measurement finishes, and weekly node snapshots appear at the start of the following week.', zh: 2023-11 至 2025-03 的快照存放于 Zenodo。自 2025-11 起，每次测量结束后归档上传至 lens-starlink.jinwei.me，每周的节点快照于次周初发布。}
+    inputs:
+    - {en: zstd tar archive parts, zh: zstd tar 归档分块}
+    outputs:
+    - {en: Zenodo snapshots, zh: Zenodo 快照}
+    - {en: lens-starlink.jinwei.me archives, zh: lens-starlink.jinwei.me 归档}

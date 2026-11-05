@@ -12,7 +12,46 @@ access: {url: 'https://www.tuwien.at/etit/tc/en/vienna-simulators/request-simula
 code: []
 paper: doi:10.1186/s13638-018-1239-6
 used_in: []
-citing: ["doi:10.1109/icc40277.2020.9149151","doi:10.1109/twc.2022.3232379","doi:10.1109/jsac.2025.3531577"]
+citing: ['doi:10.1109/icc40277.2020.9149151', 'doi:10.1109/twc.2022.3232379', 'doi:10.1109/jsac.2025.3531577']
 summary: {en: 'A MATLAB-based link-level simulator for standard-compliant 4G LTE and 5G NR physical-layer chains that processes the transmitter and receiver down to individual signal samples. Its results are PHY performance metrics such as throughput, BER and FER.', zh: 基于 MATLAB 的链路级仿真器，面向符合标准的 4G LTE 与 5G NR 物理层链路，对发射机和接收机的处理细化到单个信号采样点。仿真结果为 PHY 性能指标，如吞吐量、BER 和 FER。}
 sources: ['https://jwcn-eurasipjournals.springeropen.com/counter/pdf/10.1186/s13638-018-1239-6.pdf', 'https://doi.org/10.1186/s13638-018-1239-6', 'https://api.crossref.org/works/10.1186/s13638-018-1239-6', 'https://www.tuwien.at/etit/tc/en/vienna-simulators/request-simulator-downloads/', 'https://www.tuwien.at/etit/tc/en/vienna-simulators/vienna-5g-simulators/']
 checked: '2026-11-06'
+overview: {en: 'The Vienna 5G Link Level Simulator is a MATLAB-based physical-layer simulator developed at the TU Wien Institute of Telecommunications and described in a 2018 EURASIP Journal on Wireless Communications and Networking article. It models the 4G LTE and 5G NR transmitter and receiver chains down to individual signal samples. Path loss is entered as an input parameter, and the channel model covers small-scale fading only. Outputs are PHY metrics such as throughput, bit error ratio (BER) and frame error ratio (FER), obtained from Monte Carlo runs with 95 percent confidence intervals by default. The simulator is distributed under an academic use license on request. The stated scope is channel coding, MIMO processing, multicarrier modulation, channel estimation and equalization in standard-compliant setups.', zh: Vienna 5G 链路级仿真器是基于 MATLAB 的物理层仿真工具，由 TU Wien 通信研究所开发，相关论文发表于 2018 年 EURASIP Journal on Wireless Communications and Networking。它在单个信号采样点的粒度上建模符合标准的 4G LTE 与 5G NR 发射机和接收机链路。路径损耗作为输入参数设定，信道模型仅包含小尺度衰落。输出为吞吐量、误码率（BER）和误帧率（FER）等
+    PHY 指标，默认通过 Monte Carlo 仿真计算并给出 95% 置信区间。软件以学术使用许可的方式申请获取。仿真范围包括信道编码、MIMO 处理、多载波调制，以及信道估计与均衡。}
+signal_details:
+- signal: iq
+  text: {en: 'Transmitted and received signals at the level of individual signal samples, across the whole transmitter and receiver chain. Waveforms follow standard-compliant 4G LTE and 5G NR setups.', zh: 发射与接收信号以单个信号采样点的粒度贯穿整个发射机和接收机链路。波形遵循符合标准的 4G LTE 与 5G NR 配置。}
+pipeline:
+  summary: {en: 'A MATLAB, object-oriented simulator reads a scenario file, runs the link-level PHY chain under a fixed path loss and noise model, and averages Monte Carlo realizations into PHY metrics.', zh: 基于 MATLAB 面向对象实现的仿真器读取场景文件，在给定路径损耗和噪声模型下运行链路级 PHY 链路，并对蒙特卡洛实现取平均，得到 PHY 指标。}
+  stages:
+  - title: {en: Specify the scenario file, zh: 编写场景文件}
+    detail: {en: 'The user supplies a scenario file that defines the network topology. Nodes are base stations or users, and links can be downlink, uplink or sidelink in arbitrary meshes. The path loss of each link is entered as an input parameter, because the simulator contains no network geometry.', zh: 用户提供定义网络拓扑的场景文件。节点为基站或用户，链路可为下行、上行或侧链路（sidelink），并支持任意网状连接。每条链路的路径损耗作为输入参数给定，仿真器不包含网络几何。}
+    inputs:
+    - {en: Scenario file with nodes and links, zh: 包含节点与链路的场景文件}
+    - {en: Path loss per link, zh: 每条链路的路径损耗}
+    outputs:
+    - {en: Configured network topology, zh: 已配置的网络拓扑}
+  - title: {en: Generate standard-compliant waveforms, zh: 生成符合标准的波形}
+    detail: {en: 'The transmitter chain performs channel coding, MIMO processing and multicarrier modulation according to the LTE or NR configuration. Transmit power and noise power are fixed, and the SNR is determined by the applied waveform.', zh: 发射链路按 LTE 或 NR 配置完成信道编码、MIMO 处理和多载波调制。发射功率与噪声功率固定，SNR 由所用波形决定。}
+    inputs:
+    - {en: PHY configuration per link, zh: 各链路的 PHY 配置}
+    outputs:
+    - {en: Transmitted signal samples, zh: 发射信号采样}
+  - title: {en: Apply the wireless channel, zh: 施加无线信道}
+    detail: {en: 'The channel model includes small-scale fading only. Frequency-selective and time-selective fading channels are available, and their average power is set by the path-loss input. Multi-link transmissions take an individual path loss per link, which sets the SIR of each connection.', zh: 信道模型只包含小尺度衰落。提供频率选择性与时间选择性衰落信道，其平均功率由路径损耗输入决定。多链路传输为每条链路单独设置路径损耗，从而控制各连接的 SIR。}
+    inputs:
+    - {en: Path loss per link, zh: 每条链路的路径损耗}
+    outputs:
+    - {en: Faded signal samples at each receiver, zh: 各接收端的衰落信号采样}
+  - title: {en: 'Receive, estimate and equalize', zh: 接收、估计与均衡}
+    detail: {en: 'The receiver chain runs channel estimation and equalization on the received samples. Both steps are part of the simulated PHY chain, which covers the whole transmitter and receiver at sample level.', zh: 接收链路对接收采样进行信道估计与均衡，二者都是被仿真 PHY 链路的组成部分，该链路在采样级覆盖整个发射机与接收机。}
+    inputs:
+    - {en: Received signal samples, zh: 接收信号采样}
+    outputs:
+    - {en: Per-link receiver results, zh: 各链路的接收结果}
+  - title: {en: Average over Monte Carlo realizations, zh: 对蒙特卡洛实现取平均}
+    detail: {en: 'Results are averaged over a set number of channel, noise and data realizations. The simulator reports throughput, BER and FER, with 95 percent confidence intervals by default.', zh: 结果对设定数量的信道、噪声和数据实现取平均。仿真器默认输出吞吐量、BER 和 FER，并给出 95% 置信区间。}
+    inputs:
+    - {en: Number of Monte Carlo realizations, zh: 蒙特卡洛实现次数}
+    outputs:
+    - {en: 'Throughput, BER and FER with confidence intervals', zh: 带置信区间的吞吐量、BER 与 FER}

@@ -19,3 +19,37 @@ citing: []
 summary: {en: 'Real 5G user traffic captured in residential, campus and driving scenarios and replayed on the Colosseum RF emulator in an srsRAN O-RAN system, totalling 447 minutes. gNB KPIs are polled over E2 every 250 ms, with 31 KPIs available and 17 used by the classifier.', zh: 在住宅、校园和驾车场景中采集的真实 5G 用户流量，在 Colosseum RF 仿真器中的 srsRAN O-RAN 系统内回放，总时长 447 分钟。gNB KPI 通过 E2 接口每 250 ms 轮询一次，共 31 项可用 KPI，其中 17 项用于分类器。}
 sources: ['https://github.com/genesys-neu/TRACTOR', 'https://genesys-lab.org/tractor', 'https://arxiv.org/abs/2312.07896', 'https://arxiv.org/html/2312.07896v2', 'https://api.github.com/repos/genesys-neu/TRACTOR/license']
 checked: '2026-11-06'
+overview: {en: 'TRACTOR is a dataset of real 5G user traffic and O-RAN KPIs, produced by the Genesys Lab at Northeastern University and described in a 2023 arXiv paper. The traffic was captured with a Google Pixel 6 Pro at residential and campus sites, with the phone stationary, walking or driving, and totals 447 minutes. Each capture is labeled with its phone application and grouped into eMBB, URLLC or mMTC slices. The captured traffic was replayed in the Colosseum RF emulator on an srsRAN-based O-RAN system, and gNB KPIs were recorded over the E2 interface. The KPI files total over 2.83 GB across 4,000 trials of 2 minutes each, stored as CSV. The authors target traffic slice classification and PRB allocation optimization. The KPIs contain no user-identifiable information, because identifiers, administrative fields and RSSI were removed.', zh: 'TRACTOR 是一个真实 5G 用户流量与 O-RAN KPI 数据集，由 Northeastern University 的 Genesys Lab 制作，并在 2023 年的 arXiv 论文中加以描述。流量使用 Google Pixel 6 Pro 在住宅区和校园采集，手机分别处于静止、步行和驾车状态，总时长
+    447 分钟。每次采集均按手机应用标注，并归入 eMBB、URLLC 或 mMTC 切片。采集的流量在 Colosseum RF 仿真器中回放，运行于基于 srsRAN 的 O-RAN 系统，gNB KPI 通过 E2 接口记录。KPI 文件总计超过 2.83 GB，包含 4,000 次试验，每次 2 分钟，以 CSV 格式存储。作者的目标任务为流量切片分类和 PRB 分配优化。KPI 中不含用户可识别信息，标识符、管理字段和 RSSI 已被移除。'}
+signal_details:
+- signal: traffic
+  text: {en: 'Real 5G user traffic captured with PCAPdroid on a Google Pixel 6 Pro and stored as .pcap files. Traffic falls into eMBB (video streaming, web browsing, large file transfers), URLLC (voice calls, video chat, real-time AR) and mMTC (texts and background traffic). Replay sends UDP packets with random payloads of the original lengths, with 70 bytes of overhead subtracted.', zh: 使用 PCAPdroid 在 Google Pixel 6 Pro 上采集的真实 5G 用户流量，存储为 .pcap 文件。流量分为 eMBB（视频流、网页浏览、大文件传输）、URLLC（语音通话、视频聊天、实时 AR）和 mMTC（短信及后台流量）三类。回放时以 UDP 发送数据包，负载为随机内容，长度与原始长度一致，并扣除 70 字节开销。}
+- signal: kpi
+  text: {en: 'gNB KPIs polled over E2 by the TRACTOR+ xApp every 250 ms. Of 31 available KPIs, 17 are used by the classifier, including downlink and uplink MCS, buffer bytes, bitrates, packet counts, CQI, SINR, power headroom, and requested and granted PRBs. Identifiers (IMSI, RNTI, slice ID), administrative fields and RSSI are removed. Each trial is 2 minutes long and stored as .csv. The classifier stacks T = 4, 8, 16, 32 or 64 consecutive samples.', zh: xApp TRACTOR+ 每 250 ms 通过 E2 接口轮询 gNB KPI。共 31 项可用 KPI，其中 17 项用于分类器，包括下行和上行 MCS、缓冲区字节数、比特率、包计数、CQI、SINR、功率余量，以及请求和分配的 PRB 数。标识符（IMSI、RNTI、切片 ID）、管理字段和 RSSI 已被移除。每次试验时长 2 分钟，以 .csv 格式存储。分类器堆叠 T = 4、8、16、32 或 64 个连续样本。}
+pipeline:
+  summary: {en: 'Real 5G traffic is replayed on the Colosseum emulator while an xApp records gNB KPIs, which are then split into 2-minute trials.', zh: 真实 5G 流量在 Colosseum 仿真器中回放，同时 xApp 记录 gNB KPI，随后切分为 2 分钟的试验。}
+  stages:
+  - title: {en: Traffic capture, zh: 流量采集}
+    detail: {en: 'PCAPdroid on a Google Pixel 6 Pro records phone traffic as .pcap files. Each capture is labeled with the phone application that produced it, and the sessions cover residential, campus and driving sites.', zh: 在 Google Pixel 6 Pro 上使用 PCAPdroid 将手机流量记录为 .pcap 文件。每次采集都标注了产生该流量的手机应用，会话覆盖住宅、校园和驾车场景。}
+    inputs:
+    - {en: Smartphone 5G traffic, zh: 手机 5G 流量}
+    outputs:
+    - {en: .pcap traces labeled by application, zh: 按应用标注的 .pcap 流量}
+  - title: {en: Replay on Colosseum, zh: 在 Colosseum 上回放}
+    detail: {en: 'traffic_gen.py replays the captured file on the gNB and then on the UE, using the same file. The gNB and UEs run the srsRAN-based SCOPE framework, which extends srsLTE 20.04 with an E2 interface, and the near-RT RIC uses the O-RAN Software Community Bronze release.', zh: traffic_gen.py 先在 gNB 上、再在 UE 上使用同一文件回放采集的流量。gNB 与 UE 运行基于 srsRAN 的 SCOPE 框架，该框架在 srsLTE 20.04 基础上增加了 E2 接口；near-RT RIC 采用 O-RAN Software Community 的 Bronze 版本。}
+    inputs:
+    - {en: .pcap traces, zh: .pcap 流量文件}
+    outputs:
+    - {en: Replayed UDP traffic on the emulated 5G network, zh: 仿真 5G 网络中回放的 UDP 流量}
+  - title: {en: KPI logging by xApp, zh: 通过 xApp 记录 KPI}
+    detail: {en: The TRACTOR+ xApp polls gNB KPIs over E2 every 250 ms. It writes all 31 available KPIs for offline training and runs the classifier online., zh: TRACTOR+ xApp 每 250 ms 通过 E2 接口轮询 gNB KPI。它记录全部 31 项可用 KPI 用于离线训练，并在线运行分类器。}
+    inputs:
+    - {en: gNB KPIs over E2, zh: 通过 E2 接口获取的 gNB KPI}
+    outputs:
+    - {en: KPI records (.csv), zh: KPI 记录（.csv）}
+  - title: {en: Preprocessing and trial split, zh: 预处理与试验切分}
+    detail: {en: 'Identifiers, administrative fields and RSSI are removed, and 17 KPIs remain for the classifier. Each trial is 2 minutes long, and longer traces are cut into 2-minute sub-traces.', zh: 移除标识符、管理字段和 RSSI，保留 17 项 KPI 供分类器使用。每次试验时长 2 分钟，较长的记录切分为 2 分钟的子记录。}
+    inputs:
+    - {en: Full KPI traces, zh: 完整 KPI 记录}
+    outputs:
+    - {en: 2-minute KPI trials (.csv), zh: 2 分钟 KPI 试验（.csv）}

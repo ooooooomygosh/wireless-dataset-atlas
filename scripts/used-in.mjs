@@ -51,6 +51,7 @@ for (const f of fs.readdirSync(dir).filter((f) => f.endsWith(".yaml")).sort()) {
   const file = path.join(dir, f);
   const text = fs.readFileSync(file, "utf8");
   const d = yaml.load(text);
+  if (!d.paper) { console.log(`${id}: no dataset paper, skipped`); continue; }
   const key = d.paper.toLowerCase().startsWith("doi:") ? "doi:" + d.paper.slice(4).toLowerCase() : d.paper.toLowerCase();
   let rec = papers[key];
   if (!rec?.oa) rec = { ...(rec ?? {}), ...((await resolve(d.paper)) ?? {}) };

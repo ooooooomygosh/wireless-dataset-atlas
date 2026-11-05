@@ -15,7 +15,118 @@ license: Not stated
 access: {url: 'https://github.com/fpasic1/vienna-channel-sounding', type: open}
 paper: doi:10.23919/eucap53622.2022.9769375
 used_in: []
-citing: ["doi:10.1109/mcom.003.2200718","doi:10.1109/tcomm.2025.3588591","doi:10.1109/infocomwkshps65812.2025.11152870"]
+citing: ['doi:10.1109/mcom.003.2200718', 'doi:10.1109/tcomm.2025.3588591', 'doi:10.1109/infocomwkshps65812.2025.11152870']
 summary: {en: 'Indoor laboratory channel sounding measurements at 2.55, 5.9 and 25.5 GHz with a rotating transmit antenna. Each run provides a time-variant channel transfer function over snapshots and OFDM subcarriers.', zh: 在室内实验室中于 2.55、5.9 和 25.5 GHz 进行的信道探测测量，发射天线做旋转运动。每次测量给出随快照（时间）和 OFDM 子载波变化的时变信道传输函数。}
 sources: ['https://github.com/fpasic1/vienna-channel-sounding', 'https://github.com/fpasic1/vienna-channel-sounding/blob/main/README.md', 'https://repositum.tuwien.at/handle/20.500.12708/150205', 'https://ieee-dataport.org/node/9982', 'https://api.crossref.org/works?query.title=Comparison+of+Sub+6+GHz+and+mmWave+Wireless+Channel+Measurements+at+High+Speeds&rows=3']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'A rotating arm repeats the same positions and speeds, with acquisition controlled by wired frequency/time references and position triggering. Separate runs at different carriers are then matched by trajectory position.', zh: 旋转臂重复同一位置和速度，由有线频率/时间参考及位置触发控制采集；不同载频分次测量后按轨迹位置对应。}
+  stages:
+  - title: {en: Create repeatable motion and a static environment, zh: 构造可重复运动与静态环境}
+    detail: {en: 'Mechanical rotation repeats the moving antenna''s trajectory while the receive antenna remains fixed. Keep the environment static between repeated runs at different carriers, so position and speed provide cross-run matching criteria.', zh: 通过机械旋转重复移动天线的轨迹，接收天线保持固定。在不同载频的重复运行之间保持环境静态，使位置与速度成为跨运行匹配依据。}
+    inputs:
+    - {en: Rotating arm and moving transmit antenna, zh: 旋转臂、移动发射天线}
+    - {en: Fixed receive antenna in an adjacent room and the laboratory environment, zh: 邻室固定接收天线与实验室环境}
+    outputs:
+    - {en: Repeatable trajectories, zh: 可重复轨迹}
+    - {en: Speed and deployment records for each run, zh: 每次运行的速度与部署记录}
+    controls:
+    - {en: The current repository provides a single-Tx/single-Rx interface; virtual-array processing is an additional method, zh: 当前仓库是单Tx/单Rx接口；虚拟阵列处理属于额外方法}
+    checks:
+    - {en: 'Reproduction check: inspect repeated starting positions, motion direction, speed, and environmental changes', zh: 复现检查：检查重复起点、运动方向、速度及环境变化}
+  - title: {en: Distribute frequency and time references, zh: 分配频率与时间参考}
+    detail: {en: 'The transmitting and receiving systems use a common frequency reference and a wired time reference. Position triggering samples the same trajectory positions across runs, with separate repeated acquisition at each carrier.', zh: 发射、接收系统使用公共频率参考和有线时间参考，位置触发使不同运行在相同轨迹位置采样。每个载频分别重复采集。}
+    inputs:
+    - {en: Wired reference connections, zh: 有线参考连接}
+    - {en: Position triggering and run configuration, zh: 位置触发与运行配置}
+    outputs:
+    - {en: Position-triggered acquisition sequences, zh: 按位置触发的采集序列}
+    - {en: Position correspondence across runs, zh: 跨运行位置对应关系}
+    controls:
+    - {en: Cross-frequency pairing relies on controlled repeated motion; parallel dual-band reception is not part of this published method, zh: 跨频配对依赖受控重复运动；并行双频接收不属于该公开方法}
+    checks:
+    - {en: 'Reproduction check: verify trigger offsets and initial-phase conventions; record carrier frequencies and run IDs', zh: 复现检查：验证触发偏差和起始相位约定；记录载频与运行编号}
+  - title: {en: Transmit OFDM and estimate CTF, zh: 发送OFDM并估计CTF}
+    detail: {en: 'Estimate the time-varying channel transfer function from training signals, averaging several OFDM symbols per snapshot. Each run contains 500 snapshots; the averaging window helps determine the effective temporal resolution.', zh: 根据训练信号估计时变channel transfer function，每个快照对多个OFDM符号平均；一次运行包含500个快照。平均窗口参与决定有效时间分辨率。}
+    inputs:
+    - {en: OFDM training signals, zh: OFDM训练信号}
+    - {en: Received samples at each position, zh: 每位置接收样本}
+    outputs:
+    - {en: Frequency-domain CTF for each run, zh: 每运行的频域CTF}
+    - {en: Snapshot and OFDM-averaging parameters, zh: 快照与OFDM平均参数}
+    controls:
+    - {en: Read OFDM configurations and actual sampling intervals from the corresponding campaign parameters, zh: OFDM配置和实际采样间隔按对应campaign参数读取}
+    checks:
+    - {en: 'Reproduction check: inspect the frequency axis and effective bandwidth, and whether averaging smooths the Doppler of interest', zh: 复现检查：检查频率轴、有效带宽及平均是否平滑了目标Doppler}
+  - title: {en: 'Organize runs by band, speed, and position', zh: 按频段、速度与位置组织运行}
+    detail: {en: 'The repository organizes data by carrier, campaign, and speed. For cross-frequency research, associate runs at matched positions and speeds before analyzing frequency differences. Confirm raw-file encoding and the deepest array dimensions when loading data.', zh: 仓库按载频、campaign和速度组织数据。跨频研究先在相同位置和速度上关联运行，再分析频率差异；原始文件编码和最深层数组维度需要加载时确认。}
+    inputs:
+    - {en: CTF at each carrier frequency, zh: 各载频的CTF}
+    - {en: Speed and position indices for the same trajectory, zh: 相同轨迹的速度和位置索引}
+    outputs:
+    - {en: CTF organized by run, zh: 按运行组织的CTF}
+    - {en: Cross-frequency matching on controlled trajectories, zh: 受控轨迹跨频匹配}
+    controls:
+    - {en: Correspondence between the 126 positions in the 2025 author manuscript and current repository files remains to be verified, zh: 2025作者稿中的126个位置与当前仓库文件对应尚待核验}
+    checks:
+    - {en: 'Reproduction check: establish explicit run-to-run position mappings; exclude repeated runs with environmental changes', zh: 复现检查：建立明确的run-to-run位置映射；排除环境发生变化的重复运行}
+  - title: {en: Distinguish spatial repetition from future-prediction tasks, zh: 区分空间重复与未来预测任务}
+    detail: {en: 'For reproduction, derive CIR/PDP from CTF and hold out complete runs. If using a virtual array, separately specify element positions and cross-snapshot phase-consistency assumptions. Evaluate future prediction at actual time intervals.', zh: 复现时将CIR/PDP由CTF导出，并按完整run留出。若使用虚拟阵列，应另写阵元位置与跨快照相位一致性假设；未来预测按真实时间间隔评估。}
+    inputs:
+    - {en: 'Paired CTF, trajectory positions, and sampling times', zh: 配对CTF、轨迹位置和采样时间}
+    outputs:
+    - {en: CIR/PDP and cross-frequency statistics, zh: CIR/PDP、跨频统计}
+    - {en: Run-level splits and prediction windows, zh: run级划分与预测窗口}
+    controls:
+    - {en: Keep physical motion speeds and frequency sampling grids consistent, zh: 保持物理运动速度和频率采样网格一致}
+    checks:
+    - {en: 'Reproduction check: first test persistence and frequency-smoothing baselines; check for leakage across repeated runs on the same path', zh: 复现检查：先测试persistence和频率平滑基线；检查同一路径重复运行是否泄漏}
+  scope: {en: Controlled rotating-trajectory single-link CTF at 2.55/5.9/25.5 GHz in the official repository; the 2025 author manuscript only supplements the method description., zh: 官方仓库2.55/5.9/25.5 GHz受控旋转轨迹单链路CTF；2025作者稿只补充方法说明。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Time-varying CTF organized by carrier/speed/campaign
+
+      • Measurement and OFDM parameters', zh: '• 按载频/速度/campaign组织的时变CTF
+
+      • 测量与OFDM参数'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• CIR, PDP, time-frequency correlation, and Doppler statistics
+
+      • Virtual arrays, prediction windows, or SE analysis under explicit assumptions', zh: '• CIR、PDP、时频相关性和Doppler统计
+
+      • 显式假设下的虚拟阵列、预测窗口或SE分析'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The cross-frequency matching type on this card is repeatable-motion pairing.
+
+      • Raw arrays have not been downloaded. The 500-snapshot count and OFDM averaging come from the official README; other run parameters require file-level verification.', zh: '• 本卡跨频匹配类型是可重复运动配对。
+
+      • 原始数组尚未下载；500快照与OFDM平均来自官方README，其他运行参数逐文件核验。'}
+provenance:
+- {en: Controlled static laboratory → moving antenna on a rotating arm, zh: 受控静态实验室 → 旋转臂移动天线}
+- {en: Common frequency reference and position triggering → repeated measurements at different carriers, zh: 公共频率参考与位置触发 → 不同载频重复测量}
+- {en: OFDM training signal → averaged estimates of time-varying CTF, zh: OFDM 训练信号 → 平均估计时变 CTF}
+technical_notes:
+- {en: 'Verified: positions and speeds are repeated across bands; the receiver remains stationary in an adjacent room.', zh: 已确认：不同频段保持重复的位置和速度，接收端在邻室静止。}
+- {en: 'Verified: frequency/time references use wired connections; the environment must remain static between runs.', zh: 已确认：频率/时间参考来自有线连接；环境需要在不同运行之间保持静态。}
+- {en: 'The same team''s 2025 author manuscript has been read: 2.55/25.5 GHz, 50/100 km/h, and 126 positions. The full campaign was restricted to 2 hours without people moving, with separate acquisitions along the same trajectory. File-by-file correspondence between this manuscript and the current GitHub release is unconfirmed.', zh: 已读2025同团队作者稿：2.55/25.5 GHz、50/100 km/h、126个位置；整个campaign限定2小时无人员移动，用相同轨迹分次采集。该稿与当前GitHub各文件的逐项对应未确认。}
+limitations:
+- {en: Synchronized sounder Tx/Rx ≠ simultaneous acquisition at different carrier frequencies., zh: 同步声探仪收发端 ≠ 不同载频同时采集。}
+- {en: Single-link CTF does not automatically substitute for a full array channel., zh: 单链路 CTF 不能自动替代完整阵列信道。}
+- {en: 'The 2025 author manuscript synthesizes a virtual antenna array from temporal snapshots. This relies on a static scattering environment and repeatable motion; it is not a simultaneous measured multi-antenna, multi-UE scenario.', zh: 2025作者稿以时间快照合成virtual antenna array；这依赖静态散射环境和可重复运动，不能当作同时实测多天线、多UE场景。}
+history:
+- {en: '2021: WSA methods paper.', zh: 2021：WSA 方法论文。}
+- {en: '2022: EuCAP cross-frequency comparison paper.', zh: 2022：EuCAP 跨频比较论文。}
+usage:
+- {en: Read measurement parameters and CTF from the band-specific directories., zh: 按频段目录读取测量参数与 CTF。}
+- {en: 'Align by trajectory position, speed, and run conditions, preserving repeated-measurement identifiers.', zh: 按轨迹位置、速度和运行条件对齐，保留重复测量标识。}
+- {en: 'Hold out complete trajectories or spatial regions, and report band mismatch and noise-normalization policies.', zh: 留出完整轨迹或位置区域，报告频段不匹配与噪声归一化策略。}
+field_notes:
+- label: {en: Paths, zh: 路径}
+  text: {en: 'This field denotes per-path angles at both ends and interaction records, which the public interface does not provide. Frequency-domain CTF can be transformed into CIR/PDP and delay statistics; geometric interaction paths and angles at both ends are not directly provided.', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。可由频域CTF变换得到CIR/PDP与时延统计；几何交互路径和双端角度不直接提供。}
+- label: {en: Beam labels, zh: 波束标签}
+  text: {en: 'The README releases CTF for a single transmit antenna and a single receive antenna, without per-codebook beam-sweep labels. Virtual-array beam analysis requires additional static-environment/phase-consistency assumptions.', zh: README发布单发射天线与单接收天线的CTF，没有逐码本beam-sweep标签；虚拟阵列波束分析需要额外静态环境/相位一致性假设。}
+overview: {en: 'Vienna Multi-Band Channel Sounding is a set of indoor laboratory channel measurements made by TU Wien at 2.55, 5.9 and 25.5 GHz. A rotary arm moves the transmit antenna on a 2 m circular trajectory at a constant, adjustable speed, and the receive antenna stays fixed on a table in an adjacent room about 10 m away. Each band is measured at the same positions and speeds, so runs at different carriers can be matched by trajectory. Each run stores a time-variant channel transfer function over snapshots and OFDM subcarriers, using one transmit and one receive antenna. The release is organized by carrier, campaign and speed. The measurements compare sub-6 GHz and mmWave channels in a controlled high-mobility setup, as described in a 2022 EuCAP paper.', zh: Vienna Multi-Band Channel Sounding 是 TU Wien 在室内实验室中完成的信道测量数据，测量载频为 2.55、5.9 和 25.5 GHz。旋转臂以恒定且可调的速度带动发射天线沿直径 2 m 的圆形轨迹运动，接收天线固定在相邻房间中约 10 m 外的实验台上。各频段在相同位置和速度下测量，因此不同载频的运行可按轨迹位置对应。每次运行给出以快照（时间）和 OFDM 子载波为索引的时变信道传输函数，收发均为单天线。数据按载频、campaign
+    和速度组织。测量用于在受控的高速环境中比较 sub-6 GHz 与 mmWave 信道，对应 2022 年 EuCAP 论文。}
+signal_details:
+- signal: csi
+  text: {en: 'Time-variant channel transfer function (CTF) indexed by snapshot and OFDM subcarrier, measured with one transmit and one receive antenna at 2.55, 5.9 and 25.5 GHz. Each run sends 50,000 identical OFDM symbols, organized as 500 snapshots of 100 symbols. The first symbol of each snapshot serves as the cyclic prefix and is discarded, and the remaining 99 symbols are averaged. The training signal is a low-PAPR Zadoff-Chu sequence.', zh: '以快照（时间）和 OFDM 子载波为索引的时变信道传输函数（CTF），收发均为单天线，载频为 2.55、5.9 和 25.5 GHz。每次运行发送 50,000 个相同的 OFDM 符号，组织为 500 个快照，每个快照 100 个符号。每个快照的第一个符号作为循环前缀并丢弃，其余 99 个符号取平均。训练序列为低 PAPR 的 Zadoff-Chu 序列。'}

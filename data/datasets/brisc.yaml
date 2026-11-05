@@ -24,3 +24,37 @@ citing: []
 summary: {en: 'Wideband CSI at 5.53 GHz, extracted from IEEE 802.11ac VHT frames over 80 MHz (242 valid subcarriers), for a 256-element binary-state RIS. It covers 9 transmitter positions with about 10,000 RIS configurations each, measured indoors with RF absorbers.', zh: '在 5.53 GHz 载频、80 MHz 带宽（IEEE 802.11ac VHT 帧，242 个有效子载波）下测得的宽带 CSI，RIS 为 256 单元二进制状态。覆盖 9 个发射机位置，每个位置约 10,000 个 RIS 配置，测量在室内并布置射频吸波材料的环境中进行。'}
 sources: ['https://arxiv.org/abs/2602.21102', 'https://arxiv.org/html/2602.21102', 'https://api.crossref.org/works/10.1145/3831662.3844168', 'https://zenodo.org/api/records/18714621', 'https://zenodo.org/records/18714621', 'https://raw.githubusercontent.com/MattiaP1999/BRISC_RIS_dataset_scripts/main/README.md', 'https://api.github.com/repos/MattiaP1999/BRISC_RIS_dataset_scripts']
 checked: '2026-11-06'
+overview: {en: 'BRISC is a channel measurement dataset recorded with a 256-element binary-state reconfigurable intelligent surface (RIS) at 5.53 GHz. Researchers at the University of Padua and the University of Brescia published it on Zenodo in February 2026, with an accompanying arXiv paper (2602.21102). The data come from an indoor measurement campaign with two USRP X310 software-defined radios, one transmitter with one antenna and one receiver with two antennas, in a scene with RF absorbing panels. The transmitter is placed at nine positions on a 3 by 3 grid, and about 10,000 RIS configurations are measured at each position using IEEE 802.11ac VHT frames over an 80 MHz channel with 242 valid subcarriers. The release consists of MATLAB .mat files totalling 40.3 GB: one file per transmitter position for each receive antenna type, and one configuration file that lists the 10,000 RIS states. The authors target RIS channel modelling, comparison of linear and data-driven channel models, and
+    signal processing and security studies for RIS-enabled systems. The data cover one 80 MHz channel at 5.53 GHz with a fixed receiver and a blocked direct path, so they do not span the full RIS design band or any mobility.', zh: 'BRISC 是一个信道测量数据集，使用 256 单元二进制状态可重构智能表面（RIS）在 5.53 GHz 下采集。帕多瓦大学与布雷西亚大学的研究人员于 2026 年 2 月将其发布在 Zenodo 上，并附有 arXiv 论文 2602.21102。数据来自室内测量：两台 USRP X310 软件无线电分别作为发射端（1 根天线）与接收端（2 根天线），场景中布置了射频吸波板。发射机位于 3×3 网格中的 9 个位置，每个位置使用 80 MHz 带宽的 IEEE 802.11ac VHT 帧测量约 10,000 种 RIS 配置，有效子载波 242 个。发布内容为 MATLAB .mat 文件，共 40.3 GB：每个发射位置、每种接收天线类型各一个文件，另有一个列出 10,000 种 RIS 状态的配置文件。作者面向 RIS 信道建模、线性与数据驱动信道模型的比较，以及 RIS 使能系统的信号处理与安全研究。数据仅包含 5.53 GHz 下的一个 80 MHz 信道，接收机固定，直射路径被阻断，因此不覆盖 RIS 完整设计频段，也不涉及移动场景。'}
+signal_details:
+- signal: csi
+  text: {en: 'Complex CSI arrays with 242 subcarriers along one axis and frames along the other, stored per transmitter position and per receive antenna type (dipole and log-periodic). CSI is extracted from IEEE 802.11ac VHT frames over 80 MHz at 5.53 GHz, with about 60 frames per configuration per receive antenna during a roughly 0.6 s transmission window. Subcarrier spacing is 312.5 kHz. The paper averages the per-frame estimates over the frames of each configuration, giving a K by M matrix with K = 242 subcarriers and M = 1 or 2 receive antennas. Each frame carries a configuration ID (1 to 10,000), a Wi-Fi sequence number (0 to 4095) and a reception timestamp.', zh: '复数 CSI 数组，一维为 242 个子载波，另一维为帧，按发射位置与接收天线类型（dipole 与 log-periodic）分别存储。CSI 从 5.53 GHz、80 MHz 带宽的 IEEE 802.11ac VHT 帧中提取，每个配置每根接收天线约 60 帧，发送窗口约 0.6 s。子载波间隔为 312.5 kHz。论文对每个配置的逐帧估计结果取平均，得到 K×M 矩阵，其中 K = 242 个子载波，M = 1 或 2 根接收天线。每帧附带配置 ID（1 至 10,000）、Wi-Fi 序列号（0 至 4095）与接收时间戳。'}
+- signal: iq
+  text: {en: 'The receiver stores complex baseband IQ samples for offline MATLAB processing. CSI is the received signal multiplied by the conjugate of the known pilot symbol and divided by the pilot''s squared magnitude. The release file listing shows CSI arrays and metadata, not IQ samples.', zh: 接收机存储复数基带 IQ 采样，用于离线 MATLAB 处理。CSI 等于接收信号乘以已知导频符号的共轭，再除以导频幅度平方。发布文件列表中显示的是 CSI 数组与元数据，而非 IQ 采样。}
+pipeline:
+  summary: {en: 'RIS configurations are sampled in three stages, each measured as 802.11ac frames, converted to CSI in MATLAB and packaged per transmitter position.', zh: RIS 配置分三个阶段采样，每个配置以 802.11ac 帧进行测量，在 MATLAB 中转换为 CSI，并按发射位置打包。}
+  stages:
+  - title: {en: RIS configuration sampling, zh: RIS 配置采样}
+    detail: {en: 'The 256-cell 1-bit RIS is controlled over USB from a host computer. Stage 1 measures all 16 patterns of four 8×8 macro-blocks, stage 2 measures all 512 patterns of a 3×3 macro-block grid, and stage 3 assigns independent random states to each element, giving 10,000 configurations per transmitter position.', zh: '256 单元 1 bit RIS 通过 USB 由主机计算机控制。第一阶段测量四个 8×8 宏块的全部 16 种组合，第二阶段测量 3×3 宏块网格的全部 512 种组合，第三阶段为每个单元独立随机分配状态，每个发射位置共 10,000 种配置。'}
+    inputs:
+    - {en: 256-cell 1-bit RIS with USB control, zh: 带 USB 控制的 256 单元 1 bit RIS}
+    outputs:
+    - {en: '10,000 RIS configurations', zh: '10,000 种 RIS 配置'}
+  - title: {en: Frame transmission and IQ capture, zh: 帧发射与 IQ 采集}
+    detail: {en: 'MATLAB-generated 802.11ac VHT frames are sent by a USRP X310 transmitter through a 25 dB linear amplifier over 80 MHz at 5.53 GHz. The receiver uses a fixed 35 dB gain with AGC disabled and records complex baseband IQ samples over a 0.6 s window, after 0.3 s settling and before a 0.3 s silence window.', zh: MATLAB 生成的 802.11ac VHT 帧由 USRP X310 发射机经 25 dB 线性放大器，在 5.53 GHz、80 MHz 带宽上发送。接收机关闭 AGC 并固定增益 35 dB，在 0.3 s 稳定期之后、0.3 s 静默期之前，记录 0.6 s 窗口内的复数基带 IQ 采样。}
+    inputs:
+    - {en: RIS configuration and 802.11ac frames, zh: RIS 配置与 802.11ac 帧}
+    outputs:
+    - {en: complex baseband IQ samples, zh: 复数基带 IQ 采样}
+  - title: {en: CSI estimation, zh: CSI 估计}
+    detail: {en: 'Per frame, the received signal is multiplied by the conjugate of the known pilot symbol and divided by the pilot''s squared magnitude. The per-frame estimates are averaged over the frames of each configuration, giving a 242 by 1 or 242 by 2 matrix.', zh: 对每一帧，将接收信号乘以已知导频符号的共轭，再除以导频幅度平方。每个配置的逐帧估计结果取平均，得到 242×1 或 242×2 矩阵。}
+    inputs:
+    - {en: IQ samples and known pilot symbols, zh: IQ 采样与已知导频符号}
+    outputs:
+    - {en: CSI per configuration, zh: 每个配置的 CSI}
+  - title: {en: Packaging into MATLAB files, zh: 打包为 MATLAB 文件}
+    detail: {en: 'Each transmitter position 1 to 9 has one file per receive antenna type (antennaDipole_posX.mat and antennaLog_posX.mat, 2.2 GB each). The configuration file configurations_10000.mat (10.9 MB) lists the RIS configurations in hexadecimal.', zh: 每个发射位置 1 至 9 对应每种接收天线类型各一个文件（antennaDipole_posX.mat 与 antennaLog_posX.mat，各 2.2 GB）。配置文件 configurations_10000.mat（10.9 MB）以十六进制列出 RIS 配置。}
+    inputs:
+    - {en: per-frame CSI arrays, zh: 逐帧 CSI 数组}
+    outputs:
+    - {en: MAT files per position and antenna type, zh: 按位置与天线类型划分的 MAT 文件}

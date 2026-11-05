@@ -12,7 +12,35 @@ license: CC BY 4.0
 access: {url: 'https://zenodo.org/records/7185349', type: open}
 paper: doi:10.1109/VTC2022-Spring54318.2022.9860818
 used_in: []
-citing: ["doi:10.1109/twc.2023.3315732","doi:10.1109/tap.2023.3318861","doi:10.1109/tcomm.2024.3469543"]
+citing: ['doi:10.1109/twc.2023.3315732', 'doi:10.1109/tap.2023.3318861', 'doi:10.1109/tcomm.2024.3469543']
 summary: {en: 'Double-directional multipath path data at 140 GHz for an indoor hall, derived from single-directional channel sounding and a measurement-based ray-launcher, covering 12 line-of-sight and 56 non-line-of-sight links.', zh: 140 GHz 室内大厅的双定向多径路径数据，由单定向信道探测结合基于测量的 ray-launcher 推导得到，覆盖 12 条视距（LOS）和 56 条非视距（NLOS）链路。}
 sources: ['https://zenodo.org/records/7185349', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1109/VTC2022-Spring54318.2022.9860818?fields=title,abstract,year,venue', 'https://api.crossref.org/works?query.title=Double-directional+multipath+data+at+140+GHz+derived+from+measurement-based+ray-tracer&rows=3&select=DOI,title,issued']
 checked: '2026-11-06'
+overview: {en: 'This dataset contains double-directional multipath path data at 140 GHz for an indoor hall. The data were derived from single-directional channel sounding combined with a measurement-based ray-launcher. Mar Francis de Guzman and Katsuyuki Haneda of Aalto University produced it together with Pasi Koivumäki, and the data accompany a 2022 IEEE VTC-Spring paper. The sounding performs beam scanning at only one of the transmit or receive ends, which allows many more Tx-Rx links to be measured than double-directional sounding would. The ray-launcher maps the measured multipaths onto the geometry of the site to identify reflection points and angular information. The data cover 12 line-of-sight and 56 non-line-of-sight indoor links, 68 links in total, and are intended for the design and evaluation of communication links, localization and sensing at 140 GHz. The archive is an 11.7 MB zip file on Zenodo under CC BY 4.0, and the environment details and data format are described in .txt
+    and .ppt files inside it.', zh: 该数据集包含 140 GHz 频段室内大厅的双定向多径路径数据，由单定向信道探测结合基于测量的 ray-launcher 推导得到。数据由 Aalto 大学的 Mar Francis de Guzman 和 Katsuyuki Haneda 与 Pasi Koivumäki 共同制作，相关论文为 2022 年 IEEE VTC-Spring 会议论文。探测时仅在收发两端之一进行波束扫描，因此可测量的收发链路数量远多于双定向探测。ray-launcher 将测得的多径映射到测量场地的几何结构上，以识别反射点和角度信息。数据覆盖 12 条视距（LOS）和 56 条非视距（NLOS）室内链路，共 68 条，用于 140 GHz 通信链路、定位和感知的设计与评估。数据以 11.7 MB 的 zip 压缩包形式发布于 Zenodo，许可为 CC BY 4.0；环境细节和数据格式见压缩包内的 .txt 和 .ppt 文件。}
+signal_details:
+- signal: paths
+  text: {en: 'Double-directional path data for 68 indoor links at 140 GHz (12 LOS, 56 NLOS), derived from single-directional channel sounding and the measurement-based ray-launcher. Delivered as data_290922_double_directional_paths.zip (11.7 MB). Field definitions, columns and units are described in .txt and .ppt files inside the archive.', zh: 140 GHz 频段下 68 条室内链路（12 条 LOS，56 条 NLOS）的双定向路径数据，由单定向信道探测和基于测量的 ray-launcher 推导得到。数据以 data_290922_double_directional_paths.zip（11.7 MB）形式发布。字段定义、列及单位见压缩包内的 .txt 和 .ppt 文件。}
+pipeline:
+  summary: {en: Single-directional sounding at 140 GHz is combined with a measurement-based ray-launcher to produce double-directional path data for indoor links., zh: 将 140 GHz 单定向信道探测与基于测量的 ray-launcher 结合，得到室内链路的双定向路径数据。}
+  stages:
+  - title: {en: Single-directional channel sounding, zh: 单定向信道探测}
+    detail: {en: 'The channel is sounded with beam scanning at only one of the transmit or receive ends, which gives single-directional multipath measurements for each indoor link at 140 GHz.', zh: 仅在收发两端之一进行波束扫描，对 140 GHz 下每条室内链路获得单定向多径测量结果。}
+    inputs:
+    - {en: indoor hall at 140 GHz, zh: 140 GHz 室内大厅}
+    outputs:
+    - {en: single-directional multipath measurements, zh: 单定向多径测量数据}
+  - title: {en: Site geometry mapping, zh: 场地几何映射}
+    detail: {en: The measurement-based ray-launcher (MBRL) maps the measured multipaths onto the geometry of the measurement site., zh: 基于测量的 ray-launcher（MBRL）将测得的多径映射到测量场地的几何结构上。}
+    inputs:
+    - {en: multipaths and site geometry, zh: 多径数据与场地几何结构}
+    outputs:
+    - {en: multipaths placed on the site geometry, zh: 映射到场地几何结构上的多径}
+  - title: {en: Reflection point and angle identification, zh: 反射点与角度识别}
+    detail: {en: The MBRL identifies reflection points and angular information for multipaths that were not measured directly. The output is double-directional path data for each link., zh: MBRL 为未被直接测量的多径识别反射点和角度信息，输出每条链路的双定向路径数据。}
+    outputs:
+    - {en: double-directional path data per link, zh: 每条链路的双定向路径数据}
+  - title: {en: Archive publication, zh: 归档发布}
+    detail: {en: 'The path data are packaged as data_290922_double_directional_paths.zip (11.7 MB) and published on Zenodo under CC BY 4.0, with format descriptions in .txt and .ppt files.', zh: 路径数据打包为 data_290922_double_directional_paths.zip（11.7 MB），以 CC BY 4.0 许可发布于 Zenodo，格式说明位于 .txt 和 .ppt 文件中。}
+    outputs:
+    - {en: zip archive on Zenodo, zh: Zenodo 上的 zip 压缩包}

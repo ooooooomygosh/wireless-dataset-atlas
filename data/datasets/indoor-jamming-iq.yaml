@@ -12,7 +12,45 @@ license: CC BY 4.0
 access: {url: 'https://zenodo.org/record/7119040', type: open}
 paper: doi:10.1016/j.dib.2022.108773
 used_in: []
-citing: ["doi:10.1109/jiot.2023.3343611","doi:10.1109/icc52391.2025.11161395"]
+citing: ['doi:10.1109/jiot.2023.3343611', 'doi:10.1109/icc52391.2025.11161395']
 summary: {en: 'Raw I/Q samples of BPSK bit sequences recorded by seven USRP X310 software-defined radios in an office environment without line of sight. The recordings cover no jamming, tone and Gaussian-noise jamming at varied distances and jamming powers, stored in 31 MAT files.', zh: 七台 USRP X310 软件无线电在无视距的办公室环境中采集的 BPSK 比特序列原始 I/Q 样本。记录涵盖无干扰、单音干扰和高斯噪声干扰，并包含不同距离与干扰功率条件，数据存储于 31 个 MAT 文件中。}
 sources: ['https://zenodo.org/record/7119040', 'https://zenodo.org/api/records/7119040', 'https://api.crossref.org/works/10.1016/j.dib.2022.108773']
 checked: '2026-11-06'
+overview: {en: 'The Indoor Jamming I/Q Measurements dataset contains raw I/Q samples recorded during jamming experiments in an indoor office. Alhazbi and Oligeri of Hamad Bin Khalifa University and Sciancalepore of Eindhoven University of Technology published it on Zenodo in October 2022. The dataset is associated with a Data in Brief article (DOI 10.1016/j.dib.2022.108773) and with an IEEE CCNC 2023 paper. Seven USRP Ettus Research X310 software-defined radios transmit and receive BPSK-modulated bit sequences in an office where the transmitter and receiver have no line of sight. Each experiment has a transmitter, a receiver and a jammer; the transmitter and receiver hardware stay fixed, while the jammer is one of five radios of the same model and brand. The recordings cover no jamming, tone (sinusoidal) jamming and Gaussian-noise jamming at different transmission distances and jamming power levels. The receiver stores each experiment as a two-column matrix of raw I/Q samples, and the data
+    are split into 31 MAT files (w1.mat to w31.mat) with a README.xls, totalling 118.45 GB. The Zenodo record does not state antenna, centre frequency, sampling rate, bandwidth, gain or jamming power values.', zh: 室内干扰 I/Q 测量数据集收录了在室内办公环境中进行干扰实验时采集的原始 I/Q 样本。作者 Alhazbi 与 Oligeri 来自 Hamad Bin Khalifa University，Sciancalepore 来自 Eindhoven University of Technology，数据于 2022 年 10 月发布在 Zenodo 上。该数据集与 Data in Brief 论文（DOI 10.1016/j.dib.2022.108773）及 IEEE CCNC 2023 会议论文相关联。七台 USRP Ettus Research X310 软件无线电在收发端无视距的办公室环境中传输 BPSK 调制的比特序列。每次实验包含一台发射机、一台接收机和一台干扰机；收发端硬件保持不变，干扰机使用同一型号与品牌的五台无线电之一。数据覆盖无干扰、单音（正弦）干扰和高斯噪声干扰，并包含不同传输距离与干扰功率等级。接收端将每次实验存储为两列的原始 I/Q 样本矩阵，数据分为 31 个 MAT 文件（w1.mat 至 w31.mat）及一个 README.xls，总计 118.45 GB。}
+signal_details:
+- signal: iq
+  text: {en: 'Raw I/Q samples captured by seven USRP Ettus Research X310 SDRs. Each experiment is stored as one two-column matrix of I/Q values for a predetermined bit sequence ([0, 255]) modulated with BPSK. The data are in 31 MAT files, w1.mat to w31.mat, each roughly 3.5 GB to 4.5 GB. The Zenodo record does not describe the variables inside the MAT files.', zh: '七台 USRP Ettus Research X310 软件无线电采集的原始 I/Q 样本。每次实验存储为一个两列的 I/Q 矩阵，对应以 BPSK 调制的预定比特序列（[0, 255]）。数据存于 31 个 MAT 文件（w1.mat 至 w31.mat），每个约 3.5 GB 至 4.5 GB。'}
+pipeline:
+  summary: {en: 'Seven USRP X310 radios transmit BPSK bit sequences with and without jamming in an indoor office, and the receiver stores raw I/Q samples.', zh: 七台 USRP X310 无线电在室内办公环境中发送带有或不带干扰的 BPSK 比特序列，接收端存储原始 I/Q 样本。}
+  stages:
+  - title: {en: Testbed configuration, zh: 试验平台配置}
+    detail: {en: 'Seven USRP Ettus Research X310 SDRs are used in an office without line of sight between transmitter and receiver. Each experiment has a transmitter, a receiver and a jammer. Transmitter and receiver hardware are fixed across experiments; the jammer is one of five radios of the same model and brand.', zh: 七台 USRP Ettus Research X310 软件无线电用于办公室环境，发射机与接收机之间无视距。每次实验包含一台发射机、一台接收机和一台干扰机。收发端硬件在所有实验中保持不变；干扰机为同一型号与品牌的五台无线电之一。}
+    inputs:
+    - {en: Seven USRP X310 SDRs, zh: 七台 USRP X310 软件无线电}
+    outputs:
+    - {en: 'Transmitter, receiver and jammer roles', zh: 发射机、接收机与干扰机角色}
+  - title: {en: BPSK transmission, zh: BPSK 发送}
+    detail: {en: 'A predetermined bit sequence ([0, 255]) is BPSK-modulated and transmitted. The symbol rate and other modulation parameters are not stated.', zh: '预定比特序列（[0, 255]）经 BPSK 调制后发送。论文未给出符号速率及其他调制参数。'}
+    inputs:
+    - {en: Predetermined bit sequence, zh: 预定比特序列}
+    outputs:
+    - {en: BPSK signal, zh: BPSK 信号}
+  - title: {en: Jamming and recording conditions, zh: 干扰与采集条件}
+    detail: {en: 'Jamming types are none (silent), tone (sinusoidal) and Gaussian noise. The recordings vary the transmission distance and the jamming power level.', zh: 干扰类型包括无干扰（静默）、单音（正弦）干扰和高斯噪声干扰。采集时改变传输距离与干扰功率等级。}
+    inputs:
+    - {en: 'Jamming type, distance and power settings', zh: 干扰类型、距离与功率设置}
+    outputs:
+    - {en: Jammed and unjammed experiments, zh: 有干扰与无干扰的实验}
+  - title: {en: Reception and storage, zh: 接收与存储}
+    detail: {en: The receiver stores each experiment as a two-column matrix of raw I/Q samples., zh: 接收机将每次实验存储为两列的原始 I/Q 样本矩阵。}
+    inputs:
+    - {en: Received BPSK signal, zh: 接收到的 BPSK 信号}
+    outputs:
+    - {en: Raw I/Q matrix per experiment, zh: 每次实验的原始 I/Q 矩阵}
+  - title: {en: File packaging, zh: 文件打包}
+    detail: {en: 'The recordings are distributed as 31 MAT files, w1.mat to w31.mat, together with a README.xls file. The Zenodo record gives a total size of 118.45 GB.', zh: 采集数据以 31 个 MAT 文件（w1.mat 至 w31.mat）及一个 README.xls 文件发布。Zenodo 记录给出总大小为 118.45 GB。}
+    inputs:
+    - {en: Raw I/Q matrices, zh: 原始 I/Q 矩阵}
+    outputs:
+    - {en: 31 MAT files and README.xls, zh: 31 个 MAT 文件与 README.xls}

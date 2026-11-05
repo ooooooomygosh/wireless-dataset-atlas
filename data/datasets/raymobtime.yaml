@@ -9,8 +9,139 @@ license: GNU General Public License v3.0 (GPLv3)
 access: {url: 'https://github.com/lasseufpa/Raymobtime', type: open}
 code: ['https://github.com/lasseufpa/Raymobtime']
 paper: doi:10.1109/ita.2018.8503086
-used_in: ["doi:10.1109/infocom59046.2026.11571670"]
-citing: ["doi:10.1109/jproc.2019.2954595","doi:10.1109/comst.2023.3300664","doi:10.1109/twc.2021.3128392"]
+used_in: ['doi:10.1109/infocom59046.2026.11571670']
+citing: ['doi:10.1109/jproc.2019.2954595', 'doi:10.1109/comst.2023.3300664', 'doi:10.1109/twc.2021.3128392']
 summary: {en: 'Generator for ray-traced mmWave MIMO data, producing propagation paths, path loss, RGB images and LiDAR point clouds in scenes with vehicles, buses, trucks, pedestrians and drones. The repository quick-start script downloads a tiny scenario with ray tracing already done.', zh: 用于生成光线追踪 mmWave MIMO 数据的生成器，输出传播路径、路径损耗、RGB 图像和 LiDAR 点云，场景包含车辆、公交车、卡车、行人和无人机。代码仓库的快速开始脚本可下载一个已完成光线追踪的小型场景。}
 sources: ['https://github.com/lasseufpa/Raymobtime/blob/master/README.md', 'https://api.openalex.org/works/doi:10.1109/ita.2018.8503086']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'SUMO generates mobility states; Raymobtime aligns coordinates and node associations; Wireless InSite, Blender, and Blensor compute wireless data, images, and point clouds, respectively, then aggregate them into episode/scene data.', zh: SUMO产生移动状态，Raymobtime统一坐标和节点关联，Wireless InSite、Blender和Blensor分别计算无线、图像与点云，再汇总成episode/scene数据。}
+  stages:
+  - title: {en: Prepare static scenes and module configuration, zh: 准备静态场景和模块配置}
+    detail: {en: 'Merge user settings with defaults, select scenes and enabled modules, and set external-tool paths and output directories.', zh: 合并用户配置与默认值，选择场景和启用模块，设置外部工具路径与输出目录。}
+    inputs:
+    - {en: SUMO road network/routes, zh: SUMO路网/路线}
+    - {en: Wireless InSite project and Blender scene, zh: Wireless InSite工程与Blender场景}
+    - {en: config.yaml and default configuration, zh: config.yaml及默认配置}
+    outputs:
+    - {en: Run configuration, zh: 运行配置}
+    - {en: Static scenes usable by each engine, zh: 可被各引擎使用的静态场景}
+    controls:
+    - {en: 'Researcher specifies: tool versions, scene files, RT/RGB/LiDAR switches, and seed', zh: 研究者固定：各工具版本、场景文件、RT/RGB/LiDAR开关与seed}
+    checks:
+    - {en: Check coordinate and object-scale consistency across the three scenes, zh: 检查三个场景的坐标与对象尺度一致}
+    - {en: Quick-start RT uses pregenerated data; identify which parts were actually rerun separately, zh: quick start的RT为预生成数据，另标真实重跑范围}
+  - title: {en: Generate mobility and episodes, zh: 生成移动与episode}
+    detail: {en: 'Read vehicle/object positions, orientations, dimensions, and identities through TraCI. Select communication objects at the start of each episode; their receiver indices retain these associations within that episode.', zh: 通过TraCI读取车辆等对象的位置、朝向、尺寸与身份。每个episode开始选择通信对象，其receiver索引在该episode内保持关联。}
+    inputs:
+    - {en: SUMO traffic configuration, zh: SUMO交通配置}
+    - {en: Sampling interval and episode definition, zh: 采样间隔和episode定义}
+    outputs:
+    - {en: Dynamic-object states per scene, zh: 逐scene动态对象状态}
+    - {en: Node-identity mapping within each episode, zh: episode内的节点身份映射}
+    controls:
+    - {en: 'Researcher specifies: routes, speeds/accelerations, sampling step, episode length, and receiver count', zh: 研究者固定：路由、速度/加速度、采样步长、episode长度与接收机数}
+    checks:
+    - {en: 'Use object mappings across episodes, not receiver-ID concatenation alone', zh: 跨episode使用对象映射而非仅拼receiver ID}
+    - {en: Record invalid links caused by vehicles leaving the valid region, zh: 记录车辆驶出有效区域导致的无效链路}
+  - title: {en: Convert coordinates and place devices, zh: 转换坐标并放置设备}
+    detail: {en: 'Correct SUMO''s front-bumper reference point to the object center, convert orientations, and set heights, antennas, and sensor positions; write dynamic objects into each engine''s scene.', zh: 修正SUMO前保险杠参考点到物体中心，转换朝向并设置高度、天线和传感器位置，将动态对象写入各引擎场景。}
+    inputs:
+    - {en: SUMO states, zh: SUMO状态}
+    - {en: Engine-specific coordinates and object templates, zh: 各引擎坐标和物体模板}
+    outputs:
+    - {en: Synchronized wireless/visual/scanning scenes, zh: 同步无线/视觉/扫描场景}
+    - {en: Tx/Rx and sensor extrinsics, zh: Tx/Rx与传感器外参}
+    controls:
+    - {en: 'Researcher specifies: vehicle geometry fidelity, reference points, heights, antenna positions, and camera mounting positions', zh: 研究者固定：车辆几何精度、参考点、高度、天线及相机安装位置}
+    checks:
+    - {en: Check heading and vehicle-length corrections, zh: 检查转向和车辆长度修正}
+    - {en: Additional drone altitude is a Raymobtime setting; preserve its provenance, zh: 无人机额外高度属于Raymobtime设置，需保留来源}
+  - title: {en: Execute the wireless propagation branch, zh: 执行无线传播分支}
+    detail: {en: 'Run Wireless InSite or read pregenerated RT results, parse paths, and construct wireless outputs using arrays/codebooks.', zh: 运行Wireless InSite或读取已生成RT结果，解析路径并按阵列/码本构造无线输出。}
+    inputs:
+    - {en: Per-scene Wireless InSite projects, zh: 逐scene Wireless InSite工程}
+    - {en: 'Carrier frequency, antennas, and RT parameters', zh: 载频、天线和RT参数}
+    outputs:
+    - {en: Propagation paths, zh: 传播路径}
+    - {en: Configured channel and beam data, zh: 配置后的信道与beam数据}
+    controls:
+    - {en: 'Researcher specifies: propagation switches, path budget, antennas/codebook, and invalid-link policy', zh: 研究者固定：传播开关、路径预算、天线/码本和无效链路策略}
+    checks:
+    - {en: Check that pregenerated paths correspond to current mobility states, zh: 检查预生成路径与当前移动状态对应}
+    - {en: Recompute a small set of beam gains and record empty-path masks, zh: 复算少量beam收益，记录空路径掩码}
+  - title: {en: Execute RGB and LiDAR branches, zh: 执行RGB与LiDAR分支}
+    detail: {en: 'Blender renders BS/UE-view images, while Blensor generates point clouds using scanner parameters; postprocessing can produce voxels, image annotations, and bounding boxes.', zh: Blender渲染BS/UE视角图像，Blensor按扫描器参数生成点云；后处理可产生体素、图像标记和目标框。}
+    inputs:
+    - {en: Object states from the same scene, zh: 同一scene对象状态}
+    - {en: Blender cameras and Blensor scanners, zh: Blender相机与Blensor扫描器}
+    outputs:
+    - {en: 'RGB, LiDAR, and camera parameters', zh: RGB、LiDAR和相机参数}
+    - {en: Optional voxels and visual annotations, zh: 可选体素与视觉标注}
+    controls:
+    - {en: 'Researcher specifies: camera field of view/resolution, scan angular resolution, range, rotation rate, and noise', zh: 研究者固定：相机视场/分辨率、扫描角分辨率、量程、转速与噪声}
+    checks:
+    - {en: Check point-cloud local/global coordinates, zh: 检查点云局部/全局坐标}
+    - {en: Record whether scan timing is treated as a single snapshot or a scan cycle, zh: 记录扫描时间是否按单快照或扫描周期处理}
+  - title: {en: 'Align, package, and split', zh: 对齐、封装与划分}
+    detail: {en: 'Associate outputs by run/episode/scene/Tx/Rx, handling coordinates and invalid records; use them to build temporal or multiuser tasks.', zh: 按run/episode/scene/Tx/Rx关联输出，处理坐标和无效记录；研究者据此建立时序或多用户任务。}
+    inputs:
+    - {en: 'Wireless, mobility, RGB, LiDAR, and metadata', zh: 无线、移动、RGB、LiDAR及元数据}
+    outputs:
+    - {en: Traceable multimodal samples, zh: 可追溯的多模态样本}
+    - {en: Task labels and validity records, zh: 任务标签与有效性记录}
+    controls:
+    - {en: 'Researcher specifies: time-alignment rules, retained fields, and episode/scenario splits', zh: 研究者固定：时间对齐规则、保留字段和episode/scenario切分}
+    checks:
+    - {en: Treat multi-object views as synchronized only when they come from the same scene, zh: 只把同scene多对象视角作为同步场景}
+    - {en: Verify that invalid samples are not silently rewritten as zero labels, zh: 验证无效样本不会被静默改写成零标签}
+  scope: {en: The modular pipeline described in the current official README; pin each dataset package and the v6.0-Organized_Pipeline commit separately., zh: 当前官方README描述的模块化管线；具体数据包与v6.0-Organized_Pipeline提交需各自固定。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• RT results, RGB, LiDAR, mobility, and camera metadata generated by enabled modules', zh: • 按启用模块生成的RT结果、RGB、LiDAR、移动及相机元数据}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Beam data, LiDAR voxels, and visual annotations
+
+      • Task time windows and communication utility', zh: '• beam数据、LiDAR体素、视觉标注
+
+      • 任务时序窗口和通信utility'}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• README workflow verified; commercial RT was not installed and the full pipeline was not run in this round.
+
+      • Version the current software pipeline and historical scenario packages separately to avoid assigning new-module fields to old packages.', zh: '• README工作流已核验；本轮未安装商业RT或运行完整管线。
+
+      • 当前软件管线和历史scenario数据包分别标版本，避免旧包被赋予新模块字段。'}
+provenance:
+- {en: SUMO road network and traffic behavior, zh: SUMO 路网与交通行为}
+- {en: Vehicle/object positions at each time step, zh: 每时刻车辆/对象位置}
+- {en: Wireless InSite paths + Blender RGB + Blensor LiDAR, zh: Wireless InSite 路径 + Blender RGB + Blensor LiDAR}
+- {en: Coordinate conversion and time alignment, zh: 坐标转换与时间对齐}
+- {en: episode/scene/Tx/Rx data, zh: episode/scene/Tx/Rx 数据}
+- {en: CSI and codebook-gain postprocessing, zh: CSI 与码本收益后处理}
+technical_notes:
+- {en: 'Confirmed: the README distinguishes fixed-receiver scenarios 2–7 from moving-receiver scenarios 1 and 11–13.', zh: 已确认：README 区分固定接收机 scenarios 2–7 与移动接收机 scenarios 1、11–13。}
+- {en: 'Confirmed: receiver IDs retain their vehicle association within an episode but may be reassigned in a new episode.', zh: 已确认：episode 内 receiver ID 保持车辆关联，新 episode 可重新选择。}
+- {en: 'Inference: traffic behavior and material approximations still require validation with real data.', zh: 推断：交通模型行为和材质近似仍需真实数据检验。}
+limitations:
+- {en: Do not connect trajectories across episodes using receiver IDs alone., zh: 跨 episode 不可仅以 receiver ID 连接轨迹。}
+- {en: A quick start using pregenerated data with RT disabled does not establish reproducibility of the complete generation pipeline., zh: 关闭 RT 使用预生成数据的 quick start 不证明重新生成管线全可复现。}
+history:
+- {en: '2026-08: the JOSS pre-review records the pipeline version; this is submission status, not evidence of formal publication.', zh: 2026-08：JOSS pre-review 记录 pipeline 版本；这是投稿状态，非正式发表证据。}
+usage:
+- {en: Run the official pregenerated quick start first to avoid commercial RT dependencies during initial setup., zh: 先运行官方预生成 quick-start，避免初次就依赖商业 RT。}
+- {en: Read the enabled modalities and sampling interval from YAML., zh: 读取 YAML 中启用的模态和采样间隔。}
+- {en: Preserve episode/scene/vehicle IDs and verify modality alignment and invalid samples., zh: 保留 episode/scene/vehicle IDs，验证模态对齐与无效样本。}
+tools: [project-mitsuba-blender, project-raymobtime-pipeline, wireless-ml-data-hub]
+overview: {en: 'Raymobtime is a simulation framework and dataset-generation methodology for wireless communication with mobility, originally built for ray-tracing datasets in vehicular scenarios, especially millimeter-wave and MIMO systems. Its pipeline combines SUMO traffic simulation, Wireless InSite ray tracing, Blender rendering and Blensor LiDAR simulation into time-aligned scenes. Each scene is a snapshot of vehicles, buses, trucks, pedestrians and drones at one sampling instant, and consecutive scenes form an episode. Within an episode, a receiver index refers to the same object, while a new episode selects objects again, so the same index can refer to a different vehicle. The original scenarios 2 to 7 use fixed receivers on rooftops or building facades, and scenarios 1 and 11 to 13 use receivers mounted on moving vehicles. Outputs are grouped by scenario and simulation identifier, and contain ray-tracing paths, path loss, RGB images, LiDAR point clouds and object metadata, depending
+    on the enabled modules. The framework is licensed under GPLv3, but Wireless InSite is proprietary and needs a commercial license for new ray tracing, so the README provides a pregenerated quick-start scenario that runs without it. The associated workshop paper is ''5G MIMO Data for Machine Learning: Application to Beam-Selection using Deep Learning'' (ITA 2018).', zh: 'Raymobtime 是面向带移动性无线通信的仿真框架和数据集生成方法，最初用于车联网场景的光线追踪数据生成，尤其是毫米波与 MIMO 系统。该流程将 SUMO 交通仿真、Wireless InSite 光线追踪、Blender 渲染和 Blensor LiDAR 仿真整合为时间对齐的场景。每个 scene 是车辆、公交车、卡车、行人和无人机在某一采样时刻的快照，连续的 scene 组成一个 episode。在同一 episode 内，接收机索引指向同一对象；新的 episode 会重新选择对象，因此同一索引可对应不同车辆。原始数据集中，scenario 2 至 7 使用安装在屋顶或建筑立面上的固定接收机，scenario 1 和 11 至 13 使用安装在移动车辆上的接收机。输出按 scenario 与仿真标识分组，依据启用的模块包含光线追踪路径、路径损耗、RGB 图像、LiDAR 点云和对象元数据。框架采用 GPLv3 许可，但 Wireless InSite 为商业软件，新的光线追踪需要商业许可；README 提供了预生成数据的 quick-start 场景，无需该软件即可运行。相关研讨会论文为《5G MIMO Data for Machine Learning: Application to Beam-Selection using Deep Learning》（ITA 2018）。'}
+signal_details:
+- signal: paths
+  text: {en: 'Propagation paths from Wireless InSite ray tracing, with received power, delays, angles of departure and angles of arrival, stored per run, episode, scene, transmitter and receiver.', zh: Wireless InSite 光线追踪得到的传播路径，包含接收功率、时延、离开角和到达角，按 run、episode、scene、发射机和接收机分别存储。}
+- signal: pathloss
+  text: {en: 'Path loss computed in the same Wireless InSite ray-tracing stage as the propagation paths, stored with the propagation results for each run, episode, scene, transmitter and receiver.', zh: 与传播路径在同一 Wireless InSite 光线追踪阶段计算得到的路径损耗，与传播结果一同按 run、episode、scene、发射机和接收机存储。}
+- signal: rgb
+  text: {en: 'RGB images rendered with Blender from base-station and user-equipment viewpoints. Camera position, orientation, focal length, sensor dimensions and image resolution are exported with each image.', zh: 由 Blender 从基站与用户设备视角渲染的 RGB 图像。每幅图像同时导出相机位置、朝向、焦距、传感器尺寸和图像分辨率。}
+- signal: lidar
+  text: {en: 'LiDAR point clouds simulated with Blensor at the communication node, configured by angular resolution, maximum sensing distance, rotation speed and noise level. Clouds can be converted to local and spherical coordinates and postprocessed into voxels and bounding boxes.', zh: 由 Blensor 在通信节点处仿真的 LiDAR 点云，扫描参数包括角分辨率、最大探测距离、转速和噪声水平。点云可转换为局部坐标与球面表示，并经后处理生成体素与目标框。}

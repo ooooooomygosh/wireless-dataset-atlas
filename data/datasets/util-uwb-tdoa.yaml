@@ -17,3 +17,43 @@ citing: []
 summary: {en: 'UWB time-difference-of-arrival (TDOA) measurements from DWM1000 modules, with SNR and power-difference values under LOS and NLOS conditions, plus IMU, optical flow, laser ranging and Vicon pose ground truth from flight experiments. The flights total about 150 minutes in indoor arenas with four anchor layouts.', zh: 来自 DWM1000 模块的 UWB 到达时间差（TDOA）测量值，包括视距（LOS）与非视距（NLOS）条件下的 SNR 与功率差，并记录飞行实验中的 IMU、光流、激光测距和 Vicon 位姿真值。飞行总时长约 150 分钟，室内场地采用四种锚点布局。}
 sources: ['https://learnsyslab.github.io/util-uwb-dataset/', 'https://arxiv.org/abs/2203.14471', 'https://api.crossref.org/works/10.1177/02783649241230640', 'https://api.github.com/repos/utiasDSL/util-uwb-dataset/license']
 checked: '2026-11-06'
+overview: {en: 'UTIL is an ultra-wideband (UWB) time-difference-of-arrival (TDOA) indoor localization dataset from the University of Toronto Institute for Aerospace Studies (UTIAS). The authors are Wenda Zhao, Abhishek Goudar, Xinyuan Qiao and Angela P. Schoellig. The dataset was released as arXiv:2203.14471 in 2022, and the paper appeared in The International Journal of Robotics Research in 2024. The measurements use Decawave DWM1000 UWB modules. Identification experiments record TDOA, signal-to-noise ratio (SNR) and power-difference values under line-of-sight (LOS) and non-line-of-sight (NLOS) conditions. Flight experiments total about 150 minutes at an average speed of 0.45 m/s, in obstacle-free and cluttered arenas with four anchor constellations, and log UWB TDOA, IMU, optical flow, time-of-flight altitude and Vicon ground-truth poses. The data are distributed as a .7z archive organized by constellation, with Matlab and Python parsing scripts and an EKF (extended Kalman filter) baseline.
+    The page states that onboard clock drift is ignored because each sub-dataset lasts about 120 seconds.', zh: 'UTIL 是多伦多大学航空航天研究所（UTIAS）发布的超宽带（UWB）到达时间差（TDOA）室内定位数据集。作者为 Wenda Zhao、Abhishek Goudar、Xinyuan Qiao 和 Angela P. Schoellig。数据集于 2022 年以 arXiv:2203.14471 形式发布，论文于 2024 年发表在 The International Journal of Robotics Research 上。测量使用 Decawave DWM1000 UWB 模块。识别实验在视距（LOS）与非视距（NLOS）条件下记录 TDOA、信噪比（SNR）和功率差值。飞行实验累计约 150 分钟，平均速度 0.45 m/s，场地包括无障碍和杂乱两类，采用四种锚点布局，记录 UWB TDOA、IMU、光流、飞行时间（ToF）激光高度以及 Vicon 位姿真值。数据以 .7z 压缩包发布，按锚点布局组织，并附带 Matlab 与 Python 解析脚本以及 EKF（扩展卡尔曼滤波）基线。数据页说明，因每个子数据集约 120 秒，机载时钟漂移被忽略。'}
+signal_details:
+- signal: ranging
+  text: {en: 'UWB TDOA from DWM1000 modules in two modes: TDOA 2 (centralized) and TDOA 3 (decentralized). Identification experiments also record SNR and power-difference values. Flight tests use a Loco Positioning System (LPS) UWB tag on the quadrotor, with eight anchors per constellation and four constellations.', zh: 来自 DWM1000 模块的 UWB TDOA，包括两种模式：TDOA 2（集中式）和 TDOA 3（分布式）。识别实验还记录 SNR 与功率差值。飞行测试中，四旋翼搭载 Loco Positioning System（LPS）UWB 标签，每种锚点布局使用 8 个锚点，共四种布局。}
+pipeline:
+  summary: {en: 'Identification runs and flights record UWB and sensor data, and the flight logs are converted to csv files and ROS1 bags for parsing with the released scripts.', zh: 识别实验与飞行实验记录 UWB 与传感器数据，飞行日志转换为 csv 文件与 ROS1 bag，再由发布的脚本解析。}
+  stages:
+  - title: {en: Identification runs, zh: 识别实验}
+    detail: {en: 'Two anchors and one Crazyflie nano-quadrotor carrying a UWB tag. The tag is placed at LOS distances of 0.5 m to 6.5 m in 0.5 m steps and LOS angles of 180 degrees to 15 degrees in 15 degree steps. NLOS obstacles are cardboard, metal, wood, plastic and foam. SNR, power difference and TDOA are recorded.', zh: 两个锚点和一架搭载 UWB 标签的 Crazyflie 纳米四旋翼。标签的视距距离为 0.5 m 至 6.5 m（步长 0.5 m），视距角度为 180° 至 15°（步长 15°）。非视距障碍物为纸板、金属、木材、塑料和泡沫。记录 SNR、功率差与 TDOA。}
+    inputs:
+    - {en: two DWM1000 anchors and a UWB tag, zh: 两个 DWM1000 锚点与一个 UWB 标签}
+    outputs:
+    - {en: csv of measurements, zh: 测量数据 csv}
+    - {en: txt of tag and anchor poses, zh: 标签与锚点位姿 txt}
+  - title: {en: Anchor survey, zh: 锚点测量}
+    detail: {en: A Leica total station surveys the anchor positions at millimeter-level accuracy. The survey is released as txt and npz files., zh: Leica 全站仪以毫米级精度测量锚点位置，测量结果以 txt 与 npz 格式发布。}
+    inputs:
+    - {en: anchor positions, zh: 锚点位置}
+    outputs:
+    - {en: anchor survey files in txt and npz, zh: txt 与 npz 格式的锚点测量文件}
+  - title: {en: Flight experiments, zh: 飞行实验}
+    detail: {en: 'A customized Crazyflie Bolt-based quadrotor carries an LPS UWB tag, a flow deck, an IMU, a barometer and a time-of-flight sensor. Ten Vicon Vantage+ cameras provide ground truth in a 7.0 m x 8.0 m x 3.5 m arena. The quadrotor flies at an average speed of 0.45 m/s, and the sensor logs are written to an onboard SD card.', zh: 定制的 Crazyflie Bolt 四旋翼搭载 LPS UWB 标签、光流模块、IMU、气压计和飞行时间（ToF）传感器。10 台 Vicon Vantage+ 相机在 7.0 m × 8.0 m × 3.5 m 的场地中提供真值。平均速度 0.45 m/s，传感器日志写入机载 SD 卡。}
+    inputs:
+    - {en: LPS UWB tag and onboard sensors, zh: LPS UWB 标签与机载传感器}
+    outputs:
+    - {en: binary SD-card logs, zh: 二进制 SD 卡日志}
+  - title: {en: Log conversion, zh: 日志转换}
+    detail: {en: 'Binary SD-card logs are converted into ROS1 bags. The released flight data are one csv per sub-dataset, with timestamped TDOA, IMU, optical flow, time-of-flight, barometer and ground-truth pose data. ROS2 users are pointed to a conversion tool from SFUISE2 for the ROS1 bags.', zh: 二进制 SD 卡日志转换为 ROS1 bag。发布的飞行数据为每个子数据集一个 csv 文件，包含带时间戳的 TDOA、IMU、光流、飞行时间、气压计和真值位姿数据。ROS2 用户可使用 SFUISE2 提供的工具转换 ROS1 bag。}
+    inputs:
+    - {en: binary SD-card logs, zh: 二进制 SD 卡日志}
+    outputs:
+    - {en: ROS1 bags, zh: ROS1 bag}
+    - {en: csv per sub-dataset, zh: 每个子数据集一个 csv}
+  - title: {en: Parsing and baseline, zh: 解析与基线}
+    detail: {en: 'Matlab and Python scripts parse the data, and an EKF (extended Kalman filter) is included as baseline. The scripts and the paper give the sensor translation vectors. The IMU is assumed aligned with the vehicle centre, clock drift is ignored over sub-datasets of about 120 seconds, and the ground-station-to-firmware latency is about 10 ms.', zh: Matlab 与 Python 脚本解析数据，并附带 EKF（扩展卡尔曼滤波）基线。脚本与论文给出传感器平移向量。假设 IMU 与机体中心对齐，子数据集约 120 秒，因此忽略时钟漂移。地面站到固件的延迟约 10 ms。}
+    inputs:
+    - {en: csv files and ROS1 bags, zh: csv 文件与 ROS1 bag}
+    outputs:
+    - {en: EKF baseline estimates, zh: EKF 基线估计}

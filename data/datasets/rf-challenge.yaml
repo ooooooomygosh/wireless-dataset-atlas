@@ -10,8 +10,40 @@ license: Not stated
 access: {url: 'https://rfchallenge.mit.edu/datasets/', type: open}
 code: ['https://github.com/RFChallenge/rfchallenge_singlechannel_starter']
 paper: doi:10.1109/ojcoms.2025.3556319
-used_in: ["doi:10.1109/ojcoms.2025.3597377"]
-citing: ["doi:10.1109/icc59461.2026.11587724","doi:10.1109/lcomm.2026.3650880"]
+used_in: ['doi:10.1109/ojcoms.2025.3597377']
+citing: ['doi:10.1109/icc59461.2026.11587724', 'doi:10.1109/lcomm.2026.3650880']
 summary: {en: 'Single-channel RF recordings of electromagnetic interference and digital communication signals, including a 5G signal, with recording bandwidths of 25 MHz and 61.44 MHz, used to form signal mixtures for interference rejection.', zh: 单通道射频录制数据，包含电磁干扰（EMI）和数字通信信号（含一个5G信号），录制带宽分别为25 MHz和61.44 MHz，用于构建干扰抑制的信号混合样本。}
 sources: ['https://rfchallenge.mit.edu/datasets/', 'https://arxiv.org/abs/2409.08839', 'https://arxiv.org/html/2409.08839', 'https://github.com/RFChallenge/rfchallenge_singlechannel_starter', 'https://raw.githubusercontent.com/RFChallenge/rfchallenge_singlechannel_starter/main/rfcutils/sigmf_helper_fn.py']
 checked: '2026-11-06'
+overview: {en: 'The RF Challenge single-channel dataset from MIT contains recordings of interference and communication signals for interference rejection, described in arXiv:2409.08839 (Lancho et al.). It includes four interference types: EMISignal1, an unintentional emission from an unknown device recorded at 25 MHz bandwidth; CommSignal2 and CommSignal3, digital signals from commercial wireless devices recorded at 25 MHz; and CommSignal5G1, a 5G-compliant waveform recorded at 61.44 MHz. The three over-the-air types were recorded over the air, while CommSignal5G1 was generated and recorded in a wired laboratory with wireless impairments introduced by simulators, and most signals lie in the 2.4 GHz ISM band. The task is to recover a signal of interest (SOI) from a mixture with one interference, and the paper uses two SOIs with known generation processes, a single-carrier QPSK signal and an OFDM-QPSK signal. Each mixture is a 40,960-sample window in which the interference is scaled to a target
+    SINR, giving eight SOI-interference combinations. The files are SigMF recordings in cf32_le format.', zh: 'RF Challenge 单通道数据集由 MIT 发布，包含用于干扰抑制的干扰与通信信号录制，论文为 arXiv:2409.08839（Lancho 等）。数据包含四类干扰：EMISignal1 为未知设备的非故意辐射，录制带宽 25 MHz；CommSignal2 与 CommSignal3 为商用无线设备的数字通信信号，录制带宽 25 MHz；CommSignal5G1 为符合 5G 规范的波形，录制带宽 61.44 MHz。前三类为空口录制，CommSignal5G1 在有线实验室中生成并录制，由仿真器引入无线损伤；大多数信号位于 2.4 GHz ISM 频段。任务是从与一种干扰的混合信号中恢复感兴趣信号（SOI），论文使用两种生成过程已知的 SOI：单载波 QPSK 信号与 OFDM-QPSK 信号。每个混合样本为 40,960 个采样点的窗口，干扰按目标 SINR 缩放，共形成八种 SOI 与干扰组合。文件为 SigMF 录制，采样格式为 cf32_le。MIT 数据集页面还列出多通道与 cyber-RF 挑战数据集，本记录未覆盖；该页面未声明单通道数据集的许可。'}
+signal_details:
+- signal: iq
+  text: {en: 'Complex baseband samples in SigMF recordings with cf32_le sample format, i.e. complex64 values. Recording bandwidth is 25 MHz for EMISignal1, CommSignal2 and CommSignal3, and 61.44 MHz for CommSignal5G1. Mixture windows are 40,960 samples, and all signal datasets are normalized to unit power.', zh: 'SigMF 录制中的复数基带采样，采样格式为 cf32_le，即 complex64 数值。EMISignal1、CommSignal2 和 CommSignal3 的录制带宽为 25 MHz，CommSignal5G1 为 61.44 MHz。混合样本窗口长 40,960 个采样点；所有信号数据集均归一化为单位功率。'}
+pipeline:
+  summary: {en: 'Interference recordings are split into training and test sets, SOIs with known generation processes are produced, and each mixture is formed by windowing an interference frame and scaling it to a target SINR.', zh: 干扰录制被划分为训练集与测试集，生成过程已知的 SOI 被产生，每个混合样本通过截取干扰帧窗口并按目标 SINR 缩放形成。}
+  stages:
+  - title: {en: Record the interference signals, zh: 录制干扰信号}
+    detail: {en: 'EMISignal1, CommSignal2 and CommSignal3 are recorded over the air at 25 MHz recording bandwidth. CommSignal5G1 is generated and recorded in a controlled wired laboratory, with wireless impairments introduced by simulators, at 61.44 MHz recording bandwidth.', zh: EMISignal1、CommSignal2 和 CommSignal3 以 25 MHz 录制带宽在空口录制。CommSignal5G1 在受控有线实验室中生成并录制，由仿真器引入无线损伤，录制带宽为 61.44 MHz。}
+    inputs:
+    - {en: Unknown EMI and commercial wireless transmissions, zh: 未知电磁干扰与商用无线发射}
+    outputs:
+    - {en: Four interference recording types, zh: 四类干扰录制}
+  - title: {en: Generate SOIs with known processes, zh: 生成已知过程的 SOI}
+    detail: {en: 'The single-carrier QPSK SOI uses Gray-coded bits from a fair coin toss, oversampling factor 16, and a root-raised-cosine pulse with roll-off 0.5 spanning 128 samples. The OFDM-QPSK SOI uses K = 64 subcarriers, 56 of them active, and a cyclic prefix of length 16.', zh: 单载波 QPSK SOI 使用公平抛硬币产生并经 Gray 编码的比特，过采样因子为 16，采用滚降系数 0.5 的根升余弦脉冲，脉冲跨越 128 个采样点。OFDM-QPSK SOI 使用 K = 64 个子载波，其中 56 个为激活子载波，循环前缀长度为 16。}
+    inputs:
+    - {en: i.i.d. fair-coin bits, zh: 独立同分布的公平抛硬币比特}
+    outputs:
+    - {en: QPSK and OFDM-QPSK SOI waveforms, zh: QPSK 与 OFDM-QPSK SOI 波形}
+  - title: {en: Split interference recordings, zh: 划分干扰录制}
+    detail: {en: 'Each interference type is divided into training and test sets. For each mixture, one frame is selected uniformly at random from the corresponding set, and a random window of 40,960 samples is extracted from it.', zh: '每种干扰被划分为训练集与测试集。每个混合样本从对应集合中均匀随机选择一帧，并从中截取长度 40,960 的随机窗口。'}
+    inputs:
+    - {en: Interference recordings per type, zh: 各类干扰录制}
+    outputs:
+    - {en: Training and test interference windows, zh: 训练与测试干扰窗口}
+  - title: {en: Scale interference and form mixtures, zh: 缩放干扰并形成混合信号}
+    detail: {en: 'The interference is scaled by 1/kappa, where kappa squared equals 10 to the power of SINR in dB over 10, so that the empirical SINR matches the target. It receives a random phase rotation and is added to the SOI, giving the mixture y = s + b. Eight SOI-interference combinations are produced.', zh: 干扰按 1/kappa 缩放，其中 kappa 的平方等于 10 的 SINR（dB）/10 次方，使经验 SINR 与目标值一致。干扰随后施加随机相位旋转并与 SOI 相加，得到混合信号 y = s + b。共生成八种 SOI 与干扰组合。}
+    inputs:
+    - {en: Interference windows and SOI waveforms, zh: 干扰窗口与 SOI 波形}
+    outputs:
+    - {en: Eight mixture types of 40, 960 samples each: null, zh: 八种混合类型，每种 40, 960 个采样点: null}

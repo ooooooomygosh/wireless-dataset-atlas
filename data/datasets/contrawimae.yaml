@@ -18,7 +18,145 @@ access: {url: 'https://huggingface.co/datasets/BerkIGuler/ContraWiMAEDataset', t
 code: ['https://github.com/BerkIGuler/WirelessContrastiveMaskedLearning']
 paper: arxiv:2505.09160
 used_in: []
-citing: ["doi:10.1109/iccworkshops63917.2026.11586587","doi:10.1109/ojcoms.2026.3735905"]
+citing: ['doi:10.1109/iccworkshops63917.2026.11586587', 'doi:10.1109/ojcoms.2026.3735905']
 summary: {en: 'Simulated MISO channel samples generated with DeepMIMO ray tracing at 3.5 GHz, with 28 GHz channels for some downstream scenarios; each sample has 32 TX antennas, 32 subcarriers at 30 kHz spacing and up to 20 paths. Pretraining data cover 56 city scenarios (about 2.5M samples) and downstream data cover 10 unseen cities (about 0.55M samples).', zh: 基于 DeepMIMO 射线追踪生成的仿真 MISO 信道样本，载频为 3.5 GHz，部分下游场景为 28 GHz；每个样本包含 32 根发射天线、间隔 30 kHz 的 32 个子载波以及至多 20 条路径。预训练数据覆盖 56 个城市场景（约 250 万样本），下游数据覆盖 10 个未见城市（约 55 万样本）。}
 sources: ['https://huggingface.co/datasets/BerkIGuler/ContraWiMAEDataset', 'https://arxiv.org/html/2505.09160v2', 'https://arxiv.org/abs/2505.09160', 'https://github.com/BerkIGuler/WirelessContrastiveMaskedLearning']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'DeepMIMO CSI, coordinates, LoS, and beam labels are packaged into NPZ files. Training-set statistics standardize real/imaginary components, followed by paired noisy views and paired real/imaginary masks.', zh: DeepMIMO CSI 与坐标、LoS、beam 标签被封装为 NPZ；训练集统计量用于实虚标准化，随后构造成对带噪视图与实虚配对 mask。}
+  stages:
+  - title: {en: Select pretraining and downstream scenarios, zh: 选择预训练和下游场景}
+    detail: {en: The data card lists approximately 2.5 million samples from 56 pretraining scenarios and 0.55 million from 10 downstream scenarios. 3.5 GHz is the primary configuration; 28 GHz is available only for scenarios with corresponding RT assets., zh: 数据卡列出 56 个预训练场景约 250 万样本，以及 10 个下游场景约 55 万样本；3.5 GHz 为主要配置，只有具备对应 RT 资产的场景提供 28 GHz。}
+    inputs:
+    - {en: DeepMIMO RT scenarios and BSs, zh: DeepMIMO RT 场景与 BS}
+    - {en: Receiver positions and original indices, zh: 接收位置与原始索引}
+    outputs:
+    - {en: Link collection organized by scenario/BS/frequency, zh: 按场景/BS/频率组织的链路集合}
+    controls:
+    - {en: 'Author data: cross-frequency fields apply only to scenarios providing the corresponding frequencies.', zh: 作者数据：跨频率字段只在提供对应频率的场景中成立。}
+    checks:
+    - {en: 'Reproduction recommendation: confirm dual-band pairings using active_mask_original_indices and coordinates, not sample row numbers alone.', zh: 复现建议：按 active_mask_original_indices 和坐标确认双频配对，不能只按样本行号配对。}
+  - title: {en: Synthesize complex array–subcarrier channels, zh: 合成阵列-子载波复信道}
+    detail: {en: 'The authors use 32 elements, 32 subcarriers, 30 kHz spacing, up to 20 paths, and isotropic single-polarized elements, producing channels with example shape N×1×32×32.', zh: 作者采用 32 阵元、32 子载波、30 kHz 间隔、最多 20 条路径与各向同性单极化阵元，生成示例 shape 为 N×1×32×32 的 channels。}
+    inputs:
+    - {en: Path and array parameters, zh: 路径与阵列参数}
+    outputs:
+    - {en: Complex CSI, zh: 复 CSI}
+    - {en: 'Corresponding positions, LoS, and beam_labels', zh: 对应位置、LoS 与 beam_labels}
+    controls:
+    - {en: 'Author data: the number of paths used for generation does not mean that NPZ files release per-path arrays.', zh: 作者数据：生成用的路径数量不表示 NPZ 发布了逐径数组。}
+    checks:
+    - {en: 'Reproduction recommendation: verify the codebook and beam_labels generation definition. Do not invent an unknown beam-computation formula before obtaining the generation script.', zh: 复现建议：核对码本与 beam_labels 的生成定义；未取得生成脚本前不补写未知的 beam 计算公式。}
+  - title: {en: Package and load NPZ files, zh: NPZ 封装与加载}
+    detail: {en: 'The package retains six types of keys. The current loader takes channels[:,0,:,:], converts it to complex64, and constructs real/imaginary inputs. Positions and labels are available for downstream tasks.', zh: '数据包保留六类键。当前 loader 取 channels[:,0,:,:] 转 complex64，再构造实部/虚部输入；位置和标签可供下游任务使用。'}
+    inputs:
+    - {en: channels、rx_pos、tx_pos, zh: channels、rx_pos、tx_pos}
+    - {en: los、active_mask_original_indices、beam_labels, zh: los、active_mask_original_indices、beam_labels}
+    outputs:
+    - {en: 2D complex-channel samples, zh: 二维复信道样本}
+    - {en: Metadata and downstream labels, zh: 元数据与下游标签}
+    controls:
+    - {en: 'Author code: the singleton receive axis is explicitly removed; this is not arbitrary selection among multiple receive antennas.', zh: 作者代码：单例接收轴被显式去除；不是任意选择多接收天线。}
+    checks:
+    - {en: 'Reproduction recommendation: check lengths and valid-index correspondence across all six keys. Multiple BS files are not automatically synchronized acquisitions.', zh: 复现建议：检查六个键的长度和有效索引对应关系；多 BS 文件不能自动当成同步采集。}
+  - title: {en: Split samples and fit normalization statistics, zh: 划分样本并拟合归一化统计量}
+    detail: {en: 'The current trainer builds train/validation sets first, then calculates separate real/imaginary means and standard deviations from training data and reuses them for validation. It supports scenario splits based on filename patterns and random sample splits with default seed=42.', zh: 当前 trainer 先建立 train/validation 集合，再从训练数据计算实部与虚部各自的均值和标准差，并复用于验证。代码支持按文件名模式作 scenario split，也支持默认 seed=42 的随机样本划分。}
+    inputs:
+    - {en: Pretraining NPZ collection, zh: 预训练 NPZ 集合}
+    - {en: Split configuration, zh: split 配置}
+    outputs:
+    - {en: Training/validation sets, zh: 训练/验证集合}
+    - {en: Training-set real/imaginary means and standard deviations, zh: 训练集实虚均值与标准差}
+    - {en: Standardized inputs, zh: 标准化输入}
+    controls:
+    - {en: 'Current author code: default val_split=0.2.', zh: 作者当前代码：默认 val_split=0.2。}
+    - {en: 'Author paper: reports a 90/10 split. Do not describe the current 80/20 default as the paper''s setting.', zh: 作者论文：报告 90/10 划分；不能把当前默认 80/20 写成论文设置。}
+    checks:
+    - {en: 'Reproduction recommendation: configure explicit scenario isolation for cross-scenario generalization. Random sample splits address only within-domain generalization.', zh: 复现建议：若研究跨场景泛化，显式配置场景隔离；随机样本划分只回答域内泛化。}
+  - title: {en: Contrastive views and paired masks, zh: 对比视图与配对 mask}
+    detail: {en: The paper generates positive views using different noise realizations and combines them with masked reconstruction. The current augmentation module provides AWGN; the mask generator masks the same positions in real and imaginary components together., zh: 论文以不同噪声实现产生正样本视图，并结合 masked reconstruction。当前增广模块提供 AWGN，mask 生成器使实部和虚部的同一位置共同遮挡。}
+    inputs:
+    - {en: Standardized CSI, zh: 标准化 CSI}
+    - {en: SNR range and mask configuration, zh: SNR 范围与 mask 配置}
+    outputs:
+    - {en: Two contrastive views, zh: 两份对比视图}
+    - {en: Paired real/imaginary masks, zh: 实虚配对 mask}
+    - {en: Clean reconstruction targets, zh: 干净重建目标}
+    controls:
+    - {en: 'Author paper: positive-view SNRs range from 5–40 dB.', zh: 作者论文：正样本 SNR 范围为 5–40 dB。}
+    - {en: 'Author code: the MaskGenerator class defaults to 0.6, versus 0.9 in the paper. Use the actual training configuration.', zh: 作者代码：MaskGenerator 类默认 0.6 与论文 0.9 不同，需以实际训练配置为准。}
+    - {en: 'Author code: AWGN scaling assumes unit variance; phase/frequency-shift options are disabled by default.', zh: 作者代码：AWGN 标度按单位方差假设设置；相位/频率平移选项默认关闭。}
+    checks:
+    - {en: 'Reproduction recommendation: report actual per-sample noise power. Confirm that both views come from the same channel and that masks align; do not describe optional augmentations as steps used in the paper.', zh: 复现建议：报告实际逐样本噪声功率；确认两视图源自同一信道且 mask 对齐，避免把可选增广当成论文已采用步骤。}
+  - title: {en: Training entry points and downstream packaging, zh: 训练入口与下游封装}
+    detail: {en: The official repository provides WiMAETrainer and ContraWiMAETrainer entry points. Complete NPZ data are downloaded through the data card; repository demonstration samples use Git LFS. Random complex-Gaussian NPZ files in the Quickstart only test the interface., zh: 官方仓库给出 WiMAETrainer 与 ContraWiMAETrainer 入口，完整 NPZ 通过数据卡下载，仓库演示样本使用 Git LFS。Quickstart 的随机复高斯 NPZ 只验证接口。}
+    inputs:
+    - {en: Standardized and augmented batches, zh: 标准化及增广 batch}
+    - {en: WiMAE/ContraWiMAE configuration, zh: WiMAE/ContraWiMAE 配置}
+    outputs:
+    - {en: Training configurations and model assets, zh: 训练配置和模型资产}
+    - {en: 'Data views for classification, positioning, and beam tasks', zh: 可供分类、定位、波束任务使用的数据视图}
+    controls:
+    - {en: 'Author repository: training code and the original RT generation workflow are separate assets. The quickstart is not a physical-scene generator.', zh: 作者仓库：训练代码与 RT 原始生成流程是不同资产；quickstart 不是物理场景生成器。}
+    checks:
+    - {en: 'Reproduction recommendation: record exposure to training scenarios. Test simple representations and downstream utility before assessing the benefit of pretraining.', zh: 复现建议：记录训练场景暴露范围，先检验简单表示和下游效用，再判断预训练收益。}
+  scope: {en: 'Data-card DeepMIMO generation parameters, the paper''s protocol, and loading/training code on the current master branch. Default code configurations and paper settings are labeled separately.', zh: 数据卡的 DeepMIMO 生成参数、论文协议及当前 master 分支的加载/训练代码；默认代码配置与论文设置分开标注。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Six-key NPZ: complex CSI, coordinates, LoS, original indices, and beam labels
+
+      • Official training code and example configurations', zh: '• 六键 NPZ：复 CSI、坐标、LoS、原始索引和 beam 标签
+
+      • 官方训练代码与示例配置'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Training-set standardization statistics
+
+      • Noisy positive pairs, masks, and reconstruction targets
+
+      • Trained representations, checkpoints, and downstream evaluations', zh: '• 训练集标准化统计量
+
+      • 带噪正样本对、mask 与重建目标
+
+      • 训练后表示、checkpoint 和下游评测'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• Current master defaults differ from the paper''s protocol; reproducing the paper requires the corresponding experimental configurations.
+
+      • No NPZ files were downloaded and no training was executed. Cross-frequency pairings, codebook recomputation, and actual data shapes still require sample-level verification.', zh: '• 当前 master 默认值与论文协议有差异，复现论文须使用对应实验配置。
+
+      • 没有下载 NPZ 或执行训练；跨频配对、码本复算和实际数据 shape 尚需抽样验证。'}
+provenance:
+- {en: DeepMIMO urban scenarios and RT paths, zh: DeepMIMO 城市场景与 RT 路径}
+- {en: 'Channel postprocessing with 32 elements, 32 subcarriers, and 30 kHz spacing', zh: 32 阵元、32 子载波、30 kHz 间隔的信道后处理}
+- {en: 'Up to 20 paths and isotropic, single-polarized elements', zh: 最多 20 条路径、各向同性单极化阵元}
+- {en: Preserve coordinates/LoS/original indices and generate codebook labels, zh: 保留坐标/LoS/原始索引并生成码本标签}
+- {en: Separate NPZ packages for pretraining and downstream data, zh: 预训练与下游 NPZ 分包}
+technical_notes:
+- {en: 'Literature-supported: half-wavelength element spacing, isotropic antennas, single polarization, and up to 20 paths; actual array-calibration errors are therefore absent.', zh: 文献支持：半波长阵元间隔、各向同性天线、单极化、最多 20 条路径；因此不含真实阵列校准误差。}
+- {en: 'Literature-supported: the authors list mobility/Doppler and OTA hardware validation as future extensions.', zh: 文献支持：作者将移动性/Doppler 与 OTA 硬件验证列为未来扩展。}
+- {en: 'Unknown: the paper does not specify enabled diffraction/scattering mechanisms for each urban scenario.', zh: 未知：论文未明确各城市场景启用的绕射/散射机制。}
+limitations:
+- {en: The data card's beam_labels description appears to contain an index/codebook-size formatting issue. Verify it against actual generation code and arrays rather than copying it directly., zh: 原数据卡 beam_labels 列说明有疑似索引/码本大小排版问题，必须以实际生成代码和数组验证，不能照抄。}
+- {en: Cross-frequency scenarios share geometry and the same DeepMIMO source; they do not establish cross-engine generalization., zh: 跨频场景共享几何和相同 DeepMIMO 来源；不能声称跨引擎泛化。}
+- {en: Separating 56 pretraining scenarios from 10 downstream scenarios does not automatically eliminate nearby-point leakage from random downstream spatial splits., zh: 预训练 56 场景和下游 10 场景分离，不自动排除下游随机空间划分带来的邻近泄漏。}
+history:
+- {en: '2025-05-14: Preprint v1', zh: 2025-05-14：预印本 v1}
+- {en: '2025-10-22: Extended paper v2', zh: 2025-10-22：扩展论文 v2}
+- {en: '2025: Related AI4NextG Workshop version; grouped with the extended preprint as one research series.', zh: 2025：AI4NextG Workshop 的相关版本；与扩展预印本合并为同一研究系列}
+usage:
+- {en: 'Select a small file from the official data package; first list keys, dtype, shape, and coordinate ranges.', zh: 从官方数据包选一个小文件；先列 keys、dtype、shape、坐标范围。}
+- {en: Use active_mask_original_indices or coordinates to verify the Sub-6/mmWave intersection; do not pair files based only on equal length., zh: 用 active_mask_original_indices 或坐标核验 Sub-6/mmWave 交集，不按文件长度直接配对。}
+- {en: Confirm the codebook from actual code and recompute at least 100 beam labels., zh: 从实际代码确认码本，重算至少 100 个波束标签。}
+- {en: 'Split by city, BS, and spatial block before preprocessing. Retain both LWM-configuration-matched experiments and experiments on the full larger corpus. Not run locally.', zh: 按城市、BS 和空间块分割后再预处理；同时保留 LWM 配置匹配实验与完整大语料实验。未本机运行。}
+field_notes:
+- label: {en: Cross-frequency pairing, zh: 跨频配对}
+  text: {en: Verify simulated pairings by original UE indices/coordinates; only some scenarios have 28 GHz data., zh: 仿真配对须按原始 UE 索引/坐标核验，部分场景才有 28 GHz。}
+- label: {en: Multi-BS, zh: 多基站}
+  text: {en: 'Multiple BS files do not establish organized, synchronized multi-BS observations.', zh: 多个 BS 文件，不代表已整理的同步多 BS 观测。}
+- label: {en: Paths, zh: 路径}
+  text: {en: 'The official NPZ field list is channels, rx_pos, tx_pos, los, active_mask_original_indices, and beam_labels. This processed view has no per-path arrays. The maximum of 20 paths in generation parameters belongs to the upstream synthesis configuration.', zh: 官方 NPZ 字段清单为 channels、rx_pos、tx_pos、los、active_mask_original_indices、beam_labels；该处理视图不附逐径数组。生成参数中的最多 20 条路径属于上游合成配置。}
+tools: [project-contrawimae, awesome-channel-foundation-models]
+overview: {en: 'ContraWiMAE Dataset is a set of simulated complex MISO channel samples generated with DeepMIMO ray tracing, released on Hugging Face under an MIT license with the arXiv paper 2505.09160 (2025). Each sample is one channel between a user and a base station with 32 transmit antennas in a half-wavelength uniform linear array, over 32 subcarriers at 30 kHz spacing (960 kHz total), with up to 20 paths. The pretraining split has about 2.5M samples from 56 city scenarios at 3.5 GHz. The downstream split has about 0.55M samples from 10 unseen cities, and 28 GHz channels are included for some downstream scenarios. The files are NumPy NPZ archives in sub6 and mmwave folders, with pretrain and task/train and task/test splits, and the total size is 25.5 GB. The paper evaluates cross-frequency beam selection, LoS detection and channel estimation.', zh: ContraWiMAE Dataset 是基于 DeepMIMO 光线追踪生成的仿真复数 MISO 信道样本集，以 MIT 许可证发布于 Hugging Face，对应论文为 arXiv 2505.09160（2025）。每个样本是一个用户与一个基站之间的信道，基站为
+    32 根发射天线组成的半波长均匀线阵，用户为单天线，子载波 32 个，间距 30 kHz（总带宽 960 kHz），最多 20 条路径。预训练划分约含 250 万样本，来自 56 个城市场景，载频 3.5 GHz。下游划分约含 55 万样本，来自 10 个未见城市，部分下游场景包含 28 GHz 信道。文件为 NumPy NPZ 格式，分为 sub6 和 mmwave 两个文件夹，包含 pretrain 以及 task/train、task/test 划分，总大小 25.5 GB。论文评估的任务为跨频段波束选择、LoS 检测和信道估计。}
+signal_details:
+- signal: csi
+  text: {en: 'Complex channel matrices in the channels field, shape (N, 1, 32, 32) in the example file; the card lists the axes as channels, RX antennas, TX antennas and subcarriers. Values are generated with DeepMIMO ray tracing: 32 TX antennas, 32 subcarriers at 30 kHz spacing, up to 20 paths, at 3.5 GHz and 28 GHz. Each file also stores rx_pos (user 3D position), tx_pos, los (0 for nLoS, 1 for LoS) and beam_labels (best-beam indices from uniform codebooks).', zh: 'channels 字段为复数信道矩阵，示例文件中形状为 (N, 1, 32, 32)；数据卡将各轴列为信道数、RX 天线、TX 天线和子载波。数据由 DeepMIMO 光线追踪生成：32 根 TX 天线、32 个子载波、间距 30 kHz、最多 20 条路径，载频 3.5 GHz 与 28 GHz。每个文件还存储 rx_pos（用户三维位置）、tx_pos、los（0 表示 nLoS，1 表示 LoS）以及 beam_labels（均匀码本下的最优波束索引）。'}

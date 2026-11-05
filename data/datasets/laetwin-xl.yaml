@@ -17,3 +17,38 @@ citing: []
 summary: {en: 'Sionna ray-traced near-field and far-field XL-MIMO channel realizations at 7 GHz for UAV trajectories in urban and suburban scenes of 13 cities, with 57,236 pretraining and 13,450 downstream samples. Time-stamped UAV coordinates and near-field and far-field labels accompany the channels.', zh: '基于Sionna射线追踪生成的7 GHz XL-MIMO近场与远场信道实现，覆盖13个城市的城市与郊区场景中的无人机轨迹，包含57,236个预训练样本和13,450个下游样本。数据同时提供带时间戳的无人机坐标以及近场和远场标签。'}
 sources: ['https://arxiv.org/html/2606.14114', 'https://arxiv.org/abs/2606.14114', 'https://github.com/Lmyxxn/LAETwin-XL', 'https://api.github.com/repos/Lmyxxn/LAETwin-XL/license', 'https://huggingface.co/datasets/lmyxxn/LAETwin-XL', 'https://api.crossref.org/works/10.1109/jstsp.2026.3705369']
 checked: '2026-11-06'
+overview: {en: 'LAETwin-XL is a near-field XL-MIMO channel dataset for low-altitude economy (LAE) scenarios. It was released with the paper Digital Twin-Based Channel Generation Toolchain and Foundation Model for Low-Altitude XL-MIMO, published in IEEE Journal of Selected Topics in Signal Processing (early access, 2026) by M. Li, Y. Han, J. Tian, C.-K. Wen and S. Jin. The channels are simulated with a digital-twin toolchain: OpenStreetMap geometry and ITU-compliant materials form the scene, and Sionna RT computes per-antenna ray-traced channels. UAVs fly along road-guided trajectories in urban scenes and nearly linear trajectories in suburban scenes. The dataset covers 13 cities in urban and suburban scenarios, with 57,236 pretraining samples and 13,450 downstream samples. Each output contains site-specific XL-MIMO channels, time-stamped UAV coordinates and near-field and far-field labels. The authors target channel extrapolation, channel estimation, near/far-field user classification and
+    3D user localization, and they pretrain a foundation model on the data. The Hugging Face card lists a total file size of 70.4 GB and shows no license field.', zh: 'LAETwin-XL是面向低空经济（LAE）场景的近场XL-MIMO信道数据集。数据随论文《Digital Twin-Based Channel Generation Toolchain and Foundation Model for Low-Altitude XL-MIMO》发布，该论文发表于IEEE Journal of Selected Topics in Signal Processing（2026年提前在线发表），作者为M. Li、Y. Han、J. Tian、C.-K. Wen和S. Jin。信道由数字孪生工具链仿真生成：OpenStreetMap几何数据与符合ITU标准的材料构成场景，Sionna RT计算逐天线的射线追踪信道。在城市场景中，UAV沿道路引导的轨迹飞行；在郊区场景中，UAV沿近似直线的轨迹飞行。数据集覆盖13个城市的城市与郊区场景，包含57,236个预训练样本和13,450个下游样本。每个输出包含特定场地的XL-MIMO信道、带时间戳的UAV坐标以及近场和远场标签。作者面向信道外推、信道估计、近场/远场用户分类和三维用户定位任务，并在该数据上预训练基础模型。'}
+signal_details:
+- signal: csi
+  text: {en: 'Site-specific XL-MIMO channels computed by Sionna RT per antenna. The BS uses a UPA with 64 elements in the vertical and 64 elements in the horizontal dimension, and each UAV is a single-antenna UE. Carrier frequency 7 GHz, subcarrier spacing 30 kHz. The dataset is sampled at 1 s intervals, and each subscene contains 10 consecutive time slots. Channel models follow 3GPP TR 38.901. Near-field and far-field labels accompany the channels.', zh: 由Sionna RT逐天线计算的特定场地XL-MIMO信道。BS采用UPA，垂直方向和水平方向各含64个阵元；每个UAV为单天线UE。载频7 GHz，子载波间隔30 kHz。数据集的采样间隔为1 s，每个子场景包含10个连续时隙。信道模型遵循3GPP TR 38.901。信道附带近场和远场标签。}
+pipeline:
+  summary: {en: 'OpenStreetMap geometry is converted into a Sionna RT scene, UAV trajectories are generated in SUMO or as near-linear flights, and Sionna RT computes per-antenna near-field and far-field channels that are then merged into one dataset.', zh: OpenStreetMap几何数据被转换为Sionna RT场景，UAV轨迹由SUMO生成或以近似直线飞行方式生成，Sionna RT计算逐天线的近场和远场信道，随后合并为一个数据集。}
+  stages:
+  - title: {en: Build the static 3D scene, zh: 构建静态三维场景}
+    detail: {en: 'The region of interest is extracted from OpenStreetMap in WGS84 coordinates and projected to a regional Gauss-Kruger system, for example EPSG:4527 for Beijing. The scene is centered on the ROI centroid. Building heights come from OSM where available and are user-defined otherwise. Materials follow ITU recommendations, such as itu-concrete, itu-metal, itu-medium-dry-ground and itu-glass.', zh: '感兴趣区域（ROI）从OpenStreetMap以WGS84坐标提取，并投影到区域性的Gauss-Kruger平面坐标系，例如北京使用EPSG:4527。场景以ROI中心为原点。建筑高度在OSM中存在时取自OSM，否则由用户指定。材料依据ITU建议设置，例如itu-concrete、itu-metal、itu-medium-dry-ground和itu-glass。'}
+    inputs:
+    - {en: OpenStreetMap region of interest, zh: OpenStreetMap感兴趣区域}
+    - {en: Building heights from OSM or user-defined, zh: 来自OSM或用户指定的建筑高度}
+    outputs:
+    - {en: 3D scene with ITU-compliant materials, zh: 带ITU标准材料的三维场景}
+  - title: {en: Generate UAV trajectories, zh: 生成UAV轨迹}
+    detail: {en: 'Urban trajectories are road-guided and produced with SUMO, using parameters such as period and maxSpeed. Suburban trajectories apply random perturbations to an initial velocity to produce nearly linear flight paths. The initial altitude is sampled uniformly from [zmin, zmax], then follows a bounded random walk or a sinusoidal pattern at each sampling interval. The Doppler analysis in the paper uses a maximum UAV speed of 20 m/s.', zh: '城市轨迹沿道路生成，使用SUMO并设置period和maxSpeed等参数。郊区轨迹对初始速度施加随机扰动，形成近似直线的飞行路径。初始高度在[zmin, zmax]内均匀采样，之后在每个采样间隔按有界随机游走或正弦模式变化。论文的多普勒分析采用的UAV最大速度为20 m/s。'}
+    inputs:
+    - {en: Road network from OSM, zh: 来自OSM的道路网络}
+    - {en: SUMO period and maxSpeed, zh: SUMO的period和maxSpeed参数}
+    outputs:
+    - {en: Time-stamped UAV trajectories, zh: 带时间戳的UAV轨迹}
+  - title: {en: Ray-trace per-antenna channels with Sionna RT, zh: 使用Sionna RT进行逐天线射线追踪}
+    detail: {en: 'The UAV positions are imported into Sionna RT, and the BS UPA is anchored at the array center. Near-field links are simulated with synthetic_array disabled, so every element is evaluated. Far-field links use the synthetic array to reduce computation. The README lists Python 3.10.18, sionna-rt 1.1.0 and Mitsuba 3 as prerequisites.', zh: UAV位置导入Sionna RT，BS UPA固定在阵列中心。近场链路关闭synthetic_array，逐阵元计算；远场链路开启synthetic_array以降低计算量。README列出的前置环境为Python 3.10.18、sionna-rt 1.1.0和Mitsuba 3。}
+    inputs:
+    - {en: 3D scene and UAV positions, zh: 三维场景和UAV位置}
+    outputs:
+    - {en: Per-antenna near-field or far-field channels, zh: 逐天线的近场或远场信道}
+    - {en: Near-field and far-field labels, zh: 近场和远场标签}
+  - title: {en: 'Split, merge and aggregate scene outputs', zh: 拆分、合并并汇总场景输出}
+    detail: {en: 'Split_and_merge_single_scene_channels.py divides large generation tasks and merges the partial results of each scene. merge_all_scene_channels.py then aggregates channels, UAV positions and labels from all dynamic scenes into one dataset structure.', zh: Split_and_merge_single_scene_channels.py负责拆分较大的生成任务并合并每个场景的部分结果。随后，merge_all_scene_channels.py将所有动态场景的信道、UAV位置和标签汇总为统一的数据集结构。}
+    inputs:
+    - {en: Partial channel results per scene, zh: 各场景的部分信道结果}
+    outputs:
+    - {en: 'Aggregated dataset with channels, UAV positions and labels', zh: 汇总了信道、UAV位置和标签的数据集}

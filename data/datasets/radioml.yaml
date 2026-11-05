@@ -12,8 +12,135 @@ license: CC BY-NC-SA 4.0
 access: {url: 'https://www.deepsig.ai/datasets/', type: open}
 code: ['https://github.com/radioML/dataset']
 paper: arxiv:1712.04578
-used_in: ["doi:10.1109/tvt.2020.3005707","doi:10.1109/lcomm.2022.3213523","doi:10.1109/tvt.2020.3042638","doi:10.1109/twc.2023.3254490","doi:10.1109/tccn.2022.3179450"]
-citing: ["doi:10.1109/tccn.2020.3024610","doi:10.1109/lcomm.2020.2968030","doi:10.1109/lwc.2018.2867459"]
+used_in: ['doi:10.1109/tvt.2020.3005707', 'doi:10.1109/lcomm.2022.3213523', 'doi:10.1109/tvt.2020.3042638', 'doi:10.1109/twc.2023.3254490', 'doi:10.1109/tccn.2022.3179450']
+citing: ['doi:10.1109/tccn.2020.3024610', 'doi:10.1109/lcomm.2020.2968030', 'doi:10.1109/lwc.2018.2867459']
 summary: {en: 'Synthetic complex I/Q frames. RML2016.10A, generated with GNU Radio, has 11 modulations (8 digital, 3 analog) at varying SNR; RML2018.01A has 24 digital and analog modulation types with simulated channel effects, 2 million examples of 1024 samples each.', zh: 合成的复数 I/Q 帧数据。RML2016.10A 由 GNU Radio 生成，包含 11 种调制方式（8 种数字、3 种模拟），信噪比可变；RML2018.01A 包含 24 种数字和模拟调制方式并模拟了信道效应，共 200 万个样本，每个样本长 1024 点。}
 sources: ['https://www.deepsig.ai/datasets/', 'https://arxiv.org/abs/1712.04578', 'https://arxiv.org/pdf/1712.04578']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Modulators generate complex baseband waveforms. The channel module adds multipath and frequency/sampling impairments, then 128-point I/Q segments are extracted with modulation and SNR labels. This pipeline does not generate CSI.', zh: 调制器产生复基带波形，信道模块加入多径与频率/采样扰动，截取 128 点 I/Q 并附调制与 SNR 标签；这条链不生成 CSI。}
+  stages:
+  - title: {en: Generate modulated baseband streams, zh: 生成调制基带流}
+    detail: {en: 'The official transmitters and generation script construct 8 digital and 3 analog modulation waveforms, producing continuous complex baseband streams.', zh: 官方 transmitters 与生成脚本构造 8 种数字和 3 种模拟调制波形，形成连续复基带流。}
+    inputs:
+    - {en: 11 modulation configurations, zh: 11 种调制配置}
+    - {en: Random digital symbols or analog-modulated signals, zh: 随机数字符号或模拟调制信号}
+    outputs:
+    - {en: Modulated complex waveforms, zh: 调制后的复数波形}
+    controls:
+    - {en: 'Author code: the 2016.10a waveform sampling rate is set to 200 kHz.', zh: 作者代码：2016.10a 的波形采样率设置为 200 kHz。}
+    checks:
+    - {en: 'Reproduction recommendation: preserve modulation parameters, random sources, and the GNU Radio version. The I/Q time dimension is not a mobile-channel trajectory.', zh: 复现建议：保留调制参数、随机源与 GNU Radio 版本；I/Q 的时间维不是移动信道轨迹。}
+  - title: {en: Apply dynamic-channel impairments, zh: 施加动态信道扰动}
+    detail: {en: 'The script iterates over labels from -20 to 18 dB in 2 dB steps, adding multipath and other impairments through dynamic_channel_model. delays=[0,0.9,1.7], magnitudes=[1,0.8,0.3], 8 taps, and fD=1 define processing for this version.', zh: '脚本遍历 -20 到 18 dB、步长 2 dB 的标签，经 dynamic_channel_model 加入多径等扰动；代码的 delays=[0,0.9,1.7]、magnitudes=[1,0.8,0.3]、8 taps 和 fD=1 定义该版本的处理。'}
+    inputs:
+    - {en: Complex baseband stream, zh: 复基带流}
+    - {en: SNR-label grid, zh: SNR 标签网格}
+    outputs:
+    - {en: Impaired complex baseband stream, zh: 受扰复基带流}
+    controls:
+    - {en: 'Author code: noise_amp=10^(-snr/10). Interpret label values and interface semantics according to the corresponding GNU Radio version.', zh: 作者代码：noise_amp=10^(-snr/10)；标签值和接口语义须依对应 GNU Radio 版本解释。}
+    checks:
+    - {en: 'Reproduction recommendation: measure actual SNR from generated waveforms. Variable names alone do not establish that every segment''s actual SNR exactly equals its label.', zh: 复现建议：用生成波形测量实际 SNR；不得仅凭变量名宣称每段的实际 SNR 精确等于标签。}
+  - title: {en: Skip transients and extract samples, zh: 跳过瞬态并截取样本}
+    detail: {en: 'The script skips an initial section using a random starting offset, extracts 128-point complex segments, and continues sampling at random intervals. It saves 1000 samples per modulation/SNR combination.', zh: 脚本从随机起点跳过初始段，截取长度 128 的复数片段，并以随机间隔继续取样；每个调制与 SNR 组合保存 1000 个样本。}
+    inputs:
+    - {en: Long complex baseband stream, zh: 长时复基带流}
+    outputs:
+    - {en: 128-point complex segments, zh: 长度 128 的复数片段}
+    controls:
+    - {en: 'Author code: the initial offset is selected from 50–500; subsequent sampling intervals are at least 128.', zh: 作者代码：初始偏移在 50–500 范围选择，后续采样间隔至少 128。}
+    checks:
+    - {en: 'Reproduction recommendation: record stream and segment identities; check for correlated segments from the same generated stream across training/test sets.', zh: 复现建议：记录流和切片身份，检查训练/测试中是否混入来自同一生成流的相关片段。}
+  - title: {en: Scale amplitudes and form I/Q tensors, zh: 幅度缩放与 I/Q 张量化}
+    detail: {en: 'The script divides each segment by sum(abs(x)), then stores real and imaginary components separately as float32, yielding [number of samples,2,128].', zh: '脚本将每个片段除以 sum(abs(x))，再分别保存实部与虚部为 float32，得到 [样本数,2,128]。'}
+    inputs:
+    - {en: 128-point complex segments, zh: 128 点复数片段}
+    outputs:
+    - {en: Two-channel float32 I/Q arrays, zh: 双通道 float32 I/Q 数组}
+    controls:
+    - {en: 'Author implementation: the denominator is the sum of magnitudes, not sum(abs(x)^2); this is not normalization to unit squared energy.', zh: 作者实际实现：分母是幅度和，不是 sum(abs(x)^2)，不能称为单位平方能量归一化。}
+    checks:
+    - {en: 'Reproduction recommendation: check that denominators are nonzero and use the same scaling for all methods. Switching to unit-power normalization requires a separately reported protocol.', zh: 复现建议：检查分母非零，并用同一缩放规则处理所有比较方法；若改单位功率归一化，应另列协议。}
+  - title: {en: Attach labels and serialize, zh: 附标签并序列化}
+    detail: {en: 'Use (modulation,SNR) as dictionary keys and save RML2016.10a_dict.dat with Python pickle/cPickle. Classes and SNRs are inherited from generation settings.', zh: '以 (modulation,SNR) 为字典键，使用 Python pickle/cPickle 保存 RML2016.10a_dict.dat；类别与 SNR 由生成设置继承。'}
+    inputs:
+    - {en: I/Q arrays, zh: I/Q 数组}
+    - {en: Modulation types and nominal SNRs, zh: 调制类型与名义 SNR}
+    outputs:
+    - {en: Pickle data with modulation/SNR labels, zh: 带调制/SNR 标签的 pickle 数据}
+    controls:
+    - {en: 'Author assets: the 2016.10a generator depends on old Python/GNU Radio versions; the official historical data are no longer maintained.', zh: 作者资产：2016.10a 生成器依赖旧 Python/GNU Radio；官方历史数据不再维护。}
+    checks:
+    - {en: 'Reproduction recommendation: preserve dictionary keys and class order, and check each combination''s [1000,2,128] tensor and float32 dtype.', zh: '复现建议：保留字典键与类别顺序，并检查各组合的 [1000,2,128] 张量和 float32 类型。'}
+  - title: {en: Define learning splits and version scope separately, zh: 单独定义学习划分与版本范围}
+    detail: {en: 'This generation script provides no standard train/validation/test split; classification experiments must declare their own splits and label mappings. 2018.01A is a separate HDF5 release, officially described as 24 modulations and approximately 2 million 1024-point samples. This script cannot be claimed to reproduce it.', zh: 该生成脚本不提供统一 train/validation/test；分类实验须声明自己的划分与标签映射。2018.01A 是独立 HDF5 发布，官方描述为 24 调制、约 200 万个 1024 点样本，不能用此脚本宣称复现。}
+    inputs:
+    - {en: 2016.10a dictionary, zh: 2016.10a 字典}
+    - {en: Modulation classes and SNR range required by the task, zh: 任务所需调制类别与 SNR 范围}
+    outputs:
+    - {en: Explicitly declared task splits, zh: 声明清楚的任务划分}
+    - {en: Version-specific classification benchmarks, zh: 版本独立的分类基准}
+    controls:
+    - {en: 'Reproduction recommendation: stratify at least by modulation and SNR, and add generated-stream isolation or unseen-SNR testing.', zh: 复现建议：至少按调制与 SNR 分层，并增加生成流隔离或未见 SNR 测试。}
+    checks:
+    - {en: 'Reproduction recommendation: verify data version and sample length. This I/Q library is not a source of CSI beam/position labels.', zh: 复现建议：核对数据版本与样本长度；不能把此 I/Q 库用作 CSI 波束/定位标签库。}
+  scope: {en: 'The detailed workflow corresponds to the official public RadioML 2016.10a generation script. For 2018.01A, only the official release scope is recorded; the 2016 generator is not applied.', zh: 详细流程对应官方公开的 RadioML 2016.10a 生成脚本；2018.01A 仅记录官方发布范围，不套用 2016 生成器。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Time-domain complex baseband I/Q segments
+
+      • Modulation classes and nominal SNRs
+
+      • 2016 pickle files or separately released files from other versions', zh: '• 时域复基带 I/Q 片段
+
+      • 调制类别与名义 SNR
+
+      • 2016 pickle 或其他版本独立发布文件'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• User-defined classification splits
+
+      • Optional augmentation or tokens/masks
+
+      • Modulation-recognition metrics', zh: '• 用户定义的分类划分
+
+      • 可选增广或 token/mask
+
+      • 调制识别指标'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• No RadioML data were downloaded. Specific file shapes and actual SNRs of impaired signals were not measured.
+
+      • The official public code explains how 2016.10a was constructed. Repository licensing and runnable dependencies require separate verification; visible code does not imply an explicit open-source license.', zh: '• 未下载任何 RadioML 数据；具体文件 shape 与受扰信号的实际 SNR 未实测。
+
+      • 官方公开代码能够说明 2016.10a 构建方式；其仓库许可和可运行依赖需另核验，不把代码可见等同于明确开源授权。'}
+provenance:
+- {en: '2016.10a: modulators generate complex baseband streams across modulation classes and nominal SNRs.', zh: 2016.10a：调制器生成复基带流，遍历调制类别与名义 SNR}
+- {en: GNU Radio dynamic channels add multipath and other impairments., zh: GNU Radio 动态信道加入多径与其他扰动}
+- {en: 'Randomly extract 128-point segments, divide by sum(abs(x)), then separate into float32 I/Q.', zh: 随机截取 128 点片段，除以 sum(abs(x)) 后拆成 float32 I/Q}
+- {en: 'Write pickle data keyed by (modulation,SNR); users specify learning splits.', zh: '以 (modulation,SNR) 为键写入 pickle；学习划分由使用者声明'}
+- {en: Versions such as 2018.01A are separate releases; 2016.10a scripts and dimensions do not apply to them., zh: 2018.01A 等版本是独立发布，不能套用 2016.10a 的脚本和维度}
+technical_notes:
+- {en: 'Official design: 2016.04C includes local-oscillator drift, mild fading, and multiple SNRs; 2016.10A is the cleaned/normalized version.', zh: 官方设计：2016.04C 包含局振漂移、轻衰落和多 SNR；2016.10A 为清理/归一化版本。}
+- {en: 'Official statement: the data have known errata and do not represent training data for DeepSig''s current products.', zh: 官方说明：数据有已知勘误，不代表 DeepSig 当前产品训练数据。}
+- {en: 'Inference: high accuracy on these historical simulated segments does not directly establish modern OTA, multidevice, or open-set deployment capability.', zh: 推断：在这些历史模拟片段上的高准确率不能直接证明现代 OTA、多设备和开放集部署能力。}
+limitations:
+- {en: Do not misinterpret the two real-valued I/Q channels as complex CSI from two receive antennas., zh: 不能将 I/Q 的两个实数通道误读为两个接收天线的复 CSI。}
+- {en: Adjacent segments from the same long signal may be correlated. Verify actual source grouping; do not assume random splits are independent., zh: 同一长信号的相邻片段可能相关；实际来源分组需核验，不默认随机切分独立。}
+- {en: Download pickle files only from trusted sources; do not execute serialized objects from unknown sources., zh: 下载 pickle 时只使用可信来源，不能执行来源不明的序列化对象。}
+history:
+- {en: '2016: Initial 2016.04C and cleaned 2016.10A versions', zh: 2016：2016.04C 初版及 2016.10A 清理版}
+- {en: '2018.01: Historical 2018.01A release identifier', zh: 2018.01：2018.01A 历史发布标识}
+- {en: '2026-11-05: The current official page retains historical entry points and states that maintenance has stopped.', zh: 2026-11-05：当前官方页面仍提供历史入口并说明不维护}
+usage:
+- {en: 'Choose a specific version first and verify labels, SNRs, and I/Q axes. Do not mix sample counts across versions.', zh: 先选择具体版本并核对标签、SNR 及 I/Q 轴；不要把版本间样本数混用。}
+- {en: 'Establish SNR-stratified, modulation-balanced splits grouped by independent waveform source.', zh: 建立 SNR 分层、调制类别平衡和独立波形来源划分。}
+- {en: Include at least an independent OTA test or another generation pipeline; report calibration and open-set errors., zh: 至少加入独立 OTA 或另一生成流水线测试；报告 calibration 与开放集错误。}
+- {en: This Atlas does not provide a fabricated conversion to MIMO CSI., zh: 本 Atlas 不提供伪造的 MIMO CSI 转换。}
+field_notes:
+- label: {en: Time, zh: 时间}
+  text: {en: 'A sampling sequence within a modulation-waveform segment, not a user-motion trajectory or future-channel sequence.', zh: 单个调制波形片段的采样序列，不是用户移动轨迹或未来信道序列。}
+overview: {en: 'RadioML is a family of synthetic radio-signal datasets from DeepSig, Inc. that targets modulation recognition. RML2016.10A, generated with GNU Radio and stored as a Python pickle file, contains 11 modulation types (8 digital and 3 analog) at varying SNR. RML2018.01A, stored in HDF5, contains 24 digital and analog modulation types with simulated channel effects, in 2 million examples of 1024 samples each. DeepSig labels the 2016 releases as from 2016 and RML2018.01A as from 2017, and states that these are early academic datasets with known errata that are not used in current DeepSig products. The data are complex baseband I/Q waveforms labelled with modulation class and SNR, produced by simulation rather than measurement. Each example is a sampling sequence within one modulation-waveform segment, not a user trajectory, and the data contain no CSI, antenna-array channels or positions.', zh: 'RadioML 是 DeepSig, Inc. 发布的一组合成无线信号数据集，面向调制识别任务。RML2016.10A 由 GNU Radio 生成，以 Python
+    pickle 文件保存，包含 11 种调制方式（8 种数字、3 种模拟），信噪比可变。RML2018.01A 以 HDF5 格式保存，包含 24 种数字和模拟调制方式以及模拟的信道效应，共 200 万个样本，每个样本长 1024 点。DeepSig 将 2016 年的发布标为 2016 年数据，将 RML2018.01A 标为 2017 年数据，并说明这些是早期学术数据集，存在已知勘误，目前不用于 DeepSig 产品。数据为复基带 I/Q 波形，标注调制类别和 SNR，由仿真生成而非测量获得。每个样本是单个调制波形片段内的采样序列，而非用户轨迹；数据不包含 CSI、天线阵列信道或位置信息。数据集采用 CC BY-NC-SA 4.0 许可，DeepSig 不提供支持或修订。'}
+signal_details:
+- signal: iq
+  text: {en: 'Complex baseband I/Q samples. RML2018.01A stores complex floating-point values in HDF5, with 2 million examples of 1024 samples each. RML2016.10A is a Python pickle file generated with GNU Radio.', zh: 复数基带 I/Q 采样。RML2018.01A 以 HDF5 保存复数浮点值，共 200 万个样本，每个样本 1024 个采样点。RML2016.10A 为 Python pickle 文件，由 GNU Radio 生成。}

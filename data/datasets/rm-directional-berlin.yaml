@@ -13,7 +13,39 @@ access: {url: 'https://zenodo.org/records/10210089', type: open}
 code: ['https://github.com/fabja19/RML']
 paper: arxiv:2402.00878
 used_in: []
-citing: ["doi:10.1109/tccn.2024.3502492","doi:10.1109/tccn.2025.3570469"]
+citing: ['doi:10.1109/tccn.2024.3502492', 'doi:10.1109/tccn.2025.3570469']
 summary: {en: 'Simulated path loss radio maps with directive transmitter antennas over Berlin city maps at 3.7 GHz, with building and vegetation height maps, transmitter parameters and RGBIR aerial images. The paper reports 74,515 radio maps covering 256 m x 256 m at 1 m spatial resolution.', zh: '基于柏林城市地图的仿真路径损耗无线电地图，采用定向发射天线，载频 3.7 GHz，并配有建筑与植被高度图、发射机参数以及 RGBIR 航拍图像。论文报告共 74,515 幅无线电地图，覆盖 256 m × 256 m 区域，空间分辨率为 1 m。'}
 sources: ['https://arxiv.org/abs/2402.00878', 'https://arxiv.org/html/2402.00878', 'https://github.com/fabja19/RML', 'https://zenodo.org/records/10210089', 'https://zenodo.org/api/records/10210089']
 checked: '2026-11-06'
+overview: {en: 'RMDirectionalBerlin is a simulated radio map dataset of path loss at 3.7 GHz over Berlin city maps, with directive transmitter antennas. It accompanies arXiv:2402.00878 and is published on Zenodo under CC BY 4.0 (DOI 10.5281/zenodo.10210089). Fabian Jaensch (TU Berlin) created the dataset, with Giuseppe Caire (USC) and Begüm Demir (TU Berlin) as supervisors. The paper reports 74,515 radio maps from 424 Berlin city maps, each covering 256 m x 256 m at 1 m resolution. The maps were produced by ray tracing in Wireless InSite, using building and vegetation height polygons derived from Berlin LiDAR data. The inputs include building and vegetation nDSMs, RGBIR aerial images, transmitter positions and parameters, antenna patterns and line-of-sight files. The main archive is 4.5 GB, the model checkpoints archive is 4.9 GB, and the GIS files archive is 56.9 MB. The data are intended for training CNN-based radio map estimators, and the code is in the RML repository.', zh: 'RMDirectionalBerlin
+    是柏林城市地图上 3.7 GHz 路径损耗的仿真无线电地图数据集，采用定向发射天线。数据集对应 arXiv:2402.00878，发布于 Zenodo，采用 CC BY 4.0 许可（DOI 10.5281/zenodo.10210089）。由柏林工业大学（TU Berlin）的 Fabian Jaensch 创建，Giuseppe Caire（USC）与 Begüm Demir（TU Berlin）为指导者。论文报告共 74,515 幅无线电地图，来自 424 张柏林城市地图，每幅覆盖 256 m x 256 m，分辨率为 1 m。地图由 Wireless InSite 射线追踪生成，使用基于柏林 LiDAR 数据得到的建筑与植被高度多边形。输入包括建筑与植被 nDSM、RGBIR 航拍图像、发射机位置与参数、天线方向图以及视距文件。主压缩包为 4.5 GB，模型检查点压缩包为 4.9 GB，GIS 文件压缩包为 56.9 MB。数据用于训练基于 CNN 的无线电地图估计模型，代码位于 RML 仓库。'}
+signal_details:
+- signal: pathloss
+  text: {en: 'Path loss maps computed as simulated received power minus transmit power, cut off at the -127 dB noise floor and linearly scaled to [0, 1] as grayscale images. The simulation uses a 3.7 GHz carrier, isotropic receivers at 1.5 m height on a 1 m grid, and a maximum path loss setting of -50 dB.', zh: '路径损耗图由仿真接收功率减去发射功率得到，在 -127 dB 噪声底处截断，并线性缩放到 [0, 1] 的灰度图像。仿真载频为 3.7 GHz，接收机为各向同性天线，位于 1.5 m 高度，按 1 m 间距排列；最大路径损耗设置为 -50 dB。'}
+pipeline:
+  summary: {en: 'LiDAR point clouds become height polygons, which feed a Wireless InSite ray-tracing run, and the received power is converted into scaled path loss maps.', zh: LiDAR 点云被转换为高度多边形，输入 Wireless InSite 射线追踪仿真，接收功率再转换为缩放后的路径损耗图。}
+  stages:
+  - title: {en: LiDAR classification, zh: LiDAR 分类}
+    detail: {en: 'Raw LiDAR point clouds from Geoportal Berlin are classified into ground, building and vegetation with LAStools. Building footprints refine the building class. The output is building and vegetation nDSMs, meaning heights above a flat ground approximation.', zh: 来自 Geoportal Berlin 的原始 LiDAR 点云通过 LAStools 分为地面、建筑与植被三类，建筑足迹用于细化建筑类别。输出为建筑与植被 nDSM，即相对于平坦地面近似的高度。}
+    inputs:
+    - {en: LiDAR point clouds and building footprints, zh: LiDAR 点云与建筑足迹}
+    outputs:
+    - {en: Building and vegetation nDSMs, zh: 建筑与植被 nDSM}
+  - title: {en: Height polygon construction, zh: 高度多边形构建}
+    detail: {en: Neighboring pixels of similar height in the nDSMs are grouped into 2D polygons with height attributes. Vegetation boundaries are interpolated more coarsely to reduce runtime., zh: nDSM 中高度相近的相邻像素被合并为带高度属性的二维多边形。植被边界采用较粗的插值以减少运行时间。}
+    inputs:
+    - {en: Building and vegetation nDSMs, zh: 建筑与植被 nDSM}
+    outputs:
+    - {en: 2D polygons with height attributes, zh: 带高度属性的二维多边形}
+  - title: {en: Ray tracing, zh: 射线追踪}
+    detail: {en: 'The Wireless InSite X3D model simulates each transmitter at 3.7 GHz with up to 2 reflections, 1 diffraction and 0 transmissions. Transmitters sit on roof edges and corners, 2 m from the roof, at heights of 6 m to 30 m above ground, with directive antennas whose half-power beam widths range from 15 to 90 degrees. Receivers form a grid with 1 m spacing at 1.5 m height.', zh: Wireless InSite X3D 模型以 3.7 GHz 对每个发射机进行仿真，最多 2 次反射、1 次绕射、0 次透射。发射机位于屋顶边缘和角点，距屋顶 2 m，离地高度 6 m 至 30 m，采用半功率波束宽度为 15 至 90 度的定向天线。接收机按 1 m 间距布置于 1.5 m 高度的网格上。}
+    inputs:
+    - {en: 'Height polygons, transmitter positions and antenna patterns', zh: 高度多边形、发射机位置与天线方向图}
+    outputs:
+    - {en: Received power at each receiver, zh: 每个接收机处的接收功率}
+  - title: {en: Path loss map generation, zh: 路径损耗图生成}
+    detail: {en: 'Path loss is the received power minus the transmit power. Values are cut off at the -127 dB noise floor and scaled linearly to [0, 1] as grayscale images, one map per 256 m x 256 m area at 1 m resolution.', zh: '路径损耗为接收功率减去发射功率。数值在 -127 dB 噪声底处截断，并线性缩放到 [0, 1] 作为灰度图像，每幅图对应 256 m x 256 m 区域，分辨率为 1 m。'}
+    inputs:
+    - {en: Received power and transmit power, zh: 接收功率与发射功率}
+    outputs:
+    - {en: Grayscale path loss radio maps, zh: 灰度路径损耗无线电地图}

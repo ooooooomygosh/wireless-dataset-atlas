@@ -16,3 +16,37 @@ citing: []
 summary: {en: 'Ray-traced per-path complex gain, time of arrival, angle of departure, angle of arrival and path type for 128 m x 128 m scenes derived from OpenStreetMap city layouts, with procedurally generated blocks also supported by the generator. The generator uses NVIDIA Sionna ray tracing.', zh: 基于OpenStreetMap城市布局的128 m x 128 m场景，经光线追踪得到每径的复增益、到达时间、离开角、到达角和路径类型。生成器同时支持程序化生成的区块，并使用NVIDIA Sionna进行光线追踪。}
 sources: ['https://arxiv.org/abs/2512.17286', 'https://arxiv.org/html/2512.17286', 'https://github.com/liu-lz/OpenPathNet', 'https://raw.githubusercontent.com/liu-lz/OpenPathNet/main/README.md', 'https://huggingface.co/api/datasets/liu-lz/OpenPathNet']
 checked: '2026-11-06'
+overview: {en: 'OpenPathNet is an open-source toolchain and a ray-traced dataset of per-path multipath parameters for urban radio scenes, described by Lizhou Liu, Xiaohui Chen and Wenyi Zhang (arXiv:2512.17286, 2025; the README states acceptance at IEEE VTC2026-Spring). Scenes are 128 m x 128 m blocks built from OpenStreetMap footprints and simulated with NVIDIA Sionna 0.19.2 ray tracing. The Hugging Face release contains 1,777 ray-traced scenes, 971 from Boston and 806 from Miami, with geometry under scenes/ and results under raytracing_results/ using the same scene_<lat>_<lon> names. The transmitter is at (0, 0, 30) m with an omnidirectional antenna, and receivers lie on a 128 x 128 grid with 1 m spacing at 1 m height. For each receiver the release keeps the five paths with the highest channel gain, each with channel gain, time of arrival (ToA), angles of departure and arrival, and path type (LoS, Reflected or Scattered). The paper names channel prediction and semantic labeling as downstream
+    tasks and describes a wider dataset of more than 12,000 scenes across more than ten cities, while the README describes the Hugging Face release as about 1,700 scenes from three cities. Paths beyond the top five at each receiver are not stored.', zh: 'OpenPathNet 是一个开源工具链，同时提供城市无线电场景的逐径多径参数光线追踪数据集，作者为 Lizhou Liu、Xiaohui Chen 与 Wenyi Zhang（arXiv:2512.17286，2025 年；README 称该工作已被 IEEE VTC2026-Spring 接收）。场景为 128 m x 128 m 的街区，由 OpenStreetMap 建筑轮廓构建，并使用 NVIDIA Sionna 0.19.2 进行光线追踪仿真。Hugging Face 发布版包含 1,777 个光线追踪场景，其中 Boston 971 个、Miami 806 个；几何文件位于 scenes/，结果位于 raytracing_results/，两者使用相同的 scene_<lat>_<lon> 命名。发射机位于 (0, 0, 30) m，采用全向天线；接收机位于 128 x 128 网格上，间距 1 m，高度 1 m。每个接收点保留信道增益最高的五条路径，每条路径包含信道增益、到达时间（ToA）、离开角与到达角，以及路径类型（LoS、Reflected 或 Scattered）。论文列举的下游任务为信道预测与语义标注，并描述了一个更大的数据集，包含十余个城市、超过 12,000 个场景；README 则称 Hugging Face 发布版约 1,700 个场景，来自三个城市。每个接收点前五条以外的路径不予保存。'}
+signal_details:
+- signal: paths
+  text: {en: 'Per-path records for the five strongest paths at each receiver. Fields: channel_gain, tau (ToA, seconds), freq (carrier frequency, Hz), rx_coord, phi_r and theta_r (AoA azimuth and elevation), phi_t and theta_t (AoD azimuth and elevation), and type (LoS, Reflected or Scattered). Stored as CSV and pickle with one row per receiver and path, and as a DeepMIMO-style NPY file with arrays of length 5 per receiver.', zh: 每个接收点前五条最强路径的逐径记录。字段包括 channel_gain、tau（到达时间 ToA，单位秒）、freq（载波频率，单位 Hz）、rx_coord、phi_r 与 theta_r（AoA 方位角与仰角）、phi_t 与 theta_t（AoD 方位角与仰角），以及 type（LoS、Reflected 或 Scattered）。以 CSV 与 pickle 存储，每行对应一个接收点与一条路径；DeepMIMO 风格的 NPY 文件中，每个接收点包含长度为 5 的数组。}
+pipeline:
+  summary: {en: 'The generator takes OpenStreetMap coordinates, or a randomized block layout as fallback, and outputs 3D scene files together with per-path ray-tracing results for each receiver.', zh: 生成器以 OpenStreetMap 坐标为输入（失败时可改用随机街区布局），输出三维场景文件，以及每个接收点的逐径光线追踪结果。}
+  stages:
+  - title: {en: Scene generation from OpenStreetMap, zh: 基于 OpenStreetMap 的场景生成}
+    detail: {en: 'The generator fetches building data for a region set by center coordinates and radius, and builds 3D scenes as Mitsuba-compatible scene.xml files with ground.ply and building_*.ply meshes. If OSM retrieval fails, osm_retry re-samples a point within a search radius, and fallback switches to randomized buildings.', zh: 生成器根据中心坐标与半径获取区域内的 OpenStreetMap 建筑数据，生成与 Mitsuba 兼容的三维场景 scene.xml，并输出 ground.ply 与 building_*.ply 网格。OSM 获取失败时，osm_retry 模式在搜索半径内重新采样点位，fallback 模式则切换为随机建筑。}
+    inputs:
+    - {en: OpenStreetMap data for a center and radius, zh: 中心坐标与半径范围内的 OpenStreetMap 数据}
+    - {en: configs/regions_config.yaml, zh: configs/regions_config.yaml}
+    outputs:
+    - {en: scene.xml and PLY meshes, zh: scene.xml 与 PLY 网格}
+    - {en: generated_scenes.txt manifest, zh: generated_scenes.txt 清单}
+  - title: {en: Transmitter and receiver grid, zh: 发射机与接收机网格}
+    detail: {en: 'The transmitter is at (0, 0, 30) m with an omnidirectional antenna. Receivers are placed on a 128 x 128 grid with 1 m spacing at a height of 1 m. Outdoor point filtering and a minimum sample density are applied as quality-control thresholds.', zh: '发射机位于 (0, 0, 30) m，采用全向天线。接收机按 1 m 间距布置在 128 x 128 网格上，高度为 1 m。质量控制阈值包括室外点过滤与最小采样密度。'}
+    inputs:
+    - {en: Scene geometry, zh: 场景几何}
+    outputs:
+    - {en: Receiver coordinates, zh: 接收机坐标}
+  - title: {en: Sionna ray tracing, zh: Sionna 光线追踪}
+    detail: {en: 'NVIDIA Sionna 0.19.2 resolves the LoS, reflection, diffraction and scattering paths for each receiver. The device mode is set by gpu-mode (auto or cpu_only), ray_samples sets the accuracy, and max_depth limits the number of reflections.', zh: NVIDIA Sionna 0.19.2 为每个接收点求解 LoS、反射、绕射与散射路径。计算设备由 gpu-mode 设定（auto 或 cpu_only），ray_samples 控制精度，max_depth 限制反射次数。}
+    inputs:
+    - {en: scene.xml and transmitter and receiver configuration, zh: scene.xml 与收发机配置}
+    outputs:
+    - {en: 'Per-path channel gain, ToA, AoD and AoA', zh: 逐径信道增益、ToA、AoD 与 AoA}
+  - title: {en: Top-5 selection and export, zh: 前五路径筛选与导出}
+    detail: {en: 'For each receiver, the five paths with the highest channel gain are kept. Results are written as raytracing_results.csv, raytracing_results.pkl and deepmimo_format.npy, together with distribution and heatmap PNG plots.', zh: 每个接收点保留信道增益最高的五条路径。结果写为 raytracing_results.csv、raytracing_results.pkl 与 deepmimo_format.npy，并输出分布图与热力图（PNG）。}
+    inputs:
+    - {en: Per-path results, zh: 逐径结果}
+    outputs:
+    - {en: 'CSV, pickle, NPY and PNG files', zh: CSV、pickle、NPY 与 PNG 文件}

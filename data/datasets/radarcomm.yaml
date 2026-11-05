@@ -15,7 +15,40 @@ access: {url: 'https://github.com/ANDROComputationalSolutions/RadarCommDataset',
 code: ['https://github.com/ANDROComputationalSolutions/RadarCommDataset']
 paper: doi:10.1016/j.comnet.2021.108441
 used_in: []
-citing: ["doi:10.1038/s41467-024-51161-8","doi:10.1109/jiot.2025.3623318","doi:10.1109/ojcoms.2026.3733317"]
+citing: ['doi:10.1038/s41467-024-51161-8', 'doi:10.1109/jiot.2025.3623318', 'doi:10.1109/ojcoms.2026.3733317']
 summary: {en: 'Synthetic GNU Radio radar and communication waveforms with 6 modulation and 8 signal-type labels, each stored as 128 I and 128 Q values at 10 MS/s, at SNR from -20 to 18 dB in 2 dB steps. Most data are GNU Radio synthetic; one over-the-air capture at 2.45 GHz is included.', zh: 由 GNU Radio 合成的雷达与通信波形，包含 6 个调制标签和 8 个信号类型标签，每个波形存储为 128 个 I 值和 128 个 Q 值，采样率 10 MS/s，SNR 范围为 -20 至 18 dB，步长 2 dB。数据以 GNU Radio 合成为主，另含一段 2.45 GHz 空口采集数据。}
 sources: ['https://github.com/ANDROComputationalSolutions/RadarCommDataset', 'https://api.crossref.org/works/10.1016/j.comnet.2021.108441']
 checked: '2026-11-06'
+overview: {en: 'RadarCommDataset (RadCom) is a labelled dataset of radar and communication waveforms published by ANDRO Computational Solutions in 2021. The accompanying paper by Jagannath and Jagannath appeared in Computer Networks, vol. 199 (2021). Most of the data are synthetic waveforms generated in GNU Radio Companion, and one over-the-air capture at 2.45 GHz is included. The labels cover 6 modulation classes and 8 signal classes, and they support modulation classification and signal-type classification in multi-task and single-task learning. Each waveform is stored as 700 snapshots, and each snapshot holds 128 in-phase and 128 quadrature samples at 10 MS/s. The synthetic data cover SNR values from -20 dB to 18 dB in 2 dB steps, in an AWGN-only version and a version with dynamic channel effects. The files are in HDF5 format and are released under CC BY-NC-SA 4.0, with helper scripts for loading and visualization.', zh: RadarCommDataset（RadCom）是一个带标签的雷达与通信波形数据集，由 ANDRO Computational
+    Solutions 于 2021 年发布。配套论文由 Jagannath 与 Jagannath 撰写，发表于 Computer Networks 第 199 卷（2021）。数据以 GNU Radio Companion 生成的合成波形为主，另含一段 2.45 GHz 的空口采集数据。标签包括 6 个调制类和 8 个信号类，可用于调制分类与信号类型分类，支持多任务与单任务学习。每个波形存储为 700 个快照，每个快照包含 128 个同相样本和 128 个正交样本，采样率为 10 MS/s。合成数据覆盖 -20 dB 至 18 dB 的 SNR，步长 2 dB，分为仅含 AWGN 的版本和含动态信道效应的版本。文件为 HDF5 格式，采用 CC BY-NC-SA 4.0 许可，并附带加载与可视化的辅助脚本。}
+signal_details:
+- signal: iq
+  text: {en: 'I/Q snapshots stored in HDF5 with keys {modulation, signal, snr, sample}. Each snapshot is a 256 × 1 tensor: 128 in-phase values followed by 128 quadrature values. Sampling rate 10 MS/s; 700 snapshots per waveform; SNR from -20 dB to 18 dB in 2 dB steps. The over-the-air capture uses a USRP N210 with a VERT2450 antenna at 2.45 GHz.', zh: 'I/Q 快照以 HDF5 存储，键为 {modulation, signal, snr, sample}。每个快照为 256 × 1 张量：128 个同相值后接 128 个正交值。采样率 10 MS/s；每个波形 700 个快照；SNR 为 -20 dB 至 18 dB，步长 2 dB。空口采集使用 USRP N210 与 VERT2450 天线，中心频率 2.45 GHz。'}
+pipeline:
+  summary: {en: 'GNU Radio Companion generates the synthetic waveforms, a dynamic channel model applies channel effects across the SNR range, and the snapshots are stored in HDF5. One over-the-air capture at 2.45 GHz is recorded separately.', zh: GNU Radio Companion 生成合成波形，动态信道模型在 SNR 范围内施加信道效应，快照以 HDF5 格式存储。另外单独记录一段 2.45 GHz 空口采集数据。}
+  stages:
+  - title: {en: Generate waveforms in GNU Radio Companion, zh: 在 GNU Radio Companion 中生成波形}
+    detail: {en: 'Synthetic radar and communication waveforms are produced in GNU Radio Companion for the listed modulation and signal classes. The modulation classes are Pulsed Continuous wave, FMCW, BPSK, AM-DSB, AM-SSB and ASK.', zh: 在 GNU Radio Companion 中为所列调制类与信号类生成合成雷达与通信波形。调制类包括 Pulsed Continuous wave、FMCW、BPSK、AM-DSB、AM-SSB 和 ASK。}
+    inputs:
+    - {en: Modulation and signal class definitions, zh: 调制类与信号类定义}
+    outputs:
+    - {en: Waveforms for each class, zh: 各类别波形}
+  - title: {en: Apply dynamic channel effects over the SNR range, zh: 在 SNR 范围内施加动态信道效应}
+    detail: {en: 'The gnuradio.channels.dynamic_channel_model block is applied over SNRs from -20 dB to 18 dB in 2 dB steps. The maximum carrier frequency offset is 250 Hz, the maximum sample-rate offset is 60 Hz, the maximum Doppler frequency is 2 Hz and the Rician K-factor is 3.', zh: 在 -20 dB 至 18 dB、步长 2 dB 的 SNR 范围内应用 gnuradio.channels.dynamic_channel_model 模块。最大载波频偏为 250 Hz，最大采样率偏差为 60 Hz，最大多普勒频率为 2 Hz，莱斯 K 因子为 3。}
+    inputs:
+    - {en: Waveforms from the previous stage, zh: 上一步生成的波形}
+    - {en: SNR values from -20 dB to 18 dB, zh: -20 dB 至 18 dB 的 SNR 值}
+    outputs:
+    - {en: Impaired waveforms at each SNR, zh: 各 SNR 下的受损波形}
+  - title: {en: Store snapshots in HDF5, zh: 以 HDF5 格式存储快照}
+    detail: {en: 'Each waveform has 700 snapshots. Each snapshot is one 256 × 1 tensor of 128 in-phase values followed by 128 quadrature values, sampled at 10 MS/s. Snapshots are indexed by modulation, signal, SNR and sample.', zh: 每个波形包含 700 个快照。每个快照为一个 256 × 1 张量，依次为 128 个同相值和 128 个正交值，采样率 10 MS/s。快照按 modulation、signal、SNR 和 sample 索引。}
+    inputs:
+    - {en: Impaired waveforms, zh: 受损波形}
+    outputs:
+    - {en: 'HDF5 file keyed by modulation, signal, snr and sample', zh: 以 modulation、signal、snr、sample 为键的 HDF5 文件}
+  - title: {en: Record over-the-air captures, zh: 记录空口采集数据}
+    detail: {en: The RadComOta2.45GHz package is recorded with a USRP N210 and a VERT2450 antenna at a 2.45 GHz center frequency and 10 MS/s., zh: 空口数据包 RadComOta2.45GHz 使用 USRP N210 与 VERT2450 天线，在 2.45 GHz 中心频率、10 MS/s 采样率下采集。}
+    inputs:
+    - {en: 2.45 GHz over-the-air signals, zh: 2.45 GHz 空口信号}
+    outputs:
+    - {en: RadComOta2.45GHz package, zh: RadComOta2.45GHz 数据包}

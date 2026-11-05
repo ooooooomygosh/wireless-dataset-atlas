@@ -230,3 +230,43 @@ footer.site-footer .wrap { display: flex; justify-content: space-between; gap: 1
 }
 .facet-toggle { display: none; margin-bottom: 12px; }
 @media print { .site-header, .tray, footer.site-footer, .facets { display: none; } }
+
+/* detail page */
+.detail-grid { grid-template-columns: minmax(0, 1fr) 280px; gap: 40px; }
+.detail-main .block { margin-top: 40px; scroll-margin-top: 76px; }
+.detail-main .block:first-child { margin-top: 0; }
+.detail-main .block > h2 { margin-bottom: 14px; }
+.body { margin: 0 0 12px; max-width: 74ch; color: var(--ink); line-height: 1.7; }
+.small { font-size: 13px; } h3.sub { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-3); margin: 18px 0 8px; }
+.detail-side { position: sticky; top: 72px; max-height: calc(100vh - 88px); overflow: auto; align-self: start; }
+.toc h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-3); margin-bottom: 8px; }
+.toc ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+.toc a { display: block; padding: 4px 0 4px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--ink-2); font-size: 14px; }
+.toc a:hover { color: var(--ink); text-decoration: none; }
+.toc a.on { color: var(--accent); border-left-color: var(--accent); }
+.modal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.modal { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+.modal-h { font-weight: 600; margin-bottom: 4px; } .modal p { color: var(--ink-2); font-size: 14px; }
+.chain { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 0; counter-reset: c; }
+.chain li { position: relative; border: 1px solid var(--line); background: var(--bg-subtle); padding: 6px 10px; border-radius: var(--radius); font-size: 13px; margin-right: 22px; max-width: 100%; }
+.chain li:not(:last-child)::after { content: "→"; position: absolute; right: -19px; top: 50%; transform: translateY(-50%); color: var(--ink-3); }
+.stages { list-style: none; margin: 14px 0 0; padding: 0; counter-reset: s; position: relative; }
+.stage { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding-bottom: 20px; position: relative; }
+.stage:not(:last-child)::before { content: ""; position: absolute; left: 16px; top: 34px; bottom: 0; width: 1px; background: var(--line-strong); }
+.stage-n { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--bg); display: grid; place-items: center; font-weight: 600; font-size: 13px; color: var(--accent); }
+.stage-b h3 { margin: 4px 0 4px; font-size: 15px; } .stage-b p { color: var(--ink-2); margin: 0 0 8px; max-width: 74ch; }
+.io { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px 18px; font-size: 13px; }
+.io b { display: block; color: var(--ink-3); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+.io ul { margin: 0; padding-left: 16px; color: var(--ink-2); }
+dl.facts { margin: 0; border-top: 1px solid var(--line); }
+dl.facts dt { font-weight: 600; padding-top: 10px; } dl.facts dd { margin: 2px 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--ink-2); white-space: pre-line; max-width: 80ch; }
+ul.plain, ol.plain { margin: 0; padding-left: 20px; color: var(--ink-2); max-width: 80ch; } ul.plain li, ol.plain li { margin: 0 0 6px; }
+@media (max-width: 860px) { .detail-side { position: static; max-height: none; } .toc { display: none; } .detail-grid { grid-template-columns: minmax(0, 1fr); } }
+
+.tool-list { display: grid; gap: 14px; }
+.tool { border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; scroll-margin-top: 76px; }
+.tool h3 { font-size: 16px; }
+pre.code { max-height: 420px; font-size: 12px; margin-top: 8px; }
+details summary { cursor: pointer; color: var(--accent); font: 13px var(--mono); }
+
+.icon-btn { white-space: nowrap; }

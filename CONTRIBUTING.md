@@ -19,6 +19,10 @@
 
 6. Open a pull request and fill in the template.
 
+## Long-form fields
+
+Beyond the required fields, a record can carry `overview` (a detailed introduction), `signal_details` (how each signal is captured), `pipeline` (ordered stages from source to labels, each with inputs, outputs and checks), `facts`, `variants`, `limitations`, `history` and `usage`. Every text is a pair of `en` and `zh` strings, and every statement must come from a cited source. Leave a field out when the sources do not describe it.
+
 ## Fields
 
 | Field | Meaning |

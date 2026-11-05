@@ -14,8 +14,290 @@ license: 'Not stated (toolchain code: Apache-2.0)'
 access: {url: 'https://deepmimo.net/scenarios', type: open}
 code: ['https://github.com/DeepMIMO/DeepMIMO']
 paper: arxiv:1902.06435
-used_in: ["doi:10.1109/infocom42981.2021.9488913","doi:10.1109/twc.2022.3170104","doi:10.1109/tmc.2022.3159697","doi:10.1109/lwc.2023.3294184","doi:10.1109/mcom.001.2400284"]
-citing: ["doi:10.1109/tcomm.2020.3003670","doi:10.1109/mcom.006.2200730","doi:10.1109/tcomm.2020.3027027"]
+used_in: ['doi:10.1109/infocom42981.2021.9488913', 'doi:10.1109/twc.2022.3170104', 'doi:10.1109/tmc.2022.3159697', 'doi:10.1109/lwc.2023.3294184', 'doi:10.1109/mcom.001.2400284']
+citing: ['doi:10.1109/tcomm.2020.3003670', 'doi:10.1109/mcom.006.2200730', 'doi:10.1109/tcomm.2020.3027027']
 summary: {en: 'Ray-traced channel matrices and propagation paths for the outdoor O1 scenario, with 18 base stations and 1,184,923 users, generated with Wireless InSite at 60 GHz, 0.5 GHz bandwidth and 1024 OFDM subcarriers.', zh: '基于 Wireless InSite 射线追踪生成的室外 O1 场景信道矩阵与传播路径，包含 18 个基站和 1,184,923 个用户，载频 60 GHz，带宽 0.5 GHz，1024 个 OFDM 子载波。'}
 sources: ['https://arxiv.org/abs/1902.06435', 'https://arxiv.org/html/1902.06435v1', 'https://github.com/DeepMIMO/DeepMIMO', 'https://www.deepmimo.net/docs/resources/specs.html']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'The scene and propagation engine determine the path library. DeepMIMO standardizes its format and generates CSI from the chosen array, frequency-domain settings, and users. Beam and multiuser labels belong to the downstream decision layer.', zh: 场景与传播引擎先决定路径库，DeepMIMO再统一格式并按阵列、频域和用户选择生成CSI。波束与多用户标签属于后续决策层。}
+  stages:
+  - title: {en: Fix the scenario and source engine, zh: 固定场景与源引擎}
+    detail: {en: 'Select a precomputed path scenario, or generate paths in an upstream engine such as Wireless InSite or Sionna RT. DeepMIMO retains that engine''s propagation physics.', zh: 选择现成路径场景，或先在Wireless InSite、Sionna RT等上游引擎生成路径；DeepMIMO不替代该引擎的传播物理。}
+    inputs:
+    - {en: 'Existing scenario name/version, or 3D geometry to be traced', zh: 已有场景名称/版本，或待追踪的3D几何}
+    - {en: 'Materials, Tx/Rx positions, and upstream RT project', zh: 材料、Tx/Rx位置与上游RT工程}
+    outputs:
+    - {en: Scenario identifier, zh: 场景标识}
+    - {en: Per-frequency RT path sources and generation parameters, zh: 逐频RT路径源及生成参数}
+    controls:
+    - {en: 'Researcher specifies: source-engine version, carrier frequency, scene scale, interaction switches, and path limit', zh: 研究者固定：源引擎版本、载频、场景尺度、交互开关与路径上限}
+    checks:
+    - {en: Record scenario names such as O1 separately from software generations such as v4, zh: 检查O1等场景名与v4等软件代际分开记录}
+    - {en: 'Check whether paths share a map, come from independent RT, or use postprocessed frequency changes', zh: 检查路径来源是同一地图、独立RT还是后处理改频}
+  - title: {en: Convert to standardized path matrices, zh: 转换成统一路径矩阵}
+    detail: {en: The converter organizes source data into MAT matrices for Tx/Rx sets and saves scene information in objects.json and params.json. Optional fields depend on the source engine., zh: 转换器把来源数据组织成Tx/Rx集合对应的MAT矩阵，配合objects.json和params.json保存场景信息；可选字段由源引擎决定。}
+    inputs:
+    - {en: 'Upstream per-path angles, delays, powers, and phases', zh: 上游逐路径角度、时延、功率、相位}
+    - {en: 'Available interaction points, geometry, and materials', zh: 可用的交互点、几何与材料}
+    outputs:
+    - {en: Position and path MAT matrices, zh: 位置与路径MAT矩阵}
+    - {en: Scene/material/RT-parameter JSON, zh: 场景/材料/RT参数JSON}
+    controls:
+    - {en: 'Researcher specifies: converter version, coordinate and angle conventions, and path-truncation rules', zh: 研究者固定：转换器版本、坐标和角度约定、路径裁剪规则}
+    checks:
+    - {en: 'Check angle, delay, and power units', zh: 核对角度单位、时延单位、功率单位}
+    - {en: Distinguish missing fields from zeros; do not invent interaction types, zh: 区分缺失字段与零值，不补造交互类型}
+  - title: {en: Load and select users/links, zh: 读取并筛选用户/链路}
+    detail: {en: 'dm.load returns a Dataset, MacroDataset, or DynamicDataset according to the data organization. Select transmitters, user regions, and valid paths for the task.', zh: dm.load按数据组织返回Dataset、MacroDataset或DynamicDataset；按任务选择发射站、用户区域和有效路径。}
+    inputs:
+    - {en: Standardized scenario directory, zh: 统一格式场景目录}
+    - {en: Tx/Rx sets and candidate-user indices, zh: Tx/Rx集合与候选用户索引}
+    outputs:
+    - {en: Path arrays for selected links, zh: 选定链路的路径数组}
+    - {en: Mapping to original user/scenario indices, zh: 原始用户/场景索引映射}
+    controls:
+    - {en: 'Researcher specifies: region, Tx/Rx sets, retained path count, and policy for links with no paths', zh: 研究者固定：区域、Tx/Rx集合、保留路径数、空路径保留策略}
+    checks:
+    - {en: Record excluded users with no paths; outage studies must not silently drop them, zh: 记录筛除的无路径用户；outage研究不能静默删除}
+    - {en: Retain positions before splitting to prevent leakage from randomly split neighboring grid points, zh: 在切分前保留空间位置，避免近邻网格随机泄漏}
+  - title: {en: Define the array and frequency-domain sampling, zh: 定义阵列与频域采样}
+    detail: {en: 'Configure element count, positions/spacing, patterns, and OFDM frequency sampling, then call compute_channels. Different configurations generate different MIMO tensors from the same path library.', zh: 配置阵元数、位置/间距、方向图和OFDM频率采样，再调用compute_channels；不同配置可由同一路径库生成不同MIMO张量。}
+    inputs:
+    - {en: 'AoA/AoD, phases, powers, and delays', zh: AoA/AoD、相位、功率和时延}
+    - {en: Tx/Rx arrays and ChannelParameters, zh: Tx/Rx阵列及ChannelParameters}
+    outputs:
+    - {en: 'Complex CSI: users × Rx elements × Tx elements × paths or subcarriers', zh: 复数CSI：用户×Rx阵元×Tx阵元×路径或子载波}
+    - {en: Complete channel-generation parameters, zh: 完整信道生成参数}
+    controls:
+    - {en: 'Researcher specifies: array coordinates, normalization, bandwidth/subcarriers, and path limit', zh: 研究者固定：阵列坐标、归一化、带宽/子载波、路径上限}
+    - {en: 'For near-field tasks, verify how the array is generated; an angular response is not automatically equivalent to element-wise RT', zh: 近场任务需核验使用的阵列生成方式，不默认角度响应等同逐阵元RT}
+    checks:
+    - {en: Check output axes and complex-number conventions, zh: 核对输出各轴和复数约定}
+    - {en: Check power/phase with a single path and a unit-norm codebook, zh: 用单径和单位范数码本检查功率/相位}
+  - title: {en: Assign time to dynamic snapshots, zh: 为动态快照赋予时间}
+    detail: {en: Explicit timestamps enable node/object velocity and Doppler calculations for dynamic data; a static position grid has no time axis by itself., zh: 动态数据显式设置timestamps后，可计算节点/物体速度与Doppler；静态位置网格本身没有时间轴。}
+    inputs:
+    - {en: Per-snapshot RT scenes or an explicit mobility-sampling rule, zh: 逐快照RT场景或明确的移动采样规则}
+    - {en: Uniform interval or timestamp sequence, zh: 均匀间隔或时间戳序列}
+    outputs:
+    - {en: Time-aligned channel sequence, zh: 时间对齐的信道序列}
+    - {en: Velocities/Doppler and snapshot indices, zh: 速度/Doppler及快照索引}
+    controls:
+    - {en: 'Researcher specifies: snapshot interval, trajectory order, object identities, and mobility mechanism', zh: 研究者固定：快照间隔、轨迹顺序、对象身份、移动机制}
+    - {en: Skip this stage for a static task, zh: 不需要时跳过此阶段，保留为静态任务}
+    checks:
+    - {en: Verify increasing timestamps and consistent object identities, zh: 验证时间单调和对象身份连续}
+    - {en: Describe scene-geometry changes separately from UE sampling within a static scene, zh: 把场景几何变化与静态场景内UE采样分开说明}
+  - title: {en: Generate task labels and package the data, zh: 生成任务标签并封装}
+    detail: {en: 'The researcher computes beam responses, Top-K labels, or multiuser SINR/compatibility, then packages inputs and labels by site or trajectory. A DeepMIMO scenario name does not uniquely specify this layer.', zh: 研究者计算beam response、Top-K或多用户SINR/兼容性，再按站点或轨迹封装输入与标签。这一层不由DeepMIMO场景名唯一确定。}
+    inputs:
+    - {en: Complex CSI, zh: 复数CSI}
+    - {en: 'Codebook, power, noise, RF-chain, and scheduling rules', zh: 码本、功率、噪声、RF-chain与调度规则}
+    outputs:
+    - {en: Researcher-generated beam/scheduling labels, zh: 研究者生成的beam/调度标签}
+    - {en: Region/trajectory-based splits and downstream utility, zh: 按区域/轨迹划分的数据与下游utility}
+    controls:
+    - {en: 'Researcher specifies: unit-norm codebook, H or Hᴴ convention, power allocation, and candidate-user set', zh: 研究者固定：码本单位范数、H或Hᴴ约定、功率分配、候选用户集}
+    checks:
+    - {en: Recompute small-sample oracles and interference toy cases, zh: 复算小样本oracle与干扰toy case}
+    - {en: Fit normalization on training data only; preserve policies for empty links and failed labels, zh: 训练归一化只拟合训练集，保留空链路和失败标签策略}
+  scope: {en: DeepMIMO v4 path format and 4.0.5 channel generator; fix the source scenario's RT configuration separately., zh: DeepMIMO v4路径格式与4.0.5信道生成器；源场景的RT配置另行固定。}
+facts:
+- label: {en: Entry inputs, zh: 入口输入}
+  text: {en: '• The core input is a precomputed RT path library: Tx/Rx link positions, per-path powers, phases, delays, AoA/AoD, and any interaction points or scene metadata supplied by the source.
+
+      • ChannelParameters then selects the array, path count, OFDM bandwidth/subcarriers, and Doppler time sampling. DeepMIMO also includes upstream RT and conversion components, but Dataset.compute_channels itself generates channels from paths.', zh: '• 核心入口是已求出的RT路径库：各Tx/Rx链路的位置、逐路径功率、相位、时延、AoA/AoD，以及来源允许的交互点/场景元数据。
+
+      • 随后由ChannelParameters选择阵列、路径数、OFDM带宽/子载波和Doppler时间采样。DeepMIMO也有上游RT调用与转换组件，但Dataset.compute_channels本身从路径生成信道。'}
+- label: {en: Physical model, zh: 物理模型}
+  text: {en: '• Upstream engines such as Wireless InSite and Sionna RT determine path existence and propagation gains. DeepMIMO standardizes the data organization and uses those path results.
+
+      • The checked v4.0.5 standard generator forms plane-wave array responses from AoA/AoD and coherently sums paths. Whether element-wise RT information exists and whether it is used must be checked separately for the actual generation interface.', zh: '• 上游Wireless InSite、Sionna RT等决定哪些路径存在及其传播增益；DeepMIMO统一数据组织，沿用这些路径结果。
+
+      • 核验的v4.0.5标准生成器以AoA/AoD构造平面波阵列响应，再相干叠加路径。是否已有逐阵元RT信息与是否使用该信息，需要按实际生成接口分别确认。'}
+- label: {en: How the channel is formed, zh: 信道形成方式}
+  text: {en: '• compute_channels reads path powers, phases, and delays and multiplies them by Tx/Rx array responses. The frequency-domain branch also applies subcarrier delay phases and sums over paths.
+
+      • With Doppler enabled, each path receives an exp(j2πfD·t) phase factor. Explicit times are in seconds; num_timestamps creates samples spaced by the OFDM interval 1/Δf.
+
+      • Single-time frequency-domain output is [users, Rx elements, Tx elements, subcarriers]; multiple times add a time axis.', zh: '• compute_channels读取路径功率、相位、时延，乘Tx/Rx阵列响应；频域分支再乘子载波时延相位并沿路径求和。
+
+      • 启用Doppler时，对各路径追加exp(j2πfD·t)相位。显式times单位为秒；num_timestamps按OFDM的1/Δf间隔生成时间点。
+
+      • 单时刻频域输出为[用户,Rx阵元,Tx阵元,子载波]；多时刻追加时间轴。'}
+- label: {en: Changing the carrier frequency, zh: 改变载频}
+  text: {en: '• Changing only OFDM bandwidth, subcarrier count, or sampling indices allows reuse of the original-carrier path library and recomputation of the baseband frequency response. Applicability depends on the path model''s bandwidth assumptions.
+
+      • Changing the RF center frequency requires path responses at the target frequency, or upstream recomputation of frequency-dependent materials, propagation gains/phases, and any necessary path searches, followed by conversion and CSI generation.
+
+      • ChannelParameters in v4.0.5 has no carrier-frequency field. Changing only rt_params.frequency affects computations that read it, such as the wavelength used for Doppler, but does not recompute stored path powers or phases.', zh: '• 只改OFDM带宽、子载波数或采样索引：可复用原载频的路径库，重算基带频域响应；适用范围由原路径模型的带宽假设决定。
+
+      • 改RF中心频率：应取得目标频率的路径响应，或回到上游引擎重算频率相关材料、传播增益/相位和必要的路径搜索，然后重新转换并生成CSI。
+
+      • v4.0.5的ChannelParameters没有载频项。只改rt_params.frequency会影响读取该值的计算（例如Doppler波长），不会自动重算已保存的路径功率与相位。'}
+- label: {en: Changing the array or codebook, zh: 改变阵列或码本}
+  text: {en: '• Within the standard angular-response model, changes to element count, spacing, rotation, or supported patterns can reuse RT paths; recompute array responses and CSI.
+
+      • spacing is normalized by wavelength, and the code uses kd=2π·spacing. Cross-frequency comparisons must specify whether spacing stays at 0.5λ or the physical aperture stays fixed in meters.
+
+      • Element-wise visibility differences, spherical waves, and large-aperture near-field behavior require a matching element-wise/spherical-wave path model and renewed validation; merely increasing the generator''s element count is insufficient.
+
+      • Usage: if only the codebook changes and full complex CSI is retained, recompute codebook responses and labels under the same channel convention. Top-K powers alone cannot recover responses to arbitrary new beams.', zh: '• 在标准角度响应模型内，只改阵元数、spacing、旋转或支持的方向图：保留RT路径，重算阵列响应和CSI。
+
+      • spacing按波长归一化，代码使用kd=2π·spacing。比较不同载频时，需要明确固定的是0.5λ间距还是固定米制孔径。
+
+      • 若研究阵元间可见性差异、球面波或大孔径近场，单纯增加该生成器的阵元数不够；需使用匹配的逐阵元/球面波路径模型并重新验证。
+
+      • 使用步骤：只换码本且保留完整复CSI时，按同一信道约定重算码本响应和标签即可；只保留Top-K功率时无法补出任意新波束的响应。'}
+- label: {en: Meaning of time, zh: 时间含义}
+  text: {en: '• User positions in a static Dataset are spatial samples; the chosen trajectory and timestamps define their temporal order.
+
+      • Adding Doppler to fixed paths evolves their phases locally while retaining powers, angles, and delays; it creates neither new reflections nor blockage transitions.
+
+      • DynamicDataset stores per-scene snapshots; set_timestamps estimates velocities from adjacent position differences. The official dynamic-RT example reruns Sionna PathSolver at each position before export. An existing static path grid can support an explicitly defined trajectory-sampling model.', zh: '• 静态Dataset的不同用户位置是空间采样，时间顺序由所选移动轨迹和时间戳定义。
+
+      • 固定路径加Doppler是在既有功率、角度和时延上的局部相位演化；不会产生新反射路径或遮挡切换。
+
+      • DynamicDataset保存逐场景快照；set_timestamps根据相邻位置差估计速度。官方动态RT示例对每个位置重新调用Sionna PathSolver再导出。已有静态路径网格可用于明确规定的轨迹采样。'}
+- label: {en: Changing blockage, zh: 改变遮挡}
+  text: {en: '• To change vehicle/building/human positions and obtain changed path visibility, return to the upstream geometry and RT layer, recompute affected snapshots, and convert them to DeepMIMO.
+
+      • Changing object velocity or adding time samples produces Doppler phase evolution on existing paths; it does not perform collision or blockage tests or create/remove paths.
+
+      • Manually deleting paths or scaling powers can define a clearly labeled perturbation model. Its physical meaning differs from resolving moving-blocker propagation.', zh: '• 改变车辆/建筑/人体位置并要求其改变可见路径：回到上游几何和RT层，重新求受影响快照的路径，再转换到DeepMIMO。
+
+      • 直接修改对象velocity或增加时间采样只生成既有路径的Doppler相位，不会执行碰撞、遮挡测试或路径出生/消失。
+
+      • 人为删除路径或缩放功率可以构造明确标注的扰动模型；它与重新求解移动遮挡的物理含义不同。'}
+- label: {en: Cost drivers, zh: 成本来源}
+  text: {en: '• With existing paths, the main costs depend on user/link count, retained paths, Tx/Rx elements, subcarriers, and time samples. Output size grows as U×Nr×Nt×K×T.
+
+      • v4.0.5 processes users in chunks and stores Tx/Rx array responses separately to control intermediate memory.
+
+      • The upstream RT engine determines the cost of new frequency bands or dynamic geometry. Resampling OFDM and changing angular-response arrays usually require only postprocessing. Runtime was not measured here.', zh: '• 已有路径时，主要成本来自用户/链路数、保留路径数、Tx/Rx阵元数、子载波数和时间点数。输出尺寸按U×Nr×Nt×K×T增长。
+
+      • v4.0.5按用户分块，并分开保存Tx/Rx阵列响应以控制中间内存。
+
+      • 重新生成频段或动态几何的成本由上游RT决定；重新采样OFDM和更换角度响应阵列通常只触发后处理。这里未测量实际耗时。'}
+- label: {en: Stored artifacts, zh: 产物}
+  text: {en: '• Retain the source scenario/band, RT version and configuration, standardized path matrices, params.json, and geometry/material metadata.
+
+      • Derived CSI needs ChannelParameters, dimensions, normalization, and user indices. Dynamic data also needs snapshot order, object identities, and timestamps.
+
+      • Beam labels, SINR, and scheduling utility depend on downstream codebook/power/noise/protocol definitions and cannot be described by a scenario name alone.', zh: '• 保留来源场景/频段、RT版本与配置、统一路径矩阵、params.json及几何/材料元数据。
+
+      • 派生CSI需附ChannelParameters、维度、归一化、用户索引；动态数据还需快照顺序、对象身份和时间戳。
+
+      • 波束标签、SINR和调度效用由后续码本/功率/噪声/协议定义产生，不能只用场景名描述。'}
+- label: {en: Common mistakes, zh: 常见混淆}
+  text: {en: '• Conflating changes to subcarrier frequencies, changes to RF carrier frequency, and acquisition of propagation data for a new band.
+
+      • Calling spatial grids, fixed-path Doppler sequences, and newly traced moving-blocker snapshots the same type of dynamic channel.
+
+      • Increasing element count in a plane-wave generator and claiming validation of element-wise near-field propagation.', zh: '• 把“换子载波频率”“换RF载频”和“取得新频段传播数据”混为一项操作。
+
+      • 把空间网格、固定路径Doppler序列和重新追踪移动遮挡的快照都称为同一种动态信道。
+
+      • 在平面波合成器里增加阵元数后，直接声称验证了逐阵元近场传播。'}
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Path parameters and position matrices (provided by downloaded scenarios)
+
+      • CSI and statistics (obtained by running the generator)', zh: '• 路径参数与位置矩阵（已下载场景提供）
+
+      • CSI及统计量（运行生成器后获得）'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Codebook powers and Top-K labels
+
+      • Trajectory-prediction windows
+
+      • Multiuser SINR, compatibility graphs, and scheduling utility', zh: '• 码本功率与Top-K标签
+
+      • 轨迹预测窗口
+
+      • 多用户SINR、兼容图和调度utility'}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• Fix the software version, scenario version, and RT source separately; stating only "DeepMIMO" is insufficient.
+
+      • Items marked "Researcher" in controls/checks are reproduction choices, not official defaults.
+
+      • This atlas verified parameter instantiation and tutorial code for 4.0.5; it did not download complete scenarios or rerun their upstream RT.', zh: '• 软件版本、具体场景版本和RT来源分别固定；不能仅写“使用DeepMIMO”。
+
+      • controls/checks中标“研究者”的内容是复现设计，不是官方默认。
+
+      • 本图谱已验证4.0.5参数实例化与教程代码；没有下载全量场景或重跑其上游RT。'}
+variants:
+- name: {en: Standard static Dataset / MacroDataset, zh: 标准静态Dataset / MacroDataset}
+  observations: {en: Positions and path angles/delays/phases/powers; optional interactions and scene geometry; CSI derived from array parameters., zh: 位置、路径角度/时延/相位/功率；可选交互与场景几何；由阵列参数派生CSI。}
+  csi: {en: Computable; RGB/LiDAR are not standard fields., zh: 可计算；RGB/LiDAR不属于标准字段。}
+- name: {en: DynamicDataset, zh: DynamicDataset}
+  observations: {en: Each snapshot comes from a separate RT result; timestamps enable node/object velocity and Doppler calculations., zh: 每个snapshot来自单独RT结果；设置时间戳后计算节点/对象速度与Doppler。}
+  csi: {en: Requires additional simulation or a specific dynamic scenario. An available API does not mean every static download contains time sequences., zh: 需额外仿真或取得具体动态场景；API存在不代表所有静态下载包都有时间序列。}
+provenance:
+- {en: '3D scene, materials, and BS/UE configuration', zh: 3D 场景、材料、BS/UE 配置}
+- {en: 'Source engines such as Wireless InSite, Sionna RT, and AODT', zh: Wireless InSite / Sionna RT / AODT 等源引擎}
+- {en: 'Per-path angles, delays, powers, phases, and optional interaction information', zh: 逐路径角度、时延、功率、相位及可选交互信息}
+- {en: DeepMIMO converters and scenario format, zh: DeepMIMO 转换器与场景格式}
+- {en: 'Array, bandwidth, subcarrier, and path-selection parameters', zh: 阵列、带宽、子载波和路径选择参数}
+- {en: Derived CSI → codebook responses → beam labels, zh: 派生 CSI → 码本响应 → beam label}
+technical_notes:
+- {en: 'Confirmed: the source engine and RT configuration determine propagation mechanisms. DeepMIMO does not replace the engines'' electromagnetic models with a common model.', zh: 已确认：源引擎和 RT 配置决定传播机制，DeepMIMO 不统一替代各引擎的电磁模型。}
+- {en: 'Confirmed: v4 params.json can store engine, frequency, interaction limits, materials, and other parameters; chs is a computed field.', zh: 已确认：v4 params.json 可容纳引擎、频率、交互上限、材料等参数；chs 是计算字段。}
+- {en: 'Supported by the literature: the original 2019 paper''s O1 example uses BSs 3/4/5/6 and 5 paths. This is an experimental configuration, not a library-wide limit.', zh: 文献支持：2019 原论文 O1 示例使用 BS 3/4/5/6、5 条路径；这是该实验配置，不是全库固定上限。}
+- {en: 'Supported by the literature: the original 2019 O1 setup uses Wireless InSite X3D at 60 GHz, considers up to 4 reflections, and retains the strongest 25 paths; the application experiment truncates these to 5. This configuration does not establish the settings of other O1 frequency packages or newer scenarios.', zh: 文献支持：2019 原论文 O1 使用 Wireless InSite X3D、60 GHz，考虑至4次反射并保留最强25条路径；应用实验再截为5条。该配置不可外推到其他O1频率包或新场景。}
+- {en: 'Unknown: the original O1 project configuration was not opened in this review, so its diffraction, transmission, and diffuse-scattering settings remain unconfirmed.', zh: 未知：本轮未打开 O1 原始项目配置，故不认定其绕射、透射或漫散射启用状态。}
+- {en: 'Inference: changing only array/carrier postprocessing on one path library preserves shared structure; it is not equivalent to two independent RT runs or measured cross-frequency evidence.', zh: 推断：同一路径库只更换阵列/载频后处理会保留共同结构，不能等同两次独立 RT 或实测跨频证据。}
+limitations:
+- {en: Randomly splitting neighboring grid points can cause spatial-neighbor leakage. Separate regions/sites and retain a buffer zone., zh: 随机划分相邻网格可产生空间近邻泄漏；按区域/站点隔离，并保留缓冲区。}
+- {en: v3 and v4 differ in data organization and indexing; compat_v3 implements only its specified compatibility behavior., zh: v3/v4 数据组织及索引方式不同；compat_v3 仅提供指定兼容行为。}
+- {en: Transfer with a shared source engine and map should be labeled cross-scenario transfer within the same source., zh: 共享源引擎与地图的迁移应标为同源跨场景。}
+- {en: 'The software license does not automatically cover maps, scenario assets, or third-party raw outputs.', zh: 软件许可证不能自动覆盖地图、场景与第三方原始输出。}
+history:
+- {en: '2019: the original paper defines data through a scenario plus generation parameters.', zh: 2019：原始论文描述场景加生成参数定义数据。}
+- {en: '2025: v4 beta introduces a matrix format, converters, and a dynamic-scenario API.', zh: 2025：v4 beta 引入矩阵格式、转换器和动态场景 API。}
+- {en: '2026: v4.0.0 stable; v4.0.5 is the latest official release checked. Consult tag metadata for exact release dates.', zh: 2026：v4.0.0 stable；v4.0.5 当前官方最新发布；精确发布日期以 tag 元数据为准。}
+usage:
+- {en: Pin deepmimo==4.0.5 and the specific scenario name; also save the scenario identifier and RT parameters., zh: 固定 deepmimo==4.0.5 和具体场景名；另存场景标识及 RT 参数。}
+- {en: 'After dm.download / dm.load, inspect rx_pos, path dimensions, and valid UEs.', zh: 执行 dm.download / dm.load 后先检查 rx_pos、路径维度和有效 UE。}
+- {en: 'Set antenna and frequency-domain parameters explicitly, then run compute_channels; verify dimensions and complex-number conventions.', zh: 显式设置天线、频域参数，再 compute_channels；确认维度与复数约定。}
+- {en: 'Compute all codebook powers using unit-norm beams. Verify the oracle beam first, then compare fixed, geometric, or nearest-neighbor baselines.', zh: 单位范数码本遍历计算功率，先复核 oracle 最优波束，再比固定/几何或邻近基线。}
+- {en: Split by site/region and fit normalization on training data only; report beam gain loss and SE under an explicit SNR assumption., zh: 按站点/区域划分，归一化仅在训练集拟合；报告 beam gain loss 和明确 SNR 假设下的 SE。}
+paper_summary:
+- label: {en: 'System (DeepMIMO: A Generic Deep Learning Dataset for Mi…)', zh: '系统（DeepMIMO: A Generic Deep Learning Da…）'}
+  text: {en: Site-specific RT paths combined with array and OFDM parameters form reproducible MIMO channels., zh: 站点RT路径加阵列和OFDM参数，构成可复现的MIMO信道。}
+- label: {en: 'Prediction target (DeepMIMO: A Generic Deep Learning Dataset for Mi…)', zh: '预测对象（DeepMIMO: A Generic Deep Learning Da…）'}
+  text: {en: The example predicts achievable rates of candidate beams using omnidirectional received-pilot features from multiple BSs., zh: 示例用多基站全向接收导频特征预测候选波束的可达速率。}
+- label: {en: 'Decision target (DeepMIMO: A Generic Deep Learning Dataset for Mi…)', zh: '决策目标（DeepMIMO: A Generic Deep Learning Da…）'}
+  text: {en: 'Codebook beam selection at each coordinated BS, with downstream evaluation in achievable rate.', zh: 每个协调基站的码本波束选择；下游评价回到可达速率。}
+- label: {en: 'Protocol (DeepMIMO: A Generic Deep Learning Dataset for Mi…)', zh: '评估协议（DeepMIMO: A Generic Deep Learning Da…）'}
+  text: {en: 'Sec. II–IV distinguish source RT scenes, parameters, and generation code; Sec. V/Table I specify O1, BSs 3/4/5/6, arrays, paths, and other configuration.', zh: Sec.II–IV区分源RT场景、参数与生成代码；Sec.V/Table I固定O1、BS 3/4/5/6、阵列和路径等配置。}
+- label: {en: 'Key finding (DeepMIMO: A Generic Deep Learning Dataset for Mi…)', zh: '主要发现（DeepMIMO: A Generic Deep Learning Da…）'}
+  text: {en: Scenes and parameters jointly define the data; input features and rate labels form a task layer derived from the same CSI., zh: 数据由场景与参数共同定义；输入特征和速率标签是从同一CSI派生的任务层。}
+- label: {en: 'Remaining gap (DeepMIMO: A Generic Deep Learning Dataset for Mi…)', zh: '尚未解决的问题（DeepMIMO: A Generic Deep Learning Da…）'}
+  text: {en: Reproduction with current Python v4 requires remapping interfaces; spatial snapshots do not automatically establish moving blockage or independent cross-frequency evidence., zh: 复现当前Python v4时需重新对应接口；空间快照不能自动代表移动遮挡或独立跨频证据。}
+- label: {en: 'System (AirFM-DDA: Air-Interface Foundation Model in the…)', zh: '系统（AirFM-DDA: Air-Interface Foundation …）'}
+  text: {en: 'Transforms partial STF-domain CSI into the DDA domain, reconstructing channels with windowed attention and frame-structure encoding; task heads use a frozen encoder.', zh: 部分STF域CSI变换到DDA域，以窗口注意力与帧结构编码恢复信道；冻结编码器接任务头。}
+- label: {en: 'Prediction target (AirFM-DDA: Air-Interface Foundation Model in the…)', zh: '预测对象（AirFM-DDA: Air-Interface Foundation …）'}
+  text: {en: 'Time/frequency extrapolation, pilot-based channel estimation, sub-6-assisted 28 GHz beam classes, and LoS.', zh: 时间/频率外推、导频信道估计、sub-6辅助28 GHz beam类别与LoS。}
+- label: {en: 'Decision target (AirFM-DDA: Air-Interface Foundation Model in the…)', zh: '决策目标（AirFM-DDA: Air-Interface Foundation …）'}
+  text: {en: 'Evaluated with NMSE, beam Top-1, and LoS F1; final communication utility is still missing.', zh: 以NMSE、beam Top-1和LoS F1评估；尚缺最终通信效用。}
+- label: {en: 'Protocol (AirFM-DDA: Air-Interface Foundation Model in the…)', zh: '评估协议（AirFM-DDA: Air-Interface Foundation …）'}
+  text: {en: 'DeepMIMO pretraining uses 18 cities with 4 held out; WAIR-D is split by environment. LuViRA uses 17 trajectories for adaptation and 70 for testing, constituting adaptation to measured data.', zh: DeepMIMO 18城预训练、4城留出；WAIR-D按环境隔离。LuViRA为17条轨迹适配、70条轨迹测试，属于实测适配。}
+- label: {en: 'Key finding (AirFM-DDA: Air-Interface Foundation Model in the…)', zh: '主要发现（AirFM-DDA: Air-Interface Foundation …）'}
+  text: {en: The paper separates simulation holdouts from LuViRA measurement adaptation; LuViRA results use target-domain training trajectories and therefore represent measured-domain adaptation. Current public HF assets cover only part of the derived test data., zh: 论文将仿真留出与LuViRA实测适配分开；LuViRA结果使用目标域训练轨迹，属于实测域适配。当前公开HF资产只覆盖部分测试派生数据。}
+- label: {en: 'Remaining gap (AirFM-DDA: Air-Interface Foundation Model in the…)', zh: '尚未解决的问题（AirFM-DDA: Air-Interface Foundation …）'}
+  text: {en: Test NMSE gains against low-order physics-based predictors and final rates; do not infer current public-asset coverage from the paper's 2.85M-sample training corpus., zh: 用低阶物理预测器和最终速率检验NMSE收益；当前公开资产的覆盖范围不能按论文2.85M训练语料规模直接推定。}
+materials:
+- {title: DeepMIMO v4.0.5 official introduction and directory guide, path: /materials/official/deepmimo/README.md, license: Apache-2.0, source_url: 'https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/README.md'}
+- {title: DeepMIMO v4.0.5 official format specification, path: /materials/official/deepmimo/specs.md, license: Apache-2.0, source_url: 'https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/docs/resources/specs.md'}
+tutorials: [deepmimo]
+tools: [project-scenebaker, wireless-ml-data-hub, project-deepmimo-sionna-bridge, project-wavesfm-suite]
+overview: {en: 'DeepMIMO is a generic dataset of mmWave and massive MIMO channels introduced by Ahmed Alkhateeb in 2019 (arXiv:1902.06435). The channels are computed from ray-tracing output generated with Remcom Wireless InSite. The paper''s example is the outdoor O1 scenario, with two streets meeting at one intersection, 18 base stations and 1,184,923 users. The O1 materials are set for 60 GHz propagation, and the example configuration uses 0.5 GHz bandwidth and 1024 OFDM subcarriers. The ray tracer considers up to four reflections and keeps the strongest 25 paths per transmitter-receiver pair. The DeepMIMOv4 toolchain converts ray-tracer output from Wireless InSite, Sionna RT and AODT into a shared format. The path records hold angles of departure and arrival, time of arrival, phase, power and interaction type, together with transmitter and receiver locations.', zh: 'DeepMIMO 是由 Ahmed Alkhateeb 于 2019 年提出的通用毫米波与大规模 MIMO 信道数据集（arXiv:1902.06435）。信道由 Remcom Wireless InSite 生成的射线追踪结果计算得到。论文的示例是室外
+    O1 场景，两条街道相交于一个路口，包含 18 个基站和 1,184,923 个用户。O1 的材料参数按 60 GHz 传播设置，示例配置使用 0.5 GHz 带宽和 1024 个 OFDM 子载波。射线追踪考虑最多 4 次反射，每个收发机对保留最强的 25 条路径。DeepMIMOv4 工具链将 Wireless InSite、Sionna RT 和 AODT 的射线追踪输出转换为统一格式。路径记录包含出发角、到达角、时延、相位、功率和交互类型，并包含收发机位置。'}
+signal_details:
+- signal: csi
+  text: {en: 'Complex channel matrices stored as chs in the DeepMIMOv4 format, with shape N_RX_antennas × N_TX_antennas × N_subcarriers and type complex64. In the 2019 example the BS array is a 1×32×8 UPA with half-wavelength spacing (256 elements), and the channel uses 1024 OFDM subcarriers over 0.5 GHz bandwidth. The 2019 paper defines the channel for each BS-user pair as a sum over paths of complex gains and delay phases, multiplied by a Kronecker-product array response across the x, y and z axes.', zh: DeepMIMOv4 格式中以 chs 存储的复数信道矩阵，维度为 N_RX_antennas × N_TX_antennas × N_subcarriers，数据类型为 complex64。2019 年示例中，基站阵列为 1×32×8 的 UPA，半波长间距，共 256 个阵元；信道使用 1024 个 OFDM 子载波，带宽 0.5 GHz。2019 年论文将每个 BS-用户对的信道定义为各路径复增益与时延相位之和，并乘以跨 x、y、z 轴的 Kronecker 积阵列响应。}
+- signal: paths
+  text: {en: 'Path-level arrays of shape N × MAX_PATHS (float32) for each transmitter-receiver set: aoa_az, aoa_el, aod_az and aod_el (angles of arrival and departure in azimuth and elevation), toa (time of arrival), phase and power. The inter array (int32) codes each path as 0 LoS, 1 single reflection, 2 diffraction, 3 scattering or 4 transmission, and inter_loc stores the interaction points. Transmitter and receiver locations are in tx_loc (1 × 3) and rx_loc (N × 3). The v4 params.json records the frequency, interaction limits and materials used for ray tracing.', zh: 每个收发机集合对应的路径级数组，形状为 N × MAX_PATHS（float32）：aoa_az、aoa_el、aod_az、aod_el（方位与俯仰的到达角和出发角）、toa（到达时间）、phase（相位）和 power（功率）。inter 数组（int32）将每条路径编码为 0 视距、1 单次反射、2 绕射、3 散射或 4 透射，inter_loc 存储交互点坐标。收发机位置分别存于 tx_loc（1 × 3）和 rx_loc（N × 3）。v4 的 params.json 记录射线追踪所用的频率、交互次数限制和材料。}

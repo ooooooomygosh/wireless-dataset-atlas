@@ -13,8 +13,154 @@ mobility: pedestrian users with recorded speeds
 license: ODC Open Database License v1.0
 access: {url: 'https://zenodo.org/records/14535165', type: open}
 paper: doi:10.1109/eucnc/6gsummit63408.2025.11037113
-used_in: ["doi:10.1109/lwc.2026.3727299"]
-citing: ["doi:10.1109/infocom59046.2026.11571682"]
+used_in: ['doi:10.1109/lwc.2026.3727299']
+citing: ['doi:10.1109/infocom59046.2026.11571682']
 summary: {en: 'Synthetic CSI from Sionna ray-tracing simulation of an outdoor campus with ten base stations covering about 625 m by 535 m, with pedestrian users and mixed LoS and NLoS paths. The data include user positions, timestamps, speeds, multipath delays and path coefficients, and path loss.', zh: 基于 Sionna 射线追踪仿真的合成 CSI 数据，场景为约 625 m × 535 m 的户外校园，包含 10 个基站和行人用户，同时存在视距与非视距路径。数据包括用户位置、时间戳、速度、多径时延与路径系数，以及路径损耗。}
 sources: ['https://zenodo.org/records/14535165', 'https://zenodo.org/records/15294869']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: Sionna RT produces per-path coefficients and delays along moving trajectories in the same campus scene. Users can compute channels and communication tasks after specifying a frequency grid and array conventions., zh: 同一校园场景中的移动轨迹经 Sionna RT 得到逐径系数与时延；使用者在指定频率网格和阵列约定后可计算信道及通信任务。}
+  stages:
+  - title: {en: Build the campus scene and fixed BSs, zh: 建立校园场景与固定 BS}
+    detail: {en: 'Official materials describe a 625 m×535 m campus with 10 BSs whose coverage partly overlaps, providing a shared propagation environment for mobile links.', zh: 官方资料描述 625 m×535 m 校园场景与 10 个覆盖部分重叠的 BS，用作移动链路的共同传播环境。}
+    inputs:
+    - {en: OpenStreetMap campus geometry, zh: OpenStreetMap 校园几何}
+    - {en: Positions of 10 BSs, zh: 10 个 BS 位置}
+    outputs:
+    - {en: Campus geometry and fixed-BS configuration, zh: 校园几何与固定 BS 配置}
+    controls:
+    - {en: 'To verify: complete numerical settings for materials, arrays, carrier frequency, and coordinate origin have not been read.', zh: 待核实：材质参数、阵列、载频和坐标原点的完整数值配置尚未读取。}
+    checks:
+    - {en: 'Reproduction recommendation: use the official scene/configuration and record coordinates and metric units. Adding materials independently creates a new simulation.', zh: 复现建议：使用官方场景与配置，记录坐标和米制单位；自行补材质后需标为新仿真。}
+  - title: {en: Generate pedestrian trajectories and a timeline, zh: 生成行人轨迹和时间轴}
+    detail: {en: 'The authors use a probabilistic roadmap to plan pedestrian movement on campus, producing trajectories with timestamps, positions, and velocities.', zh: 作者以概率路线图规划校园内的行人移动，形成带时间戳、位置和速度的轨迹。}
+    inputs:
+    - {en: Walkable areas, zh: 可通行区域}
+    - {en: probabilistic roadmap, zh: probabilistic roadmap}
+    - {en: Trajectory and velocity conditions, zh: 轨迹与速度条件}
+    outputs:
+    - {en: Moving-UE trajectories, zh: 移动 UE 轨迹}
+    - {en: Per-timestep positions and velocities, zh: 逐时刻位置与速度}
+    controls:
+    - {en: 'Author description: multiple trajectories within a shared scene support spatial-consistency studies.', zh: 作者说明：共同场景中的多条轨迹支持空间一致性研究。}
+    - {en: 'To verify: trajectory-speed distributions, sampling steps, and dynamic-blocker modeling details.', zh: 待核实：轨迹速度分布、采样步长和动态遮挡物建模细节。}
+    checks:
+    - {en: 'Reproduction recommendation: check trajectory IDs, timestamps, and cross-BS alignment. Trajectory motion does not automatically establish time-varying environmental geometry.', zh: 复现建议：检查轨迹 ID、时间戳与跨 BS 对齐；轨迹移动不能自动证明环境几何随时间变化。}
+  - title: {en: Run Sionna RT and store paths, zh: 运行 Sionna RT 并保存路径}
+    detail: {en: 'Compute link paths using NVIDIA Sionna ray tracing. The release description explicitly lists per-path coefficients and delays, along with positions, velocities, and timestamps.', zh: 使用 NVIDIA Sionna 射线追踪计算链路路径，发布描述明确列出逐径系数与时延，以及位置、速度和时间戳。}
+    inputs:
+    - {en: Campus scene, zh: 校园场景}
+    - {en: BSs and sampled UE trajectory points, zh: BS 与 UE 轨迹采样点}
+    outputs:
+    - {en: Per-path coefficients and delays, zh: 逐径系数与时延}
+    - {en: Link and trajectory metadata, zh: 链路及轨迹元数据}
+    controls:
+    - {en: 'To verify: reflection/diffraction/scattering switches, maximum depth, ray count, carrier frequency, and antenna patterns.', zh: 待核实：反射/绕射/散射开关、最大深度、ray 数、载频与天线模式。}
+    checks:
+    - {en: 'Reproduction recommendation: obtain generation source code before recording RT parameters. Upstream settings cannot be inferred from a downstream paper''s CFR grid.', zh: 复现建议：取得生成源码后再记录 RT 参数；不能从下游论文的 CFR 网格反推这些上游设置。}
+  - title: {en: Package the HDF5 release, zh: 封装 HDF5 发布物}
+    detail: {en: 'Zenodo v1 provides csi_data_24h_trajectories.h5, approximately 17.9 GB, with license.txt. Metadata specify ODbL.', zh: Zenodo v1 提供 csi_data_24h_trajectories.h5，约 17.9 GB，并附 license.txt；元数据标注 ODbL。}
+    inputs:
+    - {en: Path and mobility metadata, zh: 路径与移动元数据}
+    outputs:
+    - {en: Official HDF5 and license file, zh: 官方 HDF5 与许可文件}
+    controls:
+    - {en: 'To verify: complete HDF5 keys, shapes, dtypes, zero-padding rules, and whether precomputed CFR is also stored.', zh: 待核实：完整 HDF5 键、shape、dtype、零填充方式及是否另存现成 CFR。}
+    checks:
+    - {en: 'Reproduction recommendation: open read-only and inspect a sample schema. Record path-validity masks to avoid treating padding as actual reflections.', zh: 复现建议：只读打开并抽样打印 schema；按路径有效性记录 mask，避免把 padding 当真实反射。}
+  - title: {en: 'Derive task-specific CFR, beams, and multiuser inputs', zh: 按任务派生 CFR、波束和多用户输入}
+    detail: {en: 'Reproduction proposal: sum path responses on a specified frequency grid to form CFR, then calculate beam gains with a codebook. CFM-Bench R2''s 64 tones at 30 kHz spacing are one published derived example.', zh: 复现方案：在指定频率网格对路径响应求和形成 CFR，再用码本计算 beam gain。CFM-Bench R2 的 64 tones、30 kHz 间隔是一个已发表的派生实例。}
+    inputs:
+    - {en: Per-path coefficients and delays, zh: 逐径系数与时延}
+    - {en: 'Selected frequency points, array, and power conventions', zh: 选定频点、阵列和功率约定}
+    outputs:
+    - {en: Derived CFR, zh: 派生 CFR}
+    - {en: Optional beam labels, zh: 可选 beam 标签}
+    - {en: Multiuser channel sets aligned by time and a common BS, zh: 按时间和共同 BS 对齐的多用户信道集合}
+    controls:
+    - {en: 'Reproduction recommendation: distinguish the reference carrier used by path coefficients from relative baseband frequency points to avoid counting carrier phase twice.', zh: 复现建议：区分路径系数所用参考载频与相对基带频点，避免重复计入载波相位。}
+    - {en: 'Reproduction recommendation: explicitly define power, noise, RF chains, and scheduling objectives for the new experiment.', zh: 复现建议：功率、噪声、RF chains 与调度目标由新实验显式定义。}
+    checks:
+    - {en: 'Reproduction recommendation: first check single-path responses and an interference toy system. Ready-made joint-scheduling labels are not part of the native release.', zh: 复现建议：先检查单径响应与干扰 toy system；现成 joint scheduling 标签不属于原生发布。}
+  - title: {en: Establish isolated splits for derived tasks, zh: 为派生任务建立隔离划分}
+    detail: {en: 'Reproduction proposal: isolate complete trajectories, time intervals, or spatial regions before generating windows and training samples. Reproducing CFM-Bench requires its prescribed R2 trajectory split.', zh: 复现方案：先按完整轨迹、时间段或空间区域隔离，再生成窗口与训练样本；若复现 CFM-Bench，应沿用其 R2 的既定轨迹划分。}
+    inputs:
+    - {en: Complete trajectories or spatial regions, zh: 完整轨迹或空间区域}
+    - {en: Derived channels and labels, zh: 派生信道与标签}
+    outputs:
+    - {en: Task train/validation/test views, zh: 任务 train/validation/test 视图}
+    - {en: Reproducible processing configuration, zh: 可复现处理配置}
+    controls:
+    - {en: 'To verify: a native unified MOCSID training split was not confirmed in the reviewed release description.', zh: 待核实：MOCSID 原生统一训练划分未在已读发布说明中确认。}
+    checks:
+    - {en: 'Reproduction recommendation: keep windows from the same trajectory and files derived from the same link in consistent partitions. Fit normalization statistics only on the training partition.', zh: 复现建议：保持同轨迹窗口和同链路派生文件的分区一致，归一化统计量只从训练区拟合。}
+  scope: {en: 'Upstream construction is supported by the Zenodo release description and Inria official report. CFR, beam, and split postprocessing are explicitly marked as reproduction proposals.', zh: 上游构建以 Zenodo 发布说明和 Inria 官方报告为证；CFR、beam 与 split 的后处理明确标为复现方案。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Per-path coefficients and delays
+
+      • Positions, timestamps, and velocities
+
+      • Official HDF5 and license.txt', zh: '• 逐径系数和时延
+
+      • 位置、时间戳与速度
+
+      • 官方 HDF5 和 license.txt'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• CFR on a specified frequency grid
+
+      • Beam labels for a specified codebook
+
+      • Time-aligned multiuser channels and new task splits', zh: '• 指定频率网格的 CFR
+
+      • 指定码本的 beam 标签
+
+      • 时间对齐的多用户信道与新任务划分'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The original-paper PDF could not be obtained, and automated reading of Inria GitLab source code was restricted. Detailed RT parameters and the HDF5 schema remain unverified.
+
+      • The 17.9 GB raw dataset was not downloaded. Unknowns remain to be verified and are not filled in using generic Sionna defaults.', zh: '• 原始论文 PDF 获取失败、Inria GitLab 源码自动读取受限；RT 细参数和 HDF5 schema 未核实。
+
+      • 没有下载 17.9 GB 原始数据；未知项保持待核实，不按 Sionna 的通用默认值填充。'}
+provenance:
+- {en: 3D campus scene and 10 BSs, zh: 校园三维场景与 10 个 BS}
+- {en: Pedestrian motion generated by a probabilistic roadmap, zh: 概率路线图生成行人移动}
+- {en: NVIDIA Sionna RT propagation computation, zh: NVIDIA Sionna RT 传播计算}
+- {en: 'Store per-path coefficients/delays, positions, velocities, and timestamps', zh: 保存逐径系数/时延、位置、速度、时间戳}
+- {en: CFR or beam labels can be generated after specifying an OFDM grid., zh: 指定 OFDM 网格后可生成 CFR 或波束标签}
+technical_notes:
+- {en: 'Official design: the dataset emphasizes a synthetic campus, partially overlapping coverage, LoS/NLoS, multipath, and spatial consistency.', zh: 官方设计：合成校园、部分覆盖重叠、LoS/NLoS、多径与空间一致性是数据重点。}
+- {en: 'Unknown: generation-source configurations were not obtained in this review, so whether this specific release enabled diffraction or diffuse scattering cannot be asserted.', zh: 未知：本轮未获得生成源码配置，不能断言具体发布启用了绕射或漫散射。}
+- {en: 'Inference: pedestrian motion on a fixed campus does not establish correlated blockage statistics caused by moving vehicles/crowds.', zh: 推断：固定校园上的行人移动不能证明动态车辆/人群引起的相关遮挡统计。}
+limitations:
+- {en: An unknown carrier frequency is not 0 GHz; the selector must not treat unknown as satisfying any requested frequency., zh: 未知载频不是 0 GHz；选型器不得把未知当作任意载频均满足。}
+- {en: Use timestamps and trajectory IDs for temporal alignment across BSs; do not infer alignment from array row numbers., zh: 多 BS 的时域对齐需用 timestamp 和轨迹 ID，不按数组行号推定。}
+- {en: Keep CFM-Bench R2's derived frequency grid and labels separate from source metadata., zh: CFM-Bench 对 R2 的派生频率网格与标签必须与源元数据分离。}
+history:
+- {en: '2025-02-28: Zenodo dataset v1 released', zh: 2025-02-28：Zenodo 数据 v1 发布}
+- {en: '2025-04-28: Companion paper archived; dataset-record metadata modified', zh: 2025-04-28：配套论文存档；数据记录元数据修改}
+- {en: '2025-06: Companion paper at EuCNC/6G Summit', zh: 2025-06：EuCNC/6G Summit 配套论文}
+- {en: '2026-08-14: CFM-Bench v2 describes the derived R2 view', zh: 2026-08-14：CFM-Bench v2 描述 R2 派生视图}
+usage:
+- {en: 'After obtaining the HDF5 from Zenodo, first read metadata, BS IDs, trajectory IDs, and timestamps.', zh: 从 Zenodo 取得 HDF5 后先读取 metadata、BS ID、trajectory ID 和时间戳。}
+- {en: Compute CFR at specified subcarriers using τ and complex path coefficients; save the grid choice and keep phase conventions consistent with the generator., zh: 以 τ 和复路径系数计算指定子载波 CFR，保存网格选择；相位约定需与生成器保持一致。}
+- {en: Hold out complete trajectories; do not build windows across time gaps., zh: 按完整轨迹留出；构造窗口时不跨时间缺口。}
+- {en: 'Association/handover experiments must explicitly include measurement delay, handover cost, and outage. CSI alone does not establish actual end-to-end network throughput. Not run locally.', zh: 关联/切换实验显式加入测量延时、切换成本和 outage；不得从 CSI 直接宣称真实端到端网络吞吐。未本机运行。}
+field_notes:
+- label: {en: CSI, zh: CSI}
+  text: {en: Official documentation explicitly lists per-path coefficients/delays. CFR can be computed on a specified frequency grid; availability of precomputed CFR arrays is unknown., zh: 官方明确逐径系数/时延；CFR 可在指定频率网格计算，现成 CFR 数组未知。}
+- label: {en: Time, zh: 时间}
+  text: {en: User trajectories are generated by a probabilistic roadmap; this does not establish that all dynamic blockers are modeled., zh: 用户轨迹由 probabilistic roadmap 生成，不等于所有动态遮挡物已建模。}
+- label: {en: Multi-BS, zh: 多基站}
+  text: {en: 10 BSs with partially overlapping coverage. Networking protocols/scheduling are not automatically supplied with channel data., zh: 10 BS、部分重叠覆盖；组网协议/调度不随信道数据自动提供。}
+- label: {en: Multi-user, zh: 多用户}
+  text: {en: 'Official data include multiple user trajectories, timestamps, and path information to a common set of 10 BSs on one campus. Multiuser channel sets can be constructed after aligning times and link validity. Users define power, interference, and scheduling protocols; the release description provides no native joint-scheduling labels.', zh: 官方数据含同一校园内多条用户轨迹、时间戳及到共同 10 BS 的路径信息，可在对齐时间和链路有效性后构造多用户信道集合。功率、干扰与调度协议由使用者定义；发布说明没有提供原生联合调度标签。}
+overview: {en: 'MOCSID (Multi-cell Outdoor CSI Dataset) is a synthetic CSI dataset from Centre Inria de Lyon, by Makhlouf, Guillaud, and Vindas. Version 1 was published on Zenodo on 28 Feb 2025 (DOI 10.5281/zenodo.14535165), and the dataset is described in a companion paper for EuCNC and 6G Summit 2025. The channel is generated with NVIDIA Sionna ray tracing for an outdoor campus with 10 base stations in an area of 625 m × 535 m. Pedestrian user trajectories are generated with a probabilistic roadmap. The description lists user positions, timestamps, velocities, multipath delays, path coefficients, and path loss, and the propagation includes both LoS and NLoS paths. The data are one HDF5 file, csi_data_24h_trajectories.h5 (17.9 GB), with a license.txt file under the ODC Open Database License v1.0.', zh: MOCSID（Multi-cell Outdoor CSI Dataset）是一个合成 CSI 数据集，由法国 Inria 里昂中心的 Makhlouf、Guillaud 和 Vindas 发布。第 1 版于 2025 年 2 月 28 日发布在 Zenodo 上（DOI 10.5281/zenodo.14535165），相关论文面向 EuCNC & 6G Summit
+    2025。信道使用 NVIDIA Sionna 射线追踪生成，场景为户外校园，包含 10 个基站，覆盖约 625 m × 535 m 的区域。行人用户轨迹由概率路线图（probabilistic roadmap）算法生成。数据描述列出用户位置、时间戳、速度、多径时延、路径系数以及路径损耗，传播中同时包含视距（LoS）与非视距（NLoS）路径。数据为一个 HDF5 文件 csi_data_24h_trajectories.h5（17.9 GB），附 license.txt 文件，采用 ODC Open Database License v1.0。}
+signal_details:
+- signal: csi
+  text: {en: 'Simulated CSI from Sionna ray tracing, with per-path delays and path coefficients linked to user positions, timestamps, and velocities.', zh: 由 Sionna 射线追踪仿真得到的 CSI，包含逐路径时延与路径系数，并与用户位置、时间戳和速度相关联。}
+- signal: paths
+  text: {en: 'Multipath components for each user, given as delays and path coefficients. Both LoS and NLoS paths are included.', zh: 每个用户的多径分量，以时延和路径系数给出，同时包含视距与非视距路径。}
+- signal: pathloss
+  text: {en: 'Path loss is among the stated outputs. The simulated propagation includes path loss, shadowing, and multipath effects.', zh: 路径损耗为所列输出之一。仿真传播包含路径损耗、阴影衰落与多径效应。}

@@ -11,8 +11,131 @@ mobility: car driving through a city street
 license: CC BY-NC-SA 4.0
 access: {url: 'https://www.viwi-dataset.net/index.html', type: open}
 paper: arxiv:1911.06257
-used_in: ["doi:10.1109/tvt.2021.3104219","doi:10.1109/twc.2024.3401686"]
-citing: ["doi:10.1109/mcom.006.2200730","doi:10.1109/tcomm.2020.3019077","doi:10.1109/comst.2023.3336917"]
+used_in: ['doi:10.1109/tvt.2021.3104219', 'doi:10.1109/twc.2024.3401686']
+citing: ['doi:10.1109/mcom.006.2200730', 'doi:10.1109/tcomm.2020.3019077', 'doi:10.1109/comst.2023.3336917']
 summary: {en: 'Ray-traced outdoor urban street scenarios at 60 GHz, where each sample contains an RGB image, a depth map, a wireless channel and a user location. The current release provides four outdoor scenario datasets.', zh: 基于光线追踪生成的 60 GHz 户外城市街道场景数据，每个样本包含 RGB 图像、深度图、无线信道和用户位置。当前版本提供四个户外场景数据集。}
 sources: ['https://www.viwi-dataset.net/index.html', 'https://arxiv.org/abs/1911.06257', 'https://arxiv.org/html/1911.06257']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Shared geometry enters visual rendering and wireless RT separately, with alignment through scenario attributes. After path files are downloaded, the MATLAB generator constructs wireless channels from array parameters.', zh: 共享几何分别进入视觉渲染和无线RT，再按场景属性对齐。下载路径文件后，MATLAB生成器负责按阵列参数构造无线信道。}
+  stages:
+  - title: {en: Select version and shared scene, zh: 选择版本和共享场景}
+    detail: {en: 'Select the scenario and version, preserving correspondence between modality packages. For regeneration, adapt the shared geometry to both visual and wireless engines.', zh: 选定场景与版本，保存各模态包的对应关系。重新生成时，共享几何需分别适配视觉与无线引擎。}
+    inputs:
+    - {en: v1 single-user or v2 multiuser scenarios, zh: v1单用户或v2多用户场景}
+    - {en: 'Visual, wireless, and scenario-attributes archives', zh: 视觉、wireless和scenario attributes压缩包}
+    outputs:
+    - {en: Scenario directory and version information, zh: 场景目录与版本信息}
+    controls:
+    - {en: 'Researcher specifies: scenario name, version, downloaded packages, and object identities', zh: 研究者固定：场景名、版本、下载包和对象身份}
+    checks:
+    - {en: Check that v1/v2 directories match the generator, zh: 核对v1/v2目录与生成器匹配}
+    - {en: Check association rules between visual objects and wireless terminals, zh: 检查视觉对象和无线终端的对应规则}
+  - title: {en: 'Build geometry, moving objects, and devices', zh: 建立几何、移动对象和设备}
+    detail: {en: 'ViWi-BT imports visual scenes into Wireless InSite, approximates vehicles and people with block geometry, and configures wireless devices and cameras from the same scene state.', zh: ViWi-BT将视觉场景导入Wireless InSite，车辆与人体用块状几何近似，按同一场景状态设置无线设备和相机。}
+    inputs:
+    - {en: Blender scene, zh: Blender场景}
+    - {en: 'BS, camera, and dynamic-object configuration', zh: BS、相机和动态对象配置}
+    outputs:
+    - {en: Visual and RT scenes, zh: 视觉场景与RT场景}
+    - {en: Object/device positions and time indices, zh: 对象/设备位置和时间索引}
+    controls:
+    - {en: 'Paper configuration: 100 dynamic objects and 2 BSs per scenario; 128 antenna elements and 3 cameras per BS', zh: 论文配置：各场景100个动态对象、2个BS；每BS128阵元、3台相机}
+    - {en: 'For reconstruction, fix geometric approximations and motion rules', zh: 研究者重建时固定几何近似和运动规则}
+    checks:
+    - {en: 'Check scale, coordinate, and time consistency between engines', zh: 检查两个引擎的尺度、坐标和时间一致}
+    - {en: Verify upstream material/engine settings for downloaded paths with each package, zh: 已下载路径的上游材料/引擎配置需随包核验}
+  - title: {en: Generate visual and wireless outputs separately, zh: 分别生成视觉与无线输出}
+    detail: {en: The visual branch generates images and the wireless branch generates propagation paths; scenario attributes associate them with the same snapshots and terminals., zh: 视觉分支生成图像，无线分支生成传播路径；通过场景属性关联到相同快照和终端。}
+    inputs:
+    - {en: The same scene state, zh: 同一场景状态}
+    - {en: Camera-rendering and Wireless InSite parameters, zh: 相机渲染参数与Wireless InSite参数}
+    outputs:
+    - {en: Synthetic images, zh: 合成图像}
+    - {en: RT paths and scenario attributes, zh: RT路径与场景属性}
+    controls:
+    - {en: 'Researcher specifies: camera intrinsics/extrinsics, RT frequency, path budget, and dynamic time step', zh: 研究者固定：相机内外参、RT频率、路径预算和动态步长}
+    checks:
+    - {en: Check blocker-position consistency between branches, zh: 检查遮挡物在两分支的位置一致}
+    - {en: Identify which object in the image corresponds to the served user, zh: 明确图像中哪个对象对应服务用户}
+  - title: {en: Run the MATLAB channel generator, zh: 运行MATLAB信道生成器}
+    detail: {en: 'v1 returns Dataset through Dataset_Generator; in v2, extract RayTracing, visual_data, and scenario_attrib, then run main.m to obtain the raw_data structure.', zh: v1通过Dataset_Generator返回Dataset；v2解压RayTracing、visual_data和scenario_attrib后运行main.m，得到raw_data结构。}
+    inputs:
+    - {en: Downloaded wireless/RayTracing directory, zh: 下载的wireless/RayTracing目录}
+    - {en: 'Array, frequency-domain, and user-selection parameters', zh: 阵列、频域和用户选择参数}
+    outputs:
+    - {en: Complex wireless channels for the configuration, zh: 配置对应的复数无线信道}
+    - {en: v2 raw_data structure, zh: v2 raw_data结构}
+    controls:
+    - {en: 'Researcher specifies: antennas, subcarriers, user selection, and script version', zh: 研究者固定：天线、子载波、用户选择和所用脚本版本}
+    checks:
+    - {en: Check MATLAB paths and scenario prefixes, zh: 检查MATLAB路径和场景前缀}
+    - {en: Spot-check channel/image indices; do not reuse return-field assumptions across versions, zh: 抽查信道与图像索引，不跨版本套用返回字段}
+  - title: {en: Build beam or temporal tasks, zh: 建立波束或时序任务}
+    detail: {en: 'Compute codebook gains and optimal beams, and organize historical inputs and future labels; user association in the ViWi-BT development set must be handled separately.', zh: 研究者计算码本收益和最优波束，组织历史输入与未来标签；ViWi-BT开发集的用户关联需自行处理。}
+    inputs:
+    - {en: 'Complex channels, images, and scenario indices', zh: 复数信道、图像和场景索引}
+    - {en: 'Codebook, history length, and prediction horizon', zh: 码本、历史长度和预测时距}
+    outputs:
+    - {en: Beam gains and sequence samples, zh: 波束收益与序列样本}
+    - {en: Training and test sets split by scenario/trajectory, zh: 按场景/轨迹划分的训练和测试集}
+    controls:
+    - {en: 'Researcher specifies: codebook, label times, served-user localization method, and splits', zh: 研究者固定：码本、标签时刻、服务用户定位方式和切分}
+    checks:
+    - {en: The ViWi-BT development set provides no bounding boxes for served users, zh: ViWi-BT开发集未给服务用户bounding box}
+    - {en: Verify visual gains against beam-history baselines and oracle gains, zh: 以历史beam基线及oracle收益核验视觉增益}
+  scope: {en: Official ViWi v1/v2 generation steps and the ViWi-BT paper; handle pregenerated scenes and scene reconstruction separately., zh: ViWi v1/v2官网生成步骤与ViWi-BT论文；预生成场景与重新建模分别处理。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Visual images, RT paths, and scenario attributes in downloaded packages
+
+      • Wireless channels generated by the MATLAB generator', zh: '• 下载包中的视觉图像、RT路径和场景属性
+
+      • MATLAB生成器生成的无线信道'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Codebook gains, optimal beams, and prediction windows
+
+      • Multiuser SINR/scheduling labels', zh: '• 码本收益、最优beam和预测窗口
+
+      • 多用户SINR/调度标签'}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• Web pages and papers verified in this round; scenario packages were not downloaded and MATLAB was not run.
+
+      • The original ViWi-BT baseline uses beam history; gains from visual fusion must be established by subsequent experiments.', zh: '• 本轮核验网页与论文，未下载场景包或运行MATLAB。
+
+      • ViWi-BT原论文基线使用历史beam；视觉融合收益须由后续实验建立。'}
+provenance:
+- {en: Shared simulation environment, zh: 共享仿真环境}
+- {en: Visual rendering + Wireless InSite, zh: 视觉渲染 + Wireless InSite}
+- {en: 'Images, paths, and user/scenario attributes', zh: 图像、路径、用户/场景属性}
+- {en: Wireless channels generated after MATLAB configuration, zh: MATLAB 配置后生成无线信道}
+- {en: Codebook-optimal beams and temporal tasks, zh: 码本最优波束和时序任务}
+technical_notes:
+- {en: 'Confirmed: the official website packages wireless RT and visual modalities separately and provides generation parameters.', zh: 已确认：官网将无线 RT 与视觉模态分别打包，并提供生成参数。}
+- {en: 'Inference: shared synthetic geometry can make associations more ideal than real camera/wireless synchronization.', zh: 推断：共享合成几何可使关联比真实相机/无线同步更理想。}
+- {en: 'Supported by the literature: ViWi-BT imports Blender visual scenes into Wireless InSite, approximating dynamic vehicles/people with block geometry; each scenario has 100 dynamic objects and 2 BSs, each with 128 antenna elements and 3 cameras.', zh: 文献支持：ViWi-BT 将 Blender 视觉场景导入 Wireless InSite，动态车辆/人体采用块状近似；每场景含 100 个动态对象、2 个 BS，各 BS 128 阵元和 3 台相机。}
+limitations:
+- {en: Do not label synthetic images as real road captures., zh: 不能把合成图片标为真实道路采集。}
+- {en: v2 multiuser data do not automatically provide complete network scheduling and interference protocols., zh: v2 多用户数据不自动提供完整网络调度和干扰协议。}
+- {en: The ViWi-BT image–beam sequence development set provides no bounding boxes for served users; handle user association separately. The original paper's baseline uses only beam history and does not validate gains from visual fusion., zh: ViWi-BT 图像–波束序列开发集没有为服务用户提供 bounding box；用户关联需单独处理。原论文基线只使用历史 beam，未验证视觉融合收益。}
+history:
+- {en: '2019: original ViWi preprint.', zh: 2019：ViWi 原始预印本。}
+- {en: '2020: the ViWi-BT paper describes multiple BSs, moving users, and dynamic scenes.', zh: 2020：ViWi-BT 论文描述多 BS、移动用户与动态场景。}
+- {en: '2021-02: update date displayed on the official website; not the release date of every package.', zh: 2021-02：官网显示更新日期；不是所有数据包发布日。}
+usage:
+- {en: Fix Version 1 or 2 and the scenario., zh: 固定 Version 1 或 2 与场景。}
+- {en: Download wireless/visual/attribute files separately and verify ID alignment., zh: 分别下载无线/视觉/属性文件，验证 ID 对齐。}
+- {en: 'Configure MATLAB main.m or Dataset_Generator, then generate channels.', zh: 配置 MATLAB main.m 或 Dataset_Generator，再生成信道。}
+- {en: Split by complete sequences and report beam-power loss alongside Top-k accuracy., zh: 按完整序列切分，以 beam power loss 补充 Top-k accuracy。}
+tools: [project-mitsuba-blender]
+overview: {en: 'ViWi is a vision-aided wireless dataset framework from Arizona State University, introduced in a 2019 preprint (arXiv:1911.06257) by Alrabeiah, Hredzak, Liu and Alkhateeb. The framework generates RGB images, depth maps and 60 GHz ray-traced wireless channels for the same scene, together with user and scenario attributes. The first scenario is an outdoor city street with a car driving along it. Blender builds the visual scene, and Remcom Wireless InSite computes the ray paths. The official site packages the wireless, visual and scenario-attribute files separately, and Version 1 (single-user) and Version 2 (multi-user) use different generation procedures. The paper names camera-aided beam prediction and blockage prediction as applications. All images are synthetic and are not road captures. Data are organized by scenario and modality.', zh: 'ViWi 是来自 Arizona State University 的视觉辅助无线通信数据集框架，由 Alrabeiah、Hredzak、Liu 与 Alkhateeb 于 2019 年提出（arXiv:1911.06257）。框架为同一场景生成 RGB 图像、深度图和
+    60 GHz 光线追踪无线信道，并附带用户与场景属性。第一个场景是车辆在户外城市街道上行驶。Blender 构建视觉场景，Remcom Wireless InSite 计算射线路径。官网将无线、视觉和场景属性文件分别打包；Version 1 为单用户，Version 2 为多用户，两者的生成流程不同。论文将摄像头辅助的波束预测和阻挡预测列为应用。所有图像均为合成图像，不是真实道路采集。数据按场景和模态组织。'}
+signal_details:
+- signal: csi
+  text: {en: 'Wireless channels from ray tracing in Remcom Wireless InSite at 60 GHz, with half-wave dipole antennas driven by a sinusoidal waveform. The downloaded packages contain the RT paths, and the MATLAB generator constructs complex channels from them using array and frequency-domain parameters.', zh: 由 Remcom Wireless InSite 光线追踪得到的 60 GHz 无线信道，收发天线为半波偶极子，激励波形为正弦波。下载包中包含 RT 路径，MATLAB 生成器依据阵列参数和频域参数由其构造复数信道。}
+- signal: rgb
+  text: {en: 'Synthetic RGB images rendered from the animated Blender scene and stored as JPEG files. In the distributed-camera dataset, three cameras are 5 m high and 30 m apart, each with a 100-degree field of view.', zh: 由动画化 Blender 场景渲染的合成 RGB 图像，以 JPEG 格式保存。在 distributed-camera 数据集中，3 台摄像头高 5 m、间距 30 m，视场角均为 100 度。}
+- signal: depth
+  text: {en: 'Depth maps generated from the same visual scene and provided as MAT files, in place of the OpenEXR format used for the original depth maps.', zh: 与视觉场景同源生成的深度图，以 MAT 文件提供，替代了原始深度图所用的 OpenEXR 格式。}
