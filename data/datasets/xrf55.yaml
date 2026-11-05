@@ -1,0 +1,17 @@
+id: xrf55
+name: XRF55
+year: 2024
+origin: measured
+tasks: [wireless-sensing, multimodal-sensing]
+signals: [csi, radar, rgb, depth]
+bands_ghz: [5.64, 60, 64]
+environment: [indoor]
+subcarriers: 30
+samples: 42.9K samples (about 59.6 hours) from 39 subjects
+license: CC BY-NC 4.0
+access: {url: 'https://aiotgroup.github.io/XRF55', type: open}
+paper: doi:10.1145/3643543
+used_in: ["doi:10.1109/jiot.2025.3554228","doi:10.1109/ton.2025.3599016","doi:10.1109/jiot.2026.3672036"]
+summary: {en: '42.9K samples of 55 indoor human actions from 39 subjects (about 59.6 hours), with Wi-Fi CSI, RFID phase, mmWave radar and Azure Kinect RGB and depth data.', zh: 共 42.9K 个样本，涵盖 39 名受试者的 55 种室内人体动作（约 59.6 小时），包含 Wi-Fi CSI、RFID 相位、毫米波雷达以及 Azure Kinect 的 RGB 和深度数据。}
+sources: ['https://aiotgroup.github.io/XRF55', 'https://api.crossref.org/works/10.1145/3643543']
+checked: '2026-11-06'

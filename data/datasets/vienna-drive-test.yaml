@@ -1,0 +1,20 @@
+id: vienna-drive-test
+name: Vienna 4G/5G Drive-Test Dataset
+year: 2026
+origin: measured
+tasks: [network-traffic, radio-map]
+signals: [kpi, traffic]
+bands_ghz: [0.8, 1.8, 2.1, 2.6, 3.5]
+environment: [outdoor-urban, outdoor-suburban]
+size_gb: 0.75
+format: CSV, Parquet, GeoTIFF
+standard: LTE, 5G NR
+samples: 2,893,129 released records across the measurement tables
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/records/21372657', type: open}
+code: []
+paper: doi:10.1038/s41597-026-08259-z
+used_in: []
+summary: {en: 'Georeferenced LTE and 5G NR drive-test measurements in Vienna, Austria, combining passive wideband scanner observations with active handset logs that include throughput and timing advance. The release also includes building and terrain models, and the measurement tables hold 2,893,129 records.', zh: '奥地利维也纳的地理参考 LTE 与 5G NR 路测数据，结合被动宽带扫描仪观测和主动手机日志（包括吞吐量与 timing advance）。发布内容还包括建筑物与地形模型，测量表共含 2,893,129 条记录。'}
+sources: ['https://zenodo.org/api/records/21372657', 'https://arxiv.org/abs/2603.02638', 'https://arxiv.org/html/2603.02638', 'https://www.nature.com/articles/s41597-026-08259-z', 'https://api.crossref.org/works?query.title=Vienna+4G%2F5G+Drive-Test+Dataset&rows=3&select=DOI,title,issued']
+checked: '2026-11-06'

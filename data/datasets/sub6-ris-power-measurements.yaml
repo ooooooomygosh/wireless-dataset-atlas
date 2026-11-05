@@ -1,0 +1,19 @@
+id: sub6-ris-power-measurements
+name: Sub-6 GHz RIS Power Measurements
+year: 2024
+organization: NEC Laboratories Europe; TU Darmstadt; i2CAT Foundation
+origin: measured
+tasks: [ris]
+signals: [beam-power]
+bands_ghz: [5.3]
+bandwidth_mhz: 5
+environment: [lab]
+format: CSV
+license: Not stated
+access: {url: 'https://github.com/marcantonio14/RIS-Power-Measurements-Dataset', type: open}
+code: []
+paper: arxiv:2404.01796
+used_in: ["doi:10.1109/iccworkshops67674.2025.11162261","doi:10.1109/ojcoms.2025.3572723"]
+summary: {en: 'Received-power (RSRP) measurements of an OFDM link through a 10 × 10-element RIS prototype at 5.3 GHz, collected in a 5 × 8 m anechoic chamber. The beampattern set sweeps 1891 main-beam codebook configurations while a turntable rotates from -90° to 90°, and the absorption-mode set varies the number of active RIS elements.', zh: 在 5 × 8 m 消声暗室中，通过 10 × 10 单元 RIS 原型的 OFDM 链路，于 5.3 GHz 测得接收功率（RSRP）。波束方向图数据集包含 1891 个主波束码本配置，转台在 -90° 至 90° 之间旋转；吸收模式数据集则改变有效 RIS 单元数量。}
+sources: ['https://arxiv.org/abs/2404.01796', 'https://arxiv.org/html/2404.01796', 'https://github.com/marcantonio14/RIS-Power-Measurements-Dataset', 'https://raw.githubusercontent.com/marcantonio14/RIS-Power-Measurements-Dataset/main/README.md', 'https://api.github.com/repos/marcantonio14/RIS-Power-Measurements-Dataset']
+checked: '2026-11-06'

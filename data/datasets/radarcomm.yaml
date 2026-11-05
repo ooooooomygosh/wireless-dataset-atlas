@@ -1,0 +1,20 @@
+id: radarcomm
+name: RadarCommDataset (RadCom)
+aliases: [RadCom]
+year: 2021
+organization: ANDRO Computational Solutions
+origin: simulation
+tasks: [modulation-classification]
+signals: [iq]
+bands_ghz: [2.45]
+environment: []
+format: HDF5
+samples: 700 snapshots per waveform
+license: CC BY-NC-SA 4.0
+access: {url: 'https://github.com/ANDROComputationalSolutions/RadarCommDataset', type: open}
+code: ['https://github.com/ANDROComputationalSolutions/RadarCommDataset']
+paper: doi:10.1016/j.comnet.2021.108441
+used_in: ["doi:10.1038/s41467-024-51161-8","doi:10.1109/jiot.2025.3623318","doi:10.1109/ojcoms.2026.3733317"]
+summary: {en: 'Synthetic GNU Radio radar and communication waveforms with 6 modulation and 8 signal-type labels, each stored as 128 I and 128 Q values at 10 MS/s, at SNR from -20 to 18 dB in 2 dB steps. Most data are GNU Radio synthetic; one over-the-air capture at 2.45 GHz is included.', zh: 由 GNU Radio 合成的雷达与通信波形，包含 6 个调制标签和 8 个信号类型标签，每个波形存储为 128 个 I 值和 128 个 Q 值，采样率 10 MS/s，SNR 范围为 -20 至 18 dB，步长 2 dB。数据以 GNU Radio 合成为主，另含一段 2.45 GHz 空口采集数据。}
+sources: ['https://github.com/ANDROComputationalSolutions/RadarCommDataset', 'https://api.crossref.org/works/10.1016/j.comnet.2021.108441']
+checked: '2026-11-06'

@@ -1,0 +1,18 @@
+id: rfuav
+name: RFUAV
+year: 2025
+origin: measured
+tasks: [spectrum-sensing, rf-fingerprinting]
+signals: [iq, spectrum]
+bands_ghz: []
+environment: []
+size_gb: 1300
+format: binary IQ, spectrogram images, video, XML metadata
+license: Apache-2.0
+access: {url: 'https://huggingface.co/datasets/kitofrank/RFUAV', type: open}
+code: ['https://github.com/kitoweeknd/RFUAV']
+paper: arxiv:2503.09033
+used_in: []
+summary: {en: 'Raw RF IQ recordings of 37 UAV types captured with USRP hardware in real-world environments, totalling about 1.3 TB. The release also includes spectrogram images and XML metadata files.', zh: 来自37种无人机类型的原始射频IQ录制数据，使用USRP采集，录制于真实环境，总量约1.3 TB。数据集还包含频谱图和XML元数据文件。}
+sources: ['https://github.com/kitoweeknd/RFUAV', 'https://huggingface.co/datasets/kitofrank/RFUAV', 'https://raw.githubusercontent.com/kitoweeknd/RFUAV/main/LICENSE', 'https://arxiv.org/abs/2503.09033', 'https://arxiv.org/html/2503.09033']
+checked: '2026-11-06'

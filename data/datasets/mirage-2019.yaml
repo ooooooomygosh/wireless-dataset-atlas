@@ -1,0 +1,17 @@
+id: mirage-2019
+name: MIRAGE-2019 Dataset
+year: 2019
+organization: University of Naples Federico II (Traffic Research Group)
+origin: measured
+tasks: [network-traffic]
+signals: [traffic]
+bands_ghz: []
+environment: []
+license: CC BY-NC-ND 4.0
+access: {url: 'https://traffic.comics.unina.it/mirage/mirage-2019.html', type: open}
+code: []
+paper: doi:10.1109/cccs.2019.8888137
+used_in: ["doi:10.1109/ojcoms.2024.3366849","doi:10.1109/lnet.2021.3098455","doi:10.1145/3561954.3561958"]
+summary: {en: 'Human-generated mobile app network traffic from 40 apps on 3 devices, collected by more than 280 experimenters, with associated ground-truth. The data is distributed as a downloadable archive of the latest release.', zh: 人工生成的移动应用网络流量数据，由 280 多名实验人员在 3 台设备上操作 40 个应用产生，并附带真值（ground-truth）。数据以可下载压缩包的形式发布。}
+sources: ['https://traffic.comics.unina.it/mirage/mirage-2019.html', 'https://traffic.comics.unina.it/mirage/', 'https://api.crossref.org/works/10.1109/CCCS.2019.8888137']
+checked: '2026-11-06'

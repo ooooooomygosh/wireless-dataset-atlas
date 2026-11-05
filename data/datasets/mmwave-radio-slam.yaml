@@ -1,0 +1,16 @@
+id: mmwave-radio-slam
+name: Millimeter-Wave Radio SLAM Dataset
+year: 2024
+organization: Tampere University; Chalmers University of Technology
+origin: measured
+tasks: [isac, localization]
+signals: [iq, paths]
+bands_ghz: [60]
+environment: [indoor]
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset', type: registration}
+paper: arxiv:2312.13741
+used_in: ["doi:10.1109/tvt.2024.3524118","doi:10.1109/lwc.2024.3489653","doi:10.1109/jsac.2025.3640150"]
+summary: {en: 'Raw I/Q of a bistatic 5G PRS-based OFDM radar at 60 GHz recorded in an indoor building at Tampere University, with path-wise AoD, AoA, ToA and power estimates. MATLAB scripts for loading and visualizing the data are included.', zh: 在坦佩雷大学室内建筑中采集的 60 GHz 双基地 5G PRS OFDM 雷达原始 I/Q 数据，并附带逐径 AoD、AoA、ToA 与功率估计值。数据包含用于加载与可视化的 MATLAB 脚本。}
+sources: ['https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset', 'https://ieee-dataport.org/node/12854', 'https://arxiv.org/abs/2312.13741']
+checked: '2026-11-06'

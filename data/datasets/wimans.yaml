@@ -1,0 +1,18 @@
+id: wimans
+name: WiMANS
+year: 2024
+origin: measured
+tasks: [wireless-sensing, multimodal-sensing]
+signals: [csi, rgb]
+bands_ghz: [2.4, 5]
+environment: [indoor]
+samples: 11,286 CSI samples of 3 seconds each, over 9.4 hours of dual-band WiFi CSI
+format: MAT, NPY, MP4, CSV
+license: Not stated
+access: {url: 'https://www.kaggle.com/datasets/shuokanghuang/wimans', type: open}
+code: ['https://github.com/huangshk/WiMANS']
+paper: arxiv:2402.09430
+used_in: ["doi:10.1109/jiot.2026.3654610","doi:10.1109/jiot.2026.3716007","doi:10.1109/lcomm.2026.3715770"]
+summary: {en: 'Dual-band (2.4 and 5 GHz) WiFi CSI samples of three seconds each, with 0 to 5 simultaneous users and synchronized video, labelled with anonymized identity, location and activity. The dataset contains over 9.4 hours of CSI.', zh: 双频段（2.4 和 5 GHz）WiFi CSI 样本，每个样本时长 3 秒，包含 0 至 5 名同时活动的用户，并配有同步视频，标注了匿名身份、位置和活动。数据集包含超过 9.4 小时的 CSI。}
+sources: ['https://github.com/huangshk/WiMANS', 'https://arxiv.org/abs/2402.09430']
+checked: '2026-11-06'

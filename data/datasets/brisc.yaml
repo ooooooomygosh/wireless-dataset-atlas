@@ -1,0 +1,25 @@
+id: brisc
+name: BRISC
+aliases: [Broadband RIS Channel (BRISC) dataset]
+year: 2026
+organization: University of Padova; University of Brescia and CNIT
+origin: measured
+tasks: [ris]
+signals: [csi, iq]
+bands_ghz: [5.53]
+bandwidth_mhz: 80
+subcarriers: 242
+environment: [indoor]
+antennas: {tx: 1, rx: 2}
+samples: about 10,000 RIS configurations per each of 9 TX positions; about 60 frames per configuration per receive antenna
+size_gb: 40.3
+format: MAT
+standard: IEEE 802.11ac
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/records/18714621', type: open}
+code: ['https://github.com/MattiaP1999/BRISC_RIS_dataset_scripts']
+paper: doi:10.1145/3831662.3844168
+used_in: []
+summary: {en: 'Wideband CSI at 5.53 GHz, extracted from IEEE 802.11ac VHT frames over 80 MHz (242 valid subcarriers), for a 256-element binary-state RIS. It covers 9 transmitter positions with about 10,000 RIS configurations each, measured indoors with RF absorbers.', zh: '在 5.53 GHz 载频、80 MHz 带宽（IEEE 802.11ac VHT 帧，242 个有效子载波）下测得的宽带 CSI，RIS 为 256 单元二进制状态。覆盖 9 个发射机位置，每个位置约 10,000 个 RIS 配置，测量在室内并布置射频吸波材料的环境中进行。'}
+sources: ['https://arxiv.org/abs/2602.21102', 'https://arxiv.org/html/2602.21102', 'https://api.crossref.org/works/10.1145/3831662.3844168', 'https://zenodo.org/api/records/18714621', 'https://zenodo.org/records/18714621', 'https://raw.githubusercontent.com/MattiaP1999/BRISC_RIS_dataset_scripts/main/README.md', 'https://api.github.com/repos/MattiaP1999/BRISC_RIS_dataset_scripts']
+checked: '2026-11-06'

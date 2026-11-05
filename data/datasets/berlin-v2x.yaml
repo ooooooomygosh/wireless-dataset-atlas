@@ -1,0 +1,18 @@
+id: berlin-v2x
+name: Berlin V2X
+year: 2022
+organization: Fraunhofer Heinrich Hertz Institute
+origin: measured
+tasks: [network-traffic]
+signals: [rssi, kpi, gps]
+bands_ghz: []
+environment: [outdoor-urban, vehicular]
+format: Parquet
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/open-access/berlin-v2x', type: restricted}
+code: ['https://github.com/fraunhoferhhi/BerlinV2X']
+paper: doi:10.1109/vtc2023-spring57618.2023.10200750
+used_in: ["doi:10.1109/comst.2024.3372083","doi:10.1109/mcom.001.2300494","doi:10.1109/tmlcn.2025.3564239"]
+summary: {en: 'Drive-test measurements from up to four cars in Berlin covering LTE cellular and sidelink links, with signal strength and quality, cellular resource and QoS metrics, GPS positions, and traffic and weather side information. The data is provided as two Parquet tables.', zh: 柏林市区的路测数据，涵盖 LTE 蜂窝链路和 sidelink 链路，最多使用4辆汽车采集。数据包括信号强度与质量、蜂窝资源与 QoS 指标、GPS 位置以及交通和天气辅助信息，以两个 Parquet 表格提供。}
+sources: ['https://ieee-dataport.org/open-access/berlin-v2x', 'https://github.com/fraunhoferhhi/BerlinV2X', 'https://api.crossref.org/works?query.title=Berlin+V2X%3A+A+Machine+Learning+Dataset+from+Multiple+Vehicles+and+Radio+Access+Technologies&rows=3&select=DOI,title,issued']
+checked: '2026-11-06'

@@ -1,0 +1,16 @@
+id: sensefi
+name: SenseFi
+year: 2022
+origin: benchmark
+tasks: [wireless-sensing]
+signals: [csi]
+environment: []
+samples: UT-HAR 3,977 train / 996 test; NTU-HAR 936 / 264; NTU-HumanID 546 / 294; Widar 34,926 / 8,726 (train / test)
+license: Not stated
+access: {url: 'https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark', type: open}
+code: ['https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark']
+paper: doi:10.1016/j.patter.2023.100703
+used_in: ["doi:10.1109/icc51166.2024.10622623","doi:10.1109/jiot.2023.3262940","doi:10.1109/tmc.2025.3552538"]
+summary: {en: 'A PyTorch library and benchmark for WiFi CSI human sensing that packages four preprocessed datasets: UT-HAR (7 activities), NTU-HAR (6 activities), NTU-HumanID (14 subject classes) and Widar gesture data (22 gesture classes).', zh: 用于 WiFi CSI 人体感知的 PyTorch 库与基准，整理了四个预处理数据集：UT-HAR（7 类活动）、NTU-HAR（6 类活动）、NTU-HumanID（14 个受试者类别）以及 Widar 手势数据（22 类手势）。}
+sources: ['https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark', 'https://arxiv.org/abs/2207.07859']
+checked: '2026-11-06'

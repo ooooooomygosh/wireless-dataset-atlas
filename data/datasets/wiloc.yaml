@@ -1,0 +1,20 @@
+id: wiloc
+name: WiLoc
+year: 2026
+organization: University of Southern California
+origin: measured
+tasks: [localization]
+signals: [csi]
+bands_ghz: [2.4]
+bandwidth_mhz: 20
+environment: [indoor, outdoor-urban]
+samples: more than 12 million UE locations, more than 3,000 access points, 180 indoor trajectories in 16 buildings, more than 30 outdoor streets
+standard: IEEE 802.11 (Wi-Fi)
+license: Not stated
+access: {url: 'https://wides.usc.edu/programs-and-data.html', type: registration}
+code: []
+paper: arxiv:2602.09115
+used_in: []
+summary: {en: 'Wi-Fi CSI measured over three months from campus access points at the University of Southern California, covering more than 12 million UE locations, more than 3,000 access points, 16 buildings and more than 30 outdoor streets. Measurements use 20 MHz channels in the 2.4 GHz ISM band, captured with a USRP at the UE side.', zh: '在南加州大学（USC）校园 Wi-Fi 接入点上三个月内采集的 Wi-Fi CSI，覆盖超过 1,200 万个 UE 位置、3,000 多个接入点、16 栋建筑及 30 余条户外街道。测量使用 2.4 GHz ISM 频段的 20 MHz 信道，UE 端采用 USRP 采集。'}
+sources: ['https://arxiv.org/abs/2602.09115', 'https://arxiv.org/pdf/2602.09115', 'https://wides.usc.edu/programs-and-data.html']
+checked: '2026-11-06'

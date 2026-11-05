@@ -1,0 +1,17 @@
+id: uji-long-term-wifi
+name: UJI Long-Term Wi-Fi Fingerprinting
+aliases: [Long-Term WiFi Fingerprinting Dataset]
+year: 2017
+organization: Universitat Jaume I
+origin: measured
+tasks: [localization]
+signals: [rssi]
+environment: [indoor]
+samples: 103,584 WiFi fingerprints
+license: MIT
+access: {url: 'https://zenodo.org/records/3748719', type: open}
+paper: doi:10.3390/data3010003
+used_in: ["doi:10.1109/twc.2021.3052606","doi:10.1109/tmc.2020.3017176","doi:10.1109/jiot.2019.2932464"]
+summary: {en: 'The dataset contains 103,584 Wi-Fi RSS fingerprints, mainly from one Android smartphone, collected over 25 months on two floors of a university library building and organized into collection campaigns. MATLAB scripts for loading and filtering the data are included.', zh: '数据集包含103,584条Wi-Fi RSS指纹，主要由一部Android智能手机采集，历时25个月，覆盖大学图书馆建筑的两层楼，并按采集批次组织。数据集同时包含用于加载和过滤数据的MATLAB脚本。'}
+sources: ['https://zenodo.org/records/3748719', 'https://zenodo.org/records/1066041', 'https://api.crossref.org/works/10.3390/data3010003']
+checked: '2026-11-06'

@@ -1,0 +1,18 @@
+id: ut-har
+name: UT-HAR
+year: 2017
+origin: measured
+tasks: [wireless-sensing]
+signals: [csi]
+environment: []
+subcarriers: 30
+size_gb: 4
+standard: 802.11n
+license: GPL-3.0 (repository license)
+access: {url: 'https://github.com/ermongroup/Wifi_Activity_Recognition', type: open}
+code: ['https://github.com/ermongroup/Wifi_Activity_Recognition']
+paper: doi:10.1109/mcom.2017.1700082
+used_in: ["doi:10.1109/jiot.2024.3375337","doi:10.1109/jiot.2024.3400773","doi:10.1109/tmc.2018.2878233"]
+summary: {en: 'WiFi CSI amplitude and phase from 30 subcarriers and 3 antennas, recorded with the Linux 802.11n CSI Tool, with activity annotations for human activity recognition. The repository distributes about 4 GB of input and annotation files.', zh: 使用 Linux 802.11n CSI Tool 采集的 WiFi CSI 幅度与相位数据（30 个子载波、3 根天线），附带人体活动标注，用于人体活动识别。仓库提供约 4 GB 的输入文件与标注文件。}
+sources: ['https://github.com/ermongroup/Wifi_Activity_Recognition', 'https://api.crossref.org/works/10.1109/mcom.2017.1700082']
+checked: '2026-11-06'

@@ -1,0 +1,16 @@
+id: tampere-wifi-fingerprints
+name: Tampere Crowdsourced Wi-Fi Fingerprints
+aliases: [Tampere Wi-Fi crowdsourced fingerprinting dataset]
+year: 2017
+origin: measured
+tasks: [localization]
+signals: [rssi]
+environment: [indoor]
+samples: 687 training and 3951 test fingerprints
+license: MIT
+access: {url: 'https://zenodo.org/records/889798', type: open}
+paper: doi:10.3390/data2040032
+used_in: ["doi:10.1109/tmc.2020.3017176","doi:10.1109/jiot.2024.3430087","doi:10.1109/jiot.2023.3298603"]
+summary: {en: 'The dataset contains 687 training and 3,951 test Wi-Fi fingerprints, recorded as MAC addresses and RSS values with 21 devices in a four-floor university building in Tampere, Finland, from January to August 2017. MATLAB and Python benchmark software for Wi-Fi indoor positioning is included.', zh: '数据集包含687条训练Wi-Fi指纹和3,951条测试Wi-Fi指纹，由21台设备在芬兰坦佩雷一栋四层大学建筑中于2017年1月至8月采集，记录MAC地址和RSS值。数据集同时包含用于Wi-Fi室内定位的MATLAB和Python基准测试软件。'}
+sources: ['https://zenodo.org/records/889798', 'https://api.crossref.org/works/10.3390/data2040032']
+checked: '2026-11-06'

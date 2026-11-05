@@ -1,0 +1,20 @@
+id: tractor
+name: TRACTOR O-RAN KPI Dataset
+aliases: [TRACTOR O-RAN KPI and traffic dataset, Traffic Analysis and Classification Tool for Open RAN]
+year: 2023
+organization: Northeastern University, Genesys Lab
+origin: measured
+tasks: [network-traffic]
+signals: [traffic, kpi]
+environment: [lab, vehicular]
+size_gb: 2.83
+mobility: stationary, walking and driving
+standard: 5G, O-RAN
+license: MIT
+access: {url: 'https://github.com/genesys-neu/TRACTOR', type: open}
+code: ['https://github.com/genesys-neu/TRACTOR']
+paper: arxiv:2312.07896
+used_in: []
+summary: {en: 'Real 5G user traffic captured in residential, campus and driving scenarios and replayed on the Colosseum RF emulator in an srsRAN O-RAN system, totalling 447 minutes. gNB KPIs are polled over E2 every 250 ms, with 31 KPIs available and 17 used by the classifier.', zh: 在住宅、校园和驾车场景中采集的真实 5G 用户流量，在 Colosseum RF 仿真器中的 srsRAN O-RAN 系统内回放，总时长 447 分钟。gNB KPI 通过 E2 接口每 250 ms 轮询一次，共 31 项可用 KPI，其中 17 项用于分类器。}
+sources: ['https://github.com/genesys-neu/TRACTOR', 'https://genesys-lab.org/tractor', 'https://arxiv.org/abs/2312.07896', 'https://arxiv.org/html/2312.07896v2', 'https://api.github.com/repos/genesys-neu/TRACTOR/license']
+checked: '2026-11-06'

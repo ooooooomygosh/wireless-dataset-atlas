@@ -1,0 +1,18 @@
+id: bluetooth-5-1-doa
+name: Bluetooth 5.1 Direction-of-Arrival Dataset
+year: 2021
+origin: simulation
+tasks: [doa-estimation]
+signals: [iq]
+bands_ghz: []
+environment: []
+antennas: {rx: 8, array: upa}
+standard: Bluetooth 5.1
+license: GPLv3
+access: {url: 'https://data.mendeley.com/datasets/zjn2zxcgyz/1', type: open}
+code: []
+paper: doi:10.1016/j.dib.2021.107576
+used_in: ["doi:10.1109/jiot.2025.3530866"]
+summary: {en: 'Python-generated baseband Bluetooth 5.1 signals and pure-tone data for an 8-element URA, with additive noise and coherent interfering signals at random arrival angles. The dataset is distributed in four parts.', zh: 由 Python 生成器产生的 Bluetooth 5.1 基带信号与纯音数据，面向 8 元 URA 阵列，包含加性噪声以及随机到达角的相干干扰信号。数据集分为四个部分发布。}
+sources: ['https://data.mendeley.com/datasets/zjn2zxcgyz/1', 'https://api.crossref.org/works/10.1016/j.dib.2021.107576', 'https://api.openalex.org/works/doi:10.1016/j.dib.2021.107576']
+checked: '2026-11-06'

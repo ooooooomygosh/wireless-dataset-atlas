@@ -1,0 +1,19 @@
+id: lora-rf-fingerprinting
+name: LoRa RF Fingerprinting Datasets (Oregon State)
+year: 2021
+organization: Oregon State University
+origin: measured
+tasks: [rf-fingerprinting]
+signals: [iq, spectrum]
+bands_ghz: [0.915]
+environment: [indoor, outdoor]
+samples: 16,300 files with more than 1.2 TB of data
+format: float32 interleaved I/Q .dat files with SigMF-style JSON metadata
+license: Not stated
+access: {url: 'https://research.engr.oregonstate.edu/hamdaoui/datasets/', type: open}
+code: []
+paper: doi:10.1109/access.2021.3121606
+used_in: ["doi:10.1109/tmc.2023.3340039","doi:10.1109/tmc.2023.3240971","doi:10.1109/tccn.2023.3329012"]
+summary: {en: 'Time-domain I/Q samples and FFT representations of LoRa transmissions from 25 IoT devices, received by USRP B210 receivers at 915 MHz and sampled at 1 MS/s. The setups cover indoor and outdoor scenarios with different days, distances, LoRa configurations, locations and receivers.', zh: 25 台 IoT 设备 LoRa 传输的时域 I/Q 采样与 FFT 表示，由 USRP B210 接收机在 915 MHz 下以 1 MS/s 采样。数据覆盖室内与室外场景，并包含不同日期、距离、LoRa 配置、地点和接收机等设置。}
+sources: ['https://research.engr.oregonstate.edu/hamdaoui/datasets/', 'https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_lora_datasets_final_oct2023_v2.pdf', 'https://arxiv.org/abs/2201.02213', 'https://api.crossref.org/works/10.1109/access.2021.3121606']
+checked: '2026-11-06'

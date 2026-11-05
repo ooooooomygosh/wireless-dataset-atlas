@@ -1,0 +1,18 @@
+id: mmbody
+name: mmBody
+aliases: [mmBody Benchmark]
+year: 2022
+organization: State Key Laboratory of Industrial Control Technology, Zhejiang University
+origin: measured
+tasks: [wireless-sensing, multimodal-sensing]
+signals: [radar, rgb, depth]
+environment: [lab]
+samples: more than 200k frames covering 100 motions of 20 volunteers
+license: Custom non-commercial academic terms (no modification or redistribution without permission)
+access: {url: 'https://chen3110.github.io/mmbody/index.html', type: request}
+code: ['https://github.com/Chen3110/mmBody']
+paper: doi:10.1145/3503161.3548262
+used_in: ["doi:10.1109/jiot.2025.3601012","doi:10.1109/cvpr52733.2024.00185","doi:10.1109/jiot.2024.3359209"]
+summary: {en: 'Synchronized, calibrated mmWave radar point clouds and RGB(D) images of 20 volunteers performing 100 motions, with skeleton and mesh annotations. Scenes include lab settings and smoke, rain, occlusion and poor-lighting conditions.', zh: 20 名志愿者执行 100 种动作时同步、标定的毫米波雷达点云与 RGB(D) 图像，附带骨架与网格标注。场景包括实验室环境以及烟雾、降雨、遮挡和低光照条件。}
+sources: ['https://chen3110.github.io/mmbody/index.html', 'https://github.com/Chen3110/mmBody', 'https://arxiv.org/abs/2209.05070', 'https://arxiv.org/html/2209.05070v3', 'https://api.crossref.org/works/10.1145/3503161.3548262']
+checked: '2026-11-06'

@@ -1,0 +1,20 @@
+id: v2v-mmwave-56-64ghz
+name: V2V Millimeter-Wave Channel Measurements at 56-64 GHz
+year: 2022
+organization: Brno University of Technology
+origin: measured
+tasks: [channel-modeling]
+signals: [cir]
+bands_ghz: [60]
+bandwidth_mhz: 8000
+environment: [outdoor, vehicular]
+samples: 468 CIR realizations per run, two runs, almost 1000 CIR recordings in total
+format: MAT
+mobility: two oncoming cars on a campus two-lane road
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/v2v-mmwave-channel-measurements', type: restricted}
+paper: doi:10.1109/vtcfall.2019.8891543
+used_in: ["doi:10.1109/mcom.004.2200723"]
+summary: {en: 'Channel impulse response recordings of a vehicle-to-vehicle link at about 60 GHz with 8 GHz bandwidth, with two oncoming cars on a campus road. The data consists of almost 1000 CIR recordings in MAT files.', zh: 两辆相向行驶汽车在校园道路上的车对车链路信道冲激响应（CIR）记录，中心频率约60 GHz，带宽8 GHz。数据为MAT文件，共近1000条CIR记录。}
+sources: ['https://ieee-dataport.org/documents/v2v-mmwave-channel-measurements', 'https://api.crossref.org/works/10.1109/vtcfall.2019.8891543']
+checked: '2026-11-06'

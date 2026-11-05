@@ -1,0 +1,18 @@
+id: ns3-5glena
+name: 5G-LENA (ns-3 NR module)
+aliases: [ns-3 NR module]
+year: 2019
+organization: CTTC (Centre Tecnologic de Telecomunicacions de Catalunya)
+origin: simulation
+tasks: [channel-modeling, network-traffic]
+signals: [kpi]
+bands_ghz: []
+environment: []
+license: GPL-2.0
+access: {url: 'https://5g-lena.cttc.es/download/', type: open}
+code: ['https://gitlab.com/cttc-lena/nr']
+paper: doi:10.1016/j.simpat.2019.101933
+used_in: ["doi:10.1145/3789240.3827591","doi:10.1109/iccworkshops63917.2026.11586752","doi:10.1109/tcomm.2020.3035582"]
+summary: {en: 'Generator: an open-source ns-3 module for simulating 3GPP NR (5G New Radio) cellular networks, with simulation outputs such as RSRP/RSRQ measurements and uplink transport-block results.', zh: 生成器：一个开源 ns-3 模块，用于仿真 3GPP NR（5G 新空口）蜂窝网络，输出包括 RSRP/RSRQ 测量值和上行传输块结果等仿真数据。}
+sources: ['https://5g-lena.cttc.es/blog/36/', 'https://5g-lena.cttc.es/blog/35/', 'https://5g-lena.cttc.es/features/roadmap/', 'https://5g-lena.cttc.es/papers/', 'https://5g-lena.cttc.es/download/', 'https://gitlab.com/cttc-lena/nr', 'https://arxiv.org/abs/1911.05534']
+checked: '2026-11-06'

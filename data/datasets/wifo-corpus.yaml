@@ -1,0 +1,20 @@
+id: wifo-corpus
+name: RF-only channel dataset for WiFo
+aliases: [WiFo pre-training channel datasets]
+year: 2025
+origin: statistical
+tasks: [foundation-model, channel-prediction, csi-feedback]
+signals: [csi]
+bands_ghz: [1.5, 2.5, 3.5, 4.9, 5.9, 6.7, 28]
+environment: [indoor, outdoor-urban, rural]
+mobility: user speed 0-300 km/h, depending on dataset
+standard: 5G NR
+samples: 12,000 samples per dataset, 19 datasets (D1-D19)
+license: Apache-2.0
+access: {url: 'https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo', type: open}
+code: ['https://github.com/PKU-PCNI/WiFo']
+paper: arxiv:2412.08908
+used_in: ["doi:10.1109/twc.2026.3681311","doi:10.1109/lwc.2026.3664439","doi:10.1109/tccn.2026.3717927"]
+summary: {en: 'Simulated MISO-OFDM CSI generated with the QuaDRiGa channel generator for 3GPP scenarios (UMi, UMa, RMa and indoor) at seven 5G NR bands from 1.5 to 28 GHz, with user speeds up to 300 km/h. The 19 datasets (D1 to D19) each contain 12,000 samples.', zh: '由 QuaDRiGa 信道生成器按 3GPP 场景（UMi、UMa、RMa 与室内）生成的仿真 MISO-OFDM CSI，覆盖 1.5 至 28 GHz 的七个 5G NR 频段，用户速度最高 300 km/h。19 个数据集（D1 至 D19）各含 12,000 个样本。'}
+sources: ['https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo', 'https://github.com/PKU-PCNI/WiFo', 'https://arxiv.org/abs/2412.08908', 'https://arxiv.org/html/2412.08908']
+checked: '2026-11-06'

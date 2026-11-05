@@ -1,0 +1,18 @@
+id: ckmimagenet
+name: CKMImageNet
+year: 2025
+organization: Southeast University and Purple Mountain Laboratories
+origin: ray-tracing
+tasks: [radio-map]
+signals: [paths]
+bands_ghz: [28]
+environment: [outdoor-urban, rural, indoor]
+samples: over 10,000 environment maps of 128 m x 128 m
+format: P2M (channel data), binary matrices (environment maps)
+license: Not stated
+access: {url: 'https://github.com/zyktzCKM/CKMImageNet', type: open}
+paper: doi:10.1109/tcomm.2025.3615778
+used_in: ["doi:10.1109/tccn.2026.3739531","doi:10.1109/wcnc65185.2026.11555043","doi:10.1109/twc.2026.3678277"]
+summary: {en: 'Per-location channel gain, propagation delay, angle of arrival and angle of departure at 28 GHz, generated with Wireless InSite ray tracing for over 10,000 environment maps of 128 m x 128 m across urban, rural and indoor scenes. Grayscale channel knowledge map images at 32, 64 and 128 pixels accompany the data.', zh: '在28 GHz频段下，使用Wireless InSite光线追踪为城市、乡村和室内场景中超过10,000张128 m x 128 m环境地图生成各位置的信道增益、传播时延、到达角（AoA）和离开角（AoD）数据。配套的灰度信道知识地图图像分辨率为32、64和128像素。'}
+sources: ['https://github.com/zyktzCKM/CKMImageNet', 'https://github.com/Darwen9/CKMImagenet', 'https://raw.githubusercontent.com/zyktzCKM/CKMImageNet/main/README.md', 'https://arxiv.org/abs/2504.09849', 'https://arxiv.org/html/2504.09849', 'https://doi.org/10.1109/TCOMM.2025.3615778']
+checked: '2026-11-06'

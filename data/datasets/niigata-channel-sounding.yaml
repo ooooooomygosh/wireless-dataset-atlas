@@ -1,0 +1,21 @@
+id: niigata-channel-sounding
+name: Sub-6 GHz MIMO Channel Sounding Dataset
+aliases: [Niigata Yokohama channel sounding]
+year: 2026
+organization: Niigata University Radio Signal Processing Laboratory
+origin: measured
+tasks: [channel-modeling]
+signals: [cir]
+bands_ghz: [4.85]
+environment: [outdoor-urban, vehicular]
+antennas: {tx: 8, rx: 8, array: other}
+samples: 3,386 valid samples on routes R3 to R6
+format: MAT, CSV
+mobility: vehicle-mounted receiver, drive measurements
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/records/21213882', type: open}
+paper: doi:10.1109/tap.2026.3717623
+used_in: []
+summary: {en: 'Double-directional 8x8 MIMO channel measurements at 4.85 GHz on urban macro- and micro-cell routes in Yokohama, Japan, with a vehicle-mounted receiver. The data contains 3,386 valid samples across routes R3 to R6, with LoS/NLoS labels.', zh: '在日本横滨市的城市宏蜂窝和微蜂窝路线上，以车载接收机进行的 4.85 GHz 双向 8x8 MIMO 信道测量。数据包含路线 R3 至 R6 的 3,386 个有效样本，并标注了 LoS/NLoS。'}
+sources: ['https://radio.eng.niigata-u.ac.jp/datasets/sub-6ghz/', 'https://zenodo.org/records/21213882', 'https://radio.eng.niigata-u.ac.jp/datasets/mm-wave/']
+checked: '2026-11-06'

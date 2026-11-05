@@ -1,0 +1,18 @@
+id: espargos
+name: ESPARGOS phase-coherent CSI datasets
+year: 2024
+origin: measured
+tasks: [doa-estimation, wireless-sensing]
+signals: [csi, rssi]
+bands_ghz: [2.462]
+bandwidth_mhz: 36.5625
+environment: [lab]
+format: TFRecord
+license: CC BY 4.0
+access: {url: 'https://espargos.net/research/', type: registration}
+code: ['https://github.com/ESPARGOS/pyespargos']
+paper: arxiv:2408.16377
+used_in: ["doi:10.1109/jiot.2026.3710751","doi:10.1109/icc59461.2026.11588034"]
+summary: {en: 'Phase- and time-synchronized WiFi CSI at 2.462 GHz from four ESPARGOS arrays (8 antennas each) in lab rooms, with position tags and timestamps as ground truth. Four datasets (espargos-0001, -0002, -0005, -0007) are hosted on DaRUS.', zh: 来自四个 ESPARGOS 阵列（每个 8 根天线）的相位与时间同步 WiFi CSI，中心频率 2.462 GHz，采集于实验室房间，以位置标签和时间戳作为真值。四个数据集（espargos-0001、-0002、-0005、-0007）托管于 DaRUS。}
+sources: ['https://espargos.net/research/', 'https://espargos.net/datasets/data/espargos-0007/', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/DARUS-4973', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/DARUS-4754', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/darus-4456', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/darus-4352', 'https://arxiv.org/abs/2408.16377', 'https://arxiv.org/html/2408.16377', 'https://github.com/ESPARGOS/pyespargos']
+checked: '2026-11-06'

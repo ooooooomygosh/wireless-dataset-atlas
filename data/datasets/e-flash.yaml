@@ -1,0 +1,18 @@
+id: e-flash
+name: e-FLASH
+year: 2023
+organization: Northeastern University
+origin: measured
+tasks: [beam-management, multimodal-sensing]
+signals: [rssi, kpi, rgb, lidar, gps]
+bands_ghz: [60]
+environment: [outdoor-urban, vehicular]
+size_gb: 22.3
+format: rosbag (.bag), image files
+license: Creative Commons Attribution
+access: {url: 'https://ieee-dataport.org/documents/e-flash', type: restricted}
+paper: doi:10.1109/mcom.002.2200028
+used_in: ["doi:10.1109/tmc.2024.3401046","doi:10.1109/comst.2023.3336917","doi:10.1109/jstsp.2024.3405859"]
+summary: {en: 'Measured 60 GHz V2X data recorded on open streets in downtown Boston, with time-synchronized Ouster LiDAR, camera and GPS data paired with per-sector data rate and RSSI ground truth. The data covers LOS and NLOS cases with a pedestrian or a static or moving car as obstacle.', zh: 在波士顿市中心开放街道上采集的60 GHz V2X测量数据，包含时间同步的Ouster LiDAR、相机和GPS数据，并配有各扇区的数据速率与RSSI真值。数据涵盖LOS和NLOS情况，遮挡物为行人、静止车辆或移动车辆。}
+sources: ['https://ieee-dataport.org/documents/e-flash', 'https://genesys-lab.org/multimodal-fusion-nextg-v2x-communications', 'https://api.crossref.org/works?query.title=Multimodality+in+mmWave+MIMO+Beam+Selection+Using+Deep+Learning+Datasets+and+Challenges&rows=3&select=DOI,title,issued']
+checked: '2026-11-06'

@@ -1,0 +1,17 @@
+id: vienna-5g-lls
+name: Vienna 5G Link Level Simulator
+aliases: [Vienna 5G LL Simulator]
+year: 2018
+organization: TU Wien, Institute of Telecommunications
+origin: simulation
+tasks: [channel-estimation, mimo-detection]
+signals: [iq]
+bands_ghz: []
+license: Academic use license
+access: {url: 'https://www.tuwien.at/etit/tc/en/vienna-simulators/request-simulator-downloads/', type: request}
+code: []
+paper: doi:10.1186/s13638-018-1239-6
+used_in: ["doi:10.1109/icc40277.2020.9149151","doi:10.1109/twc.2022.3232379","doi:10.1109/jsac.2025.3531577"]
+summary: {en: 'A MATLAB-based link-level simulator for standard-compliant 4G LTE and 5G NR physical-layer chains that processes the transmitter and receiver down to individual signal samples. Its results are PHY performance metrics such as throughput, BER and FER.', zh: 基于 MATLAB 的链路级仿真器，面向符合标准的 4G LTE 与 5G NR 物理层链路，对发射机和接收机的处理细化到单个信号采样点。仿真结果为 PHY 性能指标，如吞吐量、BER 和 FER。}
+sources: ['https://jwcn-eurasipjournals.springeropen.com/counter/pdf/10.1186/s13638-018-1239-6.pdf', 'https://doi.org/10.1186/s13638-018-1239-6', 'https://api.crossref.org/works/10.1186/s13638-018-1239-6', 'https://www.tuwien.at/etit/tc/en/vienna-simulators/request-simulator-downloads/', 'https://www.tuwien.at/etit/tc/en/vienna-simulators/vienna-5g-simulators/']
+checked: '2026-11-06'

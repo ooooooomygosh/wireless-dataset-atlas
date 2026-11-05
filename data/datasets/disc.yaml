@@ -1,0 +1,21 @@
+id: disc
+name: DISC
+aliases: []
+year: 2023
+organization: University of Padova; IMDEA Networks Institute
+origin: measured
+tasks: [isac, wireless-sensing]
+signals: [cir]
+bands_ghz: [60]
+environment: [indoor]
+standard: IEEE 802.11ay
+samples: 'Three parts: almost 40 min (DISC-A), over 40 min (DISC-B) and 9 min (DISC-C) of CIR sequences'
+format: TAR.GZ
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/records/21871050', type: open}
+code: []
+paper: doi:10.1109/MCOM.002.2400687
+used_in: ["doi:10.1109/jstsp.2024.3408041","doi:10.1109/ojcoms.2025.3649235","doi:10.1109/iccspa69228.2026.11600843"]
+summary: {en: '60 GHz channel impulse response (CIR) sequences from IEEE 802.11ay packets reflected by people moving in indoor environments. The three parts contain almost 40 minutes (DISC-A), over 40 minutes (DISC-B) and 9 minutes (DISC-C) of data, with one to seven subjects performing four or five activities.', zh: 来自 IEEE 802.11ay 数据包的 60 GHz 信道冲激响应（CIR）序列，记录室内环境中人员移动造成的反射。三部分数据分别约 40 分钟（DISC-A）、超过 40 分钟（DISC-B）和 9 分钟（DISC-C），由 1 至 7 名受试者完成四至五种活动。}
+sources: ['https://zenodo.org/records/21871050', 'https://zenodo.org/records/18347489', 'https://arxiv.org/abs/2306.09469', 'https://api.crossref.org/works/10.1109/MCOM.002.2400687']
+checked: '2026-11-06'

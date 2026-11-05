@@ -1,0 +1,24 @@
+id: live-ris
+name: LIVE-RIS
+aliases: []
+year: 2026
+organization: Ruhr University Bochum
+origin: measured
+tasks: [ris, channel-modeling]
+signals: [csi]
+bands_ghz: [5.385]
+bandwidth_mhz: 650
+environment: [indoor, lab, uav]
+antennas: {tx: 1, rx: 1, array: single}
+samples: Three scenarios with six flights each; 10 s files at 50 Hz (500 time steps)
+size_gb: 0.0197
+format: CSV
+mobility: UAV-mounted RIS in flight
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/records/23011126', type: open}
+code: ['https://github.com/DavidMller/risdataset']
+paper: arxiv:2609.34993
+used_in: []
+summary: {en: 'S21 channel measurements from a vector network analyzer over 5.225–5.875 GHz with 201 frequency points, for a UAV-mounted RIS in indoor flight experiments, together with EKF-based UAV and RIS state estimates and RIS configurations. The dataset has three scenarios with six flights each, stored as 10 s files at 50 Hz.', zh: 矢量网络分析仪在 5.225–5.875 GHz 范围内测得的 S21 信道测量数据（201 个频点），对象为室内飞行实验中搭载 RIS 的无人机，并附带基于 EKF 的无人机与 RIS 状态估计以及 RIS 配置。数据包含三个场景，每个场景六次飞行，以 50 Hz 采样的 10 秒文件存储。}
+sources: ['https://zenodo.org/records/23011126', 'https://github.com/DavidMller/risdataset', 'https://arxiv.org/abs/2609.34993', 'https://arxiv.org/html/2609.34993v1']
+checked: '2026-11-06'

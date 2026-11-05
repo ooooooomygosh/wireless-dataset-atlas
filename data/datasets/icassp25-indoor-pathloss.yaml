@@ -1,0 +1,18 @@
+id: icassp25-indoor-pathloss
+name: ICASSP 2025 Indoor Pathloss Radio Map Dataset
+aliases: [Indoor Pathloss Radio Map Dataset]
+year: 2024
+origin: ray-tracing
+tasks: [radio-map, channel-modeling]
+signals: [pathloss]
+bands_ghz: [0.868, 1.8, 3.5]
+environment: [indoor]
+format: PNG, CSV
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/indoor-radio-map-dataset', type: restricted}
+code: []
+paper: arxiv:2501.13698
+used_in: ["doi:10.1109/icc59461.2026.11587950","doi:10.1109/icc59461.2026.11587244","doi:10.1109/twc.2026.3731526"]
+summary: {en: 'Ray-traced indoor pathloss radio maps of 25 indoor environments at 868 MHz, 1.8 GHz and 3.5 GHz, sampled every 0.25 m. The test set of the ICASSP 2025 challenge is not part of the published data.', zh: 基于射线追踪生成的室内路径损耗无线电地图，覆盖25个室内环境，频率为868 MHz、1.8 GHz和3.5 GHz，采样间距为0.25 m。ICASSP 2025挑战赛的测试集未包含在已发布数据中。}
+sources: ['https://ieee-dataport.org/documents/indoor-radio-map-dataset', 'https://dx.doi.org/10.21227/c0ec-cw74', 'https://arxiv.org/abs/2501.13698', 'https://arxiv.org/html/2501.13698']
+checked: '2026-11-06'

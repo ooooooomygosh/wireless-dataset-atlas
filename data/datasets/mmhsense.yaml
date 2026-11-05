@@ -1,0 +1,18 @@
+id: mmhsense
+name: mmHSense
+year: 2025
+origin: measured
+tasks: [isac, wireless-sensing, localization]
+signals: [csi, beam-power]
+bands_ghz: [5, 60]
+environment: [indoor]
+size_gb: 101.79
+format: PyTorch .pth
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/mmhsense-multi-modal-and-distributed-mmwave-isac-datasets-human-sensing', type: restricted}
+code: ['https://github.com/nisarnabeel/Multi-Modal-and-Distributed-mmWave-ISAC-Datasets-for-Human-Sensing']
+paper: doi:10.1109/access.2026.3691174
+used_in: []
+summary: {en: 'Six labeled mmWave ISAC datasets for human sensing (gesture recognition, pose estimation, gait identification and localization), collected with IEEE 802.11ad/ay Wi-Fi hardware and custom 5G mmWave OFDM systems in bi-static, multi-static and distributed setups. The 5GmmGesture subset contains 34,496 samples.', zh: '六个带标签的 mmWave ISAC 人体感知数据集，涵盖手势识别、姿态估计、步态身份识别和定位，采用 IEEE 802.11ad/ay Wi-Fi 商用硬件与自定义 5G mmWave OFDM 系统，以双站、多站和分布式方式采集。5GmmGesture 子集包含 34,496 个样本。'}
+sources: ['https://ieee-dataport.org/documents/mmhsense-multi-modal-and-distributed-mmwave-isac-datasets-human-sensing', 'https://arxiv.org/abs/2509.21396', 'https://arxiv.org/html/2509.21396', 'https://github.com/nisarnabeel/Multi-Modal-and-Distributed-mmWave-ISAC-Datasets-for-Human-Sensing', 'https://api.crossref.org/works/10.1109/ACCESS.2026.3691174']
+checked: '2026-11-06'

@@ -1,0 +1,17 @@
+id: indoor-jamming-iq
+name: Indoor Jamming I/Q Measurements
+year: 2022
+organization: Hamad Bin Khalifa University
+origin: measured
+tasks: [spectrum-sensing]
+signals: [iq]
+environment: [indoor]
+size_gb: 118.45
+format: MAT
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/record/7119040', type: open}
+paper: doi:10.1016/j.dib.2022.108773
+used_in: ["doi:10.1109/jiot.2023.3343611","doi:10.1109/icc52391.2025.11161395"]
+summary: {en: 'Raw I/Q samples of BPSK bit sequences recorded by seven USRP X310 software-defined radios in an office environment without line of sight. The recordings cover no jamming, tone and Gaussian-noise jamming at varied distances and jamming powers, stored in 31 MAT files.', zh: 七台 USRP X310 软件无线电在无视距的办公室环境中采集的 BPSK 比特序列原始 I/Q 样本。记录涵盖无干扰、单音干扰和高斯噪声干扰，并包含不同距离与干扰功率条件，数据存储于 31 个 MAT 文件中。}
+sources: ['https://zenodo.org/record/7119040', 'https://zenodo.org/api/records/7119040', 'https://api.crossref.org/works/10.1016/j.dib.2022.108773']
+checked: '2026-11-06'

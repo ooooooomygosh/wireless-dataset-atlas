@@ -1,0 +1,23 @@
+id: usc-drone-channels
+name: USC Drone-Based Channel Measurements
+year: 2025
+organization: University of Southern California
+origin: measured
+tasks: [channel-modeling, mimo-detection]
+signals: [csi]
+bands_ghz: [3.5]
+bandwidth_mhz: 46
+subcarriers: 2301
+environment: [uav]
+samples: 31,619 drone positions
+size_gb: 76.16
+format: .mat
+mobility: UAV transmitter at 25-45 m height
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/usc-drone-based-channel-measurement-data', type: restricted}
+code: []
+paper: arxiv:2106.15276
+used_in: ["doi:10.1109/tvt.2021.3122413","doi:10.1109/twc.2025.3548890","doi:10.1109/twc.2026.3665431"]
+summary: {en: 'Measured 3.5 GHz channel frequency responses over 2,301 subcarriers (46 MHz) from a drone-mounted transmitter at 31,619 positions, with 128 ground user positions in a 200 m x 200 m outdoor area, covering LOS and NLOS cases and stored as .mat files.', zh: '在 200 m × 200 m 室外区域内采集的 3.5 GHz 实测信道频率响应，包含 2,301 个子载波（46 MHz 带宽）、无人机发射机的 31,619 个位置和 128 个地面用户位置，涵盖 LOS 与 NLOS 场景，以 .mat 文件存储。'}
+sources: ['https://ieee-dataport.org/documents/usc-drone-based-channel-measurement-data', 'https://arxiv.org/abs/2106.15276']
+checked: '2026-11-06'

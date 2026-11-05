@@ -1,0 +1,18 @@
+id: laetwin-xl
+name: LAETwin-XL
+year: 2026
+origin: ray-tracing
+tasks: [near-field, foundation-model, channel-estimation]
+signals: [csi]
+bands_ghz: [7]
+environment: [outdoor-urban, outdoor-suburban, uav]
+antennas: {array: upa}
+samples: 57,236 pretraining samples and 13,450 downstream samples
+license: Not stated
+access: {url: 'https://huggingface.co/datasets/lmyxxn/LAETwin-XL', type: open}
+code: ['https://github.com/Lmyxxn/LAETwin-XL']
+paper: doi:10.1109/jstsp.2026.3705369
+used_in: []
+summary: {en: 'Sionna ray-traced near-field and far-field XL-MIMO channel realizations at 7 GHz for UAV trajectories in urban and suburban scenes of 13 cities, with 57,236 pretraining and 13,450 downstream samples. Time-stamped UAV coordinates and near-field and far-field labels accompany the channels.', zh: '基于Sionna射线追踪生成的7 GHz XL-MIMO近场与远场信道实现，覆盖13个城市的城市与郊区场景中的无人机轨迹，包含57,236个预训练样本和13,450个下游样本。数据同时提供带时间戳的无人机坐标以及近场和远场标签。'}
+sources: ['https://arxiv.org/html/2606.14114', 'https://arxiv.org/abs/2606.14114', 'https://github.com/Lmyxxn/LAETwin-XL', 'https://api.github.com/repos/Lmyxxn/LAETwin-XL/license', 'https://huggingface.co/datasets/lmyxxn/LAETwin-XL', 'https://api.crossref.org/works/10.1109/jstsp.2026.3705369']
+checked: '2026-11-06'

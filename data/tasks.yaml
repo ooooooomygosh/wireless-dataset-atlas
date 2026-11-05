@@ -1,0 +1,114 @@
+- id: channel-modeling
+  name: { en: Channel modeling and generation, zh: 信道建模与生成 }
+  definition: { en: "Characterizing or generating propagation channels with measurements, ray tracing or stochastic models, including channel sounding campaigns and simulators that produce channel data.", zh: "利用测量、射线追踪或随机模型刻画和生成传播信道，包括信道探测测量活动和产生信道数据的仿真器。" }
+  inputs: [3D scene, antenna configuration, carrier frequency, user trajectory]
+  labels: [channel impulse response, path parameters, channel matrix]
+  metrics: [power delay profile, angular spread, NMSE against measurements]
+- id: beam-management
+  name: { en: Beam management, zh: 波束管理 }
+  definition: { en: "Selecting, tracking or predicting transmit and receive beams from a codebook, using channel measurements or side information.", zh: "利用信道测量或辅助信息，从码本中选择、跟踪和预测收发波束。" }
+  inputs: [sub-6 GHz CSI, user position, RGB, LiDAR, radar, previous beam indices]
+  labels: [optimal beam index, top-k beams, received power per beam]
+  metrics: [top-k accuracy, beamforming gain loss, achievable rate]
+- id: channel-estimation
+  name: { en: Channel estimation, zh: 信道估计 }
+  definition: { en: "Recovering the channel response from pilot observations, including sparse, low-resolution and few-pilot settings.", zh: "由导频观测恢复信道响应，包括稀疏、低分辨率和少导频场景。" }
+  inputs: [pilot observations, received signal, partial CSI]
+  labels: [full CSI, channel matrix, path parameters]
+  metrics: [NMSE, BER, achievable rate]
+- id: csi-feedback
+  name: { en: CSI feedback and compression, zh: CSI 反馈与压缩 }
+  definition: { en: "Compressing downlink CSI at the user and reconstructing it at the base station under a feedback-bit budget.", zh: "在反馈比特预算下，用户端压缩下行 CSI，基站端重构。" }
+  inputs: [downlink CSI]
+  labels: [reconstructed CSI]
+  metrics: [NMSE, cosine similarity, feedback bits]
+- id: channel-prediction
+  name: { en: Channel prediction, zh: 信道预测 }
+  definition: { en: "Predicting future channel states from past observations in time, frequency or space, including cross-band extrapolation.", zh: "根据时间、频率或空间上的历史观测预测未来信道状态，含跨频段外推。" }
+  inputs: [past CSI sequence, user trajectory, sub-band CSI]
+  labels: [future CSI, channel in another band]
+  metrics: [NMSE, prediction horizon, achievable rate]
+- id: doa-estimation
+  name: { en: DoA / AoA estimation, zh: DoA / AoA 估计 }
+  definition: { en: "Estimating the direction of arrival of one or more sources from array measurements.", zh: "由阵列测量估计一个或多个信号源的到达方向。" }
+  inputs: [array snapshots, covariance matrix, CSI]
+  labels: [azimuth, elevation, number of sources]
+  metrics: [RMSE, resolution probability, success rate]
+- id: localization
+  name: { en: Localization and fingerprinting, zh: 定位与指纹 }
+  definition: { en: "Estimating device position from radio measurements such as CSI, RSSI or time of arrival, commonly by matching against a fingerprint database.", zh: "利用 CSI、RSSI 或到达时间等无线测量估计设备位置，常通过与指纹库匹配实现。" }
+  inputs: [CSI, RSSI, ToA, IQ samples]
+  labels: [2D or 3D position]
+  metrics: [mean error, CDF of error, 90th percentile error]
+- id: radio-map
+  name: { en: Radio map and path-loss prediction, zh: 无线电地图与路径损耗预测 }
+  definition: { en: "Predicting received power, path loss or other radio quantities over space from maps and sparse measurements.", zh: "依据地图和稀疏测量预测空间中的接收功率、路径损耗等无线量。" }
+  inputs: [city or floor map, transmitter position, sparse samples]
+  labels: [path loss map, received signal strength map]
+  metrics: [RMSE, NMSE, SSIM]
+- id: mimo-detection
+  name: { en: MIMO detection and precoding, zh: MIMO 检测与预编码 }
+  definition: { en: "Learning symbol detection, precoder design or power allocation for MIMO links from channel realizations.", zh: "基于信道样本学习 MIMO 符号检测、预编码设计或功率分配。" }
+  inputs: [channel matrix, received signal]
+  labels: [transmitted symbols, precoder, power allocation]
+  metrics: [BER, sum rate, spectral efficiency]
+- id: modulation-classification
+  name: { en: Modulation and signal classification, zh: 调制与信号分类 }
+  definition: { en: "Identifying modulation type, waveform or protocol from raw I/Q samples.", zh: "由原始 I/Q 样本识别调制方式、波形或协议。" }
+  inputs: [IQ samples]
+  labels: [modulation class, signal type]
+  metrics: [accuracy vs SNR, confusion matrix]
+- id: rf-fingerprinting
+  name: { en: RF fingerprinting, zh: 射频指纹与设备识别 }
+  definition: { en: "Identifying transmitting devices from hardware-induced impairments in the received signal.", zh: "利用硬件非理想性造成的信号特征识别发射设备。" }
+  inputs: [IQ samples, preamble]
+  labels: [device identity]
+  metrics: [identification accuracy, open-set detection rate]
+- id: spectrum-sensing
+  name: { en: Spectrum sensing and occupancy, zh: 频谱感知与占用 }
+  definition: { en: "Detecting occupied spectrum and characterizing usage, interference or anomalies from wideband observations.", zh: "由宽带观测检测频谱占用，并刻画使用情况、干扰或异常。" }
+  inputs: [spectrogram, IQ samples, power spectral density]
+  labels: [occupancy mask, signal presence, interference class]
+  metrics: [detection probability, false alarm rate, IoU]
+- id: wireless-sensing
+  name: { en: Wi-Fi and RF sensing, zh: Wi-Fi / 射频感知 }
+  definition: { en: "Inferring human activity, gestures, presence or vital signs from changes in wireless signals.", zh: "由无线信号的变化推断人体活动、手势、存在或生命体征。" }
+  inputs: [CSI, mmWave radar, RSSI]
+  labels: [activity class, gesture, pose, respiration rate]
+  metrics: [accuracy, F1, cross-domain accuracy]
+- id: isac
+  name: { en: ISAC and radar, zh: 通感一体与雷达 }
+  definition: { en: "Joint communication and sensing, including radar target detection, ranging and parameter estimation on communication waveforms.", zh: "通信与感知联合，包括基于通信波形的雷达目标检测、测距和参数估计。" }
+  inputs: [radar cube, OFDM echoes, communication CSI]
+  labels: [target range and velocity, target class]
+  metrics: [detection probability, range RMSE, velocity RMSE]
+- id: multimodal-sensing
+  name: { en: Multimodal sensing-aided communication, zh: 多模态感知辅助通信 }
+  definition: { en: "Using non-RF sensors such as cameras, LiDAR, GPS and radar to support communication decisions like beam selection or blockage prediction.", zh: "借助相机、LiDAR、GPS、雷达等非射频传感器支持波束选择、阻塞预测等通信决策。" }
+  inputs: [RGB, LiDAR, radar, GPS, IMU]
+  labels: [beam index, blockage state, link quality]
+  metrics: [top-k accuracy, blockage F1, latency]
+- id: ris
+  name: { en: Reconfigurable intelligent surfaces, zh: 智能反射面 }
+  definition: { en: "Configuring or estimating channels through reconfigurable intelligent surfaces.", zh: "智能反射面的配置与级联信道估计。" }
+  inputs: [cascaded CSI, RIS configuration, user position]
+  labels: [RIS phase profile, cascaded channel]
+  metrics: [NMSE, received power gain, sum rate]
+- id: near-field
+  name: { en: Near-field and XL-MIMO, zh: 近场与超大规模 MIMO }
+  definition: { en: "Channels where spherical-wave propagation and spatial non-stationarity matter, as in extremely large aperture arrays.", zh: "球面波传播与空间非平稳性起作用的信道，如超大孔径阵列。" }
+  inputs: [XL-MIMO CSI, near-field codebook]
+  labels: [channel, user distance and angle]
+  metrics: [NMSE, beam gain, localization error]
+- id: foundation-model
+  name: { en: Wireless foundation models, zh: 无线基础模型 }
+  definition: { en: "Large-scale pretraining corpora and benchmarks used to train and evaluate models that transfer across wireless tasks.", zh: "用于预训练并评测可跨无线任务迁移的模型的大规模语料与基准。" }
+  inputs: [CSI, IQ samples, multi-task corpora]
+  labels: [downstream task labels]
+  metrics: [transfer accuracy, few-shot performance]
+- id: network-traffic
+  name: { en: Network traffic and KPI, zh: 网络流量与 KPI }
+  definition: { en: "Cellular and Wi-Fi network measurements such as traffic volume, throughput and radio KPIs over time and space.", zh: "蜂窝与 Wi-Fi 网络的流量、吞吐和无线 KPI 在时空上的测量。" }
+  inputs: [traffic series, KPI series, mobility traces]
+  labels: [future traffic, throughput, anomalies]
+  metrics: [MAE, RMSE, MAPE]

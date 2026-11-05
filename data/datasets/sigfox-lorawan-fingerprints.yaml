@@ -1,0 +1,20 @@
+id: sigfox-lorawan-fingerprints
+name: Sigfox and LoRaWAN Fingerprint Localization Datasets
+year: 2018
+organization: University of Antwerp
+origin: measured
+tasks: [localization]
+signals: [rssi, gps]
+bands_ghz: []
+environment: [outdoor-urban, rural]
+samples: 14,378 Sigfox messages (urban Antwerp), 25,638 Sigfox messages (rural, Antwerp-Ghent), 130,430 LoRaWAN messages (urban Antwerp)
+format: CSV, JSON
+standard: Sigfox, LoRaWAN
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/record/3342253', type: open}
+code: []
+paper: doi:10.3390/data3020013
+used_in: ["doi:10.1109/jiot.2020.3019199","doi:10.1109/tvt.2019.2940272","doi:10.1109/infocom42981.2021.9488784"]
+summary: {en: 'GPS-tagged Sigfox and LoRaWAN messages with per-base-station RSSI and network metadata, collected over three months from devices that periodically reported their GPS location. Sigfox data cover urban Antwerp and a rural area between Antwerp and Ghent; LoRaWAN data cover urban Antwerp.', zh: 带有 GPS 位置标签的 Sigfox 与 LoRaWAN 报文，包含各基站的 RSSI 及网络元数据，采集周期为三个月，设备周期性上报其 GPS 位置。Sigfox 数据覆盖安特卫普市区以及安特卫普与根特之间的农村地区；LoRaWAN 数据覆盖安特卫普市区。}
+sources: ['https://zenodo.org/record/3342253', 'https://zenodo.org/api/records/3342253', 'https://api.crossref.org/works/10.3390/data3020013']
+checked: '2026-11-06'

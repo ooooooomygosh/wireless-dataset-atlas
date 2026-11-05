@@ -1,0 +1,23 @@
+id: contrawimae
+name: ContraWiMAE Dataset
+aliases: [ContraWiMAEDataset]
+year: 2025
+origin: ray-tracing
+tasks: [foundation-model, beam-management, channel-estimation]
+signals: [csi]
+bands_ghz: [3.5, 28]
+bandwidth_mhz: 0.96
+environment: []
+antennas: {tx: 32, rx: 1, array: ula}
+subcarriers: 32
+samples: about 2.5M pretraining samples (56 scenarios) and 0.55M downstream samples (10 scenarios)
+size_gb: 25.5
+format: NumPy NPZ
+license: MIT
+access: {url: 'https://huggingface.co/datasets/BerkIGuler/ContraWiMAEDataset', type: open}
+code: ['https://github.com/BerkIGuler/WirelessContrastiveMaskedLearning']
+paper: arxiv:2505.09160
+used_in: ["doi:10.1109/iccworkshops63917.2026.11586587","doi:10.1109/ojcoms.2026.3735905"]
+summary: {en: 'Simulated MISO channel samples generated with DeepMIMO ray tracing at 3.5 GHz, with 28 GHz channels for some downstream scenarios; each sample has 32 TX antennas, 32 subcarriers at 30 kHz spacing and up to 20 paths. Pretraining data cover 56 city scenarios (about 2.5M samples) and downstream data cover 10 unseen cities (about 0.55M samples).', zh: 基于 DeepMIMO 射线追踪生成的仿真 MISO 信道样本，载频为 3.5 GHz，部分下游场景为 28 GHz；每个样本包含 32 根发射天线、间隔 30 kHz 的 32 个子载波以及至多 20 条路径。预训练数据覆盖 56 个城市场景（约 250 万样本），下游数据覆盖 10 个未见城市（约 55 万样本）。}
+sources: ['https://huggingface.co/datasets/BerkIGuler/ContraWiMAEDataset', 'https://arxiv.org/html/2505.09160v2', 'https://arxiv.org/abs/2505.09160', 'https://github.com/BerkIGuler/WirelessContrastiveMaskedLearning']
+checked: '2026-11-06'
