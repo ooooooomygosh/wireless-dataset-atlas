@@ -1,0 +1,37 @@
+---
+import type { Dataset } from "../schema.ts";
+import { ORIGIN } from "../i18n/enums.ts";
+import { t, type Lang } from "../lib/data.ts";
+interface Props { lang: Lang; datasets: Dataset[] }
+const { lang, datasets } = Astro.props;
+const origins = Object.keys(ORIGIN);
+const y0 = Math.min(...datasets.map((d) => d.year), 2012), y1 = Math.max(...datasets.map((d) => d.year), 2025);
+const years = Array.from({ length: y1 - y0 + 1 }, (_, i) => y0 + i);
+const count = (y: number, o: string) => datasets.filter((d) => d.year === y && d.origin === o).length;
+const max = Math.max(1, ...years.map((y) => origins.reduce((s, o) => s + count(y, o), 0)));
+const W = 760, H = 220, L = 28, B = 24, T = 8, bw = (W - L) / years.length;
+const sy = (n: number) => (n / max) * (H - B - T);
+const step = max > 20 ? 10 : 5;
+const gridVals = Array.from({ length: Math.floor(max / step) + 1 }, (_, i) => i * step);
+---
+<div class="chart">
+  <h3>{t(lang, "chart.year.title")}</h3>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t(lang, "chart.year.title")}>
+    {gridVals.map((v) => (<g><line class="grid" x1={L} x2={W} y1={H - B - sy(v)} y2={H - B - sy(v)} /><text x={L - 6} y={H - B - sy(v) + 4} text-anchor="end">{v}</text></g>))}
+    {years.map((y, i) => {
+      let acc = 0;
+      return (
+        <g>
+          {origins.map((o) => {
+            const n = count(y, o); if (!n) return null;
+            const h = sy(n); acc += h;
+            return <rect x={L + i * bw + 3} y={H - B - acc} width={bw - 6} height={h - 1} rx="1.5" fill={`var(--c-${o})`}><title>{y} · {ORIGIN[o][lang]}: {n}</title></rect>;
+          })}
+          {(i % 2 === 0 || years.length < 12) && <text x={L + i * bw + bw / 2} y={H - 6} text-anchor="middle">{y}</text>}
+        </g>
+      );
+    })}
+    <line class="axis" x1={L} x2={W} y1={H - B} y2={H - B} />
+  </svg>
+  <div class="legend">{origins.map((o) => <span><i class={`dot ${o}`}></i>{ORIGIN[o][lang]}</span>)}</div>
+</div>

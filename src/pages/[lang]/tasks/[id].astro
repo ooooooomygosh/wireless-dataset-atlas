@@ -1,0 +1,34 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../../layouts/Base.astro";
+import DatasetTable from "../../../components/DatasetTable.astro";
+import { allDatasets, tasks, paperOf, t, authorsShort, LANGS, type Lang } from "../../../lib/data.ts";
+export const getStaticPaths = (() => LANGS.flatMap((lang) => tasks.map((task) => ({ params: { lang, id: task.id }, props: { task } })))) satisfies GetStaticPaths;
+const lang = Astro.params.lang as Lang;
+const { task } = Astro.props;
+const ds = (await allDatasets()).filter((d) => d.tasks.includes(task.id));
+const seen = new Set<string>();
+const top = ds.flatMap((d) => d.used_in.map((id) => ({ id, d: d.name }))).filter((x) => !seen.has(x.id) && seen.add(x.id))
+  .map((x) => ({ ...x, p: paperOf(x.id) })).sort((a, b) => b.p.cited_by - a.p.cited_by).slice(0, 10);
+---
+<Base lang={lang} nav="tasks" title={task.name[lang]} description={task.definition[lang]}>
+  <div class="crumb"><a href={`/${lang}/tasks/`}>{t(lang, "nav.tasks")}</a></div>
+  <div class="page-head"><h1>{task.name[lang]}</h1><p>{task.definition[lang]}</p></div>
+  <dl class="spec" style="max-width:760px">
+    <dt>{t(lang, "task.inputs")}</dt><dd>{task.inputs.join(", ")}</dd>
+    <dt>{t(lang, "task.labels")}</dt><dd>{task.labels.join(", ")}</dd>
+    <dt>{t(lang, "task.metrics")}</dt><dd>{task.metrics.join(", ")}</dd>
+  </dl>
+  <section class="section">
+    <div class="row between"><h2>{t(lang, "task.datasets")} ({ds.length})</h2><a href={`/${lang}/datasets/?task=${task.id}`}>{t(lang, "home.all")} →</a></div>
+    <div style="margin-top:14px"><DatasetTable lang={lang} datasets={ds} /></div>
+  </section>
+  {top.length > 0 && (
+    <section class="section">
+      <h2>{t(lang, "task.papers")}</h2>
+      {top.map(({ p, d }) => (
+        <div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{[authorsShort(p.authors), p.venue, p.year, t(lang, "papers.cited", { n: p.cited_by }), d].filter(Boolean).join(" · ")}</div></div>
+      ))}
+    </section>
+  )}
+</Base>

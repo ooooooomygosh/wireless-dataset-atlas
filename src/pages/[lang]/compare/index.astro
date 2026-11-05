@@ -1,0 +1,70 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../../layouts/Base.astro";
+import { allDatasets, t, LANGS, type Lang } from "../../../lib/data.ts";
+import { specRows } from "../../../lib/view.ts";
+export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+const lang = Astro.params.lang as Lang;
+const ds = await allDatasets();
+const payload = ds.map((d) => ({ id: d.id, name: d.name, rows: specRows(d, lang).map(([, k, v]) => [k, v]) }));
+---
+<Base lang={lang} nav="compare" title={t(lang, "compare.title")}>
+  <div class="page-head"><h1>{t(lang, "compare.title")}</h1></div>
+  <div class="toolbar">
+    <div class="picker" id="picked"></div>
+    <div class="row">
+      <select class="field" id="add" aria-label={t(lang, "compare.pick")}></select>
+      <label class="row muted" style="gap:6px"><input type="checkbox" id="diff" checked /> {t(lang, "compare.differs")}</label>
+      <button class="btn" type="button" id="csv">{t(lang, "compare.csv")}</button>
+    </div>
+  </div>
+  <p class="empty-state" id="empty">{t(lang, "compare.empty")}</p>
+  <div class="table-wrap" id="wrap" hidden><table class="cmp"><thead id="head"></thead><tbody id="body"></tbody></table></div>
+  <script id="cmp-data" type="application/json" set:html={JSON.stringify(payload)} />
+  <span id="cmp-pick" hidden>{t(lang, "compare.pick")}</span>
+  <span id="cmp-remove" hidden>{t(lang, "compare.remove")}</span>
+  <script>
+    import { getIds, setIds, MAX } from "../../../scripts/compare-store.ts";
+    type Row = { id: string; name: string; rows: [string, string][] };
+    const data: Row[] = JSON.parse(document.getElementById("cmp-data")!.textContent!);
+    const byId = new Map(data.map((d) => [d.id, d]));
+    const lang = document.body.dataset.lang;
+    const q = new URLSearchParams(location.search).get("ids");
+    if (q) setIds(q.split(",").filter((i) => byId.has(i)));
+    const $ = (id: string) => document.getElementById(id)!;
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+    function render() {
+      const ids = getIds().filter((i) => byId.has(i));
+      const sel = $("add") as HTMLSelectElement;
+      sel.innerHTML = `<option value="">${esc($("cmp-pick").textContent!)}</option>` + data.filter((d) => !ids.includes(d.id)).map((d) => `<option value="${d.id}">${esc(d.name)}</option>`).join("");
+      sel.disabled = ids.length >= MAX;
+      $("picked").innerHTML = ids.map((i) => `<button class="tag" type="button" data-rm="${i}" title="${esc($("cmp-remove").textContent!)}">${esc(byId.get(i)!.name)} ×</button>`).join("");
+      $("empty").hidden = ids.length > 0; $("wrap").hidden = ids.length === 0;
+      if (!ids.length) { history.replaceState(null, "", location.pathname); return; }
+      history.replaceState(null, "", location.pathname + "?ids=" + ids.join(","));
+      const cols = ids.map((i) => byId.get(i)!);
+      $("head").innerHTML = `<tr><th></th>${cols.map((c) => `<th><a href="/${lang}/datasets/${c.id}/">${esc(c.name)}</a></th>`).join("")}</tr>`;
+      const hi = ($("diff") as HTMLInputElement).checked && cols.length > 1;
+      $("body").innerHTML = cols[0].rows.map((r, k) => {
+        const vals = cols.map((c) => c.rows[k][1]);
+        const differs = hi && new Set(vals).size > 1;
+        return `<tr><td>${esc(r[0])}</td>${vals.map((v) => `<td class="${differs ? "diff" : ""}">${esc(v)}</td>`).join("")}</tr>`;
+      }).join("");
+    }
+    $("add").addEventListener("change", (e) => { const v = (e.target as HTMLSelectElement).value; if (v) setIds([...getIds(), v]); });
+    $("picked").addEventListener("click", (e) => { const b = (e.target as HTMLElement).closest<HTMLElement>("[data-rm]"); if (b) setIds(getIds().filter((i) => i !== b.dataset.rm)); });
+    $("diff").addEventListener("change", render);
+    $("csv").addEventListener("click", () => {
+      const ids = getIds().filter((i) => byId.has(i)); if (!ids.length) return;
+      const cols = ids.map((i) => byId.get(i)!);
+      const cell = (s: string) => `"${s.replace(/"/g, '""')}"`;
+      const lines = [["", ...cols.map((c) => c.name)].map(cell).join(",")];
+      cols[0].rows.forEach((r, k) => lines.push([r[0], ...cols.map((c) => c.rows[k][1])].map(cell).join(",")));
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob(["﻿" + lines.join("\n")], { type: "text/csv;charset=utf-8" }));
+      a.download = "dataset-comparison.csv"; a.click(); URL.revokeObjectURL(a.href);
+    });
+    window.addEventListener("compare-change", render);
+    render();
+  </script>
+</Base>

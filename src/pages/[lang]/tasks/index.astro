@@ -1,0 +1,17 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../../layouts/Base.astro";
+import { allDatasets, tasks, t, LANGS, type Lang } from "../../../lib/data.ts";
+export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+const lang = Astro.params.lang as Lang;
+const ds = await allDatasets();
+---
+<Base lang={lang} nav="tasks" title={t(lang, "nav.tasks")}>
+  <div class="page-head"><h1>{t(lang, "nav.tasks")}</h1></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>{t(lang, "nav.tasks")}</th><th>{t(lang, "task.definition")}</th><th class="num">{t(lang, "task.datasets")}</th></tr></thead>
+    <tbody>{tasks.map((x) => (
+      <tr><td><a class="name" href={`/${lang}/tasks/${x.id}/`}>{x.name[lang]}</a></td><td class="muted">{x.definition[lang]}</td><td class="num">{ds.filter((d) => d.tasks.includes(x.id)).length}</td></tr>
+    ))}</tbody>
+  </table></div>
+</Base>

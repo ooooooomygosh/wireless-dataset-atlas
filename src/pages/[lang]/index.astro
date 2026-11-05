@@ -1,0 +1,54 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../layouts/Base.astro";
+import FreqChart from "../../components/FreqChart.astro";
+import YearChart from "../../components/YearChart.astro";
+import TaskMatrix from "../../components/TaskMatrix.astro";
+import { allDatasets, tasks, t, LANGS, type Lang } from "../../lib/data.ts";
+
+export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+const lang = Astro.params.lang as Lang;
+const ds = await allDatasets();
+const nPapers = new Set(ds.flatMap((d) => [d.paper, ...d.used_in])).size;
+const taskCount = (id: string) => ds.filter((d) => d.tasks.includes(id)).length;
+const used = tasks.filter((x) => taskCount(x.id) > 0);
+const recent = [...ds].sort((a, b) => b.checked.localeCompare(a.checked) || b.year - a.year).slice(0, 6);
+---
+<Base lang={lang}>
+  <section class="hero">
+    <h1>{t(lang, "site.tagline")}</h1>
+    <p>{t(lang, "home.lead")}</p>
+    <div class="row">
+      <a class="btn primary" href={`/${lang}/datasets/`}>{t(lang, "home.all")}</a>
+      <a class="btn" href={`/${lang}/tasks/`}>{t(lang, "nav.tasks")}</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>{ds.length}</b><span>{t(lang, "home.stats.datasets")}</span></div>
+      <div class="stat"><b>{used.length}</b><span>{t(lang, "home.stats.tasks")}</span></div>
+      {nPapers > 0 && <div class="stat"><b>{nPapers}</b><span>{t(lang, "home.stats.papers")}</span></div>}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>{t(lang, "home.tasks")}</h2>
+    <div class="task-grid">
+      {used.map((x) => <a class="task-card" href={`/${lang}/tasks/${x.id}/`}><span>{x.name[lang]}</span><span class="n">{taskCount(x.id)}</span></a>)}
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>{t(lang, "home.charts")}</h2>
+    <div class="charts-grid">
+      <FreqChart lang={lang} datasets={ds} />
+      <YearChart lang={lang} datasets={ds} />
+      <TaskMatrix lang={lang} datasets={ds} />
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>{t(lang, "home.recent")}</h2>
+    <div class="cards">
+      {recent.map((d) => (<a class="card" href={`/${lang}/datasets/${d.id}/`} style="color:inherit"><span class="name">{d.name}</span><p>{d.summary[lang]}</p></a>))}
+    </div>
+  </section>
+</Base>

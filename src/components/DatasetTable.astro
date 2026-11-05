@@ -1,0 +1,49 @@
+---
+import type { Dataset } from "../schema.ts";
+import { t, label, labels, formatBands, bandClasses, paperOf, type Lang } from "../lib/data.ts";
+import { tasksText } from "../lib/view.ts";
+interface Props { lang: Lang; datasets: Dataset[]; filterable?: boolean }
+const { lang, datasets, filterable = false } = Astro.props;
+const attrs = (d: Dataset) => ({
+  "data-id": d.id,
+  "data-name": [d.name, ...d.aliases].join(" ").toLowerCase(),
+  "data-sortname": d.name.toLowerCase(),
+  "data-year": d.year,
+  "data-cited": paperOf(d.paper).cited_by,
+  "data-task": d.tasks.join(" "),
+  "data-origin": d.origin,
+  "data-signal": d.signals.join(" "),
+  "data-band": bandClasses(d).join(" "),
+  "data-environment": d.environment.join(" "),
+  "data-access": d.access.type,
+  "data-code": d.code.length ? "1" : "0",
+});
+---
+<div class="table-wrap" id={filterable ? "view-table" : undefined}>
+  <table>
+    <thead>
+      <tr>
+        <th class="sr"><span class="sr">{t(lang, "col.compare")}</span></th>
+        <th>{t(lang, "col.name")}</th>
+        <th class="num">{t(lang, "col.year")}</th>
+        <th>{t(lang, "col.origin")}</th>
+        <th>{t(lang, "col.tasks")}</th>
+        <th>{t(lang, "col.band")}</th>
+        <th>{t(lang, "col.access")}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {datasets.map((d) => (
+        <tr {...attrs(d)}>
+          <td><input class="chk" type="checkbox" data-compare={d.id} aria-label={`${t(lang, "compare.add")}: ${d.name}`} /></td>
+          <td><a class="name" href={`/${lang}/datasets/${d.id}/`}>{d.name}</a>{d.organization && <div class="sub">{d.organization}</div>}</td>
+          <td class="num">{d.year}</td>
+          <td><span class="tag"><i class={`dot ${d.origin}`}></i>{label(labels.origin, d.origin, lang)}</span></td>
+          <td>{tasksText(d, lang).join(", ")}</td>
+          <td class="num">{formatBands(d.bands_ghz)} <span class="faint">{t(lang, "unit.ghz")}</span></td>
+          <td>{label(labels.access, d.access.type, lang)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
