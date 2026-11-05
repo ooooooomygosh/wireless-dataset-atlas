@@ -12,7 +12,8 @@ license: MIT
 access: {url: 'https://github.com/torchdsp/torchsig', type: open}
 code: ['https://github.com/torchdsp/torchsig']
 paper: arxiv:2207.09918
-used_in: ["doi:10.1109/lcomm.2024.3474519","doi:10.1109/icmlcn64995.2025.11140224"]
+used_in: []
+citing: ["doi:10.1109/lcomm.2024.3474519","doi:10.1109/icmlcn64995.2025.11140224"]
 summary: {en: 'Synthetic I/Q samples from 53 signal classes, 5 million samples in total, generated with the TorchSig toolkit and including selected channel impairments.', zh: 来自 53 类信号的合成 I/Q 样本，共 500 万个样本，由 TorchSig 工具包生成，并包含经过选择的信道损伤。}
 sources: ['https://arxiv.org/abs/2207.09918', 'https://arxiv.org/html/2207.09918v1', 'https://github.com/torchdsp/torchsig']
 checked: '2026-11-06'

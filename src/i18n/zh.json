@@ -118,5 +118,9 @@
   "about.title": "关于",
   "footer.source": "GitHub 源码",
   "footer.license": "代码 MIT，目录数据 CC BY 4.0",
-  "footer.updated": "更新于 {date}"
+  "footer.updated": "更新于 {date}",
+  "detail.citing": "引用数据集论文的高被引工作",
+  "papers.kind.citing": "引用论文",
+  "detail.usedInNote": "标题或摘要中提到该数据集的研究。",
+  "detail.citingNote": "引用了数据集论文，是否使用该数据未经核实。"
 }

@@ -9,7 +9,8 @@ license: GNU General Public License v3.0 (GPLv3)
 access: {url: 'https://github.com/lasseufpa/Raymobtime', type: open}
 code: ['https://github.com/lasseufpa/Raymobtime']
 paper: doi:10.1109/ita.2018.8503086
-used_in: ["doi:10.1109/infocom59046.2026.11571670","doi:10.1109/jproc.2019.2954595","doi:10.1109/comst.2023.3300664"]
+used_in: ["doi:10.1109/infocom59046.2026.11571670"]
+citing: ["doi:10.1109/jproc.2019.2954595","doi:10.1109/comst.2023.3300664","doi:10.1109/twc.2021.3128392"]
 summary: {en: 'Generator for ray-traced mmWave MIMO data, producing propagation paths, path loss, RGB images and LiDAR point clouds in scenes with vehicles, buses, trucks, pedestrians and drones. The repository quick-start script downloads a tiny scenario with ray tracing already done.', zh: 用于生成光线追踪 mmWave MIMO 数据的生成器，输出传播路径、路径损耗、RGB 图像和 LiDAR 点云，场景包含车辆、公交车、卡车、行人和无人机。代码仓库的快速开始脚本可下载一个已完成光线追踪的小型场景。}
 sources: ['https://github.com/lasseufpa/Raymobtime/blob/master/README.md', 'https://api.openalex.org/works/doi:10.1109/ita.2018.8503086']
 checked: '2026-11-06'

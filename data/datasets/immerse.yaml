@@ -13,6 +13,7 @@ format: CSV
 code: ['https://github.com/tudo-cni/immerse_dataset']
 paper: doi:10.1109/gcwkshp64532.2024.11100825
 used_in: []
+citing: []
 summary: {en: Received-power metrics (RSRP) of 4G sub-6 GHz and 5G mmWave links recorded by three devices in an indoor private network. Scenarios include line-of-sight recordings and passages of pedestrians and AGVs on two tracks., zh: 三台终端在室内专网中记录的 4G（sub-6 GHz）和 5G（mmWave）链路接收功率指标（RSRP）。场景包括视距测量，以及行人和 AGV 在两条轨道上的通过过程。}
 sources: ['https://github.com/tudo-cni/immerse_dataset', 'https://comnets.etit.tu-dortmund.de/newsdetail/machine-learning-aided-sensing-in-private-mmwave-networks-for-industrial-application-45414/']
 checked: '2026-11-06'

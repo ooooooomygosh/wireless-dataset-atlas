@@ -10,6 +10,7 @@ access: {url: 'https://github.com/SAIC-MONTREAL/CeBed', type: open}
 code: ['https://github.com/SAIC-MONTREAL/CeBed']
 paper: arxiv:2306.13761
 used_in: []
+citing: []
 summary: {en: 'OFDM channel-estimation datasets generated with the Sionna link-level simulator across different system models and propagation conditions, bundled with ten deep learning and traditional baselines. Each dataset contains complex tensors x, h and y, and the benchmark varies pilot count, pilot arrangement and number of receive antennas.', zh: 基于 Sionna 链路级仿真器生成的 OFDM 信道估计数据集，涵盖不同系统模型和传播条件，并附带十种深度学习与传统基线方法。每个数据集包含复数张量 x、h 和 y，基准测试中变化的参数包括导频数量、导频排布和接收天线数。}
 sources: ['https://github.com/SAIC-MONTREAL/CeBed', 'https://arxiv.org/abs/2306.13761', 'https://export.arxiv.org/api/query?search_query=ti:%22CeBed%22&max_results=3']
 checked: '2026-11-06'

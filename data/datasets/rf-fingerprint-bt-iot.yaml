@@ -14,7 +14,8 @@ format: complex64 IQ (.dat), JSON metadata (.meta.json)
 license: CC BY-NC-SA 4.0
 access: {url: 'https://ieee-dataport.org/documents/rf-fingerprint-bt-iot-real-world-frequency-hopping-bluetooth-dataset-iot-devices-rf', type: restricted}
 paper: doi:10.1109/tccn.2023.3269764
-used_in: ["doi:10.1109/jsac.2024.3413961","doi:10.1109/jiot.2025.3559183","doi:10.1109/mcom.001.2200725"]
+used_in: []
+citing: ["doi:10.1109/jsac.2024.3413961","doi:10.1109/jiot.2025.3559183","doi:10.1109/mcom.001.2200725"]
 summary: {en: 'Bluetooth IQ captures from 10 commercial emitters (2 laptops, 8 chips) recorded with a USRP X300 at 2.414 GHz over 2 MHz, with 40 MS of complex64 samples per capture. The data covers a line-of-sight day and a multipath day in an indoor laboratory, with SigMF-style JSON metadata per capture.', zh: 来自10个商用发射端（2台笔记本、8个商用芯片）的蓝牙IQ采集，由USRP X300在2.414 GHz、2 MHz带宽下记录，每次采集包含40 MS的complex64采样。数据包括室内实验室中的视距（LOS）日和多径日两部分，每次采集附带SigMF风格的JSON元数据。}
 sources: ['https://ieee-dataport.org/documents/rf-fingerprint-bt-iot-real-world-frequency-hopping-bluetooth-dataset-iot-devices-rf', 'https://api.crossref.org/works/10.1109/tccn.2023.3269764', 'https://api.crossref.org/works/10.36227/techrxiv.20767315.v1']
 checked: '2026-11-06'

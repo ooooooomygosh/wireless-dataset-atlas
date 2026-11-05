@@ -15,6 +15,7 @@ access: {url: 'https://huggingface.co/CSI-4CAST', type: open}
 code: ['https://github.com/AI4OPT/CSI-4CAST']
 paper: arxiv:2510.12996
 used_in: []
+citing: []
 summary: {en: 'Simulated CSI sequences for TDD and FDD massive MIMO, generated with Sionna''s implementation of the 3GPP TR 38.901 channel model, with 16 historical and 4 predicted time slots per sample. The CSI-RRG benchmark contains more than 300,000 samples over 3,060 scenarios, split into regular, robustness and generalization tests.', zh: '面向 TDD 与 FDD 大规模 MIMO 的仿真 CSI 序列，由 Sionna 实现的 3GPP TR 38.901 信道模型生成，每个样本包含 16 个历史时隙和 4 个预测时隙。CSI-RRG 基准包含 300,000 余个样本，覆盖 3,060 个场景，分为常规、鲁棒性和泛化测试。'}
 sources: ['https://huggingface.co/CSI-4CAST', 'https://huggingface.co/api/datasets?author=CSI-4CAST', 'https://github.com/AI4OPT/CSI-4CAST', 'https://export.arxiv.org/api/query?id_list=2510.12996']
 checked: '2026-11-06'

@@ -13,7 +13,8 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/open-access/widar30-wifi-based-activity-recognition-dataset', type: registration}
 code: []
 paper: doi:10.1145/3307334.3326081
-used_in: ["doi:10.1109/jiot.2021.3064890","doi:10.1109/jiot.2025.3554228","doi:10.1145/3372224.3380900"]
+used_in: ["doi:10.1109/jiot.2021.3064890","doi:10.1109/jiot.2025.3554228"]
+citing: ["doi:10.1145/3372224.3380900","doi:10.1145/3384419.3430735","doi:10.1145/3485730.3485937"]
 summary: {en: 'Commodity Wi-Fi RSSI and CSI recordings of hand gestures, with 258K instances totalling 8,620 minutes across 75 domains. Doppler frequency shift (DFS) and body-coordinate velocity profile (BVP) features are included.', zh: '商用 Wi-Fi 采集的手势 RSSI 与 CSI 记录，共 258K 个手势实例，总时长 8,620 分钟，覆盖 75 个域。数据中包含多普勒频移（DFS）与身体坐标速度分布（BVP）特征。'}
 sources: ['https://ieee-dataport.org/open-access/widar30-wifi-based-activity-recognition-dataset', 'http://tns.thss.tsinghua.edu.cn/widar3.0/index.html', 'https://api.crossref.org/works/10.1145/3307334.3326081']
 checked: '2026-11-06'

@@ -13,6 +13,7 @@ access: {url: 'https://ieee-dataport.org/documents/aimc-spec', type: restricted}
 code: []
 paper: arxiv:2601.08265
 used_in: []
+citing: []
 summary: {en: 'Synthetic radar intrapulse signals with 30 modulation types at 5 SNR levels, stored as complex I/Q pulses in HDF5 files with one file per modulation type. The dataset is built for spectrogram-based image classification.', zh: 合成雷达脉内信号，包含 30 种调制类型和 5 个信噪比等级，以复数 I/Q 脉冲形式存储于 HDF5 文件中，每种调制类型对应一个文件。数据面向基于频谱图的图像分类。}
 sources: ['https://ieee-dataport.org/documents/aimc-spec', 'https://arxiv.org/abs/2601.08265']
 checked: '2026-11-06'

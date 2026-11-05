@@ -14,7 +14,8 @@ format: PNG, MAT, WAV, CSV, TSV, ROS bag
 license: CC BY 4.0
 access: {url: 'https://github.com/ilaydayaman/LuViRA_Dataset', type: open}
 paper: doi:10.1109/icra57147.2024.10610237
-used_in: ["doi:10.1109/tmlcn.2023.3334712","doi:10.1109/icc45041.2023.10278664","doi:10.1109/lwc.2026.3702704"]
+used_in: []
+citing: ["doi:10.1109/tmlcn.2023.3334712","doi:10.1109/icc45041.2023.10278664","doi:10.1109/lwc.2026.3702704"]
 summary: {en: 'Indoor localization recordings with synchronized RGB, depth and IMU data, 5G massive MIMO channel responses between a testbed and user equipment, and 12-microphone audio. The camera, speaker and transmit antenna are mounted on a slowly moving service robot, and the 89 trajectories have 6DoF motion-capture ground truth.', zh: 室内定位测量数据，包含同步的 RGB、深度和 IMU 数据、测试平台与用户设备之间的 5G 大规模 MIMO 信道响应，以及 12 路麦克风音频。相机、扬声器和发射天线安装在缓慢移动的服务机器人上，89 条轨迹均带有 6DoF 动作捕捉真值。}
 sources: ['https://github.com/ilaydayaman/LuViRA_Dataset', 'https://arxiv.org/abs/2302.05309', 'https://github.com/ilaydayaman/LuViRA_Dataset/blob/main/LICENSE.txt']
 checked: '2026-11-06'

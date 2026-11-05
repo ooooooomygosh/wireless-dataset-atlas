@@ -14,6 +14,7 @@ access: {url: 'https://zenodo.org/doi/10.5281/zenodo.20341906', type: open}
 code: ['https://github.com/akdd11/ofdma-spectrum-anomalies-simulation']
 paper: arxiv:2606.02102
 used_in: []
+citing: []
 summary: {en: 'Simulated OFDMA spectrograms from 21 spatially distributed sensing units per sample in an industrial indoor setting, covering 20,000 samples with normal operation and five jammer types. Each sample also has resource allocation maps, and the labels give jammer type, power and location with per-unit SNR and SJR.', zh: '面向工业室内环境的 OFDMA 仿真频谱图，每个样本包含 21 个分布式感知单元的频谱图，共 20,000 个样本，涵盖正常样本与五种干扰类型。每个样本还包含资源分配图，标签给出干扰类型、功率、位置以及每个感知单元的 SNR 和 SJR。'}
 sources: ['https://arxiv.org/abs/2606.02102', 'https://zenodo.org/doi/10.5281/zenodo.20341906', 'https://github.com/akdd11/ofdma-spectrum-anomalies-simulation']
 checked: '2026-11-06'

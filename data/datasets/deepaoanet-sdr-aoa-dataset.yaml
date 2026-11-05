@@ -14,7 +14,8 @@ license: Not stated
 access: {url: 'https://aston.box.com/v/deepaoanet-zdai', type: open}
 code: ['https://github.com/zdai257/DeepAoANet']
 paper: doi:10.1109/access.2021.3140146
-used_in: ["doi:10.1109/infocomwkshps57453.2023.10226092","doi:10.1109/tmlcn.2024.3449834","doi:10.1109/wcnc61545.2025.10978539"]
+used_in: []
+citing: ["doi:10.1109/infocomwkshps57453.2023.10226092","doi:10.1109/tmlcn.2024.3449834","doi:10.1109/wcnc61545.2025.10978539"]
 summary: {en: 'Sample covariance matrix snapshots from a four-element ULA of coherent RTL-SDR receivers (KerberosSDR), recorded from 868 MHz LoRa beacons in open-area, office, corridor and interior-to-outdoor settings. Nearly 50k measured snapshots, over 2.6 million including augmentation, with ground-truth AoA labels from -70 to 70 degrees in 10-degree steps.', zh: 来自四元件 ULA 的采样协方差矩阵快照，由四路相干 RTL-SDR 接收机（KerberosSDR）接收 868 MHz LoRa 信标，场景包括开阔区域、办公室、走廊及室内到室外。实测快照近 5 万个，含数据增强后超过 260 万个，附带 -70 至 70 度、步长 10 度的 AoA 真值标签。}
 sources: ['https://arxiv.org/abs/2112.00695', 'https://ar5iv.labs.arxiv.org/html/2112.00695', 'https://raw.githubusercontent.com/zdai257/DeepAoANet/master/README.md', 'https://aston.box.com/v/deepaoanet-zdai', 'https://api.crossref.org/works/10.1109/ACCESS.2021.3140146']
 checked: '2026-11-06'

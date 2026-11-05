@@ -10,7 +10,8 @@ license: MIT
 access: {url: 'https://drive.google.com/file/d/1rq8yyokrNhAGQryx7trpUqKenDnTI6Ky/view?usp=drive_link', type: open}
 code: ['https://github.com/yizzfz/MiliPoint']
 paper: doi:10.52202/075280-2739
-used_in: ["doi:10.1109/jiot.2026.3668767","doi:10.1145/3795866.3796684","doi:10.1109/tmc.2026.3720944"]
+used_in: ["doi:10.1109/jiot.2026.3668767"]
+citing: ["doi:10.1145/3795866.3796684","doi:10.1109/tmc.2026.3720944"]
 summary: {en: 'mmWave radar point clouds from 18 subjects, labelled for subject identification, action classification and keypoint estimation. The repository does not state the number of frames or actions.', zh: 来自18名受试者的 mmWave 雷达点云，标注用于受试者身份识别、动作分类和关键点估计。仓库未给出帧数或动作数量。}
 sources: ['https://github.com/yizzfz/MiliPoint', 'https://raw.githubusercontent.com/yizzfz/MiliPoint/main/LICENSE', 'https://doi.org/10.52202/075280-2739', 'http://www.proceedings.com/075280-2739.html']
 checked: '2026-11-06'

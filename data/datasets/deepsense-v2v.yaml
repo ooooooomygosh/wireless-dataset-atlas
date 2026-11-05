@@ -11,7 +11,8 @@ format: CSV index files, 7-Zip archives
 license: Not stated
 access: {url: 'https://www.deepsense6g.net/scenarios36-39/', type: registration}
 paper: arxiv:2406.17908
-used_in: ["doi:10.1109/icc59461.2026.11586947","doi:10.1109/tmc.2026.3674213"]
+used_in: ["doi:10.1109/icc59461.2026.11586947"]
+citing: ["doi:10.1109/tmc.2026.3674213"]
 summary: {en: 'Two-vehicle recordings on intercity and rural roads, with 60 GHz beam-power vectors from phased arrays, a 360-degree camera, four radars, a 3D LiDAR and two GPS receivers. The data are synchronized at 10 Hz, with mmWave beam power as the reference.', zh: 在城际与乡村道路上采集的双车测试平台数据，包含60 GHz相位阵列的波束功率向量、360度相机、四个雷达、3D LiDAR和两个GPS接收机。数据以10 Hz同步，并以毫米波波束功率作为参考。}
 sources: ['https://arxiv.org/abs/2406.17908', 'https://arxiv.org/html/2406.17908', 'https://export.arxiv.org/api/query?id_list=2406.17908', 'https://deepsense6g.net/', 'https://www.deepsense6g.net/assets/index-D9i131kE.js']
 checked: '2026-11-06'

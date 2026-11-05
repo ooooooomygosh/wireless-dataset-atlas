@@ -12,7 +12,8 @@ license: CC BY-SA 4.0
 access: {url: 'https://github.com/clarkzjw/LENS', type: open}
 code: ['https://github.com/clarkzjw/LENS']
 paper: doi:10.1145/3625468.3652170
-used_in: ["doi:10.1109/infocom59046.2026.11571189"]
+used_in: []
+citing: ["doi:10.1109/infocom59046.2026.11571189"]
 summary: {en: 'Ping round-trip time and IRTT one-way delay measurements from 20 Starlink dish locations across North America, Europe, Africa, Asia and Oceania, released as monthly Zenodo snapshots from 2023-11 to 2025-03.', zh: 来自北美、欧洲、非洲、亚洲和大洋洲 20 个 Starlink 终端站点的 ping RTT 与 IRTT 单向时延测量数据，以月度快照形式发布于 Zenodo，时间范围为 2023 年 11 月至 2025 年 3 月。}
 sources: ['https://github.com/clarkzjw/LENS', 'https://zenodo.org/records/15331299', 'https://api.crossref.org/works/10.1145/3625468.3652170']
 checked: '2026-11-06'

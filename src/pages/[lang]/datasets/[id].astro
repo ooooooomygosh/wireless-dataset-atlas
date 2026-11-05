@@ -13,7 +13,9 @@ const lang = Astro.params.lang as Lang;
 const { d } = Astro.props;
 const all = await allDatasets();
 const paper = paperOf(d.paper);
-const used = d.used_in.map((id) => ({ id, p: paperOf(id) })).sort((a, b) => b.p.cited_by - a.p.cited_by);
+const byCites = (ids: string[]) => ids.map((id) => ({ id, p: paperOf(id) })).sort((a, b) => b.p.cited_by - a.p.cited_by);
+const used = byCites(d.used_in);
+const citing = byCites(d.citing);
 const related = all
   .filter((x) => x.id !== d.id)
   .map((x) => ({ x, n: x.tasks.filter((k) => d.tasks.includes(k)).length }))
@@ -67,12 +69,25 @@ const ld = { "@context": "https://schema.org", "@type": "Dataset", name: d.name,
         </div>
       </section>
 
+      {(used.length > 0 || citing.length === 0) && (
       <section class="section">
         <h2>{t(lang, "detail.usedIn")}</h2>
+        {used.length ? <p class="faint" style="margin:-6px 0 8px;font-size:13px">{t(lang, "detail.usedInNote")}</p> : null}
         {used.length ? used.map(({ p }) => (
           <div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{meta(p)}</div></div>
         )) : <p class="faint">{t(lang, "detail.noUsedIn")}</p>}
       </section>
+      )}
+
+      {citing.length > 0 && (
+        <section class="section">
+          <h2>{t(lang, "detail.citing")}</h2>
+          <p class="faint" style="margin:-6px 0 8px;font-size:13px">{t(lang, "detail.citingNote")}</p>
+          {citing.map(({ p }) => (
+            <div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{meta(p)}</div></div>
+          ))}
+        </section>
+      )}
     </div>
 
     <aside>

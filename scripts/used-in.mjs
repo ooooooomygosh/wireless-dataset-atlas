@@ -1,7 +1,7 @@
 // Fill `used_in` for each dataset from OpenAlex citations of its dataset paper.
 // Rule (see About page): cites the dataset paper, published in a whitelisted venue, ordered by citations.
-// Studies naming the dataset in title or abstract come first (at most 5); when fewer than 3 qualify,
-// the most cited non-survey citing studies in the same venues fill up to 3.
+// used_in: studies naming the dataset in title or abstract (at most 5).
+// citing: the most cited non-survey works in the same venues that cite the dataset paper (at most 3).
 // Usage: node scripts/used-in.mjs [--dry] [id ...]
 import fs from "node:fs";
 import path from "node:path";
@@ -73,11 +73,12 @@ for (const f of fs.readdirSync(dir).filter((f) => f.endsWith(".yaml")).sort()) {
     picked.push(doi);
     if (picked.length === 5) break;
   }
-  for (const f of fallback) if (picked.length < 3 && !picked.includes(f)) picked.push(f);
-  console.log(`${id}: ${works.length} citing -> ${picked.length} used_in`);
+  const top = fallback.filter((f) => !picked.includes(f)).slice(0, 3);
+  console.log(`${id}: ${works.length} citing -> ${picked.length} used_in, ${top.length} citing`);
   if (!dry) {
-    const line = `used_in: ${picked.length ? JSON.stringify(picked) : "[]"}`;
-    const next = /^used_in:.*$/m.test(text) ? text.replace(/^used_in:.*$/m, line) : text.replace(/^summary:/m, `${line}\nsummary:`);
+    const line = `used_in: ${picked.length ? JSON.stringify(picked) : "[]"}\nciting: ${top.length ? JSON.stringify(top) : "[]"}`;
+    const base = text.replace(/^citing:.*\n/m, "");
+    const next = /^used_in:.*$/m.test(base) ? base.replace(/^used_in:.*$/m, line) : base.replace(/^summary:/m, `${line}\nsummary:`);
     fs.writeFileSync(file, next);
   }
   await sleep(250);

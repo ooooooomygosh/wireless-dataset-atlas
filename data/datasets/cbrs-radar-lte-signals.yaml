@@ -11,7 +11,8 @@ license: Creative Commons Attribution
 access: {url: 'https://genesys-lab.org/CBRS', type: open}
 code: []
 paper: doi:10.1109/mcom.002.2200682
-used_in: ["doi:10.1109/twc.2025.3535807","doi:10.1109/icc59461.2026.11588189","doi:10.1109/jiot.2026.3668907"]
+used_in: []
+citing: ["doi:10.1109/twc.2025.3535807","doi:10.1109/icc59461.2026.11588189","doi:10.1109/jiot.2026.3668907"]
 samples: 5640 samples, each with a 40 ms frame duration
 format: SigMF
 summary: {en: 'Over-the-air captures of LTE signals and NIST Type 1 radar signals in the shared CBRS band, recorded with software-defined radios in an RF anechoic chamber in SigMF format at 30.72 MHz sampling rate. The dataset contains 5640 samples in overlapping and non-overlapping scenarios at SINR from 15 to 35 dB.', zh: 在共享 CBRS 频段通过空口采集的 LTE 信号与 NIST Type 1 雷达信号，由软件无线电在射频消声室中录制，采用 SigMF 格式，采样率 30.72 MHz。数据集包含 5640 个样本，覆盖重叠与非重叠场景，SINR 范围为 15 至 35 dB。}

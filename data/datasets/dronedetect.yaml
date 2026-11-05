@@ -17,6 +17,7 @@ access: {url: 'https://ieee-dataport.org/open-access/dronedetect-dataset-radio-f
 code: []
 paper: doi:10.3390/aerospace8070179
 used_in: []
+citing: []
 summary: {en: 'Raw IQ recordings made with a BladeRF SDR of 7 drone models in on, hovering and flying modes, with no interference and with Bluetooth, Wi-Fi, or both. Each 2 s recording contains 1.2 × 10^8 complex samples, and the archive is 65.76 GB.', zh: 使用 BladeRF SDR 采集的 7 种无人机原始 IQ 数据，包含开机、悬停和飞行三种模式，干扰条件分为无干扰、仅蓝牙、仅 Wi-Fi 以及蓝牙与 Wi-Fi 同时存在。每段 2 秒录制包含 1.2 × 10^8 个复数采样，压缩包大小为 65.76 GB。}
 sources: ['https://ieee-dataport.org/open-access/dronedetect-dataset-radio-frequency-dataset-unmanned-aerial-system-uas-signals-machine', 'https://api.openalex.org/works/doi:10.3390/aerospace8070179', 'https://api.crossref.org/works/10.3390/aerospace8070179']
 checked: '2026-11-06'

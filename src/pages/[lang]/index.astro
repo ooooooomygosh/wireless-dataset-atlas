@@ -9,7 +9,7 @@ import { allDatasets, tasks, t, LANGS, type Lang } from "../../lib/data.ts";
 export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
 const lang = Astro.params.lang as Lang;
 const ds = await allDatasets();
-const nPapers = new Set(ds.flatMap((d) => [d.paper, ...d.used_in])).size;
+const nPapers = new Set(ds.flatMap((d) => [d.paper, ...d.used_in, ...d.citing])).size;
 const taskCount = (id: string) => ds.filter((d) => d.tasks.includes(id)).length;
 const used = tasks.filter((x) => taskCount(x.id) > 0);
 const recent = [...ds].sort((a, b) => b.checked.localeCompare(a.checked) || b.year - a.year).slice(0, 6);

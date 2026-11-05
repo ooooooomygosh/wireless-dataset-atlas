@@ -12,7 +12,8 @@ license: GPL-3.0
 access: {url: 'https://github.com/uccmisl/5Gdataset', type: open}
 code: ['https://github.com/uccmisl/5Gdataset']
 paper: doi:10.1145/3339825.3394938
-used_in: ["doi:10.1109/jiot.2023.3303713","doi:10.1109/tmc.2024.3437745","doi:10.1145/3651890.3672260"]
+used_in: []
+citing: ["doi:10.1109/jiot.2023.3303713","doi:10.1109/tmc.2024.3437745","doi:10.1145/3651890.3672260"]
 summary: {en: 'Client-side 5G KPI traces from a major Irish mobile operator, logged with G-NetTrack Pro under static and car mobility for video streaming and file download traffic. The traces include channel, context, cell and throughput metrics, and the repository adds an ns-3 5G simulation framework for synthetic data.', zh: 来自爱尔兰一家主要移动运营商的客户端 5G KPI 数据，使用 G-NetTrack Pro 记录，覆盖静止和乘车两种移动模式下的视频流和文件下载流量。数据包含信道、上下文、小区和吞吐量指标，仓库另附 ns-3 5G 仿真框架用于生成合成数据。}
 sources: ['https://github.com/uccmisl/5Gdataset', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/README.md', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/LICENSE', 'https://api.crossref.org/works/10.1145/3339825.3394938', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1145/3339825.3394938?fields=abstract']
 checked: '2026-11-06'

@@ -5,13 +5,13 @@ import { allDatasets, paperOf, t, authorsShort, LANGS, type Lang } from "../../.
 export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
 const lang = Astro.params.lang as Lang;
 const ds = await allDatasets();
-type Entry = { id: string; kind: "dataset" | "study"; datasets: { id: string; name: string }[] };
+type Entry = { id: string; kind: "dataset" | "study" | "citing"; datasets: { id: string; name: string }[] };
 const map = new Map<string, Entry>();
 for (const d of ds) {
-  const refs: [string, Entry["kind"]][] = [[d.paper, "dataset"], ...d.used_in.map((x): [string, Entry["kind"]] => [x, "study"])];
+  const refs: [string, Entry["kind"]][] = [[d.paper, "dataset"], ...d.used_in.map((x): [string, Entry["kind"]] => [x, "study"]), ...d.citing.map((x): [string, Entry["kind"]] => [x, "citing"])];
   for (const [id, kind] of refs) {
     const e: Entry = map.get(id) ?? { id, kind, datasets: [] };
-    if (kind === "dataset") e.kind = "dataset";
+    if (kind === "dataset" || (kind === "study" && e.kind === "citing")) e.kind = kind;
     e.datasets.push({ id: d.id, name: d.name });
     map.set(id, e);
   }
@@ -31,6 +31,7 @@ const rows = [...map.values()].map((e) => ({ ...e, p: paperOf(e.id) })).sort((a,
         <option value="">{t(lang, "papers.filter.kind")}: {t(lang, "papers.all")}</option>
         <option value="dataset">{t(lang, "papers.kind.dataset")}</option>
         <option value="study">{t(lang, "papers.kind.study")}</option>
+        <option value="citing">{t(lang, "papers.kind.citing")}</option>
       </select>
       <select class="field" id="psort" aria-label="Sort">
         <option value="cited">{t(lang, "papers.sort.cited")}</option>
@@ -43,7 +44,7 @@ const rows = [...map.values()].map((e) => ({ ...e, p: paperOf(e.id) })).sort((a,
       <div class="paper-item" id={id} data-kind={kind} data-datasets={datasets.map((x) => x.id).join(" ")} data-cited={p.cited_by} data-year={p.year ?? 0}>
         <a class="t" href={p.url} rel="noopener">{p.title}</a>
         <div class="m">{[authorsShort(p.authors), p.venue, p.year, p.cited_by ? t(lang, "papers.cited", { n: p.cited_by }) : ""].filter(Boolean).join(" · ")}</div>
-        <div class="tags" style="margin-top:6px"><span class="tag">{t(lang, kind === "dataset" ? "papers.kind.dataset" : "papers.kind.study")}</span>{datasets.map((x) => <a class="tag" href={`/${lang}/datasets/${x.id}/`}>{x.name}</a>)}</div>
+        <div class="tags" style="margin-top:6px"><span class="tag">{t(lang, kind === "dataset" ? "papers.kind.dataset" : kind === "study" ? "papers.kind.study" : "papers.kind.citing")}</span>{datasets.map((x) => <a class="tag" href={`/${lang}/datasets/${x.id}/`}>{x.name}</a>)}</div>
       </div>
     ))}
   </div>

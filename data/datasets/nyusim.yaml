@@ -12,6 +12,7 @@ access: {url: 'https://wireless.engineering.nyu.edu/nyusim/', type: registration
 code: []
 paper: doi:10.1109/comst.2023.3344671
 used_in: ["doi:10.1109/tap.2024.3366581","doi:10.1109/wcnc57260.2024.10570665","doi:10.1109/ojcoms.2025.3625731","doi:10.1109/icc59461.2026.11587993"]
+citing: ["doi:10.1109/jproc.2024.3412828","doi:10.1109/ojcoms.2025.3592365"]
 summary: {en: 'A channel generator for 0.5 to 150 GHz (MATLAB version 4.0) that produces drop-based and spatially consistent simulations for UMi, UMa, RMa, InH and InF scenarios.', zh: 面向 0.5 至 150 GHz 的信道生成器（MATLAB 4.0 版），可为 UMi、UMa、RMa、InH 和 InF 场景生成 drop-based 与空间一致性仿真结果。}
 sources: ['https://wireless.engineering.nyu.edu/nyusim/', 'https://wireless.engineering.nyu.edu/nyusim-thz-mmwave-channel-simulator-research/', 'https://api.crossref.org/works?query.title=NYUSIM+hybrid+channel+simulator+millimeter-wave&rows=3&select=DOI,title,issued']
 checked: '2026-11-06'

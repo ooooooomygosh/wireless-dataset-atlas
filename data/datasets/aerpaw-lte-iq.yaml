@@ -15,7 +15,8 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/documents/lte-iq-measurement-data-sets-aerpaw-platform-air-ground-propagation-modeling', type: restricted}
 code: []
 paper: arxiv:2303.01635
-used_in: ["doi:10.1109/iccworkshops63917.2026.11586300"]
+used_in: []
+citing: ["doi:10.1109/iccworkshops63917.2026.11586300"]
 summary: {en: 'The dataset contains raw LTE I/Q samples from a ground SDR-based LTE base station at 3.51 GHz, recorded by a UAV-mounted SDR at about 30 to 110 m altitude over the Lake Wheeler farm area of the AERPAW platform. The data is stored as SigMF files.', zh: 该数据集包含地面基于SDR的LTE基站在3.51 GHz频点上的原始LTE I/Q采样，由无人机搭载的SDR在约30至110米高度采集，场地为AERPAW平台的Lake Wheeler农场区域。数据以SigMF格式存储。}
 sources: ['https://ieee-dataport.org/documents/lte-iq-measurement-data-sets-aerpaw-platform-air-ground-propagation-modeling', 'https://arxiv.org/abs/2303.01635']
 checked: '2026-11-06'

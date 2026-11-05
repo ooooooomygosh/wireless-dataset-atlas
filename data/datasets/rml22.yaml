@@ -11,6 +11,7 @@ access: {url: 'https://github.com/venkateshsathya/RML22', type: open}
 code: ['https://github.com/venkateshsathya/RML22']
 paper: doi:10.1109/twc.2023.3254490
 used_in: ["doi:10.1109/tccn.2026.3683207","doi:10.1109/tccn.2026.3683189","doi:10.1109/tccn.2026.3685396","doi:10.1109/jiot.2026.3725259","doi:10.1109/iccc70295.2026.11680287"]
+citing: ["doi:10.1109/twc.2024.3450972","doi:10.1109/twc.2024.3412234","doi:10.1038/s41467-025-60921-z"]
 summary: {en: 'A generator of I/Q frames for 10 modulation types (QAM16, QAM64, 8PSK, WBFM, BPSK, CPFSK, AM-DSB, GFSK, PAM4, QPSK) at SNR from -20 to 20 dB in 2 dB steps. Variants include clean, AWGN, clock-effect, fading and combined impairments.', zh: 用于生成 I/Q 帧的生成器，覆盖 10 种调制类型（QAM16、QAM64、8PSK、WBFM、BPSK、CPFSK、AM-DSB、GFSK、PAM4、QPSK），SNR 范围为 -20 至 20 dB，步长 2 dB。变体包括无损伤、AWGN、时钟效应、衰落以及组合损伤。}
 sources: ['https://github.com/venkateshsathya/RML22', 'https://raw.githubusercontent.com/venkateshsathya/RML22/main/code/RML22.ipynb', 'https://api.crossref.org/works/10.1109/TWC.2023.3254490']
 checked: '2026-11-06'

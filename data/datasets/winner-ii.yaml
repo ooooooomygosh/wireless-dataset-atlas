@@ -11,7 +11,8 @@ license: Not stated
 access: {url: 'https://www.mathworks.com/matlabcentral/fileexchange/59690-winner-ii-channel-model-for-communications-toolbox', type: restricted}
 code: []
 paper: doi:10.1002/9780470748077.ch3
-used_in: ["doi:10.1109/twc.2011.060811.102120","doi:10.1109/twc.2016.2628795","doi:10.1109/lwc.2017.2757490"]
+used_in: ["doi:10.1109/twc.2011.060811.102120","doi:10.1109/twc.2016.2628795"]
+citing: ["doi:10.1109/lwc.2017.2757490","doi:10.1109/tcomm.2015.2434384"]
 summary: {en: 'A generator of spatially defined multiuser MIMO channel coefficients using the clustered delay line method, covering 12 indoor and outdoor scenarios with RF frequencies up to 6 GHz.', zh: 使用聚类延迟线方法生成空间定义多用户 MIMO 信道系数的生成器，涵盖 12 种室内与室外场景，射频频率最高 6 GHz。}
 sources: ['https://www.mathworks.com/help/comm/ug/winner-ii-channel.html', 'https://www.mathworks.com/matlabcentral/fileexchange/59690-winner-ii-channel-model-for-communications-toolbox', 'https://api.crossref.org/works/10.1002/9780470748077.ch3']
 checked: '2026-11-06'

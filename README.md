@@ -9,7 +9,7 @@
 A catalog of public datasets and data generators for machine learning in wireless communications. Each entry links to the data, the dataset paper, code where it exists, and studies that use the dataset.
 
 <!-- stats:start -->
-128 datasets · 19 tasks · 391 papers
+128 datasets · 19 tasks · 444 papers
 <!-- stats:end -->
 
 ## Tasks
@@ -42,7 +42,7 @@ A catalog of public datasets and data generators for machine learning in wireles
 
 Release year, data origin (measured, ray tracing, statistical model, simulation, benchmark suite), tasks, signal types, carrier frequency, bandwidth, environment, antenna configuration, sample count and size, license, access type, official links, and the date the entry was last checked against its sources. Values the sources do not state are left out.
 
-Paper titles, authors, venues and citation counts come from [OpenAlex](https://openalex.org) and are refreshed monthly by a scheduled workflow. Studies listed under a dataset cite its dataset paper and appear in a fixed list of venues. Those naming the dataset in the title or abstract come first, and the most cited non-survey citing studies fill the list up to three; the rule is documented on the [About page](https://wireless-dataset-atlas.vercel.app/en/about/).
+Paper titles, authors, venues and citation counts come from [OpenAlex](https://openalex.org) and are refreshed monthly by a scheduled workflow. Each dataset lists studies that name it in the title or abstract and the most cited non-survey works that cite its dataset paper, both limited to a fixed list of venues; the rule is documented on the [About page](https://wireless-dataset-atlas.vercel.app/en/about/).
 
 ## Repository layout
 

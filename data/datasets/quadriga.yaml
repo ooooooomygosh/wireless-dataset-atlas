@@ -11,6 +11,7 @@ access: {url: 'https://quadriga-channel-model.de/software/', type: open}
 code: ['https://github.com/fraunhoferhhi/QuaDRiGa']
 paper: doi:10.1109/tap.2014.2310220
 used_in: ["doi:10.1109/tcomm.2023.3260242","doi:10.1109/tvt.2019.2907606","doi:10.1109/tvt.2018.2865700","doi:10.1109/jstsp.2019.2931206","doi:10.1109/tcomm.2022.3180388"]
+citing: ["doi:10.1109/jsac.2017.2719924","doi:10.1109/comst.2017.2783541","doi:10.1109/tsp.2020.2976585"]
 summary: {en: QuaDRiGa is a generator of geometry-based stochastic MIMO channel impulse responses for carrier frequencies from 500 MHz to 100 GHz. The output is generated on demand by the software rather than distributed as a fixed dataset., zh: QuaDRiGa 是基于几何的随机 MIMO 信道冲激响应生成器，载频范围为 500 MHz 至 100 GHz。输出由软件按需生成，而非以固定数据集形式发布。}
 sources: ['https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/README.md?plain=1', 'https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/QuaDRiGa_License.txt', 'https://quadriga-channel-model.de/software/', 'https://api.crossref.org/works/10.1109/tap.2014.2310220']
 checked: '2026-11-06'

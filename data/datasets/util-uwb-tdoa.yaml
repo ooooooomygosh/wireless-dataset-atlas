@@ -13,6 +13,7 @@ access: {url: 'https://learnsyslab.github.io/util-uwb-dataset/', type: open}
 code: ['https://github.com/utiasDSL/util-uwb-dataset']
 paper: doi:10.1177/02783649241230640
 used_in: []
+citing: []
 summary: {en: 'UWB time-difference-of-arrival (TDOA) measurements from DWM1000 modules, with SNR and power-difference values under LOS and NLOS conditions, plus IMU, optical flow, laser ranging and Vicon pose ground truth from flight experiments. The flights total about 150 minutes in indoor arenas with four anchor layouts.', zh: 来自 DWM1000 模块的 UWB 到达时间差（TDOA）测量值，包括视距（LOS）与非视距（NLOS）条件下的 SNR 与功率差，并记录飞行实验中的 IMU、光流、激光测距和 Vicon 位姿真值。飞行总时长约 150 分钟，室内场地采用四种锚点布局。}
 sources: ['https://learnsyslab.github.io/util-uwb-dataset/', 'https://arxiv.org/abs/2203.14471', 'https://api.crossref.org/works/10.1177/02783649241230640', 'https://api.github.com/repos/utiasDSL/util-uwb-dataset/license']
 checked: '2026-11-06'

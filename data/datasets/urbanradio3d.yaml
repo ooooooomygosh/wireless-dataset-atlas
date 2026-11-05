@@ -8,7 +8,8 @@ environment: [outdoor-urban]
 license: MIT
 access: {url: 'https://github.com/UNIC-Lab/UrbanRadio3D', type: registration}
 paper: doi:10.1109/TNSE.2025.3590545
-used_in: ["doi:10.1109/tccn.2025.3641513","doi:10.1109/tmc.2026.3692307","doi:10.1109/tccn.2026.3685413"]
+used_in: []
+citing: ["doi:10.1109/tccn.2025.3641513","doi:10.1109/tmc.2026.3692307","doi:10.1109/tccn.2026.3685413"]
 summary: {en: 'Ray-traced 3D radio maps of urban environments with pathloss, direction-of-arrival and time-of-arrival layers, together with building height information. The repository provides the maps as PNG files and a building height archive, and the download code is obtained through a questionnaire.', zh: 基于光线追踪生成的城市环境三维无线电地图，包含路径损耗、到达方向（DoA）和到达时间（ToA）等层，并附带建筑高度信息。仓库以 PNG 文件提供地图，并附有建筑高度压缩包，下载需通过问卷获取解压码。}
 sources: ['https://arxiv.org/abs/2507.12166', 'https://github.com/UNIC-Lab/UrbanRadio3D', 'https://api.github.com/repos/UNIC-Lab/UrbanRadio3D/license', 'https://api.crossref.org/works/10.1109/TNSE.2025.3590545']
 checked: '2026-11-06'

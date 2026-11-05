@@ -11,6 +11,7 @@ access: {url: 'https://le-liang.github.io/mmw/download.html', type: open}
 code: ['https://github.com/le-liang/Multimodal-Wireless']
 paper: arxiv:2511.03220
 used_in: []
+citing: []
 summary: {en: 'Simulated CARLA driving scenes with Sionna ray-traced channel data, synchronized with LiDAR, RGB and depth camera, IMU, radar and GNSS sensors at 100 Hz. The release contains 161,400 frames across 4 virtual towns, 16 communication scenarios and 3 weather conditions.', zh: '基于CARLA和Sionna仿真的驾驶场景数据，包含Sionna射线追踪信道数据，并与LiDAR、RGB与深度相机、IMU、雷达和GNSS传感器同步，采样率为100 Hz。数据共161,400帧，覆盖4个虚拟城镇、16种通信场景和3种天气条件。'}
 sources: ['https://arxiv.org/abs/2511.03220', 'https://le-liang.github.io/mmw/', 'https://le-liang.github.io/mmw/download.html', 'https://github.com/le-liang/Multimodal-Wireless']
 checked: '2026-11-06'

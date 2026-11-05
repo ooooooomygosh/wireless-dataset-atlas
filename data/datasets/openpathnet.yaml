@@ -12,6 +12,7 @@ access: {url: 'https://huggingface.co/datasets/liu-lz/OpenPathNet', type: open}
 code: ['https://github.com/liu-lz/OpenPathNet']
 paper: arxiv:2512.17286
 used_in: []
+citing: []
 summary: {en: 'Ray-traced per-path complex gain, time of arrival, angle of departure, angle of arrival and path type for 128 m x 128 m scenes derived from OpenStreetMap city layouts, with procedurally generated blocks also supported by the generator. The generator uses NVIDIA Sionna ray tracing.', zh: 基于OpenStreetMap城市布局的128 m x 128 m场景，经光线追踪得到每径的复增益、到达时间、离开角、到达角和路径类型。生成器同时支持程序化生成的区块，并使用NVIDIA Sionna进行光线追踪。}
 sources: ['https://arxiv.org/abs/2512.17286', 'https://arxiv.org/html/2512.17286', 'https://github.com/liu-lz/OpenPathNet', 'https://raw.githubusercontent.com/liu-lz/OpenPathNet/main/README.md', 'https://huggingface.co/api/datasets/liu-lz/OpenPathNet']
 checked: '2026-11-06'

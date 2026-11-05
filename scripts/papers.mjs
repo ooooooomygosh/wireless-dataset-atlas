@@ -99,7 +99,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const dir = path.join(root, "data/datasets");
     ids = fs.readdirSync(dir).filter((f) => f.endsWith(".yaml")).flatMap((f) => {
       const d = yaml.load(fs.readFileSync(path.join(dir, f), "utf8"));
-      return [d.paper, ...(d.used_in ?? [])];
+      return [d.paper, ...(d.used_in ?? []), ...(d.citing ?? [])];
     });
   }
   ids = [...new Set(ids.map((i) => i.toLowerCase().startsWith("doi:") ? "doi:" + i.slice(4).toLowerCase() : i.toLowerCase()))];

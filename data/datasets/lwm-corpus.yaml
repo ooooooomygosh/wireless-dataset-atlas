@@ -14,7 +14,8 @@ license: Not stated
 access: {url: 'https://huggingface.co/datasets/wi-lab/lwm', type: open}
 code: ['https://huggingface.co/wi-lab/lwm-competition-2025']
 paper: arxiv:2411.08872
-used_in: ["doi:10.1109/icmlcn64995.2025.11140266","doi:10.1109/icmlcn64995.2025.11140101"]
+used_in: ["doi:10.1109/icmlcn64995.2025.11140266"]
+citing: ["doi:10.1109/icmlcn64995.2025.11140101"]
 summary: {en: 'Ray-traced channels from 15 DeepMIMO scenarios, with over 1 million channels in total, generated at 3.5 GHz with 32 BS antennas, one UE antenna, 32 subcarriers and 20 paths. Pre-training uses 80% of the channels for training and 20% for validation.', zh: 来自 15 个 DeepMIMO 场景的光线追踪信道，共超过 100 万条信道，在 3.5 GHz 下生成，基站 32 天线、用户 1 天线、32 子载波、20 条路径。预训练时 80% 用于训练，20% 用于验证。}
 sources: ['https://huggingface.co/datasets/wi-lab/lwm', 'https://huggingface.co/wi-lab/lwm', 'https://huggingface.co/wi-lab/lwm-competition-2025', 'https://arxiv.org/abs/2411.08872', 'https://arxiv.org/html/2411.08872v2']
 checked: '2026-11-06'

@@ -21,7 +21,7 @@ const repo = "https://github.com/ooooooomygosh/wireless-dataset-atlas";
       <h2>Fields</h2>
       <p>Each entry records the release year, data origin (measured, ray tracing, statistical model, simulation, benchmark suite), tasks, signal types, carrier frequencies in GHz, bandwidth, environment, antenna configuration, sample count and size where the source states them, license, and access type. A field that the source does not state is shown as not stated. Entries carry the date they were last checked against the source.</p>
       <h2>Papers</h2>
-      <p>Titles, authors, venues, years and citation counts come from OpenAlex and are refreshed monthly. Studies listed under a dataset cite its dataset paper and appear in a fixed list of IEEE, ACM, USENIX and machine-learning venues. Studies that name the dataset in the title or abstract are listed first, up to five. When fewer than three qualify, the most cited non-survey studies from the same venues that cite the dataset paper fill the list up to three. Each list is ordered by citation count. A study that cites a dataset paper is not guaranteed to use the data, so the list is a starting point for reading.</p>
+      <p>Titles, authors, venues, years and citation counts come from OpenAlex and are refreshed monthly. Both lists below cover works that cite the dataset paper and appear in a fixed list of IEEE, ACM, USENIX and machine-learning venues, ordered by citation count. "Studies using this dataset" holds works that name the dataset in the title or abstract, up to five. "Most cited works citing the dataset paper" holds the most cited non-survey works from the same venues, up to three, whose use of the data is not verified.</p>
       <h2>Contributing</h2>
       <p>Each dataset is one YAML file in <code>data/datasets/</code>. Open an issue or pull request on <a href={repo}>GitHub</a>; the template lists the required fields and the checks that run on every change.</p>
       <h2>License and citation</h2>
@@ -39,7 +39,7 @@ const repo = "https://github.com/ooooooomygosh/wireless-dataset-atlas";
       <h2>字段</h2>
       <p>每个条目记录发布年份、数据来源（实测、射线追踪、统计模型、仿真、基准集合）、任务、信号类型、载波频率（GHz）、带宽、场景、天线配置，以及来源给出的样本规模与数据量、许可和获取方式。来源没有给出的字段显示为“未说明”。条目标注最近一次与来源核对的日期。</p>
       <h2>论文</h2>
-      <p>标题、作者、期刊会议、年份和引用数来自 OpenAlex，每月更新。列在数据集下的研究引用了其数据集论文，并发表在固定的 IEEE、ACM、USENIX 及机器学习会议期刊清单内。标题或摘要中提到该数据集的研究优先列出，最多五篇；符合条件的不足三篇时，用同一清单内引用该数据集论文且引用数最高的非综述研究补足到三篇。每个列表按引用数排序。引用了数据集论文不等于一定使用了数据，因此该列表是阅读的起点。</p>
+      <p>标题、作者、期刊会议、年份和引用数来自 OpenAlex，每月更新。下面两个列表都限于引用了数据集论文、并发表在固定的 IEEE、ACM、USENIX 及机器学习会议期刊清单内的工作，按引用数排序。“使用该数据集的研究”收录标题或摘要中提到该数据集的工作，最多五篇；“引用数据集论文的高被引工作”收录同一清单内引用数最高的非综述工作，最多三篇，其是否使用该数据未经核实。</p>
       <h2>参与贡献</h2>
       <p>每个数据集对应 <code>data/datasets/</code> 下的一个 YAML 文件。可在 <a href={repo}>GitHub</a> 提交 Issue 或 Pull Request，模板列出必填字段和每次提交运行的检查。</p>
       <h2>许可与引用</h2>

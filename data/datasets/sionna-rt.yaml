@@ -11,7 +11,8 @@ license: Apache-2.0
 access: {url: 'https://github.com/NVlabs/sionna-rt', type: open}
 code: ['https://github.com/NVlabs/sionna-rt']
 paper: arxiv:2303.11103
-used_in: ["doi:10.1109/tap.2024.3451214","doi:10.1109/infocom59046.2026.11571503","doi:10.1109/tmlcn.2024.3474639"]
+used_in: ["doi:10.1109/tap.2024.3451214","doi:10.1109/infocom59046.2026.11571503"]
+citing: ["doi:10.1109/tmlcn.2024.3474639","doi:10.1109/mcom.001.2400086","doi:10.1109/tmlcn.2024.3448391"]
 summary: {en: 'A differentiable ray tracing generator that computes propagation paths, channel impulse responses and coverage maps (path gain in dB) for scenes, including the integrated Munich and Etoile scenes.', zh: 可微分射线追踪生成器，用于计算场景中的传播路径、信道冲激响应和覆盖图（路径增益，单位 dB），内置场景包括 Munich 和 Etoile。}
 sources: ['https://github.com/NVlabs/sionna-rt', 'https://arxiv.org/abs/2303.11103', 'https://arxiv.org/html/2303.11103v2']
 checked: '2026-11-06'

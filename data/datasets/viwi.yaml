@@ -11,7 +11,8 @@ mobility: car driving through a city street
 license: CC BY-NC-SA 4.0
 access: {url: 'https://www.viwi-dataset.net/index.html', type: open}
 paper: arxiv:1911.06257
-used_in: ["doi:10.1109/tvt.2021.3104219","doi:10.1109/twc.2024.3401686","doi:10.1109/mcom.006.2200730"]
+used_in: ["doi:10.1109/tvt.2021.3104219","doi:10.1109/twc.2024.3401686"]
+citing: ["doi:10.1109/mcom.006.2200730","doi:10.1109/tcomm.2020.3019077","doi:10.1109/comst.2023.3336917"]
 summary: {en: 'Ray-traced outdoor urban street scenarios at 60 GHz, where each sample contains an RGB image, a depth map, a wireless channel and a user location. The current release provides four outdoor scenario datasets.', zh: 基于光线追踪生成的 60 GHz 户外城市街道场景数据，每个样本包含 RGB 图像、深度图、无线信道和用户位置。当前版本提供四个户外场景数据集。}
 sources: ['https://www.viwi-dataset.net/index.html', 'https://arxiv.org/abs/1911.06257', 'https://arxiv.org/html/1911.06257']
 checked: '2026-11-06'

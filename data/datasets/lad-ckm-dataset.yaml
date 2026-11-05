@@ -15,6 +15,7 @@ access: {url: 'https://github.com/kqzzzz/LAD-CKM-dataset', type: open}
 code: ['https://github.com/kqzzzz/LAD-CKM-dataset']
 paper: doi:10.1109/icc59461.2026.11587910
 used_in: []
+citing: []
 summary: {en: 'Ground-truth MIMO-OFDM channels from Sionna ray tracing for a dynamic UMi campus scene, with pedestrian and vehicle scatterers repositioned randomly in every coherence block. OFDM uses 20 MHz with 64 subcarriers at 6.715 GHz (uplink) and 6.765 GHz (downlink).', zh: 使用Sionna光线追踪生成的动态UMi校园场景地面真值MIMO-OFDM信道，每个相干块中行人和车辆散射体随机重新放置。OFDM采用20 MHz带宽、64个子载波，上行6.715 GHz，下行6.765 GHz。}
 sources: ['https://arxiv.org/abs/2603.09273', 'https://arxiv.org/html/2603.09273', 'https://github.com/kqzzzz/LAD-CKM-dataset', 'https://raw.githubusercontent.com/kqzzzz/LAD-CKM-dataset/main/README.md', 'https://api.github.com/repos/kqzzzz/LAD-CKM-dataset/license', 'https://doi.org/10.1109/icc59461.2026.11587910']
 checked: '2026-11-06'

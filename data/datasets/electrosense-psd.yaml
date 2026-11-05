@@ -12,7 +12,8 @@ license: Custom BSD-style (Zenodo)
 access: {url: 'https://zenodo.org/record/7521246', type: open}
 code: ['https://doi.org/10.5281/zenodo.7504334']
 paper: doi:10.1109/INFOCOM53939.2023.10228867
-used_in: ["doi:10.1109/infocom52122.2024.10621298","doi:10.1109/jsac.2025.3641910","doi:10.1109/infocom52122.2024.10621266"]
+used_in: []
+citing: ["doi:10.1109/infocom52122.2024.10621298","doi:10.1109/jsac.2025.3641910","doi:10.1109/infocom52122.2024.10621266"]
 summary: {en: 'Labeled power spectral density (PSD) arrays for licensed bands, from RTL-SDR sweeps over 24 MHz to 1.7 GHz in 2 MHz chunks, with about 6 hours of full-spectrum scanning per site.', zh: 面向授权频段的带标签功率谱密度（PSD）数组，由 RTL-SDR 以 2 MHz 分段对 24 MHz 至 1.7 GHz 进行全频谱扫描获得，每个站点约 6 小时扫描数据。}
 sources: ['https://zenodo.org/record/7521246', 'https://zenodo.org/api/records/7521246', 'https://zenodo.org/api/records/7521246/files/DATASET%20LICENCE/content', 'https://zenodo.org/api/records/7504334', 'https://api.crossref.org/works/10.1109/INFOCOM53939.2023.10228867']
 checked: '2026-11-06'

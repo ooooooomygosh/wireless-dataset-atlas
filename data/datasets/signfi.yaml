@@ -14,6 +14,7 @@ access: {url: 'https://github.com/yongsen/SignFi', type: open}
 code: ['https://github.com/yongsen/SignFi']
 paper: doi:10.1145/3191755
 used_in: ["doi:10.1109/tmc.2022.3221902","doi:10.1109/tccn.2024.3414390","doi:10.1109/jiot.2024.3400773"]
+citing: ["doi:10.1109/jiot.2022.3190845","doi:10.1109/jiot.2020.3026732","doi:10.1145/3384419.3430735"]
 summary: {en: 'WiFi CSI traces recorded with the 802.11n CSI Tool for 276 sign-language gestures in lab and home settings, with downlink and uplink links. A 150-sign subset is recorded from five users in the lab.', zh: 使用 802.11n CSI Tool 记录的 WiFi CSI 数据，涵盖实验室和家庭环境中的 276 个手语手势，包含下行和上行链路。另有一个 150 个手语的子集，由实验室中的五名用户采集。}
 sources: ['https://github.com/yongsen/SignFi', 'https://api.crossref.org/works/10.1145/3191755']
 checked: '2026-11-06'

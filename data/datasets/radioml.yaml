@@ -13,6 +13,7 @@ access: {url: 'https://www.deepsig.ai/datasets/', type: open}
 code: ['https://github.com/radioML/dataset']
 paper: arxiv:1712.04578
 used_in: ["doi:10.1109/tvt.2020.3005707","doi:10.1109/lcomm.2022.3213523","doi:10.1109/tvt.2020.3042638","doi:10.1109/twc.2023.3254490","doi:10.1109/tccn.2022.3179450"]
+citing: ["doi:10.1109/tccn.2020.3024610","doi:10.1109/lcomm.2020.2968030","doi:10.1109/lwc.2018.2867459"]
 summary: {en: 'Synthetic complex I/Q frames. RML2016.10A, generated with GNU Radio, has 11 modulations (8 digital, 3 analog) at varying SNR; RML2018.01A has 24 digital and analog modulation types with simulated channel effects, 2 million examples of 1024 samples each.', zh: 合成的复数 I/Q 帧数据。RML2016.10A 由 GNU Radio 生成，包含 11 种调制方式（8 种数字、3 种模拟），信噪比可变；RML2018.01A 包含 24 种数字和模拟调制方式并模拟了信道效应，共 200 万个样本，每个样本长 1024 点。}
 sources: ['https://www.deepsig.ai/datasets/', 'https://arxiv.org/abs/1712.04578', 'https://arxiv.org/pdf/1712.04578']
 checked: '2026-11-06'

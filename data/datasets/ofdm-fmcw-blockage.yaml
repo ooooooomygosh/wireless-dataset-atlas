@@ -11,6 +11,7 @@ license: CC BY 4.0
 access: {url: 'https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/2', type: open}
 paper: doi:10.1109/jcs57290.2023.10107463
 used_in: []
+citing: []
 summary: {en: 'Paired 26 GHz OFDM communication testbed and 77 GHz FMCW MIMO radar recordings of human activity causing blockage, with bistatic CSI and multi-monostatic backscattered channels. The files include radar data and ground-truth videos.', zh: 同一测量中同时记录 26 GHz OFDM 通信测试平台与 77 GHz FMCW MIMO 雷达的数据，场景为人体活动造成的遮挡，包含双基地 CSI 与多单基地反向散射信道。文件包括雷达数据和真值视频。}
 sources: ['https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/2', 'https://data.4tu.nl/ndownloader/items/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/versions/2', 'https://api.openalex.org/works/doi:10.1109/jcs57290.2023.10107463']
 checked: '2026-11-06'

@@ -13,6 +13,7 @@ access: {url: 'https://zenodo.org/records/7641701', type: open}
 code: []
 paper: doi:10.1016/j.dib.2024.110356
 used_in: []
+citing: []
 summary: {en: 'The dataset contains Wi-Fi RSS fingerprints collected with multiple devices on a high-density measurement grid. Training and testing subsets are provided as CSV and MAT files, with coordinates for each fingerprint.', zh: 该数据集包含多款设备在高密度测量网格上采集的Wi-Fi RSS指纹。训练集和测试集以CSV及MAT文件提供，并附有每个指纹对应的坐标。}
 sources: ['https://zenodo.org/records/7641701', 'https://zenodo.org/api/records/7641701', 'https://zenodo.org/records/7641701/files/ReadMe.txt?download=1', 'https://api.crossref.org/works/10.1016/j.dib.2024.110356']
 checked: '2026-11-06'

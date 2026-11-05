@@ -16,6 +16,7 @@ access: {url: 'https://research.engr.oregonstate.edu/hamdaoui/datasets', type: o
 code: []
 paper: arxiv:2611.00332
 used_in: []
+citing: []
 summary: {en: 'Raw IQ transmissions from 31 Seeed Studio XIAO boards (ESP32-C3) sending Bluetooth Low Energy traffic, captured with two USRP B210 receivers at 6 MS/s with a 2 MHz front-end filter in outdoor and indoor setups. The captures cover different days, locations, channels, receivers and temperatures.', zh: 来自31台Seeed Studio XIAO开发板（基于ESP32-C3）发送的蓝牙低功耗（BLE）流量的原始IQ数据，由两台USRP B210接收机以6 MS/s采样、2 MHz前端滤波采集，覆盖室外和室内场景。采集涵盖不同日期、位置、信道、接收机和温度。}
 sources: ['https://research.engr.oregonstate.edu/hamdaoui/datasets', 'https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_datasets_ble_august2025_v1.pdf', 'https://arxiv.org/abs/2611.00332', 'https://arxiv.org/html/2611.00332v1']
 checked: '2026-11-06'

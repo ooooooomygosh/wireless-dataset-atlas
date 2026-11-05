@@ -13,7 +13,8 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/documents/comprehensive-dataset-ris-based-channel-measurements-5ghz-band', type: restricted}
 code: ['https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset']
 paper: doi:10.1109/vtc2023-spring57618.2023.10200973
-used_in: ["doi:10.1109/ojcoms.2024.3363423","doi:10.1109/tap.2025.3569392","doi:10.1109/ojcoms.2025.3572723"]
+used_in: []
+citing: ["doi:10.1109/ojcoms.2024.3363423","doi:10.1109/tap.2025.3569392","doi:10.1109/ojcoms.2025.3572723"]
 summary: {en: 'S21 channel measurements at 5 GHz with an RIS prototype in an anechoic chamber, covering stationary specular and non-specular geometries, a rotating stage, and RIS states set by greedy and model-based algorithms.', zh: 在 5 GHz 频段使用 RIS 原型，于无回声暗室中进行 S21 信道测量，包括固定的镜面与非镜面反射几何布置、旋转台场景，以及由贪心算法和基于模型的算法设定的 RIS 状态。}
 sources: ['https://ieee-dataport.org/documents/comprehensive-dataset-ris-based-channel-measurements-5ghz-band', 'https://doi.org/10.21227/zzx0-tp88', 'https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset', 'https://api.crossref.org/works/10.1109/VTC2023-Spring57618.2023.10200973']
 checked: '2026-11-06'

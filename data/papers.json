@@ -929,6 +929,23 @@
   "url": "https://doi.org/10.1038/s41467-024-51161-8",
   "fetched": "2026-11-05"
  },
+ "doi:10.1038/s41467-025-60921-z": {
+  "title": "Multi-representation domain attentive contrastive learning based unsupervised automatic modulation recognition",
+  "authors": [
+   "Yu Li",
+   "Xiaoran Shi",
+   "Haoyue Tan",
+   "Zhenxi Zhang",
+   "Xinyao Yang",
+   "Feng Zhou"
+  ],
+  "venue": "Nature Communications",
+  "year": 2025,
+  "cited_by": 23,
+  "oa": "W4411881880",
+  "url": "https://doi.org/10.1038/s41467-025-60921-z",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1038/s41597-022-01573-2": {
   "title": "OPERAnet, a multimodal activity recognition dataset acquired from radio frequency and vision-based sensors",
   "authors": [
@@ -1076,6 +1093,21 @@
   "url": "https://doi.org/10.1109/cccs.2019.8888137",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/comst.2017.2783541": {
+  "title": "Millimeter-Wave Communications: Physical Channel Models, Design Considerations, Antenna Constructions, and Link-Budget",
+  "authors": [
+   "Ibrahim Hemadeh",
+   "Katla Satyanarayana",
+   "Mohammed El‐Hajjar",
+   "Lajos Hanzo"
+  ],
+  "venue": "IEEE Communications Surveys & Tutorials",
+  "year": 2017,
+  "cited_by": 710,
+  "oa": "W2771579582",
+  "url": "https://doi.org/10.1109/comst.2017.2783541",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/comst.2018.2869350": {
   "title": "Ultra-Low Latency (ULL) Networks: The IEEE TSN and IETF DetNet Standards and Related 5G ULL Research",
   "authors": [
@@ -1092,6 +1124,23 @@
   "cited_by": 709,
   "oa": "W2890389408",
   "url": "https://doi.org/10.1109/comst.2018.2869350",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/comst.2021.3135829": {
+  "title": "Holistic Network Virtualization and Pervasive Network Intelligence for 6G",
+  "authors": [
+   "Xuemin Shen",
+   "Jie Gao",
+   "Wen Rong Wu",
+   "Mushu Li",
+   "Conghao Zhou",
+   "Weihua Zhuang"
+  ],
+  "venue": "IEEE Communications Surveys & Tutorials",
+  "year": 2021,
+  "cited_by": 396,
+  "oa": "W4205946715",
+  "url": "https://doi.org/10.1109/comst.2021.3135829",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/comst.2022.3171135": {
@@ -1303,6 +1352,23 @@
   "cited_by": 34,
   "oa": "W3046174374",
   "url": "https://doi.org/10.1109/icc40277.2020.9149151",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/icc40277.2020.9149444": {
+  "title": "New Radio Physical Layer Abstraction for System-Level Simulations of 5G Networks",
+  "authors": [
+   "Sandra Lagén",
+   "Kevin Wanuga",
+   "Hussain E. Elkotby",
+   "Sanjay Goyal",
+   "Natale Patriciello",
+   "Lorenza Giupponi"
+  ],
+  "venue": "International Conference on Communications",
+  "year": 2020,
+  "cited_by": 115,
+  "oa": "W3003378046",
+  "url": "https://doi.org/10.1109/icc40277.2020.9149444",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/icc45041.2023.10278664": {
@@ -1725,6 +1791,19 @@
   "url": "https://doi.org/10.1109/infocom.2016.7524428",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/infocom.2018.8485972": {
+  "title": "Steering Crowdsourced Signal Map Construction via Bayesian Compressive Sensing",
+  "authors": [
+   "Suining He",
+   "Kang Geun Shin"
+  ],
+  "venue": "IEEE Conference on Computer Communications (INFOCOM)",
+  "year": 2018,
+  "cited_by": 86,
+  "oa": "W2789572951",
+  "url": "https://doi.org/10.1109/infocom.2018.8485972",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/infocom42981.2021.9488784": {
   "title": "DeepLoRa: Learning Accurate Path Loss Model for Long Distance Links in LPWAN",
   "authors": [
@@ -2103,6 +2182,23 @@
   "url": "https://doi.org/10.1109/jiot.2019.2932464",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/jiot.2019.2940368": {
+  "title": "Recurrent Neural Networks for Accurate RSSI Indoor Localization",
+  "authors": [
+   "Minh Tu Hoang",
+   "Brosnan Yuen",
+   "Xiaodai Dong",
+   "Tao Lű",
+   "Robert Westendorp",
+   "Kishore Reddy"
+  ],
+  "venue": "IEEE Internet of Things Journal",
+  "year": 2019,
+  "cited_by": 431,
+  "oa": "W2922879336",
+  "url": "https://doi.org/10.1109/jiot.2019.2940368",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/jiot.2020.3019199": {
   "title": "Toward Location-Enabled IoT (LE-IoT): IoT Positioning Techniques, Error Sources, and Error Mitigation",
   "authors": [
@@ -2127,6 +2223,24 @@
   "cited_by": 207,
   "oa": "W3015570924",
   "url": "https://doi.org/10.1109/jiot.2020.3019199",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/jiot.2020.3026732": {
+  "title": "Data Augmentation and Dense-LSTM for Human Activity Recognition Using WiFi Signal",
+  "authors": [
+   "Jin Zhang",
+   "Fuxiang Wu",
+   "Bo Wen Wei",
+   "Qieshi Zhang",
+   "Hui Huang",
+   "Syed Wajid Ali Shah",
+   "Jun Sheng Cheng"
+  ],
+  "venue": "IEEE Internet of Things Journal",
+  "year": 2020,
+  "cited_by": 190,
+  "oa": "W3088369757",
+  "url": "https://doi.org/10.1109/jiot.2020.3026732",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/jiot.2021.3064890": {
@@ -2192,6 +2306,39 @@
   "cited_by": 204,
   "oa": "W4285410860",
   "url": "https://doi.org/10.1109/jiot.2022.3190845",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/jiot.2022.3214211": {
+  "title": "A Federated Learning Framework for Fingerprinting-Based Indoor Localization in Multibuilding and Multifloor Environments",
+  "authors": [
+   "Bo Gao",
+   "Fan Yang",
+   "Nan Cui",
+   "Ke Xiong",
+   "Yang Lu",
+   "Yuwei Wang"
+  ],
+  "venue": "IEEE Internet of Things Journal",
+  "year": 2022,
+  "cited_by": 65,
+  "oa": "W4312844021",
+  "url": "https://doi.org/10.1109/jiot.2022.3214211",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/jiot.2022.3228820": {
+  "title": "AutoFi: Toward Automatic Wi-Fi Human Sensing via Geometric Self-Supervised Learning",
+  "authors": [
+   "Jianfei Yang",
+   "Xinyan Chen",
+   "Han Zou",
+   "Dazhuo Wang",
+   "Lihua Xie"
+  ],
+  "venue": "IEEE Internet of Things Journal",
+  "year": 2022,
+  "cited_by": 91,
+  "oa": "W4312829261",
+  "url": "https://doi.org/10.1109/jiot.2022.3228820",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/jiot.2022.3230913": {
@@ -2503,6 +2650,26 @@
   "url": "https://doi.org/10.1109/jiot.2025.3573713",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/jiot.2025.3580141": {
+  "title": "Lightweight CSI-Based Human Activity Recognition for Multitask IoT Applications",
+  "authors": [
+   "Chenchen Liu",
+   "Fucheng Miao",
+   "Yi‐Ting Chen",
+   "Jiangbo Wu",
+   "Hong Wan",
+   "Tiantian Tang",
+   "Tomoaki Otsuki Ohtsuki",
+   "Guan Gui",
+   "Hikmet Sari"
+  ],
+  "venue": "IEEE Internet of Things Journal",
+  "year": 2025,
+  "cited_by": 5,
+  "oa": "W4411336768",
+  "url": "https://doi.org/10.1109/jiot.2025.3580141",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/jiot.2025.3598480": {
   "title": "SWLC-Conformer: An Efficient and Secure Hybrid Architecture for Specific Emitter Identification",
   "authors": [
@@ -2774,6 +2941,46 @@
   "url": "https://doi.org/10.1109/jproc.2024.3402265",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/jproc.2024.3412828": {
+  "title": "The Evolution of Applications, Hardware Design, and Channel Modeling for Terahertz (THz) Band Communications and Sensing: Ready for 6G?",
+  "authors": [
+   "Josep Miquel Jornet",
+   "Виталий Игоревич Петров",
+   "Hua Wang",
+   "Zoya B. Popovic",
+   "Dipankar Shakya",
+   "José V. Siles",
+   "Theodore S. Rappaport"
+  ],
+  "venue": "Proceedings of the IEEE",
+  "year": 2024,
+  "cited_by": 91,
+  "oa": "W4400188408",
+  "url": "https://doi.org/10.1109/jproc.2024.3412828",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/jsac.2017.2719924": {
+  "title": "Millimeter Wave Communications for Future Mobile Networks",
+  "authors": [
+   "Ming Xiao",
+   "Shahid Mumtaz",
+   "Yongming Huang",
+   "Linglong Dai",
+   "Yonghui Li",
+   "Michail Matthaiou",
+   "George K. Karagiannidis",
+   "Emil Björnson",
+   "Kai Yang",
+   "I Chih‐Lin",
+   "Amitabha Ghosh"
+  ],
+  "venue": "IEEE Journal on Selected Areas in Communications",
+  "year": 2017,
+  "cited_by": 1115,
+  "oa": "W2615358882",
+  "url": "https://doi.org/10.1109/jsac.2017.2719924",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/jsac.2019.2904363": {
   "title": "Deep Transfer Learning for Intelligent Cellular Traffic Prediction Based on Cross-Domain Big Data",
   "authors": [
@@ -2788,6 +2995,41 @@
   "cited_by": 377,
   "oa": "W2921319277",
   "url": "https://doi.org/10.1109/jsac.2019.2904363",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/jsac.2023.3310097": {
+  "title": "Digital Twin Empowered Wireless Healthcare Monitoring for Smart Home",
+  "authors": [
+   "Junxin Chen",
+   "Wei William Wang",
+   "Bo Fang",
+   "Yu Liu",
+   "Keping Yu",
+   "Victor C. M. Leung",
+   "Xiping Hu"
+  ],
+  "venue": "IEEE Journal on Selected Areas in Communications",
+  "year": 2023,
+  "cited_by": 184,
+  "oa": "W4386280880",
+  "url": "https://doi.org/10.1109/jsac.2023.3310097",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/jsac.2023.3322766": {
+  "title": "MetaLoc: Learning to Learn Wireless Localization",
+  "authors": [
+   "Jun Gao",
+   "Dongze Wu",
+   "Feng Yin",
+   "Qinglei Kong",
+   "Lexi Xu",
+   "Shuguang Robert Cui"
+  ],
+  "venue": "IEEE Journal on Selected Areas in Communications",
+  "year": 2023,
+  "cited_by": 143,
+  "oa": "W4387449321",
+  "url": "https://doi.org/10.1109/jsac.2023.3322766",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/jsac.2023.3322812": {
@@ -2932,6 +3174,21 @@
   "url": "https://doi.org/10.1109/jsac.2025.3641910",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/jsac.2025.3643823": {
+  "title": "Prompt-Enabled Large AI Models for CSI Feedback",
+  "authors": [
+   "Jiajia Guo",
+   "Yiming Cui",
+   "Chao-Kai Wen",
+   "Shi Jin"
+  ],
+  "venue": "IEEE Journal on Selected Areas in Communications",
+  "year": 2025,
+  "cited_by": 17,
+  "oa": "W7114926922",
+  "url": "https://doi.org/10.1109/jsac.2025.3643823",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/jstsp.2019.2931206": {
   "title": "Compressive Initial Access and Beamforming Training for Millimeter-Wave Cellular Systems",
   "authors": [
@@ -3027,6 +3284,21 @@
   "cited_by": 285,
   "oa": "W2807536558",
   "url": "https://doi.org/10.1109/lcomm.2018.2841832",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/lcomm.2020.2968030": {
+  "title": "MCNet: An Efficient CNN Architecture for Robust Automatic Modulation Classification",
+  "authors": [
+   "Thien Huynh‐The",
+   "Cam-Hao Hua",
+   "Quoc‐Viet Pham",
+   "Dong‐Seong Kim"
+  ],
+  "venue": "IEEE Communications Letters",
+  "year": 2020,
+  "cited_by": 404,
+  "oa": "W3000943722",
+  "url": "https://doi.org/10.1109/lcomm.2020.2968030",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/lcomm.2022.3213523": {
@@ -3158,6 +3430,48 @@
   "url": "https://doi.org/10.1109/lwc.2017.2757490",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/lwc.2018.2818160": {
+  "title": "Deep Learning for Massive MIMO CSI Feedback",
+  "authors": [
+   "Chao-Kai Wen",
+   "Wan-Ting Shih",
+   "Shi Jin"
+  ],
+  "venue": "IEEE Wireless Communications Letters",
+  "year": 2018,
+  "cited_by": 1177,
+  "oa": "W2963145597",
+  "url": "https://doi.org/10.1109/lwc.2018.2818160",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/lwc.2018.2867459": {
+  "title": "Adversarial Attacks on Deep-Learning Based Radio Signal Classification",
+  "authors": [
+   "Meysam Sadeghi",
+   "Erik G. Larsson"
+  ],
+  "venue": "IEEE Wireless Communications Letters",
+  "year": 2018,
+  "cited_by": 345,
+  "oa": "W2888024549",
+  "url": "https://doi.org/10.1109/lwc.2018.2867459",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/lwc.2020.2999453": {
+  "title": "A Spatiotemporal Multi-Channel Learning Framework for Automatic Modulation Recognition",
+  "authors": [
+   "Jialang Xu",
+   "Chunbo Luo",
+   "Gerard P. Parr",
+   "Yang Luo"
+  ],
+  "venue": "IEEE Wireless Communications Letters",
+  "year": 2020,
+  "cited_by": 458,
+  "oa": "W3032977069",
+  "url": "https://doi.org/10.1109/lwc.2020.2999453",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/lwc.2022.3219409": {
   "title": "LiDAR Aided Future Beam Prediction in Real-World Millimeter Wave V2I Communications",
   "authors": [
@@ -3260,6 +3574,22 @@
   "url": "https://doi.org/10.1109/lwc.2026.3664439",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/lwc.2026.3693360": {
+  "title": "Channel Knowledge Map Construction via Guided Flow Matching",
+  "authors": [
+   "Ziyu Huang",
+   "Yong Zeng",
+   "Shen Fu",
+   "Xiaoli Xu",
+   "Hongyang Du"
+  ],
+  "venue": "IEEE Wireless Communications Letters",
+  "year": 2026,
+  "cited_by": 1,
+  "oa": "W7161157053",
+  "url": "https://doi.org/10.1109/lwc.2026.3693360",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/lwc.2026.3702704": {
   "title": "Multimodal-NF: A Wireless Dataset for Near-Field Low-Altitude Sensing and Communications",
   "authors": [
@@ -3277,6 +3607,21 @@
   "cited_by": 0,
   "oa": "W7164297742",
   "url": "https://doi.org/10.1109/lwc.2026.3702704",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/lwc.2026.3704635": {
+  "title": "Platform and Orientation-Aware Channel Knowledge Mapping via Mutual Antenna Pattern Learning in 3-D Wireless Links",
+  "authors": [
+   "Mushfiqur Rahman",
+   "İsmail Güvenç",
+   "J. A. Abrahamson",
+   "Arupjyoti Bhuyan"
+  ],
+  "venue": "IEEE Wireless Communications Letters",
+  "year": 2026,
+  "cited_by": 1,
+  "oa": "W7164995728",
+  "url": "https://doi.org/10.1109/lwc.2026.3704635",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/lwc.2026.3727299": {
@@ -3307,6 +3652,21 @@
   "cited_by": 204,
   "oa": "W3024135895",
   "url": "https://doi.org/10.1109/mcom.001.2000224",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/mcom.001.2000453": {
+  "title": "Modulation Compression in Next Generation RAN: Air Interface and Fronthaul Trade-offs",
+  "authors": [
+   "Sandra Lagén",
+   "Lorenza Giupponi",
+   "Andreas Hansson",
+   "Xavier Gelabert"
+  ],
+  "venue": "IEEE Communications Magazine",
+  "year": 2021,
+  "cited_by": 54,
+  "oa": "W3105940199",
+  "url": "https://doi.org/10.1109/mcom.001.2000453",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/mcom.001.2200725": {
@@ -3350,6 +3710,20 @@
   "url": "https://doi.org/10.1109/mcom.001.2300494",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/mcom.001.2400086": {
+  "title": "Sharing Spectrum and Services in the 7–24 GHz Upper Midband",
+  "authors": [
+   "Paolo Testolina",
+   "Michele Polese",
+   "Tommaso Melodia"
+  ],
+  "venue": "IEEE Communications Magazine",
+  "year": 2024,
+  "cited_by": 39,
+  "oa": "W4401507867",
+  "url": "https://doi.org/10.1109/mcom.001.2400086",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/mcom.001.2400284": {
   "title": "Generative Artificial Intelligence for Mobile Communications: A Diffusion Model Perspective",
   "authors": [
@@ -3365,6 +3739,22 @@
   "cited_by": 18,
   "oa": "W4405718261",
   "url": "https://doi.org/10.1109/mcom.001.2400284",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/mcom.001.2400761": {
+  "title": "Edge Large AI Models: Revolutionizing 6G Networks",
+  "authors": [
+   "Zixin Wang",
+   "Yuanming Shi",
+   "Yong Zhou",
+   "Jingyang Zhu",
+   "Khaled B. Letaief"
+  ],
+  "venue": "IEEE Communications Magazine",
+  "year": 2025,
+  "cited_by": 11,
+  "oa": "W4414538737",
+  "url": "https://doi.org/10.1109/mcom.001.2400761",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/mcom.002.2200028": {
@@ -3489,6 +3879,22 @@
   "url": "https://doi.org/10.1109/mcom.006.2200730",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/mcom.101.2001120": {
+  "title": "Intelligence and Learning in O-RAN for Data-Driven NextG Cellular Networks",
+  "authors": [
+   "Leonardo Bonati",
+   "Salvatore D’Oro",
+   "Michele Polese",
+   "Stefano Basagni",
+   "Tommaso Melodia"
+  ],
+  "venue": "IEEE Communications Magazine",
+  "year": 2021,
+  "cited_by": 334,
+  "oa": "W3107377953",
+  "url": "https://doi.org/10.1109/mcom.101.2001120",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/mcom.2017.1700082": {
   "title": "A Survey on Behavior Recognition Using WiFi Channel State Information",
   "authors": [
@@ -3503,6 +3909,21 @@
   "cited_by": 628,
   "oa": "W2763219399",
   "url": "https://doi.org/10.1109/mcom.2017.1700082",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/mnet.2023.3321520": {
+  "title": "mmWave Enabled Connected Autonomous Vehicles: A Use Case With V2V Cooperative Perception",
+  "authors": [
+   "Muhammad Baqer Mollah",
+   "Honggang Wang",
+   "Mohammad Ataul Karim",
+   "Hua Fang"
+  ],
+  "venue": "IEEE Network",
+  "year": 2023,
+  "cited_by": 38,
+  "oa": "W4387609302",
+  "url": "https://doi.org/10.1109/mnet.2023.3321520",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/mwc.2012.6393523": {
@@ -3652,6 +4073,21 @@
   "url": "https://doi.org/10.1109/ojcoms.2024.3447472",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/ojcoms.2024.3465216": {
+  "title": "Context-Aware Predictive Coding: A Representation Learning Framework for WiFi Sensing",
+  "authors": [
+   "Borna Barahimi",
+   "Hina Tabassum",
+   "Mohammad Omer",
+   "Omer Waqar"
+  ],
+  "venue": "IEEE Open Journal of the Communications Society",
+  "year": 2024,
+  "cited_by": 11,
+  "oa": "W4402673224",
+  "url": "https://doi.org/10.1109/ojcoms.2024.3465216",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/ojcoms.2025.3556319": {
   "title": "RF Challenge: The Data-Driven Radio Frequency Signal Separation Challenge",
   "authors": [
@@ -3698,6 +4134,22 @@
   "cited_by": 4,
   "oa": "W4410614244",
   "url": "https://doi.org/10.1109/ojcoms.2025.3572723",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/ojcoms.2025.3592365": {
+  "title": "Terahertz Communication: State-of-the-Art and Future Directions",
+  "authors": [
+   "Sanjeev Sharma",
+   "Praveen Kumar Singya",
+   "Kuntal Deka",
+   "Cédric Adjih",
+   "Mohit Kumar Sharma"
+  ],
+  "venue": "IEEE Open Journal of the Communications Society",
+  "year": 2025,
+  "cited_by": 27,
+  "oa": "W4412623357",
+  "url": "https://doi.org/10.1109/ojcoms.2025.3592365",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/ojcoms.2025.3597377": {
@@ -3895,6 +4347,22 @@
   "url": "https://doi.org/10.1109/tap.2026.3717623",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/tccn.2020.3024610": {
+  "title": "Contour Stella Image and Deep Learning for Signal Recognition in the Physical Layer",
+  "authors": [
+   "Yun Lin",
+   "Ya Tu",
+   "Zheng Dou",
+   "Lei Chen",
+   "Shiwen Mao"
+  ],
+  "venue": "IEEE Transactions on Cognitive Communications and Networking",
+  "year": 2020,
+  "cited_by": 416,
+  "oa": "W3088383832",
+  "url": "https://doi.org/10.1109/tccn.2020.3024610",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/tccn.2022.3153004": {
   "title": "Machine Learning in NextG Networks via Generative Adversarial Networks",
   "authors": [
@@ -3939,6 +4407,21 @@
   "cited_by": 24,
   "oa": "W4312572045",
   "url": "https://doi.org/10.1109/tccn.2022.3222193",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tccn.2023.3252580": {
+  "title": "Toward the Automatic Modulation Classification With Adaptive Wavelet Network",
+  "authors": [
+   "Jiawei Zhang",
+   "Tiantian Wang",
+   "Zhixi Feng",
+   "Shuyuan Yang"
+  ],
+  "venue": "IEEE Transactions on Cognitive Communications and Networking",
+  "year": 2023,
+  "cited_by": 126,
+  "oa": "W4323338327",
+  "url": "https://doi.org/10.1109/tccn.2023.3252580",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tccn.2023.3269764": {
@@ -4114,6 +4597,21 @@
   "url": "https://doi.org/10.1109/tccn.2025.3641513",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/tccn.2026.3660764": {
+  "title": "WiDeFus: A Wi-Fi-Based Lightweight Human Activity Recognition via CSI Component Decomposition and Adaptive Feature Fusion",
+  "authors": [
+   "Xingcan Chen",
+   "Chenglin Li",
+   "Wei Meng",
+   "Wendong Xiao"
+  ],
+  "venue": "IEEE Transactions on Cognitive Communications and Networking",
+  "year": 2026,
+  "cited_by": 4,
+  "oa": "W7127395682",
+  "url": "https://doi.org/10.1109/tccn.2026.3660764",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/tccn.2026.3683189": {
   "title": "IQCM-Net: Cross-Modal Fusion With Multi-Window STFT via SNR Partitioning for Robust Modulation Recognition",
   "authors": [
@@ -4209,6 +4707,64 @@
   "url": "https://doi.org/10.1109/tccn.2026.3739531",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/tcomm.2015.2434384": {
+  "title": "Wideband Millimeter-Wave Propagation Measurements and Channel Models for Future Wireless Communication System Design",
+  "authors": [
+   "Theodore S. Rappaport",
+   "George R. MacCartney",
+   "Mathew K. Samimi",
+   "Shu Dong Sun"
+  ],
+  "venue": "IEEE Transactions on Communications",
+  "year": 2015,
+  "cited_by": 1574,
+  "oa": "W1584244501",
+  "url": "https://doi.org/10.1109/tcomm.2015.2434384",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tcomm.2020.3003670": {
+  "title": "Deep Learning for mmWave Beam and Blockage Prediction Using Sub-6 GHz Channels",
+  "authors": [
+   "Muhammad Alrabeiah",
+   "Ahmed Alkhateeb"
+  ],
+  "venue": "IEEE Transactions on Communications",
+  "year": 2020,
+  "cited_by": 341,
+  "oa": "W2978449789",
+  "url": "https://doi.org/10.1109/tcomm.2020.3003670",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tcomm.2020.3019077": {
+  "title": "Deep Transfer Learning-Based Downlink Channel Prediction for FDD Massive MIMO Systems",
+  "authors": [
+   "Yuwen Yang",
+   "Feifei Gao",
+   "Zhimeng Zhong",
+   "Bo Ai",
+   "Ahmed Alkhateeb"
+  ],
+  "venue": "IEEE Transactions on Communications",
+  "year": 2020,
+  "cited_by": 197,
+  "oa": "W3081455451",
+  "url": "https://doi.org/10.1109/tcomm.2020.3019077",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tcomm.2020.3027027": {
+  "title": "Deep Learning for Beamspace Channel Estimation in Millimeter-Wave Massive MIMO Systems",
+  "authors": [
+   "Xiuhong Wei",
+   "Chen Hu",
+   "Linglong Dai"
+  ],
+  "venue": "IEEE Transactions on Communications",
+  "year": 2020,
+  "cited_by": 220,
+  "oa": "W3091391704",
+  "url": "https://doi.org/10.1109/tcomm.2020.3027027",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/tcomm.2020.3035582": {
   "title": "Multiplexing URLLC Traffic within eMBB Services in 5G NR: Fair Scheduling",
   "authors": [
@@ -4235,6 +4791,22 @@
   "cited_by": 187,
   "oa": "W3200128456",
   "url": "https://doi.org/10.1109/tcomm.2021.3113954",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tcomm.2022.3171800": {
+  "title": "Terahertz Band Communication: An Old Problem Revisited and Research Directions for the Next Decade",
+  "authors": [
+   "Ian Fuat Akyildiz",
+   "Chong Zhao Han",
+   "Zhifeng Hu",
+   "Shuai Nie",
+   "Josep Miquel Jornet"
+  ],
+  "venue": "IEEE Transactions on Communications",
+  "year": 2022,
+  "cited_by": 708,
+  "oa": "W4285192749",
+  "url": "https://doi.org/10.1109/tcomm.2022.3171800",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tcomm.2022.3180388": {
@@ -4309,6 +4881,19 @@
   "cited_by": 11,
   "oa": "W4402917137",
   "url": "https://doi.org/10.1109/tcomm.2024.3469543",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tcomm.2024.3490740": {
+  "title": "Cell-Free ISAC MIMO Systems: Joint Sensing and Communication Beamforming",
+  "authors": [
+   "Umut Demirhan",
+   "Ahmed Alkhateeb"
+  ],
+  "venue": "IEEE Transactions on Communications",
+  "year": 2024,
+  "cited_by": 158,
+  "oa": "W4404035732",
+  "url": "https://doi.org/10.1109/tcomm.2024.3490740",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tcomm.2025.3588591": {
@@ -4564,6 +5149,40 @@
   "url": "https://doi.org/10.1109/tmc.2024.3437745",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/tmc.2025.3540863": {
+  "title": "Pushing the Limits of WiFi-Based Gait Recognition Towards Non-Gait Human Behaviors",
+  "authors": [
+   "Dawei Yan",
+   "Panlong Yang",
+   "Fei Shang",
+   "Feiyu Han",
+   "Yubo Yan",
+   "Xiang‐Yang Li"
+  ],
+  "venue": "IEEE Transactions on Mobile Computing",
+  "year": 2025,
+  "cited_by": 11,
+  "oa": "W4407354655",
+  "url": "https://doi.org/10.1109/tmc.2025.3540863",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tmc.2025.3544573": {
+  "title": "ActivityMamba: A CNN-Mamba Hybrid Neural Network for Efficient Human Activity Recognition",
+  "authors": [
+   "Fei Luo",
+   "Anna Li",
+   "Bin Jiang",
+   "Salabat Khan",
+   "Kaishun Wu",
+   "Lu Wang"
+  ],
+  "venue": "IEEE Transactions on Mobile Computing",
+  "year": 2025,
+  "cited_by": 40,
+  "oa": "W4407900045",
+  "url": "https://doi.org/10.1109/tmc.2025.3544573",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/tmc.2025.3552538": {
   "title": "Leveraging Online Learning for Domain-Adaptation in Wi-Fi-Based Device-Free Localization",
   "authors": [
@@ -4577,6 +5196,25 @@
   "cited_by": 68,
   "oa": "W4408590817",
   "url": "https://doi.org/10.1109/tmc.2025.3552538",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tmc.2025.3557504": {
+  "title": "mm-Fall: Practical and Robust Fall Detection via mmWave Signals",
+  "authors": [
+   "Cui Zhao",
+   "Qiumin Luo",
+   "Han Ding",
+   "Ge Wang",
+   "Kun Zhao",
+   "Zhi Wang",
+   "Wei Xi",
+   "Jizhong Zhao"
+  ],
+  "venue": "IEEE Transactions on Mobile Computing",
+  "year": 2025,
+  "cited_by": 12,
+  "oa": "W4409129019",
+  "url": "https://doi.org/10.1109/tmc.2025.3557504",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tmc.2025.3573702": {
@@ -4612,6 +5250,24 @@
   "cited_by": 2,
   "oa": "W7105845980",
   "url": "https://doi.org/10.1109/tmc.2025.3633287",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tmc.2026.3673171": {
+  "title": "Active Domain Adaptation for mmWave-Based HAR via R$\\acute{e}$nyi Entropy-Based Uncertainty Estimation",
+  "authors": [
+   "Mingzhi Lin",
+   "Teng Huang",
+   "Han Ding",
+   "Cui Zhao",
+   "Fei Wang",
+   "Ge Wang",
+   "Wei Xi"
+  ],
+  "venue": "IEEE Transactions on Mobile Computing",
+  "year": 2026,
+  "cited_by": 1,
+  "oa": "W7135056060",
+  "url": "https://doi.org/10.1109/tmc.2026.3673171",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tmc.2026.3674213": {
@@ -4722,6 +5378,21 @@
   "url": "https://doi.org/10.1109/tmlcn.2023.3334712",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/tmlcn.2024.3448391": {
+  "title": "Calibrating Wireless Ray Tracing for Digital Twinning Using Local Phase Error Estimates",
+  "authors": [
+   "Clément Ruah",
+   "Osvaldo Simeone",
+   "Jakob Hoydis",
+   "Bashir M. Al‐Hashimi"
+  ],
+  "venue": "IEEE Transactions on Machine Learning in Communications and Networking",
+  "year": 2024,
+  "cited_by": 31,
+  "oa": "W4401746976",
+  "url": "https://doi.org/10.1109/tmlcn.2024.3448391",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/tmlcn.2024.3449834": {
   "title": "ML-Enabled Millimeter-Wave Software-Defined Radio With Programmable Directionality",
   "authors": [
@@ -4767,6 +5438,22 @@
   "cited_by": 9,
   "oa": "W4409762326",
   "url": "https://doi.org/10.1109/tmlcn.2025.3564239",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tmlcn.2025.3585845": {
+  "title": "LLM4WM: Adapting LLM for Wireless Multi-Tasking",
+  "authors": [
+   "Xuanyu Liu",
+   "Shijian Gao",
+   "Boxun Liu",
+   "Xiang Cheng",
+   "Liuqing Yang"
+  ],
+  "venue": "IEEE Transactions on Machine Learning in Communications and Networking",
+  "year": 2025,
+  "cited_by": 29,
+  "oa": "W4411996947",
+  "url": "https://doi.org/10.1109/tmlcn.2025.3585845",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tnet.2020.2996964": {
@@ -4835,6 +5522,21 @@
   "url": "https://doi.org/10.1109/ton.2025.3599016",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/tsp.2020.2976585": {
+  "title": "Model-Driven Deep Learning for MIMO Detection",
+  "authors": [
+   "Hengtao He",
+   "Chao-Kai Wen",
+   "Shi Jin",
+   "Geoffrey Ye Li"
+  ],
+  "venue": "IEEE Transactions on Signal Processing",
+  "year": 2020,
+  "cited_by": 458,
+  "oa": "W3008026851",
+  "url": "https://doi.org/10.1109/tsp.2020.2976585",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/tvt.2018.2865700": {
   "title": "A Comprehensive Study on mmWave-Based Mobile Hotspot Network System for High-Speed Train Communications",
   "authors": [
@@ -4851,6 +5553,22 @@
   "cited_by": 38,
   "oa": "W2885157593",
   "url": "https://doi.org/10.1109/tvt.2018.2865700",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tvt.2018.2883796": {
+  "title": "Multibeam for Joint Communication and Radar Sensing Using Steerable Analog Antenna Arrays",
+  "authors": [
+   "J. Andrew Zhang",
+   "Xiaojing Huang",
+   "Y. Jay Guo",
+   "Jinhong Yuan",
+   "Robert W. Heath"
+  ],
+  "venue": "IEEE Transactions on Vehicular Technology",
+  "year": 2018,
+  "cited_by": 312,
+  "oa": "W2895865304",
+  "url": "https://doi.org/10.1109/tvt.2018.2883796",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tvt.2019.2907606": {
@@ -4943,6 +5661,21 @@
   "cited_by": 10,
   "oa": "W3208424895",
   "url": "https://doi.org/10.1109/tvt.2021.3122413",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tvt.2023.3243912": {
+  "title": "AutoLoc: Toward Ubiquitous AoA-Based Indoor Localization Using Commodity WiFi",
+  "authors": [
+   "Xianan Zhang",
+   "Yu Zhang",
+   "Guanghua Liu",
+   "Tao Jiang"
+  ],
+  "venue": "IEEE Transactions on Vehicular Technology",
+  "year": 2023,
+  "cited_by": 65,
+  "oa": "W4381162754",
+  "url": "https://doi.org/10.1109/tvt.2023.3243912",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/tvt.2023.3340447": {
@@ -5130,6 +5863,19 @@
   "url": "https://doi.org/10.1109/twc.2021.3052606",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/twc.2021.3128392": {
+  "title": "Federated Learning for Channel Estimation in Conventional and RIS-Assisted Massive MIMO",
+  "authors": [
+   "Ahmet M. Elbir",
+   "Sinem Çöleri"
+  ],
+  "venue": "IEEE Transactions on Wireless Communications",
+  "year": 2021,
+  "cited_by": 176,
+  "oa": "W3216108359",
+  "url": "https://doi.org/10.1109/twc.2021.3128392",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/twc.2022.3170104": {
   "title": "Self-Supervised Deep Learning for mmWave Beam Steering Exploiting Sub-6 GHz Channels",
   "authors": [
@@ -5287,6 +6033,21 @@
   "url": "https://doi.org/10.1109/twc.2024.3401686",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/twc.2024.3412234": {
+  "title": "MCLHN: Toward Automatic Modulation Classification via Masked Contrastive Learning With Hard Negatives",
+  "authors": [
+   "Chenghong Xiao",
+   "Shuyuan Yang",
+   "Zhixi Feng",
+   "Licheng Jiao"
+  ],
+  "venue": "IEEE Transactions on Wireless Communications",
+  "year": 2024,
+  "cited_by": 32,
+  "oa": "W4399767281",
+  "url": "https://doi.org/10.1109/twc.2024.3412234",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/twc.2024.3426525": {
   "title": "Disentangled Representation Learning Empowered CSI Feedback Using Implicit Channel Reciprocity in FDD Massive MIMO",
   "authors": [
@@ -5319,6 +6080,24 @@
   "url": "https://doi.org/10.1109/twc.2024.3447570",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/twc.2024.3450972": {
+  "title": "Joint Signal Detection and Automatic Modulation Classification via Deep Learning",
+  "authors": [
+   "Huijun Xing",
+   "Xuhui Zhang",
+   "Shuo Chang",
+   "Jinke Ren",
+   "Zixun Zhang",
+   "Jie Xu",
+   "Shuguang Robert Cui"
+  ],
+  "venue": "IEEE Transactions on Wireless Communications",
+  "year": 2024,
+  "cited_by": 40,
+  "oa": "W4402264593",
+  "url": "https://doi.org/10.1109/twc.2024.3450972",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1109/twc.2024.3457431": {
   "title": "A Scalable and Generalizable Pathloss Map Prediction",
   "authors": [
@@ -5330,6 +6109,25 @@
   "cited_by": 50,
   "oa": "W4402557620",
   "url": "https://doi.org/10.1109/twc.2024.3457431",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1109/twc.2024.3463740": {
+  "title": "VC-SEI: Robust Variable-Channel Specific Emitter Identification Method Using Semi-Supervised Domain Adaptation",
+  "authors": [
+   "Hong Wan",
+   "Qin Wang",
+   "Xue Gang Fu",
+   "Yu Wang",
+   "Haitao Zhao",
+   "Yun Lin",
+   "Hikmet Sari",
+   "Guan Gui"
+  ],
+  "venue": "IEEE Transactions on Wireless Communications",
+  "year": 2024,
+  "cited_by": 42,
+  "oa": "W4402892249",
+  "url": "https://doi.org/10.1109/twc.2024.3463740",
   "fetched": "2026-11-05"
  },
  "doi:10.1109/twc.2024.3467160": {
@@ -5816,6 +6614,21 @@
   "url": "https://doi.org/10.1145/3372224.3380900",
   "fetched": "2026-11-05"
  },
+ "doi:10.1145/3384419.3430735": {
+  "title": "RF-net: a unified meta-learning framework for RF-enabled one-shot human activity recognition",
+  "authors": [
+   "Shuya Ding",
+   "Zhe Chen",
+   "Tianyue Zheng",
+   "Jun Luo"
+  ],
+  "venue": "ACM Conference on Embedded Networked Sensor Systems (SenSys)",
+  "year": 2020,
+  "cited_by": 172,
+  "oa": "W3109228974",
+  "url": "https://doi.org/10.1145/3384419.3430735",
+  "fetched": "2026-11-05"
+ },
  "doi:10.1145/3412060.3418433": {
   "title": "mMobile: Building a mmWave Testbed to Evaluate and Address Mobility Effects",
   "authors": [
@@ -5885,6 +6698,22 @@
   "cited_by": 51,
   "oa": "W3188399836",
   "url": "https://doi.org/10.1145/3452296.3472924",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1145/3485730.3485937": {
+  "title": "LIMU-BERT: Unleashing the Potential of Unlabeled Data for IMU Sensing Applications",
+  "authors": [
+   "Huatao Xu",
+   "Pengfei Zhou",
+   "Rui Tan",
+   "Mo Li",
+   "Guobin Shen"
+  ],
+  "venue": "ACM Conference on Embedded Networked Sensor Systems (SenSys)",
+  "year": 2021,
+  "cited_by": 151,
+  "oa": "W3211771663",
+  "url": "https://doi.org/10.1145/3485730.3485937",
   "fetched": "2026-11-05"
  },
  "doi:10.1145/3495243.3560546": {
@@ -5990,6 +6819,21 @@
   "cited_by": 24,
   "oa": "W4387212744",
   "url": "https://doi.org/10.1145/3570361.3592522",
+  "fetched": "2026-11-05"
+ },
+ "doi:10.1145/3570361.3592527": {
+  "title": "NeRF2: Neural Radio-Frequency Radiance Fields",
+  "authors": [
+   "Xiaopeng Zhao",
+   "Zhenlin An",
+   "Qingrui Pan",
+   "Lei Yang"
+  ],
+  "venue": "ACM Annual International Conference on Mobile Computing and Networking (MobiCom)",
+  "year": 2023,
+  "cited_by": 138,
+  "oa": "W4376167392",
+  "url": "https://doi.org/10.1145/3570361.3592527",
   "fetched": "2026-11-05"
  },
  "doi:10.1145/3570361.3614087": {

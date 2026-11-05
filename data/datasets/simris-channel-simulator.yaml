@@ -11,7 +11,8 @@ license: GPL-2.0
 access: {url: 'https://github.com/ifyildirim/SimRIS-Channel-Simulator', type: open}
 code: ['https://github.com/ifyildirim/SimRIS-Channel-Simulator']
 paper: arxiv:2006.00468
-used_in: ["doi:10.1109/tcomm.2021.3113954","doi:10.1109/jproc.2022.3186087","doi:10.1109/ojcoms.2021.3050119"]
+used_in: ["doi:10.1109/tcomm.2021.3113954"]
+citing: ["doi:10.1109/jproc.2022.3186087","doi:10.1109/ojcoms.2021.3050119"]
 summary: {en: 'MATLAB generator of RIS channel matrices using Monte Carlo simulation. Scenarios are indoor hotspot and urban microcellular at 28 and 73 GHz, with ULA and UPA terminal arrays.', zh: 基于 MATLAB 的 RIS 信道矩阵生成器，采用 Monte Carlo 仿真生成。场景为室内热点和城市微蜂窝，频率为 28 GHz 和 73 GHz，终端阵列为 ULA 和 UPA。}
 sources: ['https://github.com/ifyildirim/SimRIS-Channel-Simulator', 'https://arxiv.org/abs/2006.00468', 'https://api.github.com/repos/ifyildirim/SimRIS-Channel-Simulator/license']
 checked: '2026-11-06'

@@ -16,7 +16,8 @@ standard: IEEE 802.11g, Bluetooth 5.0
 license: CC BY-NC-SA 4.0
 access: {url: 'https://ieee-dataport.org/documents/real-world-commercial-wifi-and-bluetooth-dataset-rf-fingerprinting', type: restricted}
 paper: doi:10.1109/mcom.001.2200725
-used_in: ["doi:10.1109/wcnc57260.2024.10571027","doi:10.1109/tmc.2025.3633287","doi:10.1109/jiot.2026.3681700"]
+used_in: []
+citing: ["doi:10.1109/wcnc57260.2024.10571027","doi:10.1109/tmc.2025.3633287","doi:10.1109/jiot.2026.3681700"]
 summary: {en: 'Complex IQ captures of WiFi (IEEE 802.11g) and Bluetooth 5.0 emissions from 10 commercial combo-chip devices, recorded with a USRP X300 at 66.67 MS/s in two time frames. Each capture contains 40 MSamples and has a JSON metadata file.', zh: 来自10台商用组合芯片设备的WiFi（IEEE 802.11g）与蓝牙5.0发射信号的复数IQ采样，由USRP X300以66.67 MS/s在两个时间段采集。每个采集文件包含40 MSample，并附带JSON元数据文件。}
 sources: ['https://ieee-dataport.org/documents/real-world-commercial-wifi-and-bluetooth-dataset-rf-fingerprinting', 'https://arxiv.org/pdf/2303.13538', 'https://doi.org/10.1109/mcom.001.2200725']
 checked: '2026-11-06'

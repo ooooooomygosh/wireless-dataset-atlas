@@ -13,7 +13,8 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/documents/data-set-time-varying-industrial-radio-channels-varying-environment', type: restricted}
 code: []
 paper: doi:10.1109/wcnc49053.2021.9417520
-used_in: ["doi:10.1109/tcomm.2025.3593660","doi:10.1109/tvt.2024.3480528","doi:10.1109/tvt.2024.3393630"]
+used_in: []
+citing: ["doi:10.1109/tcomm.2025.3593660","doi:10.1109/tvt.2024.3480528","doi:10.1109/tvt.2024.3393630"]
 summary: {en: 'Time-varying industrial radio channel measurements taken at a 1 kHz measurement frequency from a moving setup on a constant vehicle trajectory. The record describes 10 measurement scenarios, with obstacles added between repetitions.', zh: 在工业环境中，沿固定车辆轨迹运动的测量装置以 1 kHz 测量频率采集的时变无线信道数据。记录描述了 10 个测量场景，重复测量之间加入了障碍物。}
 sources: ['https://ieee-dataport.org/documents/data-set-time-varying-industrial-radio-channels-varying-environment', 'https://api.crossref.org/works/10.1109/wcnc49053.2021.9417520', 'https://api.openalex.org/works/doi:10.1109/wcnc49053.2021.9417520']
 checked: '2026-11-06'

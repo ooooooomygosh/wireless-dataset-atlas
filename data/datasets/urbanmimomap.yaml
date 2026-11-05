@@ -15,6 +15,7 @@ access: {url: 'https://github.com/UNIC-Lab/UrbanMIMOMap', type: request}
 code: ['https://github.com/UNIC-Lab/UrbanMIMOMap']
 paper: doi:10.1109/globecom59602.2025.11432757
 used_in: []
+citing: []
 summary: {en: 'Ray-traced 4x4 complex MIMO channel matrices at 3.5 GHz and 50 MHz bandwidth over 350 urban map scenarios built from OpenStreetMap data. Each of the 42,000 NPZ files holds one channel matrix H, and precoding-aware radio maps are included.', zh: '在3.5 GHz、50 MHz带宽下，基于350个由OpenStreetMap数据构建的城市地图场景，经光线追踪得到4x4复数MIMO信道矩阵。42,000个NPZ文件各包含一个信道矩阵H，并包含预编码感知的无线电地图。'}
 sources: ['https://arxiv.org/abs/2509.06270', 'https://arxiv.org/html/2509.06270', 'https://github.com/UNIC-Lab/UrbanMIMOMap', 'https://raw.githubusercontent.com/UNIC-Lab/UrbanMIMOMap/main/README.md', 'https://api.github.com/repos/UNIC-Lab/UrbanMIMOMap/license', 'https://doi.org/10.1109/globecom59602.2025.11432757']
 checked: '2026-11-06'

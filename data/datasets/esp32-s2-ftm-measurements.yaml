@@ -13,7 +13,8 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/open-access/esp32s2-ftm-measurements', type: restricted}
 code: []
 paper: doi:10.1109/jiot.2022.3158701
-used_in: ["doi:10.1109/jsac.2023.3322812","doi:10.1109/wcnc57260.2024.10570742"]
+used_in: []
+citing: ["doi:10.1109/jsac.2023.3322812","doi:10.1109/wcnc57260.2024.10570742"]
 summary: {en: 'Wi-Fi fine timing measurement (FTM) round-trip time and RSSI values from ESP32-S2 devices in indoor and outdoor environments, paired with the true distance between devices. Data are provided as rosbag and MATLAB .mat files.', zh: ESP32-S2 设备在室内和室外环境中测得的 Wi-Fi 精细时间测量（FTM）往返时间与 RSSI 数值，并附有设备之间的真实距离。数据以 rosbag 和 MATLAB .mat 文件提供。}
 sources: ['https://ieee-dataport.org/open-access/esp32s2-ftm-measurements', 'https://api.crossref.org/works/10.1109/jiot.2022.3158701', 'https://api.openalex.org/works/doi:10.1109/jiot.2022.3158701?select=title,publication_year,abstract_inverted_index']
 checked: '2026-11-06'

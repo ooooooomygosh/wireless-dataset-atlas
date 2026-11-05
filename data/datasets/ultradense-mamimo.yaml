@@ -17,7 +17,8 @@ license: Creative Commons Attribution
 access: {url: 'https://ieee-dataport.org/open-access/ultra-dense-indoor-mamimo-csi-dataset', type: registration}
 code: ['https://github.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs']
 paper: arxiv:2211.05527
-used_in: ["doi:10.1109/tvt.2023.3340447","doi:10.1109/tmlcn.2023.3334712","doi:10.1109/tmc.2025.3573702"]
+used_in: []
+citing: ["doi:10.1109/tvt.2023.3340447","doi:10.1109/tmlcn.2023.3334712","doi:10.1109/tmc.2025.3573702"]
 summary: {en: 'Location-labelled CSI from a 64-antenna base station at 2.61 GHz and 20 MHz bandwidth in an indoor room, with single-antenna users moved on a 5 mm grid by positioners. It contains 252,004 samples for each of four antenna topologies: URA with LoS and NLoS, ULA with LoS, and distributed with LoS.', zh: '在室内房间中，以 64 天线基站、2.61 GHz 载频和 20 MHz 带宽测得的带位置标签 CSI。单天线用户由定位器按 5 mm 步长移动，包含四种天线拓扑（URA 视距与非视距、ULA 视距、分布式视距）的数据，每种拓扑 252,004 个样本。'}
 sources: ['https://ieee-dataport.org/open-access/ultra-dense-indoor-mamimo-csi-dataset', 'https://dx.doi.org/10.21227/nr6k-8r78', 'https://www.esat.kuleuven.be/wavecorearenberg/research/NetworkedSystems/datasets', 'https://arxiv.org/abs/2211.05527', 'https://arxiv.org/html/2211.05527', 'https://github.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs']
 checked: '2026-11-06'

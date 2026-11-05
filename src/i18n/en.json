@@ -118,5 +118,9 @@
   "about.title": "About",
   "footer.source": "Source on GitHub",
   "footer.license": "Code MIT, catalog data CC BY 4.0",
-  "footer.updated": "Updated {date}"
+  "footer.updated": "Updated {date}",
+  "detail.citing": "Most cited works citing the dataset paper",
+  "papers.kind.citing": "Citing work",
+  "detail.usedInNote": "Studies that name the dataset in the title or abstract.",
+  "detail.citingNote": "Cite the dataset paper; use of the data is not verified."
 }

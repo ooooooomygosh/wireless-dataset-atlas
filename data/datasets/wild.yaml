@@ -14,6 +14,7 @@ access: {url: 'https://github.com/ucsdwcsng/DLoc_pt_code/blob/main/wild.md', typ
 code: ['https://github.com/ucsdwcsng/DLoc_pt_code']
 paper: doi:10.1145/3372224.3380894
 used_in: ["doi:10.1145/3495243.3560546","doi:10.1145/3452296.3472911","doi:10.1109/tnet.2022.3196806"]
+citing: ["doi:10.1145/3570361.3592527","doi:10.1109/tvt.2023.3243912","doi:10.1109/jiot.2022.3214211"]
 summary: {en: 'The dataset contains 4D complex WiFi channel matrices (datapoints x frequency x antennas x access points), RSSI values and XY location labels from indoor setups in two UCSD buildings. It also provides 2D heatmap features used by the DLoc network.', zh: 该数据集包含四维复数WiFi信道矩阵（数据点 x 频率 x 天线 x 接入点）、RSSI值以及XY位置标签，采集自加州大学圣地亚哥分校两栋建筑的室内场景。另提供DLoc网络所用的二维热图特征。}
 sources: ['https://github.com/ucsdwcsng/DLoc_pt_code/blob/main/wild.md', 'https://raw.githubusercontent.com/ucsdwcsng/DLoc_pt_code/main/README.md', 'https://forms.gle/6mvdGq9Nw69Tnhn99', 'https://wcsng.ucsd.edu/dloc/']
 checked: '2026-11-06'

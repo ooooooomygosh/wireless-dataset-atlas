@@ -12,7 +12,8 @@ license: CC BY 4.0
 access: {url: 'https://zenodo.org/records/10210089', type: open}
 code: ['https://github.com/fabja19/RML']
 paper: arxiv:2402.00878
-used_in: ["doi:10.1109/tccn.2024.3502492","doi:10.1109/tccn.2025.3570469"]
+used_in: []
+citing: ["doi:10.1109/tccn.2024.3502492","doi:10.1109/tccn.2025.3570469"]
 summary: {en: 'Simulated path loss radio maps with directive transmitter antennas over Berlin city maps at 3.7 GHz, with building and vegetation height maps, transmitter parameters and RGBIR aerial images. The paper reports 74,515 radio maps covering 256 m x 256 m at 1 m spatial resolution.', zh: '基于柏林城市地图的仿真路径损耗无线电地图，采用定向发射天线，载频 3.7 GHz，并配有建筑与植被高度图、发射机参数以及 RGBIR 航拍图像。论文报告共 74,515 幅无线电地图，覆盖 256 m × 256 m 区域，空间分辨率为 1 m。'}
 sources: ['https://arxiv.org/abs/2402.00878', 'https://arxiv.org/html/2402.00878', 'https://github.com/fabja19/RML', 'https://zenodo.org/records/10210089', 'https://zenodo.org/api/records/10210089']
 checked: '2026-11-06'

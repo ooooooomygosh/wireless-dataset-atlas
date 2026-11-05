@@ -45,6 +45,7 @@ export const datasetSchema = z.object({
   code: z.array(z.url()).default([]),
   paper: paperId,
   used_in: z.array(paperId).default([]),
+  citing: z.array(paperId).default([]),
   summary: bilingual,
   sources: z.array(z.url()).default([]),
   checked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),

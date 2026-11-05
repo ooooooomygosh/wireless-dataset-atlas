@@ -10,7 +10,8 @@ license: CC BY 4.0
 access: {url: 'https://radiomapseer.github.io/', type: open}
 code: ['https://github.com/RonLevie/RadioUNet']
 paper: arxiv:2212.11777
-used_in: ["doi:10.1109/twc.2023.3273202","doi:10.1109/tccn.2024.3502492","doi:10.1109/twc.2024.3457431"]
+used_in: []
+citing: ["doi:10.1109/twc.2023.3273202","doi:10.1109/tccn.2024.3502492","doi:10.1109/twc.2024.3457431"]
 summary: {en: 'Simulated radio maps of path loss, received signal strength and time of arrival over dense urban areas modeled on actual city layouts. The main download is about 3 GB.', zh: 基于真实城市布局建模的密集城区仿真无线电地图，包括路径损耗、接收信号强度（RSS）和到达时间（ToA）。主下载包约 3 GB。}
 sources: ['https://radiomapseer.github.io/', 'https://arxiv.org/abs/2212.11777']
 checked: '2026-11-06'

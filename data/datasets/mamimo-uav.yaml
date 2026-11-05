@@ -16,7 +16,8 @@ license: CC BY-NC 4.0
 access: {url: 'https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi%3A10.48804%2F0IMQDF', type: registration}
 code: []
 paper: doi:10.1109/TVT.2023.3340447
-used_in: ["doi:10.1109/twc.2025.3537766","doi:10.1109/jiot.2025.3560358","doi:10.1109/tccn.2025.3587802"]
+used_in: []
+citing: ["doi:10.1109/twc.2025.3537766","doi:10.1109/jiot.2025.3560358","doi:10.1109/tccn.2025.3587802"]
 summary: {en: 'CSI estimated from pilot sequences sent by a drone flying several trajectories on the KU Leuven campus, received at a base station with an 8×8 rectangular patch array on a parking lot. The dataset is distributed as a 15.8 GB ZIP file.', zh: 无人机在 KU Leuven 校园内沿若干轨迹飞行并发送导频序列，停车场上 8×8 矩形贴片天线阵列的基站据此估计信道状态信息（CSI）。数据集以 15.8 GB 的 ZIP 文件分发。}
 sources: ['https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi%3A10.48804%2F0IMQDF', 'https://rdr.kuleuven.be/api/datasets/:persistentId/?persistentId=doi:10.48804/0IMQDF', 'https://api.crossref.org/works/10.1109/TVT.2023.3340447']
 checked: '2026-11-06'

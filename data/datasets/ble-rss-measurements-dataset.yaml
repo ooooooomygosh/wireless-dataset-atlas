@@ -13,7 +13,8 @@ license: MIT
 access: {url: 'https://zenodo.org/record/1618692', type: open}
 code: []
 paper: doi:10.3390/data4010012
-used_in: ["doi:10.1109/jiot.2022.3230913","doi:10.1109/jiot.2024.3420122","doi:10.1109/tmc.2023.3277333"]
+used_in: []
+citing: ["doi:10.1109/jiot.2022.3230913","doi:10.1109/jiot.2024.3420122","doi:10.1109/tmc.2023.3277333"]
 summary: {en: 'Bluetooth Low Energy RSS fingerprints from Accent Systems IBKS105 beacons, over 4,700 fingerprints collected in a university library and an office at Universitat Jaume I. The package includes MATLAB scripts for loading and filtering the data, and the beacon deployment and obstacle coordinates.', zh: '来自 Accent Systems IBKS105 信标的蓝牙低功耗（BLE）RSS 指纹，共超过 4,700 条，采集于 Jaume I 大学（Universitat Jaume I）的图书馆与办公室。数据包含用于加载和过滤数据的 MATLAB 脚本，以及信标部署和障碍物坐标。'}
 sources: ['https://zenodo.org/record/1618692', 'https://zenodo.org/api/records/1618692', 'https://api.crossref.org/works/10.3390/data4010012']
 checked: '2026-11-06'

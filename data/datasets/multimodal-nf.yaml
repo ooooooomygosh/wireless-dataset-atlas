@@ -17,6 +17,7 @@ access: {url: 'https://huggingface.co/datasets/lmyxxn/MultimodalNF', type: open}
 code: ['https://github.com/Lmyxxn/Multimodal-NF']
 paper: doi:10.1109/LWC.2026.3702704
 used_in: []
+citing: []
 summary: {en: 'Ray-traced near-field CSI at 7 GHz from a 64×64 UPA base station, synchronized with RGB images, LiDAR point clouds, noisy GPS, LoS labels and Top-5 beam indices for UAVs in 30 OSM-based urban scenes. An open-source generator produces the data, and the released set has 215,400 samples from 10,770 trajectories.', zh: '基于光线追踪的 7 GHz 近场 CSI，来自 64×64 UPA 基站，与 RGB 图像、LiDAR 点云、带噪声的 GPS、LoS 标签及 Top-5 波束索引同步，场景为 30 个基于 OSM 的城市三维场景中的无人机。数据由开源生成器产生，发布的数据集包含来自 10,770 条轨迹的 215,400 个样本。'}
 sources: ['https://arxiv.org/abs/2603.28280', 'https://github.com/Lmyxxn/Multimodal-NF', 'https://raw.githubusercontent.com/Lmyxxn/Multimodal-NF/main/README.md', 'https://huggingface.co/datasets/lmyxxn/MultimodalNF', 'https://api.crossref.org/works/10.1109/LWC.2026.3702704']
 checked: '2026-11-06'
