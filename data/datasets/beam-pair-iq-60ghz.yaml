@@ -1,0 +1,21 @@
+id: beam-pair-iq-60ghz
+name: 60 GHz I/Q Data per TX-RX Beam Pair
+year: 2023
+organization: University of South Carolina
+origin: measured
+tasks: [beam-management, channel-modeling]
+signals: [iq]
+bands_ghz: [60.48, 65.34]
+bandwidth_mhz: 1200
+environment: [indoor]
+samples: 1,580 IQ samples per RX capture; 25 locations; 64 TX and 64 RX AWV indices
+format: MAT
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/iq-data-given-tx-rx-beam-index-pair-link-level-analysis-60-ghz-band', type: restricted}
+code: ['https://github.com/alphansahin/mmWaveSDR']
+paper: arxiv:2302.08444
+used_in: []
+citing: ["doi:10.1109/jsac.2024.3413978","doi:10.1145/3570361.3614087","doi:10.1109/tmlcn.2024.3449834"]
+summary: {en: 'IQ captures from a 60 GHz beam sweep in an indoor office, over 64 TX and 64 RX beam index pairs at 60.48 GHz and 65.34 GHz. Each RX capture contains 1,580 IQ samples, and the data covers 25 locations.', zh: '在室内办公环境中，对64个发射与64个接收波束索引对进行60 GHz波束扫描得到的IQ采样，载波频率为60.48 GHz和65.34 GHz。每次接收采集包含1,580个IQ样本，数据覆盖25个位置。'}
+sources: ['https://ieee-dataport.org/documents/iq-data-given-tx-rx-beam-index-pair-link-level-analysis-60-ghz-band', 'https://arxiv.org/abs/2302.08444', 'https://arxiv.org/html/2302.08444', 'https://github.com/alphansahin/mmWaveSDR', 'https://api.crossref.org/works/10.21227/cm3m-2f84']
+checked: '2026-11-06'

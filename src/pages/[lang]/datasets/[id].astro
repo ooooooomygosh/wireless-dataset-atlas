@@ -1,0 +1,113 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../../layouts/Base.astro";
+import { allDatasets, paperOf, bibtex, taskById, t, label, labels, authorsShort, LANGS, type Lang } from "../../../lib/data.ts";
+import { specRows } from "../../../lib/view.ts";
+
+export const getStaticPaths = (async () => {
+  const ds = await allDatasets();
+  return LANGS.flatMap((lang) => ds.map((d) => ({ params: { lang, id: d.id }, props: { d } })));
+}) satisfies GetStaticPaths;
+
+const lang = Astro.params.lang as Lang;
+const { d } = Astro.props;
+const all = await allDatasets();
+const paper = paperOf(d.paper);
+const byCites = (ids: string[]) => ids.map((id) => ({ id, p: paperOf(id) })).sort((a, b) => b.p.cited_by - a.p.cited_by);
+const used = byCites(d.used_in);
+const citing = byCites(d.citing);
+const related = all
+  .filter((x) => x.id !== d.id)
+  .map((x) => ({ x, n: x.tasks.filter((k) => d.tasks.includes(k)).length }))
+  .filter((r) => r.n > 0)
+  .sort((a, b) => b.n - a.n || Math.abs(a.x.year - d.year) - Math.abs(b.x.year - d.year))
+  .slice(0, 6)
+  .map((r) => r.x);
+const meta = (p: ReturnType<typeof paperOf>) => [authorsShort(p.authors), p.venue, p.year, p.cited_by ? t(lang, "papers.cited", { n: p.cited_by }) : ""].filter(Boolean).join(" · ");
+const ld = { "@context": "https://schema.org", "@type": "Dataset", name: d.name, description: d.summary.en, url: d.access.url, license: d.license, datePublished: String(d.year), keywords: d.tasks.join(", ") };
+---
+<Base lang={lang} nav="datasets" title={d.name} description={d.summary[lang]}>
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <div class="crumb"><a href={`/${lang}/datasets/`}>{t(lang, "nav.datasets")}</a></div>
+  <div class="detail-head">
+    <div>
+      <h1>{d.name}</h1>
+      <div class="tags" style="margin-top:10px">
+        <span class="tag"><i class={`dot ${d.origin}`}></i>{label(labels.origin, d.origin, lang)}</span>
+        <span class="tag">{d.year}</span>
+        {d.tasks.map((k) => <a class="tag" href={`/${lang}/tasks/${k}/`}>{taskById(k).name[lang]}</a>)}
+      </div>
+      <p class="lead">{d.summary[lang]}</p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href={d.access.url} rel="noopener">{t(lang, "detail.download")} ↗</a>
+      <a class="btn" href={paper.url} rel="noopener">{t(lang, "detail.paper")} ↗</a>
+      {d.code[0] && <a class="btn" href={d.code[0]} rel="noopener">{t(lang, "detail.code")} ↗</a>}
+      <button class="btn" type="button" id="cmp" data-id={d.id}>{t(lang, "compare.add")}</button>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <div>
+      <section>
+        <h2 style="margin-bottom:12px">{t(lang, "detail.spec")}</h2>
+        <dl class="spec">
+          {specRows(d, lang).filter(([, , v]) => v !== t(lang, "spec.none")).map(([, k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
+          {d.aliases.length > 0 && (<><dt>{t(lang, "spec.aliases")}</dt><dd>{d.aliases.join(", ")}</dd></>)}
+        </dl>
+        <p class="faint" style="margin-top:8px;font-size:13px">{t(lang, "detail.checked")} {d.checked}</p>
+      </section>
+
+      <section class="section">
+        <h2>{t(lang, "detail.datasetPaper")}</h2>
+        <div class="paper-item">
+          <a class="t" href={paper.url} rel="noopener">{paper.title}</a>
+          <div class="m">{meta(paper)}</div>
+          <div class="row" style="margin-top:8px">
+            <button class="btn" type="button" id="bib" data-bib={bibtex(d.paper)} data-done={t(lang, "detail.copied")}>{t(lang, "detail.bibtex")}</button>
+          </div>
+        </div>
+      </section>
+
+      {(used.length > 0 || citing.length === 0) && (
+      <section class="section">
+        <h2>{t(lang, "detail.usedIn")}</h2>
+        {used.length ? <p class="faint" style="margin:-6px 0 8px;font-size:13px">{t(lang, "detail.usedInNote")}</p> : null}
+        {used.length ? used.map(({ p }) => (
+          <div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{meta(p)}</div></div>
+        )) : <p class="faint">{t(lang, "detail.noUsedIn")}</p>}
+      </section>
+      )}
+
+      {citing.length > 0 && (
+        <section class="section">
+          <h2>{t(lang, "detail.citing")}</h2>
+          <p class="faint" style="margin:-6px 0 8px;font-size:13px">{t(lang, "detail.citingNote")}</p>
+          {citing.map(({ p }) => (
+            <div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{meta(p)}</div></div>
+          ))}
+        </section>
+      )}
+    </div>
+
+    <aside>
+      <h2 style="margin-bottom:12px">{t(lang, "detail.related")}</h2>
+      <ul class="side-list">
+        {related.map((x) => <li><a href={`/${lang}/datasets/${x.id}/`}>{x.name}</a><div class="sub">{x.year} · {label(labels.origin, x.origin, lang)}</div></li>)}
+      </ul>
+    </aside>
+  </div>
+  <script>
+    import { getIds, toggle } from "../../../scripts/compare-store.ts";
+    const b = document.getElementById("cmp") as HTMLButtonElement;
+    const lang = document.body.dataset.lang;
+    const add = lang === "zh" ? "加入对比" : "Add to comparison", rem = lang === "zh" ? "移出对比" : "Remove from comparison";
+    const sync = () => { b.textContent = getIds().includes(b.dataset.id!) ? rem : add; };
+    b.addEventListener("click", () => { toggle(b.dataset.id!); sync(); });
+    window.addEventListener("compare-change", sync); sync();
+    const bib = document.getElementById("bib") as HTMLButtonElement;
+    bib.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(bib.dataset.bib!); const o = bib.textContent; bib.textContent = bib.dataset.done!; setTimeout(() => (bib.textContent = o), 1400); } catch {}
+    });
+  </script>
+</Base>

@@ -1,0 +1,18 @@
+id: eyefi
+name: EyeFi
+year: 2020
+organization: University of North Carolina at Chapel Hill; Bosch Research and Technology Center
+origin: measured
+tasks: [doa-estimation, wireless-sensing]
+signals: [csi]
+environment: [lab]
+subcarriers: 30
+format: HDF5
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/record/3882104', type: open}
+paper: doi:10.1109/dcoss49796.2020.00022
+used_in: []
+citing: ["doi:10.1109/tccn.2022.3222193","doi:10.1145/3560905.3567773","doi:10.1145/3715014.3724041"]
+summary: {en: Intel 5300 WiFi CSI (30 subcarriers across 3 antennas per packet) recorded while people walk through a lab area and a kitchen area. Ceiling-camera position ground truth and SpotFi-estimated angle-of-arrival values are included., zh: 在实验室区域和厨房区域中行走的人员采集的 Intel 5300 WiFi CSI（每个数据包 30 个子载波、3 根天线）。数据包含天花板摄像头提供的位置真值以及 SpotFi 估计的 AoA 值。}
+sources: ['https://zenodo.org/record/3882104']
+checked: '2026-11-06'

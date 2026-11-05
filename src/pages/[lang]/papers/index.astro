@@ -1,0 +1,74 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../../layouts/Base.astro";
+import { allDatasets, paperOf, t, authorsShort, LANGS, type Lang } from "../../../lib/data.ts";
+export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+const lang = Astro.params.lang as Lang;
+const ds = await allDatasets();
+type Entry = { id: string; kind: "dataset" | "study" | "citing"; datasets: { id: string; name: string }[] };
+const map = new Map<string, Entry>();
+for (const d of ds) {
+  const refs: [string, Entry["kind"]][] = [[d.paper, "dataset"], ...d.used_in.map((x): [string, Entry["kind"]] => [x, "study"]), ...d.citing.map((x): [string, Entry["kind"]] => [x, "citing"])];
+  for (const [id, kind] of refs) {
+    const e: Entry = map.get(id) ?? { id, kind, datasets: [] };
+    if (kind === "dataset" || (kind === "study" && e.kind === "citing")) e.kind = kind;
+    e.datasets.push({ id: d.id, name: d.name });
+    map.set(id, e);
+  }
+}
+const rows = [...map.values()].map((e) => ({ ...e, p: paperOf(e.id) })).sort((a, b) => b.p.cited_by - a.p.cited_by);
+---
+<Base lang={lang} nav="papers" title={t(lang, "papers.title")} description={t(lang, "papers.lead")}>
+  <div class="page-head"><h1>{t(lang, "papers.title")}</h1><p>{t(lang, "papers.lead")}</p></div>
+  <div class="toolbar">
+    <span id="pcount" class="muted" data-tpl={t(lang, "papers.count", { n: "{n}" })}></span>
+    <div class="row">
+      <select class="field" id="pdataset" aria-label={t(lang, "papers.filter.dataset")}>
+        <option value="">{t(lang, "papers.filter.dataset")}: {t(lang, "papers.all")}</option>
+        {ds.map((d) => <option value={d.id}>{d.name}</option>)}
+      </select>
+      <select class="field" id="pkind" aria-label={t(lang, "papers.filter.kind")}>
+        <option value="">{t(lang, "papers.filter.kind")}: {t(lang, "papers.all")}</option>
+        <option value="dataset">{t(lang, "papers.kind.dataset")}</option>
+        <option value="study">{t(lang, "papers.kind.study")}</option>
+        <option value="citing">{t(lang, "papers.kind.citing")}</option>
+      </select>
+      <select class="field" id="psort" aria-label="Sort">
+        <option value="cited">{t(lang, "papers.sort.cited")}</option>
+        <option value="year">{t(lang, "papers.sort.year")}</option>
+      </select>
+    </div>
+  </div>
+  <div id="plist">
+    {rows.map(({ id, p, kind, datasets }) => (
+      <div class="paper-item" id={id} data-kind={kind} data-datasets={datasets.map((x) => x.id).join(" ")} data-cited={p.cited_by} data-year={p.year ?? 0}>
+        <a class="t" href={p.url} rel="noopener">{p.title}</a>
+        <div class="m">{[authorsShort(p.authors), p.venue, p.year, p.cited_by ? t(lang, "papers.cited", { n: p.cited_by }) : ""].filter(Boolean).join(" · ")}</div>
+        <div class="tags" style="margin-top:6px"><span class="tag">{t(lang, kind === "dataset" ? "papers.kind.dataset" : kind === "study" ? "papers.kind.study" : "papers.kind.citing")}</span>{datasets.map((x) => <a class="tag" href={`/${lang}/datasets/${x.id}/`}>{x.name}</a>)}</div>
+      </div>
+    ))}
+  </div>
+  <script>
+    const items = [...document.querySelectorAll<HTMLElement>("#plist .paper-item")];
+    const $ = (id: string) => document.getElementById(id) as HTMLSelectElement;
+    const list = document.getElementById("plist")!;
+    function run() {
+      const ds = $("pdataset").value, kind = $("pkind").value, by = $("psort").value;
+      const key = by === "year" ? "year" : "cited";
+      [...items].sort((a, b) => Number(b.dataset[key]) - Number(a.dataset[key])).forEach((el) => list.appendChild(el));
+      let n = 0;
+      for (const el of items) {
+        const ok = (!ds || el.dataset.datasets!.split(" ").includes(ds)) && (!kind || el.dataset.kind === kind);
+        el.hidden = !ok; if (ok) n++;
+      }
+      const c = document.getElementById("pcount")!; c.textContent = c.dataset.tpl!.replace("{n}", String(n));
+      const p = new URLSearchParams(); if (ds) p.set("dataset", ds); if (kind) p.set("kind", kind); if (by !== "cited") p.set("sort", by);
+      history.replaceState(null, "", location.pathname + (p.size ? "?" + p : "") + location.hash);
+    }
+    const q = new URLSearchParams(location.search);
+    $("pdataset").value = q.get("dataset") || ""; $("pkind").value = q.get("kind") || ""; $("psort").value = q.get("sort") || "cited";
+    for (const id of ["pdataset", "pkind", "psort"]) $(id).addEventListener("change", run);
+    run();
+    if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
+  </script>
+</Base>

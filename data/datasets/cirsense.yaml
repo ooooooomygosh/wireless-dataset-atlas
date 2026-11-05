@@ -1,0 +1,24 @@
+id: cirsense
+name: CIRSense Dataset
+aliases: [CIRSense]
+year: 2026
+organization: The Chinese University of Hong Kong
+origin: measured
+tasks: [wireless-sensing]
+signals: [csi]
+bands_ghz: [5.25]
+bandwidth_mhz: 160
+environment: [indoor]
+standard: IEEE 802.11ax
+format: MAT
+samples: 871 MATLAB files
+size_gb: 27.77
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/cirsense-dataset-real-world-80211ax-csi-measurements-wireless-sensing', type: restricted}
+code: ['https://github.com/Oriseven/CIRSense']
+paper: doi:10.1109/tmc.2026.3678326
+used_in: []
+citing: []
+summary: {en: '802.11ax CSI at 5.25 GHz with 160 MHz bandwidth, collected with PicoScenes and an Intel AX200 NIC, for single-target breathing, ranging, two-target and NLoS breathing sensing. Ground truth is a NeuLog respiration belt and measured target distances.', zh: 载频5.25 GHz、带宽160 MHz 的 802.11ax CSI，使用 PicoScenes 与 Intel AX200 网卡采集，涵盖单目标呼吸、测距、双目标和 NLoS 呼吸感知。真值为 NeuLog 呼吸带及测得的目标距离。}
+sources: ['https://ieee-dataport.org/documents/cirsense-dataset-real-world-80211ax-csi-measurements-wireless-sensing', 'https://github.com/Oriseven/CIRSense', 'https://api.crossref.org/works/10.1109/TMC.2026.3678326']
+checked: '2026-11-06'

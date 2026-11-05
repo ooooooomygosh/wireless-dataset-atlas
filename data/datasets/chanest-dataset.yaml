@@ -1,0 +1,22 @@
+id: chanest-dataset
+name: ChanEst Dataset
+aliases: [ChanEst]
+year: 2026
+organization: Sheffield Hallam University, Edge Hill University
+origin: simulation
+tasks: [channel-estimation]
+signals: [csi]
+bands_ghz: [7]
+subcarriers: 612
+format: MAT, HDF5
+mobility: Doppler shift 5 to 5000 Hz
+standard: 5G NR (3GPP TS 38.211)
+license: CC BY 4.0
+access: {url: 'https://data.mendeley.com/datasets/8w3zjj8hzc/1', type: open}
+code: ['https://github.com/obydelion/ChanEst-Dataset-Generation']
+paper: doi:10.3390/telecom7030065
+used_in: []
+citing: []
+summary: {en: 'Simulated OFDM grids of 612 subcarriers by 14 symbols with DM-RS Type 2 pilots at 7 GHz over TDL-A to TDL-E channels, with SNR from -10 to 30 dB. Each sample stores least-squares estimates with 2-D interpolation as input and the perfect channel as label, for SISO and MIMO configurations.', zh: 在 7 GHz 频段、采用 DM-RS Type 2 导频的仿真 OFDM 资源网格（612 个子载波、14 个符号），信道模型为 TDL-A 至 TDL-E，信噪比为 -10 至 30 dB。每个样本以带二维插值的最小二乘估计作为输入，以理想信道作为标签，支持 SISO 与 MIMO 配置。}
+sources: ['https://data.mendeley.com/datasets/8w3zjj8hzc/1', 'https://github.com/obydelion/ChanEst-Dataset-Generation', 'https://api.crossref.org/works/10.3390/telecom7030065']
+checked: '2026-11-06'

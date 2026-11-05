@@ -1,0 +1,29 @@
+name: Refresh papers and links
+on:
+  schedule:
+    - cron: "0 3 1 * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node scripts/papers.mjs --refresh
+      - name: Link report
+        run: node scripts/check-links.mjs | tee link-report.txt
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bot/refresh-papers
+          title: Refresh citation counts
+          commit-message: Refresh citation counts from OpenAlex
+          body: |
+            Citation counts refreshed from OpenAlex. Links that did not return 200 are listed in the workflow log.
+          add-paths: data/papers.json

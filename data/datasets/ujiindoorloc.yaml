@@ -1,0 +1,21 @@
+id: ujiindoorloc
+name: UJIIndoorLoc
+year: 2014
+organization: GEOTEC, Universitat Jaume I
+origin: measured
+tasks: [localization]
+signals: [rssi]
+bands_ghz: []
+environment: [indoor]
+samples: 19,936 calibration and 1,111 validation/test samples
+format: CSV
+standard: WLAN
+license: CC BY 4.0
+access: {url: 'https://archive.ics.uci.edu/ml/datasets/UJIIndoorLoc', type: open}
+code: []
+paper: doi:10.1109/IPIN.2014.7275492
+used_in: ["doi:10.1109/jiot.2024.3430087","doi:10.1109/jiot.2024.3386889","doi:10.1109/iccworkshops53468.2022.9814616"]
+citing: ["doi:10.1109/jiot.2019.2940368","doi:10.1109/jsac.2023.3322766","doi:10.1109/infocom.2018.8485972"]
+summary: {en: 'Wi-Fi RSSI fingerprints from WLAN access points in three buildings of Universitat Jaume I, with calibration and validation/test samples for multi-building, multi-floor indoor localization. The data were collected by more than 20 users.', zh: 来自 Universitat Jaume I 三座建筑的 WLAN RSSI 指纹数据，包含用于多建筑、多楼层室内定位的校准样本和验证/测试样本。数据由 20 多名用户采集。}
+sources: ['https://geotec.uji.es/?p=1782', 'https://archive.ics.uci.edu/ml/datasets/UJIIndoorLoc', 'https://api.crossref.org/works/10.1109/IPIN.2014.7275492']
+checked: '2026-11-06'

@@ -1,0 +1,19 @@
+id: powder
+name: POWDER
+year: 2020
+organization: University of Utah
+origin: measured
+tasks: [isac, localization, channel-modeling]
+signals: [csi, iq, kpi, gps]
+bands_ghz: [3.42]
+environment: [outdoor-urban]
+format: CSV, SigMF
+license: 'Varies by record: CC BY 4.0 for the 2026 Outdoor Bistatic 5G ISAC and Outdoor 5G Mobility Zenodo records; Not stated for the other records listed on the data page'
+access: {url: 'https://powderwireless.net/data', type: open}
+code: []
+paper: doi:10.1016/j.comnet.2021.108281
+used_in: ["doi:10.1145/3570361.3592522","doi:10.1109/infocom53939.2023.10228929","doi:10.1109/infocom42981.2021.9488889","doi:10.1109/lcomm.2025.3557715","doi:10.1109/lnet.2022.3177712"]
+citing: ["doi:10.1109/comst.2021.3135829","doi:10.1109/mcom.101.2001120","doi:10.1109/ojcoms.2024.3447472"]
+summary: {en: 'Over-the-air measurements from the POWDER platform at the University of Utah, including raw 5G NR uplink SRS at 3.42 GHz with GNSS and drone-video ground truth, drive-test KPIs such as SS-RSRP and SS-SINR, and RF I/Q captures.', zh: 来自犹他大学 POWDER 平台的空口实测数据，包括 3.42 GHz 的原始 5G NR 上行 SRS（附 GNSS 与无人机视频真值）、SS-RSRP 与 SS-SINR 等路测 KPI，以及 RF I/Q 采样。}
+sources: ['https://powderwireless.net/data', 'https://docs.powderwireless.net/powder-overview.html', 'https://zenodo.org/records/23717707', 'https://zenodo.org/records/23741918', 'https://doi.org/10.1016/j.comnet.2021.108281', 'https://api.crossref.org/works/10.1016/j.comnet.2021.108281']
+checked: '2026-11-06'

@@ -1,0 +1,18 @@
+id: double-directional-140ghz
+name: Double-Directional Multipath Data at 140 GHz
+year: 2022
+organization: Aalto University
+origin: measured
+tasks: [localization]
+signals: [paths]
+bands_ghz: [140]
+environment: [indoor]
+samples: 12 line-of-sight and 56 non-line-of-sight indoor links
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/records/7185349', type: open}
+paper: doi:10.1109/VTC2022-Spring54318.2022.9860818
+used_in: []
+citing: ["doi:10.1109/twc.2023.3315732","doi:10.1109/tap.2023.3318861","doi:10.1109/tcomm.2024.3469543"]
+summary: {en: 'Double-directional multipath path data at 140 GHz for an indoor hall, derived from single-directional channel sounding and a measurement-based ray-launcher, covering 12 line-of-sight and 56 non-line-of-sight links.', zh: 140 GHz 室内大厅的双定向多径路径数据，由单定向信道探测结合基于测量的 ray-launcher 推导得到，覆盖 12 条视距（LOS）和 56 条非视距（NLOS）链路。}
+sources: ['https://zenodo.org/records/7185349', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1109/VTC2022-Spring54318.2022.9860818?fields=title,abstract,year,venue', 'https://api.crossref.org/works?query.title=Double-directional+multipath+data+at+140+GHz+derived+from+measurement-based+ray-tracer&rows=3&select=DOI,title,issued']
+checked: '2026-11-06'

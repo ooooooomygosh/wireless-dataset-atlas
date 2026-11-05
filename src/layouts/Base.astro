@@ -1,0 +1,74 @@
+---
+import "../styles/global.css";
+import { t, lastUpdated, type Lang } from "../lib/data.ts";
+
+interface Props { lang: Lang; title?: string; description?: string; nav?: "datasets" | "tasks" | "papers" | "compare" | "about" | "" }
+const { lang, title, description, nav = "" } = Astro.props;
+const other: Lang = lang === "en" ? "zh" : "en";
+const here = Astro.url.pathname;
+const swap = (l: Lang) => here.replace(/^\/(en|zh)\//, `/${l}/`);
+const fullTitle = title ? `${title} · ${t(lang, "site.name")}` : `${t(lang, "site.name")} · ${t(lang, "site.tagline")}`;
+const desc = description ?? t(lang, "site.description");
+const site = Astro.site!.origin;
+const links: [string, string][] = [["datasets", "nav.datasets"], ["tasks", "nav.tasks"], ["papers", "nav.papers"], ["compare", "nav.compare"], ["about", "nav.about"]];
+---
+<!doctype html>
+<html lang={lang === "zh" ? "zh-CN" : "en"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={site + here} />
+    <link rel="alternate" hreflang="en" href={site + swap("en")} />
+    <link rel="alternate" hreflang="zh-CN" href={site + swap("zh")} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <script is:inline>
+      try { var th = localStorage.getItem("atlas-theme"); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+    </script>
+  </head>
+  <body data-lang={lang}>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href={`/${lang}/`}>Wireless Dataset Atlas</a>
+        <nav class="nav" aria-label="Main">
+          {links.map(([k, key]) => <a href={`/${lang}/${k}/`} aria-current={nav === k ? "page" : undefined}>{t(lang, key)}</a>)}
+        </nav>
+        <div class="header-tools">
+          <button class="search-open" id="search-open" type="button" aria-label={t(lang, "search.hint")}>
+            <svg class="icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5" /><path d="M10.5 10.5 14 14" /></svg>
+            <span class="lbl">{t(lang, "search.hint")}</span><kbd>⌘K</kbd>
+          </button>
+          <a class="icon-btn" id="lang-switch" href={swap(other)} hreflang={other} lang={other === "zh" ? "zh-CN" : "en"}>{t(lang, "lang.switch")}</a>
+          <button class="icon-btn" id="theme" type="button" aria-label={t(lang, "theme.toggle")} title={t(lang, "theme.toggle")}>
+            <svg class="icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" /><path d="M8 2.5v11" /><path d="M8 2.5a5.5 5.5 0 0 1 0 11z" fill="currentColor" /></svg>
+          </button>
+          <a class="icon-btn" href="https://github.com/ooooooomygosh/wireless-dataset-atlas" aria-label="GitHub" rel="noopener">
+            <svg class="icon" viewBox="0 0 16 16"><path d="M6 13c-3 1-3-1.5-4.5-2M10 14v-2.2c0-.8.1-1.3-.5-1.8 2-.2 4-1 4-4.4 0-1-.3-1.8-1-2.5.2-.7.1-1.600-.2-2.400 0 0-.8-.2-2.500 1a8.500 8.500 0 0 0-4.600 0C3.500 1.500 2.700 1.700 2.700 1.700c-.3.800-.4 1.700-.2 2.400-.7.700-1 1.500-1 2.500 0 3.400 2 4.200 4 4.400-.5.500-.5 1-.5 1.800V14" /></svg>
+          </a>
+        </div>
+      </div>
+    </header>
+    <main><div class="wrap"><slot /></div></main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>{t(lang, "footer.license")} · {t(lang, "footer.updated", { date: lastUpdated })}</span>
+        <a href="https://github.com/ooooooomygosh/wireless-dataset-atlas">{t(lang, "footer.source")}</a>
+      </div>
+    </footer>
+    <dialog id="search" aria-label={t(lang, "search.hint")}>
+      <input id="search-input" type="search" placeholder={t(lang, "search.placeholder")} autocomplete="off" spellcheck="false" />
+      <ul id="search-results" role="listbox"></ul>
+    </dialog>
+    <div class="tray" id="tray" hidden data-label={t(lang, "compare.tray", { n: "{n}" })}>
+      <span id="tray-count"></span>
+      <a class="btn primary" id="tray-open" href={`/${lang}/compare/`}>{t(lang, "compare.open")}</a>
+      <button class="btn ghost" id="tray-clear" type="button">{t(lang, "compare.clear")}</button>
+    </div>
+    <script>
+      import "../scripts/base.ts";
+    </script>
+  </body>
+</html>

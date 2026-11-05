@@ -1,0 +1,20 @@
+id: wisig
+name: WiSig
+year: 2021
+organization: UCLA CORES Lab
+origin: measured
+tasks: [rf-fingerprinting]
+signals: [iq]
+bands_ghz: [2.4]
+samples: 10 million packets from 174 transmitters captured by 41 USRP receivers over 4 captures spanning about a month
+size_gb: 76.9
+standard: Wi-Fi
+license: CC BY-NC-SA 4.0
+access: {url: 'https://cores.ee.ucla.edu/downloads/datasets/wisig/', type: open}
+code: ['https://github.com/WiSig-dataset/wisig-examples', 'https://github.com/WiSig-dataset/wisig-process-raw']
+paper: arxiv:2112.15363
+used_in: ["doi:10.1109/twc.2025.3528568","doi:10.1109/jiot.2025.3573713","doi:10.1109/jiot.2025.3598480","doi:10.1109/lcomm.2025.3588073","doi:10.1109/iccc62479.2024.10681757"]
+citing: ["doi:10.1109/tmc.2023.3340039","doi:10.1109/twc.2024.3463740","doi:10.1109/twc.2024.3450972"]
+summary: {en: 'About 10 million Wi-Fi packets from 174 off-the-shelf transmitters, recorded by 41 USRP receivers over four captures spanning about a month on the ORBIT testbed. Raw captures and pre-processed subsets are both provided.', zh: 来自174台商用现成（off-the-shelf）Wi-Fi发射机的约1000万个数据包，由41台USRP接收机在ORBIT测试平台上分四次采集，历时约一个月。同时提供原始采集数据和预处理子集。}
+sources: ['https://cores.ee.ucla.edu/downloads/datasets/wisig/', 'https://arxiv.org/abs/2112.15363', 'https://github.com/WiSig-dataset/wisig-examples', 'https://github.com/WiSig-dataset/wisig-process-raw', 'https://raw.githubusercontent.com/WiSig-dataset/wisig-process-raw/master/matlab_detection_screening/read_complex_binary.m']
+checked: '2026-11-06'

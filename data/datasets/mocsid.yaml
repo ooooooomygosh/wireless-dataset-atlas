@@ -1,0 +1,20 @@
+id: mocsid
+name: MOCSID Multi-Cell Outdoor CSI Dataset
+aliases: [MOCSID]
+year: 2025
+organization: Centre Inria de Lyon
+origin: ray-tracing
+tasks: [channel-modeling, localization]
+signals: [csi, paths, pathloss]
+environment: [outdoor]
+format: HDF5
+size_gb: 17.9
+mobility: pedestrian users with recorded speeds
+license: ODC Open Database License v1.0
+access: {url: 'https://zenodo.org/records/14535165', type: open}
+paper: doi:10.1109/eucnc/6gsummit63408.2025.11037113
+used_in: ["doi:10.1109/lwc.2026.3727299"]
+citing: ["doi:10.1109/infocom59046.2026.11571682"]
+summary: {en: 'Synthetic CSI from Sionna ray-tracing simulation of an outdoor campus with ten base stations covering about 625 m by 535 m, with pedestrian users and mixed LoS and NLoS paths. The data include user positions, timestamps, speeds, multipath delays and path coefficients, and path loss.', zh: 基于 Sionna 射线追踪仿真的合成 CSI 数据，场景为约 625 m × 535 m 的户外校园，包含 10 个基站和行人用户，同时存在视距与非视距路径。数据包括用户位置、时间戳、速度、多径时延与路径系数，以及路径损耗。}
+sources: ['https://zenodo.org/records/14535165', 'https://zenodo.org/records/15294869']
+checked: '2026-11-06'

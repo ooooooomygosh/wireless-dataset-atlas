@@ -1,0 +1,40 @@
+---
+import type { Dataset } from "../schema.ts";
+import { ORIGIN } from "../i18n/enums.ts";
+import { t, type Lang } from "../lib/data.ts";
+interface Props { lang: Lang; datasets: Dataset[] }
+const { lang, datasets } = Astro.props;
+const lanes = Object.keys(ORIGIN);
+const W = 760, L = 120, R = 16, T = 8, laneH = 30, H = T + lanes.length * laneH + 28;
+const lo = Math.log10(0.1), hi = Math.log10(300);
+const x = (g: number) => L + ((Math.log10(g) - lo) / (hi - lo)) * (W - L - R);
+const ticks = [0.1, 0.3, 1, 3, 10, 30, 100, 300];
+---
+<div class="chart">
+  <h3>{t(lang, "chart.freq.title")}</h3>
+  <p class="note">{t(lang, "chart.freq.note")}</p>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t(lang, "chart.freq.title")}>
+    {ticks.map((g) => (<g><line class="grid" x1={x(g)} x2={x(g)} y1={T} y2={H - 24} /><text x={x(g)} y={H - 8} text-anchor="middle">{g}</text></g>))}
+    {lanes.map((o, i) => {
+      const y = T + i * laneH + laneH / 2;
+      const rows = datasets.filter((d) => d.origin === o);
+      return (
+        <g>
+          <text x={L - 10} y={y + 4} text-anchor="end">{ORIGIN[o][lang]}</text>
+          <line class="grid" x1={L} x2={W - R} y1={y} y2={y} />
+          {rows.map((d) => {
+            const a = Math.min(...d.bands_ghz), b = Math.max(...d.bands_ghz);
+            return (
+              <a href={`/${lang}/datasets/${d.id}/`}>
+                <title>{d.name} · {d.bands_ghz.join(", ")} GHz</title>
+                {b / a > 1.2 && <line x1={x(a)} x2={x(b)} y1={y} y2={y} stroke={`var(--c-${o})`} stroke-width="3" stroke-linecap="round" opacity="0.45" />}
+                {d.bands_ghz.map((g) => <circle cx={x(g)} cy={y} r="4.5" fill={`var(--c-${o})`} fill-opacity="0.7" stroke="var(--bg)" stroke-width="1" />)}
+              </a>
+            );
+          })}
+        </g>
+      );
+    })}
+    <line class="axis" x1={L} x2={W - R} y1={H - 24} y2={H - 24} />
+  </svg>
+</div>

@@ -1,0 +1,17 @@
+id: rf-challenge
+name: RF Challenge
+year: 2024
+organization: Massachusetts Institute of Technology
+origin: measured
+tasks: [spectrum-sensing]
+signals: [iq]
+format: SigMF, cf32_le (complex64)
+license: Not stated
+access: {url: 'https://rfchallenge.mit.edu/datasets/', type: open}
+code: ['https://github.com/RFChallenge/rfchallenge_singlechannel_starter']
+paper: doi:10.1109/ojcoms.2025.3556319
+used_in: ["doi:10.1109/ojcoms.2025.3597377"]
+citing: ["doi:10.1109/icc59461.2026.11587724","doi:10.1109/lcomm.2026.3650880"]
+summary: {en: 'Single-channel RF recordings of electromagnetic interference and digital communication signals, including a 5G signal, with recording bandwidths of 25 MHz and 61.44 MHz, used to form signal mixtures for interference rejection.', zh: 单通道射频录制数据，包含电磁干扰（EMI）和数字通信信号（含一个5G信号），录制带宽分别为25 MHz和61.44 MHz，用于构建干扰抑制的信号混合样本。}
+sources: ['https://rfchallenge.mit.edu/datasets/', 'https://arxiv.org/abs/2409.08839', 'https://arxiv.org/html/2409.08839', 'https://github.com/RFChallenge/rfchallenge_singlechannel_starter', 'https://raw.githubusercontent.com/RFChallenge/rfchallenge_singlechannel_starter/main/rfcutils/sigmf_helper_fn.py']
+checked: '2026-11-06'

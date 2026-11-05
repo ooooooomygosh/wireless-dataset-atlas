@@ -1,0 +1,18 @@
+id: cfm-bench
+name: CFM-Bench
+year: 2026
+origin: benchmark
+tasks: [csi-feedback, channel-prediction, beam-management]
+signals: [csi, rgb, lidar, imu]
+bands_ghz: [2.61, 3.44, 3.5, 28, 60]
+environment: [outdoor-urban, outdoor, industrial, uav, vehicular]
+samples: 157,900 single-frame examples
+license: 'Mixed by subset: S1, E1 and M1 CC BY 4.0; E2 CC BY-NC 4.0; R2 ODbL 1.0; R1 CC BY-NC-SA 4.0 (subject to upstream terms); code and documentation MIT'
+access: {url: 'https://www.chaspark.com/#/s/CFM-Bench', type: open}
+code: []
+paper: arxiv:2607.14975
+used_in: []
+citing: []
+summary: {en: 'CFM-Bench contains 157,900 single-frame examples from six domains: 3GPP statistical simulation, ray-tracing pipelines, terrestrial and aerial measurements, and a synchronized vehicular multimodal simulation. The vehicular domain pairs CSI at 100 Hz with four RGB cameras, LiDAR and inertial records.', zh: 'CFM-Bench 包含来自六个数据域的 157,900 个单帧样本：3GPP 统计仿真、射线追踪流程、地面与空中实测，以及同步的车载多模态仿真。车载域将 100 Hz 的 CSI 与四路 RGB 相机、LiDAR 和惯性数据对齐。'}
+sources: ['https://arxiv.org/abs/2607.14975', 'https://arxiv.org/pdf/2607.14975']
+checked: '2026-11-06'

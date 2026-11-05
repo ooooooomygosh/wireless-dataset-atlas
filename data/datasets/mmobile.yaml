@@ -1,0 +1,23 @@
+id: mmobile
+name: mMobile Mobility Dataset
+aliases: [mMobile]
+year: 2020
+organization: University of California San Diego
+origin: measured
+tasks: [beam-management, channel-modeling]
+signals: [csi, rssi]
+bands_ghz: [28]
+environment: [indoor, outdoor]
+subcarriers: 256
+samples: 129 UE locations across four gNB-UE link configurations
+size_gb: 0.0158
+format: MAT
+license: Not stated
+access: {url: 'https://github.com/ucsdwcsng/mMobile', type: open}
+code: ['https://github.com/ucsdwcsng/mMobile']
+paper: doi:10.1145/3412060.3418433
+used_in: []
+citing: ["doi:10.1145/3452296.3472924","doi:10.1109/infocom53939.2023.10229065","doi:10.1109/jsac.2024.3413978"]
+summary: {en: '28 GHz CSI measurements with 256 subcarriers at 240 kHz spacing, tagged by UE location and beam index, for indoor 2.5 m and 4.2 m and outdoor 10 m and 30 m gNB-UE links. The four configurations contain 129 UE locations in total.', zh: 28 GHz 信道状态信息（CSI）测量，包含 256 个子载波（子载波间隔 240 kHz），按用户位置和波束索引标注，覆盖室内 2.5 m 和 4.2 m、室外 10 m 和 30 m 的 gNB–UE 链路。四种配置共 129 个用户位置。}
+sources: ['https://github.com/ucsdwcsng/mMobile', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/README.md', 'https://api.github.com/repos/ucsdwcsng/mMobile/contents/dataset', 'https://api.crossref.org/works?query.title=mMobile+mobility+dataset&rows=3&select=DOI,title,issued']
+checked: '2026-11-06'

@@ -1,0 +1,22 @@
+id: hsdpa-commute-traces
+name: Commute Path Bandwidth Traces from 3G Networks
+aliases: [HSDPA-bandwidth logs, Commute path bandwidth traces from 3G networks]
+year: 2013
+organization: Simula Research Laboratory
+origin: measured
+tasks: [network-traffic]
+signals: [traffic, gps]
+bands_ghz: []
+environment: [vehicular, outdoor-urban]
+format: space-separated text
+mobility: bus, metro, tram, car, train, ferry
+standard: HSDPA (3G)
+license: Not stated
+access: {url: 'https://datasets.simula.no/hsdpa/', type: open}
+code: []
+paper: doi:10.1145/2483977.2483991
+used_in: []
+citing: ["doi:10.1145/3098822.3098843","doi:10.1109/infocom.2016.7524428","doi:10.1109/tnet.2020.2996964"]
+summary: {en: 'Logs of TCP streaming sessions on Telenor''s 3G/HSDPA network in Norway, with GPS positions and bytes received per measurement interval, recorded on bus, metro, tram, car, train and ferry routes. The test period is 2010-09-13 to 2011-04-21.', zh: 挪威 Telenor 3G/HSDPA 网络上 TCP 流媒体会话的日志，包含 GPS 位置和每个测量间隔接收的字节数，记录路线涵盖公交、地铁、有轨电车、汽车、火车和渡轮。测试时间为 2010-09-13 至 2011-04-21。}
+sources: ['https://datasets.simula.no/hsdpa/', 'https://api.crossref.org/works/10.1145/2483977.2483991']
+checked: '2026-11-06'

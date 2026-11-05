@@ -1,0 +1,20 @@
+---
+import type { Dataset } from "../schema.ts";
+import { t, label, labels, formatBands, type Lang } from "../lib/data.ts";
+import { tasksText } from "../lib/view.ts";
+interface Props { lang: Lang; datasets: Dataset[] }
+const { lang, datasets } = Astro.props;
+---
+<div class="cards" id="view-cards" hidden>
+  {datasets.map((d) => (
+    <article class="card" data-id={d.id}>
+      <div class="row between">
+        <a class="name" href={`/${lang}/datasets/${d.id}/`}>{d.name}</a>
+        <input class="chk" type="checkbox" data-compare={d.id} aria-label={`${t(lang, "compare.add")}: ${d.name}`} />
+      </div>
+      <div class="tags"><span class="tag"><i class={`dot ${d.origin}`}></i>{label(labels.origin, d.origin, lang)}</span><span class="tag">{formatBands(d.bands_ghz)} {t(lang, "unit.ghz")}</span><span class="tag">{d.year}</span></div>
+      <p>{d.summary[lang]}</p>
+      <div class="foot"><span>{tasksText(d, lang).slice(0, 2).join(" · ")}</span><span>{label(labels.access, d.access.type, lang)}</span></div>
+    </article>
+  ))}
+</div>

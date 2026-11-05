@@ -1,0 +1,17 @@
+id: donext
+name: DoNext
+year: 2025
+organization: TU Dortmund University, Communication Networks Institute (CNI)
+origin: measured
+tasks: [network-traffic]
+signals: [kpi, rssi, traffic]
+environment: [vehicular]
+format: CSV (semicolon-separated)
+license: Not stated
+access: {url: 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public', type: open}
+paper: doi:10.1109/TMLCN.2025.3564239
+used_in: []
+citing: ["doi:10.1109/infocom59046.2026.11571614","doi:10.1109/ojcoms.2026.3657799"]
+summary: {en: 'Active and passive measurements of 2G, 4G, 5G NSA and 5G SA mobile networks in Dortmund, Germany, collected in vehicles and at static locations. The CSV data contains signal metrics (RSRP, RSRQ, RSSI, SINR), cell and location fields, latency, and data rate with TCP congestion window and RTT.', zh: 在德国多特蒙德采集的移动网络主动与被动测量数据，包括车载测量和静态测量，覆盖 2G、4G、5G NSA 和 5G SA 网络。数据为 CSV 格式，包含 RSRP、RSRQ、RSSI、SINR 等信号指标、小区与位置字段、时延，以及带 TCP 拥塞窗口和 RTT 的数据速率。}
+sources: ['https://api.crossref.org/works/10.1109/TMLCN.2025.3564239', 'https://comnets.etit.tu-dortmund.de/research/open-source-open-data/', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/raw/main/README.md']
+checked: '2026-11-06'

@@ -1,0 +1,18 @@
+id: colosseum
+name: Colosseum
+year: 2020
+organization: Northeastern University Institute for the Wireless Internet of Things
+origin: simulation
+tasks: [channel-modeling, network-traffic]
+signals: [cir, traffic, kpi]
+bands_ghz: []
+environment: []
+license: Not stated
+access: {url: 'https://colosseum.sites.northeastern.edu/', type: registration}
+code: ['https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator']
+paper: arxiv:2110.10617
+used_in: ["doi:10.1109/tmc.2022.3188013","doi:10.1109/infocom48880.2022.9796744","doi:10.1109/ojcoms.2024.3447472","doi:10.1109/tmc.2024.3359596","doi:10.1109/wcnc51071.2022.9771908"]
+citing: ["doi:10.1109/tcomm.2022.3171800"]
+summary: {en: 'Testbed and emulator: 256 software-defined radios with a hardware channel emulator that produce channel impulse responses, IP traffic flows, and experiment logs including SINR, CQI, and downlink throughput.', zh: 试验平台与仿真器：由 256 台软件定义无线电和硬件信道仿真器组成，生成信道冲激响应、IP 业务流以及包含 SINR、CQI 和下行吞吐量的实验日志。}
+sources: ['https://advancedwireless.org/colosseum/', 'https://colosseum.sites.northeastern.edu/', 'https://openrangym.com/experimental-platforms/colosseum', 'https://arxiv.org/abs/2110.10617', 'https://ar5iv.labs.arxiv.org/html/2110.10617', 'https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator']
+checked: '2026-11-06'

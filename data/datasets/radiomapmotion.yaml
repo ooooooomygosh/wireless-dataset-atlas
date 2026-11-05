@@ -1,0 +1,18 @@
+id: radiomapmotion
+name: RadioMapMotion
+year: 2025
+origin: simulation
+tasks: [radio-map, channel-prediction]
+signals: [pathloss]
+format: PNG
+mobility: vehicle trajectories
+samples: 15,000 train, 5,000 validation, 5,000 test and 5,000 new-environment test sequences
+license: Not stated
+access: {url: 'https://github.com/UNIC-Lab/RadioMapMotion', type: open}
+code: ['https://github.com/UNIC-Lab/RadioMapMotion']
+paper: doi:10.1109/tccn.2026.3685413
+used_in: []
+citing: ["doi:10.1109/iccc70295.2026.11680295"]
+summary: {en: 'Radio map sequences of path loss along vehicle trajectories in 300 numbered environments, each sequence with 8 context frames and 5 prediction frames. The frames are stored as PNG images.', zh: 沿车辆轨迹生成的无线电地图序列（路径损耗），覆盖 300 个编号环境。每个序列包含 8 个输入帧和 5 个预测帧，以 PNG 图像存储。}
+sources: ['https://github.com/UNIC-Lab/RadioMapMotion', 'https://arxiv.org/abs/2511.17526', 'https://api.openalex.org/works/doi:10.1109/TCCN.2026.3685413']
+checked: '2026-11-06'

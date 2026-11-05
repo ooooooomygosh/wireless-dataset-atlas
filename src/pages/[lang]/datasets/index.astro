@@ -1,0 +1,62 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../../layouts/Base.astro";
+import DatasetTable from "../../../components/DatasetTable.astro";
+import DatasetCards from "../../../components/DatasetCards.astro";
+import { allDatasets, tasks, t, label, labels, bandClasses, LANGS, type Lang } from "../../../lib/data.ts";
+
+export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+const lang = Astro.params.lang as Lang;
+const ds = await allDatasets();
+const uniq = (f: (d: (typeof ds)[number]) => string[]) => [...new Set(ds.flatMap(f))];
+const facets = [
+  { key: "task", title: t(lang, "filter.task"), opts: tasks.filter((x) => ds.some((d) => d.tasks.includes(x.id))).map((x) => [x.id, x.name[lang]] as const) },
+  { key: "origin", title: t(lang, "filter.origin"), opts: uniq((d) => [d.origin]).map((o) => [o, label(labels.origin, o, lang)] as const) },
+  { key: "signal", title: t(lang, "filter.signal"), opts: uniq((d) => d.signals).map((o) => [o, label(labels.signal, o, lang)] as const) },
+  { key: "band", title: t(lang, "filter.band"), opts: ["sub7", "mid", "mmwave", "subthz"].filter((b) => ds.some((d) => bandClasses(d).includes(b))).map((o) => [o, label(labels.band, o, lang)] as const) },
+  { key: "environment", title: t(lang, "filter.environment"), opts: uniq((d) => d.environment).map((o) => [o, label(labels.environment, o, lang)] as const) },
+  { key: "access", title: t(lang, "filter.access"), opts: uniq((d) => [d.access.type]).map((o) => [o, label(labels.access, o, lang)] as const) },
+];
+---
+<Base lang={lang} nav="datasets" title={t(lang, "nav.datasets")}>
+  <div class="page-head"><h1>{t(lang, "nav.datasets")}</h1></div>
+  <div class="layout" id="browser" data-total={ds.length} data-count-tpl={t(lang, "list.count", { n: "{n}", total: "{total}" })}>
+    <button class="btn facet-toggle" id="facet-toggle" type="button" aria-expanded="false" aria-controls="facets">{t(lang, "filter.title")}</button>
+    <aside class="facets" id="facets" aria-label={t(lang, "filter.title")}>
+      <div class="head"><b>{t(lang, "filter.title")}</b><button class="btn ghost" id="reset" type="button" hidden>{t(lang, "filter.reset")}</button></div>
+      <h3><label for="q">{t(lang, "filter.search")}</label></h3>
+      <input class="field" id="q" type="search" autocomplete="off" />
+      {facets.map((f) => (
+        <div class="facet" data-facet={f.key}>
+          <h3>{f.title}</h3>
+          {f.opts.map(([v, text]) => (<label><input type="checkbox" value={v} /> <span>{text}</span><span class="c"></span></label>))}
+        </div>
+      ))}
+      <div class="facet" data-facet="code"><h3>{t(lang, "filter.code")}</h3><label><input type="checkbox" value="1" /> <span>{t(lang, "filter.code")}</span><span class="c"></span></label></div>
+    </aside>
+    <section>
+      <div class="toolbar">
+        <span id="count" class="muted" aria-live="polite"></span>
+        <div class="row">
+          <label class="row muted" style="gap:6px">{t(lang, "list.sort")}
+            <select class="field" id="sort">
+              <option value="name">{t(lang, "sort.name")}</option>
+              <option value="year">{t(lang, "sort.year")}</option>
+              <option value="cited">{t(lang, "sort.cited")}</option>
+            </select>
+          </label>
+          <div class="seg" role="group" aria-label="View">
+            <button type="button" id="v-table" aria-pressed="true">{t(lang, "list.table")}</button>
+            <button type="button" id="v-cards" aria-pressed="false">{t(lang, "list.cards")}</button>
+          </div>
+        </div>
+      </div>
+      <DatasetTable lang={lang} datasets={ds} filterable />
+      <DatasetCards lang={lang} datasets={ds} />
+      <p class="empty-state" id="empty" hidden>{t(lang, "list.empty")}</p>
+    </section>
+  </div>
+  <script>
+    import "../../../scripts/datasets.ts";
+  </script>
+</Base>

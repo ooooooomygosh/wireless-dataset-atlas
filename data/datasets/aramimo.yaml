@@ -1,0 +1,21 @@
+id: aramimo
+name: AraMIMO TV White Space Measurements
+aliases: [AraMIMO TVWS mMIMO Measurements]
+year: 2026
+organization: Iowa State University
+origin: measured
+tasks: [mimo-detection]
+signals: [csi, iq, kpi]
+bands_ghz: [0.563]
+environment: [rural]
+size_gb: 0.997
+format: CSV, JSON, HDF5
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/aramimo-tvws-mmimo-dataset', type: restricted}
+code: []
+paper: doi:10.1145/3615453.3616512
+used_in: []
+citing: ["doi:10.1109/jproc.2024.3402265","doi:10.1109/infocomwkshps61880.2024.10620737"]
+summary: {en: 'Over-the-air massive MIMO measurements at 563 MHz from a base station with 42 antennas serving six UEs at 0.64 to 3.84 km on crop and livestock farms around Ames, Iowa, with 6 to 24 MHz channel bandwidths, including raw CSI, IQ pilots, per-UE KPIs and MU-MIMO scheduling summaries.', zh: 在爱荷华州 Ames 周边农场采集的 563 MHz 空口大规模 MIMO 实测数据：基站 42 根天线服务 6 个用户终端，距离 0.64 至 3.84 km，信道带宽 6 至 24 MHz，包含原始 CSI、IQ 导频、用户级 KPI 以及 MU-MIMO 分组与调度汇总。}
+sources: ['https://ieee-dataport.org/documents/aramimo-tvws-mmimo-dataset']
+checked: '2026-11-06'

@@ -1,0 +1,19 @@
+id: dichasus
+name: DICHASUS
+year: 2021
+organization: University of Stuttgart, Institute of Telecommunications
+origin: measured
+tasks: [localization, channel-modeling]
+signals: [csi]
+bands_ghz: [1.272]
+bandwidth_mhz: 50
+environment: [indoor, lab]
+license: CC BY 4.0
+access: {url: 'https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi%3A10.18419%2FDARUS-2204', type: registration}
+code: []
+paper: arxiv:2206.15302
+used_in: []
+citing: ["doi:10.1109/tmlcn.2024.3474639","doi:10.1109/tcomm.2024.3386571","doi:10.1109/twc.2024.3426525"]
+summary: {en: 'Channel state information recorded at 1.272 GHz with 50 MHz bandwidth by the DICHASUS distributed massive MIMO channel sounder, with ground-truth position tags and timestamps. Two indoor sets are included: a non-line-of-sight single room and a line-of-sight lab room with distributed arrays.', zh: 由 DICHASUS 分布式大规模 MIMO 信道探测仪在 1.272 GHz、50 MHz 带宽下记录的信道状态信息（CSI），附带真值位置标签和时间戳。包含两组室内数据：非视距单室环境，以及带分布式阵列的视距实验室环境。}
+sources: ['https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi%3A10.18419%2FDARUS-2204', 'https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi%3A10.18419%2FDARUS-2218', 'https://export.arxiv.org/api/query?id_list=2206.15302', 'https://arxiv.org/abs/2206.15302']
+checked: '2026-11-06'

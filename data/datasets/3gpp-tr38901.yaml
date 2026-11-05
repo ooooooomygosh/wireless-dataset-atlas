@@ -1,0 +1,18 @@
+id: 3gpp-tr38901
+name: 3GPP TR 38.901
+aliases: [TR 38.901, Study on channel model for frequencies from 0.5 to 100 GHz]
+year: 2017
+organization: 3GPP; published by ETSI
+origin: statistical
+tasks: [channel-modeling, csi-feedback, channel-estimation]
+signals: [cir, paths]
+bands_ghz: []
+license: Not stated
+access: {url: 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/', type: open}
+code: []
+paper: doi:10.1002/9781119471509.w5gref048
+used_in: []
+citing: ["doi:10.1109/jiot.2022.3190845","doi:10.1109/twc.2022.3207918","doi:10.1109/jiot.2022.3155773"]
+summary: {en: 'A standardized stochastic channel generator for 0.5 to 100 GHz that defines CDL and TDL channel models, a map-based hybrid model and an ISAC channel model.', zh: 面向 0.5 至 100 GHz 的标准化随机信道生成器，定义了 CDL 与 TDL 信道模型、基于地图的混合信道模型以及 ISAC 信道模型。}
+sources: ['https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.02.00_60/tr_138901v190200p.pdf', 'https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3173', 'https://api.crossref.org/works/10.1002/9781119471509.w5gref048']
+checked: '2026-11-06'

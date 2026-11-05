@@ -1,0 +1,21 @@
+id: mm-fi
+name: MM-Fi
+year: 2023
+organization: Nanyang Technological University
+origin: measured
+tasks: [multimodal-sensing, wireless-sensing]
+signals: [rgb, depth, lidar, radar, csi]
+bands_ghz: [5, 60]
+bandwidth_mhz: 40
+subcarriers: 114
+environment: [indoor]
+samples: 1,080 sequences with over 320k synchronized frames
+license: CC BY-NC 4.0
+access: {url: 'https://github.com/ybhbingo/MMFi_dataset', type: open}
+code: ['https://github.com/ybhbingo/MMFi_dataset']
+paper: arxiv:2305.10345
+used_in: ["doi:10.1109/jiot.2026.3665246","doi:10.1109/iccc65529.2025.11149317","doi:10.1109/tmc.2026.3716456"]
+citing: ["doi:10.1109/jiot.2024.3359209","doi:10.1145/3715014.3722068","doi:10.1109/tmc.2026.3673171"]
+summary: {en: 'Synchronized RGB, depth, LiDAR, mmWave radar and WiFi CSI recordings of 40 subjects performing 27 actions, in 1,080 sequences with over 320k frames. Human pose annotations accompany the data, and the WiFi CSI platform runs at 5 GHz with 40 MHz bandwidth.', zh: '来自40名受试者执行27类动作的同步RGB、深度、LiDAR、毫米波雷达和WiFi CSI记录，共1,080个序列、超过320k帧。数据附有人体姿态标注，WiFi CSI平台工作在5 GHz，带宽为40 MHz。'}
+sources: ['https://github.com/ybhbingo/MMFi_dataset', 'https://arxiv.org/html/2305.10345', 'https://export.arxiv.org/api/query?id_list=2305.10345']
+checked: '2026-11-06'

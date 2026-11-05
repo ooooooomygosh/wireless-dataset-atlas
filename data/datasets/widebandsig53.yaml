@@ -1,0 +1,20 @@
+id: widebandsig53
+name: WidebandSig53
+aliases: [WBSig53]
+year: 2022
+organization: Peraton Labs
+origin: simulation
+tasks: [spectrum-sensing, modulation-classification]
+signals: [iq]
+bands_ghz: []
+environment: []
+samples: 550 thousand synthetically-generated samples containing about 2 million unique signals
+license: MIT
+access: {url: 'https://github.com/torchdsp/torchsig', type: open}
+code: ['https://github.com/torchdsp/torchsig']
+paper: arxiv:2211.10335
+used_in: []
+citing: []
+summary: {en: 'Synthetic wideband complex I/Q samples from 53 signal classes, 550 thousand samples containing about 2 million unique signals, generated with the TorchSig toolkit.', zh: 来自 53 类信号的合成宽带复数 I/Q 样本，共 55 万个样本，包含约 200 万个唯一信号，由 TorchSig 工具包生成。}
+sources: ['https://arxiv.org/abs/2211.10335', 'https://arxiv.org/html/2211.10335v1', 'https://github.com/torchdsp/torchsig']
+checked: '2026-11-06'

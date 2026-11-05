@@ -1,9 +1,0 @@
-DeepSense 6G 原论文（arXiv v2）
-Ahmed Alkhateeb, Gouranga Charan, Tawfik Osman, Andrew Hredzak, João Morais, Umut Demirhan, and Nikhil Srinivas. DeepSense 6G: A Large-Scale Real-World Multi-Modal Sensing and Communication Dataset. arXiv:2211.09769v2, 20 March 2023. 原版PDF，未修改，保留CC BY-NC-SA 4.0。
-Source: https://arxiv.org/pdf/2211.09769v2
-Version: arXiv:2211.09769v2
-License: CC-BY-NC-SA-4.0
-License text: https://creativecommons.org/licenses/by-nc-sa/4.0/
-License evidence: https://arxiv.org/html/2211.09769v2
-This PDF is redistributed unchanged for noncommercial research and educational reference.
-This file retains its upstream license; the Atlas code license does not replace it.

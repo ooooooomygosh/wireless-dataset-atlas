@@ -1,0 +1,25 @@
+name: Add a dataset
+description: Propose a dataset or data generator for the catalog
+labels: [dataset]
+body:
+  - type: input
+    id: name
+    attributes: { label: Dataset name }
+    validations: { required: true }
+  - type: input
+    id: page
+    attributes: { label: Official page or download URL }
+    validations: { required: true }
+  - type: input
+    id: paper
+    attributes: { label: Dataset paper (DOI or arXiv id) }
+    validations: { required: true }
+  - type: dropdown
+    id: task
+    attributes:
+      label: Main task
+      options: [Beam management, Channel estimation, CSI feedback, Channel prediction, DoA / AoA estimation, Localization and fingerprinting, Radio map and path loss, MIMO detection and precoding, Modulation classification, RF fingerprinting, Spectrum sensing, Wi-Fi / RF sensing, ISAC and radar, Multimodal sensing, RIS, Near-field and XL-MIMO, Foundation models, Network traffic and KPI]
+    validations: { required: true }
+  - type: textarea
+    id: notes
+    attributes: { label: "Details the sources state (carrier frequency, signals, environment, size, license)" }

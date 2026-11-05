@@ -1,0 +1,20 @@
+id: tuwien-fr3-indoor
+name: TU Wien FR3 Indoor MIMO Channel Dataset
+year: 2024
+organization: TU Wien
+origin: measured
+tasks: [channel-modeling, near-field]
+signals: [csi]
+bands_ghz: [6, 24]
+environment: [indoor]
+antennas: {tx: 9, rx: 9, array: ula}
+samples: 6 Rx positions, 9 far-field factors, 6001 frequency points
+format: JSON (gzip)
+license: CC BY 4.0
+access: {url: 'https://researchdata.tuwien.ac.at/doi/10.48436/hzn2f-hbb79', type: open}
+paper: doi:10.23919/eucap63536.2025.11000050
+used_in: []
+citing: []
+summary: {en: 'Indoor vector network analyzer MIMO S21 measurements from 6 to 24 GHz, with 6001 frequency points, 9 Tx and 9 Rx virtual ULA ports, six Rx positions and nine far-field factors. Noise measurements with 200 repetitions are provided in the same format.', zh: 室内矢量网络分析仪测得的 MIMO S21 数据，频率范围 6 至 24 GHz，共 6001 个频点，使用 9 个发射和 9 个接收虚拟 ULA 端口，包含 6 个接收位置和 9 个远场因子。另提供格式相同的噪声测量数据，共 200 次重复。}
+sources: ['https://researchdata.tuwien.ac.at/doi/10.48436/hzn2f-hbb79', 'https://api.datacite.org/dois/10.48436/hzn2f-hbb79', 'https://api.crossref.org/works/10.23919/eucap63536.2025.11000050']
+checked: '2026-11-06'

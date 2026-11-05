@@ -1,0 +1,19 @@
+id: synthetic-subthz-rss
+name: Synthetic Received Signal Power for Sub-THz Links
+year: 2024
+origin: statistical
+tasks: [beam-management, channel-modeling]
+signals: [beam-power]
+environment: [indoor]
+samples: 60-second traces, 60 per beam-tracking period, six beam-tracking periods (20-2000 ms)
+size_gb: 17.67
+format: TXT
+mobility: micromobility; blocker walking at 3.5 km/h
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/synthetic-received-signal-power-data-6g-sub-terahertz-cellular-systems', type: restricted}
+paper: doi:10.1109/access.2025.3617323
+used_in: []
+citing: []
+summary: {en: 'Generator output: 60-second received-signal-power traces with micromobility attenuation and beam-tracking periods of 20-2000 ms, generated from blockage and micromobility processes measured in an empty hall.', zh: 生成器输出：60秒接收信号功率轨迹，包含微移动衰减和20至2000 ms的波束跟踪周期，由在空旷大厅中实测的遮挡与微移动过程生成。}
+sources: ['https://ieee-dataport.org/documents/synthetic-received-signal-power-data-6g-sub-terahertz-cellular-systems', 'https://api.crossref.org/works/10.1109/access.2025.3617323']
+checked: '2026-11-06'

@@ -1,0 +1,18 @@
+id: hupr
+name: HuPR
+aliases: ['HuPR: A Benchmark for Human Pose Estimation Using Millimeter Wave Radar']
+year: 2023
+origin: measured
+tasks: [wireless-sensing, multimodal-sensing]
+signals: [radar, rgb]
+environment: [indoor]
+samples: 141,000 radar-camera triplets in 235 sequences
+license: CC BY-NC-SA 4.0
+access: {url: 'https://huggingface.co/datasets/nirajpkini/HuPR', type: request}
+code: ['https://github.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar']
+paper: doi:10.1109/WACV56688.2023.00567
+used_in: ["doi:10.1109/jiot.2025.3650083"]
+citing: ["doi:10.1109/jiot.2024.3476350","doi:10.1145/3715014.3722045","doi:10.1109/tmc.2025.3557504"]
+summary: {en: 'Two cross-calibrated IWR1843BOOST mmWave radars and a monocular RGB camera record six subjects in an indoor setting, with 235 sequences and 141,000 radar-camera triplets. Labels are 2D keypoints from a pretrained pose network run on the camera frames.', zh: '两台经过交叉标定的 IWR1843BOOST 毫米波雷达与一台单目 RGB 相机在室内记录六名受试者的数据，共 235 段序列、141,000 组雷达-相机三元组。标签为在相机图像上由预训练二维姿态估计网络生成的关键点。'}
+sources: ['https://mapl.cs.nycu.edu.tw/HuPR/', 'https://github.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar', 'https://arxiv.org/html/2210.12564v1', 'https://arxiv.org/abs/2210.12564', 'https://api.crossref.org/works/10.1109/WACV56688.2023.00567']
+checked: '2026-11-06'

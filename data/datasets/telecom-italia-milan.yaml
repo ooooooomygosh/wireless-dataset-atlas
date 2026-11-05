@@ -1,0 +1,19 @@
+id: telecom-italia-milan
+name: Telecom Italia Big Data Challenge (Milan and Trentino)
+year: 2015
+organization: Telecom Italia
+origin: benchmark
+tasks: [network-traffic]
+signals: [traffic]
+bands_ghz: []
+environment: [outdoor-urban]
+format: TXT, GeoJSON
+license: ODbL 1.0
+access: {url: 'https://www.nature.com/articles/sdata201555', type: open}
+code: []
+paper: doi:10.1038/sdata.2015.55
+used_in: []
+citing: ["doi:10.1109/jsac.2019.2904363","doi:10.1109/lcomm.2018.2841832","doi:10.1109/infocom42981.2021.9488883"]
+summary: {en: 'Aggregated mobile phone activity (SMS, call and Internet CDR counts) per grid square for Milan and the Province of Trentino, released with geolocated tweets, weather, electricity, news and administrative datasets.', zh: 米兰市和特伦托省按网格区块汇总的手机活动数据（短信、通话和互联网 CDR 计数），并与地理定位推文、气象、电力、新闻及行政区划数据一同发布。}
+sources: ['https://www.nature.com/articles/sdata201555', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/EGZHFV', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/QLCABU', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/QJWLFU', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/FZRVSX']
+checked: '2026-11-06'

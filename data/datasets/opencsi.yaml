@@ -1,0 +1,23 @@
+id: opencsi
+name: OpenCSI
+year: 2022
+origin: measured
+tasks: [localization, radio-map]
+signals: [csi, rssi]
+bands_ghz: []
+bandwidth_mhz: 20
+environment: [indoor]
+antennas: {tx: 4}
+subcarriers: 1200
+samples: roughly 1,000 consecutive fingerprints per reference point; reference points 1 cm apart on 8 lines of 5 m
+size_gb: 2.03
+standard: LTE
+license: CC BY 4.0
+access: {url: 'https://figshare.com/articles/dataset/openCSI/19596379', type: open}
+code: ['https://github.com/arthurgassner/thymio-radio-map', 'https://github.com/arthurgassner/srsLTE']
+paper: arxiv:2104.07963
+used_in: []
+citing: ["doi:10.1109/ojcoms.2025.3560153"]
+summary: {en: 'CSI and RSSI fingerprints from an indoor LTE eNodeB with 20 MHz bandwidth and 1200 subcarriers, recorded by a software-defined radio on a wheeled robot. Reference points lie on eight parallel lines, with roughly 1,000 consecutive fingerprints recorded at each point.', zh: 室内 LTE eNodeB 的 CSI 与 RSSI 指纹，链路带宽 20 MHz，包含 1200 个子载波，由软件无线电安装在轮式机器人上采集。参考点分布于八条平行线上，每个参考点记录约 1000 条连续指纹。}
+sources: ['https://arxiv.org/abs/2104.07963', 'https://arxiv.org/pdf/2104.07963', 'https://figshare.com/articles/dataset/openCSI/19596379', 'https://api.figshare.com/v2/articles/19596379', 'https://github.com/arthurgassner/thymio-radio-map', 'https://api.github.com/repos/arthurgassner/srsLTE']
+checked: '2026-11-06'

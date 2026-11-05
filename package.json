@@ -1,11 +1,18 @@
 {
   "name": "wireless-dataset-atlas",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "test": "node tests/data.mjs && python3 -m unittest discover -s tests -p 'test_*.py'",
-    "serve": "python3 -m http.server 8765 -d dist"
+    "build": "astro build",
+    "test": "node scripts/validate.mjs && node scripts/papers.mjs --check && python3 -m unittest discover -s tests -p 'test_*.py'",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "check": "astro check",
+    "validate": "node scripts/validate.mjs",
+    "papers": "node scripts/papers.mjs",
+    "used-in": "node scripts/used-in.mjs",
+    "links": "node scripts/check-links.mjs",
+    "readme": "node scripts/readme.mjs"
   },
   "license": "MIT",
   "engines": {
@@ -15,5 +22,17 @@
     "type": "git",
     "url": "https://github.com/ooooooomygosh/wireless-dataset-atlas.git"
   },
-  "homepage": "https://wireless-dataset-atlas.vercel.app"
+  "homepage": "https://wireless-dataset-atlas.vercel.app",
+  "type": "module",
+  "dependencies": {
+    "astro": "^7.4.5",
+    "js-yaml": "^5.5.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.19.2",
+    "typescript": "^6.0.3"
+  }
 }

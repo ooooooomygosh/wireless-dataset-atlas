@@ -1,0 +1,19 @@
+id: cost2100
+name: COST 2100 Channel Model
+aliases: [COST2100]
+year: 2012
+organization: COST 2100; extended in COST IC1004 and COST CA15104 (IRACON)
+origin: statistical
+tasks: [channel-modeling, csi-feedback]
+signals: [csi]
+bands_ghz: [0.3, 2.6, 5]
+environment: [indoor, outdoor-suburban]
+license: GPL-3.0-or-later
+access: {url: 'https://github.com/cost2100/cost2100', type: open}
+code: ['https://github.com/cost2100/cost2100']
+paper: doi:10.1109/mwc.2012.6393523
+used_in: ["doi:10.1109/twc.2013.010413.120620","doi:10.1109/twc.2023.3241841","doi:10.1109/ojcoms.2020.2987704","doi:10.1109/twc.2020.3028249","doi:10.1109/twc.2023.3261782"]
+citing: ["doi:10.1109/lwc.2018.2818160","doi:10.1109/jsac.2017.2719924","doi:10.1109/comst.2017.2783541"]
+summary: {en: 'A MATLAB generator of spatially consistent MIMO and massive MIMO channel transfer functions for omnidirectional, dipole, measured-response, cylindrical and VLA arrays. Scenario names cover IndoorHall and SemiUrban settings at 0.3, 2.6 and 5 GHz.', zh: 用于生成空间一致性 MIMO 与大规模 MIMO 信道传递函数的 MATLAB 生成器，支持全向、偶极子、实测天线响应、圆柱阵列及 VLA 阵列。场景名称涵盖 IndoorHall 与 SemiUrban 环境，载频为 0.3、2.6 和 5 GHz。}
+sources: ['https://github.com/cost2100/cost2100', 'https://github.com/cost2100/cost2100/blob/master/matlab/Readme.txt', 'https://api.crossref.org/works?query.title=The+COST+2100+MIMO+channel+model&rows=3&select=DOI,title,issued']
+checked: '2026-11-06'

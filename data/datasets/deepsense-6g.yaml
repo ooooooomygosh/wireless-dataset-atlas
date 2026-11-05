@@ -1,0 +1,22 @@
+id: deepsense-6g
+name: DeepSense 6G
+aliases: [DeepSense]
+year: 2022
+organization: Wireless Intelligence Lab, Arizona State University
+origin: measured
+tasks: [beam-management, multimodal-sensing, localization]
+signals: [beam-power, rgb, lidar, radar, gps]
+bands_ghz: [60]
+environment: [indoor, outdoor-urban, vehicular, uav]
+antennas: {rx: 16, array: ula}
+samples: more than 1 million data points
+mobility: pedestrians on bikes, skateboards and scooters; vehicles at varying speeds
+license: CC BY-NC-ND 4.0
+access: {url: 'https://www.deepsense6g.net/', type: registration}
+code: ['https://github.com/wireless-intelligence-lab/DeepSense6G']
+paper: arxiv:2211.09769
+used_in: ["doi:10.1109/mcom.006.2200480","doi:10.1109/lwc.2022.3219409","doi:10.1109/wcnc51071.2022.9771651","doi:10.1109/tvt.2024.3506948","doi:10.1109/icc45855.2022.9838438"]
+citing: ["doi:10.1109/tcomm.2024.3490740"]
+summary: {en: 'Real-world measurements of co-existing multi-modal sensing and communication data across more than 40 scenarios at more than 15 indoor and outdoor sites, with 60 GHz mmWave beam power, RGB camera, 3D LiDAR, FMCW radar and RTK GPS recordings.', zh: 在 15 个以上室内外场地采集的 40 多个场景真实多模态感知与通信数据，包括 60 GHz 毫米波波束功率、RGB 摄像头、3D LiDAR、FMCW 雷达和 RTK GPS 记录。}
+sources: ['https://www.deepsense6g.net/', 'https://ar5iv.labs.arxiv.org/html/2211.09769', 'https://export.arxiv.org/api/query?id_list=2211.09769', 'https://github.com/wireless-intelligence-lab/DeepSense6G']
+checked: '2026-11-06'

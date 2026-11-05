@@ -1,0 +1,18 @@
+id: wavesfm-suite
+name: WavesFM Evaluation Suite
+year: 2026
+origin: benchmark
+tasks: [foundation-model, beam-management, localization]
+signals: [csi, cir, iq]
+bands_ghz: []
+environment: []
+format: HDF5
+license: Not stated
+access: {url: 'https://github.com/AhmedTarek62/wavesfm', type: open}
+code: ['https://github.com/AhmedTarek62/wavesfm']
+paper: arxiv:2511.15162
+used_in: []
+citing: []
+summary: {en: 'Evaluation suite whose benchmark tasks use CSI, CIR and IQ data from DeepMIMO, RadioML, POWDER, ICARUS, RadCom, EfficientFi and UWB datasets. The repository includes preprocessing scripts that convert these datasets into HDF5 cache files and fine-tuning code for a ViT-based model.', zh: 评测套件，其基准任务使用来自 DeepMIMO、RadioML、POWDER、ICARUS、RadCom、EfficientFi 和 UWB 数据集的 CSI、CIR 和 IQ 数据。代码仓库包含将这些数据集转换为 HDF5 缓存文件的预处理脚本，以及基于 ViT 模型的微调代码。}
+sources: ['https://github.com/AhmedTarek62/wavesfm/blob/main/README.md', 'https://wavesfm.waveslab.ai/benchmarks/', 'https://wavesfm.waveslab.ai/docs/datasets/deepmimo/', 'https://arxiv.org/abs/2511.15162']
+checked: '2026-11-06'

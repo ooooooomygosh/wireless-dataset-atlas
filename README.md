@@ -1,60 +1,77 @@
 # Wireless Dataset Atlas
 
-[在线网站](https://wireless-dataset-atlas.vercel.app) · [数据生产工作台](https://wireless-dataset-atlas.vercel.app/#pipelines) · [对比实验室](https://wireless-dataset-atlas.vercel.app/#compare) · [论文与官方材料](https://wireless-dataset-atlas.vercel.app/#library)
+[English](README.md) · [简体中文](README.zh-CN.md) · [Website](https://wireless-dataset-atlas.vercel.app)
 
-[English website](https://wireless-dataset-atlas.vercel.app/?lang=en) · [中文网站](https://wireless-dataset-atlas.vercel.app/?lang=zh)
+[![Check](https://github.com/ooooooomygosh/wireless-dataset-atlas/actions/workflows/check.yml/badge.svg)](https://github.com/ooooooomygosh/wireless-dataset-atlas/actions/workflows/check.yml)
+[![License: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
+[![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-面向波束管理与无线基础模型的在线研究知识库。资源卡将原始观测、数据生产流程、实验控制能力和研究结论连接到官方材料，帮助决定主数据源、验证源和需要补做的工作。
+A catalog of public datasets and data generators for machine learning in wireless communications. Each entry links to the data, the dataset paper, code where it exists, and studies that use the dataset.
 
-## 从实验问题进入
+<!-- stats:start -->
+128 datasets · 19 tasks · 444 papers
+<!-- stats:end -->
 
-- **数据怎样生产**：逐步查看输入、操作、输出、配置、复现检查与依据；点击阶段可跳转，流程支持JSON导出。
-- **不同资源怎样比较**：切换生产链、参数变更、研究用途和完整字段四个视角。区分改RF载频、改基带采样、改阵列、换码本、Doppler演化与移动遮挡。
-- **先用哪个资源**：6条研究路线给出少量主源／补充／验证建议、最小实验和继续／停止条件。
-- **读什么、下载什么**：论文卡列出系统、学习对象、最终决策、评估协议及阅读定位；[官方材料目录](materials/README.md)保存可再分发的原文件与许可。
+## Tasks
 
-DeepMIMO、Sionna RT、QuaDRiGa和DeepSense的流程与变更规则单独核验。软件支持、具体场景启用的机制、发布文件已有的字段分别记录。资源系列数、派生语料数和独立物理来源数采用各自口径。
+<!-- tasks:start -->
+| Task | Datasets |
+| --- | ---: |
+| [Channel modeling and generation](https://wireless-dataset-atlas.vercel.app/en/tasks/channel-modeling/) | 26 |
+| [Beam management](https://wireless-dataset-atlas.vercel.app/en/tasks/beam-management/) | 16 |
+| [Channel estimation](https://wireless-dataset-atlas.vercel.app/en/tasks/channel-estimation/) | 9 |
+| [CSI feedback and compression](https://wireless-dataset-atlas.vercel.app/en/tasks/csi-feedback/) | 5 |
+| [Channel prediction](https://wireless-dataset-atlas.vercel.app/en/tasks/channel-prediction/) | 5 |
+| [DoA / AoA estimation](https://wireless-dataset-atlas.vercel.app/en/tasks/doa-estimation/) | 4 |
+| [Localization and fingerprinting](https://wireless-dataset-atlas.vercel.app/en/tasks/localization/) | 23 |
+| [Radio map and path-loss prediction](https://wireless-dataset-atlas.vercel.app/en/tasks/radio-map/) | 12 |
+| [MIMO detection and precoding](https://wireless-dataset-atlas.vercel.app/en/tasks/mimo-detection/) | 3 |
+| [Modulation and signal classification](https://wireless-dataset-atlas.vercel.app/en/tasks/modulation-classification/) | 7 |
+| [RF fingerprinting](https://wireless-dataset-atlas.vercel.app/en/tasks/rf-fingerprinting/) | 7 |
+| [Spectrum sensing and occupancy](https://wireless-dataset-atlas.vercel.app/en/tasks/spectrum-sensing/) | 10 |
+| [Wi-Fi and RF sensing](https://wireless-dataset-atlas.vercel.app/en/tasks/wireless-sensing/) | 19 |
+| [ISAC and radar](https://wireless-dataset-atlas.vercel.app/en/tasks/isac/) | 6 |
+| [Multimodal sensing-aided communication](https://wireless-dataset-atlas.vercel.app/en/tasks/multimodal-sensing/) | 14 |
+| [Reconfigurable intelligent surfaces](https://wireless-dataset-atlas.vercel.app/en/tasks/ris/) | 6 |
+| [Near-field and XL-MIMO](https://wireless-dataset-atlas.vercel.app/en/tasks/near-field/) | 3 |
+| [Wireless foundation models](https://wireless-dataset-atlas.vercel.app/en/tasks/foundation-model/) | 5 |
+| [Network traffic and KPI](https://wireless-dataset-atlas.vercel.app/en/tasks/network-traffic/) | 13 |
+<!-- tasks:end -->
 
-## 本地开发与验证
+## What each entry records
 
-网站右上角提供 `Auto / 中文 / English`。首次访问按浏览器首选语言选择；手动选择保存在本地，刷新后继续生效。分享链接可使用 `?lang=en` 或 `?lang=zh`，链接指定的语言优先。自动模式在没有中英文偏好时使用英文。
+Release year, data origin (measured, ray tracing, statistical model, simulation, benchmark suite), tasks, signal types, carrier frequency, bandwidth, environment, antenna configuration, sample count and size, license, access type, official links, and the date the entry was last checked against its sources. Values the sources do not state are left out.
 
-界面、资源正文、生产流程、研究路线、来源说明和材料索引均有英文映射，搜索支持中英文关键词。切换只改变显示，保持筛选、收藏、对比、研究约束和展开状态；原始JSON、代码与官方文件保持原文。CSV对比导出使用当前显示语言。
+Paper titles, authors, venues and citation counts come from [OpenAlex](https://openalex.org) and are refreshed monthly by a scheduled workflow. Each dataset lists studies that name it in the title or abstract and the most cited non-survey works that cite its dataset paper, both limited to a fixed list of venues; the rule is documented on the [About page](https://wireless-dataset-atlas.vercel.app/en/about/).
 
-需要Node.js 22+、Python 3.12；科学计算测试使用NumPy，完整结构验证使用jsonschema。前端使用原生HTML/CSS/JavaScript。
+## Repository layout
 
-```sh
-python3 -m pip install numpy==2.2.6 jsonschema==4.25.1
-npm test
-python3 scripts/validate_schema.py
-npm run build
-npm run serve
+```
+data/datasets/*.yaml   one file per dataset (source of truth)
+data/tasks.yaml        task definitions, English and Chinese
+data/papers.json       paper metadata, generated by scripts/papers.mjs
+src/                   Astro site (pages, components, i18n)
+scripts/               validation, paper resolution, link checks
+tutorials/             Python examples for DeepMIMO, Sionna RT and DeepSense
 ```
 
-预览地址为 `http://localhost:8765`。源文件在 `src/`，`data/atlas.json` 是内容唯一来源；构建生成 `dist/index.html`、根目录HTML、BibTeX来源索引及材料目录。直接修改源文件和结构化数据，再构建。
+## Development
 
-## 内容与材料维护
+Node.js 22 or newer.
 
-1. 阅读官方论文、文档或固定版本源码，记录实际范围与定位。
-2. 更新资源的字段、生产步骤、参数变更规则和关联来源；按具体版本／Scenario限定结论。
-3. 新增论文时填写输入、预测对象、决策目标、评估协议与尚需验证的研究问题。新增派生数据时说明上游来源和划分，合并预印本与正式版本。
-4. 将许可允许再分发的文件放进 `materials/official/<resource>/`，保留完整LICENSE／NOTICE和归属；在 `officialMaterials` 记录原URL、版本、文件路径、许可和阅读范围。其他材料使用官方链接。
-5. 运行检查与构建，验证涉及的网页交互，然后提交PR。数据、模型权重和私人阅读缓存使用各自存储入口；`materials/local-reading/` 不提交。
+```sh
+npm ci
+npm run dev        # http://localhost:4321
+npm test           # schema validation, paper ids, Python tests
+npm run build      # static site in dist/
+```
 
-数据结构定义在 [data/schema.json](data/schema.json)。新增资源、来源、论文、材料与项目使用稳定ID关联。来源索引保留阅读层级和访问状态；网页可访问、字段说明核验、实际数据实验采用不同验证状态。
+`npm test` runs `scripts/validate.mjs` (schema, task ids, duplicates) and `scripts/papers.mjs --check` (every paper id resolves). The Python tests need NumPy 2.2.
 
-`data/i18n/en.json` 保存英文正文与界面映射；`src/i18n.js` 负责浏览器语言识别和显示层切换。更新中文内容时同步更新英文条目，`npm test` 会检查正文覆盖和译文完整性。页面渲染后也要检查新增界面文字的英文显示。
+## Contributing
 
-## 教程与验证范围
+See [CONTRIBUTING.md](CONTRIBUTING.md). To add a dataset, create `data/datasets/<id>.yaml`, run `npm run papers` and `npm run used-in -- <id>`, and open a pull request with the source URLs.
 
-`tutorials/` 包含DeepMIMO、Sionna RT、DeepSense解析、跨频配对、分组划分、通信基线和几何扫描点云示例。Sionna RT 2.2.0内置街谷的CFR与几何扫描检查已在Apple Silicon Metal后端运行；原始DeepMIMO／DeepSense数据端到端实验未运行。源码核验和未执行的研究建议在页面中分别标明。
+## License
 
-完整环境锁文件为 `tutorials/requirements-macos-py312.lock.txt`。DeepMIMO4.0.5要求NumPy<2.3，本项目共用验证环境使用2.2.6。详细检查结果见 [QUALITY.md](QUALITY.md)。
-
-## 发布与协作
-
-Vercel关联本仓库 `main` 分支，推送后运行 `node scripts/build.mjs` 并部署 `dist/`。GitHub Actions检查数据契约、科学计算、JSON Schema与构建。
-
-通过 [Issues](https://github.com/ooooooomygosh/wireless-dataset-atlas/issues) 提交新来源、字段修正或复现问题；欢迎PR补充材料与协议。提交时附原始依据、适用版本和阅读范围。
-
-项目代码与原创内容使用 [MIT](LICENSE)。`materials/official/` 下的第三方文件保留各自许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+Code is released under the [MIT license](LICENSE). Catalog data is released under CC BY 4.0. Datasets and papers keep the licenses of their owners. See [CITATION.cff](CITATION.cff) for how to cite this project.

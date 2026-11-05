@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../../layouts/Base.astro";
+import { allDatasets, tasks, t, LANGS, type Lang } from "../../../lib/data.ts";
+export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+const lang = Astro.params.lang as Lang;
+const n = (await allDatasets()).length;
+const repo = "https://github.com/ooooooomygosh/wireless-dataset-atlas";
+---
+<Base lang={lang} nav="about" title={t(lang, "about.title")}>
+  <div class="page-head"><h1>{t(lang, "about.title")}</h1></div>
+  {lang === "en" ? (
+    <div class="prose">
+      <p>Wireless Dataset Atlas lists {n} public datasets and data generators for machine learning in wireless communications, across {tasks.length} task areas. Each entry links to the data, its dataset paper, code where available, and studies that use it.</p>
+      <h2>Inclusion criteria</h2>
+      <ul>
+        <li>The data or generator is publicly described and reachable from an official page (project site, repository, Zenodo, IEEE DataPort, or similar).</li>
+        <li>A dataset paper or technical report with a DOI or arXiv identifier exists.</li>
+        <li>The content is radio-related: channel or signal measurements, ray-tracing and simulation outputs, or sensor and network data collected for wireless research.</li>
+      </ul>
+      <h2>Fields</h2>
+      <p>Each entry records the release year, data origin (measured, ray tracing, statistical model, simulation, benchmark suite), tasks, signal types, carrier frequencies in GHz, bandwidth, environment, antenna configuration, sample count and size where the source states them, license, and access type. A field that the source does not state is shown as not stated. Entries carry the date they were last checked against the source.</p>
+      <h2>Papers</h2>
+      <p>Titles, authors, venues, years and citation counts come from OpenAlex and are refreshed monthly. Both lists below cover works that cite the dataset paper and appear in a fixed list of IEEE, ACM, USENIX and machine-learning venues, ordered by citation count. "Studies using this dataset" holds works that name the dataset in the title or abstract, up to five. "Most cited works citing the dataset paper" holds the most cited non-survey works from the same venues, up to three, whose use of the data is not verified.</p>
+      <h2>Contributing</h2>
+      <p>Each dataset is one YAML file in <code>data/datasets/</code>. Open an issue or pull request on <a href={repo}>GitHub</a>; the template lists the required fields and the checks that run on every change.</p>
+      <h2>License and citation</h2>
+      <p>Code is released under the MIT license and the catalog data under CC BY 4.0. Datasets and papers keep their own licenses. A citation file is provided in the repository.</p>
+    </div>
+  ) : (
+    <div class="prose">
+      <p>Wireless Dataset Atlas 收录 {n} 个面向无线通信机器学习的公开数据集与数据生成器，覆盖 {tasks.length} 类任务。每个条目链接到数据本身、数据集论文、可用的代码，以及使用该数据集的研究。</p>
+      <h2>收录标准</h2>
+      <ul>
+        <li>数据或生成器有公开说明，并能从官方页面（项目主页、代码仓库、Zenodo、IEEE DataPort 等）访问。</li>
+        <li>存在带 DOI 或 arXiv 编号的数据集论文或技术报告。</li>
+        <li>内容与无线相关：信道或信号测量、射线追踪与仿真输出，以及为无线研究采集的传感器和网络数据。</li>
+      </ul>
+      <h2>字段</h2>
+      <p>每个条目记录发布年份、数据来源（实测、射线追踪、统计模型、仿真、基准集合）、任务、信号类型、载波频率（GHz）、带宽、场景、天线配置，以及来源给出的样本规模与数据量、许可和获取方式。来源没有给出的字段显示为“未说明”。条目标注最近一次与来源核对的日期。</p>
+      <h2>论文</h2>
+      <p>标题、作者、期刊会议、年份和引用数来自 OpenAlex，每月更新。下面两个列表都限于引用了数据集论文、并发表在固定的 IEEE、ACM、USENIX 及机器学习会议期刊清单内的工作，按引用数排序。“使用该数据集的研究”收录标题或摘要中提到该数据集的工作，最多五篇；“引用数据集论文的高被引工作”收录同一清单内引用数最高的非综述工作，最多三篇，其是否使用该数据未经核实。</p>
+      <h2>参与贡献</h2>
+      <p>每个数据集对应 <code>data/datasets/</code> 下的一个 YAML 文件。可在 <a href={repo}>GitHub</a> 提交 Issue 或 Pull Request，模板列出必填字段和每次提交运行的检查。</p>
+      <h2>许可与引用</h2>
+      <p>代码使用 MIT 许可，目录数据使用 CC BY 4.0。数据集与论文保留各自的许可。仓库中提供引用文件。</p>
+    </div>
+  )}
+</Base>

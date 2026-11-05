@@ -1,0 +1,16 @@
+id: 5g-beams
+name: 5G Beams
+year: 2022
+origin: measured
+tasks: [beam-management]
+signals: [beam-power, kpi]
+bands_ghz: []
+environment: [outdoor-urban]
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/5g-beams', type: restricted}
+paper: doi:10.1109/INFOCOM48880.2022.9796693
+used_in: []
+citing: ["doi:10.1109/ojcoms.2024.3373368","doi:10.1109/jsac.2023.3334610","doi:10.1145/3544216.3544217"]
+summary: {en: 'Measurements from two US commercial 5G mmWave deployments, a baseball park and a downtown urban canyon, stored as CSV files with per-beam signal strength, beam switch times and throughput. The frequency band is not stated.', zh: 来自美国两个商用 5G mmWave 部署的测量数据，场景分别为棒球场和市区峡谷，以 CSV 文件存储，包含每波束信号强度、波束切换时间和吞吐量。文中未说明频段。}
+sources: ['https://ieee-dataport.org/documents/5g-beams', 'https://api.crossref.org/works?query.title=A+Comparative+Measurement+Study+of+Commercial+5G+mmWave+Deployments&rows=3&select=DOI,title,issued']
+checked: '2026-11-06'

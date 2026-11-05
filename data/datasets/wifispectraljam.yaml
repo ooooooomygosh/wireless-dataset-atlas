@@ -1,0 +1,19 @@
+id: wifispectraljam
+name: WiFiSpectralJam
+year: 2026
+origin: measured
+tasks: [spectrum-sensing]
+signals: [rssi]
+bands_ghz: [2.4, 5]
+environment: [indoor, lab]
+samples: 522,771,130 spectral observations in 96,090 CSV files
+size_gb: 14.52
+format: CSV
+license: CC BY 4.0
+access: {url: 'https://www.kaggle.com/datasets/daniaherzalla/radio-frequency-jamming/data', type: registration}
+paper: arxiv:2608.15728
+used_in: []
+citing: []
+summary: {en: 'Wi-Fi spectral-scan records from a Raspberry Pi CM4 with a QCA9880 802.11ac interface at 2.4 and 5 GHz, captured in real-world indoor environments and in an RF-shielded chamber with HackRF One jamming. The release contains 96,090 CSV files with about 522 million spectral observations in active and passive scan modes.', zh: '使用 Raspberry Pi CM4 与 QCA9880 802.11ac 接口在 2.4 和 5 GHz 频段采集的 Wi-Fi 频谱扫描记录，采集环境包括真实室内环境以及带有 HackRF One 干扰的 RF 屏蔽暗室。数据包含 96,090 个 CSV 文件，约 5.22 亿条频谱观测，分为主动和被动两种扫描模式。'}
+sources: ['https://arxiv.org/abs/2608.15728', 'https://www.kaggle.com/datasets/daniaherzalla/radio-frequency-jamming/data', 'https://www.kaggle.com/api/v1/datasets/view/daniaherzalla/radio-frequency-jamming']
+checked: '2026-11-06'

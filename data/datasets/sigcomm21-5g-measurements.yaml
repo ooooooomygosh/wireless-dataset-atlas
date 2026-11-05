@@ -1,0 +1,20 @@
+id: sigcomm21-5g-measurements
+name: SIGCOMM 2021 5G Measurement Dataset
+aliases: [SIGCOMM21-5G artifact]
+year: 2021
+organization: University of Minnesota
+origin: measured
+tasks: [network-traffic]
+signals: [traffic, kpi]
+bands_ghz: []
+environment: [vehicular]
+standard: 5G, 4G LTE
+license: Not stated
+access: {url: 'https://github.com/SIGCOMM21-5G/artifact', type: open}
+code: ['https://github.com/SIGCOMM21-5G/artifact']
+paper: doi:10.1145/3452296.3472923
+used_in: []
+citing: ["doi:10.1109/ojcoms.2024.3373368","doi:10.1145/3544216.3544217","doi:10.1109/infocom48880.2022.9796693"]
+summary: {en: 'Measurement artifacts for 4G and 5G network experiments, covering throughput and speedtest results, handoffs while driving, RRC state probing, power traces, and ABR video streaming and web browsing QoE. Small data files are included in the repository and the full datasets are linked externally.', zh: 面向 4G 与 5G 网络实验的测量数据与分析脚本，涵盖吞吐量与测速结果、驾驶途中的切换、RRC 状态探测、功耗轨迹，以及 ABR 视频流和网页浏览的 QoE。小型数据文件存放在仓库中，完整数据集通过外部链接提供。}
+sources: ['https://github.com/SIGCOMM21-5G/artifact', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/README.md', 'https://api.crossref.org/works/10.1145/3452296.3472923']
+checked: '2026-11-06'

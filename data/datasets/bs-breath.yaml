@@ -1,0 +1,17 @@
+id: bs-breath
+name: BS-Breath
+year: 2025
+organization: KU Leuven
+origin: measured
+tasks: [wireless-sensing, isac]
+signals: [csi]
+bands_ghz: [3.51]
+size_gb: 11.64
+license: CC BY 4.0
+access: {url: 'https://ieee-dataport.org/documents/respiration-sensing-cell-free-massive-mimo-0', type: restricted}
+paper: doi:10.1109/icassp49660.2025.10888046
+used_in: []
+citing: ["doi:10.1109/infocom59046.2026.11571225","doi:10.1109/jsac.2025.3617012"]
+summary: {en: 'Uplink CSI from a 64-antenna cell-free massive MIMO testbed at 3.51 GHz, recorded while 10 subjects performed controlled breathing, with motion-capture breathing ground truth. The listed archive is 11.64 GB.', zh: 来自64天线 cell-free massive MIMO 测试平台、载频3.51 GHz 的上行 CSI，记录了10名受试者的受控呼吸过程，并提供动作捕捉呼吸真值。列出的数据压缩包为11.64 GB。}
+sources: ['https://ieee-dataport.org/documents/respiration-sensing-cell-free-massive-mimo-0', 'https://api.crossref.org/works/10.1109/icassp49660.2025.10888046']
+checked: '2026-11-06'

@@ -1,0 +1,18 @@
+id: colo-ran
+name: ColO-RAN
+aliases: [ColO-RAN dataset]
+year: 2021
+origin: simulation
+tasks: [network-traffic]
+signals: [kpi]
+bands_ghz: []
+bandwidth_mhz: 10
+license: GPL-3.0
+access: {url: 'https://github.com/wineslab/colosseum-oran-coloran-dataset', type: open}
+code: []
+paper: doi:10.1109/tmc.2022.3188013
+used_in: []
+citing: ["doi:10.1109/tmc.2023.3266642","doi:10.1109/infocom48880.2022.9796744","doi:10.1109/comst.2024.3352910"]
+summary: {en: 'The dataset contains per-base-station and per-UE radio and throughput measurements (for example DL/UL bit rate, MCS, SNR, RSRP and buffer status) from a Colosseum network with 7 base stations, 42 UEs and three scheduling policies. Traces are organized by scheduling policy, RBG allocation configuration and experiment.', zh: 该数据集包含基站级和UE级的无线电与吞吐量测量（例如DL/UL bit rate、MCS、SNR、RSRP和缓冲区状态），采集自包含7个基站、42个UE和三种调度策略的Colosseum网络。数据按调度策略、RBG分配配置和实验进行组织。}
+sources: ['https://github.com/wineslab/colosseum-oran-coloran-dataset', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/README.md', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/CITATION.cff', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/LICENSE', 'https://arxiv.org/abs/2112.09559']
+checked: '2026-11-06'

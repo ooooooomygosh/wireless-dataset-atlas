@@ -1,0 +1,21 @@
+id: vienna-channel-sounding
+name: Vienna Multi-Band Channel Sounding
+aliases: [Vienna multi-band channel sounding, vienna-channel-sounding]
+year: 2022
+organization: TU Wien
+origin: measured
+tasks: [channel-modeling]
+signals: [csi]
+bands_ghz: [2.55, 5.9, 25.5]
+environment: [lab]
+antennas: {tx: 1, rx: 1, array: single}
+samples: 50,000 identical OFDM symbols per run, organized as 500 snapshots of 100 symbols
+mobility: transmit antenna on a rotary arm, constant adjustable velocity, 2 m circular trajectory
+license: Not stated
+access: {url: 'https://github.com/fpasic1/vienna-channel-sounding', type: open}
+paper: doi:10.23919/eucap53622.2022.9769375
+used_in: []
+citing: ["doi:10.1109/mcom.003.2200718","doi:10.1109/tcomm.2025.3588591","doi:10.1109/infocomwkshps65812.2025.11152870"]
+summary: {en: 'Indoor laboratory channel sounding measurements at 2.55, 5.9 and 25.5 GHz with a rotating transmit antenna. Each run provides a time-variant channel transfer function over snapshots and OFDM subcarriers.', zh: 在室内实验室中于 2.55、5.9 和 25.5 GHz 进行的信道探测测量，发射天线做旋转运动。每次测量给出随快照（时间）和 OFDM 子载波变化的时变信道传输函数。}
+sources: ['https://github.com/fpasic1/vienna-channel-sounding', 'https://github.com/fpasic1/vienna-channel-sounding/blob/main/README.md', 'https://repositum.tuwien.at/handle/20.500.12708/150205', 'https://ieee-dataport.org/node/9982', 'https://api.crossref.org/works?query.title=Comparison+of+Sub+6+GHz+and+mmWave+Wireless+Channel+Measurements+at+High+Speeds&rows=3']
+checked: '2026-11-06'
