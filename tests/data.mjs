@@ -47,6 +47,21 @@ assert.equal(data.topics.length, 5);
 console.log(
   "Data contracts: resource count, IDs, sources, field states, tutorial and topic counts passed",
 );
+for (const r of data.resources) {
+  assert(r.productionPipeline?.stages.length >= 4, `${r.id}: detailed pipeline missing`);
+  for (const step of r.productionPipeline.stages) {
+    for (const key of ["title", "inputs", "operation", "outputs", "controls", "checks", "evidenceStatus", "sourceIds"])
+      assert(step[key]?.length, `${r.id}: empty stage ${key}`);
+    step.sourceIds.forEach(id => assert(sources.has(id), `${r.id}: dangling stage evidence ${id}`));
+  }
+}
+for (const p of data.relatedProjects) {
+  assert(/^https:\/\//.test(p.officialRepo));
+  p.resourceIds.forEach(id => assert(data.resources.some(r => r.id === id)));
+  p.sourceIds.forEach(id => assert(sources.has(id)));
+}
+assert.equal(new Set(data.relatedProjects.map(p => p.id)).size, data.relatedProjects.length);
+console.log("Production contracts: all resources have detailed steps; project and source references resolve");
 const js = fs.readFileSync(new URL("../src/app.js", import.meta.url), "utf8");
 const css = fs.readFileSync(
   new URL("../src/style.css", import.meta.url),

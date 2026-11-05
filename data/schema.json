@@ -23,7 +23,8 @@
           "summary",
           "fields",
           "tasks",
-          "sourceIds"
+          "sourceIds",
+          "productionPipeline"
         ],
         "properties": {
           "id": {
@@ -81,6 +82,119 @@
                 "type": "array",
                 "items": {
                   "type": "number"
+                }
+              }
+            }
+          },
+          "productionPipeline": {
+            "type": "object",
+            "required": [
+              "scope",
+              "summary",
+              "stages",
+              "nativeOutputs",
+              "derivedOutputs",
+              "reproductionNotes"
+            ],
+            "properties": {
+              "scope": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "stages": {
+                "type": "array",
+                "minItems": 4,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "title",
+                    "inputs",
+                    "operation",
+                    "outputs",
+                    "controls",
+                    "checks",
+                    "evidenceStatus",
+                    "sourceIds"
+                  ],
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "operation": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "inputs": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "outputs": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "controls": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "checks": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "sourceIds": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "evidenceStatus": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "nativeOutputs": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "derivedOutputs": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "reproductionNotes": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
                 }
               }
             }
@@ -160,6 +274,45 @@
                 "scope",
                 "sourceIds"
               ]
+            }
+          }
+        }
+      }
+    },
+    "relatedProjects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "officialRepo",
+          "license",
+          "pipelineRole",
+          "howToUse",
+          "limitations",
+          "resourceIds",
+          "sourceIds"
+        ],
+        "properties": {
+          "officialRepo": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "resourceIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "sourceIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
             }
           }
         }

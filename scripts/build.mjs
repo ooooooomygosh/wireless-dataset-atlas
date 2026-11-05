@@ -14,6 +14,9 @@ const html = read("src/index.html")
 fs.mkdirSync(path.join(root, "dist"), { recursive: true });
 fs.writeFileSync(path.join(root, "dist/index.html"), html);
 fs.writeFileSync(path.join(root, "index.html"), html);
+fs.writeFileSync(path.join(root, "data/references.bib"), data.sources.map(s =>
+  `@misc{${s.id},\n title={${s.title.replace(/[{}]/g, "")}},\n url={${s.url}},\n note={Accessed ${s.checkedAt}; reading scope recorded in atlas.json}\n}\n`
+).join("\n"));
 console.log(
   `Built ${data.resources.length} resources / ${data.sources.length} sources / ${(html.length / 1024).toFixed(0)} KB characters`,
 );

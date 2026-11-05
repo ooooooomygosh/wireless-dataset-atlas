@@ -1,5 +1,7 @@
 # Wireless Dataset Atlas
 
+[在线网站](https://wireless-dataset-atlas.vercel.app) · [GitHub 源码与协作](https://github.com/ooooooomygosh/wireless-dataset-atlas) · [反馈问题](https://github.com/ooooooomygosh/wireless-dataset-atlas/issues)
+
 直接双击 `index.html`（或 `dist/index.html`）即可离线浏览。无需安装前端依赖，无在线模型、字体或 CDN 依赖。外部论文、仓库与官方原文入口需要联网。
 
 ## 构建与验证
@@ -53,3 +55,11 @@ HTTP 预览入口为 http://localhost:8765 。也支持 `file://` 双击运行�
 - 完整最小实验是待执行研究建议。可导出当前条件、推荐角色和实验协议JSON。
 - Sionna几何扫描点云已列为支持（需额外仿真），新增教程07；它使用底层Mitsuba求交，不等同真实LiDAR回波仿真。Multimodal-NF当前公开实现使用Open3D。
 - 内容仍由`data/atlas.json`维护，新增`coreGuides`与`researchPlaybooks`，前端不调用在线模型。
+
+## v1.2.0：逐阶段生产流程与公开协作
+
+40个资源均有详细生产流程，共226阶段；每步包含输入、处理操作、输出、配置、复现检查与来源。支持展开、收起和导出流程JSON。9个相关项目说明接入位置、输入输出、许可证和限制。
+
+补读源码后分别标明LWM论文与Challenge、ContraWiMAE论文与默认代码、RadioML版本与SenseFi各源预处理。Multimodal-NF当前代码的频点计算、第一频点写出、RGB/点云独立打包也已列明，发布文件需按实际shape核对。
+
+项目采用MIT许可证，第三方数据、代码与材料保留各自许可。Vercel关联本仓库`main`，推送后自动从源数据构建并部署；网站首页、侧栏、顶部和页脚均有仓库入口。

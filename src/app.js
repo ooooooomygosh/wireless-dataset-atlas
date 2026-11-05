@@ -149,7 +149,7 @@ function home() {
               : "其他来源";
     origins[k] = (origins[k] || 0) + 1;
   });
-  return `<section class="hero"><div class="eyebrow">WIRELESS RESEARCH · EVIDENCE FIRST</div><h1>从研究问题出发，<br>找到可信的数据。</h1><p class="lead">了解无线数据从哪里来、包含什么、能验证什么。把传播机制、观测条件和实验边界，放在模型选择之前。</p><div class="row"><a class="task-tile" href="#core">先分清四个核心资源 →</a><a class="task-tile" href="#wizard">按研究任务选型 ↗</a></div></section><div class="stats">${[
+  return `<section class="hero"><div class="eyebrow">WIRELESS RESEARCH · EVIDENCE FIRST</div><h1>从研究问题出发，<br>找到可信的数据。</h1><p class="lead">了解无线数据从哪里来、包含什么、能验证什么。把传播机制、观测条件和实验边界，放在模型选择之前。</p><div class="row"><a class="task-tile" href="#core">先分清四个核心资源 →</a><a class="task-tile" href="#wizard">按研究任务选型 ↗</a><a class="task-tile" href="https://github.com/ooooooomygosh/wireless-dataset-atlas" target="_blank" rel="noreferrer">GitHub · 查看源码 / 参与维护 ↗</a></div></section><div class="stats">${[
     [R.length, "资源系列", "场景与版本单独列为子项"],
     [S.length, "来源索引", "阅读范围与访问状态逐条记录"],
     [

@@ -1,6 +1,6 @@
 {
   "name": "wireless-dataset-atlas",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "build": "node scripts/build.mjs",
@@ -10,5 +10,10 @@
   "license": "MIT",
   "engines": {
     "node": ">=22"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ooooooomygosh/wireless-dataset-atlas.git"
+  },
+  "homepage": "https://wireless-dataset-atlas.vercel.app"
 }
