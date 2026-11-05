@@ -13,7 +13,47 @@ access: {url: 'https://github.com/torchdsp/torchsig', type: open}
 code: ['https://github.com/torchdsp/torchsig']
 paper: arxiv:2207.09918
 used_in: []
-citing: ["doi:10.1109/lcomm.2024.3474519","doi:10.1109/icmlcn64995.2025.11140224"]
+citing: ['doi:10.1109/lcomm.2024.3474519', 'doi:10.1109/icmlcn64995.2025.11140224']
 summary: {en: 'Synthetic I/Q samples from 53 signal classes, 5 million samples in total, generated with the TorchSig toolkit and including selected channel impairments.', zh: 来自 53 类信号的合成 I/Q 样本，共 500 万个样本，由 TorchSig 工具包生成，并包含经过选择的信道损伤。}
 sources: ['https://arxiv.org/abs/2207.09918', 'https://arxiv.org/html/2207.09918v1', 'https://github.com/torchdsp/torchsig']
 checked: '2026-11-06'
+overview: {en: 'Sig53 is a synthetic I/Q dataset of 53 signal classes for radio-frequency signal classification, introduced in arXiv:2207.09918 in 2022 by Luke Boegner et al., together with the TorchSig toolkit. The abstract states 5 million samples. Section 3 lists four sub-datasets (clean training 1M, clean validation 106k, impaired training 5.3M, impaired validation 106k) and describes the total as over 6 million examples. The 53 classes come from six modulation families: ASK, PAM, PSK, QAM, FSK and OFDM. Each example is 4096 complex-valued I/Q samples. The clean sets contain signals with minimal impairments, and the impaired sets add randomized pulse shaping, AWGN at Es/N0 uniformly distributed from -2 to 30 dB, and six further channel effects. All samples are synthetically generated, and the paper''s experiments use ConvNets and Transformers for classification. The TorchSig toolkit, released under the MIT license, can regenerate the dataset or create variants, including on-the-fly generation
+    during training.', zh: 'Sig53 是用于射频信号分类的合成 I/Q 数据集，包含 53 类信号，由 Luke Boegner 等人于 2022 年在 arXiv:2207.09918 发布，并附带生成工具 TorchSig。摘要称共 500 万个样本；第 3 节列出四个子数据集（干净训练集 100 万、干净验证集 10.6 万、受损训练集 530 万、受损验证集 10.6 万），并称总数超过 600 万个样本。53 类信号来自六个调制族：ASK、PAM、PSK、QAM、FSK 与 OFDM。每个样本为 4096 个复数 I/Q 采样。干净集中的信号损伤最少；受损集额外加入随机脉冲成形、Es/N0 在 -2 至 30 dB 间均匀分布的 AWGN，以及另外六种信道效应。全部样本为合成生成，论文实验采用 ConvNet 与 Transformer 进行分类。TorchSig 以 MIT 许可发布，可重新生成该数据集或创建变体，并支持训练时即时生成数据。'}
+signal_details:
+- signal: iq
+  text: {en: 'Complex I/Q samples, 4096 per example, real and imaginary parts as two channels. Clean examples use root-raised-cosine pulse shaping with alpha 0.35. Pure FSK and MSK are generated at 8 IQ samples per symbol, and GFSK and GMSK at 2. Impaired examples randomize the RRC alpha over 0.15 to 0.60, the GFSK BT product over 0.1 to 0.5, and the SNR (Es/N0) uniformly over -2 to 30 dB. Stated impairment probabilities: phase shift 90% (-pi to pi), time shift 90% (-32 to +32 samples), frequency shift 70% (-16% to +16% of sampling rate), Rayleigh fading 50% (2 to 20 taps), IQ imbalance 90% (amplitude -3 to +3 dB, phase -pi/180 to pi/180 rad, DC offset -0.1 to +0.1), and random resampling 50% (factor 0.75 to 1.5).', zh: 复数 I/Q 采样，每个样本 4096 点，实部与虚部作为两个通道。干净样本使用 alpha 为 0.35 的根升余弦脉冲成形。纯 FSK 与 MSK 以每符号 8 个 IQ 采样生成，GFSK 与 GMSK 为每符号 2 个。受损样本的 RRC alpha 在 0.15 至 0.60 间随机，GFSK 的 BT 积在 0.1 至 0.5 间随机，SNR（Es/N0）在 -2 至 30 dB 间均匀分布。各损伤及其概率如下：相位偏移 90%（-π 至 π）；时移 90%（-32 至 +32 个采样）；频移 70%（采样率的 -16% 至
+      +16%）；瑞利衰落 50%（2 至 20 个抽头）；IQ 不平衡 90%（幅度 -3 至 +3 dB，相位 -π/180 至 π/180 rad，直流偏移 -0.1 至 +0.1）；随机重采样 50%（因子 0.75 至 1.5）。}
+pipeline:
+  summary: {en: 'TorchSig generates random symbols for 53 classes, shapes and impairs them, and writes fixed-length complex I/Q examples to disk or streams them during training.', zh: TorchSig 为 53 类生成随机符号，进行脉冲成形与损伤处理，并将定长的复数 I/Q 样本写入磁盘或在训练时流式输出。}
+  stages:
+  - title: {en: Generate random symbols for 53 classes, zh: 为 53 类生成随机符号}
+    detail: {en: 'Clean examples come from randomized data mapped to one of six families: ASK, PAM, PSK, QAM, FSK and OFDM. OFDM subcarrier modulations are chosen from BPSK, QPSK, 16QAM, 64QAM, 256QAM and 1024QAM, and the subcarrier count is drawn from a set that mirrors WiFi and LTE specifications.', zh: 干净样本由随机数据映射到六个调制族之一生成：ASK、PAM、PSK、QAM、FSK 与 OFDM。OFDM 子载波调制从 BPSK、QPSK、16QAM、64QAM、256QAM 与 1024QAM 中选取，子载波数取自模拟常见 WiFi 与 LTE 规格的集合。}
+    inputs:
+    - {en: Random data and class table, zh: 随机数据与类别表}
+    outputs:
+    - {en: Clean complex baseband signals, zh: 干净复数基带信号}
+  - title: {en: Shape pulses and set oversampling, zh: 脉冲成形与过采样设置}
+    detail: {en: 'ASK, PAM, PSK and QAM symbols use root-raised-cosine filtering with alpha 0.35 in clean mode. Pure FSK and MSK use 8 IQ samples per symbol, and GFSK and GMSK use 2. OFDM uses a cyclic prefix of one eighth or one quarter of the symbol duration and occupies half the frequency bandwidth, with a DC subcarrier in half of the examples.', zh: 干净模式下，ASK、PAM、PSK 与 QAM 符号使用 alpha 为 0.35 的根升余弦滤波。纯 FSK 与 MSK 每符号 8 个 IQ 采样，GFSK 与 GMSK 每符号 2 个。OFDM 使用符号时长八分之一或四分之一的循环前缀，占用一半频带，其中一半样本含直流子载波。}
+    inputs:
+    - {en: Clean baseband symbols, zh: 干净基带符号}
+    outputs:
+    - {en: Pulse-shaped complex signals, zh: 成形后的复数信号}
+  - title: {en: Randomize impairments and SNR, zh: 随机化损伤与 SNR}
+    detail: {en: 'Impaired examples use RRC alpha from 0.15 to 0.60 and GFSK BT from 0.1 to 0.5. Six further impairments (phase shift, time shift, frequency shift, Rayleigh fading, IQ imbalance and resampling) are applied with the probabilities listed in the paper. AWGN sets the target SNR, with Es/N0 uniformly distributed from -2 to 30 dB.', zh: 受损样本的 RRC alpha 取 0.15 至 0.60，GFSK 的 BT 取 0.1 至 0.5。另外六种损伤（相位偏移、时移、频移、瑞利衰落、IQ 不平衡与重采样）按论文给出的概率施加。AWGN 设定目标 SNR，Es/N0 在 -2 至 30 dB 间均匀分布。}
+    inputs:
+    - {en: Pulse-shaped complex signals, zh: 成形后的复数信号}
+    outputs:
+    - {en: Impaired complex signals, zh: 受损复数信号}
+  - title: {en: Fix length to 4096 IQ samples, zh: 统一为 4096 个 IQ 采样}
+    detail: {en: 'Resampling changes the number of IQ samples, so each signal is truncated or zero-padded back to 4096 complex samples. A time shift fills the emptied region with zeros.', zh: 重采样会改变 IQ 采样数，因此每个信号被截断或补零至 4096 个复数采样。时移产生的空白区域以零填充。}
+    inputs:
+    - {en: Variable-length impaired signals, zh: 长度可变的受损信号}
+    outputs:
+    - {en: 4096-sample complex examples, zh: 4096 采样的复数样本}
+  - title: {en: Write or stream the dataset with TorchSig, zh: 用 TorchSig 写入或流式输出数据集}
+    detail: {en: 'The README example builds a TorchSigIterableDataset from default dataset metadata, passes it through a reproducible WorkerSeedingDataLoader, and saves it with DatasetCreator. StaticTorchSigDataset reads the saved files back. The package requires Python 3.10 or later.', zh: README 示例使用默认数据集元数据构建 TorchSigIterableDataset，经可复现的 WorkerSeedingDataLoader 读取，并用 DatasetCreator 保存；StaticTorchSigDataset 用于读回已保存的文件。该软件包要求 Python 3.10 或更高版本。}
+    inputs:
+    - {en: TorchSig dataset metadata and Impairments configuration, zh: TorchSig 数据集元数据与 Impairments 配置}
+    outputs:
+    - {en: Saved dataset on disk, zh: 磁盘上保存的数据集}
+    - {en: Iterable dataset for training, zh: 用于训练的可迭代数据集}

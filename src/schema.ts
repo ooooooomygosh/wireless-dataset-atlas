@@ -13,6 +13,15 @@ export const ACCESS = ["open", "registration", "request", "restricted"] as const
 export const ARRAYS = ["ula", "upa", "distributed", "single", "other"] as const;
 
 const bilingual = z.object({ en: z.string().min(10), zh: z.string().min(4) });
+const L = z.object({ en: z.string().min(1), zh: z.string().min(1) });
+const stage = z.object({
+  title: L,
+  detail: L,
+  inputs: z.array(L).optional(),
+  outputs: z.array(L).optional(),
+  controls: z.array(L).optional(),
+  checks: z.array(L).optional(),
+});
 const paperId = z.string().regex(/^(doi:10\.\S+|arxiv:\d{4}\.\d{4,5}|arxiv:[a-z-]+\/\d{7})$/i, "use doi:10.x/y or arxiv:NNNN.NNNNN");
 
 export const datasetSchema = z.object({
@@ -43,10 +52,29 @@ export const datasetSchema = z.object({
   license: z.string(),
   access: z.object({ url: z.url(), type: z.enum(ACCESS) }),
   code: z.array(z.url()).default([]),
-  paper: paperId,
+  paper: paperId.optional(),
   used_in: z.array(paperId).default([]),
   citing: z.array(paperId).default([]),
   summary: bilingual,
+  overview: L.optional(),
+  signal_details: z.array(z.object({ signal: z.enum(SIGNALS), text: L })).default([]),
+  pipeline: z.object({ summary: L.optional(), scope: L.optional(), stages: z.array(stage).min(1) }).optional(),
+  facts: z.array(z.object({ label: L, text: L })).default([]),
+  variants: z.array(z.object({ name: L, observations: L, csi: L.optional() })).default([]),
+  provenance: z.array(L).default([]),
+  technical_notes: z.array(L).default([]),
+  limitations: z.array(L).default([]),
+  history: z.array(L).default([]),
+  usage: z.array(L).default([]),
+  field_notes: z.array(z.object({ label: L, text: L })).default([]),
+  tutorials: z.array(z.string()).default([]),
+  tools: z.array(z.string()).default([]),
+  materials: z
+    .array(z.object({ title: z.string(), path: z.string(), license: z.string(), source_url: z.url() }))
+    .default([]),
+  paper_summary: z
+    .array(z.object({ label: L, text: L }))
+    .default([]),
   sources: z.array(z.url()).default([]),
   checked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
@@ -61,3 +89,8 @@ export const taskSchema = z.object({
   metrics: z.array(z.string()),
 });
 export type Task = z.infer<typeof taskSchema>;
+
+/** Fragment written by the detail pass: only the long-form fields. */
+export const detailSchema = datasetSchema
+  .pick({ overview: true, signal_details: true, pipeline: true })
+  .extend({ overview: L });

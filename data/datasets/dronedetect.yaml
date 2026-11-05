@@ -21,3 +21,29 @@ citing: []
 summary: {en: 'Raw IQ recordings made with a BladeRF SDR of 7 drone models in on, hovering and flying modes, with no interference and with Bluetooth, Wi-Fi, or both. Each 2 s recording contains 1.2 × 10^8 complex samples, and the archive is 65.76 GB.', zh: 使用 BladeRF SDR 采集的 7 种无人机原始 IQ 数据，包含开机、悬停和飞行三种模式，干扰条件分为无干扰、仅蓝牙、仅 Wi-Fi 以及蓝牙与 Wi-Fi 同时存在。每段 2 秒录制包含 1.2 × 10^8 个复数采样，压缩包大小为 65.76 GB。}
 sources: ['https://ieee-dataport.org/open-access/dronedetect-dataset-radio-frequency-dataset-unmanned-aerial-system-uas-signals-machine', 'https://api.openalex.org/works/doi:10.3390/aerospace8070179', 'https://api.crossref.org/works/10.3390/aerospace8070179']
 checked: '2026-11-06'
+overview: {en: 'DroneDetect is a set of raw IQ recordings of seven drone models (six DJI, one Parrot). It was produced by Carolyn J. Swinney and John C. Woods at the University of Essex and published on IEEE DataPort in 2021. The recordings were made with a Nuand BladeRF software-defined radio running GNU Radio, at a center frequency of 2.4375 GHz and a bandwidth of 28 MHz. Each drone model is recorded when switched on, hovering and flying. Four interference conditions are included: none, Bluetooth only, Wi-Fi only, and Bluetooth and Wi-Fi together. Each 2 s recording holds 1.2 × 10^8 complex samples, and the main archive, DroneDetect_V2.zip, is 65.76 GB. Files are grouped by interference condition and then by flight mode, and the provided load_data.py script splits each recording into 20 ms segments. The associated paper evaluates UAS detection (2 classes), UAS type classification (8 classes) and flight mode classification (21 classes).', zh: DroneDetect 是一组 7 种无人机型号的原始 IQ 录制数据（6 种 DJI，1
+    种 Parrot）。数据由 University of Essex 的 Carolyn J. Swinney 和 John C. Woods 制作，于 2021 年发布在 IEEE DataPort 上。录制使用 Nuand BladeRF 软件无线电设备并运行 GNU Radio，中心频率为 2.4375 GHz，带宽为 28 MHz。每种无人机型号分别在开机、悬停和飞行三种模式下录制。干扰条件包括四种：无干扰、仅蓝牙、仅 Wi-Fi，以及蓝牙和 Wi-Fi 同时存在。每段 2 s 录制包含 1.2 × 10^8 个复数采样，主压缩包 DroneDetect_V2.zip 大小为 65.76 GB。文件先按干扰条件分组，再按飞行模式分组；随附的 load_data.py 脚本将每段录制切分为 20 ms 片段。对应论文评估了 UAS 检测（2 类）、UAS 类型分类（8 类）和飞行模式分类（21 类）。}
+signal_details:
+- signal: iq
+  text: {en: 'Raw complex IQ samples from a Nuand BladeRF SDR, with a 2.4375 GHz center frequency and a 28 MHz bandwidth. The DataPort page lists a sample rate of 60 Mbits/s. Each .dat file stores complex samples as interleaved floats, and each 2 s recording contains 1.2 × 10^8 complex samples.', zh: 由 Nuand BladeRF SDR 采集的原始复数 IQ 采样，中心频率 2.4375 GHz，带宽 28 MHz。DataPort 页面列出的采样率为 60 Mbits/s。每个 .dat 文件以交错浮点数存储复数采样，每段 2 s 录制包含 1.2 × 10^8 个复数采样。}
+pipeline:
+  summary: {en: 'Drone RF signals were captured with a BladeRF SDR and GNU Radio, stored as 2 s .dat files, and split into 20 ms segments by the provided loader.', zh: 无人机射频信号由 BladeRF SDR 与 GNU Radio 采集，保存为 2 s 的 .dat 文件，并由随附的加载脚本切分为 20 ms 片段。}
+  stages:
+  - title: {en: RF capture, zh: 射频采集}
+    detail: {en: 'A Nuand BladeRF software-defined radio with GNU Radio records each drone model in the switched-on, hovering and flying modes. Each recording lasts 2 s, at a 2.4375 GHz center frequency and 28 MHz bandwidth.', zh: Nuand BladeRF 软件无线电设备配合 GNU Radio，分别录制每种无人机型号在开机、悬停和飞行模式下的信号。每段录制时长 2 s，中心频率 2.4375 GHz，带宽 28 MHz。}
+    inputs:
+    - {en: UAS RF emissions, zh: 无人机射频信号}
+    outputs:
+    - {en: 2 s IQ recordings, zh: 2 s IQ 录制段}
+  - title: {en: File storage and grouping, zh: 文件存储与分组}
+    detail: {en: 'Complex samples are written as interleaved floats in .dat files. Files are grouped by interference condition, then by flight mode, and their names combine model, interference and mode codes.', zh: 复数采样以交错浮点数形式写入 .dat 文件。文件先按干扰条件分组，再按飞行模式分组，文件名由机型、干扰和模式代码组成。}
+    inputs:
+    - {en: 2 s IQ recordings, zh: 2 s IQ 录制段}
+    outputs:
+    - {en: .dat files, zh: .dat 文件}
+  - title: {en: Segmentation, zh: 分段}
+    detail: {en: The provided load_data.py script reads the .dat files and splits each recording into 20 ms segments., zh: 随附的 load_data.py 脚本读取 .dat 文件，并将每段录制切分为 20 ms 片段。}
+    inputs:
+    - {en: .dat files, zh: .dat 文件}
+    outputs:
+    - {en: 20 ms IQ segments, zh: 20 ms IQ 片段}

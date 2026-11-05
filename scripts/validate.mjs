@@ -20,8 +20,8 @@ for (const f of fs.readdirSync(dir).filter((f) => f.endsWith(".yaml")).sort()) {
   if (f !== `${x.id}.yaml`) fail("file name must equal id");
   if (ids.has(x.id)) fail("duplicate id"); ids.add(x.id);
   for (const t of x.tasks) if (!taskIds.has(t)) fail(`unknown task ${t}`);
-  if (papers.has(x.paper) && papers.get(x.paper) !== x.id) console.warn(`${f}: paper shared with ${papers.get(x.paper)}`);
-  papers.set(x.paper, x.id);
+  if (x.paper && papers.has(x.paper) && papers.get(x.paper) !== x.id) console.warn(`${f}: paper shared with ${papers.get(x.paper)}`);
+  if (x.paper) papers.set(x.paper, x.id);
 }
 console.log(`${ids.size} datasets checked, ${bad} problems`);
 process.exit(bad ? 1 : 0);

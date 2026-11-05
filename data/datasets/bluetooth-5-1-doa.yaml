@@ -13,7 +13,38 @@ access: {url: 'https://data.mendeley.com/datasets/zjn2zxcgyz/1', type: open}
 code: []
 paper: doi:10.1016/j.dib.2021.107576
 used_in: []
-citing: ["doi:10.1109/jiot.2025.3530866"]
+citing: ['doi:10.1109/jiot.2025.3530866']
 summary: {en: 'Python-generated baseband Bluetooth 5.1 signals and pure-tone data for an 8-element URA, with additive noise and coherent interfering signals at random arrival angles. The dataset is distributed in four parts.', zh: 由 Python 生成器产生的 Bluetooth 5.1 基带信号与纯音数据，面向 8 元 URA 阵列，包含加性噪声以及随机到达角的相干干扰信号。数据集分为四个部分发布。}
 sources: ['https://data.mendeley.com/datasets/zjn2zxcgyz/1', 'https://api.crossref.org/works/10.1016/j.dib.2021.107576', 'https://api.openalex.org/works/doi:10.1016/j.dib.2021.107576']
 checked: '2026-11-06'
+overview: {en: 'The Bluetooth 5.1 Direction-of-Arrival Dataset is a set of simulated baseband signals for developing and validating direction-of-arrival (DoA) algorithms. Piazzese, Perrone and Pau produced it with a Python generator built on a mathematical model of a non-uniform rectangular antenna array (URA8), and the data article appeared in Data in Brief in December 2021. The dataset is distributed in four parts on Mendeley Data, and the Python code that generated it is included. It has two branches: pure sinusoidal tones and baseband Bluetooth 5.1 signals. Each signal is mixed with additive white Gaussian noise at varying levels and with coherent interfering signals at random DoA coordinates. The data are generated, not measured, and the authors state that the code can be modified for other signal types or array topologies.', zh: Bluetooth 5.1 Direction-of-Arrival数据集是一组用于开发和验证到达方向（DoA）算法的仿真基带信号。Piazzese、Perrone和Pau使用基于非均匀矩形天线阵列（URA8）数学模型的Python生成器制作了该数据集，数据文章于2021年12月发表在Data in Brief上。数据集通过Mendeley
+    Data分四部分发布，并附有生成数据的Python代码。数据包含两个分支：纯正弦音和基带Bluetooth 5.1信号。每个信号都叠加了不同强度的加性高斯白噪声，并叠加了随机DoA坐标处的相干干扰信号。数据为生成所得，而非测量得到，作者指出代码可修改，以适用于其他信号类型或阵列拓扑。}
+signal_details:
+- signal: iq
+  text: {en: 'Baseband Bluetooth 5.1 signals and pure sinusoidal tones, generated for the URA8 array by the Python code included with the dataset. Additive white Gaussian noise is added at varying levels, and coherent interfering signals arrive from random DoA coordinates.', zh: 由数据集随附的Python代码为URA8阵列生成的基带Bluetooth 5.1信号和纯正弦音。叠加了不同强度的加性高斯白噪声，并叠加了来自随机DoA坐标的相干干扰信号。}
+pipeline:
+  summary: {en: 'A Python generator models the URA8 array, produces Bluetooth 5.1 baseband signals and sinusoidal tones, adds noise and coherent interferers, and packages the output in four Mendeley Data parts.', zh: Python生成器对URA8阵列建模，生成Bluetooth 5.1基带信号和正弦音，叠加噪声与相干干扰，并将输出打包为Mendeley Data的四个部分。}
+  stages:
+  - title: {en: Array model, zh: 阵列模型}
+    detail: {en: The dataset is generated with a mathematical model of a non-uniform rectangular antenna array (URA8). The Python source files that implement the model are provided with the data., zh: 数据集使用非均匀矩形天线阵列（URA8）的数学模型生成。实现该模型的Python源文件随数据一同提供。}
+    outputs:
+    - {en: URA8 array model, zh: URA8阵列模型}
+  - title: {en: Source signal generation, zh: 信源信号生成}
+    detail: {en: 'The Python code produces two branches: pure sinusoidal tones and baseband Bluetooth 5.1 signals.', zh: Python代码生成两个分支：纯正弦音和基带Bluetooth 5.1信号。}
+    inputs:
+    - {en: URA8 array model, zh: URA8阵列模型}
+    outputs:
+    - {en: Sinusoidal tones, zh: 正弦音}
+    - {en: Baseband Bluetooth 5.1 signals, zh: 基带Bluetooth 5.1信号}
+  - title: {en: Noise and interference, zh: 噪声与干扰}
+    detail: {en: Additive white Gaussian noise is added at varying levels. Coherent interfering signals are added at random DoA coordinates., zh: 以不同强度叠加加性高斯白噪声。在随机DoA坐标处叠加相干干扰信号。}
+    inputs:
+    - {en: Sinusoidal tones and Bluetooth 5.1 signals, zh: 正弦音和Bluetooth 5.1信号}
+    outputs:
+    - {en: Noisy array signals with interferers, zh: 含干扰的带噪阵列信号}
+  - title: {en: Packaging and distribution, zh: 打包与发布}
+    detail: {en: The output is split into four parts on Mendeley Data under the GPLv3 license. The Python code that generated the data is included. All four parts must be downloaded to recreate the directory structure., zh: 输出分为Mendeley Data上的四个部分，采用GPLv3许可证发布。生成数据的Python代码随数据包含在内。需下载全部四个部分才能重建目录结构。}
+    inputs:
+    - {en: Generated signal data, zh: 生成的信号数据}
+    outputs:
+    - {en: Four Mendeley Data parts, zh: Mendeley Data的四个部分}

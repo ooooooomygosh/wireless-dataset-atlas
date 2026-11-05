@@ -13,7 +13,44 @@ access: {url: 'https://github.com/uccmisl/5Gdataset', type: open}
 code: ['https://github.com/uccmisl/5Gdataset']
 paper: doi:10.1145/3339825.3394938
 used_in: []
-citing: ["doi:10.1109/jiot.2023.3303713","doi:10.1109/tmc.2024.3437745","doi:10.1145/3651890.3672260"]
+citing: ['doi:10.1109/jiot.2023.3303713', 'doi:10.1109/tmc.2024.3437745', 'doi:10.1145/3651890.3672260']
 summary: {en: 'Client-side 5G KPI traces from a major Irish mobile operator, logged with G-NetTrack Pro under static and car mobility for video streaming and file download traffic. The traces include channel, context, cell and throughput metrics, and the repository adds an ns-3 5G simulation framework for synthetic data.', zh: 来自爱尔兰一家主要移动运营商的客户端 5G KPI 数据，使用 G-NetTrack Pro 记录，覆盖静止和乘车两种移动模式下的视频流和文件下载流量。数据包含信道、上下文、小区和吞吐量指标，仓库另附 ns-3 5G 仿真框架用于生成合成数据。}
 sources: ['https://github.com/uccmisl/5Gdataset', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/README.md', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/LICENSE', 'https://api.crossref.org/works/10.1145/3339825.3394938', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1145/3339825.3394938?fields=abstract']
 checked: '2026-11-06'
+overview: {en: 'The Irish 5G dataset is a 5G trace collection from a major Irish mobile operator. It was presented by D. Raca, D. Leahy, C. J. Sreenan and J. J. Quinlan at the ACM Multimedia Systems Conference (MMSys) in June 2020, under the title Beyond Throughput, The Next Generation. The traces are client-side cellular KPIs recorded on a live production network with the non-rooted Android application G-NetTrack Pro. They cover two mobility patterns (static and car) and two application patterns (video streaming and file download). The KPIs are grouped into channel-related, context-related, cell-related and throughput metrics. The production traces are distributed as 5G-production-dataset.zip, and the repository is licensed under GPL-3.0. The repository also provides an ns-3 5G/mmWave multi-cell simulation framework that generates uplink and downlink logs for a user-defined number of UEs and eNodeBs.', zh: '爱尔兰5G数据集（Irish 5G dataset）是一组来自爱尔兰一家主要移动运营商的5G轨迹数据。数据由D. Raca、D. Leahy、C. J. Sreenan和J.
+    J. Quinlan提交，于2020年6月在ACM多媒体系统会议（MMSys）上发表，论文题目为Beyond Throughput, The Next Generation。轨迹数据为在商用生产网络中记录的客户端蜂窝KPI，采集工具为非root的Android应用G-NetTrack Pro。数据覆盖两种移动模式（静止和乘车）以及两种应用模式（视频流和文件下载）。KPI分为信道相关、上下文相关、小区相关和吞吐量四类指标。生产网络轨迹以5G-production-dataset.zip形式发布，仓库采用GPL-3.0许可。仓库还提供一个ns-3 5G/mmWave多小区仿真框架，可按用户设定的UE和eNodeB数量生成上行和下行日志。'}
+signal_details:
+- signal: kpi
+  text: {en: 'Client-side cellular KPIs logged by G-NetTrack Pro on a non-rooted Android device. The metric groups are channel-related, context-related, cell-related and throughput.', zh: 由G-NetTrack Pro在非root的Android设备上记录的客户端蜂窝KPI。指标分为信道相关、上下文相关、小区相关和吞吐量四组。}
+- signal: traffic
+  text: {en: 'Two application patterns, video streaming and file download, each run under static and car mobility.', zh: 两种应用模式，即视频流和文件下载，分别在静止和乘车两种移动模式下运行。}
+pipeline:
+  summary: {en: 'Client devices on a live 5G network run video and file-download traffic, G-NetTrack Pro logs the KPIs, and a separate ns-3 framework produces simulated uplink and downlink logs.', zh: 客户端设备在商用5G网络中运行视频和文件下载流量，G-NetTrack Pro记录KPI，另有一个独立的ns-3框架生成仿真的上行和下行日志。}
+  stages:
+  - title: {en: Run traffic on a production 5G network, zh: 在商用5G网络中运行流量}
+    detail: {en: Client devices in a major Irish mobile operator network run video streaming and file download sessions. Each session is recorded under static or car mobility., zh: 爱尔兰一家主要移动运营商网络中的客户端设备运行视频流和文件下载会话。每个会话在静止或乘车的移动模式下记录。}
+    inputs:
+    - {en: Video streaming and file download sessions, zh: 视频流和文件下载会话}
+    - {en: Static and car mobility, zh: 静止和乘车移动模式}
+    outputs:
+    - {en: Client-side network activity, zh: 客户端网络活动}
+  - title: {en: Log KPIs with G-NetTrack Pro, zh: 使用G-NetTrack Pro记录KPI}
+    detail: {en: 'G-NetTrack Pro, a non-rooted Android network monitoring application, records channel, context, cell and throughput metrics on the client.', zh: G-NetTrack Pro是一款非root的Android网络监测应用，在客户端记录信道、上下文、小区和吞吐量指标。}
+    inputs:
+    - {en: Android client device, zh: Android客户端设备}
+    outputs:
+    - {en: 'Channel, context, cell and throughput KPIs', zh: 信道、上下文、小区和吞吐量KPI}
+  - title: {en: Build the ns-3 5G/mmWave framework, zh: 构建ns-3 5G/mmWave框架}
+    detail: {en: The simulation framework runs on the ns-3 simulator with its 5G/mmwave module. The README configures and builds ns-3 with ./waf configure --enable-examples --enable-tests and ./waf build before any run., zh: 该仿真框架运行于ns-3仿真器及其5G/mmwave模块之上。运行前，README要求使用./waf configure --enable-examples --enable-tests和./waf build配置并编译ns-3。}
+    inputs:
+    - {en: ns-3 simulator with 5G/mmwave module, zh: 带5G/mmwave模块的ns-3仿真器}
+    outputs:
+    - {en: Built ns-3 executable, zh: 编译完成的ns-3可执行程序}
+  - title: {en: Run the simulation and collect UL/DL logs, zh: 运行仿真并收集上下行日志}
+    detail: {en: 'The start_mmwave.py script takes the number of UEs (-ue), the number of eNodeBs (-enb), the simulation time (-t), the area size (-x, -y, -z), the maximum velocities per axis (-xVel, -yVel, -zVel) and the interval in seconds (-i). Logs are written to a mmwave_log folder with uplink and downlink details for each UE and eNodeB.', zh: start_mmwave.py脚本接受UE数量（-ue）、eNodeB数量（-enb）、仿真时长（-t）、区域尺寸（-x、-y、-z）、各轴最大速度（-xVel、-yVel、-zVel）以及间隔秒数（-i）。日志写入mmwave_log文件夹，包含每个UE和eNodeB的上行和下行详情。}
+    inputs:
+    - {en: UE and eNodeB counts, zh: UE和eNodeB数量}
+    - {en: Area size and maximum velocities, zh: 区域尺寸和最大速度}
+    - {en: Simulation time and interval, zh: 仿真时长和间隔}
+    outputs:
+    - {en: mmwave_log folder with UL and DL logs, zh: 包含上行和下行日志的mmwave_log文件夹}

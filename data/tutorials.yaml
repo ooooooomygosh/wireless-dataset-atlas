@@ -1,0 +1,70 @@
+- id: deepmimo
+  title: {en: 'DeepMIMO: paths → CSI → beam selection', zh: DeepMIMO：路径 → CSI → 波束选择}
+  file: tutorials/01_deepmimo.py
+  status: {en: Documentation checked; original scene not run, zh: 文档核验；未运行原始场景}
+  description: {en: Complete steps and copyable code; validation covers only the stated inputs and environment., zh: 完整步骤与可复制代码；验证状态仅覆盖注明的输入与环境。}
+  environment: {en: DeepMIMO 4.0.5; Python 3.12; a separate environment. Prepare a legitimately obtained local scene first., zh: DeepMIMO 4.0.5；Python 3.12；独立环境。先准备合法获取的本地场景。}
+  steps:
+  - {en: 'Load a local scene and check paths, units, and versions', zh: 加载本地场景并检查路径、单位与版本}
+  - {en: 'Explicitly configure arrays and OFDM, then compute channels', zh: 显式配置阵列与 OFDM，计算信道}
+  - {en: Check complex conventions and output per-beam gains and oracle labels, zh: 核对复数约定，输出每波束增益与 oracle 标签}
+- id: sionna
+  title: {en: 'Sionna RT: scene and mechanisms → CFR', zh: Sionna RT：场景与机制 → CFR}
+  file: tutorials/02_sionna_rt.py
+  status: {en: Built-in street-canyon scene passed local execution, zh: 内置街谷场景本机运行通过}
+  description: {en: Complete steps and copyable code; validation covers only the stated inputs and environment., zh: 完整步骤与可复制代码；验证状态仅覆盖注明的输入与环境。}
+  environment: {en: sionna-rt 2.2.0; Mitsuba 3.9.1; Dr.Jit 1.5.0; NumPy 2.2.6; Python 3.12.3; metal_ad_mono_polarized backend., zh: sionna-rt 2.2.0；Mitsuba 3.9.1；Dr.Jit 1.5.0；NumPy 2.2.6；Python 3.12.3；metal_ad_mono_polarized 后端。}
+  steps:
+  - {en: Load bundled scene geometry and inspect positions and materials, zh: 加载随软件提供的几何场景，检查位置与材料}
+  - {en: Explicitly disable unused mechanisms and fix solver conditions, zh: 显式关闭未使用机制并固定求解条件}
+  - {en: Generate unnormalized CFR and check axes and zero-path samples, zh: 生成不归一化 CFR，检查轴与零路径样本}
+- id: deepsense
+  title: {en: 'DeepSense Scenario 9: CSV and beam powers', zh: DeepSense Scenario 9：CSV 与波束功率}
+  file: tutorials/03_deepsense.py
+  status: {en: Synthetic parsing sample passed; real data not run, zh: 人工解析样本测试通过；真实数据未运行}
+  description: {en: Complete steps and copyable code; validation covers only the stated inputs and environment., zh: 完整步骤与可复制代码；验证状态仅覆盖注明的输入与环境。}
+  environment: {en: Python 3.12.3; NumPy 2.3.1. Check CSV column names against the actual file., zh: Python 3.12.3；NumPy 2.3.1；CSV 列名必须从实际文件核对。}
+  steps:
+  - {en: Obtain data separately through the official entry; this project does not download them, zh: 从官方入口另行获取数据，本项目不下载}
+  - {en: 'Pass the power column explicitly and check paths, 64 dimensions, and NaNs', zh: 显式传入功率列，检查路径、64维与 NaN}
+  - {en: Use actual sequence identifiers to construct past inputs and future labels, zh: 以真实序列标识构造过去输入与未来标签}
+- id: pairing
+  title: {en: 'Cross-frequency samples: exact matching and synchronization checks', zh: 跨频样本：精确匹配与同步性检查}
+  file: tutorials/04_cross_frequency.py
+  status: {en: Synthetic test samples passed execution, zh: 人工测试样本运行通过}
+  description: {en: Complete steps and copyable code; validation covers only the stated inputs and environment., zh: 完整步骤与可复制代码；验证状态仅覆盖注明的输入与环境。}
+  environment: {en: Python 3.12.3; NumPy 2.3.1. The example contains no real wireless data., zh: Python 3.12.3；NumPy 2.3.1。示例不包含真实无线数据。}
+  steps:
+  - {en: Define a composite campaign/site/trajectory/sample key, zh: 定义 campaign/site/trajectory/sample 组合键}
+  - {en: Reject duplicate keys and record missing pairs, zh: 拒绝重复键，记录缺失配对}
+  - {en: Verify clocks and frequencies independently; matching keys do not prove synchronization, zh: 独立核验时钟与频率；键相同不是同步性证明}
+- id: split
+  title: {en: 'Isolate spatial regions, trajectories, sites, and engines', zh: 空间、轨迹、站点与引擎隔离}
+  file: tutorials/05_splits.py
+  status: {en: Synthetic grouped-sample tests passed, zh: 人工分组样本测试通过}
+  description: {en: Complete steps and copyable code; validation covers only the stated inputs and environment., zh: 完整步骤与可复制代码；验证状态仅覆盖注明的输入与环境。}
+  environment: {en: Python 3.12.3；NumPy 2.3.1。, zh: Python 3.12.3；NumPy 2.3.1。}
+  steps:
+  - {en: Split entire groups and verify that their intersections are empty, zh: 整组拆分，检查交集为空}
+  - {en: Add a physically justified buffer for spatial splits, zh: 空间划分另设有物理依据的隔离缓冲}
+  - {en: Fit normalization on training data only and keep test sources independent, zh: 仅训练集拟合归一化；保持测试源独立}
+- id: baseline
+  title: {en: 'Oracle, fixed beam, and position kNN', zh: Oracle、固定波束与位置 kNN}
+  file: tutorials/06_baselines.py
+  status: {en: Synthetic channel samples passed execution, zh: 人工信道样本运行通过}
+  description: {en: Complete steps and copyable code; validation covers only the stated inputs and environment., zh: 完整步骤与可复制代码；验证状态仅覆盖注明的输入与环境。}
+  environment: {en: Python 3.12.3; NumPy 2.3.1. Unit-normalized power is not measured dBm., zh: Python 3.12.3；NumPy 2.3.1；单位归一化功率不是实测 dBm。}
+  steps:
+  - {en: Compute the exhaustive oracle and train-best-fixed first, zh: 先计算 exhaustive oracle 与 train-best-fixed}
+  - {en: Compare normalized beam gain from simple position kNN, zh: 比较简单位置 kNN 的归一化波束收益}
+  - {en: Report physical SE only when noise and power scales are known; account for overhead separately, zh: 仅噪声与功率尺度已知时报告物理 SE；开销另计}
+- id: sionna-lidar
+  title: {en: 'Same-scene Sionna: custom geometric scanning point clouds', zh: Sionna同场景：自定义几何扫描点云}
+  file: tutorials/07_sionna_lidar.py
+  status: {en: Local geometry and analytical range checks passed, zh: 本机几何与解析量程检查通过}
+  description: {en: Use underlying Mitsuba ray intersections to generate first-hit point clouds. The code distinguishes geometric point clouds from a complete LiDAR sensor model., zh: 用底层Mitsuba射线求交生成首命中点云；代码区分几何点云与完整LiDAR传感器模型。}
+  environment: {en: 'Sionna RT 2.2.0 / Mitsuba 3.9.1 / Dr.Jit 1.5.0, Apple Silicon Metal; 4096-ray checks against analytical box ranges, occlusion, and range truncation.', zh: Sionna RT 2.2.0 / Mitsuba 3.9.1 / Dr.Jit 1.5.0，Apple Silicon Metal，4096射线与解析box量程、遮挡和量程截断检查。}
+  steps:
+  - {en: Obtain Mitsuba geometry from a Sionna scene and define scan pose and unit directions, zh: 从Sionna场景获取Mitsuba几何，定义扫描位姿与单位方向}
+  - {en: Keep valid first hits and apply range limits and coordinate transforms, zh: 保留有效首命中，应用量程和坐标变换}
+  - {en: 'Synchronize with CSI scene time; add noise, missed detections, and intensity models for the research target', zh: 同步到CSI场景时间；根据研究目标另设噪声、漏检与强度模型}

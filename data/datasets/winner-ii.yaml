@@ -11,8 +11,125 @@ license: Not stated
 access: {url: 'https://www.mathworks.com/matlabcentral/fileexchange/59690-winner-ii-channel-model-for-communications-toolbox', type: restricted}
 code: []
 paper: doi:10.1002/9780470748077.ch3
-used_in: ["doi:10.1109/twc.2011.060811.102120","doi:10.1109/twc.2016.2628795"]
-citing: ["doi:10.1109/lwc.2017.2757490","doi:10.1109/tcomm.2015.2434384"]
+used_in: ['doi:10.1109/twc.2011.060811.102120', 'doi:10.1109/twc.2016.2628795']
+citing: ['doi:10.1109/lwc.2017.2757490', 'doi:10.1109/tcomm.2015.2434384']
 summary: {en: 'A generator of spatially defined multiuser MIMO channel coefficients using the clustered delay line method, covering 12 indoor and outdoor scenarios with RF frequencies up to 6 GHz.', zh: 使用聚类延迟线方法生成空间定义多用户 MIMO 信道系数的生成器，涵盖 12 种室内与室外场景，射频频率最高 6 GHz。}
 sources: ['https://www.mathworks.com/help/comm/ug/winner-ii-channel.html', 'https://www.mathworks.com/matlabcentral/fileexchange/59690-winner-ii-channel-model-for-communications-toolbox', 'https://api.crossref.org/works/10.1002/9780470748077.ch3']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Generate large-scale parameters and double-directional rays from layouts and measurement statistics, then combine array responses to construct channels; configure time segmentation and FDD construction separately.', zh: 用布局与测量统计生成大尺度参数和双向角度射线，再结合阵列响应构造信道；时间分段和FDD构造需单列配置。}
+  stages:
+  - title: {en: 'Set layouts, scenarios, and antennas', zh: 设置布局、场景与天线}
+    detail: {en: Define links and arrays within one layout; record model-document and software-support-package versions separately., zh: 在同一布局中确定链路及阵列；模型文档与软件支持包版本分别记录。}
+    inputs:
+    - {en: BS/MS positions and velocities, zh: BS/MS位置和速度}
+    - {en: 'WINNER II scenarios, arrays, and frequency', zh: WINNER II场景、阵列和频率}
+    outputs:
+    - {en: Reproducible multilink layout, zh: 可复现的多链路布局}
+    controls:
+    - {en: 'Researcher specifies: carrier frequency within 2–6 GHz, bandwidth, scenario, arrays, and seed', zh: 研究者固定：2–6 GHz适用范围内的载频、带宽、场景、阵列与seed}
+    checks:
+    - {en: Check the selected scenario and elevation-angle support, zh: 核对所用场景及俯仰角支持}
+    - {en: Use a shared layout for correlated multi-BS/MS generation, zh: 多BS/MS相关生成使用同一布局}
+  - title: {en: Generate large-scale propagation states, zh: 生成大尺度传播状态}
+    detail: {en: 'Determine propagation conditions, pathloss, shadow fading, delay/angular spreads, K-factor, and other statistics by scenario.', zh: 按场景决定传播条件、路径损耗、阴影衰落和时延/角扩展、K-factor等统计量。}
+    inputs:
+    - {en: Scenario parameter tables, zh: 场景参数表}
+    - {en: Link layout, zh: 链路布局}
+    outputs:
+    - {en: Correlated large-scale parameters, zh: 带相关性的大尺度参数}
+    controls:
+    - {en: 'Researcher specifies: LOS/NLOS selection, statistical correlation, and whether losses are enabled', zh: 研究者固定：LOS/NLOS选择、统计相关与损耗是否启用}
+    checks:
+    - {en: Check sampled statistics against scenario parameter tables, zh: 检查抽样统计与场景参数表相符}
+    - {en: Do not mix parameters from different scenarios into a single default model, zh: 不把不同场景参数混用为单一默认模型}
+  - title: {en: Generate small-scale rays, zh: 生成小尺度射线}
+    detail: {en: 'Generate delays, powers, arrival/departure angles, polarization, and initial phases. Coordinates of individual scatterers in a real scene are usually unavailable.', zh: 生成时延、功率、到达/出发角、极化与初相位。通常没有真实场景中每个散射点的坐标。}
+    inputs:
+    - {en: Large-scale parameters, zh: 大尺度参数}
+    - {en: Cluster/ray generation rules, zh: 簇/射线生成规则}
+    outputs:
+    - {en: Statistical ray parameters, zh: 统计射线参数}
+    controls:
+    - {en: 'Researcher specifies: cluster/ray counts, random state, polarization, and angle conventions', zh: 研究者固定：簇/射线数、随机状态、极化和角度约定}
+    checks:
+    - {en: Check power normalization and delay ordering, zh: 检查归一化功率与时延排序}
+    - {en: Do not treat statistical rays as RT paths in a CAD scene, zh: 不将统计射线当作CAD场景RT路径}
+  - title: {en: Synthesize array and time-varying channels, zh: 合成阵列与时变信道}
+    detail: {en: 'Superpose rays to obtain MIMO channels; time evolution can connect correlated segments with gradual cluster-power transitions, subject to the specific implementation''s capabilities.', zh: 叠加各射线得到MIMO信道；时间演化可通过相关segments和渐变簇功率连接，具体实现能力需核对。}
+    inputs:
+    - {en: Ray parameters, zh: 射线参数}
+    - {en: Antenna field responses and mobility states, zh: 天线场响应、移动状态}
+    outputs:
+    - {en: Complex channel coefficients and delays, zh: 复信道系数与时延}
+    - {en: Continuous time sequences when conditions permit, zh: 条件成立时的连续时间序列}
+    controls:
+    - {en: 'Researcher specifies: time sampling, segment length, and transition/merging implementation', zh: 研究者固定：时间采样、segment长度、切换/合并实现}
+    checks:
+    - {en: Check power and phase continuity between adjacent segments, zh: 检查相邻段功率与相位连续性}
+    - {en: Do not claim real mobility simulation after merely redrawing independent drops, zh: 避免仅重抽随机drop后声明已模拟真实移动}
+  - title: {en: Export implementation outputs and process task data, zh: 实现导出与任务加工}
+    detail: {en: 'Use the selected implementation to generate arrays or filtered waveforms, then construct CSI, prediction, or link tests. Configure FDD separately using the specification''s shared-parameter and independent-initial-phase rules.', zh: 使用所选实现生成数组或滤波波形，再构造CSI、预测或链路测试。FDD按规范的共享参数与独立初相位规则另设。}
+    inputs:
+    - {en: Model specification or winner2.wim/comm.WINNER2Channel outputs, zh: 模型规范或winner2.wim/comm.WINNER2Channel输出}
+    - {en: Researcher-defined frequency-domain/receiver settings, zh: 研究者的频域/接收机设置}
+    outputs:
+    - {en: Implementation-specific channels/waveforms, zh: 实现特定信道/波形}
+    - {en: Researcher-defined labels and KPIs, zh: 研究者定义的标签与KPI}
+    controls:
+    - {en: 'Researcher specifies: MATLAB and dependency versions, FDD association method, normalization', zh: 研究者固定：MATLAB和依赖版本、FDD关联方式、归一化}
+    checks:
+    - {en: Identify which specification clauses the implementation covers, zh: 标注实现覆盖了哪些规范条款}
+    - {en: FDD construction does not establish measured generalization across arbitrary frequency bands, zh: FDD构造不能直接声称跨任意频段的实测泛化}
+  scope: {en: D1.1.2 V1.2 model workflow; the MathWorks support package is one separate implementation., zh: D1.1.2 V1.2模型流程；MathWorks支持包是其一种独立实现。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• The specification itself provides the model and parameter tables
+
+      • Software execution provides complex channels, delays, and filtered waveforms', zh: '• 规范本身提供模型和参数表
+
+      • 软件实现运行后提供复信道、时延和滤波波形'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• CFR, beam, and link-task samples', zh: • CFR、beam及链路任务样本}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The MathWorks support package was not installed or run; APIs and toolbox dependencies were verified.
+
+      • Relevant specification sections reviewed; not all CDL parameters were checked table by table.', zh: '• 未安装运行MathWorks支持包；API与工具箱依赖已核验。
+
+      • 已读规范相关章节，不声称逐表复核全部CDL参数。'}
+provenance:
+- {en: Measurement campaigns and statistics from the literature, zh: 测量活动与文献统计}
+- {en: Scenario parameter tables, zh: 场景参数表}
+- {en: Random delays/angles/powers/polarization, zh: 随机时延/角度/功率/极化}
+- {en: Ray superposition and array responses, zh: 射线叠加与阵列响应}
+- {en: Synthetic MIMO multilink channels, zh: 合成 MIMO 多链路信道}
+technical_notes:
+- {en: 'Supported by the literature: §3 generates MIMO channels by superposing double-directional plane waves driven by measurement statistics; antenna responses are separate from propagation parameters.', zh: 文献支持：§3以测量统计驱动的双向角度平面波叠加生成MIMO信道；天线响应与传播参数分开。}
+- {en: 'Supported by the literature: the basic model primarily uses azimuth angles; elevation can be added for indoor and outdoor-to-indoor scenarios.', zh: 文献支持：基本模型以方位角为主；室内及outdoor-to-indoor场景可加入俯仰角。}
+- {en: 'Supported by the literature: §3.4 constructs time evolution using correlated channel segments and gradual transitions between old and new cluster powers; Markov cluster birth/death was an alternative lacking complete parameters at the time.', zh: 文献支持：§3.4用相关channel segments和新旧簇功率渐换建立时间演化；Markov簇birth/death是当时缺少完整参数的备选方法。}
+- {en: 'Supported by the literature: §4.1 specifies 2–6 GHz and ≤100 MHz; DS, AS, and K-factor are scenario-parameterized, frequency dependence mainly enters pathloss, and FDD initial phases are independent.', zh: 文献支持：§4.1明确2–6 GHz与≤100 MHz；DS、AS、K-factor按场景参数化，频率依赖主要进入path loss，FDD初相位独立。}
+- {en: 'Supported by the literature: §5.1 requires multi-BS/multi-MS links in the same layout to be generated together to preserve correlation; scatterer coordinates are generally unknown.', zh: 文献支持：§5.1要求同一布局的多BS/多MS链接一起生成，以保留相关性；一般散射点坐标未知。}
+- {en: 'Confirmed: the current MathWorks support package provides winner2.wim and comm.WINNER2Channel; its 12 scenarios and toolbox dependencies are separately recorded from official documentation.', zh: 已确认：MathWorks当前支持包提供winner2.wim与comm.WINNER2Channel；其12种场景和工具箱依赖由官方文档单独登记。}
+limitations:
+- {en: The original report describes synthetic channels parameterized by measurements; availability of the underlying measurements requires checking Part II and individual measurement providers., zh: 原始报告描述测量参数化的合成信道；原始测量数据是否公开需另查Part II及各测量方。}
+- {en: 'Verify WINNER II, WINNER+, and QuaDRiGa versions and implementations separately.', zh: WINNER II、WINNER+与QuaDRiGa的版本和实现分别核验。}
+- {en: Retaining small-scale parameters for FDD is a model assumption; generalization across widely separated frequencies requires independent cross-frequency measurements or a validated multifrequency model., zh: FDD保留小尺度参数是模型假设；宽频跨域泛化需要独立跨频测量或经验证的多频模型。}
+- {en: 'The Part I cover is inconsistent between V1.2 and 1.1; record the file title, update date, and source together when citing it.', zh: Part I封面存在V1.2/1.1不一致；引用时同时记录文件题名、更新日期和来源。}
+history:
+- {en: '2007-09-30: D1.1.2 delivered; the PDF reviewed here records an update on 2008-02-04 and V1.2 in its headers.', zh: 2007-09-30：D1.1.2交付；本轮PDF记录2008-02-04更新，页眉为V1.2。}
+- {en: 'The current MathWorks support-package page was updated on 2026-09-23 and lists R2016b–R2026b compatibility; this dates the implementation entry, not the WINNER II model''s initial release.', zh: MathWorks支持包当前页面更新于2026-09-23，列出R2016b–R2026b兼容；这是实现入口日期，不是WINNER II模型初次发布日。}
+usage:
+- {en: 'Pin the D1.1.2 report and implementation version; for MathWorks, install the support package for the specified release and check toolbox dependencies first.', zh: 固定D1.1.2报告和所用实现版本；MathWorks路线先安装指定release支持包并检查工具箱依赖。}
+- {en: 'Choose a scenario, carrier frequency, bandwidth, and arrays within 2–6 GHz; first review LSP correlation distances and scenario tables.', zh: 选择2–6 GHz范围内的场景、载频、带宽与阵列，先查看LSP相关距离及场景表。}
+- {en: 'Build the full BS/MS layout and link matrix, generating correlated links together; use continuous segments and phase continuity for temporal prediction.', zh: 建立完整BS/MS布局和链接矩阵，一起生成相关links；时间预测使用连续segments及相位续接。}
+- {en: 'For FDD experiments, follow §5.4.3: preserve small-scale parameters, reverse link direction, change carrier frequency, and rerandomize initial phases; disclose this shared-parameter setup.', zh: FDD实验按§5.4.3保存小尺度参数、交换链路方向、改变载频并重新随机初相位，同时披露该共享参数设定。}
+- {en: 'Record seeds, layouts, and group-based splits; evaluate communication utility with oracle, persistence, and simple prediction baselines.', zh: 记录种子、布局与分组划分；用oracle、persistence和简单预测基线评估通信utility。}
+overview: {en: 'WINNER II Channel Models is a spatial channel model from the WINNER II project (IST-4-027756), specified in deliverable D1.1.2 V1.2 dated September 2007. It generates spatially defined multiuser MIMO channel coefficients with the clustered delay line method, for any number of base stations and mobile stations placed by a layout of geometry and locations. The model covers 12 indoor and outdoor scenarios (A1, A2, B1 to B4, C1 to C4, D1 and D2a) with line-of-sight and non-line-of-sight propagation, RF frequencies up to 6 GHz and signal bandwidths up to 100 MHz. The resource is a generator rather than a fixed dataset: MathWorks implements it as the WINNER II Channel Model add-on for Communications Toolbox, and the coefficients are produced at run time from a model configuration and a layout. The implementation requires MATLAB, Communications Toolbox, DSP System Toolbox and Signal Processing Toolbox, and its use is governed by MathWorks licensing.', zh: WINNER II Channel Models
+    是 WINNER II 项目（IST-4-027756）提出的空间信道模型，规范载于 2007 年 9 月发布的交付件 D1.1.2 V1.2。模型采用聚类延迟线（clustered delay line）方法，为任意数量的基站和移动台生成空间定义的多用户 MIMO 信道系数，各节点的几何与位置由布局给出。模型涵盖 12 种室内与室外场景（A1、A2、B1 至 B4、C1 至 C4、D1 和 D2a），支持视距（LOS）与非视距（NLOS）传播，射频频率最高 6 GHz，信号带宽最高 100 MHz。该资源是信道生成器而非固定数据集：MathWorks 将其实现为 Communications Toolbox 的 WINNER II Channel Model 附加组件，信道系数在运行时依据模型配置和布局生成。运行该实现需要 MATLAB、Communications Toolbox、DSP System Toolbox 和 Signal Processing Toolbox，其使用受 MathWorks 许可条款约束。}
+signal_details:
+- signal: cir
+  text: {en: 'comm.WINNER2Channel filters a real or complex input signal through the WINNER II fading channel of each link, in a streaming fashion. ModelConfig sets NumTimeSamples (default 100) and CenterFrequency (default 5.25e9 Hz). The sample rate of each link is V_MS / (c / F_center / 2 / N_SD), where V_MS is the mobile speed, c the speed of light, F_center the carrier frequency and N_SD the sample density.', zh: comm.WINNER2Channel 以流式方式，让实数或复数输入信号经过各链路的 WINNER II 衰落信道。ModelConfig 设置 NumTimeSamples（默认 100）和 CenterFrequency（默认 5.25e9 Hz）。每条链路的采样率为 V_MS / (c / F_center / 2 / N_SD)，其中 V_MS 为移动台速度，c 为光速，F_center 为载频，N_SD 为采样密度。}
+- signal: paths
+  text: {en: 'The pathgains output is a cell array with one complex array per link, of size N_R × N_T × N_P × N_S, where N_P is the number of paths of that link and N_S is the number of time samples. The number of paths and the link layout are specified by LayoutConfig. FixedPdpUsed and FixedAnglesUsed select predefined path delays, path powers, angles of departure and angles of arrival for specific scenarios.', zh: pathgains 输出为元胞数组，每条链路对应一个复数数组，尺寸为 N_R × N_T × N_P × N_S，其中 N_P 为该链路的路径数，N_S 为时间样本数。路径数和链路布局由 LayoutConfig 指定。FixedPdpUsed 与 FixedAnglesUsed 可为特定场景选用预定义的路径时延、路径功率、出发角（AoD）和到达角（AoA）。}

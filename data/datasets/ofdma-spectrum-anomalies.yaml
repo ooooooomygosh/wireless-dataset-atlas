@@ -18,3 +18,38 @@ citing: []
 summary: {en: 'Simulated OFDMA spectrograms from 21 spatially distributed sensing units per sample in an industrial indoor setting, covering 20,000 samples with normal operation and five jammer types. Each sample also has resource allocation maps, and the labels give jammer type, power and location with per-unit SNR and SJR.', zh: '面向工业室内环境的 OFDMA 仿真频谱图，每个样本包含 21 个分布式感知单元的频谱图，共 20,000 个样本，涵盖正常样本与五种干扰类型。每个样本还包含资源分配图，标签给出干扰类型、功率、位置以及每个感知单元的 SNR 和 SJR。'}
 sources: ['https://arxiv.org/abs/2606.02102', 'https://zenodo.org/doi/10.5281/zenodo.20341906', 'https://github.com/akdd11/ofdma-spectrum-anomalies-simulation']
 checked: '2026-11-06'
+overview: {en: 'This dataset is a simulated OFDMA spectrum-anomaly benchmark from Technische Universität Dresden, with Anton Schösser as first author. It is described in arXiv:2606.02102 and archived on Zenodo (DOI 10.5281/zenodo.20341906, version 1.0, published 2026-05-22). Channels are computed by ray tracing with Sionna RT 1.2.1 in a 40 m × 40 m × 5 m factory hall with production-line obstacles, at a 3.75 GHz carrier with a 20 MHz OFDMA system. The dataset has 20,000 samples, half normal and half anomalous, and the anomalies come from five jammer types (deceptive, sweep, barrage, pilot and random hopping tone), 2,000 samples each. Each sample holds 21 sensing-unit spectrograms, one resource allocation map and metadata, and labels.csv gives jammer type, jammer power in dBm, jammer location in m, the number of legitimate transmitters, and per-unit SNR and SJR in dB. The authors provide supervised ResNet-18 and unsupervised VAE baselines evaluated with F1 and AUC, and they suggest use in
+    network digital twins. The images archive is 23.5 GB, and the data are released under CC BY 4.0.', zh: '该数据集是一个仿真的 OFDMA 频谱异常基准，来自 Technische Universität Dresden，第一作者为 Anton Schösser，论文见 arXiv:2606.02102，并在 Zenodo 归档（DOI 10.5281/zenodo.20341906，1.0 版，发布于 2026-05-22）。信道由 Sionna RT 1.2.1 光线追踪计算，场景为 40 m × 40 m × 5 m 的工厂车间，内含生产线障碍物，载波频率 3.75 GHz，系统为 20 MHz 的 OFDMA。数据集共 20,000 个样本，正常与异常各占一半，异常来自五类干扰（deceptive、sweep、barrage、pilot 与 random_hop），每类 2,000 个样本。每个样本包含 21 个感知单元的频谱图、一张资源分配图和元数据；labels.csv 给出干扰类型、干扰功率（dBm）、干扰位置（m）、合法发射机数量，以及每个感知单元的 SNR 和 SJR（dB）。作者给出基于 F1 与 AUC 评估的有监督 ResNet-18 与无监督 VAE 基线，并建议用于网络数字孪生。图像压缩包为 23.5 GB，数据以 CC BY 4.0 许可发布。'}
+signal_details:
+- signal: spectrum
+  text: {en: 'Spectrograms of 1320 subcarriers by 70 OFDM symbols per sensing unit, 21 units per sample. Log-scale PSD from an STFT with a 2048-sample Blackman-Harris window, saved as 8-bit grayscale PNG and min-max scaled across the dataset. Resource allocation maps are 110 resource blocks by 5 slots, 8-bit, where the pixel value gives the legitimate transmitter index and 0 means unallocated. An HDF5 export (dataset.h5, uint8 arrays) is available with the --output-format hdf5 option.', zh: 每个感知单元的频谱图为 1320 个子载波 × 70 个 OFDM 符号，每个样本含 21 个感知单元。对 2048 点 Blackman-Harris 窗的 STFT 取对数尺度 PSD，保存为 8 位灰度 PNG，并在整个数据集上做 min-max 缩放。资源分配图为 110 个资源块 × 5 个时隙，8 位，像素值给出合法发射机编号，0 表示未分配。使用 --output-format hdf5 选项时，可导出 uint8 数组的 HDF5 文件 dataset.h5。}
+pipeline:
+  summary: {en: 'A Blender scene and Sionna ray tracing produce the channels, which an open-source framework converts into spectrograms, allocation maps, labels and PNG files.', zh: Blender 场景与 Sionna 光线追踪生成信道，开源框架再将其转换为频谱图、资源分配图、标签与 PNG 文件。}
+  stages:
+  - title: {en: Create the factory scene, zh: 创建工厂场景}
+    detail: {en: 'create_scenario_with_obstacles.py runs in the Blender Scripting workspace with Blender 4.2.19 LTS, the Mitsuba Add-on 0.4.0 and PyYAML, reading blender-python/conf/scene_attributes.yaml. The scene is exported to scenes/scene<N>. The paper describes the hall as 40 m × 40 m × 5 m with six metal production-line cuboids.', zh: create_scenario_with_obstacles.py 在 Blender Scripting 工作区中运行，使用 Blender 4.2.19 LTS、Mitsuba Add-on 0.4.0 与 PyYAML，读取 blender-python/conf/scene_attributes.yaml。场景导出到 scenes/scene<N>。论文将车间描述为 40 m × 40 m × 5 m，内含六个金属生产线长方体。}
+    inputs:
+    - {en: scene_attributes.yaml, zh: scene_attributes.yaml}
+    outputs:
+    - {en: exported scene scenes/scene<N>, zh: 导出的场景 scenes/scene<N>}
+  - title: {en: Ray-traced channel and OFDMA signal generation, zh: 光线追踪信道与 OFDMA 信号生成}
+    detail: {en: 'src/dataset_generation.py runs with scene_nr set in src/conf/dataset_generation.yaml, using Sionna RT 1.2.1, Mitsuba 3.7.1, Dr.Jit 1.2.0 and Python 3.12.12 on an NVIDIA L40S GPU. The paper''s parameters are 3 to 10 legitimate transmitters at 10 dBm, 21 sensing units, 15 kHz subcarrier spacing, and at most one jammer per sample at 0 to 30 dBm placed at 1.5 m height.', zh: src/dataset_generation.py 在 src/conf/dataset_generation.yaml 中设置 scene_nr 后运行，使用 Sionna RT 1.2.1、Mitsuba 3.7.1、Dr.Jit 1.2.0 与 Python 3.12.12，运行于 NVIDIA L40S GPU。论文参数为 3 至 10 个合法发射机（10 dBm）、21 个感知单元、15 kHz 子载波间隔，每个样本至多一个干扰机，发射功率 0 至 30 dBm，位于 1.5 m 高度。}
+    inputs:
+    - {en: scene from stage 1, zh: 第 1 阶段的场景}
+    - {en: dataset_generation.yaml configuration, zh: dataset_generation.yaml 配置}
+    outputs:
+    - {en: intermediate sample batches (pkl), zh: 中间样本批次（pkl）}
+  - title: {en: Spectrogram computation, zh: 频谱图计算}
+    detail: {en: 'The received signal at each sensing unit is converted by STFT with a Blackman-Harris window of 2048 samples and a hop of one OFDM symbol duration into a log-scale PSD. Values are clipped from the 0.1st percentile to the maximum of the non-jammed samples plus 6 dB, then scaled to 8 bit.', zh: 各感知单元的接收信号经 2048 点 Blackman-Harris 窗的 STFT 转换为对数尺度 PSD，跳步为一个 OFDM 符号时长。数值从 0.1 百分位裁剪到未受干扰样本的最大值加 6 dB，再缩放到 8 位。}
+    inputs:
+    - {en: intermediate sample batches, zh: 中间样本批次}
+    outputs:
+    - {en: 8-bit spectrograms, zh: 8 位频谱图}
+    - {en: spectrogram_min_max.csv, zh: spectrogram_min_max.csv}
+  - title: {en: Image and label export, zh: 图像与标签导出}
+    detail: {en: 'custom_data_export.py -d <dataset_number> writes the PNG spectrograms and allocation maps, labels.csv and spectrogram_min_max.csv, and the --output-format hdf5 option adds dataset.h5. labels.csv also carries the default supervised split assignments, which for normal samples are 5900, 100 and 1000 for training, validation and test.', zh: custom_data_export.py -d <dataset_number> 输出 PNG 频谱图与资源分配图、labels.csv 和 spectrogram_min_max.csv；--output-format hdf5 选项额外生成 dataset.h5。labels.csv 还包含默认的有监督划分，正常样本的训练、验证、测试数量分别为 5900、100 和 1000。}
+    inputs:
+    - {en: 8-bit spectrograms, zh: 8 位频谱图}
+    outputs:
+    - {en: images/spectrogram-XXXXX-XX.png and alloc_res-XXXXX.png, zh: images/spectrogram-XXXXX-XX.png 与 alloc_res-XXXXX.png}
+    - {en: labels.csv, zh: labels.csv}

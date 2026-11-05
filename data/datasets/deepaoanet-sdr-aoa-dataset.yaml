@@ -15,7 +15,45 @@ access: {url: 'https://aston.box.com/v/deepaoanet-zdai', type: open}
 code: ['https://github.com/zdai257/DeepAoANet']
 paper: doi:10.1109/access.2021.3140146
 used_in: []
-citing: ["doi:10.1109/infocomwkshps57453.2023.10226092","doi:10.1109/tmlcn.2024.3449834","doi:10.1109/wcnc61545.2025.10978539"]
+citing: ['doi:10.1109/infocomwkshps57453.2023.10226092', 'doi:10.1109/tmlcn.2024.3449834', 'doi:10.1109/wcnc61545.2025.10978539']
 summary: {en: 'Sample covariance matrix snapshots from a four-element ULA of coherent RTL-SDR receivers (KerberosSDR), recorded from 868 MHz LoRa beacons in open-area, office, corridor and interior-to-outdoor settings. Nearly 50k measured snapshots, over 2.6 million including augmentation, with ground-truth AoA labels from -70 to 70 degrees in 10-degree steps.', zh: 来自四元件 ULA 的采样协方差矩阵快照，由四路相干 RTL-SDR 接收机（KerberosSDR）接收 868 MHz LoRa 信标，场景包括开阔区域、办公室、走廊及室内到室外。实测快照近 5 万个，含数据增强后超过 260 万个，附带 -70 至 70 度、步长 10 度的 AoA 真值标签。}
 sources: ['https://arxiv.org/abs/2112.00695', 'https://ar5iv.labs.arxiv.org/html/2112.00695', 'https://raw.githubusercontent.com/zdai257/DeepAoANet/master/README.md', 'https://aston.box.com/v/deepaoanet-zdai', 'https://api.crossref.org/works/10.1109/ACCESS.2021.3140146']
 checked: '2026-11-06'
+overview: {en: 'The DeepAoANet SDR AoA dataset contains sample covariance matrix snapshots from a four-element ULA of coherent RTL-SDR receivers (KerberosSDR), recorded from intermittent LoRa beacons at 868 MHz. Dai et al. describe the dataset in the DeepAoANet paper, posted to arXiv in December 2021 and published in IEEE Access, volume 10 (2022). Nearly 50,000 measured snapshots were collected in an open area, an open area with copper reflectors, an office, a corridor and interior-to-outdoor settings, and phase-shift and synthetic superposition augmentation brings the total to over 2.6 million. Ground-truth AoA labels run from -70 to 70 degrees in 10-degree steps, and the phase-shift augmentation extends the field of view to -74 to 74 degrees. The data are distributed as ROS bags of about 48.9 GB through a Box link, and the code repository converts them to dataframes. The raw data were recorded with a LoRa transmitter only, and the README recommends fine-tuning with local signals before
+    use on other signals.', zh: DeepAoANet SDR AoA 数据集包含来自四元件 ULA 的采样协方差矩阵快照，由四路相干 RTL-SDR 接收机（KerberosSDR）接收 868 MHz 的间歇性 LoRa 信标。Dai 等人在 DeepAoANet 论文中描述了该数据集，论文于 2021 年 12 月发布在 arXiv 上，并以 IEEE Access 第 10 卷（2022 年）正式发表。实测快照近 5 万个，采集场景包括开阔区域、带铜板反射体的开阔区域、办公室、走廊以及室内到室外；经相位偏移与合成叠加增强后，总数超过 260 万。AoA 真值标签范围为 -70 至 70 度，步长 10 度；相位偏移增强将视场扩展到 -74 至 74 度。数据以约 48.9 GB 的 ROS bag 形式通过 Box 链接发布，代码仓库可将其转换为 dataframe。原始数据仅使用 LoRa 发射机采集，README 建议在用于其他信号前，先用本地信号进行微调。}
+signal_details:
+- signal: iq
+  text: {en: 'Four-channel IQ from a KerberosSDR (four coherent RTL-SDRs) with a centre frequency of 868 MHz, a sampling rate of 2 MHz, a bandwidth of 125 kHz and a uniform gain of 22.9 dB on all channels. The sampling window is 2^15 samples, and each snapshot is a 4x4x8 sample covariance matrix, i.e. 128 floating-point values, computed from 8 sliding windows of 2^12 samples. Data are recorded in ROS bags, and the code converts them to .pkl dataframes.', zh: 来自 KerberosSDR（四路相干 RTL-SDR）的四通道 IQ，中心频率 868 MHz，采样率 2 MHz，带宽 125 kHz，四个通道统一增益 22.9 dB。采样窗口为 2^15 个样本，每个快照是 4x4x8 的采样协方差矩阵，即 128 个浮点数，由 8 个长度为 2^12 个样本的滑动窗口计算得到。数据以 ROS bag 形式记录，代码将其转换为 .pkl dataframe。}
+pipeline:
+  summary: {en: 'LoRa beacons are recorded by a four-channel SDR with GPS-derived AoA labels, converted to covariance snapshots, augmented by phase shifts and superposition, then packaged as ROS bags and dataframes.', zh: 四通道 SDR 记录 LoRa 信标并附带由 GPS 推导的 AoA 标签，随后转换为协方差快照，经相位偏移与叠加增强，最后打包为 ROS bag 与 dataframe。}
+  stages:
+  - title: {en: Receiver setup, zh: 接收机设置}
+    detail: {en: 'A KerberosSDR with four whip antennas at an inter-element spacing factor of 0.2 is tuned to 868 MHz with a 2 MHz sampling rate and 125 kHz bandwidth. Antennas are disconnected while the noise source is active for sample and phase synchronization, then reconnected, and a band-pass FIR filter with 100 taps and decimation 4 is applied at the centre frequency.', zh: 四根鞭状天线、单元间距因子为 0.2 的 KerberosSDR 调谐至 868 MHz，采样率 2 MHz，带宽 125 kHz。同步时断开天线并启用噪声源完成采样与相位同步，之后重新连接天线，并在中心频率处施加 100 抽头、抽取因子为 4 的带通 FIR 滤波器。}
+    inputs:
+    - {en: KerberosSDR and four whip antennas, zh: KerberosSDR 与四根鞭状天线}
+    outputs:
+    - {en: phase-synchronized four-channel IQ, zh: 相位同步的四通道 IQ}
+  - title: {en: Transmitter and AoA labels, zh: 发射机与 AoA 标签}
+    detail: {en: 'A Dragino LoRa-GPS board stacked on a Raspberry Pi 4 transmits LoRa beacons at 0.5 Hz with spreading factor 11, carrying full NMEA messages. Ground-truth AoA is derived from relative GPS positions and a compass for direction alignment, with labels from -70 to 70 degrees in 10-degree steps.', zh: 叠放在 Raspberry Pi 4 上的 Dragino LoRa-GPS 板以 0.5 Hz 发送扩频因子为 11 的 LoRa 信标，负载为完整 NMEA 语句。AoA 真值由相对 GPS 位置及用于方向对齐的罗盘得到，标签范围为 -70 至 70 度，步长 10 度。}
+    inputs:
+    - {en: relative GPS positions and compass heading, zh: 相对 GPS 位置与罗盘方位}
+    outputs:
+    - {en: AoA ground-truth labels, zh: AoA 真值标签}
+  - title: {en: Covariance snapshots, zh: 协方差快照}
+    detail: {en: 'Each snapshot uses 8 sliding windows of 2^12 samples taken from a 2^15-sample sampling window, forming a 4x4x8 sample covariance feature of 128 values. Inputs are normalized with standard scaling.', zh: 每个快照使用从 2^15 个样本采样窗口中截取的 8 个长度为 2^12 个样本的滑动窗口，形成 4x4x8 的采样协方差特征，共 128 个值。输入经标准化缩放处理。}
+    inputs:
+    - {en: four-channel IQ windows, zh: 四通道 IQ 窗口}
+    outputs:
+    - {en: 128-value covariance feature per snapshot, zh: 每个快照 128 个值的协方差特征}
+  - title: {en: Augmentation, zh: 数据增强}
+    detail: {en: 'Phase shifts of -4, -2, 2 and 4 degrees are applied to single-source snapshots, which extends the labels and gives a field of view from -74 to 74 degrees. Two-source samples are synthesized by superposing IQ recorded at different AoAs in non-LOS scenarios, with a random phase difference between carriers.', zh: 对单源快照施加 -4、-2、2 和 4 度的相位偏移，扩展标签并使视场达到 -74 至 74 度。双源样本由非视距场景中不同 AoA 下记录的 IQ 叠加合成，载波之间引入随机相位差。}
+    inputs:
+    - {en: single-source snapshots and non-LOS IQ, zh: 单源快照与非视距 IQ}
+    outputs:
+    - {en: augmented single-source and two-source samples, zh: 增强后的单源与双源样本}
+  - title: {en: Packaging as ROS bags and dataframes, zh: 打包为 ROS bag 与 dataframe}
+    detail: {en: 'ROS is used for both field recording and data synthesis. The repository scripts Create_Synthetic.py and Multilabel_Create_Synthetic.py create augmented rosbags from raw AoA rosbags, and AOAsingle_main.py and AOAmultilabel_main.py convert the rosbags to .pkl dataframes.', zh: ROS 同时用于现场采集与数据合成。仓库脚本 Create_Synthetic.py 和 Multilabel_Create_Synthetic.py 由原始 AoA rosbag 生成增强 rosbag，AOAsingle_main.py 和 AOAmultilabel_main.py 将 rosbag 转换为 .pkl dataframe。}
+    inputs:
+    - {en: raw AoA rosbags, zh: 原始 AoA rosbag}
+    outputs:
+    - {en: augmented rosbags and .pkl dataframes, zh: 增强 rosbag 与 .pkl dataframe}

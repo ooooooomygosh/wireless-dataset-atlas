@@ -12,7 +12,33 @@ license: MIT
 access: {url: 'https://zenodo.org/records/3748719', type: open}
 paper: doi:10.3390/data3010003
 used_in: []
-citing: ["doi:10.1109/twc.2021.3052606","doi:10.1109/tmc.2020.3017176","doi:10.1109/jiot.2019.2932464"]
+citing: ['doi:10.1109/twc.2021.3052606', 'doi:10.1109/tmc.2020.3017176', 'doi:10.1109/jiot.2019.2932464']
 summary: {en: 'The dataset contains 103,584 Wi-Fi RSS fingerprints, mainly from one Android smartphone, collected over 25 months on two floors of a university library building and organized into collection campaigns. MATLAB scripts for loading and filtering the data are included.', zh: '数据集包含103,584条Wi-Fi RSS指纹，主要由一部Android智能手机采集，历时25个月，覆盖大学图书馆建筑的两层楼，并按采集批次组织。数据集同时包含用于加载和过滤数据的MATLAB脚本。'}
 sources: ['https://zenodo.org/records/3748719', 'https://zenodo.org/records/1066041', 'https://api.crossref.org/works/10.3390/data3010003']
 checked: '2026-11-06'
+overview: {en: 'The UJI Long-Term Wi-Fi Fingerprinting dataset is a Wi-Fi RSS database for indoor positioning, produced at Universitat Jaume I. The Zenodo citation request names G. M. Mendoza-Silva, P. Richter, J. Torres-Sospedra, E. S. Lohan and J. Huerta, and the first version was published in 2017. A trained professional collected the measurements with mainly one Android smartphone, at fixed positions and directions in the library building of Universitat Jaume I, on two floors. At each position the professional took several consecutive fingerprints, which allows the study of short-term signal variation. In each monthly campaign, one training dataset type and five test dataset types were recorded at the same positions and directions, which allows the study of long-term variation. The current version 2.2 contains 103,584 fingerprints over 25 months, and the first version had 63,504 fingerprints over 15 months. The archive is 6.5 MB and includes MATLAB scripts that load and filter the data,
+    and it is released under the MIT license.', zh: 'UJI Long-Term Wi-Fi Fingerprinting 数据集是一个用于室内定位的 Wi-Fi RSS 数据库，由 Universitat Jaume I 制作。Zenodo 引用说明列出的作者为 G. M. Mendoza-Silva、P. Richter、J. Torres-Sospedra、E. S. Lohan 和 J. Huerta，首个版本发布于 2017 年。测量由一名经过培训的专业人员主要使用一部 Android 智能手机，在 Universitat Jaume I 图书馆建筑的两层楼中，于固定位置和固定朝向完成。在每个位置上，该人员连续采集多条指纹，可用于研究短期信号变化。每个月的采集中，训练集类型一种、测试集类型五种，均在相同位置和朝向上采集，可用于研究长期信号变化。当前 2.2 版包含 103,584 条指纹，历时 25 个月；首个版本包含 63,504 条指纹，历时 15 个月。压缩包大小为 6.5 MB，包含用于加载和过滤数据的 MATLAB 脚本，采用 MIT 许可。'}
+signal_details:
+- signal: rssi
+  text: {en: 'Wi-Fi RSS fingerprints. Version 1 was collected with a Samsung Galaxy S3, and version 2.2 adds a Samsung Galaxy A5 (2017) for the final campaign. Version 2.2 holds 103,584 fingerprints, organized into datasets by collection campaign.', zh: 'Wi-Fi RSS 指纹。第一版使用 Samsung Galaxy S3 采集，2.2 版在最后一次采集中加入 Samsung Galaxy A5（2017）。2.2 版共 103,584 条指纹，按采集批次组织为数据集。'}
+pipeline:
+  summary: {en: Fingerprints were collected at fixed positions and directions in repeated monthly campaigns and organized into training and test datasets., zh: 在固定位置和朝向上，经多次按月采集的指纹被组织为训练集和测试集。}
+  stages:
+  - title: {en: Fixed-position survey, zh: 固定位置测量}
+    detail: {en: 'A trained professional stood at specific positions, facing specific directions, and took several consecutive fingerprints at each position. The same positions and directions were used in every monthly campaign.', zh: 经过培训的人员站在指定位置、面向指定方向，在每个位置连续采集多条指纹。每次按月采集都使用相同的位置和朝向。}
+    inputs:
+    - {en: Fixed reference positions and directions, zh: 固定的参考位置与朝向}
+    outputs:
+    - {en: Consecutive RSS fingerprints per position, zh: 每个位置的连续 RSS 指纹}
+  - title: {en: Monthly campaigns, zh: 按月采集}
+    detail: {en: 'Each month yields one training dataset type and five test dataset types. Version 1 covers 15 months, and version 2 adds 10 months, for 25 months in total. The Samsung Galaxy A5 (2017) was used in the final campaign.', zh: 每个月采集一种训练集类型和五种测试集类型。第一版覆盖 15 个月，第二版增加 10 个月，共 25 个月。最后一次采集使用了 Samsung Galaxy A5（2017）。}
+    inputs:
+    - {en: Monthly fingerprint sets, zh: 每月的指纹集合}
+    outputs:
+    - {en: Training and test datasets per campaign, zh: 每次采集的训练集与测试集}
+  - title: {en: MATLAB loading and filtering, zh: MATLAB 加载与过滤}
+    detail: {en: The MATLAB scripts load and filter the desired data and give examples of possible studies. The supporting material also includes the bookshelf local coordinates., zh: MATLAB 脚本用于加载和过滤所需数据，并给出可能研究的示例。补充材料还包含书架的局部坐标。}
+    inputs:
+    - {en: Dataset archive (zip), zh: 数据集压缩包（zip）}
+    outputs:
+    - {en: Filtered training and test data, zh: 过滤后的训练和测试数据}

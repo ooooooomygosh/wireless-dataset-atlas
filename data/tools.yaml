@@ -1,0 +1,181 @@
+- id: project-contrawimae
+  name: WirelessContrastiveMaskedLearning
+  category: {en: Preprocessing and training tools, zh: 预处理与训练工具}
+  repo: https://github.com/BerkIGuler/WirelessContrastiveMaskedLearning
+  license: {en: MIT (code); verify data licenses by source, zh: MIT（代码）；数据许可另按来源核验}
+  role: {en: ContraWiMAE steps 3–6, zh: ContraWiMAE 第 3–6 步}
+  how_to_use:
+  - {en: Prepare six-key NPZ files according to the data card., zh: 按 data card 准备六键 NPZ。}
+  - {en: Use WiMAETrainer or ContraWiMAETrainer and the configuration-file entry points in docs/quickstart.md., zh: 使用 docs/quickstart.md 的 WiMAETrainer 或 ContraWiMAETrainer 与配置文件入口。}
+  - {en: 'Check splits, masking ratios, and SNR ranges against the actual training configuration.', zh: 用实际训练配置核对 split、mask 比例和 SNR 范围。}
+  limitations:
+  - {en: Not an RT scene generator., zh: 不是 RT 场景生成器。}
+  - {en: The quick start's random Gaussian samples validate the interface only; they do not replace physical CSI., zh: quickstart 的随机高斯样本只验证接口，不能替代物理 CSI。}
+  - {en: Some current code defaults differ from the paper's settings., zh: 当前代码默认设置与论文部分设置不同。}
+  datasets: [contrawimae]
+- id: project-sensefi
+  name: SenseFi / WiFi-CSI-Sensing-Benchmark
+  category: {en: Preprocessing and training tools, zh: 预处理与训练工具}
+  repo: https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark
+  license: {en: MIT (code); the four upstream datasets retain their respective licenses, zh: MIT（代码）；四个上游数据的许可分别适用}
+  role: {en: SenseFi steps 3–6, zh: SenseFi 第 3–6 步}
+  how_to_use:
+  - {en: Download processed data linked in the official README and preserve the directory structure., zh: 下载官方 README 链接的 processed 数据并保持目录结构。}
+  - {en: 'Supervised example: run.py --model ResNet18 --dataset NTU-Fi_HAR.', zh: 监督示例：run.py --model ResNet18 --dataset NTU-Fi_HAR。}
+  - {en: 'Self-supervised example: self_supervised.py --model ResNet18.', zh: 自监督示例：self_supervised.py --model ResNet18。}
+  limitations:
+  - {en: Different sources use different representations and normalization., zh: 不同数据源采用不同表示和归一化。}
+  - {en: Does not generate raw complex CSI or communication beam/rate labels., zh: 不生成原始复 CSI，也没有通信波束/速率标签。}
+  - {en: Class mappings and upstream splits still require verification., zh: 类别映射与上游 split 仍需核对。}
+  datasets: [sensefi]
+- id: project-scenebaker
+  name: SceneBaker
+  category: {en: Upstream OSM scene generation, zh: 上游OSM场景生成}
+  repo: https://github.com/hslyu/sionna-scene-baker
+  license: {en: MIT (code); verify map and third-party asset licenses separately, zh: MIT（代码）；地图和第三方素材许可另核验}
+  role: {en: Input a latitude/longitude region to generate Mitsuba XML and meshes in Python that Sionna RT can load; useful for first building reusable urban geometry., zh: 输入经纬度范围，在Python中生成Sionna RT可加载的Mitsuba XML与网格；适合先建立可复用城市几何。}
+  how_to_use:
+  - {en: Input a latitude/longitude region to generate Mitsuba XML and meshes in Python that Sionna RT can load; useful for first building reusable urban geometry., zh: 输入经纬度范围，在Python中生成Sionna RT可加载的Mitsuba XML与网格；适合先建立可复用城市几何。}
+  - {en: 'Inputs: OSM latitude/longitude bounds, optional terrain, and repository LFS assets; outputs: XML and meshes, a Sionna Scene, and boundary/height/occupancy queries', zh: 输入：OSM经纬度边界、可选terrain及仓库LFS资源；输出：XML与mesh、Sionna Scene及边界/高度/占据查询}
+  limitations:
+  - {en: This project was not run; materials and geometry still need checks for the wireless task., zh: 未运行本项目；材料与几何仍需按无线任务检查。}
+  - {en: Assets are generated in a temporary directory by default; set out_dir for reuse., zh: 默认生成资产在临时目录；需要复用时设置out_dir。}
+  - {en: Provides upstream geometry only; DeepMIMO integration still requires RT execution and path conversion first., zh: 仅提供上游几何；接DeepMIMO仍需先运行RT并转换路径。}
+  datasets: [sionna-rt, deepmimo]
+- id: project-mitsuba-blender
+  name: Mitsuba Blender Add-on
+  category: {en: 'Scene editing, rendering, and XML exchange', zh: 场景编辑、渲染与XML交换}
+  repo: https://github.com/mitsuba-renderer/mitsuba-blender
+  license: {en: BSD-3-Clause, zh: BSD-3-Clause}
+  role: {en: 'Import, edit, render, and export Mitsuba scenes in Blender, providing a modeling route for geometry shared by vision and wireless simulations.', zh: 在Blender中导入、编辑、渲染并导出Mitsuba场景，为视觉和无线共享几何提供一条建模路径。}
+  how_to_use:
+  - {en: 'Import, edit, render, and export Mitsuba scenes in Blender, providing a modeling route for geometry shared by vision and wireless simulations.', zh: 在Blender中导入、编辑、渲染并导出Mitsuba场景，为视觉和无线共享几何提供一条建模路径。}
+  - {en: 'Inputs: Blender scenes or Mitsuba XML, convertible meshes, cameras, and visual materials; outputs: Mitsuba XML and geometry assets, rendered images, and editable Blender scenes', zh: 输入：Blender场景或Mitsuba XML、可转换的mesh、相机和视觉材质；输出：Mitsuba XML及几何资产、渲染图像和Blender可编辑场景}
+  limitations:
+  - {en: The current README requires Blender 4.2+; the release package includes Mitsuba 3.10.0., zh: 当前README要求Blender4.2+，发行包带Mitsuba3.10.0。}
+  - {en: This atlas's Sionna runtime example uses Mitsuba 3.9.1; interoperability requires a compatible plugin version and an actual import check., zh: 本图谱Sionna运行样例为Mitsuba3.9.1；互通需选择兼容插件版本并实际导入检查。}
+  - {en: Handle visual BSDF conversion and Sionna RF material configuration separately., zh: 视觉BSDF转换与Sionna RF材料配置分别处理。}
+  datasets: [sionna-rt, viwi, raymobtime]
+- id: project-colosseum-scenario-generator
+  name: ColosseumScenarioGenerator
+  category: {en: RT to hardware-in-the-loop FIR scenarios, zh: RT到硬件在环FIR场景}
+  repo: https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator
+  license: {en: GPL-3.0 (repository label); MATLAB/platform dependencies are separate, zh: GPL-3.0（仓库标识）；MATLAB/平台依赖独立}
+  role: {en: 'Use MATLAB ray tracing and mobile-node configurations to generate RFscenario.mat, then approximate it as channels playable on Colosseum.', zh: 用MATLAB射线追踪和移动节点配置生成RFscenario.mat，再近似为Colosseum可播放的信道。}
+  how_to_use:
+  - {en: 'Use MATLAB ray tracing and mobile-node configurations to generate RFscenario.mat, then approximate it as channels playable on Colosseum.', zh: 用MATLAB射线追踪和移动节点配置生成RFscenario.mat，再近似为Colosseum可播放的信道。}
+  - {en: 'Inputs: OSM scenes, node positions/trajectories, antennas, fc, and reflection budget; outputs: chMatrix, plMatrix, coordinates, Time, four-nonzero-tap approximations, and conversion inputs', zh: 输入：OSM场景、节点位置/轨迹、天线、fc和反射预算；输出：chMatrix、plMatrix、coordinates、Time、四非零tap近似与转换输入}
+  limitations:
+  - {en: README reviewed; MATLAB not run., zh: 已读README，未运行MATLAB。}
+  - {en: 'Compare PDP, total power, and CFR before and after approximation to quantify FIR conversion error.', zh: 近似前后应比较PDP、总功率和CFR，以量化FIR转换误差。}
+  datasets: [colosseum, matlab-5g]
+- id: project-raymobtime-pipeline
+  name: Raymobtime生成管线
+  category: {en: 'Coordinated generation of traffic, RT, images, and LiDAR', zh: 交通、RT、图像和LiDAR协同生成}
+  repo: https://github.com/lasseufpa/Raymobtime
+  license: {en: Modules and external tools have separate licenses; Wireless InSite requires a commercial license, zh: 各模块与外部工具分别适用许可；Wireless InSite需商业授权}
+  role: {en: 'Organizes SUMO mobility, Wireless InSite, Blender/Blensor, and postprocessing into an episode/scene pipeline.', zh: 把SUMO移动、Wireless InSite、Blender/Blensor及后处理组织成episode/scene管线。}
+  how_to_use:
+  - {en: 'Organizes SUMO mobility, Wireless InSite, Blender/Blensor, and postprocessing into an episode/scene pipeline.', zh: 把SUMO移动、Wireless InSite、Blender/Blensor及后处理组织成episode/scene管线。}
+  - {en: 'Inputs: SUMO road networks/routes, Wireless InSite and Blender scenes, YAML configuration, and device/sensor settings; outputs: paths/channels/beams, RGB/LiDAR, and camera, object, and time metadata', zh: 输入：SUMO路网/route、Wireless InSite和Blender场景、YAML配置与设备/传感器设置；输出：路径/信道/beam、RGB/LiDAR及相机、对象、时间元数据}
+  limitations:
+  - {en: Corresponds to the existing Raymobtime card; not counted as a new dataset., zh: 对应已收录Raymobtime卡，不计作新数据集。}
+  - {en: The quick start uses precomputed RT; full regeneration also requires external software and base scenes., zh: quick start使用预计算RT；完整再生成还需外部软件与基础场景。}
+  datasets: [raymobtime, wireless-insite]
+- id: project-open3d-raycasting
+  name: Open3D RaycastingScene
+  category: {en: Geometric LiDAR scanning on shared meshes, zh: 共享mesh上的几何LiDAR扫描}
+  repo: https://github.com/isl-org/Open3D
+  license: {en: See the repository for the code license; verify scene-asset licenses separately, zh: 代码许可见仓库；场景资产许可另核验}
+  role: {en: Computes first-hit intersections between meshes and rays to generate scan point clouds from shared geometry; the public Multimodal-NF code uses this branch., zh: 对mesh和射线执行首命中求交，可用于从共享几何生成扫描点云；Multimodal-NF公开代码采用这一分支。}
+  how_to_use:
+  - {en: Computes first-hit intersections between meshes and rays to generate scan point clouds from shared geometry; the public Multimodal-NF code uses this branch., zh: 对mesh和射线执行首命中求交，可用于从共享几何生成扫描点云；Multimodal-NF公开代码采用这一分支。}
+  - {en: 'Inputs: triangle meshes, ray origins, and directions; outputs: t_hit, geometric intersections, validity, and triangle/geometry indices', zh: 输入：三角mesh、射线原点与方向；输出：t_hit及几何交点、有效性和三角形/几何索引}
+  limitations:
+  - {en: 'With normalized ray directions, t_hit represents distance; no hit is inf.', zh: 射线方向归一化后，t_hit对应距离；无命中为inf。}
+  - {en: 'Point-cloud intensity, noise, missed detections, and scan timing are specified separately by the sensor model.', zh: 点云强度、噪声、漏检和扫描时间由传感器模型另设。}
+  datasets: [sionna-rt, multimodal-nf]
+- id: wireless-ml-data-hub
+  name: Wireless ML Data Hub
+  category: {en: Data discovery and task directory, zh: 数据发现与任务目录}
+  repo: https://github.com/Yaya195/wireless-ml-datasets
+  license: {en: 'Code: Apache-2.0; original directory and documentation: CC BY 4.0; upstream data have separate licenses', zh: 代码Apache-2.0；原始目录与说明CC BY 4.0；上游数据另许可}
+  role: {en: Adds task-to-source discovery and alias checks before formal collection or generation, zh: 在正式采集或生成前，补充任务到数据源的发现与别名核对}
+  how_to_use:
+  - {en: Find candidates and original access points by tasks such as beam prediction and channel estimation., zh: 按波束预测、信道估计等任务找到候选及原始入口。}
+  - {en: 'Compare aliases, resource types, and public-access conditions using the machine-readable directory, then trace original papers/official files to complete the Atlas.', zh: 用机器可读目录比对别名、资源类型和公开访问条件，再追踪原始论文/官方文件补齐Atlas。}
+  limitations:
+  - {en: 'Community directories aid discovery; they do not directly establish a scenario''s propagation mechanisms, synchronization errors, or specific fields.', zh: 社区目录用于发现，不直接证明特定场景的传播机制、同步误差或具体字段。}
+  - {en: 'This update adds project links and intended uses without copying the directory''s complete data records; any later import should retain original attribution, the CC BY 4.0 link, and a change log.', zh: 本次收录项目链接与用途，没有整库复制其数据记录；若后续导入目录内容，保留原作者归属、CC BY 4.0链接和变更记录。}
+  datasets: [deepmimo, deepsense-6g, dichasus, raymobtime]
+- id: awesome-channel-foundation-models
+  name: Awesome Channel Foundation Models
+  category: {en: Foundation-model research directory, zh: 基础模型研究目录}
+  repo: https://github.com/GREAT-ISAC/Awesome-Channel-Foundation-Models
+  license: {en: 'Code: MIT; directory/documentation: CC BY 4.0; repository PDFs are excluded from that license', zh: 代码MIT；目录/说明CC BY 4.0；仓库PDF不在该许可内}
+  role: {en: 'Cross-check relationships among models, checkpoints, data, and simulation tools during corpus construction and evaluation design', zh: 在语料构建和评估设计阶段补查模型、checkpoint、数据和仿真工具的关系}
+  how_to_use:
+  - {en: 'Add related work and official assets through three entry points: papers, datasets, and simulation tools.', zh: 从论文、数据集、仿真工具三个入口补充相关工作与官方资产。}
+  - {en: Trace model-training provenance to check whether pretraining corpora and downstream benchmarks share upstream data., zh: 对照模型训练血缘，核查预训练语料和下游Benchmark是否共享上游数据。}
+  limitations:
+  - {en: Directory entries are not original models or datasets and do not replace a full experimental-protocol review., zh: 目录条目不是原始模型或数据集，也不能代替完整实验协议审查。}
+  - {en: This update adds only the directory link and independently compiled integration notes; no PDFs or complete directory were copied., zh: 本次仅加入目录链接及自主整理的接入说明，未复制其PDF或整套目录。}
+  datasets: [lwm-corpus, wifo-corpus, lh-csi, contrawimae, cfm-bench]
+- id: project-deepmimo-sionna-bridge
+  name: DeepMIMO Sionna exporter / converter
+  category: {en: Sionna-path to DeepMIMO-format conversion, zh: Sionna路径到DeepMIMO格式转换}
+  repo: https://github.com/DeepMIMO/DeepMIMO/blob/v4.0.5/deepmimo/exporters/sionna_exporter.py
+  license: {en: 'DeepMIMO code: Apache-2.0; input scene/asset licenses are separate', zh: DeepMIMO代码Apache-2.0；输入场景/素材许可独立}
+  role: {en: 'Connects Sionna RT Paths/Scene to the DeepMIMO path library, converting per-snapshot solutions, geometry, materials, and solver parameters into data from which array CSI can be regenerated.', zh: 连接Sionna RT的Paths/Scene与DeepMIMO路径库；把逐快照求解结果、几何、材料和求解参数转为可再生成阵列CSI的数据。}
+  how_to_use:
+  - {en: First generate Paths with a pinned Sionna PathSolver version and explicitly save the parameters used in that solve., zh: 先用固定版本Sionna PathSolver生成Paths，显式保存本次求解参数。}
+  - {en: 'Call sionna_exporter(scene,paths,solver_params,folder) to obtain intermediate pkl files for paths, materials, RT parameters, vertices/faces, objects, and related data.', zh: '调用sionna_exporter(scene,paths,solver_params,folder)，得到路径、材料、RT参数、顶点/面与对象等pkl中间文件。'}
+  - {en: 'Call dm.convert or sionna_rt_converter to generate DeepMIMO path matrices and params.json; verify lossless=True when triangle-mesh fidelity is required, as the default geometry representation is a convex hull.', zh: 调用dm.convert或sionna_rt_converter，生成DeepMIMO路径矩阵与params.json；需要三角mesh保真时核验lossless=True，默认几何表达为convex hull。}
+  - {en: 'Convert frame results separately, combine them into a DynamicDataset, and set timestamps; finally generate CSI with a consistent array/OFDM configuration.', zh: 逐帧结果分别转换，再组合DynamicDataset并设置timestamps；最后以统一阵列/OFDM配置生成CSI。}
+  - {en: 'Spot-check path counts, total power, phases, delays, object/antenna indices, and metadata before and after export.', zh: 小规模抽查导出前后路径数、总功率、相位、时延、对象/天线索引及元数据。}
+  limitations:
+  - {en: Only source code and official tutorials were reviewed in this round; conversion was not executed., zh: 本轮只读源码和官方教程，未执行转换。}
+  - {en: 'In v4.0.5, export_scene_rt_params aliases still hard-code diffraction=False, overriding a supplied True value; for Sionna 2.2 diffraction scenes, verify and correct this metadata rather than inferring from the export that diffraction was disabled in the original solve.', zh: v4.0.5 export_scene_rt_params的aliases仍固定diffraction=False，会覆盖传入的同名True值；用于Sionna2.2绕射场景时必须核查并修正该元数据，不能以导出文件判断原求解未启用绕射。}
+  - {en: 'The v4.0.5 deepmimo[sionna] extra pins Mitsuba 3.8.0/DrJit 1.3.1, while Sionna RT 2.2.0 pins 3.9.1/1.5.0; select a compatible installation combination instead of combining both sets of pins directly.', zh: 'v4.0.5的deepmimo[sionna] extra固定Mitsuba3.8.0/DrJit1.3.1，而SionnaRT2.2.0固定3.9.1/1.5.0；安装时需选定兼容组合，不能直接把两套pin拼在一起。'}
+  - {en: Conversion only organizes existing RT results; new bands and blockage geometry still require upstream propagation solving., zh: 转换只组织已有RT结果；新的频段和遮挡几何仍需上游传播求解。}
+  datasets: [deepmimo, sionna-rt]
+- id: project-deepbeam
+  name: DeepBeam waveform-learning code
+  category: {en: I/Q beam identification and loading tools, zh: I/Q波束识别与加载工具}
+  repo: https://github.com/wineslab/deepbeam
+  license: {en: MIT (code); check the archive separately for the data license, zh: MIT（代码）；数据许可另查馆藏}
+  role: {en: Steps 3–5 of DeepBeam data collection, zh: DeepBeam采集数据的第3–5步}
+  how_to_use:
+  - {en: Select the TXB or AoA loader and corresponding HDF5 files according to the README., zh: 按README选择TXB或AoA加载器和对应HDF5。}
+  - {en: 'First validate blocks and labels with DataGenerator, then reproduce experiments with device-based splits.', zh: 先以DataGenerator验证block和label，再按设备划分进行复现。}
+  limitations:
+  - {en: Current labels identify the transmitted beam; the best communication beam requires received-power ranking., zh: 当前标签识别已发射波束；最优通信波束需接收功率排名。}
+  - {en: Preserve original RF-front-end identities for cross-device evaluation., zh: 跨设备评估须保留原始前端身份。}
+  datasets: [deepbeam]
+- id: project-protobeam
+  name: ProtoBeam
+  category: {en: Few-shot adaptation across hardware, zh: 跨硬件few-shot适配}
+  repo: https://github.com/omarmshaal/ProtoBeam
+  license: {en: Public notebook; no LICENSE found in the repository file tree in this round, zh: 公开Notebook；本轮仓库文件树未见LICENSE}
+  role: {en: Cross-antenna tasks after DeepBeam step 4, zh: DeepBeam第4步之后的跨天线任务}
+  how_to_use:
+  - {en: 'Reuse original DeepBeam files, organizing data by source/target RF front end.', zh: 复用DeepBeam原始文件；按源/目标射频前端组织数据。}
+  - {en: 'At test time, use k labeled support samples per class from the target antenna to build prototypes; use the remaining samples as queries.', zh: 测试时从目标天线每类取k个带标签support构建原型，其余样本作query。}
+  limitations:
+  - {en: Target-domain support labels are acquired information and should count toward adaptation cost., zh: 测试目标域support属于已获取标签；应计入适配成本。}
+  - {en: Some current notebook defaults differ from the paper's training settings; freeze versions and configuration for experiments., zh: 论文训练设置与当前Notebook部分默认值不同；实验需冻结版本与配置。}
+  datasets: [deepbeam]
+- id: project-wavesfm-suite
+  name: WavesFM preprocessing and evaluation
+  category: {en: Multirepresentation evaluation and task integration, zh: 多表示评估与任务接入}
+  repo: https://github.com/AhmedTarek62/wavesfm
+  license: {en: Publicly readable; no LICENSE/COPYING found in the current file tree, zh: 公开可读；当前文件树未发现LICENSE/COPYING}
+  role: {en: WavesFM steps 2–5, zh: WavesFM第2–5步}
+  how_to_use:
+  - {en: Build task HDF5 files using the corresponding scripts under preprocessing., zh: 使用preprocessing下对应脚本构建任务HDF5。}
+  - {en: Register new tasks in data.py and supply held-out generalization test sets through separate val-data., zh: 在data.py注册新任务，并通过独立val-data传入外推测试集。}
+  - {en: Run fixed protocols with main_finetune.py or run_finetune_all.py., zh: 以main_finetune.py或run_finetune_all.py运行固定协议。}
+  limitations:
+  - {en: Raw data and model weights have their own sources and licenses., zh: 原始数据和模型权重各有来源与许可。}
+  - {en: Default random splits and full-cache normalization need modification for strict generalization protocols., zh: 默认随机划分和全缓存归一化须按严格外推协议改造。}
+  datasets: [wavesfm-suite, deepmimo]

@@ -12,7 +12,42 @@ license: CC BY 4.0
 access: {url: 'https://zenodo.org/record/3882104', type: open}
 paper: doi:10.1109/dcoss49796.2020.00022
 used_in: []
-citing: ["doi:10.1109/tccn.2022.3222193","doi:10.1145/3560905.3567773","doi:10.1145/3715014.3724041"]
+citing: ['doi:10.1109/tccn.2022.3222193', 'doi:10.1145/3560905.3567773', 'doi:10.1145/3715014.3724041']
 summary: {en: Intel 5300 WiFi CSI (30 subcarriers across 3 antennas per packet) recorded while people walk through a lab area and a kitchen area. Ceiling-camera position ground truth and SpotFi-estimated angle-of-arrival values are included., zh: 在实验室区域和厨房区域中行走的人员采集的 Intel 5300 WiFi CSI（每个数据包 30 个子载波、3 根天线）。数据包含天花板摄像头提供的位置真值以及 SpotFi 估计的 AoA 值。}
 sources: ['https://zenodo.org/record/3882104']
 checked: '2026-11-06'
+overview: {en: 'EyeFi is a dataset of WiFi CSI and camera ground truth for human motion, published on Zenodo (record 3882104, version 1.0.0, June 6, 2020) under CC BY 4.0. Its paper, ''EyeFi: Fast Human Identification Through Vision and WiFi-based Trajectory Matching'', accompanies a DCOSS 2020 paper by Shiwei Fang, Tamzeed Islam, Sirajum Munir and Shahriar Nirjon of the University of North Carolina at Chapel Hill and Bosch Research and Technology Center. The data were recorded at the Bosch Research and Technology Center in Pittsburgh, PA, with an Intel 5300 WiFi NIC that captured CSI from packets sent by a Google Pixel 2 XL phone used as the access point. Each packet carries 30 subcarriers across 3 antennas, and the packet rate is about 20 to 25 packets per second. People walked in a lab area of 11.8 m by 8.74 m with 1, 2, 3, 5 or 10 people, and in a kitchen with strong reflectors such as metal refrigerators and dishwashers with 1 or 3 people. A ceiling-mounted camera at about 2.85 m gives
+    the (x, y) coordinates and a camera-based angle of arrival for each person, and SpotFi estimates angles of arrival from the CSI using 1 to 4 assumed paths. The files are HDF5 (.h5), grouped by scene and number of people, and the archive EyeFi_Dataset.zip is about 1.5 GB.', zh: 'EyeFi 是一个结合 WiFi CSI 与摄像头真值的人体运动数据集，发布于 Zenodo（record 3882104，版本 1.0.0，发布日期 2020 年 6 月 6 日），采用 CC BY 4.0 许可。数据集配套 DCOSS 2020 论文 “EyeFi: Fast Human Identification Through Vision and WiFi-based Trajectory Matching”，作者为 Shiwei Fang、Tamzeed Islam、Sirajum Munir 和 Shahriar Nirjon，单位为北卡罗来纳大学教堂山分校与 Bosch Research and Technology Center。数据采集于宾夕法尼亚州匹兹堡的 Bosch Research and Technology Center，使用 Intel 5300 WiFi 网卡采集 CSI，数据包由作为接入点的 Google Pixel 2 XL 手机发出。每个数据包包含 30 个子载波、3 根天线，包速率约为每秒 20 至 25 个。人员在 11.8 m × 8.74 m 的实验室区域中行走，人数为 1、2、3、5 或 10 人；厨房区域内有冰箱、洗碗机等金属强反射体，人数为 1 或 3 人。天花板安装的摄像头位于约 2.85 m 高度，为每位人员提供 (x, y) 坐标和基于摄像头的到达角；SpotFi 则基于 CSI 估计到达角，假设路径数为 1 至 4。文件为 HDF5（.h5）格式，按场景和人数分组；压缩包 EyeFi_Dataset.zip 约 1.5 GB。'}
+signal_details:
+- signal: csi
+  text: {en: 'WiFi CSI from an Intel 5300 NIC in an Intel NUC, extracted with Linux CSI tools, with a Google Pixel 2 XL as the access point. Each csi_real and csi_imag record has 90 values, ordered by subcarrier then antenna, which is 30 subcarriers across 3 antennas. The packet rate is about 20 to 25 packets per second.', zh: 由 Intel NUC 中的 Intel 5300 网卡经 Linux CSI tools 提取的 WiFi CSI，接入点为 Google Pixel 2 XL。每条 csi_real 与 csi_imag 记录包含 90 个数值，按子载波后天线的顺序排列，即 30 个子载波、3 根天线。数据包速率约为每秒 20 至 25 个。}
+pipeline:
+  summary: {en: 'CSI from WiFi packets is paired with camera coordinates and SpotFi angle estimates, then packed into HDF5 files by scene.', zh: WiFi 数据包的 CSI 与摄像头坐标、SpotFi 到达角估计配对，再按场景打包为 HDF5 文件。}
+  stages:
+  - title: {en: CSI capture, zh: CSI 采集}
+    detail: {en: 'An Intel 5300 WiFi NIC in an Intel NUC, running Linux CSI tools, extracts CSI from packets sent by a Google Pixel 2 XL that serves as the access point. The packet rate is about 20 to 25 packets per second, and the WiFi antennas sit about 1.12 m above ground.', zh: Intel NUC 中的 Intel 5300 WiFi 网卡运行 Linux CSI tools，从作为接入点的 Google Pixel 2 XL 发出的数据包中提取 CSI。数据包速率约为每秒 20 至 25 个，WiFi 天线距地面约 1.12 m。}
+    inputs:
+    - {en: WiFi packets from the Pixel 2 XL, zh: 来自 Pixel 2 XL 的 WiFi 数据包}
+    outputs:
+    - {en: csi_real and csi_imag per packet, zh: 每个数据包的 csi_real 与 csi_imag}
+  - title: {en: Camera ground truth, zh: 摄像头真值}
+    detail: {en: 'A Bosch Flexidome IP Panoramic 7000 camera mounted on the ceiling at about 2.85 m gives (x, y) coordinates and a camera-derived angle of arrival for each person. The person holding the phone is labelled obj_0, and other people are labelled as additional objects.', zh: '安装在天花板上、高度约 2.85 m 的 Bosch Flexidome IP Panoramic 7000 摄像头为每位人员提供 (x, y) 坐标和基于摄像头的到达角。手持手机的人员标记为 obj_0，其他行人作为其他对象标记。'}
+    inputs:
+    - {en: ceiling camera view, zh: 天花板摄像头画面}
+    outputs:
+    - {en: coordinates and cam_aoa per person, zh: 每人的坐标与 cam_aoa}
+  - title: {en: SpotFi angle-of-arrival estimation, zh: SpotFi 到达角估计}
+    detail: {en: 'SpotFi estimates angles of arrival from the CSI, assuming 1 to 4 paths. Phase-offset corrections are stored as offset_00, offset_11, offset_12, offset_21 and offset_22; the measured offsets are 1.1899 rad and -2.0071 rad for antennas 1 and 2, and 1.3883 rad and -1.8129 rad for antennas 1 and 3.', zh: SpotFi 基于 CSI 估计到达角，假设路径数为 1 至 4。相位偏移校正存储为 offset_00、offset_11、offset_12、offset_21 和 offset_22；天线 1 与 2 的实测偏移为 1.1899 rad 和 -2.0071 rad，天线 1 与 3 为 1.3883 rad 和 -1.8129 rad。}
+    inputs:
+    - {en: CSI, zh: CSI}
+    outputs:
+    - {en: spotfi_aoa per path count and offset, zh: 按路径数与偏移划分的 spotfi_aoa}
+  - title: {en: HDF5 packaging by scene, zh: 按场景打包为 HDF5}
+    detail: {en: 'Samples are written as HDF5 files grouped by scene: lab with 1, 2, 3, 5 or 10 people, and kitchen with 1 or 3 people. Each file holds csi_real, csi_imag, nPaths groups with spotfi_aoa, num_obj, obj groups with cam_aoa and coordinates, and timestamp. The training folder contains shuffled train, valid and test files without timestamps, drawn from the lab 1-person data.', zh: 样本按场景写入 HDF5 文件：实验室场景为 1、2、3、5 或 10 人，厨房场景为 1 或 3 人。每个文件包含 csi_real、csi_imag、带 spotfi_aoa 的 nPaths 分组、num_obj、带 cam_aoa 与 coordinates 的 obj 分组，以及 timestamp。训练文件夹包含打乱顺序的 train、valid 和 test 文件，无时间戳，取自实验室 1 人数据。}
+    inputs:
+    - {en: CSI, zh: CSI}
+    - {en: camera coordinates, zh: 摄像头坐标}
+    - {en: SpotFi AoA, zh: SpotFi 到达角}
+    outputs:
+    - {en: .h5 files, zh: .h5 文件}
+    - {en: EyeFi_Dataset.zip (about 1.5 GB), zh: EyeFi_Dataset.zip（约 1.5 GB）}

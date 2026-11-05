@@ -12,8 +12,46 @@ license: Custom non-commercial academic terms (no modification or redistribution
 access: {url: 'https://chen3110.github.io/mmbody/index.html', type: request}
 code: ['https://github.com/Chen3110/mmBody']
 paper: doi:10.1145/3503161.3548262
-used_in: ["doi:10.1109/jiot.2025.3601012"]
-citing: ["doi:10.1109/cvpr52733.2024.00185","doi:10.1109/jiot.2024.3359209","doi:10.1109/jiot.2024.3476350"]
+used_in: ['doi:10.1109/jiot.2025.3601012']
+citing: ['doi:10.1109/cvpr52733.2024.00185', 'doi:10.1109/jiot.2024.3359209', 'doi:10.1109/jiot.2024.3476350']
 summary: {en: 'Synchronized, calibrated mmWave radar point clouds and RGB(D) images of 20 volunteers performing 100 motions, with skeleton and mesh annotations. Scenes include lab settings and smoke, rain, occlusion and poor-lighting conditions.', zh: 20 名志愿者执行 100 种动作时同步、标定的毫米波雷达点云与 RGB(D) 图像，附带骨架与网格标注。场景包括实验室环境以及烟雾、降雨、遮挡和低光照条件。}
 sources: ['https://chen3110.github.io/mmbody/index.html', 'https://github.com/Chen3110/mmBody', 'https://arxiv.org/abs/2209.05070', 'https://arxiv.org/html/2209.05070v3', 'https://api.crossref.org/works/10.1145/3503161.3548262']
 checked: '2026-11-06'
+overview: {en: 'mmBody is a mmWave radar benchmark for 3D body reconstruction. The State Key Laboratory of Industrial Control Technology at Zhejiang University produced it, and it was published at the ACM International Conference on Multimedia (ACM MM) 2022. It contains synchronized, calibrated mmWave radar point clouds and RGB and depth images from two Azure Kinect cameras, together with motion capture labels. The data cover 100 motions performed by 20 volunteers in seven scenes, with more than 200k frames. The scenes include two labs, a furnished lab, poor lighting, rain, smoke and occlusion of the radar. Labels are skeleton and SMPL-X mesh annotations, obtained by fitting SMPL-X to OptiTrack marker data with MoSh++. The benchmark tasks are 3D joint and mesh reconstruction from radar point clouds, Kinect point clouds and RGB images, with P4Transformer and VIBE as baselines. Access requires a request, and the terms allow non-commercial academic use only, without modification or redistribution.',
+  zh: mmBody 是一个面向三维人体重建的毫米波雷达基准数据集。该数据集由浙江大学工业控制技术国家重点实验室（State Key Laboratory of Industrial Control Technology）制作，发表于 ACM International Conference on Multimedia（ACM MM）2022。数据包含同步、标定后的毫米波雷达点云，以及来自两台 Azure Kinect 相机的 RGB 与深度图像，并附带动作捕捉标签。数据覆盖 20 名志愿者在 7 个场景中执行的 100 种动作，超过 200k 帧。场景包括两个实验室、一个布置了家具的实验室、低光照环境、降雨、烟雾以及雷达遮挡。标签为骨架和 SMPL-X 网格标注，通过 MoSh++ 将 SMPL-X 拟合到 OptiTrack 标记点数据上得到。基准任务为基于雷达点云、Kinect 点云和 RGB 图像的三维关节与网格重建，基线方法为 P4Transformer 和 VIBE。获取数据需要提交申请，使用条款仅允许非商业学术用途，不得修改或再分发。}
+signal_details:
+- signal: radar
+  text: {en: 'Arbe Robotics Phoenix radar with a 48 transmit by 48 receive channel antenna array. Range resolution is 0.4 m and angle resolution about 2.0 degrees. The product rate is 10 to 30 FPS, and the actual capture rate is about 14 FPS. An onboard processor produces point clouds whose points carry 3D location, range velocity, amplitude and energy power. Each frame has about 1k human points at a distance of 3 to 5 m.', zh: Arbe Robotics Phoenix 雷达，发射 48 通道、接收 48 通道的天线阵列。距离分辨率 0.4 m，角度分辨率约 2.0 度。产品标称帧率为 10 至 30 FPS，实际采集帧率约 14 FPS。板载处理器生成点云，每个点包含三维位置、range velocity、幅度和能量功率。在 3 至 5 m 距离处，每帧约有 1k 个人体点。}
+- signal: rgb
+  text: {en: 'Color images from the two Azure Kinect units at 30 FPS. The master unit sits directly under the radar, and the sub unit sits 1.5 to 2 m from the body on one side of the radar-body line.', zh: 两台 Azure Kinect 的彩色图像，30 FPS。master 相机位于雷达正下方，sub 相机位于雷达与人体连线的一侧，距人体 1.5 至 2 m。}
+- signal: depth
+  text: {en: Depth images from the same two Azure Kinect units at 30 FPS. Depth images contain up to about 200k points. Camera intrinsics are provided as 3 x 3 matrices for the master and sub cameras., zh: 同两台 Azure Kinect 的深度图像，30 FPS。深度图最多包含约 200k 个点。提供 master 与 sub 相机的 3 x 3 内参矩阵。}
+pipeline:
+  summary: {en: 'Radar, two Kinect cameras and OptiTrack motion capture are calibrated to the radar frame, and SMPL-X labels are fitted from marker data with MoSh++.', zh: 雷达、两台 Kinect 相机和 OptiTrack 动作捕捉系统标定到雷达坐标系，SMPL-X 标签由标记点数据通过 MoSh++ 拟合得到。}
+  stages:
+  - title: {en: Multi-sensor capture, zh: 多传感器采集}
+    detail: {en: 'The radar is mounted on a 3D-printed holder on a tripod about 0.8 m above the ground and records subjects 3 to 5 m away. Two Azure Kinect units stream color and depth at 30 FPS. Eight OptiTrack cameras on tripods around a circle of 8 m radius, at 2.5 m height, track 37 markers at up to 300 FPS.', zh: 雷达安装在三脚架上的 3D 打印支架上，离地约 0.8 m，记录距离 3 至 5 m 的受试者。两台 Azure Kinect 以 30 FPS 输出彩色与深度流。8 台 OptiTrack 相机置于半径 8 m 的圆周上，高 2.5 m，以最高 300 FPS 跟踪 37 个标记点。}
+    outputs:
+    - {en: 'radar point clouds, RGB-D images, marker trajectories', zh: 雷达点云、RGB-D 图像、标记点轨迹}
+  - title: {en: Calibration, zh: 标定}
+    detail: {en: 'The radar frame is the target coordinate frame for all labels. Kinect calibration uses a 1 m x 1 m Aruco tag, with the transform computed by Colored ICP. The radar-to-Kinect transform is set beforehand on the shared holder. The radar-to-MoCap transform is computed from markers on the radar, located by OptiTrack.', zh: 雷达坐标系是所有标签的目标坐标系。Kinect 标定使用 1 m x 1 m 的 Aruco 标记板，变换由 Colored ICP 计算。雷达与 Kinect 的变换在共用支架上预先设定。雷达与动作捕捉系统的变换由雷达上的标记点经 OptiTrack 定位后计算得到。}
+    inputs:
+    - {en: marker and tag observations, zh: 标记点与标记板观测}
+    outputs:
+    - {en: sensor-to-radar transforms, zh: 各传感器到雷达的变换}
+  - title: {en: Synchronization, zh: 同步}
+    detail: {en: 'The radar runs on an Ubuntu VM on the same physical machine as the camera capture system, and the MoCap PC is synchronized to the camera system over a local network. The radar provides receive timestamps only, so misalignment is checked manually and adjusted slightly per sequence.', zh: 雷达运行在与相机采集系统同一台物理机器上的 Ubuntu 虚拟机中，动作捕捉 PC 通过局域网与相机系统同步。雷达只提供接收时间戳，因此人工检查时间错位，并对每个序列做细微调整。}
+    outputs:
+    - {en: time-aligned sequences, zh: 时间对齐的序列}
+  - title: {en: Ground-truth fitting, zh: 真值拟合}
+    detail: {en: 'MoSh++ fits SMPL-X to the MoCap marker locations. The output is 22 joints and 10475 mesh vertices. The shape parameter beta has 16 dimensions, and the pose has a global rotation plus 21 body joints. Hand pose and facial expression are fixed to template values.', zh: MoSh++ 将 SMPL-X 拟合到动作捕捉标记点位置。输出为 22 个关节和 10475 个网格顶点。形状参数 beta 为 16 维，姿态包括全局旋转和 21 个身体关节。手部姿态和面部表情固定为模板值。}
+    inputs:
+    - {en: MoCap marker locations, zh: 动作捕捉标记点位置}
+    outputs:
+    - {en: 'SMPL-X parameters, joints and mesh', zh: SMPL-X 参数、关节与网格}
+  - title: {en: Point cloud preprocessing, zh: 点云预处理}
+    detail: {en: 'Radar points are sampled to 1024 per frame, with features of 3D coordinates, amplitude, velocity and energy. Kinect point clouds are sampled to 4096 per frame. Each frame is cropped with a bounding box derived from the ground-truth skeleton.', zh: 雷达点云每帧采样为 1024 个点，特征包括三维坐标、幅度、速度和能量。Kinect 点云每帧采样为 4096 个点。每帧依据真值骨架得到的包围盒进行裁剪。}
+    inputs:
+    - {en: 'radar and Kinect point clouds, ground-truth skeletons', zh: 雷达与 Kinect 点云、真值骨架}
+    outputs:
+    - {en: fixed-size cropped point clouds, zh: 固定点数的裁剪点云}

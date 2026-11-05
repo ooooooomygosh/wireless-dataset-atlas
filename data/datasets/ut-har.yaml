@@ -12,8 +12,12 @@ license: GPL-3.0 (repository license)
 access: {url: 'https://github.com/ermongroup/Wifi_Activity_Recognition', type: open}
 code: ['https://github.com/ermongroup/Wifi_Activity_Recognition']
 paper: doi:10.1109/mcom.2017.1700082
-used_in: ["doi:10.1109/jiot.2024.3375337","doi:10.1109/jiot.2022.3228820","doi:10.1109/jiot.2024.3400773"]
-citing: ["doi:10.1109/tmc.2018.2878233","doi:10.1109/tvt.2018.2883796","doi:10.1109/jsac.2023.3310097"]
+used_in: ['doi:10.1109/jiot.2024.3375337', 'doi:10.1109/jiot.2022.3228820', 'doi:10.1109/jiot.2024.3400773']
+citing: ['doi:10.1109/tmc.2018.2878233', 'doi:10.1109/tvt.2018.2883796', 'doi:10.1109/jsac.2023.3310097']
 summary: {en: 'WiFi CSI amplitude and phase from 30 subcarriers and 3 antennas, recorded with the Linux 802.11n CSI Tool, with activity annotations for human activity recognition. The repository distributes about 4 GB of input and annotation files.', zh: 使用 Linux 802.11n CSI Tool 采集的 WiFi CSI 幅度与相位数据（30 个子载波、3 根天线），附带人体活动标注，用于人体活动识别。仓库提供约 4 GB 的输入文件与标注文件。}
 sources: ['https://github.com/ermongroup/Wifi_Activity_Recognition', 'https://api.crossref.org/works/10.1109/mcom.2017.1700082']
 checked: '2026-11-06'
+overview: {en: 'UT-HAR is a WiFi channel state information (CSI) dataset for behavior recognition, released with a 2017 survey in IEEE Communications Magazine by Yousefi, Narui, Dayal, Ermon and Valaee. The CSI was collected with the Linux 802.11n CSI Tool. Each row of an input file holds a timestamp, then 90 amplitude values (30 subcarriers x 3 antennas) and 90 phase values in the same layout. The data are a download of about 4 GB from an external Google Drive link given in the GitHub repository, which also contains TensorFlow code for training.', zh: UT-HAR 是面向行为识别的 WiFi 信道状态信息（CSI）数据集，与 Yousefi、Narui、Dayal、Ermon 和 Valaee 于 2017 年发表在 IEEE Communications Magazine 上的综述配套发布。CSI 使用 Linux 802.11n CSI Tool 采集。输入文件的每一行包含一个时间戳，随后是 90 个幅度值（30 个子载波 × 3 根天线）和 90 个相位值，排列方式相同。数据通过 GitHub 仓库中给出的外部 Google Drive 链接下载，约 4 GB，仓库还包含用于训练的 TensorFlow 代码。}
+signal_details:
+- signal: csi
+  text: {en: 'WiFi CSI from the Linux 802.11n CSI Tool, in files with the input_ prefix. Column 1 is a timestamp, columns 2 to 91 are amplitude and columns 92 to 181 are phase, for 30 subcarriers and 3 antennas.', zh: 使用 Linux 802.11n CSI Tool 采集的 WiFi CSI，存于文件名以 input_ 为前缀的文件中。第 1 列为时间戳，第 2 至 91 列为幅度，第 92 至 181 列为相位，对应 30 个子载波与 3 根天线。}

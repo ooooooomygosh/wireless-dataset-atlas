@@ -5,7 +5,7 @@ organization: University of Bristol
 origin: measured
 tasks: [wireless-sensing, multimodal-sensing]
 signals: [csi, cir, radar]
-bands_ghz: [5]
+bands_ghz: []
 environment: [indoor]
 antennas: {tx: 3, rx: 3}
 subcarriers: 30
@@ -14,7 +14,41 @@ license: CC0 1.0
 access: {url: 'https://doi.org/10.6084/m9.figshare.c.5551209.v1', type: open}
 paper: doi:10.1038/s41597-022-01573-2
 used_in: []
-citing: ["doi:10.1109/jiot.2023.3344179","doi:10.1145/3715014.3722068"]
+citing: ['doi:10.1109/jiot.2023.3344179', 'doi:10.1145/3715014.3722068']
 summary: {en: 'About 8 hours of annotated measurements from six participants performing six activities in two rooms, with WiFi CSI, passive WiFi radar, UWB channel impulse response and Kinect v2 skeleton data.', zh: 约 8 小时的标注测量数据，由 6 名参与者在两个房间中执行 6 项活动采集，包含 WiFi CSI、无源 WiFi 雷达、UWB CIR 以及 Kinect v2 骨骼数据。}
 sources: ['https://www.nature.com/articles/s41597-022-01573-2', 'https://arxiv.org/abs/2110.04239', 'https://api.figshare.com/v2/collections/5551209', 'https://api.figshare.com/v2/articles/16578428']
 checked: '2026-11-06'
+overview: {en: 'OPERAnet is a multimodal dataset for passive human activity recognition and localization, collected at the University of Bristol and described in a 2022 Scientific Data paper (doi:10.1038/s41597-022-01573-2). It contains about 8 hours of annotated measurements from six participants performing six daily activities in two rooms. The RF sensors are WiFi CSI receivers on Intel 5300 NICs, a passive WiFi radar (PWR) built on a software-defined radio, and two passive UWB systems that exchange channel impulse response (CIR) data, while a third UWB tag system provides ground-truth positions at 10 Hz. Kinect sensors add three-dimensional skeleton data. The monitoring areas are 2.46 m x 4.40 m in Room 1 and 4.06 m x 4.53 m in Room 2, and experiments exp001 to exp054 were run in Room 1 while exp055 to exp061 were run in Room 2. Each modality is a separate zip on a figshare collection, with one file per experiment in .mat or .csv format. The WiFi CSI and UWB files include a timestamp,
+    activity label, experiment number, person ID, room number and ground-truth XY coordinates, and the localization runs add transmitter and receiver notes. The data are licensed CC0 1.0, and the Kinect files contain skeleton coordinates rather than images.', zh: 'OPERAnet 是一个用于被动式人体活动识别与定位的多模态数据集，由英国布里斯托大学采集，并在 2022 年 Scientific Data 论文中发表（doi:10.1038/s41597-022-01573-2）。数据包含约 8 小时的标注测量，由 6 名参与者在两个房间中执行 6 项日常活动。射频传感器包括基于 Intel 5300 网卡的 WiFi CSI 接收机、基于软件无线电的无源 WiFi 雷达（PWR），以及两套交换信道冲激响应（CIR）数据的无源 UWB 系统；另有第三套 UWB 标签系统以 10 Hz 提供真值位置。Kinect 传感器提供三维骨骼数据。Room 1 的监测区域为 2.46 m x 4.40 m，Room 2 为 4.06 m x 4.53 m；exp001 至 exp054 在 Room 1 中进行，exp055 至 exp061 在 Room 2 中进行。每种模态作为一个独立 zip 文件发布在 figshare 集合中，每个实验对应一个 .mat 或 .csv 文件。WiFi CSI 与 UWB 文件包含时间戳、活动标签、实验编号、人员 ID、房间编号与真值 XY 坐标，定位实验还附带发射机与接收机说明。数据采用 CC0 1.0 许可；Kinect 文件保存的是骨骼坐标，而非图像。'}
+signal_details:
+- signal: csi
+  text: {en: 'WiFi CSI from an Intel 5300 NIC, 30 OFDM subcarriers per packet, 3 transmit by 3 receive antennas, giving 270 complex values per packet. One row per received packet, with a millisecond timestamp in UTC+01. Receivers NUC1 and NUC2 capture packets injected by NUC3 in injector mode. The released files are .mat.', zh: 来自 Intel 5300 网卡的 WiFi CSI，每个数据包 30 个 OFDM 子载波，3 个发射天线乘 3 个接收天线，每个数据包共 270 个复数值。每行对应一个接收到的数据包，时间戳为毫秒级 UTC+01。接收机 NUC1 与 NUC2 以注入模式接收由 NUC3 注入的数据包。文件格式为 .mat。}
+- signal: cir
+  text: {en: 'UWB channel impulse response from Decawave chipsets. The accumulator holds 1016 samples at about 1.0016 ns per tap. System 1 uses the first 35 CIR samples and system 2 the first 50, giving sensing ranges of 10.5 m and 15 m. Each row is one received UWB packet, with raw complex CIR samples (cir1, cir2, ...), first-path and receive power in dBm, and tag coordinates logged at 10 Hz. The average packet rate of system 2 is about 195 Hz. Files are .csv.', zh: 来自 Decawave 芯片的 UWB 信道冲激响应（CIR）。累加器共 1016 个采样点，每个抽头约 1.0016 ns。系统 1 使用前 35 个 CIR 采样点，系统 2 使用前 50 个，对应感知距离分别为 10.5 m 与 15 m。每行对应一个接收到的 UWB 数据包，包含原始复数 CIR 采样（cir1、cir2 等）、首径功率与接收功率（dBm），以及以 10 Hz 记录的标签坐标。系统 2 的平均包速率约为 195 Hz。文件格式为 .csv。}
+- signal: radar
+  text: {en: 'Passive WiFi radar Doppler spectrograms from three surveillance channels (rx2, rx3, rx4) on a software-defined radio. NUC3 is the signal source, injecting packets at 1600 Hz, with a coherent processing interval of 1 s and 20 MHz sampling per channel. Each row holds one measurement from each of the three receivers, with PWR_ch1 and following spectrogram columns. Files are .mat.', zh: 基于软件无线电的无源 WiFi 雷达多普勒频谱图，来自三个监测通道（rx2、rx3、rx4）。NUC3 为信号源，注入速率为 1600 Hz，相干处理间隔 1 s，每通道采样率 20 MHz。每行包含三个接收机各一条测量，列名为 PWR_ch1 等。文件格式为 .mat。}
+pipeline:
+  summary: {en: 'Four sensor types recorded during 61 numbered experiments in two rooms, and each stream was saved per experiment with its own labels.', zh: 四类传感器在两个房间内的 61 组编号实验中同时采集，每类数据按实验分别保存并附带各自的标签。}
+  stages:
+  - title: {en: Room and node layout, zh: 房间与节点布置}
+    detail: {en: 'NUC1 faced the transmitter NUC3 in a line-of-sight geometry, and NUC2 sat at 90 degrees bistatic to it. Two passive UWB systems were deployed in a multi-static configuration and exchanged CIR data among their nodes. The UWB tag system logged ground-truth positions at 10 Hz. The PWR surveillance channels were rx2, rx3 and rx4, and Kinect sensors recorded skeletons.', zh: NUC1 面向发射机 NUC3 布置，构成视距（LoS）几何；NUC2 与发射机呈 90 度双基地配置。两套无源 UWB 系统以多基地方式部署，并在各自节点之间交换 CIR 数据。UWB 标签系统以 10 Hz 记录真值位置。PWR 监测通道为 rx2、rx3 与 rx4，Kinect 记录骨骼数据。}
+    inputs:
+    - {en: Two rooms and six participants, zh: 两个房间与 6 名参与者}
+  - title: {en: Wireless capture, zh: 无线信号采集}
+    detail: {en: 'NUC3 injects packets that NUC1 and NUC2 capture with Intel 5300 NICs in injector mode, with 30 subcarriers per packet. The PWR system uses NUC3 as its signal source at an injection packet rate of 1600 Hz, with a 1 s coherent processing interval and 20 MHz sampling per channel. The UWB systems read each CIR from the accumulator starting 3 samples before the detected first path.', zh: NUC3 注入数据包，NUC1 与 NUC2 以注入模式通过 Intel 5300 网卡接收，每个数据包提取 30 个子载波。PWR 系统以 NUC3 为信号源，注入包速率为 1600 Hz，相干处理间隔 1 s，每通道采样率 20 MHz。UWB 系统从累加器中读取 CIR，起点为检测到的首径之前 3 个采样点。}
+    inputs:
+    - {en: Packets from NUC3, zh: 来自 NUC3 的数据包}
+    outputs:
+    - {en: 'CSI packets, Doppler spectrograms and CIR records', zh: CSI 数据包、多普勒频谱图与 CIR 记录}
+  - title: {en: Skeleton capture, zh: 骨骼数据采集}
+    detail: {en: 'Two Kinect sensors record three-dimensional skeleton coordinates of the participant at each time stamp, and the files are saved in .mat format.', zh: 两台 Kinect 在每个时间戳记录参与者的三维骨骼坐标，文件保存为 .mat 格式。}
+    inputs:
+    - {en: Participant in the monitoring area, zh: 监测区域内的参与者}
+    outputs:
+    - {en: Skeleton .mat files, zh: 骨骼 .mat 文件}
+  - title: {en: Labelling and export, zh: 标注与导出}
+    detail: {en: 'Each experiment is exported as one file per modality. Activities are numbered 1 to 7 (background, walk, sit, stand, liedown, standfromlie, bodyrotate), and localization experiments use the labels Loc1 to Loc9, path1 to path5 and loc1 to loc6. Each modality directory is zipped separately so that users can download one modality at a time.', zh: 每个实验按模态导出为一个文件。活动编号 1 至 7 对应 background、walk、sit、stand、liedown、standfromlie、bodyrotate；定位实验使用标签 Loc1 至 Loc9、path1 至 path5 与 loc1 至 loc6。各模态目录分别压缩，便于单独下载。}
+    inputs:
+    - {en: Experiment labels and ground truth, zh: 实验标签与真值}
+    outputs:
+    - {en: 'Per-experiment .mat or .csv files, zipped per modality', zh: 按实验划分的 .mat 或 .csv 文件，按模态压缩}

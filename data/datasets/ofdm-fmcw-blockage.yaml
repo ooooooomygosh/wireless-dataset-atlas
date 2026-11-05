@@ -15,3 +15,36 @@ citing: []
 summary: {en: 'Paired 26 GHz OFDM communication testbed and 77 GHz FMCW MIMO radar recordings of human activity causing blockage, with bistatic CSI and multi-monostatic backscattered channels. The files include radar data and ground-truth videos.', zh: 同一测量中同时记录 26 GHz OFDM 通信测试平台与 77 GHz FMCW MIMO 雷达的数据，场景为人体活动造成的遮挡，包含双基地 CSI 与多单基地反向散射信道。文件包括雷达数据和真值视频。}
 sources: ['https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/2', 'https://data.4tu.nl/ndownloader/items/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/versions/2', 'https://api.openalex.org/works/doi:10.1109/jcs57290.2023.10107463']
 checked: '2026-11-06'
+overview: {en: 'This dataset pairs a 26 GHz OFDM communication testbed with a 77 GHz FMCW MIMO radar in one measurement campaign on blockage caused by human activities. Researchers from the University of Twente, TU Eindhoven and KU Leuven recorded it, and 4TU.ResearchData publishes version 2 (2023-07-07) under DOI 10.4121/22117145.v2. The stated motivation is domain shift: blockage model performance degrades when inference conditions differ from training conditions, so the recordings are intended to cover varying measurement circumstances. The archive holds pre-processed bistatic CSI, multi-monostatic backscattered channels, radar data and ground-truth videos, in BIN and MOV formats. The files are three zip archives and a Read_Me.txt, and the download-all size is 84,237,475,214 bytes unzipped. The OFDM communication part is described in a separate, openly accessible paper.', zh: '该数据集在同一次测量中，将 26 GHz OFDM 通信测试平台与 77 GHz FMCW MIMO 雷达配对，用于记录人体活动造成的遮挡。数据由 University of Twente、TU Eindhoven 和
+    KU Leuven 的研究人员采集，并由 4TU.ResearchData 发布第 2 版（2023-07-07），DOI 为 10.4121/22117145.v2。页面给出的动机是 domain shift：当推理条件与训练条件不同时，遮挡模型的性能会下降，因此记录旨在覆盖不同的测量条件。数据包含预处理后的双基地 CSI、多单基地反向散射信道、雷达数据与真值视频，格式为 BIN 与 MOV。文件由三个 zip 压缩包和一个 Read_Me.txt 组成，全部下载的解压总大小为 84,237,475,214 字节。OFDM 通信部分由另一篇公开可获取的论文描述。'}
+signal_details:
+- signal: csi
+  text: {en: Pre-processed bistatic channel state information from the 26 GHz OFDM multi-beam communication testbed., zh: 来自 26 GHz OFDM 多波束通信测试平台的预处理双基地信道状态信息（CSI）。}
+- signal: radar
+  text: {en: 'Radar data from the 77 GHz FMCW MIMO radar in a multi-monostatic set-up, together with multi-monostatic backscattered channels. The radar data are split into Radar data.zip (38,629,265,434 bytes) and Radar2.zip (35,949,246,465 bytes). The landing page lists BIN and MOV as formats and does not map them to individual files.', zh: '来自 77 GHz FMCW MIMO 雷达（多单基地设置）的雷达数据，并包含多单基地反向散射信道。雷达数据分为 Radar data.zip（38,629,265,434 字节）和 Radar2.zip（35,949,246,465 字节）。'}
+pipeline:
+  summary: {en: 'Channels and radar returns are recorded in one measurement campaign on human activities, pre-processed, and archived together with ground-truth videos.', zh: 在一次人体活动测量中同时记录信道与雷达回波，随后进行预处理，并与真值视频一同归档。}
+  stages:
+  - title: {en: Paired measurement campaign, zh: 配对测量}
+    detail: {en: A 26 GHz OFDM multi-beam communication testbed and a 77 GHz FMCW MIMO radar in a multi-monostatic set-up measure blockage caused by diverse human activities. The campaign is designed to include varying measurement circumstances., zh: 26 GHz OFDM 多波束通信测试平台与 77 GHz FMCW MIMO 雷达（多单基地设置）测量多种人体活动造成的遮挡。测量设计包含不同的测量条件。}
+    inputs:
+    - {en: human activities causing blockage, zh: 造成遮挡的人体活动}
+    outputs:
+    - {en: OFDM link recordings, zh: OFDM 链路记录}
+    - {en: radar recordings, zh: 雷达记录}
+  - title: {en: Channel pre-processing, zh: 信道预处理}
+    detail: {en: 'The OFDM link is converted to bistatic channel state information, and the radar recordings are converted to multi-monostatic backscattered channels. The landing page describes both products as pre-processed.', zh: OFDM 链路被转换为双基地信道状态信息，雷达记录被转换为多单基地反向散射信道。页面将这两类数据均描述为预处理结果。}
+    inputs:
+    - {en: OFDM link recordings, zh: OFDM 链路记录}
+    - {en: radar recordings, zh: 雷达记录}
+    outputs:
+    - {en: bistatic CSI, zh: 双基地 CSI}
+    - {en: multi-monostatic backscattered channels, zh: 多单基地反向散射信道}
+  - title: {en: Ground-truth video, zh: 真值视频}
+    detail: {en: Ground-truth videos of the activities are provided as MOV files in a separate archive from the radar data., zh: 活动的真值视频以 MOV 文件提供，与雷达数据分别存放在不同的压缩包中。}
+    outputs:
+    - {en: MOV ground-truth videos, zh: MOV 格式真值视频}
+  - title: {en: Archive and publication, zh: 打包与发布}
+    detail: {en: 'Radar data and ground-truth videos are packed into zip archives with MD5 checksums, and a Read_Me.txt is included. Version 2 was published on 4TU.ResearchData on 2023-07-07 under CC BY 4.0.', zh: 雷达数据与真值视频打包为 zip 压缩包，每个文件附 MD5 校验值，并附 Read_Me.txt。第 2 版于 2023-07-07 在 4TU.ResearchData 发布，许可为 CC BY 4.0。}
+    outputs:
+    - {en: 'Radar data.zip, Radar2.zip, Ground-truth-videos.zip, Read_Me.txt', zh: Radar data.zip、Radar2.zip、Ground-truth-videos.zip 与 Read_Me.txt}

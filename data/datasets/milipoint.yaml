@@ -10,8 +10,36 @@ license: MIT
 access: {url: 'https://drive.google.com/file/d/1rq8yyokrNhAGQryx7trpUqKenDnTI6Ky/view?usp=drive_link', type: open}
 code: ['https://github.com/yizzfz/MiliPoint']
 paper: doi:10.52202/075280-2739
-used_in: ["doi:10.1109/jiot.2026.3668767"]
-citing: ["doi:10.1145/3795866.3796684","doi:10.1109/tmc.2026.3720944"]
+used_in: ['doi:10.1109/jiot.2026.3668767']
+citing: ['doi:10.1145/3795866.3796684', 'doi:10.1109/tmc.2026.3720944']
 summary: {en: 'mmWave radar point clouds from 18 subjects, labelled for subject identification, action classification and keypoint estimation. The repository does not state the number of frames or actions.', zh: 来自18名受试者的 mmWave 雷达点云，标注用于受试者身份识别、动作分类和关键点估计。仓库未给出帧数或动作数量。}
 sources: ['https://github.com/yizzfz/MiliPoint', 'https://raw.githubusercontent.com/yizzfz/MiliPoint/main/LICENSE', 'https://doi.org/10.52202/075280-2739', 'http://www.proceedings.com/075280-2739.html']
 checked: '2026-11-06'
+overview: {en: 'MiliPoint is a point cloud dataset of mmWave radar recordings of human activity. It was published in Advances in Neural Information Processing Systems 36 (NeurIPS 2023) by researchers from the University of Bristol, University College London and Imperial College London. The raw archive unpacks to PKL files such as 1.pkl, and each sample is a point cloud of shape (n, 3); the repository example uses an input of shape 66 x 3. The dataset supports three tasks: identification of 18 subjects, action classification, and keypoint estimation. Keypoint labels come in two forms: low, with 9 points (shoulders, elbows, waists, knees and head), and high, with 18 points in COCO18 format. The authors state that the dataset is larger than existing mmWave datasets and contains more diverse human actions.', zh: 'MiliPoint 是一个记录人体活动的毫米波雷达点云数据集，发表于 Advances in Neural Information Processing Systems 36（NeurIPS 2023），作者来自 University of Bristol、University College London 和 Imperial College London。原始压缩包解压后为
+    1.pkl 等 PKL 文件，每个样本是形状为 (n, 3) 的点云，仓库示例中的输入形状为 66 x 3。数据集支持三项任务：18 名受试者的身份识别、动作分类和关键点估计。关键点标注有两种形式：low 为 9 个点（肩、肘、腰、膝和头），high 为 18 个点（COCO18 格式）。作者称该数据集比现有 mmWave 数据集规模更大，包含的人体动作更多样。'}
+signal_details:
+- signal: radar
+  text: {en: 'mmWave radar point clouds. Each sample is a point cloud of shape (n, 3). Frames can be stacked with the stacks option. The zero_padding option pads per frame (data_point) or per stack (stack).', zh: '毫米波雷达点云。每个样本是形状为 (n, 3) 的点云。可通过 stacks 选项堆叠多帧。zero_padding 选项按帧（data_point）或按堆叠（stack）进行零填充。'}
+pipeline:
+  summary: {en: 'Raw radar point clouds are converted into stacked, zero-padded samples with keypoint labels, then cached as processed PKL files.', zh: 原始雷达点云被转换为堆叠、零填充并带有关键点标签的样本，然后缓存为处理后的 PKL 文件。}
+  stages:
+  - title: {en: Download and unpack raw data, zh: 下载并解压原始数据}
+    detail: {en: 'MiliPoint_data.zip is downloaded from Google Drive and unzipped to data/raw/, which holds files named 1.pkl, 2.pkl and so on. The code environment uses torch 2.0.0 with torch-cluster from data.pyg.org.', zh: 从 Google Drive 下载 MiliPoint_data.zip，解压到 data/raw/，其中包含 1.pkl、2.pkl 等文件。代码环境使用 torch 2.0.0 以及来自 data.pyg.org 的 torch-cluster。}
+    inputs:
+    - {en: MiliPoint_data.zip, zh: MiliPoint_data.zip}
+    outputs:
+    - {en: data/raw/*.pkl, zh: data/raw/*.pkl}
+  - title: {en: Frame stacking and zero padding, zh: 帧堆叠与零填充}
+    detail: {en: The stacks option (--dataset_stacks) sets how many previous frames are stacked with the current frame. The zero_padding option (--dataset_zero_padding) is data_point (per frame) or stack (per stack)., zh: stacks 选项（--dataset_stacks）设定与当前帧堆叠的前序帧数。zero_padding 选项（--dataset_zero_padding）可选 data_point（按帧）或 stack（按堆叠）。}
+    inputs:
+    - {en: raw point clouds, zh: 原始点云}
+    outputs:
+    - {en: stacked and padded point clouds, zh: 堆叠并填充后的点云}
+  - title: {en: Keypoint label selection, zh: 关键点标签选择}
+    detail: {en: 'The num_keypoints option (--dataset_num_keypoints) selects low (9 points: shoulders, elbows, waists, knees and head) or high (18 points in COCO18 format).', zh: num_keypoints 选项（--dataset_num_keypoints）可选 low（9 个点：肩、肘、腰、膝和头）或 high（18 个点，COCO18 格式）。}
+    outputs:
+    - {en: keypoint labels, zh: 关键点标签}
+  - title: {en: Split and caching, zh: 划分与缓存}
+    detail: {en: 'The example settings use a 0.8 / 0.1 / 0.1 split with seed 20. A processed file is reused when it exists, and -d_forced_rewrite forces reprocessing.', zh: 示例设置使用 0.8 / 0.1 / 0.1 的划分比例和随机种子 20。若处理后的文件已存在则直接复用，-d_forced_rewrite 强制重新处理。}
+    outputs:
+    - {en: processed PKL cache in data/processed/, zh: data/processed/ 中的处理后 PKL 缓存}

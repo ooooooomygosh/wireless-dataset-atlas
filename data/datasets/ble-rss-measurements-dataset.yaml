@@ -14,7 +14,33 @@ access: {url: 'https://zenodo.org/record/1618692', type: open}
 code: []
 paper: doi:10.3390/data4010012
 used_in: []
-citing: ["doi:10.1109/jiot.2022.3230913","doi:10.1109/jiot.2024.3420122","doi:10.1109/tmc.2023.3277333"]
+citing: ['doi:10.1109/jiot.2022.3230913', 'doi:10.1109/jiot.2024.3420122', 'doi:10.1109/tmc.2023.3277333']
 summary: {en: 'Bluetooth Low Energy RSS fingerprints from Accent Systems IBKS105 beacons, over 4,700 fingerprints collected in a university library and an office at Universitat Jaume I. The package includes MATLAB scripts for loading and filtering the data, and the beacon deployment and obstacle coordinates.', zh: '来自 Accent Systems IBKS105 信标的蓝牙低功耗（BLE）RSS 指纹，共超过 4,700 条，采集于 Jaume I 大学（Universitat Jaume I）的图书馆与办公室。数据包含用于加载和过滤数据的 MATLAB 脚本，以及信标部署和障碍物坐标。'}
 sources: ['https://zenodo.org/record/1618692', 'https://zenodo.org/api/records/1618692', 'https://api.crossref.org/works/10.3390/data4010012']
 checked: '2026-11-06'
+overview: {en: 'The BLE RSS Measurements Dataset is a set of Bluetooth Low Energy received signal strength (RSS) fingerprints for indoor positioning research. Universitat Jaume I in Castellon, Spain produced it. Mendoza-Silva, Matey-Sanz, Torres-Sospedra and Huerta published it in the journal Data in 2019 and released it on Zenodo on 5 December 2018. The measurements were taken in two zones of the university, a library bookshelf area and an office space, using Accent Systems IBKS105 beacons. The collection holds over 4,700 fingerprints, recorded with three smartphones in the library zone and one smartphone in the office zone. The archive UJI_BLE_DB.zip (451.2 kB) includes MATLAB scripts for loading and filtering the data, examples of common challenges in BLE RSS positioning, and the local coordinates of the beacon deployment and of the obstacles. The dataset contains RSS values only and no other signal type.', zh: 'BLE RSS测量数据集是一组用于室内定位研究的蓝牙低功耗（BLE）接收信号强度（RSS）指纹。该数据由西班牙卡斯特利翁的Universitat
+    Jaume I（Jaume I大学）制作。Mendoza-Silva、Matey-Sanz、Torres-Sospedra和Huerta于2019年在期刊Data上发表了该数据集，并于2018年12月5日在Zenodo上发布。测量在大学的两个区域进行：图书馆书架区和办公室区域，所用信标为Accent Systems IBKS105。数据集共包含超过4,700条指纹，其中图书馆区域使用三部智能手机采集，办公室区域使用一部智能手机采集。压缩包UJI_BLE_DB.zip（451.2 kB）包含用于加载和过滤数据的MATLAB脚本、BLE RSS定位常见挑战的示例，以及信标部署和障碍物的本地坐标。数据集仅包含RSS数值，不包含其他类型的信号。'}
+signal_details:
+- signal: rssi
+  text: {en: 'Received signal strength (RSS) of Bluetooth Low Energy advertisements from Accent Systems IBKS105 beacons, recorded by smartphones. The beacons advertise every 200 ms. In the library zone the beacons transmit at -12 dBm and the readings were taken with aBQ Aquaris X5 Plus, Samsung Galaxy S6 (SM-G920F) and Samsung Galaxy A5 2017 (SM-A520F) phones. In the office zone the beacons transmit at -4 dBm, -12 dBm and -20 dBm, and the readings were taken with one Samsung Galaxy A5 phone.', zh: 智能手机记录的Accent Systems IBKS105信标蓝牙低功耗（BLE）广播的接收信号强度（RSS）。信标每200 ms广播一次。图书馆区域信标的发射功率为-12 dBm，读数由aBQ Aquaris X5 Plus、Samsung Galaxy S6（SM-G920F）和Samsung Galaxy A5 2017（SM-A520F）手机采集。办公室区域信标的发射功率为-4 dBm、-12 dBm和-20 dBm，读数由一部Samsung Galaxy A5手机采集。}
+pipeline:
+  summary: {en: 'Beacons broadcast BLE advertisements in two university zones, smartphones record RSS fingerprints, and the readings are annotated and packaged with MATLAB scripts and coordinate files.', zh: 信标在大学的两个区域广播BLE广播帧，智能手机记录RSS指纹，读数经过标注后与MATLAB脚本和坐标文件一起打包。}
+  stages:
+  - title: {en: Beacon deployment and advertising, zh: 信标部署与广播}
+    detail: {en: 'Accent Systems IBKS105 beacons are deployed in two zones of the university, each zone with its own batch. The beacons advertise every 200 ms. Library beacons transmit at -12 dBm, and office beacons at -4 dBm, -12 dBm and -20 dBm. The package gives the beacon deployment in local coordinates.', zh: Accent Systems IBKS105信标部署在大学的两个区域，每个区域使用各自的一批信标。信标每200 ms广播一次。图书馆区域信标的发射功率为-12 dBm，办公室区域信标为-4 dBm、-12 dBm和-20 dBm。数据包提供信标部署的本地坐标。}
+    inputs:
+    - {en: IBKS105 beacons, zh: IBKS105信标}
+    outputs:
+    - {en: BLE advertisements, zh: BLE广播帧}
+  - title: {en: Smartphone RSS recording, zh: 智能手机RSS采集}
+    detail: {en: 'Smartphones in each zone record the RSS of the beacon advertisements for each fingerprint. The library zone used three phones: aBQ Aquaris X5 Plus, Samsung Galaxy S6 (SM-G920F) and Samsung Galaxy A5 2017 (SM-A520F). The office zone used one Samsung Galaxy A5 phone.', zh: 各区域的智能手机为每个指纹记录信标广播的RSS。图书馆区域使用三部手机：aBQ Aquaris X5 Plus、Samsung Galaxy S6（SM-G920F）和Samsung Galaxy A5 2017（SM-A520F）。办公室区域使用一部Samsung Galaxy A5手机。}
+    inputs:
+    - {en: BLE advertisements, zh: BLE广播帧}
+    outputs:
+    - {en: 'RSS fingerprints (over 4,700)', zh: 'RSS指纹（超过4,700条）'}
+  - title: {en: Annotation and packaging, zh: 标注与打包}
+    detail: {en: 'The BLE readings are annotated, and the supporting material gives details on the collection, the environment and the beacon deployments. MATLAB scripts load and filter the data. The archive also holds the beacon and obstacle coordinates in local coordinates.', zh: BLE读数经过标注，配套材料提供了采集、环境和信标部署的详细信息。MATLAB脚本用于加载和过滤数据。压缩包还包含信标和障碍物的本地坐标。}
+    inputs:
+    - {en: RSS fingerprints, zh: RSS指纹}
+    outputs:
+    - {en: UJI_BLE_DB.zip (451.2 kB), zh: UJI_BLE_DB.zip（451.2 kB）}

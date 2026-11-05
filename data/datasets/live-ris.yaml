@@ -23,3 +23,117 @@ citing: []
 summary: {en: 'S21 channel measurements from a vector network analyzer over 5.225–5.875 GHz with 201 frequency points, for a UAV-mounted RIS in indoor flight experiments, together with EKF-based UAV and RIS state estimates and RIS configurations. The dataset has three scenarios with six flights each, stored as 10 s files at 50 Hz.', zh: 矢量网络分析仪在 5.225–5.875 GHz 范围内测得的 S21 信道测量数据（201 个频点），对象为室内飞行实验中搭载 RIS 的无人机，并附带基于 EKF 的无人机与 RIS 状态估计以及 RIS 配置。数据包含三个场景，每个场景六次飞行，以 50 Hz 采样的 10 秒文件存储。}
 sources: ['https://zenodo.org/records/23011126', 'https://github.com/DavidMller/risdataset', 'https://arxiv.org/abs/2609.34993', 'https://arxiv.org/html/2609.34993v1']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Pose estimates drive RIS configurations. Flight measurements at 50 Hz associate configuration, pose, and VNA power response. A time-domain gate extracts RIS-related transmission components; CSV files are then released by scenario and flight.', zh: 位姿估计驱动RIS配置，50 Hz飞行测量将配置、位姿与VNA功率响应关联；时域门提取RIS相关传输分量，最终按场景和飞行发布CSV。}
+  stages:
+  - title: {en: 'Deploy Tx, Rx, and the flying RIS', zh: 布置Tx、Rx与飞行RIS}
+    detail: {en: Set up transmitting/receiving horns and the UAV-mounted RIS in three deployment geometries. The RIS design frequency is 5.385 GHz; the VNA sweeps 201 frequency points over 5.225–5.875 GHz., zh: 在三种部署几何下设置发射、接收喇叭与UAV承载RIS。RIS设计频率5.385 GHz，VNA在5.225–5.875 GHz范围扫描201个频点。}
+    inputs:
+    - {en: Indoor single-Tx/Rx link, zh: 室内单Tx/Rx链路}
+    - {en: 'UAV and a 10×12, 120-element, 1-bit RIS', zh: UAV与10×12、120元1-bit RIS}
+    outputs:
+    - {en: Deployment geometry and system settings, zh: 部署几何与系统设置}
+    - {en: Controllable RIS surface, zh: 可控RIS阵面}
+    controls:
+    - {en: Each flight still corresponds to one pair of VNA ports; scenarios are organized independently., zh: 每次飞行仍对应一对VNA端口；不同scenario独立组织}
+    checks:
+    - {en: 'Reproduction check: verify horn/RIS positions, orientations, and element order in the state encoding.', zh: 复现检查：核对喇叭/RIS位置、朝向与状态编码的单元顺序}
+  - title: {en: Estimate pose and generate RIS configurations, zh: 估计位姿并生成RIS配置}
+    detail: {en: Use EKF state estimates to obtain control poses and calculate RIS configurations. Motion capture provides position/attitude ground truth for analyzing how estimation errors affect configurations and the link., zh: 使用EKF状态估计生成用于控制的位姿，并计算RIS配置。motion capture提供位置/姿态真值，可分析估计误差对配置与链路的影响。}
+    inputs:
+    - {en: UAV sensing and state estimation, zh: UAV传感与状态估计}
+    - {en: Target Tx/Rx geometry, zh: 目标Tx/Rx几何}
+    - {en: Mocap ground truth, zh: mocap真值}
+    outputs:
+    - {en: Estimated and ground-truth poses, zh: 估计位姿、真值位姿}
+    - {en: Optimized binary RIS configurations, zh: 优化后的二进制RIS配置}
+    controls:
+    - {en: Store estimated states and ground truth separately to prevent replacing control inputs with ground truth., zh: 估计状态与ground truth分别保存，防止控制输入被真值替代}
+    checks:
+    - {en: 'Reproduction check: verify pose coordinate transforms, angular units, and 120 valid bits per configuration.', zh: 复现检查：检查位姿坐标变换、角度单位以及每次配置包含120个有效bit}
+  - title: {en: Align RIS switching and VNA measurements, zh: 对齐RIS切换与VNA测量}
+    detail: {en: 'The paper aligns RIS switching and measurements at 50 Hz and records time. Each flight CSV contains 500 rows over 10 s, associating states, configurations, and received responses.', zh: 论文将RIS切换与测量在50 Hz对齐，并记录时间。每次飞行CSV为10 s、500行，用于关联状态、配置和接收响应。}
+    inputs:
+    - {en: RIS configuration sequence, zh: RIS配置序列}
+    - {en: VNA frequency sweep, zh: VNA频率扫描}
+    - {en: Flight-pose timestamps, zh: 飞行位姿时间}
+    outputs:
+    - {en: Per-timestep associations between configurations and S21, zh: 逐时刻配置与S21关联}
+    - {en: Flight time series, zh: 飞行时间序列}
+    controls:
+    - {en: 'Verify control periods, sweep durations, and state timestamps separately.', zh: 控制周期、扫描耗时和状态时间分别核实}
+    checks:
+    - {en: 'Reproduction check: inspect offsets between configuration activation and measurement times; record duplicated or missing rows.', zh: 复现检查：检查配置生效时刻与测量时刻的偏差，记录重复/漏采行}
+  - title: {en: Extract RIS-related responses with a time gate, zh: 用时间门提取RIS相关响应}
+    detail: {en: 'Apply a 61–71 ns time gate to the VNA response to suppress other reflections, then summarize the released S21 Magnitude(dB). The gate position and width determine the physical meaning of the resulting power metric.', zh: 对VNA响应使用61–71 ns时间门，抑制其他反射成分，再汇总所发布的S21 Magnitude(dB)。门的位置和宽度限定了最终功率指标的物理含义。}
+    inputs:
+    - {en: VNA transmission responses, zh: VNA传输响应}
+    - {en: 61–71 ns time gate, zh: 61–71 ns时间门}
+    outputs:
+    - {en: Time-gated S21 magnitude, zh: 时间门处理后的S21幅值}
+    controls:
+    - {en: The public CSV field is S21 magnitude; distinguish the hardware's complex-response capability from the fields actually released., zh: 公开CSV字段为S21幅值；硬件复杂频响能力与实际发布字段分开}
+    checks:
+    - {en: 'Reproduction check: assess the effect of gate width/position on power results; retain these processing conditions when raw frequency sweeps are unavailable.', zh: 复现检查：评估门宽/门位置对功率结果的影响；若原始频扫不可得，保留该处理条件}
+  - title: {en: Release data by flight and evaluate control performance, zh: 按飞行发布并评估控制效果}
+    detail: {en: 'The official CSV files are organized by scenario, RIS configuration, and flight. For reproduction, group entire flights first, then compare configuration policies, state-estimation errors, and measured received power.', zh: 官方按场景、RIS配置和飞行组织CSV。复现先以完整飞行分组，再比较配置策略、状态估计误差与实测接收功率。}
+    inputs:
+    - {en: 'Time, pose, RIS bits, and S21', zh: 时间、位姿、RIS bit与S21}
+    - {en: scenario → configuration → Flight directories, zh: scenario→配置→Flight目录}
+    outputs:
+    - {en: Per-flight CSV files, zh: 逐飞行CSV}
+    - {en: 'Position/attitude, configuration, and S21 labels', zh: 位置/姿态、配置、S21标签}
+    controls:
+    - {en: Windows from the same flight share states and hardware conditions; keep them in one group., zh: 同一飞行窗口共享状态与硬件条件，整体分组}
+    checks:
+    - {en: 'Reproduction check: verify the expected 500 rows, field units, and configuration switches. Evaluation must not use the target S21 from the same instant as a decision input.', zh: 复现检查：验证500行预期、字段单位和配置切换；评估时禁止使用同一时刻的目标S21作为决策输入}
+  scope: {en: 'Official public CSV fields and paper Sec. III–V; an indoor single-link experiment with a UAV carrying a 120-element, 1-bit RIS.', zh: 官方公开CSV字段与论文Sec.III–V；UAV承载120元1-bit RIS的室内单链路实验。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• CSV files organized by scenario/configuration/Flight
+
+      • Time, estimated/ground-truth pose, RIS bits, and S21 Magnitude', zh: '• 按scenario/配置/Flight组织的CSV
+
+      • 时间、估计/真值位姿、RIS bit与S21 Magnitude'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Power improvement, sensitivity to state errors, and configuration-policy evaluation
+
+      • User-defined flight-level splits', zh: '• 功率改进、状态误差敏感性和配置策略评价
+
+      • 用户定义的飞行级split'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The final-stage split and causal-input checks are evaluation recommendations for users. The official release structure was verified from the README.
+
+      • The VNA and mocap provide measurements and poses; phase/complex-CSI fields in the released CSV files remain unconfirmed.', zh: '• 最后阶段中的split和因果输入检查为使用者评估建议；官方发布结构已由README核验。
+
+      • VNA与mocap配合提供测量和位姿；发布CSV的相位/复数CSI字段未确认。'}
+provenance:
+- {en: Indoor flight of a UAV-mounted RIS → EKF state estimates/ground truth, zh: 室内飞行UAV-mounted RIS → EKF状态估计/ground truth}
+- {en: Optimized configurations → 1-bit RIS switching, zh: 优化配置 → 1-bit RIS切换}
+- {en: 'VNA + directional horns and time gating → synchronized S21 magnitude, pose, and RIS-configuration records in the public CSV files', zh: VNA+方向喇叭与time-gating → 公开CSV中的S21幅值、位姿与RIS配置同步记录}
+technical_notes:
+- {en: 'Literature-supported: the VNA uses a 61–71 ns time gate to suppress non-RIS reflections.', zh: 文献支持：VNA采用61–71 ns时间门，抑制非RIS反射成分。}
+- {en: 'Literature-supported: measurements and RIS switching are aligned at 50 Hz. S21 is a port transfer function, not complete array CSI.', zh: 文献支持：50 Hz测量与RIS切换对齐；S21是端口传输函数，不是完整阵列CSI。}
+limitations:
+- {en: Path gain after time gating cannot directly represent the overall OTA communication-link gain., zh: 时间门后的路径增益不能直接当总OTA通信链路收益。}
+- {en: RIS configurations selected by the behavior policy introduce action-coverage bias., zh: 行为策略选择的RIS配置会造成动作覆盖偏差。}
+history:
+- {en: '2026-09-28: dataset v1.0 and preprint released.', zh: 2026-09-28：数据v1.0与预印本发布。}
+- {en: '2026-09-29: record modification date; not a new dataset version.', zh: 2026-09-29：记录修改时间；不作为新数据版本。}
+usage:
+- {en: 'Align EKF estimates, ground truth, RIS actions, and S21 timestamps; first reproduce the relationship between configuration errors and link responses.', zh: 关联EKF、ground truth、RIS actions和S21时间戳，先复现配置误差与链路响应关系。}
+- {en: Compare actions identifiable in the records; unmeasured actions require simulation or new measurements., zh: 比较记录中可识别的动作；未测动作须仿真或重新测量。}
+field_notes:
+- label: {en: CSI, zh: CSI}
+  text: {en: 'The official public field table lists only S21 Magnitude(dB), with no phase/complex entry. Complex CSI is therefore marked unsupported here. Any complex frequency sweeps in other versions require file-by-file verification.', zh: 官方公开字段表仅列S21 Magnitude(dB)，没有相位/复数项；因此本表的复数CSI标为不支持。若其他版本另有复数频扫，须逐文件另核验。}
+- label: {en: Beam labels, zh: 波束标签}
+  text: {en: RIS configurations are directly provided; they are not complete communication beam-sweep labels., zh: RIS配置直接提供，不等于完整通信beam-sweep标签}
+- label: {en: RGB, zh: RGB}
+  text: {en: 'Motion-capture cameras provide position/attitude ground truth. The released CSV files contain processed poses, not camera video/image observation sequences.', zh: Motion Capture相机用于位置/姿态真值；发布CSV包含处理后的位姿，没有相机视频/图像观测序列。}
+- label: {en: Multi-BS, zh: 多基站}
+  text: {en: 'Three scenarios change the deployment geometry of a single Tx/Rx/RIS. Each flight still uses one pair of VNA ports, not a simultaneous multi-BS network.', zh: 3个scenario改变单Tx/Rx/RIS的部署几何；同一次飞行仍为单对VNA端口，不是同时多BS网络。}
+overview: {en: 'LIVE-RIS is an indoor in-flight channel measurement dataset for a reconfigurable intelligent surface (RIS) mounted under a UAV. David Müller, Kevin Weinberger, Aydin Sezgin and Martin Mönnigmann (Ruhr University Bochum) describe it in arXiv:2609.34993, and it is released on Zenodo (record 23011126, version 1.0, CC BY 4.0). A Keysight P5026B vector network analyzer with the S9010B time-gating option measured S21 between two directional horn antennas over 5.225–5.875 GHz at 201 frequency points, while a 120-element, 1-bit RIS (10 × 12 elements, design frequency 5.385 GHz) flew on a Holybro X500 quadcopter. The dataset has three scenarios, and each scenario contains dynamic, static and off RIS configurations with two flights per configuration, 18 flights in total. Ten Vicon Vantage V5 cameras provide motion capture, which replaces GNSS in the flight controller EKF for UAV pose estimation. The released CSV files cover 10 s segments sampled at 50 Hz (500 time steps each) and include
+    the RIS configuration vectors and the S21 magnitude in dB. The setup has one Tx horn and one Rx horn per flight.', zh: 'LIVE-RIS 是一个室内飞行信道测量数据集，测量对象为安装在无人机下方的可重构智能表面（RIS）。作者为 David Müller、Kevin Weinberger、Aydin Sezgin 与 Martin Mönnigmann（Ruhr University Bochum），论文为 arXiv:2609.34993，数据发布于 Zenodo（记录号 23011126，版本 1.0，CC BY 4.0）。Keysight P5026B 矢量网络分析仪配合 S9010B 时间门控选项，在 5.225–5.875 GHz 范围内以 201 个频点测量两个定向喇叭天线之间的 S21；同时，一块 120 单元、1-bit 的 RIS（10 × 12 单元，设计频率 5.385 GHz）搭载在 Holybro X500 四旋翼无人机上飞行。数据集包含三个场景，每个场景含动态、静态与关闭三种 RIS 配置，每种配置两次飞行，共 18 次飞行。十台 Vicon Vantage V5 相机提供动作捕捉，在飞控 EKF 中替代 GNSS 用于无人机位姿估计。发布的 CSV 文件覆盖 10 s 片段，采样率 50 Hz（每个文件 500 个时间步），包含 RIS 配置向量与以 dB 计的 S21 幅度。每次飞行使用一个发射喇叭与一个接收喇叭。'}
+signal_details:
+- signal: csi
+  text: {en: 'S21 is measured with the VNA over 5.225–5.875 GHz (650 MHz span) at 201 frequency points, with a time gate of 61–71 ns, and one acquisition per 50 Hz interval. Horn antennas are LB-187-15-C-SF (A-Info), with gain of at least 16.35 dBi. The released CSV column is S21 Magnitude in dB. The RIS configuration is a 120-element binary vector (0 = 0°, 1 = 180°), indexed column-wise from the top-left corner as seen from the UAV. Each file holds 10 s at 50 Hz, which gives 500 time steps.', zh: S21 由 VNA 在 5.225–5.875 GHz（650 MHz 带宽）内以 201 个频点测得，时间门控为 61–71 ns，每个 50 Hz 间隔采集一次。喇叭天线型号为 LB-187-15-C-SF（A-Info），增益至少 16.35 dBi。发布的 CSV 列为 S21 Magnitude，单位 dB。RIS 配置为 120 元素二进制向量（0 = 0°，1 = 180°），从无人机视角的左上角开始按列索引。每个文件包含 10 s、50 Hz 的数据，即 500 个时间步。}

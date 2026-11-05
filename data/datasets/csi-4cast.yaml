@@ -19,3 +19,41 @@ citing: []
 summary: {en: 'Simulated CSI sequences for TDD and FDD massive MIMO, generated with Sionna''s implementation of the 3GPP TR 38.901 channel model, with 16 historical and 4 predicted time slots per sample. The CSI-RRG benchmark contains more than 300,000 samples over 3,060 scenarios, split into regular, robustness and generalization tests.', zh: '面向 TDD 与 FDD 大规模 MIMO 的仿真 CSI 序列，由 Sionna 实现的 3GPP TR 38.901 信道模型生成，每个样本包含 16 个历史时隙和 4 个预测时隙。CSI-RRG 基准包含 300,000 余个样本，覆盖 3,060 个场景，分为常规、鲁棒性和泛化测试。'}
 sources: ['https://huggingface.co/CSI-4CAST', 'https://huggingface.co/api/datasets?author=CSI-4CAST', 'https://github.com/AI4OPT/CSI-4CAST', 'https://export.arxiv.org/api/query?id_list=2510.12996']
 checked: '2026-11-06'
+overview: {en: 'CSI-4CAST is a simulated CSI dataset for TDD and FDD massive MIMO, released by the AI4OPT group with the paper posted to arXiv on 14 October 2025. The channels come from Sionna''s implementation of the 3GPP TR 38.901 channel model, and no measured channel is included. Each sample holds 16 historical and 4 predicted time slots of CSI, and the dataset targets CSI prediction. The CSI-RRG benchmark contains more than 300,000 samples over 3,060 scenarios, split into regular, robustness and generalization test groups. Channel models are A, C and D in the regular tests and A to E in the generalization tests, delay spreads run from 30 to 400 ns, and user speeds from 1 to 45 m/s. Data are stored as PyTorch .pt tensors with normalization statistics in .pkl files, and each test configuration is its own Hugging Face repository named by test type, channel model, delay spread and minimum speed.', zh: 'CSI-4CAST 是面向 TDD 与 FDD 大规模 MIMO 的仿真 CSI 数据集，由 AI4OPT 团队发布，论文于 2025 年 10 月 14 日发布在 arXiv
+    上。信道由 Sionna 实现的 3GPP TR 38.901 信道模型生成，不包含实测信道。每个样本包含 16 个历史时隙和 4 个预测时隙的 CSI，数据集面向 CSI 预测任务。CSI-RRG 基准包含 30 万余个样本，覆盖 3,060 个场景，分为常规、鲁棒性和泛化测试三组。常规测试使用信道模型 A、C 和 D，泛化测试使用 A 至 E；时延扩展范围为 30 至 400 ns，用户速度为 1 至 45 m/s。数据以 PyTorch .pt 张量保存，归一化统计量保存在 .pkl 文件中；每个测试配置对应一个独立的 Hugging Face 仓库，仓库名由测试类型、信道模型、时延扩展和最低速度构成。'}
+signal_details:
+- signal: csi
+  text: {en: 'Channel tensors for each sample of 20 slots x 32 BS antennas x 750 subcarriers, from a 4x4x2 dual-polarized BS array with one UT antenna. The 750 subcarriers are 300 uplink, a 150-subcarrier gap and 300 downlink. Files per configuration: H_U_hist.pt (uplink history, model input), H_U_pred.pt (uplink prediction target) and H_D_pred.pt (downlink prediction target for cross-link cases). The simulator uses a 2.4 GHz carrier and 30 kHz subcarrier spacing.', zh: 每个样本的信道张量为 20 个时隙 x 32 个 BS 天线 x 750 个子载波，BS 天线为 4x4x2 双极化阵列，UT 为单天线。750 个子载波包括 300 个上行、150 个保护子载波和 300 个下行。每个配置的文件包括：H_U_hist.pt（上行历史，模型输入）、H_U_pred.pt（上行预测目标）以及 H_D_pred.pt（用于跨链路情形的下行预测目标）。仿真器使用 2.4 GHz 载频和 30 kHz 子载波间隔。}
+pipeline:
+  summary: {en: 'Sionna generates 3GPP TR 38.901 channel realizations for each scenario in the grid, the generator writes tensor files per configuration, and normalization statistics are computed from the stored data.', zh: Sionna 为场景网格中的每个场景生成 3GPP TR 38.901 信道实现，生成器按配置写出张量文件，随后由保存的数据计算归一化统计量。}
+  stages:
+  - title: {en: Simulator constants and scenario grid, zh: 仿真器常量与场景网格}
+    detail: {en: 'src/utils/data_utils.py defines the constants: 2.4 GHz carrier, 30 kHz subcarrier spacing, 14 OFDM symbols per frame, 16 historical and 4 predicted slots, 300 + 150 + 300 subcarriers and a 4x4x2 BS array. The scenario grid is set by channel models A, C and D for regular tests, A to E for generalization, delay spreads of 30 to 400 ns and minimum speeds of 1 to 45 m/s.', zh: src/utils/data_utils.py 定义常量：2.4 GHz 载频、30 kHz 子载波间隔、每帧 14 个 OFDM 符号、16 个历史时隙和 4 个预测时隙、300 + 150 + 300 个子载波，以及 4x4x2 的 BS 阵列。场景网格由常规测试的信道模型 A、C、D，泛化测试的 A 至 E，30 至 400 ns 的时延扩展，以及 1 至 45 m/s 的最低速度构成。}
+    inputs:
+    - {en: constants in data_utils.py, zh: data_utils.py 中的常量}
+    outputs:
+    - {en: 'scenario grid of channel model, delay spread and speed', zh: 信道模型、时延扩展与速度的场景网格}
+  - title: {en: Channel simulation, zh: 信道仿真}
+    detail: {en: 'src/data/csi_simulator.py configures Sionna''s 3GPP TR 38.901 channel model for each scenario. The generator src/data/generator.py runs in three modes: training data with --is_train, regular test data, and generalization test data with --is_gen.', zh: src/data/csi_simulator.py 为每个场景配置 Sionna 的 3GPP TR 38.901 信道模型。生成器 src/data/generator.py 有三种模式：--is_train 生成训练数据，默认模式生成常规测试数据，--is_gen 生成泛化测试数据。}
+    inputs:
+    - {en: scenario parameters, zh: 场景参数}
+    outputs:
+    - {en: complex CSI tensors for historical and predicted slots, zh: 历史与预测时隙的复数 CSI 张量}
+  - title: {en: Noise conditions for robustness sets, zh: 鲁棒性测试集的噪声条件}
+    detail: {en: 'The noise module src/noise/noise.py generates realistic noise types, and src/noise/noise_degree.py maps a target SNR to noise parameters. The robustness test sets are generated under these conditions, and the result plots name burst noise, packet drop and phase noise.', zh: 噪声模块 src/noise/noise.py 生成实际噪声类型，src/noise/noise_degree.py 将目标 SNR 映射为噪声参数。鲁棒性测试集在这些条件下生成，结果图中的条件包括突发噪声、丢包和相位噪声。}
+    inputs:
+    - {en: target SNR and noise type, zh: 目标 SNR 与噪声类型}
+    outputs:
+    - {en: noise-degree parameters, zh: 噪声程度参数}
+  - title: {en: Sample storage, zh: 样本存储}
+    detail: {en: 'Each configuration is written to a folder named from channel model, delay spread and minimum speed, containing H_U_hist.pt, H_U_pred.pt and H_D_pred.pt. Files are loaded as PyTorch tensors, and the train, regular test and generalization test splits are kept in separate directories.', zh: 每个配置写入一个文件夹，文件夹名由信道模型、时延扩展和最低速度构成，内含 H_U_hist.pt、H_U_pred.pt 和 H_D_pred.pt。文件以 PyTorch 张量加载，训练集、常规测试集和泛化测试集分别保存在不同目录中。}
+    inputs:
+    - {en: simulated tensors per configuration, zh: 每个配置的仿真张量}
+    outputs:
+    - {en: 'H_U_hist, H_U_pred and H_D_pred .pt files', zh: H_U_hist、H_U_pred 与 H_D_pred 的 .pt 文件}
+  - title: {en: Normalization statistics, zh: 归一化统计量}
+    detail: {en: 'src/utils/norm_utils.py computes normalization statistics from the stored data and saves them to z_artifacts/data/stats/[fdd|tdd]/normalization_stats.pkl, separately for FDD and TDD.', zh: 'src/utils/norm_utils.py 基于已保存的数据计算归一化统计量，并分别为 FDD 与 TDD 保存到 z_artifacts/data/stats/[fdd|tdd]/normalization_stats.pkl。'}
+    inputs:
+    - {en: stored tensor files, zh: 已保存的张量文件}
+    outputs:
+    - {en: normalization_stats.pkl for FDD and TDD, zh: FDD 与 TDD 的 normalization_stats.pkl}

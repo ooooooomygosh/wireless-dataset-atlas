@@ -14,8 +14,37 @@ license: CC BY 4.0
 access: {url: 'https://archive.ics.uci.edu/ml/datasets/UJIIndoorLoc', type: open}
 code: []
 paper: doi:10.1109/IPIN.2014.7275492
-used_in: ["doi:10.1109/jiot.2024.3430087","doi:10.1109/jiot.2024.3386889","doi:10.1109/iccworkshops53468.2022.9814616"]
-citing: ["doi:10.1109/jiot.2019.2940368","doi:10.1109/jsac.2023.3322766","doi:10.1109/infocom.2018.8485972"]
+used_in: ['doi:10.1109/jiot.2024.3430087', 'doi:10.1109/jiot.2024.3386889', 'doi:10.1109/iccworkshops53468.2022.9814616']
+citing: ['doi:10.1109/jiot.2019.2940368', 'doi:10.1109/jsac.2023.3322766', 'doi:10.1109/infocom.2018.8485972']
 summary: {en: 'Wi-Fi RSSI fingerprints from WLAN access points in three buildings of Universitat Jaume I, with calibration and validation/test samples for multi-building, multi-floor indoor localization. The data were collected by more than 20 users.', zh: 来自 Universitat Jaume I 三座建筑的 WLAN RSSI 指纹数据，包含用于多建筑、多楼层室内定位的校准样本和验证/测试样本。数据由 20 多名用户采集。}
 sources: ['https://geotec.uji.es/?p=1782', 'https://archive.ics.uci.edu/ml/datasets/UJIIndoorLoc', 'https://api.crossref.org/works/10.1109/IPIN.2014.7275492']
 checked: '2026-11-06'
+overview: {en: 'UJIIndoorLoc is a WLAN fingerprint database for indoor localization in multi-building, multi-floor environments. The GEOTEC group at Universitat Jaume I created it in 2013 and published it at IPIN 2014 (Torres-Sospedra, Montoliu, Martinez-Uso, Avariento, Arnau). More than 20 users recorded the data with 25 Android devices in three buildings of the university, which cover 4 or more floors and almost 110,000 m2. Each sample holds RSSI values in dBm from 520 WAPs (WAP001 to WAP520), with values from -104 to 0, and the value 100 marks a WAP that was not detected. The calibration set has 19,936 samples and the validation/test set has 1,111 samples, and the validation samples carry user ID 0 (USER0000). Each row also stores longitude, latitude, floor, building ID, space ID, relative position, user ID, phone ID and a UNIX timestamp. The files contain RSSI fingerprints and these labels only.', zh: 'UJIIndoorLoc 是一个用于多建筑、多楼层室内定位的 WLAN 指纹数据库。Universitat Jaume I 的 GEOTEC 研究组于 2013 年创建该数据库，并于
+    2014 年在 IPIN 会议发表（Torres-Sospedra、Montoliu、Martinez-Uso、Avariento、Arnau）。20 多名用户使用 25 台 Android 设备，在该校三座建筑中采集数据，建筑覆盖 4 层及以上楼层，总面积近 110,000 m2。每个样本包含 520 个 WAP（WAP001 至 WAP520）的 RSSI 值，单位 dBm，取值范围 -104 至 0，数值 100 表示该 WAP 未被检测到。校准集包含 19,936 个样本，验证/测试集包含 1,111 个样本，验证样本的用户 ID 为 0（USER0000）。每行还保存经度、纬度、楼层、建筑 ID、空间 ID、相对位置、用户 ID、手机 ID 和 UNIX 时间戳。文件仅包含 RSSI 指纹及上述标签。'}
+signal_details:
+- signal: rssi
+  text: {en: 'WLAN received signal strength in dBm from 520 WAP attributes (WAP001 to WAP520), integer values from -104 (extremely poor signal) to 0. The value 100 means the WAP was not detected. The fingerprints were recorded with 25 Android devices (PhoneID 0 to 24) by more than 20 users.', zh: WLAN 接收信号强度，单位 dBm，来自 520 个 WAP 属性（WAP001 至 WAP520），为整数，范围从 -104（极差信号）到 0。数值 100 表示该 WAP 未被检测到。指纹由 20 多名用户使用 25 台 Android 设备（PhoneID 0 至 24）记录。}
+pipeline:
+  summary: {en: 'Users recorded WLAN RSSI fingerprints with Android devices in three university buildings, labelled each sample with position and context fields, and split the samples into calibration and validation/test files.', zh: 用户使用 Android 设备在该校三座建筑中记录 WLAN RSSI 指纹，为每个样本标注位置与上下文字段，并将样本划分为校准文件和验证/测试文件。}
+  stages:
+  - title: {en: Record WLAN fingerprints on Android devices, zh: 在 Android 设备上记录 WLAN 指纹}
+    detail: {en: 'In 2013, more than 20 users recorded RSSI from WLAN access points in three UJI buildings with 25 Android devices. Each fingerprint holds one RSSI value per WAP, and undetected WAPs are coded as 100.', zh: 2013 年，20 多名用户使用 25 台 Android 设备在 UJI 三座建筑中记录 WLAN 接入点的 RSSI。每条指纹包含每个 WAP 的一个 RSSI 值，未检测到的 WAP 编码为 100。}
+    inputs:
+    - {en: Android devices, zh: Android 设备}
+    - {en: WLAN access points, zh: WLAN 接入点}
+    outputs:
+    - {en: RSSI fingerprint vectors, zh: RSSI 指纹向量}
+  - title: {en: Attach position and context fields, zh: 附加位置与上下文字段}
+    detail: {en: 'Each row stores longitude, latitude, floor, building ID, space ID, relative position (1 for inside, 2 for outside in front of the door), user ID, phone ID and a UNIX timestamp.', zh: 每行保存经度、纬度、楼层、建筑 ID、空间 ID、相对位置（1 表示室内，2 表示门外前方）、用户 ID、手机 ID 和 UNIX 时间戳。}
+    inputs:
+    - {en: RSSI fingerprints, zh: RSSI 指纹}
+    - {en: Position and context information, zh: 位置与上下文信息}
+    outputs:
+    - {en: Labelled records, zh: 带标签记录}
+  - title: {en: Split into calibration and validation sets, zh: 划分校准集与验证集}
+    detail: {en: '19,936 calibration samples are stored in trainingData.csv (40.7 MB). 1,111 validation/test samples are stored in validationData.csv (2.3 MB), and these samples carry user ID 0 (USER0000).', zh: '19,936 个校准样本保存在 trainingData.csv（40.7 MB）中，1,111 个验证/测试样本保存在 validationData.csv（2.3 MB）中，这些验证样本的用户 ID 为 0（USER0000）。'}
+    inputs:
+    - {en: Labelled records, zh: 带标签记录}
+    outputs:
+    - {en: trainingData.csv, zh: trainingData.csv}
+    - {en: validationData.csv, zh: validationData.csv}

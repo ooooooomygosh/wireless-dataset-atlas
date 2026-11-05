@@ -22,3 +22,36 @@ citing: []
 summary: {en: '802.11ax CSI at 5.25 GHz with 160 MHz bandwidth, collected with PicoScenes and an Intel AX200 NIC, for single-target breathing, ranging, two-target and NLoS breathing sensing. Ground truth is a NeuLog respiration belt and measured target distances.', zh: 载频5.25 GHz、带宽160 MHz 的 802.11ax CSI，使用 PicoScenes 与 Intel AX200 网卡采集，涵盖单目标呼吸、测距、双目标和 NLoS 呼吸感知。真值为 NeuLog 呼吸带及测得的目标距离。}
 sources: ['https://ieee-dataport.org/documents/cirsense-dataset-real-world-80211ax-csi-measurements-wireless-sensing', 'https://github.com/Oriseven/CIRSense', 'https://api.crossref.org/works/10.1109/TMC.2026.3678326']
 checked: '2026-11-06'
+overview: {en: 'CIRSense is a set of real-world IEEE 802.11ax Wi-Fi CSI measurements for wireless sensing, released with the paper CIRSense: Rethinking WiFi Sensing With Channel Impulse Response by Ruiqi Kong and He Chen in IEEE Transactions on Mobile Computing (2026). The data were captured with the PicoScenes platform and an Intel AX200 NIC at 5.25 GHz with 160 MHz bandwidth, across multiple days and environments. The captures cover single-target breathing and distance estimation, two-target sensing, and breathing sensing without line of sight in residential apartments. Scenes are labelled car (car park) and home (indoor residential). Ground truth consists of reference respiration rates from a NeuLog respiration belt and measured target distances. The package contains 871 MATLAB .mat files in the folders breathe, distance, multitarget and nlos_breathe, with a zip archive of 27.77 GB. The dataset page lists the package contents as raw CSI, processed CIR data, experiment metadata and ground-truth
+    annotations, depending on the release. Access is through IEEE DataPort, which requires a subscription and login, under CC BY 4.0.', zh: 'CIRSense 是一组基于 IEEE 802.11ax 的真实 Wi-Fi CSI 测量数据，用于无线感知研究，与 Ruiqi Kong 和 He Chen 发表于 IEEE Transactions on Mobile Computing（2026）的论文《CIRSense: Rethinking WiFi Sensing With Channel Impulse Response》配套发布。数据使用 PicoScenes 平台与 Intel AX200 网卡，在 5.25 GHz 载频、160 MHz 带宽下采集，覆盖多个日期与环境。采集内容包括单目标呼吸与测距、双目标感知，以及住宅公寓中无视距条件下的呼吸感知。场景分为 car（停车场）与 home（室内住宅）。真值包括来自 NeuLog 呼吸带的参考呼吸速率与测得的目标距离。数据包含 871 个 MATLAB .mat 文件，分布在 breathe、distance、multitarget 与 nlos_breathe 文件夹中，压缩包大小为 27.77 GB。数据页面列出的数据包内容为原始 CSI、处理后的 CIR 数据、实验元数据与真值标注，具体取决于发布版本。数据通过 IEEE DataPort 获取，需要订阅与登录，许可协议为 CC BY 4.0。'}
+signal_details:
+- signal: csi
+  text: {en: '802.11ax Wi-Fi CSI and channel impulse response (CIR) data, stored as MATLAB .mat files named <scene>_<distance>_<trial>.mat. The dataset page lists the package contents as raw CSI, processed CIR data, experiment metadata and ground-truth annotations, depending on the release. Capture uses PicoScenes, an Intel AX200 NIC and a modified ASUS TUF Gaming AX3000 router, at 5.25 GHz with 160 MHz bandwidth. Breathing distances listed are 2, 2.25, 3, 3.175, 4, 5, 6, 7, 10, 15 and 20 m, and not every distance appears in every subset.', zh: 802.11ax Wi-Fi CSI 与信道冲激响应（CIR）数据，以 MATLAB .mat 文件保存，文件名格式为 <scene>_<distance>_<trial>.mat。数据页面列出的内容为原始 CSI、处理后的 CIR 数据、实验元数据与真值标注，具体取决于发布版本。采集使用 PicoScenes、Intel AX200 网卡与修改过的 ASUS TUF Gaming AX3000 路由器，载频 5.25 GHz，带宽 160 MHz。页面列出的呼吸测试距离为 2、2.25、3、3.175、4、5、6、7、10、15 和 20 m，但并非每个子集都包含全部距离。}
+pipeline:
+  summary: {en: 'PicoScenes captures Wi-Fi CSI on an Intel AX200 NIC during breathing and ranging sessions, the sessions are labelled with reference sensors, and the results are packaged as MATLAB files.', zh: 使用 PicoScenes 在 Intel AX200 网卡上采集呼吸与测距实验中的 Wi-Fi CSI，实验数据以参考传感器进行标注，并打包为 MATLAB 文件。}
+  stages:
+  - title: {en: Link and hardware setup, zh: 链路与硬件配置}
+    detail: {en: 'The captures use an IEEE 802.11ax link at 5.25 GHz with 160 MHz bandwidth. The hardware is an Intel AX200 NIC and a modified ASUS TUF Gaming AX3000 router, with the PicoScenes platform as the capture tool.', zh: 采集使用 IEEE 802.11ax 链路，载频 5.25 GHz，带宽 160 MHz。硬件包括 Intel AX200 网卡与修改过的 ASUS TUF Gaming AX3000 路由器，采集工具为 PicoScenes 平台。}
+    inputs:
+    - {en: Intel AX200 NIC, zh: Intel AX200 网卡}
+    - {en: modified ASUS TUF Gaming AX3000 router, zh: 修改版 ASUS TUF Gaming AX3000 路由器}
+    outputs:
+    - {en: 802.11ax link configuration, zh: 802.11ax 链路配置}
+  - title: {en: Scenario capture, zh: 场景采集}
+    detail: {en: 'Recordings cover single-target breathing at distances up to 20 m, single-target distance estimation with known target locations, two-target sessions, and breathing sensing in residential apartments without line of sight. Scenes are labelled car (car park) and home (indoor residential), and the data were collected over multiple days and environments.', zh: 采集内容包括距离最远 20 m 的单目标呼吸、目标位置已知的单目标测距、双目标实验，以及住宅公寓中无视距条件下的呼吸感知。场景分为 car（停车场）与 home（室内住宅），数据在多个日期与环境中采集。}
+    inputs:
+    - {en: one or two human targets, zh: 一名或两名人体目标}
+    outputs:
+    - {en: PicoScenes CSI captures, zh: PicoScenes CSI 采集数据}
+  - title: {en: Ground-truth recording, zh: 真值记录}
+    detail: {en: 'A NeuLog respiration belt provides the reference respiration rate for the breathing sessions, and measured target distances label the ranging sessions. The dataset page does not name the instrument used for distance measurement.', zh: NeuLog 呼吸带提供呼吸实验的参考呼吸速率，测得的目标距离用于标注测距实验。数据页面未说明距离测量所用的仪器。}
+    inputs:
+    - {en: NeuLog respiration belt readings, zh: NeuLog 呼吸带读数}
+    outputs:
+    - {en: respiration rate and distance labels, zh: 呼吸速率与距离标签}
+  - title: {en: File packaging, zh: 文件打包}
+    detail: {en: 'Each capture is saved as a MATLAB .mat file named <scene>_<distance>_<trial>.mat and sorted into the breathe, distance, multitarget and nlos_breathe folders. Multitarget breathing files are further split into less1m and larger1m subfolders by target separation. The package totals 871 files and a 27.77 GB zip archive.', zh: 每次采集保存为 MATLAB .mat 文件，文件名格式为 <scene>_<distance>_<trial>.mat，并归入 breathe、distance、multitarget 与 nlos_breathe 文件夹。多目标呼吸文件按目标间距进一步分入 less1m 与 larger1m 子文件夹。数据包共 871 个文件，压缩包大小为 27.77 GB。}
+    inputs:
+    - {en: capture files and ground-truth labels, zh: 采集文件与真值标签}
+    outputs:
+    - {en: 871 .mat files in a zip archive, zh: 压缩包内的 871 个 .mat 文件}

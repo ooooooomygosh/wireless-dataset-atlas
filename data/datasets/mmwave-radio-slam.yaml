@@ -11,7 +11,45 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset', type: registration}
 paper: arxiv:2312.13741
 used_in: []
-citing: ["doi:10.1109/tvt.2024.3524118","doi:10.1109/lwc.2024.3489653","doi:10.1109/jsac.2025.3640150"]
+citing: ['doi:10.1109/tvt.2024.3524118', 'doi:10.1109/lwc.2024.3489653', 'doi:10.1109/jsac.2025.3640150']
 summary: {en: 'Raw I/Q of a bistatic 5G PRS-based OFDM radar at 60 GHz recorded in an indoor building at Tampere University, with path-wise AoD, AoA, ToA and power estimates. MATLAB scripts for loading and visualizing the data are included.', zh: 在坦佩雷大学室内建筑中采集的 60 GHz 双基地 5G PRS OFDM 雷达原始 I/Q 数据，并附带逐径 AoD、AoA、ToA 与功率估计值。数据包含用于加载与可视化的 MATLAB 脚本。}
 sources: ['https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset', 'https://ieee-dataport.org/node/12854', 'https://arxiv.org/abs/2312.13741']
 checked: '2026-11-06'
+overview: {en: 'Millimeter-Wave Radio SLAM is a 60 GHz indoor sensing dataset from Tampere University and Chalmers University of Technology, released in 2024 with the arXiv preprint 2312.13741 and a related IEEE JSAC article. The measurements were taken on the ground floor of the Kampusareena (Campus Arena) building on the Hervanta campus in Tampere, Finland. A bistatic link built from Sivers EVK06002 kits sends 5G NR positioning reference signals (PRS) with a 400 MHz bandwidth, sweeping up to 126 TX beams and 252 RX beams; a FLIR PTU-46 pan-tilt unit provides rotation beyond the electronic steering range of ±45°. The release contains six raw I/Q archives (TAU_raw_IQdata_1 to 6), a post-processed archive of estimated per-path AoD, AoA, ToA, and power, and MATLAB scripts for loading and visualization. The stated uses are indoor positioning, SLAM, and channel parameter estimation.', zh: Millimeter-Wave Radio SLAM 是一个 60 GHz 室内感知数据集，由坦佩雷大学与查尔姆斯理工大学发布，2024 年发布，附有 arXiv 预印本 2312.13741 及相关的 IEEE
+    JSAC 文章。测量在芬兰坦佩雷 Hervanta 校区 Kampusareena（Campus Arena）建筑的一层进行。双站链路由 Sivers EVK06002 套件构成，发送 5G NR 定位参考信号（PRS），带宽 400 MHz，扫描多达 126 个 TX 波束和 252 个 RX 波束；FLIR PTU-46 云台提供超出 ±45° 电子扫描范围的旋转。数据包含六个原始 I/Q 压缩包（TAU_raw_IQdata_1 至 6）、一个后处理压缩包（逐路径 AoD、AoA、ToA 和功率估计），以及用于加载和可视化的 MATLAB 脚本。文中说明的用途为室内定位、SLAM 和信道参数估计。}
+signal_details:
+- signal: iq
+  text: {en: 'Raw I/Q samples from the bistatic 5G NR PRS OFDM system, with 400 MHz PRS bandwidth. The release has six archives, TAU_raw_IQdata_1.zip to TAU_raw_IQdata_6.zip, listed at 20.04, 17.18, 17.18, 25.76, 25.76, and 22.9 GB. Beam-based measurements use up to 126 TX beams and 252 RX beams.', zh: 双站 5G NR PRS OFDM 系统的原始 I/Q 采样，PRS 带宽 400 MHz。数据共六个压缩包 TAU_raw_IQdata_1.zip 至 TAU_raw_IQdata_6.zip，列出大小分别为 20.04、17.18、17.18、25.76、25.76 和 22.9 GB。基于波束的测量使用最多 126 个 TX 波束和 252 个 RX 波束。}
+- signal: paths
+  text: {en: 'Per-path AoD, AoA, ToA, and power estimates in TAU_postprocessed_measurements.zip (47.69 KB). AoD and AoA are angles in local TX and RX coordinate frames, derived from the beam-pair power matrix. ToA contains the unknown UE clock bias.', zh: TAU_postprocessed_measurements.zip（47.69 KB）中的逐路径 AoD、AoA、ToA 与功率估计。AoD 与 AoA 为本地 TX 与 RX 坐标系中的角度，由波束对功率矩阵导出。ToA 包含未知的 UE 时钟偏差。}
+pipeline:
+  summary: {en: 'A bistatic 5G NR PRS OFDM radar at 60 GHz records beam sweeps as raw I/Q, and the processing reduces them to per-path AoD, AoA, and ToA estimates.', zh: 60 GHz 双站 5G NR PRS OFDM 雷达以原始 I/Q 记录波束扫描，处理流程将其归约为逐路径的 AoD、AoA 与 ToA 估计。}
+  stages:
+  - title: {en: Transmitter and receiver setup, zh: 收发端配置}
+    detail: {en: 'Sivers EVK06002 evaluation kits (57–71 GHz, 4×16 element arrays per polarization) serve as TX and RX. An M8195A arbitrary waveform generator drives the TX kit, and a Keysight DSOS804A oscilloscope records the RX kit, with both synchronized to one clock by coaxial cable and controlled from one PC. The PRS bandwidth is 400 MHz.', zh: Sivers EVK06002 评估套件（57–71 GHz，每个极化 4×16 阵元）用作 TX 与 RX。M8195A 任意波形发生器驱动 TX 套件，Keysight DSOS804A 示波器采集 RX 套件信号；两者通过同轴线缆同步到同一时钟，并由同一台 PC 控制。PRS 带宽为 400 MHz。}
+    outputs:
+    - {en: Synchronized TX and RX signal capture, zh: 同步的 TX 与 RX 信号采集}
+  - title: {en: Beam sweep and mechanical rotation, zh: 波束扫描与机械旋转}
+    detail: {en: 'TX beams cover a 180° field of view with up to 126 beams, and RX beams cover 360° with up to 252 beams. Electrical steering covers only −45° to +45°, so a FLIR PTU-46 pan-tilt unit provides the mechanical rotation.', zh: TX 波束覆盖 180° 视场，最多 126 个波束；RX 波束覆盖 360°，最多 252 个波束。电子扫描仅覆盖 −45° 至 +45°，因此由 FLIR PTU-46 云台提供机械旋转。}
+    inputs:
+    - {en: PRS transmissions over beam sweeps, zh: 波束扫描下的 PRS 发射}
+    outputs:
+    - {en: Beam-pair measurements, zh: 波束对测量}
+  - title: {en: Raw I/Q storage, zh: 原始 I/Q 存储}
+    detail: {en: 'The 60 GHz raw I/Q samples are stored in six archives with supportive MATLAB scripts. The DataPort page lists ZIP, MAT, m, TXT, and bin formats.', zh: 60 GHz 原始 I/Q 采样保存在六个压缩包中，并附带辅助 MATLAB 脚本。DataPort 页面列出的格式为 ZIP、MAT、m、TXT 与 bin。}
+    inputs:
+    - {en: Beam-pair measurements, zh: 波束对测量}
+    outputs:
+    - {en: Raw I/Q archives TAU_raw_IQdata_1 to 6, zh: 原始 I/Q 压缩包 TAU_raw_IQdata_1 至 6}
+  - title: {en: Angle estimation from beam-pair power, zh: 基于波束对功率的角度估计}
+    detail: {en: 'The beam-pair power matrix is decomposed with SVD, and the rank is selected by a target power ratio. Power thresholding and clustering follow, and polynomial peak refinement gives the AoD and AoA in local TX and RX frames.', zh: 对波束对功率矩阵进行 SVD 分解，并按目标功率比选择秩。随后进行功率阈值处理与聚类，经多项式峰值细化得到本地 TX 与 RX 坐标系下的 AoD 和 AoA。}
+    inputs:
+    - {en: Beam-pair power matrix, zh: 波束对功率矩阵}
+    outputs:
+    - {en: Per-path AoD and AoA, zh: 逐路径 AoD 与 AoA}
+  - title: {en: Delay estimation, zh: 时延估计}
+    detail: {en: A coarse ToA comes from time-domain cross-correlation against the PRS sequences. A fine ToA comes from a frequency-domain search at the estimated beam angles. Both contain the unknown UE clock bias., zh: 粗略 ToA 由与 PRS 序列的时域互相关得到。精细 ToA 由在估计波束角度上的频域搜索得到。两者均包含未知的 UE 时钟偏差。}
+    inputs:
+    - {en: PRS sequences and estimated beam angles, zh: PRS 序列与估计的波束角度}
+    outputs:
+    - {en: Per-path ToA, zh: 逐路径 ToA}

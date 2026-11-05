@@ -7,7 +7,7 @@ const root = path.resolve(import.meta.dirname, "..");
 const dir = path.join(root, "data/datasets");
 const ds = fs.readdirSync(dir).filter((f) => f.endsWith(".yaml")).map((f) => yaml.load(fs.readFileSync(path.join(dir, f), "utf8")));
 const tasks = yaml.load(fs.readFileSync(path.join(root, "data/tasks.yaml"), "utf8"));
-const papers = new Set(ds.flatMap((d) => [d.paper, ...(d.used_in ?? []), ...(d.citing ?? [])])).size;
+const papers = new Set(ds.flatMap((d) => [d.paper, ...(d.used_in ?? []), ...(d.citing ?? [])].filter(Boolean))).size;
 const site = "https://wireless-dataset-atlas.vercel.app";
 const used = tasks.filter((t) => ds.some((d) => d.tasks.includes(t.id)));
 

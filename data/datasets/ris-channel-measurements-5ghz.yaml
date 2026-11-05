@@ -14,7 +14,39 @@ access: {url: 'https://ieee-dataport.org/documents/comprehensive-dataset-ris-bas
 code: ['https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset']
 paper: doi:10.1109/vtc2023-spring57618.2023.10200973
 used_in: []
-citing: ["doi:10.1109/ojcoms.2024.3363423","doi:10.1109/tap.2025.3569392","doi:10.1109/ojcoms.2025.3572723"]
+citing: ['doi:10.1109/ojcoms.2024.3363423', 'doi:10.1109/tap.2025.3569392', 'doi:10.1109/ojcoms.2025.3572723']
 summary: {en: 'S21 channel measurements at 5 GHz with an RIS prototype in an anechoic chamber, covering stationary specular and non-specular geometries, a rotating stage, and RIS states set by greedy and model-based algorithms.', zh: 在 5 GHz 频段使用 RIS 原型，于无回声暗室中进行 S21 信道测量，包括固定的镜面与非镜面反射几何布置、旋转台场景，以及由贪心算法和基于模型的算法设定的 RIS 状态。}
 sources: ['https://ieee-dataport.org/documents/comprehensive-dataset-ris-based-channel-measurements-5ghz-band', 'https://doi.org/10.21227/zzx0-tp88', 'https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset', 'https://api.crossref.org/works/10.1109/VTC2023-Spring57618.2023.10200973']
 checked: '2026-11-06'
+overview: {en: 'This dataset holds S21 channel measurements at 5 GHz with an RIS prototype. It is provided by Ruhr University Bochum and TH Cologne, released in 2023 under CC BY 4.0 (doi:10.21227/zzx0-tp88, v1.0), and the citation is Tewes et al., VTC2023-Spring. The measured geometries are stationary arrangements with specular and non-specular reflection angles, plus a scenario in which the RIS sits on a rotary stage. The RIS switching states are set by a greedy algorithm, a single-element switching approach, and a model-based approach that uses exact knowledge of the setup geometry. Each set of states was optimized once to maximize and once to minimize the received power. The abstract reports up to 20 dB more received power than a reference plate. The release is a single 1.21 GB zip archive (dataset_v1.0.zip) of MAT files, with MATLAB scripts and documentation on GitHub.', zh: '该数据集包含使用 RIS 原型在 5 GHz 频段的 S21 信道测量，由波鸿鲁尔大学（Ruhr University Bochum）与科隆应用技术大学（TH Cologne）提供，于 2023 年以 CC BY 4.0
+    发布（doi:10.21227/zzx0-tp88，v1.0），引用文献为 Tewes 等人的 VTC2023-Spring 论文。测量几何包括具有镜面与非镜面反射角的固定布置，以及 RIS 安装在旋转台上的场景。RIS 开关状态由贪心算法、单元件切换方法和基于模型的方法设定，其中基于模型的方法使用几何结构的精确信息。每组状态分别以最大化和最小化接收功率进行优化。摘要报告相比参考板，接收功率最多提高 20 dB。数据以单个 1.21 GB 的 zip 压缩包（dataset_v1.0.zip）发布，内含 MAT 文件，MATLAB 脚本与文档位于 GitHub。'}
+signal_details:
+- signal: csi
+  text: {en: 'S21 channel measurements in the 5 GHz band, with an RIS prototype in stationary and rotating-stage geometries. Stored as MAT files. The archive includes the measured data, the optimized RIS switching states, the MATLAB scripts and the GitHub documentation.', zh: 使用 RIS 原型在 5 GHz 频段测得的 S21 信道测量，包括固定几何与旋转台几何。数据存储为 MAT 文件。压缩包包含测量数据、优化后的 RIS 开关状态、MATLAB 脚本以及 GitHub 文档。}
+pipeline:
+  summary: {en: 'An RIS prototype is placed in measured geometries, RIS states are chosen by three algorithms, S21 is measured for each arrangement, and the results are packaged as MAT files.', zh: RIS 原型被放置于测量几何中，RIS 状态由三种算法选定，对每种布置测量 S21，结果打包为 MAT 文件。}
+  stages:
+  - title: {en: Geometry setup, zh: 几何布置}
+    detail: {en: 'Antennas and the RIS prototype are placed in stationary arrangements with specular or non-specular reflection angles. In one scenario the RIS is mounted on a rotary stage. The setup, hardware and geometries are documented on GitHub.', zh: 天线与 RIS 原型被放置于具有镜面或非镜面反射角的固定布置中。在一个场景中，RIS 安装在旋转台上。设置、硬件和几何结构记录于 GitHub。}
+    inputs:
+    - {en: RIS prototype at 5 GHz, zh: 5 GHz 的 RIS 原型}
+    outputs:
+    - {en: Stationary and rotating-stage geometries, zh: 固定与旋转台几何布置}
+  - title: {en: RIS state selection, zh: RIS 状态选择}
+    detail: {en: 'Switching states are chosen by a greedy algorithm, by single-element switching, and by a model-based approach that uses exact knowledge of the setup geometry. Each set of states is optimized once to maximize and once to minimize the received power.', zh: 开关状态由贪心算法、单元件切换以及使用几何结构精确信息的基于模型方法选定。每组状态分别以最大化和最小化接收功率进行优化。}
+    inputs:
+    - {en: Setup geometry, zh: 布置几何}
+    outputs:
+    - {en: Optimized RIS switching states, zh: 优化后的 RIS 开关状态}
+  - title: {en: S21 measurement, zh: S21 测量}
+    detail: {en: The S21 channel response is measured for each geometric arrangement with the RIS in the selected states. The measurement configuration is described in the GitHub documentation., zh: 对每种几何布置，在所选 RIS 状态下测量 S21 信道响应。测量配置见 GitHub 文档。}
+    inputs:
+    - {en: Geometries and RIS switching states, zh: 几何布置与 RIS 开关状态}
+    outputs:
+    - {en: S21 measurement data, zh: S21 测量数据}
+  - title: {en: Packaging, zh: 数据打包}
+    detail: {en: The data are stored as MAT files in dataset_v1.0.zip (1.21 GB) on IEEE DataPort. The repository MATLAB scripts read the files from a local folder named dataset at the repository root., zh: 数据以 MAT 文件形式存储于 IEEE DataPort 的 dataset_v1.0.zip（1.21 GB）中。仓库的 MATLAB 脚本从仓库根目录下名为 dataset 的本地文件夹读取文件。}
+    inputs:
+    - {en: S21 measurement data, zh: S21 测量数据}
+    outputs:
+    - {en: dataset_v1.0.zip with MAT files, zh: 包含 MAT 文件的 dataset_v1.0.zip}

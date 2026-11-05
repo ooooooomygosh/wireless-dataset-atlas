@@ -12,8 +12,54 @@ format: rosbag (.bag), image files
 license: Creative Commons Attribution
 access: {url: 'https://ieee-dataport.org/documents/e-flash', type: restricted}
 paper: doi:10.1109/mcom.002.2200028
-used_in: ["doi:10.1109/tmc.2024.3401046"]
-citing: ["doi:10.1109/comst.2023.3336917","doi:10.1109/jstsp.2024.3405859","doi:10.1109/mnet.2023.3321520"]
+used_in: ['doi:10.1109/tmc.2024.3401046']
+citing: ['doi:10.1109/comst.2023.3336917', 'doi:10.1109/jstsp.2024.3405859', 'doi:10.1109/mnet.2023.3321520']
 summary: {en: 'Measured 60 GHz V2X data recorded on open streets in downtown Boston, with time-synchronized Ouster LiDAR, camera and GPS data paired with per-sector data rate and RSSI ground truth. The data covers LOS and NLOS cases with a pedestrian or a static or moving car as obstacle.', zh: 在波士顿市中心开放街道上采集的60 GHz V2X测量数据，包含时间同步的Ouster LiDAR、相机和GPS数据，并配有各扇区的数据速率与RSSI真值。数据涵盖LOS和NLOS情况，遮挡物为行人、静止车辆或移动车辆。}
 sources: ['https://ieee-dataport.org/documents/e-flash', 'https://genesys-lab.org/multimodal-fusion-nextg-v2x-communications', 'https://api.crossref.org/works?query.title=Multimodality+in+mmWave+MIMO+Beam+Selection+Using+Deep+Learning+Datasets+and+Challenges&rows=3&select=DOI,title,issued']
 checked: '2026-11-06'
+overview: {en: 'e-FLASH is a measured 60 GHz V2X dataset produced by Northeastern University and published on IEEE DataPort in 2023. The data were recorded on open streets in downtown Boston, with TP-Link Talon AD7200 routers (Qualcomm QCA9500 802.11ad chips) acting as base station and receiver. The sensor streams are time-synchronized and include two LiDARs (Velodyne VLP-16 and Ouster OS1-64), two GoPro cameras and a GPS unit. The scenarios cover line-of-sight passing and non-line-of-sight cases in which a pedestrian, a static car or a moving car blocks the link. The RF ground truth is the data transmission rate and RSSI for each of 34 sectors, recorded together with the sensor data. The files are rosbag (.bag) files and image files, organized by category, scenario and episode, and the processed archive is 22.3 GB. The primary target is mmWave beamforming, where the non-RF sensor data narrow the exhaustive beam search.', zh: e-FLASH 是一个 60 GHz V2X 实测数据集，由 Northeastern University 制作，2023
+    年发布在 IEEE DataPort 上。数据采集于波士顿市中心的开放街道，由 TP-Link Talon AD7200 路由器（搭载 Qualcomm QCA9500 802.11ad 芯片）分别作为基站和接收端。传感器数据流经过时间同步，包括两台 LiDAR（Velodyne VLP-16 和 Ouster OS1-64）、两台 GoPro 相机和一个 GPS 单元。场景覆盖视距通过以及行人、静止车辆或移动车辆遮挡链路的非视距情况。射频真值为每个扇区的数据传输速率和 RSSI，共 34 个扇区，与传感器数据一同记录。文件为 rosbag（.bag）和图像文件，按类别、场景和 episode 组织，处理后的压缩包大小为 22.3 GB。主要目标是毫米波波束成形，利用非射频传感器数据缩小穷举波束搜索的范围。}
+signal_details:
+- signal: rssi
+  text: {en: 'Per-sector RSSI at 60 GHz, recorded time-synchronized with the sensor data. The radios are TP-Link Talon AD7200 routers with Qualcomm QCA9500 802.11ad chips, and PHY-layer access uses LEDE and Nexmon firmware patching.', zh: 各扇区的 60 GHz RSSI，与传感器数据同步记录。射频设备为搭载 Qualcomm QCA9500 802.11ad 芯片的 TP-Link Talon AD7200 路由器，PHY 层访问采用 LEDE 与 Nexmon 固件补丁。}
+- signal: kpi
+  text: {en: 'Data transmission rate for each sector, used as ground truth and recorded time-synchronized with the sensor data.', zh: 各扇区的数据传输速率，作为真值与传感器数据同步记录。}
+- signal: rgb
+  text: {en: 'Two GoPro cameras with a 130° field of view at 30 fps. Camera 1 faces the side toward the base station, and camera 2 is front-facing. Camera recordings are timestamped with custom Python and OpenCV code.', zh: 两台 GoPro 相机，视场角 130°，帧率 30 fps。相机 1 朝向基站一侧，相机 2 为前向。相机录像的时间戳由自定义 Python 与 OpenCV 代码生成。}
+- signal: lidar
+  text: {en: 'Two 360° LiDARs at 10 Hz: a Velodyne VLP-16 with 16 channels and an Ouster OS1-64 with 64 channels.', zh: 两台 360° LiDAR，频率均为 10 Hz：Velodyne VLP-16（16 通道）和 Ouster OS1-64（64 通道）。}
+- signal: gps
+  text: {en: On-board MyLincoln Touch GPS at 1 Hz., zh: 车载 MyLincoln Touch GPS，频率 1 Hz。}
+pipeline:
+  summary: {en: 'LiDAR, camera, GPS and 60 GHz link data were logged on one onboard computer, then synchronized and labeled with the per-sector data rate and RSSI.', zh: LiDAR、相机、GPS 和 60 GHz 链路数据被记录在同一台车载计算机上，随后完成同步，并以各扇区的数据速率和 RSSI 进行标注。}
+  stages:
+  - title: {en: Sensor logging on one computer, zh: 单台计算机上的传感器记录}
+    detail: {en: 'All sensors are connected to one onboard computer, which provides a single clock reference. Sensor streams are written to ROS bag files. The LiDARs run at 10 Hz, the cameras at 30 fps and the GPS at 1 Hz.', zh: 所有传感器连接到同一台车载计算机，使用同一时钟基准。传感器数据流写入 ROS bag 文件。LiDAR 频率为 10 Hz，相机为 30 fps，GPS 为 1 Hz。}
+    inputs:
+    - {en: 'LiDAR, camera and GPS streams', zh: LiDAR、相机和 GPS 数据流}
+    outputs:
+    - {en: ROS bag files, zh: ROS bag 文件}
+  - title: {en: 60 GHz link measurement, zh: 60 GHz 链路测量}
+    detail: {en: 'TP-Link Talon AD7200 routers with QCA9500 802.11ad chips act as base station and receiver at 60 GHz. PHY-layer access uses LEDE and Nexmon firmware patching, following Steinmetzer et al. The data rate and RSSI of each sector are logged.', zh: 搭载 QCA9500 802.11ad 芯片的 TP-Link Talon AD7200 路由器在 60 GHz 频段分别作为基站和接收端。PHY 层访问采用 LEDE 与 Nexmon 固件补丁，遵循 Steinmetzer 等人的方法。记录每个扇区的数据速率和 RSSI。}
+    inputs:
+    - {en: 34-sector codebook, zh: 34 扇区码本}
+    outputs:
+    - {en: per-sector data rate and RSSI, zh: 各扇区数据速率与 RSSI}
+  - title: {en: Camera timestamping, zh: 相机时间戳}
+    detail: {en: Custom Python and OpenCV code timestamps the camera recordings and maps each camera frame to an image name., zh: 自定义 Python 与 OpenCV 代码为相机录像添加时间戳，并将每一帧映射到图像文件名。}
+    inputs:
+    - {en: GoPro camera recordings, zh: GoPro 相机录像}
+    outputs:
+    - {en: timestamped image files, zh: 带时间戳的图像文件}
+  - title: {en: Scenario recording, zh: 场景录制}
+    detail: {en: 'Four scenario categories are recorded on open streets in downtown Boston: line-of-sight passing at 10 mph, pedestrian blockage at 15 mph, static-car blockage at 10 mph, and moving-car blockage at 15 or 20 mph. Each category is split into episodes.', zh: 在波士顿市中心开放街道上录制四类场景：10 mph 视距通过、15 mph 行人遮挡、10 mph 静止车辆遮挡，以及 15 或 20 mph 移动车辆遮挡。每类场景划分为若干 episode。}
+    inputs:
+    - {en: vehicle runs at 10 to 20 mph, zh: 车辆以 10 至 20 mph 行驶}
+    outputs:
+    - {en: episodes by scenario category, zh: 按场景类别划分的 episode}
+  - title: {en: Synchronization and labeling, zh: 同步与标注}
+    detail: {en: 'Sensor data and RF ground truth are synchronized, and each sample carries a sector label. The processed archive e-FLASH-processed.zip is 22.3 GB.', zh: 传感器数据与射频真值完成同步，每个样本带有扇区标签。处理后的压缩包 e-FLASH-processed.zip 大小为 22.3 GB。}
+    inputs:
+    - {en: 'ROS bag files, image files and per-sector RF logs', zh: ROS bag 文件、图像文件和各扇区射频日志}
+    outputs:
+    - {en: labeled synchronized samples, zh: 带标签的同步样本}

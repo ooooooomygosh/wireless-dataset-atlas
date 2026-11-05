@@ -27,4 +27,4 @@ export function specRows(d: Dataset, lang: Lang): [string, string, string][] {
   ];
 }
 
-export const citedOf = (d: Dataset) => paperOf(d.paper).cited_by;
+export const citedOf = (d: Dataset) => (d.paper ? paperOf(d.paper).cited_by : 0);

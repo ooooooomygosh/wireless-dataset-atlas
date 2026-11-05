@@ -11,7 +11,33 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/documents/respiration-sensing-cell-free-massive-mimo-0', type: restricted}
 paper: doi:10.1109/icassp49660.2025.10888046
 used_in: []
-citing: ["doi:10.1109/infocom59046.2026.11571225","doi:10.1109/jsac.2025.3617012"]
+citing: ['doi:10.1109/infocom59046.2026.11571225', 'doi:10.1109/jsac.2025.3617012']
 summary: {en: 'Uplink CSI from a 64-antenna cell-free massive MIMO testbed at 3.51 GHz, recorded while 10 subjects performed controlled breathing, with motion-capture breathing ground truth. The listed archive is 11.64 GB.', zh: 来自64天线 cell-free massive MIMO 测试平台、载频3.51 GHz 的上行 CSI，记录了10名受试者的受控呼吸过程，并提供动作捕捉呼吸真值。列出的数据压缩包为11.64 GB。}
 sources: ['https://ieee-dataport.org/documents/respiration-sensing-cell-free-massive-mimo-0', 'https://api.crossref.org/works/10.1109/icassp49660.2025.10888046']
 checked: '2026-11-06'
+overview: {en: 'BS-Breath is a dataset of uplink channel state information (CSI) from a 64-antenna cell-free massive MIMO testbed at 3.51 GHz, recorded for respiration sensing. KU Leuven researchers (Xiong, Beerten and Pollin) published it in 2025 alongside an ICASSP 2025 paper and an arXiv preprint (2502.12114). Ten subjects performed controlled breathing during the recordings, and a motion-capture (MoCap) system provides breathing ground truth synchronized with the CSI. The release is a single archive, data_single_person_wo_interf.zip, of 11.64 GB, and the source pages state that it contains raw CSI measurements, processed breathing signals and MoCap recordings. The testbed uses an 18 MHz bandwidth. Access requires an IEEE DataPort subscription.', zh: BS-Breath 是一个上行信道状态信息（CSI）数据集，采集自载频 3.51 GHz 的 64 天线 cell-free massive MIMO 测试平台，用于呼吸感知。KU Leuven 的研究人员（Xiong、Beerten 与 Pollin）于 2025 年发布该数据集，并附有 ICASSP 2025 论文与 arXiv 预印本（2502.12114）。采集过程中 10 名受试者进行受控呼吸，动作捕捉（MoCap）系统提供与 CSI 同步的呼吸真值。发布内容为单个压缩包
+    data_single_person_wo_interf.zip，大小 11.64 GB，来源页面称其包含原始 CSI 测量、处理后的呼吸信号与 MoCap 记录。测试平台带宽为 18 MHz。访问需要 IEEE DataPort 订阅。}
+signal_details:
+- signal: csi
+  text: {en: 'Uplink CSI from a 64-antenna cell-free massive MIMO OFDM base station at 3.51 GHz, with an 18 MHz bandwidth in the testbed. The user equipment sends uplink pilots, and the sensing target is near the user equipment.', zh: 来自载频 3.51 GHz、64 天线 cell-free massive MIMO OFDM 基站的上行 CSI，测试平台带宽 18 MHz。用户设备发送上行导频，感知目标位于用户设备附近。}
+pipeline:
+  summary: {en: 'Uplink pilots from a user device are measured on a cell-free massive MIMO base station, synchronized with MoCap ground truth, and processed into breathing signals.', zh: 用户设备发送的上行导频在 cell-free massive MIMO 基站上测量，与 MoCap 真值同步，并处理为呼吸信号。}
+  stages:
+  - title: {en: Cell-free testbed measurement, zh: cell-free 测试平台测量}
+    detail: {en: A 64-antenna cell-free massive MIMO OFDM testbed records uplink CSI at 3.51 GHz with an 18 MHz bandwidth while the user equipment sends uplink pilots. Ten subjects breathe in a controlled manner., zh: 64 天线 cell-free massive MIMO OFDM 测试平台在 3.51 GHz、18 MHz 带宽下记录上行 CSI，此时用户设备发送上行导频。10 名受试者进行受控呼吸。}
+    inputs:
+    - {en: uplink pilots from the user equipment, zh: 用户设备发出的上行导频}
+    outputs:
+    - {en: uplink CSI at 3.51 GHz, zh: 3.51 GHz 上行 CSI}
+  - title: {en: Motion-capture ground truth, zh: 动作捕捉真值}
+    detail: {en: 'A MoCap system records the breathing motion synchronized with the CSI data, providing the reference for breathing evaluation.', zh: MoCap 系统记录与 CSI 数据同步的呼吸运动，为呼吸评估提供参考。}
+    inputs:
+    - {en: subject motion, zh: 受试者运动}
+    outputs:
+    - {en: synchronized MoCap recordings, zh: 同步的 MoCap 记录}
+  - title: {en: Breathing signal extraction, zh: 呼吸信号提取}
+    detail: {en: A single-antenna method combines multiple subcarriers and applies a breathing projection that maps the 2D complex breathing pattern to one displacement dimension. Weighted antenna combining then aggregates the 1D breathing signals from multiple antennas., zh: 单天线方法合并多个子载波，并施加呼吸投影，将二维复数呼吸模式映射为一维位移。加权天线合并（WAC）随后汇总多根天线的一维呼吸信号。}
+    inputs:
+    - {en: uplink CSI, zh: 上行 CSI}
+    outputs:
+    - {en: processed breathing signal, zh: 处理后的呼吸信号}

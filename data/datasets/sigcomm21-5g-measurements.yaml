@@ -14,7 +14,51 @@ access: {url: 'https://github.com/SIGCOMM21-5G/artifact', type: open}
 code: ['https://github.com/SIGCOMM21-5G/artifact']
 paper: doi:10.1145/3452296.3472923
 used_in: []
-citing: ["doi:10.1109/ojcoms.2024.3373368","doi:10.1145/3544216.3544217","doi:10.1109/infocom48880.2022.9796693"]
+citing: ['doi:10.1109/ojcoms.2024.3373368', 'doi:10.1145/3544216.3544217', 'doi:10.1109/infocom48880.2022.9796693']
 summary: {en: 'Measurement artifacts for 4G and 5G network experiments, covering throughput and speedtest results, handoffs while driving, RRC state probing, power traces, and ABR video streaming and web browsing QoE. Small data files are included in the repository and the full datasets are linked externally.', zh: 面向 4G 与 5G 网络实验的测量数据与分析脚本，涵盖吞吐量与测速结果、驾驶途中的切换、RRC 状态探测、功耗轨迹，以及 ABR 视频流和网页浏览的 QoE。小型数据文件存放在仓库中，完整数据集通过外部链接提供。}
 sources: ['https://github.com/SIGCOMM21-5G/artifact', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/README.md', 'https://api.crossref.org/works/10.1145/3452296.3472923']
 checked: '2026-11-06'
+overview: {en: 'This is the measurement artifact release for the SIGCOMM 2021 paper ''A Variegated Look at 5G in the Wild: Performance, Power, and QoE Implications'' (DOI 10.1145/3452296.3472923). The measurements cover 4G LTE and 5G networks on phones, using the Ookla Speedtest Android app, the 5G Tracker application, iPerf3 and ping, tcpdump, and a Monsoon Power Monitor. Driving runs record handoffs and power. The data cover throughput and Speedtest results, single-connection TCP downlink performance, RRC state probing, power during RRC transitions and data transfers, a power model, and benchmarks of software-based power monitors. Adaptive video streaming experiments run seven ABR algorithms over 4G and 5G throughput traces, and web-browsing experiments compare QoE and energy efficiency on 4G and 5G. The repository has one folder per experiment, and each folder''s README names the paper figures and tables it reproduces. Small data files are stored in the repository, and full datasets are
+    linked from external Google Drive folders. A complete ABR run takes more than 24 hours, so the repository provides a screencast of a trace subset, output logs and full results instead.', zh: '本仓库为 SIGCOMM 2021 论文《A Variegated Look at 5G in the Wild: Performance, Power, and QoE Implications》（DOI 10.1145/3452296.3472923）的测量数据与分析工具发布。测量在 4G LTE 与 5G 网络上以手机进行，使用 Ookla Speedtest Android 应用、5G Tracker 应用、iPerf3 与 ping、tcpdump 以及 Monsoon Power Monitor 功耗仪。驾车实验记录切换与功耗。数据涵盖吞吐量与 Speedtest 结果、单连接 TCP 下行性能、RRC 状态探测、RRC 状态转换与数据传输期间的功耗、功耗模型，以及软件功耗监测器的基准测试。自适应视频流实验在 4G 与 5G 吞吐量轨迹上运行七种 ABR 算法；网页浏览实验比较 4G 与 5G 的 QoE 与能效。仓库每个实验一个目录，各目录 README 注明其复现的论文图表。较小的数据文件存放在仓库中，完整数据集通过外部 Google Drive 文件夹链接提供。ABR 实验的完整运行超过 24 小时，因此仓库改为提供部分轨迹的录屏、输出日志与完整结果。'}
+signal_details:
+- signal: traffic
+  text: {en: 'Web-browsing traffic records: tcpdump captures and HAR files stored per collection date under raw_dataset, processed by preprocessing.py with Scapy and haralyzer (minimum tested versions 2.4.4 and 1.8.0). The 5G Tracker tool also records tcpdump packet dumps, iPerf3 throughput and ping during active measurements.', zh: 网页浏览流量记录：tcpdump 抓包与 HAR 文件，按采集日期存放在 raw_dataset 下，由 preprocessing.py 利用 Scapy 与 haralyzer 处理（测试过的最低版本分别为 2.4.4 与 1.8.0）。5G Tracker 工具在主动测量中同时记录 tcpdump 抓包、iPerf3 吞吐量与 ping。}
+- signal: kpi
+  text: {en: 'Speedtest results in dataset_speedtest_ookla.csv with downlink_Mbps, uplink_Mbps, latency_ms (round-trip, ms), connection_mode (single or multi), radio_type, carrier, UE_model and UE-to-server distance fields. RRC-Probe results in dataset_rrc_probe.csv. In the Driving-Wild folder, Monsoon power logs are merged with handoff logs into processed per-run CSV files.', zh: Speedtest 结果位于 dataset_speedtest_ookla.csv，字段包括 downlink_Mbps、uplink_Mbps、latency_ms（往返时延，ms）、connection_mode（单连接或多连接）、radio_type、carrier、UE_model 以及 UE 与服务器的距离。RRC-Probe 结果位于 dataset_rrc_probe.csv。Driving-Wild 目录中，Monsoon 功耗日志与切换日志合并为每次运行的处理后 CSV 文件。}
+pipeline:
+  summary: {en: 'Phones with the 5G Tracker application and a Monsoon Power Monitor produce logs, which are processed into CSV files and then plotted by per-folder scripts.', zh: 手机运行 5G Tracker 应用并配合 Monsoon Power Monitor 产生日志，日志经处理后形成 CSV 文件，再由各目录脚本绘图。}
+  stages:
+  - title: {en: Measure on phones, zh: 在手机上测量}
+    detail: {en: 'Passive measurements use Android APIs, and active measurements use iPerf3 and ping, both inside the 5G Tracker application, which also runs RRC-Probe and tcpdump packet dumps. Speedtest results come from Ookla''s Speedtest Android app, and power is recorded with a Monsoon Power Monitor.', zh: 被动测量通过 Android API 进行，主动测量使用 iPerf3 与 ping，二者均在 5G Tracker 应用中运行；该应用同时运行 RRC-Probe 并记录 tcpdump 抓包。Speedtest 结果来自 Ookla 的 Speedtest Android 应用，功耗由 Monsoon Power Monitor 记录。}
+    inputs:
+    - {en: 5G and 4G phones with data service, zh: 具备数据服务的 5G 与 4G 手机}
+    - {en: 5G Tracker application and Monsoon Power Monitor, zh: 5G Tracker 应用与 Monsoon Power Monitor}
+    outputs:
+    - {en: 'Passive and active logs, packet dumps', zh: 被动与主动日志、抓包文件}
+    - {en: RRC-Probe results and power traces, zh: RRC-Probe 结果与功耗轨迹}
+  - title: {en: Log handoffs while driving, zh: 驾车时记录切换}
+    detail: {en: 'The RRC messages are not accessible, so handoff events are read from the screen with the Samsung Service Code *#0011#* and an overlaid clock app. Video recordings are used to check the handoff events, and the handoff logs are merged with the power logs into processed CSV files.', zh: 由于无法获取 RRC 消息，切换事件通过三星服务代码 *#0011#* 与叠加的时钟应用从屏幕读取。录像用于核对切换事件，切换日志与功耗日志合并为处理后的 CSV 文件。}
+    inputs:
+    - {en: Handoff screen logs, zh: 切换屏幕日志}
+    - {en: Monsoon power logs and video recordings, zh: Monsoon 功耗日志与录像}
+    outputs:
+    - {en: Per-run processed CSV files, zh: 每次运行的处理后 CSV 文件}
+  - title: {en: Replay ABR video streaming, zh: 回放 ABR 视频流}
+    detail: {en: 'Seven ABR algorithms run over 4G and 5G throughput traces in an emulation testbed that controls the Chrome browser. A full run takes longer than 24 hours, so the repository provides a screencast, output logs and full results.', zh: 七种 ABR 算法在 4G 与 5G 吞吐量轨迹上运行，实验平台通过控制 Chrome 浏览器完成模拟。完整运行超过 24 小时，因此仓库提供录屏、输出日志与完整结果。}
+    inputs:
+    - {en: 4G and 5G throughput traces, zh: 4G 与 5G 吞吐量轨迹}
+    - {en: Seven ABR algorithms, zh: 七种 ABR 算法}
+    outputs:
+    - {en: Streaming output logs and results, zh: 视频流输出日志与结果}
+  - title: {en: Preprocess web-browsing captures, zh: 预处理网页浏览抓包}
+    detail: {en: 'For each collection date, the HAR files and tcpdump captures are processed by preprocessing.py. The README lists Python 3, Scapy (minimum tested 2.4.4) and haralyzer (minimum tested 1.8.0) as requirements.', zh: 每个采集日期的 HAR 文件与 tcpdump 抓包由 preprocessing.py 处理。README 列出的依赖为 Python 3、Scapy（测试过的最低版本 2.4.4）与 haralyzer（测试过的最低版本 1.8.0）。}
+    inputs:
+    - {en: HAR files and tcpdump captures, zh: HAR 文件与 tcpdump 抓包}
+    outputs:
+    - {en: Processed web-browsing dataset, zh: 处理后的网页浏览数据集}
+  - title: {en: Generate figures with plotting scripts, zh: 用绘图脚本生成图表}
+    detail: {en: 'Each experiment folder contains plotting scripts, for example plots-section3.py for the Speedtest figures, which read the CSV files and write PNG, PDF and EPS figures. The Speedtest scripts need Python 3.7.7 or later, pandas 1.1.3 or later and Matplotlib 3.3.1 or later.', zh: 每个实验目录都包含绘图脚本，例如 Speedtest 图表使用的 plots-section3.py，它读取 CSV 文件并输出 PNG、PDF 与 EPS 图。Speedtest 脚本需要 Python 3.7.7 或更高版本、pandas 1.1.3 或更高版本以及 Matplotlib 3.3.1 或更高版本。}
+    inputs:
+    - {en: Processed CSV files, zh: 处理后的 CSV 文件}
+    outputs:
+    - {en: 'Figures in PNG, PDF and EPS', zh: PNG、PDF 与 EPS 格式的图表}

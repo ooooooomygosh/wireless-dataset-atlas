@@ -16,7 +16,132 @@ access: {url: 'https://zenodo.org/records/21871050', type: open}
 code: []
 paper: doi:10.1109/MCOM.002.2400687
 used_in: []
-citing: ["doi:10.1109/jstsp.2024.3408041","doi:10.1109/ojcoms.2025.3649235","doi:10.1109/iccspa69228.2026.11600843"]
+citing: ['doi:10.1109/jstsp.2024.3408041', 'doi:10.1109/ojcoms.2025.3649235', 'doi:10.1109/iccspa69228.2026.11600843']
 summary: {en: '60 GHz channel impulse response (CIR) sequences from IEEE 802.11ay packets reflected by people moving in indoor environments. The three parts contain almost 40 minutes (DISC-A), over 40 minutes (DISC-B) and 9 minutes (DISC-C) of data, with one to seven subjects performing four or five activities.', zh: 来自 IEEE 802.11ay 数据包的 60 GHz 信道冲激响应（CIR）序列，记录室内环境中人员移动造成的反射。三部分数据分别约 40 分钟（DISC-A）、超过 40 分钟（DISC-B）和 9 分钟（DISC-C），由 1 至 7 名受试者完成四至五种活动。}
 sources: ['https://zenodo.org/records/21871050', 'https://zenodo.org/records/18347489', 'https://arxiv.org/abs/2306.09469', 'https://api.crossref.org/works/10.1109/MCOM.002.2400687']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: A 60 GHz SDR sends 802.11ay-compatible communication packets whose training fields yield CIR. Activity records are organized with uniform or sparse packet intervals and further processed into micro-Doppler., zh: 60 GHz SDR发送802.11ay兼容通信包，训练字段产生CIR；活动记录按均匀或稀疏包间隔组织，进一步生成micro-Doppler。}
+  stages:
+  - title: {en: 'Specify activities, environments, and communication sounding', zh: 设定活动、环境与通信声探}
+    detail: {en: 'Collect 5 activities from 7 subjects in two environments; the original paper describes over 2 hours of data. 802.11ay-compatible communication packets are transmitted, and scattering from human motion enters the received channel.', zh: 在两个环境中采集7名受试者的5种活动，原论文描述总量超过2小时。发射802.11ay兼容通信包，人体运动引起的散射进入接收信道。}
+    inputs:
+    - {en: 60 GHz SDR platform, zh: 60 GHz SDR平台}
+    - {en: 'Subjects, activities, and indoor deployment', zh: 受试者、活动与室内部署}
+    outputs:
+    - {en: Runs with subject/activity/environment identities, zh: 带受试者/活动/环境身份的运行}
+    controls:
+    - {en: Record identities of sensed people separately from communication-user identities, zh: 多人感知身份与通信用户身份分开记录}
+    checks:
+    - {en: 'Reproduction check: confirm participants, environment, and motion intervals for each activity', zh: 复现检查：确认每次活动的参与者、环境和运动区间}
+  - title: {en: Set beam training and packet-arrival timing, zh: 设置波束训练与包到达时序}
+    detail: {en: Each DISC-B packet contains 12 TRN fields that scan the field of view using different beam patterns. Uniform acquisition uses a 0.27 ms packet interval; sparse sequences retain actual packet times in TIME., zh: DISC-B每包包含12个TRN字段，用不同beam pattern扫描视场。均匀采集的包间隔为0.27 ms；稀疏序列使用TIME字段保留实际包时间。}
+    inputs:
+    - {en: Communication packets and training fields, zh: 通信包和训练字段}
+    - {en: Uniform or sparse transmission conditions, zh: 均匀或稀疏发送条件}
+    outputs:
+    - {en: Packet-level observations for each beam pattern, zh: 各beam pattern的包级观测}
+    - {en: Packet interval or TIME, zh: 包间隔或TIME}
+    controls:
+    - {en: Uniform-sequence timing can be recovered from the fixed interval; process sparse streams using actual TIME, zh: 均匀序列可由固定间隔恢复时间；稀疏流按实际TIME处理}
+    checks:
+    - {en: 'Reproduction check: inspect TIME units, out-of-order records, and missing packets; identify missing data caused by the acquisition conditions', zh: 复现检查：检查TIME单位、乱序与缺包，明确哪些缺失属于采集条件}
+  - title: {en: Obtain CIR from communication training fields, zh: 由通信训练字段获得CIR}
+    detail: {en: Estimate channels from received packets and release MAT CIR with axes range bins×packets×beam patterns. Multibeam observations support range/angle-related processing., zh: 对接收包进行信道估计，发布MAT CIR，轴为range bins×packets×beam patterns。多beam观测可支持距离/角度相关处理。}
+    inputs:
+    - {en: Received communication packets, zh: 接收通信包}
+    - {en: Training fields and beam patterns, zh: 训练字段与波束模式}
+    outputs:
+    - {en: Complex CIR time series, zh: 复数CIR时间序列}
+    - {en: Optional TIME, zh: 可选TIME}
+    controls:
+    - {en: Released CIR retains communication-sensing signals; full-array MIMO CSI requires a different observation protocol, zh: 发布CIR保留通信感知信号；完整阵列MIMO CSI需其他观测协议}
+    checks:
+    - {en: 'Reproduction check: verify range-bin meanings, static background, noise level, and beam dimensions', zh: 复现检查：核对距离bin含义、静态背景、噪声水平与beam维度}
+  - title: {en: Generate and publish micro-Doppler views, zh: 生成并发布micro-Doppler视图}
+    detail: {en: The release also provides processed micro-Doppler NPY with dimensions time frames×frequency bins. Raw CIR and processed representations are different outputs of the same acquisition chain., zh: 数据发布同时提供处理后的micro-Doppler NPY，维度为time frames×frequency bins。原始CIR与处理后表征属于同一采集链中的不同输出。}
+    inputs:
+    - {en: 'CIR, packet times, and processing parameters', zh: CIR、包时间和处理参数}
+    outputs:
+    - {en: Raw MAT CIR/TIME, zh: MAT原始CIR/TIME}
+    - {en: NPY micro-Doppler, zh: NPY micro-Doppler}
+    controls:
+    - {en: 'Window length, frequency axis, and sparse-packet processing change the representation; fix them according to the actual code when reproducing results', zh: 窗口长度、频率轴与稀疏包处理会改变表征，复现时按实际代码固定}
+    checks:
+    - {en: 'Reproduction check: recompute spectrograms from CIR for several samples, checking velocity/frequency units and window alignment', zh: 复现检查：对若干样本从CIR重算谱图，核对速度/频率单位和窗口对齐}
+  - title: {en: 'Evaluate by subject, session, or environment', zh: 按受试者、会话或环境评估}
+    detail: {en: 'Keep all windows cut from the same activity run in one split. Compare raw-CIR and micro-Doppler baselines, evaluating cross-subject, cross-environment, and sparse-sampling conditions separately.', zh: 将同一活动运行切出的所有窗口置于同一split。比较原始CIR和micro-Doppler基线，分别检验跨受试者、跨环境和稀疏采样条件。}
+    inputs:
+    - {en: CIR or spectrograms, zh: CIR或谱图}
+    - {en: Activity labels and run groups, zh: 活动标签与运行分组}
+    outputs:
+    - {en: Activity-recognition/gait task splits, zh: 活动识别/步态任务划分}
+    - {en: Robustness results under different sampling conditions, zh: 不同采样条件的稳健性结果}
+    controls:
+    - {en: Handle missing packets using only currently available packets; avoid future interpolation affecting online tasks, zh: 缺包处理仅利用当前可用包，避免未来插值影响在线任务}
+    checks:
+    - {en: 'Reproduction check: prevent leakage from overlapping windows; jointly report recognition performance, observation duration, and sampling overhead', zh: 复现检查：排除窗口重叠泄漏；联合报告识别效果、观察时长和采样开销}
+  scope: {en: Public DISC-A/B/C CIR/TIME and micro-Doppler interfaces; measurements capture human scattering., zh: DISC-A/B/C公开CIR/TIME与micro-Doppler接口；测量对象为人体散射。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• MAT CIR and sparse-mode TIME
+
+      • Processed micro-Doppler NPY
+
+      • Activity, subject, and environment organization information', zh: '• MAT CIR及稀疏模式TIME
+
+      • 处理后micro-Doppler NPY
+
+      • 活动、受试者与环境组织信息'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Range/AoA or tracking estimates
+
+      • User-defined spectrogram processing, windows, and cross-domain splits', zh: '• range/AoA或跟踪估计
+
+      • 用户定义的谱图处理、窗口和跨域split'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• Raw CIR is not optical position ground truth; localization results are outputs estimated from signals.
+
+      • Acquisition hardware clocks and calibration residuals require further reading of the complete protocol; this audit relies on public fields and the abstracts/descriptions read.', zh: '• 原始CIR不等于光学位置真值，定位结果属于由信号估计的输出。
+
+      • 采集硬件时钟与标定残差需进一步读完整协议；本轮依据公开字段与已读摘要/说明。'}
+provenance:
+- {en: Indoor subject activity → 60 GHz SDR transmits communication packets, zh: 室内受试者活动 → 60 GHz SDR发送通信包}
+- {en: Channel estimation from received packets → CIR time series, zh: 接收包信道估计 → CIR时间序列}
+- {en: Activity/subject splits and uniform/sparse traffic conditions → benchmark, zh: 活动/受试者划分与均匀/稀疏流量条件 → benchmark}
+technical_notes:
+- {en: 'Verified: measured CIR includes scattering from human motion, providing actual RF-sensing observations.', zh: 已确认：包含人体运动散射的实测CIR，具备真正RF感知观测。}
+- {en: 'Inference: conversion from CIR to micro-Doppler depends on window length, sampling rate, and missing-packet handling; include the processing method in model comparisons.', zh: 推断：CIR转micro-Doppler依赖窗长、采样率和缺包处理，处理方式应纳入模型比较。}
+limitations:
+- {en: 'Hold out subjects, environments, or sessions; do not randomly split windows from the same activity.', zh: 须按受试者、环境、session留出，不能把同一动作窗口随机拆分。}
+- {en: Activity labels may correlate with traffic modes; check for statistical shortcuts., zh: 活动标签与流量模式可能相关，应交叉检查统计捷径。}
+history:
+- {en: '2023-06: first preprint release.', zh: 2023-06：预印本首次发布。}
+- {en: '2025-02: preprint v4.', zh: 2025-02：预印本v4。}
+- {en: '2026-08: Zenodo multipart/scripts index release; this is not the original introduction year.', zh: 2026-08：Zenodo分卷/脚本索引发布；不是首次提出年份。}
+usage:
+- {en: Download the required parts from the data index and combine them; verify file completeness against the manifest., zh: 从数据索引下载所需分卷并合并；按清单验证文件完整性。}
+- {en: 'Read CIR and packet timestamps, then first reproduce the official time-frequency processing.', zh: 读取CIR及包时间戳，先复现官方时频处理。}
+- {en: 'Group by subject/session to compare classical feature classifiers with learning models, reporting sensing performance and sampling costs.', zh: 按subject/session分组比较经典特征分类和学习模型，报告感知性能及采样成本。}
+field_notes:
+- label: {en: CSI, zh: CSI}
+  text: {en: CIR is provided directly; not an arbitrary full multi-antenna multiuser matrix, zh: 直接提供CIR；不是任意多天线多用户全矩阵}
+- label: {en: Paths, zh: 路径}
+  text: {en: 'This field denotes per-path angles at both ends and interaction records, which the public interface does not provide. Delay/power can be derived from CIR; AoA/AoD and complete path interactions remain unconfirmed', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。CIR可导出delay/power；AoA/AoD和完整路径交互仍未确认}
+- label: {en: Radar, zh: 雷达}
+  text: {en: 'RF-sensing representations derived from communication CIR, not raw signals from a separate FMCW radar', zh: 由通信CIR导出RF感知表征，不是独立FMCW雷达原始信号}
+- label: {en: Position, zh: 位置}
+  text: {en: DISC-B's multi-BP CIR supports range/AoA estimation and target localization/tracking. Public CIR/TIME fields do not directly provide optical position ground truth., zh: DISC-B的多BP CIR可估计range/AoA并进行目标定位跟踪；公开字段CIR/TIME不等于直接提供光学位置真值。}
+- label: {en: Beam labels, zh: 波束标签}
+  text: {en: DISC-B uses 12 TRN fields per packet to scan the FoV with different beam patterns; the 3rd CIR axis is n_bp. No communication Top-1 oracle labels have been confirmed., zh: DISC-B每包12个TRN字段以不同beam pattern扫描FoV，CIR的第3轴就是n_bp；不存在已确认的通信Top-1 oracle标签。}
+- label: {en: RGB, zh: RGB}
+  text: {en: 'The public data description lists CIR, optional TIME, and processed NPY spectrograms; it does not include per-sample RGB observations.', zh: 公开数据说明列CIR、可选TIME和处理后NPY谱图；不含逐样本RGB观测。}
+- label: {en: Multi-user, zh: 多用户}
+  text: {en: 'Concurrent people are sensed scattering targets, not communication UEs with uplink/downlink channels; the data cannot directly support MU-MIMO scheduling.', zh: 并发多人是被感知散射目标；不是多个通信UE的下行/上行信道，因此不能直接用于MU-MIMO调度。}
+- label: {en: Time, zh: 时间}
+  text: {en: 'Sparse sequences provide TIME in seconds; uniform sequences omit TIME, with timing recovered from the fixed packet interval.', zh: 稀疏序列提供秒单位TIME；均匀序列省略TIME，时间由固定包间隔恢复。}
+overview: {en: 'DISC is a set of 60 GHz channel impulse response (CIR) sequences recorded with a software-defined radio testbed that transmits IEEE 802.11ay packets. Jacopo Pegoraro, Pablo Saucedo, Jesus Omar Lacruz Jucht and Michele Rossi (University of Padova) and Joerg Widmer (IMDEA Networks Institute) produced the data. The arXiv version was first submitted in June 2023, and the paper appeared in IEEE Communications Magazine in 2026. The CIRs capture reflections from people moving in indoor rooms, with seven subjects performing four or five activities in two environments. The data have three parts: DISC-A, almost 40 minutes of uniformly timed packets; DISC-B, over 40 minutes of uniformly timed packets with 12 TRN fields per packet for different beam patterns; and DISC-C, 9 minutes of sparse packets whose timing follows three Wi-Fi traffic patterns. Raw CIR is stored in .mat files, and micro-Doppler spectrograms are included as .npy files for DISC-C. The Zenodo record contains a scripts
+    package, and the data archives are linked from its page. The dataset is licensed under CC BY 4.0.', zh: DISC 是一组 60 GHz 信道冲激响应（CIR）序列，由软件定义无线电测试平台发射 IEEE 802.11ay 数据包并采集得到。数据由帕多瓦大学的 Jacopo Pegoraro、Pablo Saucedo、Jesus Omar Lacruz Jucht 和 Michele Rossi，以及 IMDEA Networks 研究所的 Joerg Widmer 制作。arXiv 版本于 2023 年 6 月首次提交，论文于 2026 年发表在 IEEE Communications Magazine。CIR 记录了室内人员移动产生的反射，共 7 名受试者在两种室内环境中完成 4 至 5 种活动。数据分为三部分：DISC-A，约 40 分钟，数据包时间间隔均匀；DISC-B，超过 40 分钟，数据包时间间隔均匀，每个数据包含 12 个 TRN 字段，对应不同波束图样；DISC-C，9 分钟，数据包稀疏，时间遵循三种 Wi-Fi 流量模式。原始 CIR 以 .mat 文件保存，DISC-C 另附 .npy 格式的微多普勒频谱图。Zenodo 记录中包含脚本压缩包，数据压缩包通过该页面链接获取。数据集采用 CC BY 4.0 许可。}
+signal_details:
+- signal: cir
+  text: {en: 'Channel impulse response from IEEE 802.11ay packets at 60 GHz, captured with a software-defined radio platform built on a Sivers mmWave front-end, an FPGA and a baseband processor. Each .mat file holds a CIR field of shape (512, n_packets, n_bp): 512 range bins, one column per packet, and n_bp = 1 or 12 beam patterns. The optional TIME field gives transmission instants in seconds and appears only in the sparse sequences of DISC-C. The uniform sequences have an inter-packet time of 0.27 ms, with more than 3 CIR estimates per millisecond. DISC-C traces are 8.7 s long, with M = 4, 8, 16, 32 or 64 packets per window.', zh: '来自 IEEE 802.11ay 数据包的 60 GHz 信道冲激响应，由基于 Sivers 毫米波前端、FPGA 和基带处理器的软件定义无线电平台采集。每个 .mat 文件包含形状为 (512, n_packets, n_bp) 的 CIR 字段：512 个距离单元，每个数据包一列，n_bp = 1 或 12 个波束图样。可选的 TIME 字段以秒为单位给出发射时刻，仅出现在 DISC-C 的稀疏序列中。均匀序列的数据包间隔为 0.27 ms，每毫秒超过 3 个 CIR 估计值。DISC-C 每段轨迹长 8.7 s，每个窗口包含 M = 4、8、16、32 或 64 个数据包。'}

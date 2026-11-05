@@ -15,7 +15,16 @@ access: {url: 'https://ieee-dataport.org/documents/aramimo-tvws-mmimo-dataset', 
 code: []
 paper: doi:10.1145/3615453.3616512
 used_in: []
-citing: ["doi:10.1109/jproc.2024.3402265","doi:10.1109/infocomwkshps61880.2024.10620737"]
+citing: ['doi:10.1109/jproc.2024.3402265', 'doi:10.1109/infocomwkshps61880.2024.10620737']
 summary: {en: 'Over-the-air massive MIMO measurements at 563 MHz from a base station with 42 antennas serving six UEs at 0.64 to 3.84 km on crop and livestock farms around Ames, Iowa, with 6 to 24 MHz channel bandwidths, including raw CSI, IQ pilots, per-UE KPIs and MU-MIMO scheduling summaries.', zh: 在爱荷华州 Ames 周边农场采集的 563 MHz 空口大规模 MIMO 实测数据：基站 42 根天线服务 6 个用户终端，距离 0.64 至 3.84 km，信道带宽 6 至 24 MHz，包含原始 CSI、IQ 导频、用户级 KPI 以及 MU-MIMO 分组与调度汇总。}
 sources: ['https://ieee-dataport.org/documents/aramimo-tvws-mmimo-dataset']
 checked: '2026-11-06'
+overview: {en: 'AraMIMO TVWS is a set of over-the-air massive MIMO measurements at 563 MHz, made by Iowa State University in a campaign on June 26, 2023. The base station is a Skylark Wireless Faros V2 on a rooftop in Ames, Iowa, with 42 antennas in three radio units of 14 antennas each. Six user units with two antennas each sit 0.64 km to 3.84 km from the base station. Four fixed units are on farms, and two portable units are in the south sector, which is the sector the dataset studies. Channel bandwidth is 6, 12, 18 or 24 MHz depending on the scenario. Four scenarios are recorded: all six users connected together, users connected one at a time, all users forced into one beamforming group, and a sweep of the maximum spatial streams per group. The files hold raw CSI and IQ pilot samples in HDF5, per-sample network KPIs, one-way link latency per user, and MU-MIMO grouping and scheduling summaries, in CSV, JSON and HDF5 format in a 996.76 MB archive.', zh: AraMIMO TVWS 是在 563 MHz 频段采集的空口大规模
+    MIMO 实测数据，由爱荷华州立大学于 2023 年 6 月 26 日开展测量。基站为 Skylark Wireless Faros V2，架设在爱荷华州 Ames 的一栋楼楼顶，包含 3 个射频单元，每个单元 14 根天线，共 42 根天线。6 个用户单元各配备 2 根天线，距基站 0.64 km 至 3.84 km。其中 4 个为固定安装在农场的单元，2 个为便携单元，位于南扇区，本数据集研究的即为南扇区。信道带宽根据场景为 6、12、18 或 24 MHz。数据记录了四类场景：6 个用户同时接入、用户逐一接入、所有用户被置于同一波束成形组，以及对每组最大空间流数的扫描。文件包含 HDF5 格式的原始 CSI 和 IQ 导频样本、逐样本的网络 KPI、每个用户的单向链路时延，以及 MU-MIMO 分组与调度汇总，以 CSV、JSON 和 HDF5 格式保存在 996.76 MB 的压缩包中。}
+signal_details:
+- signal: csi
+  text: {en: 'Raw channel state information between the 42 base-station antennas and six user units with two antennas each, at 563 MHz with 6, 12, 18 or 24 MHz channel bandwidth. Raw CSI is stored in HDF5 files together with the IQ pilots.', zh: 基站 42 根天线与 6 个用户单元（每个 2 根天线）之间的原始信道状态信息，中心频率 563 MHz，信道带宽 6、12、18 或 24 MHz。原始 CSI 与 IQ 导频一同以 HDF5 文件保存。}
+- signal: iq
+  text: {en: IQ pilot samples stored in HDF5 files alongside the raw CSI. The base station includes a 2-antenna reference radio used for reciprocity calibration and pilots., zh: IQ 导频样本以 HDF5 文件与原始 CSI 一并保存。基站配有 2 根天线的参考射频单元，用于互易性校准和导频。}
+- signal: kpi
+  text: {en: 'Per-sample network KPIs: throughput, spectral efficiency, per-user SNR and decode rates. One-way wireless-link latency for each user. MU-MIMO grouping and scheduling summaries, and per-user radio statistics.', zh: 逐样本网络 KPI：吞吐量、频谱效率、每个用户的 SNR 和解码率。每个用户的单向无线链路时延。MU-MIMO 分组与调度汇总，以及每个用户的无线电统计量。}

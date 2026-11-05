@@ -4,15 +4,58 @@ year: 2024
 origin: measured
 tasks: [beam-management, multimodal-sensing]
 signals: [beam-power, rgb, lidar, radar, gps]
-bands_ghz: [60]
+bands_ghz: [62.64]
 environment: [vehicular, rural]
 mobility: vehicle, up to 100 km/h
 format: CSV index files, 7-Zip archives
 license: Not stated
 access: {url: 'https://www.deepsense6g.net/scenarios36-39/', type: registration}
 paper: arxiv:2406.17908
-used_in: ["doi:10.1109/icc59461.2026.11586947"]
-citing: ["doi:10.1109/tmc.2026.3674213"]
+used_in: ['doi:10.1109/icc59461.2026.11586947']
+citing: ['doi:10.1109/tmc.2026.3674213']
 summary: {en: 'Two-vehicle recordings on intercity and rural roads, with 60 GHz beam-power vectors from phased arrays, a 360-degree camera, four radars, a 3D LiDAR and two GPS receivers. The data are synchronized at 10 Hz, with mmWave beam power as the reference.', zh: 在城际与乡村道路上采集的双车测试平台数据，包含60 GHz相位阵列的波束功率向量、360度相机、四个雷达、3D LiDAR和两个GPS接收机。数据以10 Hz同步，并以毫米波波束功率作为参考。}
 sources: ['https://arxiv.org/abs/2406.17908', 'https://arxiv.org/html/2406.17908', 'https://export.arxiv.org/api/query?id_list=2406.17908', 'https://deepsense6g.net/', 'https://www.deepsense6g.net/assets/index-D9i131kE.js']
 checked: '2026-11-06'
+overview: {en: 'DeepSense-V2V is a vehicle-to-vehicle multi-modal dataset from a two-vehicle testbed, described by Morais, Charan, Srinivas and Alkhateeb (arXiv:2406.17908, 2024). The vehicles drove 120 km of intercity and rural roads in Tempe, AZ, in daytime and nighttime, at speeds up to 100 km/h. The receiver vehicle carries four 16-element phased arrays at 62.64 GHz, four radars, a 360-degree camera, a 3D LiDAR and a GPS RTK receiver. The transmitter vehicle carries a quasi-omnidirectional mmWave antenna and a GPS receiver. The dataset is split into four scenarios, 36 to 39, where 36 and 37 are long intercity drives and 38 and 39 are urban commutes. The mmWave receiver sweeps a 64-beam codebook from -45 to +45 degrees in azimuth every 100 ms, and mmWave beam power at 10 Hz is the reference for all modalities. The paper''s Table I lists 756k RGB images, 126k LiDAR point clouds and 524k radar frames. The archives contain CSV index files and 7-Zip compressed parts.', zh: 'DeepSense-V2V
+    是一个车对车多模态数据集，采集自双车测试平台，由 Morais、Charan、Srinivas 与 Alkhateeb 发布（arXiv:2406.17908，2024）。两车在亚利桑那州 Tempe 的城际与乡村道路上行驶共 120 km，包括白天与夜间，速度最高 100 km/h。接收车辆搭载四个 62.64 GHz 的 16 阵元相控阵、四个雷达、一个 360 度相机、一个 3D LiDAR 和一个 GPS RTK 接收机。发射车辆搭载一个准全向毫米波天线和一个 GPS 接收机。数据集分为场景 36 至 39 四组，其中 36 和 37 为长距离城际行驶，38 和 39 为城市通勤。毫米波接收机每 100 ms 扫描一次 64 波束码本，方位角范围为 -45 至 +45 度；10 Hz 的毫米波波束功率为所有模态的参考。论文 Table I 给出 756k 张 RGB 图像、126k 个 LiDAR 点云和 524k 个雷达帧。压缩包内包含 CSV 索引文件和 7-Zip 分卷。'}
+signal_details:
+- signal: beam-power
+  text: {en: The receiver unit's arrays are 16-element ULAs with a 62.64 GHz center frequency. The receiver sweeps a codebook of 64 beams from -45 to +45 degrees in azimuth. Each sample is a 64-value power vector collected every 100 ms (10 Hz). The USRP records 640 samples per beam at a 5 MHz sample rate. The transmitter unit uses a quasi-omnidirectional 60 GHz antenna., zh: 接收单元的阵列为 16 阵元 ULA，中心频率 62.64 GHz。接收端在方位角 -45 至 +45 度范围内扫描 64 个波束的码本。每个采样为 64 个数值的功率向量，每 100 ms（10 Hz）采集一次。USRP 每个波束采集 640 个样本，采样率 5 MHz。发射单元使用准全向 60 GHz 天线。}
+- signal: rgb
+  text: {en: '360-degree camera on the receiver vehicle at 30 Hz, the rate stated in the paper. Table I lists 756k RGB images for the four scenarios.', zh: 接收车辆上的 360 度相机，帧率 30 Hz（论文所述）。Table I 列出四个场景共 756k 张 RGB 图像。}
+- signal: radar
+  text: {en: 'Four FMCW radars on the receiver vehicle, each an AWR2243BOOST with a DCA1000EVM, in the 77 GHz band with a 15.015 THz/s chirp slope. Table I lists 524k radar frames for the four scenarios.', zh: 接收车辆上的四个 FMCW 雷达，每个由 AWR2243BOOST 与 DCA1000EVM 组成，工作在 77 GHz 频段，调频斜率 15.015 THz/s。Table I 列出四个场景共 524k 个雷达帧。}
+- signal: lidar
+  text: {en: 'A 3D LiDAR (Ouster OS1) on the receiver vehicle with 32 beams, 1024 horizontal samples per revolution and a 20 Hz rate. Table I lists 126k LiDAR point clouds for the four scenarios.', zh: 接收车辆上的 3D LiDAR（Ouster OS1），32 线，每圈 1024 个水平采样，帧率 20 Hz。Table I 列出四个场景共 126k 个 LiDAR 点云。}
+- signal: gps
+  text: {en: 'Two GPS receivers (RTK Express) at 10 Hz, one per vehicle. Raw GPS data are in NMEA format. Linear interpolation is applied only across gaps shorter than 1 second, and each interpolated value is marked in the CSV index.', zh: 两个 GPS 接收机（RTK Express），每车一个，采样率 10 Hz。原始 GPS 数据为 NMEA 格式。仅对短于 1 秒的间隔进行线性插值，每个插值结果在 CSV 索引中作标记。}
+pipeline:
+  summary: {en: 'The two-vehicle testbed records mmWave beam power, radar, LiDAR, camera and GPS, then synchronizes them to 10 Hz with beam power as the reference and packs them into CSV-indexed 7-Zip archives.', zh: 双车测试平台同时记录毫米波波束功率、雷达、LiDAR、相机和 GPS，随后以波束功率为参考将各模态同步到 10 Hz，并打包为带 CSV 索引的 7-Zip 压缩包。}
+  stages:
+  - title: {en: Two-vehicle data collection, zh: 双车数据采集}
+    detail: {en: 'The transmitter and receiver vehicles drive intercity and rural roads in daytime and nighttime. The receiver unit sweeps the 64-beam codebook and records a 64-value power vector every 100 ms, while the camera, radars, LiDAR and GPS record their own streams.', zh: 发射车与接收车在城际与乡村道路上白天和夜间行驶。接收单元扫描 64 波束码本，每 100 ms 记录一个 64 值功率向量，相机、雷达、LiDAR 和 GPS 各自记录数据流。}
+    inputs:
+    - {en: Intercity and rural drive routes, zh: 城际与乡村行驶路线}
+    - {en: 64-beam sweeps every 100 ms, zh: 每 100 ms 一次的 64 波束扫描}
+    outputs:
+    - {en: Raw streams per modality, zh: 各模态原始数据流}
+  - title: {en: Synchronization to 10 Hz, zh: 同步到 10 Hz}
+    detail: {en: The synchronization stage uses mmWave beam power as the reference and sets the 10 Hz sampling instants. At each instant it selects the closest sample of every other modality and discards the unselected samples. The 30 Hz camera frames are reduced to about one third., zh: 同步阶段以毫米波波束功率为参考，确定 10 Hz 的采样时刻。在每个时刻，它为其他各模态选取最近的一个样本，并丢弃未被选中的样本。30 Hz 的相机帧因此减少到约三分之一。}
+    inputs:
+    - {en: mmWave beam power as reference, zh: 毫米波波束功率作为参考}
+    - {en: 'Camera, radar, LiDAR and GPS streams', zh: 相机、雷达、LiDAR 与 GPS 数据流}
+    outputs:
+    - {en: Samples aligned at 10 Hz, zh: 对齐到 10 Hz 的样本}
+  - title: {en: GPS interpolation, zh: GPS 插值}
+    detail: {en: GPS position and label values are interpolated linearly only across gaps shorter than 1 second. Each interpolated value is marked in the CSV index file., zh: GPS 位置与标签值仅在短于 1 秒的间隔内进行线性插值。每个插值结果都在 CSV 索引文件中作标记。}
+    inputs:
+    - {en: GPS samples with gaps, zh: 含缺口的 GPS 样本}
+    outputs:
+    - {en: Interpolation marks in the index, zh: 索引中的插值标记}
+  - title: {en: Indexing and archiving, zh: 索引与归档}
+    detail: {en: 'Processing writes CSV index files that link all modalities. The compression stage separates each modality into its own files and packs them into 8 GB parts with 7-Zip, deflate method, level 5.', zh: 处理阶段生成将所有模态关联起来的 CSV 索引文件。压缩阶段将各模态分别存为独立文件，并使用 7-Zip（deflate 方法，级别 5）打包为 8 GB 分卷。}
+    inputs:
+    - {en: Synchronized samples, zh: 同步后的样本}
+    outputs:
+    - {en: CSV index files, zh: CSV 索引文件}
+    - {en: 7-Zip parts of 8 GB, zh: 8 GB 的 7-Zip 分卷}

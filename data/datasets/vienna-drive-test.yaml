@@ -19,3 +19,44 @@ citing: []
 summary: {en: 'Georeferenced LTE and 5G NR drive-test measurements in Vienna, Austria, combining passive wideband scanner observations with active handset logs that include throughput and timing advance. The release also includes building and terrain models, and the measurement tables hold 2,893,129 records.', zh: '奥地利维也纳的地理参考 LTE 与 5G NR 路测数据，结合被动宽带扫描仪观测和主动手机日志（包括吞吐量与 timing advance）。发布内容还包括建筑物与地形模型，测量表共含 2,893,129 条记录。'}
 sources: ['https://zenodo.org/api/records/21372657', 'https://arxiv.org/abs/2603.02638', 'https://arxiv.org/html/2603.02638', 'https://www.nature.com/articles/s41597-026-08259-z', 'https://api.crossref.org/works?query.title=Vienna+4G%2F5G+Drive-Test+Dataset&rows=3&select=DOI,title,issued']
 checked: '2026-11-06'
+overview: {en: 'The Vienna 4G/5G Drive-Test Dataset is a georeferenced LTE and 5G NR measurement release for Vienna, Austria. It was published by TU Wien with a 2026 arXiv preprint (arXiv:2603.02638) and an article with DOI 10.1038/s41597-026-08259-z. A car carried a passive wideband scanner, and handsets were logged in parallel, so the data show both the network side and the user side. Measurements cover urban and suburban areas and are aligned with time and GPS position in WGS84. For a subset of base stations the release gives estimated site locations, sector azimuths and antenna heights, and it includes building and terrain models of Vienna. The measurement tables hold 2,893,129 records in CSV and Parquet, and the city model is provided as GeoTIFF. The authors target radio map estimation, propagation modeling, digital-twin calibration, base station localization and ray-tracing calibration. The throughput fields are physical-layer shared-channel indicators, not application-layer throughput.',
+  zh: 'Vienna 4G/5G Drive-Test Dataset 是奥地利维也纳地理参考的 LTE 与 5G NR 测量数据，由 TU Wien 发布，对应 2026 年 arXiv 预印本（arXiv:2603.02638）以及 DOI 为 10.1038/s41597-026-08259-z 的文章。车顶安装被动宽带扫描仪，同时并行记录手机侧数据，因此同时包含网络侧与用户侧视角。测量覆盖城区与郊区，并按时间和 WGS84 的 GPS 位置对齐。发布内容包括部分基站的估计站址、扇区方位角与天线高度，以及维也纳的建筑物与地形模型。测量表共 2,893,129 条记录，以 CSV 与 Parquet 格式提供，城市模型为 GeoTIFF 栅格。作者面向的任务包括无线电地图估计、传播建模、数字孪生校准、基站定位与光线追踪校准。吞吐量字段为物理层共享信道指标，不是应用层吞吐量。'}
+signal_details:
+- signal: kpi
+  text: {en: 'Per-cell radio KPIs: RSRP, RSRQ, RSSI and SINR, with PCI and channel number as cell identifiers. CINR is reported for LTE scanner data only, and other quality ratios are reported as SINR. The NR scanner data include beam-level observations. Handset radio-layer information is logged through the Qualcomm diagnostic interface.', zh: 各小区的无线 KPI：RSRP、RSRQ、RSSI 和 SINR，以 PCI 与信道号作为小区标识。CINR 仅用于 LTE 扫描仪数据，其余质量比率记为 SINR。NR 扫描数据包含波束级观测。手机侧无线层信息通过 Qualcomm diagnostic interface 记录。}
+- signal: traffic
+  text: {en: 'Connected-mode handset (UE) logs for LTE and 5G NR non-standalone (NSA) operation. Throughput is a physical-layer shared-channel indicator, and timing advance (TA) is recorded. In NSA mode, NR physical identifiers are not exposed, so the release provides cell_id_dummy and gnb_id_dummy where reliable estimates are available.', zh: LTE 与 5G NR 非独立组网（NSA）连接态的手机（UE）日志。吞吐量为物理层共享信道指标，同时记录 timing advance（TA）。NSA 模式下不暴露 NR 物理层标识，因此在可靠估计时提供 cell_id_dummy 与 gnb_id_dummy。}
+pipeline:
+  summary: {en: 'A rooftop scanner and handset logging record georeferenced LTE and 5G NR measurements, which are then combined with estimated cell descriptors and city models.', zh: 车顶扫描仪与手机日志记录带地理参考的 LTE 与 5G NR 测量，随后与估计的小区描述信息和城市模型结合。}
+  stages:
+  - title: {en: Record passive scanner data, zh: 记录被动扫描数据}
+    detail: {en: 'A PCTEL IBflex scanning receiver, two OmniLOG PRO omnidirectional antennas on the car rooftop and a PCTEL GPS receiver are controlled by Nemo Outdoor software from Keysight on a notebook. The scanner monitors cellular signals in a wideband, technology-agnostic way and records multi-cell observations at each position.', zh: PCTEL IBflex 扫描接收机、车顶两根 OmniLOG PRO 全向天线以及 PCTEL GPS 接收机，由笔记本上的 Keysight Nemo Outdoor 软件控制和记录。扫描仪以宽带、与技术无关的方式监测蜂窝信号，并在每个位置记录多小区观测。}
+    inputs:
+    - {en: Cellular signals along the drive route, zh: 沿路线的蜂窝信号}
+    - {en: GPS position, zh: GPS 位置}
+    outputs:
+    - {en: Scanner observations with per-cell metrics, zh: 含小区指标的扫描观测}
+  - title: {en: Log handset radio and throughput data, zh: 记录手机无线与吞吐量数据}
+    detail: {en: 'Handsets in connected mode log radio-layer information in parallel through the Qualcomm diagnostic interface. The throughput fields are physical-layer shared-channel indicators, and timing advance is recorded alongside them.', zh: 连接态手机并行地通过 Qualcomm diagnostic interface 记录无线层信息。吞吐量字段为物理层共享信道指标，并与 timing advance 一同记录。}
+    inputs:
+    - {en: Handsets in connected mode, zh: 连接态手机}
+    outputs:
+    - {en: 'Handset logs with radio KPIs, throughput and TA', zh: 含无线 KPI、吞吐量和 TA 的手机日志}
+  - title: {en: Georeference and time-align records, zh: 地理参考与时间对齐}
+    detail: {en: 'Each measurement point carries a measurement ID, a timestamp and a GPS position in WGS84 (EPSG:4326). A point holds one or more cell observations, identified by PCI and channel number, and by cell, BS or sector IDs where available.', zh: '每个测量点包含 measurement ID、时间戳以及 WGS84（EPSG:4326）的 GPS 位置。每个点包含一个或多个小区观测，以 PCI 与信道号标识，可用时还包含 cell、BS 或 sector 标识。'}
+    inputs:
+    - {en: Scanner and handset records, zh: 扫描与手机记录}
+    outputs:
+    - {en: Georeferenced measurement tables, zh: 带地理参考的测量表}
+  - title: {en: Infer base station descriptors, zh: 推断基站描述信息}
+    detail: {en: 'For a representative subset of cells, site locations, sector orientations and antenna heights are estimated from the measurements, using timing-advance-based localization and signal-strength analysis. LTE measurements link to these descriptors through network-reported identifiers.', zh: 对具有代表性的部分小区，利用测量数据、基于 timing advance 的定位以及信号强度分析，估计站址、扇区朝向和天线高度。LTE 测量通过网络上报的标识与这些描述信息关联。}
+    inputs:
+    - {en: Measurements with TA and signal strength, zh: 含 TA 与信号强度的测量}
+    outputs:
+    - {en: 'Estimated site positions, azimuths and antenna heights', zh: 估计的站址、方位角与天线高度}
+  - title: {en: Add the city model and package the release, zh: 加入城市模型并打包发布}
+    detail: {en: 'Building and terrain models of Vienna, released by the City of Vienna under CC BY 4.0, are provided as GeoTIFF rasters. Measurement and metadata tables are released as CSV and Parquet in four subdirectories: estimated cell information, phone measurements, scanner measurements and the city model.', zh: 维也纳建筑物与地形模型由维也纳市政府以 CC BY 4.0 许可发布，以 GeoTIFF 栅格提供。测量与元数据表以 CSV 和 Parquet 格式发布，分为估计小区信息、手机测量、扫描测量和城市模型四个子目录。}
+    inputs:
+    - {en: City of Vienna building and terrain data, zh: 维也纳市政府的建筑物与地形数据}
+    outputs:
+    - {en: Release archive Vienna-full-4G-5G-dataset-v1.0.5.zip, zh: 发布压缩包 Vienna-full-4G-5G-dataset-v1.0.5.zip}

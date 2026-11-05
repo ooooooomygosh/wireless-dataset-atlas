@@ -17,3 +17,30 @@ citing: []
 summary: {en: 'Generator output: 60-second received-signal-power traces with micromobility attenuation and beam-tracking periods of 20-2000 ms, generated from blockage and micromobility processes measured in an empty hall.', zh: 生成器输出：60秒接收信号功率轨迹，包含微移动衰减和20至2000 ms的波束跟踪周期，由在空旷大厅中实测的遮挡与微移动过程生成。}
 sources: ['https://ieee-dataport.org/documents/synthetic-received-signal-power-data-6g-sub-terahertz-cellular-systems', 'https://api.crossref.org/works/10.1109/access.2025.3617323']
 checked: '2026-11-06'
+overview: {en: 'This dataset contains synthetic received signal power (RSP) time series for 6G sub-terahertz cellular links. The listed authors are Margarita Ershova, Alexander Shurakov, Yevgeni Koucheryavy and Gregory Gol''tsman, and the data page was created on 13 December 2024. The related paper, DOI 10.1109/access.2025.3617323, is titled ''Generating Measurement-Based Synthetic Received Signal Power Data for 6G Sub-Terahertz Research With Micromobility and Blockage''. The data page notes that practical measurements usually cover blockage and micromobility separately, so this release gives RSP traces that contain blockage, micromobility and beam tracking together. Each trace is 60 seconds long, is stored as a TXT file with four columns, and the archive data.zip is 17.67 GB. The traces were generated for an empty hall of 7.5 × 4.5 × 3 m, with base-station-to-UE distances of 3, 5 and 7 m and a blocker walking at 3.5 km/h. The stated uses are statistical tests that separate blockage events
+    from micromobility events and the design of beam-tracking algorithms.', zh: 该数据集包含面向 6G 亚太赫兹蜂窝链路的合成接收信号功率（RSP）时间序列。列出的作者为 Margarita Ershova、Alexander Shurakov、Yevgeni Koucheryavy 和 Gregory Gol'tsman，数据页面创建于 2024 年 12 月 13 日。相关论文 DOI 为 10.1109/access.2025.3617323，题为《Generating Measurement-Based Synthetic Received Signal Power Data for 6G Sub-Terahertz Research With Micromobility and Blockage》。数据页面指出，实际测量通常分别覆盖遮挡和微移动，因此本数据集的 RSP 轨迹同时包含遮挡、微移动和波束跟踪。每条轨迹时长 60 秒，以 TXT 文件存储，包含四列。轨迹针对 7.5 × 4.5 × 3 m 的空旷大厅生成，基站到 UE 的距离为 3、5 和 7 m，遮挡物以 3.5 km/h 的速度行走。压缩包 data.zip 大小为 17.67 GB。所述用途为区分遮挡事件与微移动事件的统计检验，以及波束跟踪算法设计。}
+signal_details:
+- signal: beam-power
+  text: {en: 'Received signal power (RSP) in dBm over time. Each trace has four columns: time, RSP regardless of micromobility (dBm), attenuation due to micromobility (dBm), and RSP with respect to micromobility (dBm). RSP is set to -100 dBm during a beam-tracking procedure. Each trace is 60 s long, with 60 traces per beam-tracking period. The beam-tracking periods are 20, 80, 160, 320, 1000 and 2000 ms.', zh: 随时间变化的接收信号功率（RSP），单位 dBm。每条轨迹包含四列：时间、不考虑微移动的 RSP（dBm）、微移动引起的衰减（dBm）以及相对微移动的 RSP（dBm）。在波束跟踪过程中，RSP 设为 -100 dBm。每条轨迹时长 60 s，每个波束跟踪周期包含 60 条轨迹。波束跟踪周期为 20、80、160、320、1000 和 2000 ms。}
+pipeline:
+  summary: {en: 'Traces are generated for an empty-hall scenario with a walking blocker and UE micromobility, beam-tracking intervals are inserted, and the output is packaged as 60 s TXT traces.', zh: 轨迹针对带有行走遮挡物和 UE 微移动的空旷大厅场景生成，插入波束跟踪时段，并打包为 60 秒的 TXT 轨迹文件。}
+  stages:
+  - title: {en: Blockage and micromobility scenario, zh: 遮挡与微移动场景}
+    detail: {en: 'The scenario is an empty hall of 7.5 m × 4.5 m × 3 m, with the base-station-to-UE distance set to 3, 5 or 7 m. A blocker crosses the line of sight at the middle of the link at 3.5 km/h. The UE rotates quickly in the user''s hand, which produces micromobility.', zh: 场景为 7.5 m × 4.5 m × 3 m 的空旷大厅，基站到 UE 的距离设为 3、5 或 7 m。遮挡物在链路中点以 3.5 km/h 的速度穿过视距路径。UE 在用户手中快速旋转，产生微移动。}
+    inputs:
+    - {en: 'BS-to-UE distance 3, 5 or 7 m', zh: 基站到 UE 距离 3、5 或 7 m}
+    - {en: blocker at 3.5 km/h, zh: 3.5 km/h 遮挡物}
+    outputs:
+    - {en: blockage and micromobility process, zh: 遮挡与微移动过程}
+  - title: {en: Trace synthesis, zh: 轨迹合成}
+    detail: {en: 'Each 60 s trace has four columns: time, RSP without micromobility (dBm), micromobility attenuation (dBm) and RSP with micromobility (dBm). During a beam-tracking procedure the RSP is set to -100 dBm.', zh: 每条 60 秒轨迹包含四列：时间、不含微移动的 RSP（dBm）、微移动衰减（dBm）以及含微移动的 RSP（dBm）。在波束跟踪过程中，RSP 设为 -100 dBm。}
+    inputs:
+    - {en: blockage and micromobility process, zh: 遮挡与微移动过程}
+    outputs:
+    - {en: RSP time series, zh: RSP 时间序列}
+  - title: {en: Beam-tracking periods and packaging, zh: 波束跟踪周期与打包}
+    detail: {en: 'Beam-tracking periods are 20, 80, 160, 320, 1000 and 2000 ms, with 60 traces per period in each folder. Folders are named H###cm_L###cm by UE height and BS-to-UE distance, then <application>_<beam-tracking type>, with applications racing game, phone calling, VR and video watching, and types On Demand and Regular. Files are named <application>_<period ms>_<date>-<time>.txt and archived as data.zip (17.67 GB).', zh: 波束跟踪周期为 20、80、160、320、1000 和 2000 ms，每个文件夹中每个周期包含 60 条轨迹。文件夹按 UE 高度和基站到 UE 距离命名为 H###cm_L###cm，其下为 <application>_<beam-tracking type>，应用包括 racing game、phone calling、VR 和 video watching，类型为 On Demand 和 Regular。文件命名为 <application>_<period ms>_<date>-<time>.txt，并打包为 data.zip（17.67 GB）。}
+    inputs:
+    - {en: RSP traces, zh: RSP 轨迹}
+    outputs:
+    - {en: TXT traces in data.zip, zh: data.zip 中的 TXT 轨迹}

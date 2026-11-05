@@ -12,8 +12,150 @@ license: 'Varies by record: CC BY 4.0 for the 2026 Outdoor Bistatic 5G ISAC and 
 access: {url: 'https://powderwireless.net/data', type: open}
 code: []
 paper: doi:10.1016/j.comnet.2021.108281
-used_in: ["doi:10.1145/3570361.3592522","doi:10.1109/infocom53939.2023.10228929","doi:10.1109/infocom42981.2021.9488889","doi:10.1109/lcomm.2025.3557715","doi:10.1109/lnet.2022.3177712"]
-citing: ["doi:10.1109/comst.2021.3135829","doi:10.1109/mcom.101.2001120","doi:10.1109/ojcoms.2024.3447472"]
+used_in: ['doi:10.1145/3570361.3592522', 'doi:10.1109/infocom53939.2023.10228929', 'doi:10.1109/infocom42981.2021.9488889', 'doi:10.1109/lcomm.2025.3557715', 'doi:10.1109/lnet.2022.3177712']
+citing: ['doi:10.1109/comst.2021.3135829', 'doi:10.1109/mcom.101.2001120', 'doi:10.1109/ojcoms.2024.3447472']
 summary: {en: 'Over-the-air measurements from the POWDER platform at the University of Utah, including raw 5G NR uplink SRS at 3.42 GHz with GNSS and drone-video ground truth, drive-test KPIs such as SS-RSRP and SS-SINR, and RF I/Q captures.', zh: 来自犹他大学 POWDER 平台的空口实测数据，包括 3.42 GHz 的原始 5G NR 上行 SRS（附 GNSS 与无人机视频真值）、SS-RSRP 与 SS-SINR 等路测 KPI，以及 RF I/Q 采样。}
 sources: ['https://powderwireless.net/data', 'https://docs.powderwireless.net/powder-overview.html', 'https://zenodo.org/records/23717707', 'https://zenodo.org/records/23741918', 'https://doi.org/10.1016/j.comnet.2021.108281', 'https://api.crossref.org/works/10.1016/j.comnet.2021.108281']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Select real OTA or a controlled experiment, operate the radio devices, and synchronously collect radio, position, and log data. The public package''s sampling periods, clocks, and sensor configuration determine how training samples can be assembled.', zh: 先选择真实OTA或受控实验，运行无线设备并同步采集无线、位置和日志。公开包的采样周期、时钟与传感器配置决定能否组成训练样本。}
+  stages:
+  - title: {en: Select the experiment mode and resources, zh: 选择试验模式与资源}
+    detail: {en: 'Configure available SDRs, compute nodes, and protocol software on POWDER, explicitly selecting controlled-channel or real-OTA operation.', zh: 在POWDER上配置可用SDR、计算节点和协议软件，明确受控信道或真实OTA模式。}
+    inputs:
+    - {en: 'Benchtop, indoor, outdoor, or mobile nodes', zh: 台架、室内、室外或移动节点}
+    - {en: Experiment profile and device reservation, zh: 实验profile与设备预订}
+    outputs:
+    - {en: Experiment profile and resource mapping, zh: 实验profile和资源映射}
+    controls:
+    - {en: 'Researcher specifies: site, devices, software image, frequency, bandwidth, power, and collection date', zh: 研究者固定：站点、设备、软件镜像、频率、带宽、功率和采集日期}
+    checks:
+    - {en: Record the actual operating mode, zh: 记录实际运行模式}
+    - {en: 'For repeated experiments, retain route, environment, and interference covariates', zh: 重复实验保留路线、环境和干扰协变量}
+  - title: {en: Configure the radio task and motion, zh: 设置无线任务与运动}
+    detail: {en: 'Mobility uses a moving rooftop UE and GNSS. ISAC uses two stationary UEs transmitting SRS, with vehicles and drones as moving reflectors.', zh: Mobility使用移动车顶UE与GNSS；ISAC使用两台静止UE发送SRS，车辆和无人机作为移动反射体。}
+    inputs:
+    - {en: gNB/UE configuration, zh: gNB/UE配置}
+    - {en: Trajectory or target motion and reference sensors, zh: 轨迹或目标运动及参考传感器}
+    outputs:
+    - {en: Radio configuration, zh: 无线配置}
+    - {en: Terminal/reflector routes and sensor configuration, zh: 终端/反射体路线和传感器配置}
+    controls:
+    - {en: 'Recorded configuration: over-the-air SRS every 10 ms for Mobility; every 2.5 ms for ISAC', zh: 记录配置：Mobility空口SRS每10ms；ISAC每2.5ms}
+    - {en: 'Researcher specifies: ports, antenna positions, routes, and target identities', zh: 研究者固定：端口、天线位置、路线和目标身份}
+    checks:
+    - {en: Distinguish a moving transmitter from a moving reflector, zh: 区分移动发射机与移动反射体}
+    - {en: Check that the SRS receive ports match the task's observations, zh: 检查SRS接收端口和任务观测一致}
+  - title: {en: Record radio and reference observations synchronously, zh: 同步记录无线与参考观测}
+    detail: {en: 'Record received SRS resource elements, reference sequences, and configuration/timing. Mobility includes UE Nemo and gNB logs; ISAC includes vehicle GNSS, drone logs, and video-camera poses.', zh: 记录SRS接收资源元素、参考序列与配置/时间。Mobility附UE Nemo及gNB日志；ISAC附车辆GNSS、无人机日志和视频相机位姿。}
+    inputs:
+    - {en: Actual over-the-air SRS, zh: 实际空口SRS}
+    - {en: 'Reference sequences, GNSS, logs, or video', zh: 参考序列、GNSS、日志或视频}
+    outputs:
+    - {en: Raw SRS and reference sequences, zh: 原始SRS与参考序列}
+    - {en: GNSS/logs/video and timestamps, zh: GNSS/日志/视频和时间标记}
+    controls:
+    - {en: Use the original clock fields in the published package, zh: 研究者使用发布包的原始时钟字段}
+    - {en: 'During collection, fix gains, valid-SRS selection, and reference-sensor synchronization', zh: 采集时固定增益、有效SRS筛选和参考传感器同步}
+    checks:
+    - {en: 'Mobility files retain 40 ms sampling, distinct from the 10 ms over-the-air period', zh: Mobility文件保留采样40ms，与10ms空口周期分开}
+    - {en: Record missing frames and discarded SRS, zh: 记录缺失帧和被丢弃SRS}
+  - title: {en: Archive and align timestamps, zh: 归档与对齐时间}
+    detail: {en: 'The Mobility package is organized into SRS/GNSS/Nemo/gNB logs; the ISAC package separates radio, truth, video, and other archives. Align the streams using their timestamps.', zh: Mobility包按SRS/GNSS/Nemo/gNB日志组织；ISAC包分radio、truth、video等归档。研究者根据时间戳对齐各流。}
+    inputs:
+    - {en: 'HDF5, GPX, CSV, or TAR contents', zh: HDF5、GPX、CSV或TAR内容}
+    - {en: Clocks and coordinates of each stream, zh: 各流时钟与坐标}
+    outputs:
+    - {en: Sample indices with a common time/coordinate reference, zh: 带统一时间/坐标的样本索引}
+    controls:
+    - {en: 'Researcher specifies: UTC conversion, date completion, interpolation tolerance, and missing-data policy', zh: 研究者固定：UTC转换、日期补齐、插值容差和缺测策略}
+    checks:
+    - {en: Nemo time is UTC−6 without a date; complete it before aligning with UTC-nanosecond SRS/GPX, zh: Nemo时间为UTC−6且无日期，须补齐后对齐UTC纳秒SRS/GPX}
+    - {en: Verify video-to-sensing-window timing error separately, zh: 视频与感知窗口的时间误差单独核验}
+  - title: {en: Derive task quantities from reference signals, zh: 从参考信号构造任务量}
+    detail: {en: 'Estimate channels on the observed SRS resources. For sensing, apply background processing and delay/Doppler analysis, then associate results with GNSS/video ground truth.', zh: 研究者估计所观测SRS资源上的信道；感知任务再进行背景处理、时延/Doppler分析，并与GNSS/视频真值对应。}
+    inputs:
+    - {en: Received SRS values and reference sequences, zh: SRS接收值和参考序列}
+    - {en: Time-frequency/port configuration and available calibration, zh: 时频/端口配置与可用校准}
+    outputs:
+    - {en: Estimated channels on SRS resources, zh: SRS资源上的估计信道}
+    - {en: Researcher-generated mobility/sensing features and labels, zh: 研究者生成的移动/感知特征和标签}
+    controls:
+    - {en: 'Researcher specifies: estimator, interpolation, phase processing, background suppression, window, and ground-truth association', zh: 研究者固定：估计器、插值、相位处理、背景抑制、窗口与真值关联}
+    checks:
+    - {en: Record observed over-the-air frequency points separately from full-bandwidth CSI, zh: 空口观测频点与完整带宽CSI分开登记}
+    - {en: Check that sensing peaks correspond to the true target rather than other reflectors, zh: 检查感知峰与真实目标对应，避免把其他反射体当目标}
+  - title: {en: Evaluate and split samples, zh: 评估并划分样本}
+    detail: {en: 'Construct tasks grouped by run, time, or route, and report channel-estimation/sensing metrics together with available communication KPIs.', zh: 按运行、时间或路线分组构造任务，并报告无线估计/感知指标与可用的通信KPI。}
+    inputs:
+    - {en: Aligned radio/reference streams, zh: 对齐无线/参考流}
+    - {en: Traffic and protocol results, zh: 业务与协议结果}
+    outputs:
+    - {en: Traceable training/test windows, zh: 可追溯的训练/测试窗口}
+    - {en: Task metrics and actual communication results, zh: 任务指标和真实通信结果}
+    controls:
+    - {en: 'Researcher specifies: run grouping, window overlap, label horizon, and evaluation definitions', zh: 研究者固定：运行分组、窗口重叠、标签时距和评价口径}
+    checks:
+    - {en: Keep conclusions within the scope of two runs on the same route at one site, zh: 两轮同路线单站点数据保持其评估范围}
+    - {en: Compute sensing costs and waveform resources from the actual settings, zh: 感知成本和波形资源须从实际设置计算}
+  scope: {en: 'The general POWDER collection workflow, illustrated by the two public 2026 Mobility and Bistatic ISAC records.', zh: POWDER平台通用采集流程，结合2026 Mobility与Bistatic ISAC两套公开记录。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Mobility SRS HDF5, GNSS GPX, Nemo CSV, and gNB logs
+
+      • ISAC radio/truth/video archives and manifests', zh: '• Mobility的SRS HDF5、GNSS GPX、Nemo CSV和gNB日志
+
+      • ISAC的radio/truth/video归档与清单'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• SRS channel estimates and prediction windows
+
+      • Delay/Doppler features, target labels, and communication/sensing KPIs', zh: '• SRS信道估计、预测窗口
+
+      • 时延/Doppler特征、目标标签与通信/感知KPI'}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The official catalog and complete Zenodo metadata/file lists have been read; raw data have not been downloaded.
+
+      • Distinguish data the platform can generate from the actual fields in these two public records.', zh: '• 已读官方目录和Zenodo完整元数据/文件清单；未下载原始数据。
+
+      • 平台可生成的数据与这两套已公开记录的实际字段分别使用。'}
+variants:
+- name: {en: Outdoor Bistatic 5G ISAC（October 2026）, zh: Outdoor Bistatic 5G ISAC（October 2026）}
+  observations: {en: '3.42 GHz, two stationary UEs, four Rx ports; 2.5 ms SRS per UE, two Tx ports, and 288 RE/port; approximately 1.37 million snapshots. Vehicle-mounted 10 Hz GNSS, drone 4K video, and flight logs.', zh: 3.42 GHz、两台静止UE、四Rx端口；每UE 2.5 ms SRS、两Tx端口、288 RE/port；约137万快照。车载10 Hz GNSS、无人机4K视频与飞行日志。}
+  csi: {en: 'Derivable: raw SRS and reference sequences support limited-port CSI estimation and bistatic delay–Doppler processing. The record does not provide cleaned channels, detections, tracks, or sensing labels.', zh: 可计算：原始SRS与参考序列支持有限端口CSI估计及双基地时延–Doppler处理；记录未提供已清洗信道、检测、轨迹或感知标签。}
+- name: {en: Outdoor 5G Mobility（October 2026）, zh: Outdoor 5G Mobility（October 2026）}
+  observations: {en: '3.42 GHz, one mobile UE, two Rx ports, and 576 RE/port. SRS is transmitted every 10 ms but recorded every 40 ms. Two runs contain 29,514 snapshots, with Y/X, UTC ns, sfn/slot, and SRS attributes; 10 Hz GPX, Nemo L1–L3, and gNB logs are also included.', zh: '3.42 GHz、单移动UE、两Rx端口、576 RE/port。SRS发送周期10 ms，但记录周期40 ms；两轮共29,514快照，含Y/X、UTC ns、sfn/slot和SRS属性；另有10 Hz GPX、Nemo L1–L3与gNB日志。'}
+  csi: {en: 'Derivable: Y/X and the port/comb configuration support SRS channel estimation. The second row of X is NaN in single-Tx-port snapshots; process it according to nof_tx_ports.', zh: 可计算：Y/X及端口/梳状配置支持SRS信道估计；X第二行在单Tx-port快照为NaN，必须按nof_tx_ports处理。}
+provenance:
+- {en: Select benchtop/indoor/outdoor/shuttle experiments, zh: 台架/室内/室外/班车实验选择}
+- {en: Configure SDRs and protocol stacks, zh: SDR 与协议栈配置}
+- {en: Actual transmission/reception or controlled channels, zh: 实际发送接收或受控信道}
+- {en: User-collected IQ/protocol/KPI data, zh: 用户采集 IQ/协议/KPI}
+- {en: Organize an independent research dataset, zh: 整理独立研究数据集}
+technical_notes:
+- {en: 'Verified: the official platform offers wired, controlled-emulation, and OTA modes; distinguish these data sources.', zh: 已确认：官方同时提供有线、受控仿真和 OTA 模式，数据来源必须细分。}
+- {en: 'Verified: city and shuttle deployments support real mobility experiments.', zh: 已确认：城市与班车支持真实移动实验。}
+- {en: 'Inference: real OTA includes hardware and environmental effects; separating error sources requires additional calibration.', zh: 推断：真实 OTA 包含硬件和环境因素，但需额外标定才能分离误差来源。}
+limitations:
+- {en: Platform access does not imply that all wireless data are publicly released., zh: 平台可访问不意味着所有无线数据已经公开。}
+- {en: Weather/interference changes across time periods may also shift the distribution; record covariates., zh: 跨时段天气/干扰变化可能同时改变分布，需记录协变量。}
+- {en: 'Mobility''s 10 ms over-the-air SRS period differs from its 40 ms file sampling interval. Nemo time is UTC−6 without a date; add the date and offset when aligning it with UTC-nanosecond SRS/GPX. The two ISAC runs share one route, one site, and one night; they do not constitute independent cross-city evaluation.', zh: Mobility的空口SRS周期10 ms与文件采样40 ms不同；Nemo时间为UTC−6且无日期，和UTC纳秒SRS/GPX对齐时须补日期及偏移。ISAC两轮同路线、单站点单晚，不能当独立城市外推。}
+history:
+- {en: 'Since 2020: spectrum scanning, Massive MIMO, RF fingerprinting, and other assets have been released separately.', zh: 2020起：频谱扫描、Massive MIMO和RF指纹等资产分别发布。}
+- {en: '2026-10: the official catalog added mobility SRS and bistatic 5G ISAC data. Each asset has its own record; there is no unified platform release.', zh: 2026年10月：官方目录增加移动SRS与双基地5G ISAC数据；各资产有独立记录，无平台统一release。}
+usage:
+- {en: Create a project account and run a minimal profile following the official getting-started guide., zh: 建立项目账户，按官方 getting started 运行最小 profile。}
+- {en: 'Select legally available bands and the required devices, and record the image/profile.', zh: 选择合法可用频段与所需设备，记录镜像/profile。}
+- {en: 'Plan repeated measurements, time synchronization, and data storage, and produce reusable dataset documentation.', zh: 规划重复测量、时间同步和数据保存，输出可重用数据说明。}
+overview: {en: 'POWDER is a city-scale, remotely accessible wireless testbed at the University of Utah in Salt Lake City, one of the NSF Platforms for Advanced Wireless Research (PAWR). The platform is described in a 2021 Computer Networks paper by J. Breen et al. (doi:10.1016/j.comnet.2021.108281), and its public data portal lists over-the-air measurement datasets. The two 2026 Zenodo records described here use band n78 at 3.42 GHz with a 34.56 MHz SRS span, and both are licensed CC BY 4.0. The outdoor bistatic 5G ISAC record contains 1.37 million raw uplink SRS snapshots from two parked UEs, recorded every 2.5 ms on a four-port panel over two runs of 13.1 and 15.6 minutes, with vehicle GNSS, drone flight logs and 3840 x 2160 drone video as ground truth. The outdoor 5G mobility record contains 29,514 SRS snapshots from a UE on a car driven through the lot, configured every 10 ms over two runs, together with UE-side Nemo Outdoor logs, GNSS tracks and gNB logs. Other portal entries include
+    drive-test KPIs such as SS-RSRP and SS-SINR, spectrum scans, and I/Q captures with up to four simultaneous OFDM interferers. The ISAC record does not include detections, tracks or processed channels, which users must derive from the raw signals.', zh: 'POWDER 是犹他大学（盐湖城）的城市级可远程访问无线试验平台，是美国国家科学基金会先进无线研究平台（PAWR）之一。该平台在 2021 年 Computer Networks 论文中有所描述，作者 J. Breen 等（doi:10.1016/j.comnet.2021.108281）；其公开数据门户列出了空口测量数据集。本文涉及的两条 2026 年 Zenodo 记录均使用 n78 频段、中心频率 3.42 GHz，SRS 跨度 34.56 MHz，许可均为 CC BY 4.0。室外双基地 5G ISAC 记录包含两台停放 UE 的 137 万条原始上行 SRS 快照，每 2.5 ms 在四端口天线面板上采集，分两次运行，时长分别为 13.1 和 15.6 分钟；真值包括车辆 GNSS、无人机飞行日志与 3840 x 2160 无人机视频。室外 5G 移动性记录包含一台装在汽车上的 UE 在校园停车场内行驶时的 29,514 条 SRS 快照，SRS 配置周期为 10 ms，共两次运行，并附带 UE 侧 Nemo Outdoor 日志、GNSS 轨迹与 gNB 日志。门户中的其他条目包括 SS-RSRP、SS-SINR 等路测 KPI、频谱扫描，以及最多四个同时存在的 OFDM 干扰源的 I/Q 采样。ISAC 记录不包含检测结果、航迹或经过处理的信道，这些需要使用者从原始信号中自行推导。'}
+signal_details:
+- signal: csi
+  text: {en: 'Raw 5G NR uplink SRS, not a processed channel estimate. The ISAC record stores the received resource elements on 4 receive ports (288 per port, 120 kHz subcarrier spacing), the reference sequences and the air time of each snapshot. The mobility record stores 576 resource elements per port on 2 receive ports, in run1_srs.h5 and run2_srs.h5 with the frame, slot and gNB capture timestamp of each snapshot (timestamp_ns, UTC).', zh: 原始 5G NR 上行 SRS，而非处理后的信道估计。ISAC 记录保存 4 个接收端口上接收到的资源单元（每端口 288 个，子载波间隔 120 kHz）、参考序列以及每个快照的空口时间。移动性记录保存 2 个接收端口上每端口 576 个资源单元，存于 run1_srs.h5 与 run2_srs.h5，并附带每个快照的帧号、时隙号与 gNB 采集时间（timestamp_ns，UTC）。}
+- signal: iq
+  text: {en: I/Q captures. The Multiple Simultaneous Interferer record gives RX I/Q data with 0 to 4 simultaneous OFDM interferers. The 2020 RF fingerprinting supplement is listed as IQ samples by its file name only., zh: I/Q 采样。Multiple Simultaneous Interferer 记录提供接收端 I/Q 数据，干扰源为 0 至 4 个同时存在的 OFDM 信号。2020 年 RF 指纹补充数据仅以文件名 IQsample 标注为 IQ 采样。}
+- signal: kpi
+  text: {en: 'Drive-test KPIs. The mobility record includes UE-side Nemo Outdoor CSV logs, one row per event, with SS-RSRP, RSRQ, SINR, path loss, PUSCH, PUCCH and SRS transmit power, power headroom, timing advance, MCS, DCI and throughput. The Spectrum Usage record gives band, RSRP, RSRQ and handover events. The 2026 Cellular Metrics record gives per-channel SS-RSRP and SS-SINR from a Viavi CA5000.', zh: 路测 KPI。移动性记录包含 UE 侧 Nemo Outdoor CSV 日志，每行对应一个事件，字段有 SS-RSRP、RSRQ、SINR、路径损耗、PUSCH、PUCCH 与 SRS 发射功率、功率余量、时间提前量、MCS、DCI 与吞吐量。Spectrum Usage 记录给出频段、RSRP、RSRQ 与切换事件。2026 Cellular Metrics 记录给出由 Viavi CA5000 测得的分信道 SS-RSRP 与 SS-SINR。}
+- signal: gps
+  text: {en: 'GNSS positions. The ISAC record uses a u-blox ZED-X20P receiver at 10 Hz, standalone without RTK, on the target car, with accuracy stated as decimetre to metre. The mobility record has GNSS tracks in GPX (UTC) at about 10 Hz, with 6,457 and 4,815 points from DGPS fixes using 12 satellites. The Spectrum Usage and 2026 Cellular Metrics records include location from GPS.', zh: 'GNSS 位置。ISAC 记录使用安装在目标车辆上的 u-blox ZED-X20P 接收机，频率 10 Hz，独立定位不使用 RTK，精度表述为分米级到米级。移动性记录的 GNSS 轨迹为 GPX 格式（UTC），约 10 Hz，分别含 6,457 与 4,815 个点，为使用 12 颗卫星的 DGPS 定位结果。Spectrum Usage 与 2026 Cellular Metrics 记录同样包含 GPS 位置。'}

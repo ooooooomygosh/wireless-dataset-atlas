@@ -15,8 +15,265 @@ license: CC BY-NC-ND 4.0
 access: {url: 'https://www.deepsense6g.net/', type: registration}
 code: ['https://github.com/wireless-intelligence-lab/DeepSense6G']
 paper: arxiv:2211.09769
-used_in: ["doi:10.1109/mcom.006.2200480","doi:10.1109/lwc.2022.3219409","doi:10.1109/wcnc51071.2022.9771651","doi:10.1109/tvt.2024.3506948","doi:10.1109/icc45855.2022.9838438"]
-citing: ["doi:10.1109/tcomm.2024.3490740"]
+used_in: ['doi:10.1109/mcom.006.2200480', 'doi:10.1109/lwc.2022.3219409', 'doi:10.1109/wcnc51071.2022.9771651', 'doi:10.1109/tvt.2024.3506948', 'doi:10.1109/icc45855.2022.9838438']
+citing: ['doi:10.1109/tcomm.2024.3490740']
 summary: {en: 'Real-world measurements of co-existing multi-modal sensing and communication data across more than 40 scenarios at more than 15 indoor and outdoor sites, with 60 GHz mmWave beam power, RGB camera, 3D LiDAR, FMCW radar and RTK GPS recordings.', zh: 在 15 个以上室内外场地采集的 40 多个场景真实多模态感知与通信数据，包括 60 GHz 毫米波波束功率、RGB 摄像头、3D LiDAR、FMCW 雷达和 RTK GPS 记录。}
 sources: ['https://www.deepsense6g.net/', 'https://ar5iv.labs.arxiv.org/html/2211.09769', 'https://export.arxiv.org/api/query?id_list=2211.09769', 'https://github.com/wireless-intelligence-lab/DeepSense6G']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Define the scenario and hardware, then align fields of view and sampling clocks. Beam-sweep power and raw sensor records are matched by UTC, filtered, and manually checked to form Scenario sample indices.', zh: 先确定场景与硬件，再对齐视场和采样时钟；扫束功率与各传感器原始记录经UTC匹配、筛选和人工复核，形成Scenario样本索引。}
+  stages:
+  - title: {en: 'Define the scenario, units, and hardware', zh: 确定场景、单位与硬件}
+    detail: {en: 'The official process first specifies collection time, location, device units, and sensor combinations. Testbed 5 consists of a fixed base-station unit and a vehicle-mounted user. The base station has a 60 GHz receive array, camera, 3D LiDAR, FMCW radar, and RTK GPS; the vehicle has a 60 GHz quasi-omnidirectional transmit antenna and GPS.', zh: 官方先确定采集时间、地点、设备单元及传感器组合。Testbed 5由固定基站单元和车载用户组成；基站配置60 GHz接收阵列、相机、3D LiDAR、FMCW雷达与RTK GPS，车载端配置60 GHz准全向发射天线和GPS。}
+    inputs:
+    - {en: 'Location, application objectives, and mobility route', zh: 地点、应用目标、移动路线}
+    - {en: Selected Scenario/Testbed documentation, zh: 所选Scenario/Testbed说明}
+    outputs:
+    - {en: Scenario deployment and device configuration, zh: 场景部署与设备配置}
+    - {en: Roles of Tx/Rx and sensors, zh: 收发端及传感器角色表}
+    controls:
+    - {en: This hardware example is Testbed 5; configure other Scenarios according to their own hardware tables, zh: 该硬件例属于Testbed 5；其他Scenario按各自硬件表配置}
+    checks:
+    - {en: 'Reproduction check: first record the carrier frequency, antennas, codebook, beam-index convention, and availability of each modality', zh: 复现检查：先记录载频、天线、码本、波束索引基准及各模态是否存在}
+  - title: {en: Install and align sensor fields of view, zh: 安装并对齐各传感器视场}
+    detail: {en: 'Before collection, install and calibrate sensors according to their ranges and fields of view. Testbed 5''s communication codebook spans 90° and RGB spans 110°; their shared visible region determines which target samples can be used for beam learning.', zh: 采集前按量程和视场安装、校准各传感器。Testbed 5的通信码本覆盖90°，RGB视场110°；传感器共同可见区域决定哪些目标样本可用于波束学习。}
+    inputs:
+    - {en: 'Orientations and coverage of the array, camera, LiDAR, and radar', zh: 阵列、相机、LiDAR、雷达的朝向与覆盖范围}
+    outputs:
+    - {en: Aligned acquisition platform, zh: 对齐后的采集平台}
+    - {en: Effective shared field of view, zh: 有效共同视场}
+    controls:
+    - {en: The official source describes field-of-view calibration; verify specific extrinsic matrices in the scenario files, zh: 官方描述视场校准步骤；具体外参矩阵按场景文件核验}
+    checks:
+    - {en: 'Reproduction check: use images and point clouds to inspect the communication service area; record axes, extrinsics, and occlusions', zh: 复现检查：用图像和点云检查通信服务区域；记录坐标轴、外参及遮挡}
+  - title: {en: Trigger acquisition and retain UTC timestamps, zh: 触发采集并保留UTC时间}
+    detail: {en: 'In Testbed 5, the communication receiver operates at approximately 10 Hz, the camera at 30 fps, LiDAR at up to 20 Hz, and GPS at 10 Hz. The camera is triggered after a beam sweep, and each modality stores UTC time for postprocessing alignment.', zh: Testbed 5中通信接收机约10 Hz、相机30 fps、LiDAR最高20 Hz、GPS 10 Hz。相机在一轮扫束结束后触发曝光，各模态保存UTC时间，供后处理对齐。}
+    inputs:
+    - {en: Sampling streams from each device, zh: 各设备采样流}
+    - {en: Device UTC records, zh: 设备UTC记录}
+    outputs:
+    - {en: Raw modality records with UTC timestamps, zh: 带UTC的模态原始记录}
+    - {en: Timing relationship between beam sweeping and exposure, zh: 扫束与曝光的时序关系}
+    controls:
+    - {en: The original paper gives no series-wide upper bound on synchronization error; these sampling rates apply to this hardware example, zh: 原论文未给全系列统一同步误差上界；采样率属于该硬件例}
+    checks:
+    - {en: 'Reproduction check: compare consecutive time differences, dropped frames, and cross-modal offsets; retain observation-completion times for prediction tasks', zh: 复现检查：比较相邻时间差、漏帧与跨模态偏移；需要预测时保留观测结束时间}
+  - title: {en: Sweep the codebook and record sensor outputs, zh: 扫描码本并记录传感输出}
+    detail: {en: 'The receiver measures each codebook beam to form a 64-dimensional received-power vector, while images, point clouds, radar IQ, and position records are collected. The platform plots data in real time and supports manual quality monitoring. Scenarios 17–22 use a fixed communication link blocked by passing vehicles; 23 uses a UAV communication link.', zh: 接收机按码本逐波束测量，形成64维接收功率向量；同时采集图像、点云、雷达IQ和定位记录。采集平台实时绘图并人工监视数据质量。17–22使用固定通信链路，车辆穿越引入遮挡；23使用UAV通信链路。}
+    inputs:
+    - {en: 60 GHz transmitted signal, zh: 60 GHz发射信号}
+    - {en: 16-element receive ULA and 64-beam codebook, zh: 16阵元接收ULA与64波束码本}
+    - {en: RGB/LiDAR/radar/GPS streams, zh: RGB/LiDAR/radar/GPS流}
+    outputs:
+    - {en: Beam-power vector for each sweep, zh: 每轮beam-power向量}
+    - {en: Multimodal files supported by the scenario, zh: 场景支持的多模态文件}
+    controls:
+    - {en: Power outputs and complex array CSI are different observations; the modality combination is Scenario-specific, zh: 功率输出与复数阵列CSI是不同观测；模态组合按Scenario取值}
+    checks:
+    - {en: 'Reproduction check: inspect power units, sweep order, and full-sweep duration; use original times to avoid treating sequential sweeps during motion as instantaneous snapshots', zh: 复现检查：检查功率单位、扫束顺序及整轮耗时；用原始时间避免将运动中顺序扫束视为瞬时快照}
+  - title: {en: Record waveforms and IQ for ISAC scenarios, zh: 按ISAC场景记录波形与IQ}
+    detail: {en: 'Scenarios 42–44 record actual transmitted waveforms and received IQ while varying the communication bandwidth share. This branch uses directions 22–42 of the 64-direction codebook, totaling 21 directions, and also collects RGB, 3D LiDAR, and radar range-angle data.', zh: 42–44记录真实发射波形和接收IQ，并改变通信带宽占比。该分支使用64方向码本中的22–42号共21个方向，另采集RGB、3D LiDAR与雷达range-angle数据。}
+    inputs:
+    - {en: Known transmitted waveforms for Scenarios 42–44, zh: Scenarios 42–44的已知发射波形}
+    - {en: 60 GHz received IQ and sensor streams, zh: 60 GHz接收IQ与传感器流}
+    outputs:
+    - {en: Transmitted waveforms and received IQ, zh: 发射波形和接收IQ}
+    - {en: Records from 21 directions and their associated modalities, zh: 21方向采集记录及对应模态}
+    controls:
+    - {en: This step applies only to 42–44; verify the page's scan-period descriptions against IQ timing, zh: 该步骤仅适用于42–44；页面对扫描周期的表述须结合IQ时间核验}
+    checks:
+    - {en: 'Reproduction check: when estimating effective link channels from known waveforms, specify synchronization, noise, and estimation windows; retain communication/sensing resource shares as sample conditions', zh: 复现检查：由已知波形估计有效链路信道时，明确同步、噪声和估计窗口；将通信与感知资源比例保存在样本条件中}
+  - title: {en: 'Align, filter, and inspect samples by time', zh: 按时间对齐、筛选并检查样本}
+    detail: {en: 'Official scripts associate modalities by timestamp and then filter samples for the task, for example removing records where the served vehicle has left the base station''s field of view. A synchronized visualization tool displays modalities side by side to identify misalignment, missing data, and corruption.', zh: 官方脚本按时间戳关联模态，再按任务筛选样本，例如剔除服务车辆已离开基站视场的记录。同步可视化工具并排展示各模态，用于查找错位、缺失和损坏。}
+    inputs:
+    - {en: Raw files with UTC timestamps, zh: 带UTC的原始文件}
+    - {en: Shared field of view and scenario targets, zh: 共同视场与场景目标}
+    outputs:
+    - {en: Aligned and filtered development samples, zh: 对齐且筛选的development samples}
+    - {en: Traceable sample-to-modality associations, zh: 可追溯的样本与模态关联}
+    controls:
+    - {en: Filtering rules depend on the application; preserve scenario and continuous-session identities, zh: 筛选规则由具体应用定义；保留场景和连续采集身份}
+    checks:
+    - {en: 'Reproduction check: spot-check the vehicle/target associated with each row; measure missing-data rates and alignment residuals for each modality', zh: 复现检查：抽查同一行对应的车辆/目标；统计各模态缺失率与对齐残差}
+  - title: {en: Publish Scenario files and task indices, zh: 发布Scenario文件与任务索引}
+    detail: {en: 'Package files by Scenario, with CSV rows referencing power, position, and other modality paths. Specific tasks organize beam, sequence, direction, or blockage labels; record development sets, hidden test sets, and licenses separately for each task.', zh: 按Scenario打包文件，由CSV行引用功率、位置及其他模态路径。特定任务再组织beam、sequence、direction或blockage标签；各任务的开发集、隐藏测试集及许可分别记录。}
+    inputs:
+    - {en: Aligned samples, zh: 已对齐的样本}
+    - {en: Task definitions and scenario descriptions, zh: 任务定义与场景说明}
+    outputs:
+    - {en: Scenario ZIP and CSV index, zh: Scenario ZIP与CSV索引}
+    - {en: Scenario-specific labels and licenses, zh: 场景专属标签与许可}
+    controls:
+    - {en: Use Scenario 9's sequence/beam fields only as defined in its public documentation, zh: Scenario 9的sequence/beam字段只按其公开说明使用}
+    checks:
+    - {en: 'Reproduction check: verify resolvable paths and unique indices, then inspect class IDs, units, and the grouping of records from the same sequence', zh: 复现检查：先验证路径可解析和索引唯一，再检查类别编号、单位以及相同sequence的归属}
+  - title: {en: Reconstruct labels and establish independent evaluation, zh: 重建标签并建立独立评估}
+    detail: {en: 'For reproduction, use argmax of the same power vector to define the oracle beam, and split by complete trajectories or blockage events. First compare common beams, position nearest neighbors, and the oracle, then evaluate selected-beam power loss and sweeping overhead.', zh: 复现时以同一功率向量的argmax建立oracle beam，并按完整轨迹或遮挡事件划分。先比较常用波束、位置近邻与oracle，随后评估模型的选束功率损失和扫束开销。}
+    inputs:
+    - {en: 'Power vectors, events, and sequence identifiers from the selected Scenario', zh: 选定Scenario的功率向量、事件与序列标识}
+    outputs:
+    - {en: Verifiable beam labels, zh: 可复核的beam标签}
+    - {en: Trajectory/event-level splits, zh: 轨迹/事件级划分}
+    - {en: Communication gains and overhead results, zh: 通信收益与开销结果}
+    controls:
+    - {en: Fit normalization on the training set only; define acquisition costs using the hardware and protocol used, zh: 归一化仅在训练集拟合；采集成本按所用硬件与协议定义}
+    checks:
+    - {en: 'Reproduction check: randomly compare power argmax with stored labels; ensure inputs contain no future frames or unacquired modalities', zh: 复现检查：随机抽查功率argmax与stored label；检查输入不含未来帧或未获取模态}
+  scope: {en: Testbed 5 from the original paper illustrates the general acquisition chain; Scenarios 9/17–22/23 illustrate the release interface. Scenarios 42–44 form a separate real-ISAC waveform branch., zh: 以原论文Testbed 5说明通用采集链，Scenario 9/17–22/23说明发布接口；42–44单列真实ISAC波形分支。}
+facts:
+- label: {en: Entry inputs, zh: 入口输入}
+  text: {en: '• Specific Scenario and its CSV/data files
+
+      • Hardware, codebook, sensor, and timing documentation for that scenario', zh: '• 具体Scenario及其CSV/数据文件
+
+      • 该场景的硬件、码本、传感器与时间说明'}
+- label: {en: Physical model, zh: 物理模型}
+  text: {en: 'Real propagation and transceiver/sensor hardware jointly produce the observations. Calibration, sequential beam sweeping, and time alignment affect the records.', zh: 真实传播和收发/传感硬件共同形成观测；校准、顺序扫束和时间对齐会影响记录。}
+- label: {en: How the channel is formed, zh: 信道形成方式}
+  text: {en: 'Typical beam scenarios measure received power sequentially over a fixed codebook, then use UTC to associate images, positions, point clouds, and other observations with samples. Scenarios 42–44 additionally provide waveforms and IQ for estimating effective link channels under their protocol.', zh: 典型波束场景按固定码本逐束测接收功率，再用UTC将图像、定位、点云等关联到样本。42–44另提供波形与IQ，可按相应协议估计有效链路信道。}
+- label: {en: Changing the carrier frequency, zh: 改变载频}
+  text: {en: The carrier frequency of published records is determined by the acquisition hardware. A new band requires new collection using suitable hardware or another dataset; relabeling the carrier frequency of existing power vectors does not produce channels in a new band., zh: 已发布记录的载频由硬件采集确定。新频段需要相应硬件重新采集或另选数据；对现有功率向量重新标载频不能得到新频段信道。}
+- label: {en: Changing the array or codebook, zh: 改变阵列或码本}
+  text: {en: '• Within a complete measured power vector, measured beams can be reselected or pruned and labels recomputed.
+
+      • Array/codebook changes that introduce unmeasured responses require new collection. Beam power lacks the full phase information needed to reconstruct arbitrary digital precoding.', zh: '• 在完整已测功率向量内可重选、裁剪已测波束并计算标签。
+
+      • 阵列/码本改变产生未测响应时需重新采集；beam power不包含重构任意数字预编码所需的完整相位信息。'}
+- label: {en: Array note, zh: 阵列说明}
+  text: {en: Verify all fields and observation windows for each specific Scenario separately., zh: 具体Scenario的全部字段与观测窗单独核对。}
+- label: {en: Meaning of time, zh: 时间含义}
+  text: {en: Sampling rates and sequence lengths are Scenario-specific; a sequential sweep has a real duration. Split by complete trajectories/events and preserve observation-completion and prediction-target times., zh: 采样率和序列长度以Scenario为单位；一次顺序扫束有实际持续时间。按整段轨迹/事件划分，保留观测完成时间与预测目标时间。}
+- label: {en: Changing blockage, zh: 改变遮挡}
+  text: {en: 'Scenarios 17–22 support studies of recorded blockage events caused by passing vehicles. Counterfactuals for new locations, objects, or unmeasured actions require controlled acquisition or accompanying simulation.', zh: 17–22可研究已记录车辆穿越造成的遮挡事件；新位置、新物体或未测动作的反事实要另做可控采集或配套仿真。}
+- label: {en: Cost drivers, zh: 成本来源}
+  text: {en: '• Download and decode the selected Scenario, recover time/path indices, and perform calibration and event cleanup.
+
+      • New collection also involves hardware, sites, sweep latency, and cross-sensor synchronization; the website does not estimate undisclosed collection labor.', zh: '• 下载与解码所选Scenario、恢复时间/路径索引、校准和事件清理。
+
+      • 新采集还涉及硬件、场地、扫束时延与跨传感器同步；网站不估算未公布的采集工时。'}
+- label: {en: Stored artifacts, zh: 产物}
+  text: {en: '• CSV sample index and scenario documentation
+
+      • Beam-power, GPS, RGB, LiDAR, or radar files from the selected scenario
+
+      • Transmitted waveforms and received IQ from 42–44', zh: '• CSV样本索引及场景说明
+
+      • 所选场景的beam power、GPS、RGB、LiDAR或雷达文件
+
+      • 42–44的发送波形与接收IQ'}
+- label: {en: Common mistakes, zh: 常见混淆}
+  text: {en: '• Using the series-wide union of modalities in place of the fields actually present in one Scenario.
+
+      • Treating beam-sweep power as complex array CSI, or sequential sweeping as simultaneous snapshots.
+
+      • Randomly splitting adjacent frames so that the same trajectory/event appears in both training and test sets.', zh: '• 用系列的模态并集代替一个Scenario实际拥有的字段。
+
+      • 把扫束功率当作阵列复数CSI，或把顺序扫束当成同时快照。
+
+      • 随机切相邻帧，让同一轨迹/事件跨训练测试。'}
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• CSV sample index and scenario documentation
+
+      • Beam-power, GPS, RGB, LiDAR, or radar files from the selected scenario
+
+      • Transmitted waveforms and received IQ from 42–44', zh: '• CSV样本索引及场景说明
+
+      • 所选场景的beam power、GPS、RGB、LiDAR或雷达文件
+
+      • 42–44的发送波形与接收IQ'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Top-k beams and gain loss derived from power
+
+      • Effective link channels estimated from 42–44 waveforms/IQ
+
+      • User-defined trajectory splits, scanning costs, and net utility', zh: '• 由功率求得的Top-k beam与gain loss
+
+      • 由42–44波形/IQ估计的有效链路信道
+
+      • 用户自行定义的轨迹划分、扫描成本与净效用'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• This workflow is based on the papers and scenario pages read; no hardware collection was performed and no original scenario data were downloaded.
+
+      • Reproduction checks are usage recommendations, not claims that the publisher has performed these tests.
+
+      • Fix the Scenario, file version, codebook, and license together; there is no single universal field set for the full series.', zh: '• 本流程根据已读论文与场景页面整理；未执行硬件采集或下载原始场景。
+
+      • 复现检查是使用建议，不表示发布者已完成这些检验。
+
+      • 应同时固定Scenario、文件版本、码本和许可；全系列不存在一套通用字段。'}
+variants:
+- name: {en: Scenarios 17–22, zh: Scenarios 17–22}
+  observations: {en: 'RGB, 60 GHz beam power, GPS, and blockage labels', zh: RGB、60 GHz beam power、GPS、遮挡标签}
+  csi: {en: 'Not supported: the listed fields contain no complex CSI', zh: 不支持：已列字段没有复数 CSI}
+- name: {en: Scenarios 42–44, zh: Scenarios 42–44}
+  observations: {en: '60 GHz received IQ, transmitted waveforms, RGB, 3D LiDAR, and radar range-angle data', zh: 60 GHz 接收 IQ、发送波形、RGB、3D LiDAR、雷达 range-angle 数据}
+  csi: {en: Derivable channel estimates must follow the waveform and acquisition protocol; they are not original full MIMO CSI, zh: 可计算的信道估计需按波形和采集协议实现，不等于原始完整 MIMO CSI}
+- name: {en: Scenario 23, zh: Scenario 23}
+  observations: {en: 'Real UAV: 60 GHz 64-dimensional beam power, RGB, GPS, and IMU information such as attitude/altitude', zh: 真实UAV：60 GHz 64维beam-power、RGB、GPS与姿态/高度等IMU信息}
+  csi: {en: No evidence that full complex CSI is publicly released; these are power and multimodal observations, zh: 未公开完整复数CSI的证据；属于功率与多模态观测}
+provenance:
+- {en: 'Real sites, vehicles, or indoor targets → synchronized camera/positioning/radio acquisition', zh: 真实站点、车辆或室内目标 → 相机/定位/无线硬件同步采集}
+- {en: 'Testbed 1: a 60 GHz 16-element ULA scans 64 receive beams → power vector', zh: Testbed 1：60 GHz 16 元 ULA 扫描 64 个接收波束 → 功率向量}
+- {en: Scenario CSV indexes sensor files → scenario-specific beam/blockage/IQ labels, zh: 按场景 CSV 索引传感文件 → 场景专属 beam/blockage/IQ 标签}
+technical_notes:
+- {en: 'Verified: Testbed 1 releases beam power, which cannot recover the complete complex array channel needed for arbitrary digital precoding.', zh: 已确认：Testbed 1 发布波束功率，不能还原任意数字预编码所需完整复数阵列信道。}
+- {en: 'Verified: 42–44 use directions 22–42 of a 64-direction codebook, for 21 directions in total. The source-page overview and index use somewhat different wording for the scan period; verify the actual cycle duration using IQ timestamps.', zh: 已确认：42–44使用64方向码本中的22–42号，共21个方向。源页面概述与索引对扫描周期的措辞不完全一致；真实循环时长须按IQ时间戳核验。}
+- {en: 'Inference: target motion during sequential beam sweeping means the full vector may not be an observation at one instant; inspect the original timestamps.', zh: 推断：顺序扫束期间目标运动会使全向量并非严格同一时刻观测，应检查原始时间戳。}
+- {en: 'Verified: the Tx and Rx units in 17–22 are stationary, and passing vehicles cause blockage. This task does not represent the served UE itself moving rapidly along the road.', zh: 已确认：17–22的发射与接收单元静止，车辆穿越造成遮挡；该任务不能解释为被服务UE本身沿路高速移动。}
+- {en: 'Verified: Testbed 5 in the original paper uses 60 GHz, a 16-element ULA, and 64 beams over 90°. The camera is triggered after the sweep; each modality records UTC and is aligned in postprocessing. No series-wide upper bound on synchronization error is reported.', zh: 已确认：原论文Testbed 5使用60 GHz、16阵元ULA、64波束/90°；相机在扫束结束后触发，各模态记录UTC并在后处理对齐，没有报告全系列统一的同步误差上界。}
+limitations:
+- {en: 'Random frame splits can place adjacent locations, the same trajectory, and repeated backgrounds in both training and test sets.', zh: 随机帧划分会让相邻位置、同轨迹和重复背景进入训练与测试。}
+- {en: Modalities have different sampling rates; the paper uses UTC-based postprocessing alignment. Timestamp alignment does not imply simultaneous exposure or coherent RF measurements., zh: 不同模态采样率不同，原文用UTC后处理对齐；时间戳对齐不等于同时曝光或相干RF测量。}
+- {en: 'Codebooks, hardware, and labels may differ across independent scenarios; Top-1 class indices cannot be concatenated directly across scenarios.', zh: 独立场景之间码本、硬件和标签可变；Top-1 类别编号不能直接跨场景拼接。}
+- {en: 'The official 42–44 component''s aggregate dataModalities still contains power/GPS, which differs from the specific ISAC sensor description. Verify sensor fields and actual files rather than inheriting fields from the aggregate list.', zh: 官网42–44组件的汇总dataModalities仍含power/GPS字样，与具体ISAC sensor说明不一致；按传感器字段和实际文件核验，不据汇总继承字段。}
+- {en: The original paper covers only the then-current 1–40 series. Its 2023 Table I cannot replace the ISAC fields for 42–44 added in 2024 or the current download manifest., zh: 原始论文只覆盖当时1–40系列；不能用2023表I替代2024新增42–44的ISAC字段或当前下载manifest。}
+history:
+- {en: '2022-03: the official website records the initial public release.', zh: 2022-03：官网记载初始公开发布。}
+- {en: '2024-03-21: Scenario 41 announcement.', zh: 2024-03-21：Scenario 41 公告。}
+- {en: '2024-04-15: Scenarios 42–44 announcement.', zh: 2024-04-15：Scenarios 42–44 公告。}
+- {en: '2026-11-05: scenario pages rechecked; website news or paper revisions are not labeled as versions of the entire data series.', zh: 2026-11-05：复核场景页面；没有把官网新闻或论文版本称为数据全系列版本。}
+usage:
+- {en: 'Select a specific Scenario, read the CSV column definitions, and obtain its codebook.', zh: 选定一个明确 Scenario，阅读 CSV 列定义并获取对应码本。}
+- {en: Load input modalities and power targets from the same row; preserve trajectory/event/time identifiers., zh: 从同一行加载输入模态和功率目标；保留 trajectory/event/time 标识。}
+- {en: 'Fit normalization on the training set and isolate trajectories. First compare common-beam, position-kNN, and perfect-beam-oracle baselines.', zh: 在训练集上拟合归一化，按轨迹隔离；先比较常用波束、位置 kNN 和 perfect-beam oracle。}
+- {en: 'Report Top-k, selected-beam power loss, and scanning overhead together. Compute rate or goodput only when noise and protocol parameters are available.', zh: 同时报告 Top-k、选中波束功率损失和扫描开销；只有具备噪声与协议参数时计算速率或 goodput。}
+field_notes:
+- label: {en: CSI, zh: CSI}
+  text: {en: 'Scenarios 9, 17–22, and 23 provide only beam power, which cannot recover complex CSI. Scenarios 42–44 provide known transmitted waveforms and received IQ for estimating effective link channels; this does not establish full MIMO array CSI.', zh: Scenario 9、17–22、23只提供beam power，不能恢复复数CSI；42–44有已知发送波形与接收IQ，可估计其有效链路信道，不能据此声称完整MIMO阵列CSI。}
+- label: {en: Multi-user, zh: 多用户}
+  text: {en: The verified scenarios above contain a single communication link. Multiple vehicles or sensing targets in the image do not form a synchronized multi-UE channel matrix., zh: 核实的上述场景为单通信链路；画面中多辆车或多个感知目标不构成同步多UE信道矩阵。}
+- label: {en: Multi-BS, zh: 多基站}
+  text: {en: Communication records in these scenarios are single-BS links. Multiple collection scenarios do not constitute a synchronized multi-BS network., zh: 上述场景的通信记录是单BS链路；多个采集场景不是同步多BS网络。}
+- label: {en: Cross-frequency pairing, zh: 跨频配对}
+  text: {en: The communication carrier in these scenarios is 60 GHz. The 76–81 GHz radar and 60 GHz communication are not paired cross-frequency communication CSI., zh: 上述场景的通信载频为60 GHz；76–81 GHz雷达与60 GHz通信不是配对跨频通信CSI。}
+paper_summary:
+- label: {en: System, zh: 系统}
+  text: {en: Real communication and sensor captures organized by testbed and scenario., zh: 按Testbed和Scenario组织的真实通信与传感器采集。}
+- label: {en: Prediction target, zh: 预测对象}
+  text: {en: The example fuses vision and position to predict millimeter-wave beams., zh: 示例融合视觉与位置预测毫米波波束。}
+- label: {en: Decision target, zh: 决策目标}
+  text: {en: Beam selection within the measured codebook., zh: 已测码本内的波束选择。}
+- label: {en: Protocol, zh: 评估协议}
+  text: {en: 'Sec. III–VI explain sample structure, UTC alignment, shared-field-of-view filtering, and manual checks; Sec. VII evaluates within-scenario tests and Scenario 1→5 transfer separately.', zh: Sec.III–VI解释样本结构、UTC对齐、共同视场筛选和人工复核；Sec.VII分别做场景内与Scenario 1→5测试。}
+- label: {en: Key finding, zh: 主要发现}
+  text: {en: 'Available modalities, timing, and hardware conditions in real captures are scenario-specific; a unified CSV structure does not imply identical fields in every scenario.', zh: 真实采集的可用模态、时间和硬件条件以Scenario为单位；统一CSV结构不代表每个场景字段相同。}
+- label: {en: Remaining gap, zh: 尚未解决的问题}
+  text: {en: Build strict trajectory- or event-based splits and connect swept-beam power gains to acquisition costs; beam powers do not support arbitrary phase-based precoding., zh: 需按轨迹或事件建立严格划分，并将扫束功率收益与获取成本联系；波束功率不支持任意相位预编码。}
+materials:
+- {title: DeepSense 2022 official challenge-baseline documentation, path: /materials/official/deepsense-6g/challenge-2022/README.md, license: MIT, source_url: 'https://github.com/DeepSense6G/Multi-Modal-Beam-Prediction-Challenge-2022-Baseline/blob/main/README.md'}
+- {title: Original DeepSense 6G paper (arXiv v2), path: /materials/official/deepsense-6g/paper/deepsense-2211.09769v2.pdf, license: CC-BY-NC-SA-4.0, source_url: 'https://arxiv.org/pdf/2211.09769v2'}
+tutorials: [deepsense]
+tools: [wireless-ml-data-hub]
+overview: {en: 'DeepSense 6G is a set of real-world communication and sensing datasets from the Wireless Intelligence Lab at Arizona State University (arXiv:2211.09769). The series covers more than 40 scenarios at more than 15 indoor and outdoor sites, with deployments including fixed wireless, V2I, V2V, drone communication, pedestrian and RIS. Each scenario records 60 GHz mmWave beam power and GPS, together with RGB images, LiDAR, FMCW radar, depending on the scenario group. In the representative testbed, a base station receiver with a 16-element ULA sweeps a 64-beam codebook over 90 degrees, and the camera exposure is triggered right after each sweep. Every modality carries a UTC timestamp, and the modalities are aligned in post-processing. Table I of the paper reports 460,838 samples for scenarios 17 to 22, 11,387 for scenario 23 and 18,667 for scenarios 31 to 34. The radar operates in the 76 to 81 GHz band, and the communication link operates at 60 GHz.', zh: 'DeepSense 6G 是亚利桑那州立大学
+    Wireless Intelligence Lab 发布的一组真实场景通信与感知数据集（arXiv:2211.09769）。数据覆盖 40 个以上场景、15 个以上室内外场地，部署形式包括固定无线、V2I、V2V、无人机通信、行人和 RIS。每个场景记录 60 GHz 毫米波波束功率和 GPS，并根据场景组不同记录 RGB 图像、LiDAR 和 FMCW 雷达。在代表性测试平台中，基站端 16 阵元 ULA 接收机在 90 度范围内扫描 64 波束码本，相机曝光在每次扫描结束后立即触发。每种模态均带有 UTC 时间戳，并在后处理中对齐。论文 Table I 给出场景 17 至 22 共 460,838 个样本，场景 23 共 11,387 个，场景 31 至 34 共 18,667 个。雷达工作在 76 至 81 GHz 频段，通信链路工作在 60 GHz。'}
+signal_details:
+- signal: beam-power
+  text: {en: '60 GHz mmWave beam power from the representative testbed. The base station receiver is a 16-element ULA (SIVERS) with a combining codebook of 64 beams that scans 90 degrees. Each instant yields a 64-element power vector from beam training at the base station, sampled at 10 Hz. The mobile unit transmits from a 60 GHz quasi-omni antenna.', zh: 代表性测试平台中的 60 GHz 毫米波波束功率。基站接收机为 16 阵元 ULA（SIVERS），使用覆盖 90 度的 64 波束合并码本。每个时刻由基站端波束训练得到一个 64 元素功率向量，采样率 10 Hz。移动单元使用 60 GHz 准全向天线发射。}
+- signal: rgb
+  text: {en: RGB images from a ZED2 (StereoLabs) camera with a 110 degree field of view at 30 fps in the representative testbed. The exposure is triggered right after each beam sweep completes. Table I lists RGB for every scenario group., zh: 代表性测试平台中的 ZED2（StereoLabs）RGB 相机，视场角 110 度，帧率 30 fps。每次波束扫描结束后立即触发曝光。Table I 中每个场景组均列有 RGB。}
+- signal: lidar
+  text: {en: '3D LiDAR from an Ouster unit with 32 vertical by 1024 horizontal channels, 120 m range and a 20 Hz frame rate in the representative testbed. Table I lists 2D LiDAR for scenarios 8, 9 and 24 to 30, and 3D LiDAR for scenarios 31 to 34 and 36 to 40.', zh: 代表性测试平台中的 Ouster 3D LiDAR，32 个垂直通道乘 1024 个水平通道，测距 120 m，帧率 20 Hz。Table I 中场景 8、9 和 24 至 30 为 2D LiDAR，场景 31 至 34 和 36 至 40 为 3D LiDAR。}
+- signal: radar
+  text: {en: 'FMCW radar from Texas Instruments operating in the 76 to 81 GHz band, with a 100 m maximum range in the representative testbed. Table I lists radar for scenario 9 and for scenarios 30 to 40.', zh: 代表性测试平台中的德州仪器（Texas Instruments）FMCW 雷达，工作在 76 至 81 GHz 频段，最大探测距离 100 m。Table I 中场景 9 以及场景 30 至 40 列有雷达数据。}
+- signal: gps
+  text: {en: RTK GPS from a SparkFun RTK kit at 10 Hz in the representative testbed. Table I lists GPS in every scenario group., zh: 代表性测试平台中的 SparkFun RTK 套件，采样率 10 Hz。Table I 中每个场景组均列有 GPS。}

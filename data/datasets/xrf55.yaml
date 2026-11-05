@@ -11,8 +11,46 @@ samples: 42.9K samples (about 59.6 hours) from 39 subjects
 license: CC BY-NC 4.0
 access: {url: 'https://aiotgroup.github.io/XRF55', type: open}
 paper: doi:10.1145/3643543
-used_in: ["doi:10.1109/jiot.2025.3554228","doi:10.1109/ton.2025.3599016","doi:10.1109/jiot.2026.3672036"]
-citing: ["doi:10.1145/3715014.3722068","doi:10.1109/tmc.2025.3540863"]
+used_in: ['doi:10.1109/jiot.2025.3554228', 'doi:10.1109/ton.2025.3599016', 'doi:10.1109/jiot.2026.3672036']
+citing: ['doi:10.1145/3715014.3722068', 'doi:10.1109/tmc.2025.3540863']
 summary: {en: '42.9K samples of 55 indoor human actions from 39 subjects (about 59.6 hours), with Wi-Fi CSI, RFID phase, mmWave radar and Azure Kinect RGB and depth data.', zh: 共 42.9K 个样本，涵盖 39 名受试者的 55 种室内人体动作（约 59.6 小时），包含 Wi-Fi CSI、RFID 相位、毫米波雷达以及 Azure Kinect 的 RGB 和深度数据。}
 sources: ['https://aiotgroup.github.io/XRF55', 'https://api.crossref.org/works/10.1145/3643543']
 checked: '2026-11-06'
+overview: {en: 'XRF55 is a radio frequency dataset for human indoor action analysis from Xi''an Jiaotong University and Zhejiang University, published at ACM IMWUT/Ubicomp 2024 (DOI 10.1145/3643543). It contains 42.9K samples of 55 indoor actions performed by 39 subjects, totalling 59 h 35 min. Each subject performs each action 20 times, and each repetition has a 5-second action window; the 55 actions fall into 15 human-object interactions, 7 human-human interactions, 8 fitness actions, 14 body motions and 11 human-computer interactions. The recordings were made in four scenes: Scene 1 has 30 subjects with all four sensors, and Scenes 2, 3 and 4 have three subjects each. Wi-Fi CSI, RFID phase, 60 to 64 GHz mmWave radar, and Azure Kinect RGB and depth data are included, and the page defines the split as the first 14 trials of each action per subject for training and the last 6 for testing. The project page lists 2D pose, 3D pose and human mesh data as in progress, and marks the raw mmWave
+    data link as expired. The data are distributed through the project page, the Sensing Dataset Platform (sdp8.org) and Kaggle under CC BY-NC 4.0.', zh: XRF55是面向室内人体动作分析的射频数据集，由西安交通大学与浙江大学提出，发表于ACM IMWUT/Ubicomp 2024（DOI 10.1145/3643543）。数据包含39名受试者执行55种室内动作的42.9K个样本，总时长59 h 35 min。每名受试者每个动作重复20次，每次重复的动作窗口为5 s；55种动作分为人-物交互15种、人-人交互7种、健身动作8种、身体运动14种和人机交互11种。采集分为四个场景：场景1有30名受试者且四种传感器齐全，场景2、3、4各有3名受试者。数据包括Wi-Fi CSI、RFID相位、60至64 GHz毫米波雷达以及Azure Kinect的RGB和深度数据，页面定义的划分为每名受试者每个动作的前14次用于训练、后6次用于测试。项目页面将2D pose、3D pose和human mesh数据列为进行中，并标注毫米波原始数据链接已失效。数据通过项目页面、Sensing Dataset Platform（sdp8.org）和Kaggle发布，许可为CC BY-NC 4.0。}
+signal_details:
+- signal: csi
+  text: {en: 'Wi-Fi CSI from one ThinkPad X201 transmitter (Intel 5300 NIC) and three receiver laptops placed at the corners of a rectangle at 1.2 m height. The link uses 802.11n on channel 128 (5.64 GHz) at 200 packets per second. The 9 links (1 Tx antenna, 3 receivers with 3 antennas each) carry 30 OFDM subcarriers per link, giving a raw CSI shape of (200t) × 1 × 3 × 3 × 30.', zh: Wi-Fi CSI由一台ThinkPad X201发射机（Intel 5300网卡）和三台接收笔记本组成，布置于矩形四角，高度1.2 m。链路采用802.11n，信道128（5.64 GHz），每秒200个包。9条链路（1根Tx天线，3台接收端各3根天线）每条含30个OFDM子载波，原始CSI形状为(200t) × 1 × 3 × 3 × 30。}
+- signal: radar
+  text: {en: 'TI IWR6843ISK radar with a TI DCA1000EVM capture board, 60 to 64 GHz FMCW, 3 transmit and 4 receive antennas, 20 frames per second, 64 chirps per frame and 256 samples per chirp. Range-Doppler and range-angle maps are released, each 256 × 64 per frame and concatenated to 256 × 128; the raw shape is (20t) × 3 × 4 × 256 × 64.', zh: TI IWR6843ISK雷达配合TI DCA1000EVM采集板，工作于60至64 GHz FMCW，3根发射天线、4根接收天线，20帧/秒，每帧64个chirp，每个chirp 256个采样。发布的range-Doppler与range-angle热图每帧各为256 × 64，拼接后为256 × 128；原始形状为(20t) × 3 × 4 × 256 × 64。}
+- signal: rgb
+  text: {en: 'Azure Kinect RGB, captured at 30 fps at 720P and released as 1280 × 720 video at 15 fps. The Kaggle release of RGB video covers 19 consenting participants.', zh: Azure Kinect RGB视频，原始采集为30 fps、720P，发布版本为1280 × 720、15 fps。Kaggle上的RGB视频包含19名同意参与者的数据。}
+- signal: depth
+  text: {en: 'Azure Kinect depth stream, captured at 30 fps. The released depth video is 512 × 512 at 15 fps, and depth and IR video are split into several parts on Kaggle.', zh: Azure Kinect深度流，原始采集为30 fps。发布的深度视频为512 × 512、15 fps，深度与红外视频在Kaggle上分为多个部分。}
+pipeline:
+  summary: {en: 'Multi-sensor recordings of 55 actions are cut into 5-second windows, with radar frames converted to heatmaps and the video downsampled to 15 fps.', zh: 55种动作的多传感器记录被切分为5秒窗口，雷达帧转换为热图，视频降采样至15 fps。}
+  stages:
+  - title: {en: 'Record CSI, RFID, radar and Kinect streams', zh: 记录CSI、RFID、雷达和Kinect数据流}
+    detail: {en: 'One Wi-Fi transmitter and three receiver laptops record CSI at 200 packets per second, and an Impinj Speedway R420 reader queries 23 passive tags at 30 queries per second. The TI IWR6843ISK radar outputs 20 frames per second, and the Azure Kinect records RGB, depth and infrared at 30 fps.', zh: 一台Wi-Fi发射机和三台接收笔记本以每秒200个包记录CSI，Impinj Speedway R420读写器以每秒30次查询读取23个无源标签。TI IWR6843ISK雷达输出20帧/秒，Azure Kinect以30 fps记录RGB、深度和红外。}
+    inputs:
+    - {en: '39 subjects performing 55 actions, 20 repetitions each', zh: 39名受试者，每人执行55种动作各20次}
+    outputs:
+    - {en: 'Raw CSI, RFID phase, radar ADC frames, Kinect video', zh: 原始CSI、RFID相位、雷达ADC帧、Kinect视频}
+  - title: {en: Convert radar frames to heatmaps and point clouds, zh: 将雷达帧转换为热图和点云}
+    detail: {en: 'Each radar frame is transformed into range-Doppler and range-angle heatmaps of 256 × 64 each, concatenated to 256 × 128. The page lists mmWave_RA_RE.py and point_clouds_generation.py among its provided Python tools.', zh: 每个雷达帧被转换为各256 × 64的range-Doppler与range-angle热图，并拼接为256 × 128。项目页面列出了提供的Python工具mmWave_RA_RE.py和point_clouds_generation.py。}
+    inputs:
+    - {en: 'Radar frames, shape (20t) × 3 × 4 × 256 × 64', zh: 雷达帧，形状(20t) × 3 × 4 × 256 × 64}
+    outputs:
+    - {en: 'Range-Doppler and range-angle heatmaps, mmWave point clouds', zh: range-Doppler与range-angle热图、mmWave点云}
+  - title: {en: Downsample video to 15 fps, zh: 将视频降采样至15 fps}
+    detail: {en: 'The Azure Kinect streams are downsampled from 30 fps to 15 fps, and the released RGB video is 1280 × 720 while depth and IR video are 512 × 512.', zh: Azure Kinect数据流从30 fps降采样至15 fps，发布的RGB视频为1280 × 720，深度与红外视频为512 × 512。}
+    inputs:
+    - {en: 'Kinect RGB, depth and IR streams at 30 fps', zh: 30 fps的Kinect RGB、深度和红外数据流}
+    outputs:
+    - {en: 'RGB video at 1280 × 720 and depth/IR video at 512 × 512, both at 15 fps', zh: 1280 × 720的RGB视频与512 × 512的深度/红外视频，均为15 fps}
+  - title: {en: Cut 5-second windows and split by trial, zh: 切分5秒窗口并按次数划分}
+    detail: {en: 'Each repetition is cut to a 5-second action window, which gives 1000 CSI packets, 150 RFID reads and 100 radar frames per training sample. For each action and subject, the first 14 trials form the training set (30.0K samples) and the last 6 trials form the test set (12.9K samples).', zh: 每次重复被切分为5秒动作窗口，每个训练样本对应1000个CSI包、150次RFID读数和100帧雷达。每名受试者每个动作的前14次为训练集（30.0K个样本），后6次为测试集（12.9K个样本）。}
+    inputs:
+    - {en: Per-trial data streams of 5 seconds, zh: 每次试验5秒的各数据流}
+    outputs:
+    - {en: Training set (30.0K samples) and test set (12.9K samples), zh: 训练集（30.0K个样本）和测试集（12.9K个样本）}

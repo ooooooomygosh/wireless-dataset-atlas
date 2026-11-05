@@ -12,8 +12,49 @@ license: Not stated
 access: {url: 'https://www.kaggle.com/datasets/shuokanghuang/wimans', type: open}
 code: ['https://github.com/huangshk/WiMANS']
 paper: arxiv:2402.09430
-used_in: ["doi:10.1109/jiot.2026.3654610","doi:10.1109/jiot.2026.3716007","doi:10.1109/lcomm.2026.3715770"]
-citing: ["doi:10.1109/ojcoms.2024.3465216","doi:10.1109/jiot.2025.3580141","doi:10.1109/tccn.2026.3660764"]
+used_in: ['doi:10.1109/jiot.2026.3654610', 'doi:10.1109/jiot.2026.3716007', 'doi:10.1109/lcomm.2026.3715770']
+citing: ['doi:10.1109/ojcoms.2024.3465216', 'doi:10.1109/jiot.2025.3580141', 'doi:10.1109/tccn.2026.3660764']
 summary: {en: 'Dual-band (2.4 and 5 GHz) WiFi CSI samples of three seconds each, with 0 to 5 simultaneous users and synchronized video, labelled with anonymized identity, location and activity. The dataset contains over 9.4 hours of CSI.', zh: 双频段（2.4 和 5 GHz）WiFi CSI 样本，每个样本时长 3 秒，包含 0 至 5 名同时活动的用户，并配有同步视频，标注了匿名身份、位置和活动。数据集包含超过 9.4 小时的 CSI。}
 sources: ['https://github.com/huangshk/WiMANS', 'https://arxiv.org/abs/2402.09430']
 checked: '2026-11-06'
+overview: {en: 'WiMANS is a benchmark dataset for WiFi-based multi-user activity sensing, described by Huang et al. in 2024 (arXiv:2402.09430). Each sample is a 3-second recording of dual-band WiFi CSI at 2.4 GHz and 5 GHz, made while 0 to 5 users perform activities at the same time, together with a synchronized video from a monitor camera. The data were collected in three environments (a classroom, a meeting room and an empty room) with 6 volunteers forming 114 user groups. Each user in a sample is labelled with an anonymized identity, one of five locations (A to E) and one of nine activities: nothing, walking, rotation, jumping, waving, lying down, picking up, sitting down and standing up. The dataset holds 11,286 samples, over 9.4 hours of CSI, and 63.2% of the samples contain two or more users. The authors target WiFi-based and video-based recognition of identity, location and activity for multiple users, and they report benchmark results for both. The annotations contain no body-joint
+    labels, and faces in the videos are blurred. The authors state that the data should be used for academic research only.', zh: 'WiMANS 是一个基于 WiFi 的多用户活动感知基准数据集，由 Huang 等人于 2024 年发表（arXiv:2402.09430）。每个样本是时长 3 秒的双频段 WiFi CSI 记录，频段为 2.4 GHz 和 5 GHz，采集时 0 至 5 名用户同时执行活动，并配有来自监控摄像头的同步视频。数据采集于三种环境（教室、会议室和空房间），由 6 名志愿者组成 114 个用户组。样本中的每位用户都标注了匿名身份、五个位置（A 至 E）之一，以及九种活动之一：无活动（Nothing）、行走、转身、跳跃、挥手、躺下、拾取、坐下和站起。数据集共包含 11,286 个样本，CSI 总时长超过 9.4 小时，其中 63.2% 的样本包含两名或以上用户。作者面向多用户场景下基于 WiFi 和基于视频的身份、位置与活动识别，并给出了两类模型的基准结果。标注中不包含人体关节点，视频中的人脸已模糊处理。作者声明数据仅用于学术研究。'}
+signal_details:
+- signal: csi
+  text: {en: 'Two HP EliteDesk 800 G2 TWR computers serve as transmitter and receiver, each with an Intel 5300 network interface card running the Linux 802.11n CSI tool in monitor mode. Each side has 3 antennas and each antenna pair uses 30 subcarriers, so the CSI at one time step is 3 × 3 × 30. Packets are sent at 1000 packets per second for 3 seconds, giving 3000 time steps per sample and a raw sample shape of 3000 × 3 × 3 × 30. The 2.4 GHz band uses channel 12 and the 5 GHz band uses channel 64. Average packet loss is 4.52% at 2.4 GHz and 2.31% at 5 GHz, so the 2.4 GHz samples have 2864.39 time steps on average. Raw CSI is stored as .mat files and CSI amplitude as .npy files.', zh: 两台 HP EliteDesk 800 G2 TWR 计算机分别作为发射端和接收端，各配备 Intel 5300 网卡，运行 Linux 802.11n CSI tool 并工作在 monitor mode。收发两端各有 3 根天线，每对天线使用 30 个子载波，因此每个时间步的 CSI 维度为 3 × 3 × 30。以 1000 packets/s 的速率发送 3 秒数据包，每个样本有 3000 个时间步，原始样本形状为 3000 × 3 × 3 × 30。2.4 GHz 频段使用 channel 12，5 GHz 频段使用 channel 64。平均丢包率在 2.4 GHz 为 4.52%，在 5 GHz
+      为 2.31%，因此 2.4 GHz 样本平均含 2864.39 个时间步。原始 CSI 以 .mat 文件存储，CSI 幅度以 .npy 文件存储。}
+- signal: rgb
+  text: {en: 'A monitor camera records video during the CSI collection, and the long recording is cut into 3-second clips by timestamp. The frame rate is 30 Hz and the frame resolution is 1920 × 1080 with 3 RGB channels, so each 3-second clip has 90 frames (shape 90 × 3 × 1920 × 1080). The videos are stored as MP4 files, and faces are blurred.', zh: 监控摄像头在 CSI 采集期间录制视频，长视频再按时间戳切分为 3 秒片段。帧率为 30 Hz，分辨率为 1920 × 1080，包含 3 个 RGB 通道，因此每个 3 秒片段有 90 帧（形状 90 × 3 × 1920 × 1080）。视频以 MP4 文件存储，人脸已模糊处理。}
+pipeline:
+  summary: {en: 'Capture CSI and video in parallel while users perform scripted activities, then segment, label and package the samples.', zh: 用户按脚本执行活动时并行采集 CSI 与视频，随后切分、标注并打包为样本。}
+  stages:
+  - title: {en: Set up the CSI link, zh: 搭建 CSI 链路}
+    detail: {en: One transmitter and one receiver with Intel 5300 network interface cards run the Linux 802.11n CSI tool in monitor mode. The 2.4 GHz band uses channel 12 and the 5 GHz band uses channel 64., zh: 一个发射端和一个接收端配备 Intel 5300 网卡，运行 Linux 802.11n CSI tool 并工作在 monitor mode。2.4 GHz 频段使用 channel 12，5 GHz 频段使用 channel 64。}
+    inputs:
+    - {en: Two HP EliteDesk 800 G2 TWR computers, zh: 两台 HP EliteDesk 800 G2 TWR 计算机}
+    - {en: Intel 5300 network interface cards, zh: Intel 5300 网卡}
+    outputs:
+    - {en: Monitor-mode CSI link on each band, zh: 各频段的 monitor mode CSI 链路}
+  - title: {en: Run scripted sample collection, zh: 按脚本采集样本}
+    detail: {en: 'Fixed users form a user group for an environment, and five simultaneous scripts assign each user a location and an activity. For each sample the receiver logs CSI while the transmitter sends 3000 packets at 1000 packets per second, and the collection stops before the next index is announced.', zh: 固定用户组成一个用户组，并对应一个环境；五套同步脚本为每位用户分配位置和活动。每个样本采集时，接收端记录 CSI，发射端以 1000 packets/s 发送 3000 个数据包；下一个索引公布前，采集先停止。}
+    inputs:
+    - {en: User groups and five simultaneous scripts, zh: 用户组与五套同步脚本}
+    - {en: Environment layouts with locations A to E, zh: 包含位置 A 至 E 的环境布局}
+    outputs:
+    - {en: Raw 3-second CSI sample, zh: 3 秒原始 CSI 样本}
+  - title: {en: Record synchronized video, zh: 录制同步视频}
+    detail: {en: 'A monitor camera records the scene throughout the session. The long recording is cut into 3-second clips by timestamp, and the stated synchronization granularity is 16.67 ms.', zh: 监控摄像头在整个采集过程中录制场景。长视频按时间戳切分为 3 秒片段，文中给出的同步精度为 16.67 ms。}
+    inputs:
+    - {en: Long video recording at 30 Hz, zh: 30 Hz 的长视频录像}
+    outputs:
+    - {en: 3-second video clips, zh: 3 秒视频片段}
+  - title: {en: Label and anonymize samples, zh: 标注与匿名化}
+    detail: {en: 'Labels follow from the scripts, which were fixed before collection, and each sample is named act_<group>_<sample>. Users receive aliases such as User 1, and their faces are blurred in the videos.', zh: 标签由采集前固定的脚本给出，每个样本命名为 act_<group>_<sample>。用户以 User 1 等别名标识，视频中的人脸已模糊处理。}
+    outputs:
+    - {en: 'annotation.csv with identity, location and activity labels', zh: 包含身份、位置与活动标签的 annotation.csv}
+  - title: {en: Compute amplitudes and package files, zh: 计算幅度并打包文件}
+    detail: {en: 'The script benchmark/wifi_csi/preprocess.py computes CSI amplitude from the raw .mat files and saves it as .npy files. The released package contains the .mat files, the .npy amplitudes, the .mp4 videos and annotation.csv.', zh: 脚本 benchmark/wifi_csi/preprocess.py 从原始 .mat 文件计算 CSI 幅度，并保存为 .npy 文件。发布包包含 .mat 文件、.npy 幅度文件、.mp4 视频和 annotation.csv。}
+    inputs:
+    - {en: Raw CSI .mat files, zh: 原始 CSI .mat 文件}
+    outputs:
+    - {en: 'CSI amplitude .npy files, video .mp4 files and annotation.csv', zh: CSI 幅度 .npy 文件、视频 .mp4 文件与 annotation.csv}

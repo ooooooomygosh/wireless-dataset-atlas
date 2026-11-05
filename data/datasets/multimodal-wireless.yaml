@@ -15,3 +15,52 @@ citing: []
 summary: {en: 'Simulated CARLA driving scenes with Sionna ray-traced channel data, synchronized with LiDAR, RGB and depth camera, IMU, radar and GNSS sensors at 100 Hz. The release contains 161,400 frames across 4 virtual towns, 16 communication scenarios and 3 weather conditions.', zh: '基于CARLA和Sionna仿真的驾驶场景数据，包含Sionna射线追踪信道数据，并与LiDAR、RGB与深度相机、IMU、雷达和GNSS传感器同步，采样率为100 Hz。数据共161,400帧，覆盖4个虚拟城镇、16种通信场景和3种天气条件。'}
 sources: ['https://arxiv.org/abs/2511.03220', 'https://le-liang.github.io/mmw/', 'https://le-liang.github.io/mmw/download.html', 'https://github.com/le-liang/Multimodal-Wireless']
 checked: '2026-11-06'
+overview: {en: 'Multimodal-Wireless is a simulated dataset for multimodal sensing and communication in vehicular scenes, described in arXiv:2511.03220 (first version November 2025, revised February 2026). The scenes are generated in the CARLA simulator (version 0.9.15), and the channel data are computed by Sionna ray tracing. RGB camera, depth camera, LiDAR, radar and IMU streams, together with the CSI, are sampled at 100 Hz and temporally aligned. The release contains 161,400 frames across four virtual towns (Town03, Town05, Town07 and Town10), 16 communication scenarios and three weather conditions (sunny, rainy and foggy). The sunny folder holds channel-data and sensor-data subfolders, and the rainy and foggy folders hold data for their conditions; a Blender_Towns folder provides Blender versions of the CARLA towns for replay. The authors demonstrate beam prediction with a multimodal large language model, and the abstract lists communication and collaborative perception as applications.
+    The data are simulated only, with no real-world measurements, and the channel model covers line-of-sight paths and first-order reflections.', zh: 'Multimodal-Wireless 是一个面向车联网多模态感知与通信研究的仿真数据集，见 arXiv:2511.03220（2025 年 11 月首版，2026 年 2 月修订）。场景由 CARLA 仿真器（版本 0.9.15）生成，信道数据由 Sionna 光线追踪计算。RGB 相机、深度相机、LiDAR、雷达和 IMU 的数据流与 CSI 以 100 Hz 采样，并在时间上对齐。发布数据共 161,400 帧，覆盖 4 个虚拟城镇（Town03、Town05、Town07、Town10）、16 种通信场景和 3 种天气条件（晴天、雨天、雾天）。晴天目录包含信道数据与传感器数据两个子目录，雨天和雾天目录分别存放对应天气的数据；Blender_Towns 目录提供 CARLA 城镇的 Blender 版本，用于回放。论文以多模态大语言模型演示了波束预测，摘要列出的应用还包括协同感知与通信。数据仅为仿真结果，不含实测数据；信道模型仅包含视距路径和一阶反射。'}
+signal_details:
+- signal: csi
+  text: {en: 'Sionna ray-traced channel at 28 GHz and 4.9 GHz, with line-of-sight paths and first-order reflections (10^6 rays, maximum reflection order 1). Each path stores azimuth and zenith angles of departure and arrival, propagation delay and a complex gain matrix. Frequency-domain CSI uses 1,024 subcarriers at 120 kHz spacing. The RSU transmit array is a ULA of 4, 16, 64 or 256 elements or an 8×8 planar array; the CAV receive array is a ULA of 4 or 16 elements or an 8×8 planar array. The primary link is V2I downlink with the RSU as base station. The project page gives a 100 Hz channel rate.', zh: 'Sionna 光线追踪信道，载频为 28 GHz 和 4.9 GHz，包含视距路径和一阶反射（10^6 条射线，最大反射阶数 1）。每条路径保存出发与到达的方位角、俯仰角，传播时延和复数增益矩阵。频域 CSI 采用 1,024 个子载波，子载波间隔 120 kHz。RSU 发射阵列为 4、16、64 或 256 元 ULA，或 8×8 平面阵列；CAV 接收阵列为 4 或 16 元 ULA，或 8×8 平面阵列。主链路为 V2I 下行，RSU 作为基站，CAV 作为用户。项目页给出信道速率为 100 Hz。'}
+- signal: rgb
+  text: {en: '640 × 480 pixels with a 110° field of view at 100 Hz. Each CAV carries four cameras for 360° coverage, and each RSU carries one.', zh: 640 × 480 像素，视场角 110°，采样率 100 Hz。每辆 CAV 配备 4 个相机以覆盖 360°，每个 RSU 配备 1 个。}
+- signal: depth
+  text: {en: '640 × 480 pixels with a 110° field of view at 100 Hz, mounted on the RSU.', zh: 640 × 480 像素，视场角 110°，采样率 100 Hz，安装于 RSU。}
+- signal: lidar
+  text: {en: '64 channels, 30,000 points per sample, 120 m range and a −25° to 2° vertical field of view, at 100 Hz. Mounted on CAVs and RSUs.', zh: '64 线，每个样本 30,000 点，测距 120 m，垂直视场角 −25° 至 2°，采样率 100 Hz，安装于 CAV 与 RSU。'}
+- signal: radar
+  text: {en: '2,000 points per sample, 100 m range, 30° vertical and 110° horizontal field of view, mounted on the RSU, at 100 Hz.', zh: '每个样本 2,000 点，测距 100 m，垂直视场角 30°，水平视场角 110°，安装于 RSU，采样率 100 Hz。'}
+- signal: imu
+  text: {en: Mounted on CAVs at 100 Hz. Gyroscope noise has mean 0.001 rad/s and standard deviation 0.002 rad/s; accelerometer noise has standard deviation 0.1 m/s²., zh: 安装于 CAV，采样率 100 Hz。陀螺仪噪声均值 0.001 rad/s，标准差 0.002 rad/s；加速度计噪声标准差 0.1 m/s²。}
+pipeline:
+  summary: {en: 'CARLA scenarios produce sensor streams and a per-frame YAML file, Blender rebuilds the first-frame scene, and Sionna ray tracing computes the channel for each frame.', zh: CARLA 场景生成传感器数据流与逐帧 YAML 文件，Blender 重建首帧场景，Sionna 光线追踪为每一帧计算信道。}
+  stages:
+  - title: {en: CARLA scenario simulation, zh: CARLA 场景仿真}
+    detail: {en: 'carla_main.py runs a scenario defined in a configuration file in CARLA 0.9.15 at a fixed 100 Hz frame rate. Each scenario lasts 8 to 13 s with 3 to 4 CAVs and one RSU, giving 800 to 1,300 frames per CAV. The run writes five sensor data streams (RGB, depth, LiDAR, radar and IMU) together with a YAML file of all frames.', zh: 'carla_main.py 在 CARLA 0.9.15 中运行配置文件定义的场景，帧率固定为 100 Hz。每个场景持续 8 至 13 s，包含 3 至 4 辆 CAV 和 1 个 RSU，每辆 CAV 得到 800 至 1,300 帧。运行结果为五类传感器数据流（RGB、深度、LiDAR、雷达和 IMU）以及包含所有帧的 YAML 文件。'}
+    inputs:
+    - {en: scenario configuration file, zh: 场景配置文件}
+    outputs:
+    - {en: sensor streams, zh: 传感器数据流}
+    - {en: per-frame YAML, zh: 逐帧 YAML}
+  - title: {en: Scene reconstruction in Blender, zh: Blender 场景重建}
+    detail: {en: 'Blender 4.3.2 with the Mitsuba (.xml) add-on and PyYAML rebuilds the first frame of the scenario from the YAML file. The CARLA town geometry was exported from Unreal Engine 4.26, and Blender_Towns provides Blender versions of the towns.', zh: Blender 4.3.2 配合 Mitsuba (.xml) 插件与 PyYAML，根据 YAML 文件重建场景的首帧。CARLA 城镇几何由 Unreal Engine 4.26 导出，Blender_Towns 目录提供各城镇的 Blender 版本。}
+    inputs:
+    - {en: YAML of all frames, zh: 全部帧的 YAML}
+    outputs:
+    - {en: first-frame scene, zh: 首帧场景}
+  - title: {en: Ray-traced channel generation in Sionna, zh: Sionna 光线追踪信道生成}
+    detail: {en: 'Sionna (version 0.19.2 cited in the paper) loads the first-frame scene, moves the vehicle objects for each frame and computes the multipath components with 10^6 rays, maximum reflection order 1 and vertically polarized dipole antennas. Version 1.1.0 keeps the static scene and updates vehicle poses frame by frame, which the authors report as 20 times faster with about 95% less total time.', zh: Sionna（论文引用版本为 0.19.2）加载首帧场景，逐帧移动车辆对象，并以 10^6 条射线、最大反射阶数 1、垂直极化偶极子天线计算多径分量。1.1.0 版本保留静态场景并逐帧更新车辆位姿，作者报告总耗时降低约 95%，速度提升 20 倍。}
+    inputs:
+    - {en: first-frame scene and per-frame vehicle poses, zh: 首帧场景与逐帧车辆位姿}
+    outputs:
+    - {en: 'per-path AoD, AoA, delay and complex gain', zh: 逐路径 AoD、AoA、时延与复增益}
+  - title: {en: Optional CSI synthesis from path parameters, zh: 由路径参数合成 CSI（可选）}
+    detail: {en: 'The paper computes frequency-domain CSI from stored path parameters with H(f_k) = Σ_m A_m exp(−j2π f_k τ_m), where f_k = (k − (K+1)/2)Δf, K = 1,024 subcarriers and Δf = 120 kHz. Raw path data are kept separate from the channel realization.', zh: '论文用存储的路径参数按 H(f_k) = Σ_m A_m exp(−j2π f_k τ_m) 计算频域 CSI，其中 f_k = (k − (K+1)/2)Δf，K = 1,024 个子载波，Δf = 120 kHz。原始路径数据与信道实现分开保存。'}
+    inputs:
+    - {en: path gains and delays, zh: 路径增益与时延}
+    outputs:
+    - {en: frequency-domain CSI, zh: 频域 CSI}
+  - title: {en: Packaging by weather condition, zh: 按天气条件分类打包}
+    detail: {en: 'Released data are grouped into sunny, rainy and foggy folders, and the sunny folder has separate channel-data and sensor-data subfolders. The authors state that channel data and sensor data can be combined for user research. LiDAR data under rainy and foggy conditions need the post-processing described in the paper.', zh: 发布数据按晴天、雨天和雾天分为三个目录，晴天目录下分为信道数据与传感器数据两个子目录。作者说明信道数据与传感器数据可自行组合用于研究。雨天和雾天的 LiDAR 数据需要论文中描述的后处理。}
+    inputs:
+    - {en: 'CSI, sensor streams and YAML', zh: CSI、传感器数据流与 YAML}
+    outputs:
+    - {en: weather-specific folders, zh: 按天气划分的目录}

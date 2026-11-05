@@ -17,7 +17,33 @@ license: CC BY-NC-SA 4.0
 access: {url: 'https://ieee-dataport.org/documents/real-world-commercial-wifi-and-bluetooth-dataset-rf-fingerprinting', type: restricted}
 paper: doi:10.1109/mcom.001.2200725
 used_in: []
-citing: ["doi:10.1109/wcnc57260.2024.10571027","doi:10.1109/tmc.2025.3633287","doi:10.1109/jiot.2026.3681700"]
+citing: ['doi:10.1109/wcnc57260.2024.10571027', 'doi:10.1109/tmc.2025.3633287', 'doi:10.1109/jiot.2026.3681700']
 summary: {en: 'Complex IQ captures of WiFi (IEEE 802.11g) and Bluetooth 5.0 emissions from 10 commercial combo-chip devices, recorded with a USRP X300 at 66.67 MS/s in two time frames. Each capture contains 40 MSamples and has a JSON metadata file.', zh: 来自10台商用组合芯片设备的WiFi（IEEE 802.11g）与蓝牙5.0发射信号的复数IQ采样，由USRP X300以66.67 MS/s在两个时间段采集。每个采集文件包含40 MSample，并附带JSON元数据文件。}
 sources: ['https://ieee-dataport.org/documents/real-world-commercial-wifi-and-bluetooth-dataset-rf-fingerprinting', 'https://arxiv.org/pdf/2303.13538', 'https://doi.org/10.1109/mcom.001.2200725']
 checked: '2026-11-06'
+overview: {en: 'The Bluetooth and Wi-Fi RF Fingerprinting Dataset contains raw IQ captures of WiFi (IEEE 802.11g) and Bluetooth 5.0 emissions from commercial devices. ANDRO Computational Solutions, LLC produced it and described it in an article. Ten commercial devices were recorded: eight Raspberry Pi 4B boards with Cypress CYW43455 WiFi-Bluetooth combo chips and two Lenovo laptops with Intel Dual Band Wireless-AC 7260 chips. A USRP X300 with a UBX160 daughterboard recorded the emissions at 66.67 MS/s in an indoor laboratory, on two days separated by several months. Each technology has 120 captures of 40 MSamples. Each capture is a binary complex64 file with a JSON metadata file of the same name. The Bluetooth captures vary the transmitter-receiver distance from 0.5 m to 3.0 m in 0.5 m steps, and the WiFi captures vary the transmit power. Access is through IEEE DataPort, which requires a subscription and login.', zh: '蓝牙与Wi-Fi射频指纹数据集包含商用设备发出的WiFi（IEEE 802.11g）和Bluetooth 5.0信号的原始IQ采集数据。该数据由ANDRO
+    Computational Solutions, LLC制作，并在一篇文章中进行了描述。共记录十台商用设备：八块搭载Cypress CYW43455 WiFi-Bluetooth组合芯片的Raspberry Pi 4B开发板，以及两台搭载Intel Dual Band Wireless-AC 7260芯片的Lenovo笔记本。采集使用配备UBX160子板的USRP X300，在室内实验室以66.67 MS/s采样，分两天进行，两天相隔数月。每种技术各有120次采集，每次采集40 MSamples。每个采集为二进制complex64文件，并附有同名的JSON元数据文件。蓝牙采集改变收发距离，从0.5 m至3.0 m，步长0.5 m；WiFi采集改变发射功率。数据通过IEEE DataPort获取，需要订阅并登录。'}
+signal_details:
+- signal: iq
+  text: {en: 'Raw binary IQ captures in complex64 format, one .dat file per capture, recorded with a USRP X300 with UBX160 daughterboard and VERT2450 antenna on the RX2 port. Sampling rate 66.67 MS/s and 40 MSamples per capture. Each .dat file is paired with a .meta.json file of the same name, in a modified SigMF format. The metadata holds global settings (sample rate, record date, datatype), capture fields (center frequency, sample start, transmission number) and annotations such as environment, distance, protocol, transmitter and receiver details, modulation and gain.', zh: 原始二进制IQ采集数据，格式为complex64，每次采集一个.dat文件。采集设备为USRP X300，配备UBX160子板，RX2端口连接VERT2450天线。采样率66.67 MS/s，每次采集40 MSamples。每个.dat文件配有同名的.meta.json文件，格式为修改后的SigMF。元数据包含全局设置（采样率、记录日期、数据类型）、采集字段（中心频率、采样起点、发送编号）以及标注（环境、距离、协议、收发端信息、调制方式和增益）。}
+pipeline:
+  summary: {en: 'Ten commercial devices transmit WiFi or Bluetooth one at a time, a USRP X300 records the emissions at 66.67 MS/s, and each capture is stored as an IQ file with a JSON metadata file.', zh: 十台商用设备每次只发射WiFi或Bluetooth之一，USRP X300以66.67 MS/s记录发射信号，每次采集保存为一个IQ文件和一个JSON元数据文件。}
+  stages:
+  - title: {en: Emitter setup, zh: 发射端配置}
+    detail: {en: 'Only one emitter is active at a time, and WiFi and Bluetooth are never transmitted together; the other radio is blocked with rfkill. WiFi emitters run as access points that broadcast beacons on channel 8 (centered at 2447 MHz, 20 MHz bandwidth) every 15 ms, at 5 to 30 dBm in 5 dBm steps on the Raspberry Pi boards and 2 to 22 dBm in 4 dBm steps on the Lenovo laptops. Bluetooth emitters send a 103 MB text file over OBEX to an LG Nexus 5 phone, and each transfer lasts at least 5 minutes.', zh: 同一时间只有一个发射端工作，WiFi与Bluetooth从不同时发射，另一种无线电通过rfkill屏蔽。WiFi发射端作为接入点，在信道8（中心频率2447 MHz，带宽20 MHz）上每15 ms广播一次信标：Raspberry Pi开发板的发射功率为5至30 dBm，步长5 dBm；Lenovo笔记本为2至22 dBm，步长4 dBm。Bluetooth发射端通过OBEX向LG Nexus 5手机发送一个103 MB的文本文件，每次传输至少持续5分钟。}
+    inputs:
+    - {en: 10 commercial devices, zh: 10台商用设备}
+    outputs:
+    - {en: WiFi beacons and Bluetooth OBEX transfers, zh: WiFi信标与Bluetooth OBEX传输}
+  - title: {en: Capture, zh: 采集}
+    detail: {en: 'A USRP X300 with a UBX160 daughterboard and VERT2450 antenna on the RX2 port records the passive reception at 66.67 MS/s, the highest rate the receiver supports without sample drops. Bluetooth captures cover six transmitter-receiver separations, from 0.5 m to 3.0 m in 0.5 m steps, for each device, and WiFi captures vary the transmit power. Day-1 and Day-2 captures use the same receiver settings, separated by several months.', zh: 配备UBX160子板并通过RX2端口连接VERT2450天线的USRP X300以66.67 MS/s记录被动接收信号，这是接收机在无采样丢失情况下支持的最高速率。蓝牙采集对每台设备覆盖六个收发距离，从0.5 m至3.0 m，步长0.5 m；WiFi采集改变发射功率。Day-1与Day-2采集使用相同的接收机设置，两天相隔数月。}
+    inputs:
+    - {en: RF emissions from the devices, zh: 设备的射频发射信号}
+    outputs:
+    - {en: Raw IQ samples, zh: 原始IQ采样}
+  - title: {en: Storage and metadata, zh: 存储与元数据}
+    detail: {en: 'Each capture is written as a binary .dat file of complex64 IQ samples and a .meta.json file of the same name. The files are packed in four .tar.gz archives: Day1BT, Day2BT, Day1WIFI and Day2WIFI. A parse.py script reads the JSON metadata.', zh: 每次采集写入一个complex64格式的二进制.dat文件和一个同名的.meta.json文件。文件打包为四个.tar.gz压缩包：Day1BT、Day2BT、Day1WIFI和Day2WIFI。parse.py脚本用于读取JSON元数据。}
+    inputs:
+    - {en: Raw IQ samples, zh: 原始IQ采样}
+    outputs:
+    - {en: '.dat files, .meta.json files and four .tar.gz archives', zh: .dat文件、.meta.json文件及四个.tar.gz压缩包}

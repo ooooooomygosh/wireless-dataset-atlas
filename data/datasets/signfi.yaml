@@ -13,8 +13,40 @@ license: 'Custom Terms of Use (College of William and Mary): non-commercial educ
 access: {url: 'https://github.com/yongsen/SignFi', type: open}
 code: ['https://github.com/yongsen/SignFi']
 paper: doi:10.1145/3191755
-used_in: ["doi:10.1109/tmc.2022.3221902","doi:10.1109/tccn.2024.3414390","doi:10.1109/jiot.2024.3400773"]
-citing: ["doi:10.1109/jiot.2022.3190845","doi:10.1109/jiot.2020.3026732","doi:10.1145/3384419.3430735"]
+used_in: ['doi:10.1109/tmc.2022.3221902', 'doi:10.1109/tccn.2024.3414390', 'doi:10.1109/jiot.2024.3400773']
+citing: ['doi:10.1109/jiot.2022.3190845', 'doi:10.1109/jiot.2020.3026732', 'doi:10.1145/3384419.3430735']
 summary: {en: 'WiFi CSI traces recorded with the 802.11n CSI Tool for 276 sign-language gestures in lab and home settings, with downlink and uplink links. A 150-sign subset is recorded from five users in the lab.', zh: 使用 802.11n CSI Tool 记录的 WiFi CSI 数据，涵盖实验室和家庭环境中的 276 个手语手势，包含下行和上行链路。另有一个 150 个手语的子集，由实验室中的五名用户采集。}
 sources: ['https://github.com/yongsen/SignFi', 'https://api.crossref.org/works/10.1145/3191755']
 checked: '2026-11-06'
+overview: {en: 'SignFi is a WiFi channel state information (CSI) dataset for sign language recognition, collected by the College of William and Mary and described in the ACM IMWUT 2018 paper (doi:10.1145/3191755). The data hold CSI traces of 276 sign gestures that involve the head, arm, hand and finger, recorded in a lab and in a home. The 276-sign set has 8,280 instances in each link direction, from one user (5,520 lab, 2,760 home), with downlink and uplink traces. A separate lab set holds 7,500 instances of 150 sign gestures from five users, downlink only. The traces are segmented, with one ground-truth label per instance, and stored as MATLAB .mat files. The repository also contains sign_labels.csv, the sign videos used during collection, and a MATLAB CNN training example. The page refers to the paper for bandwidth, sampling rate and WiFi settings. Use is limited to non-commercial educational and research purposes, and redistribution needs written approval.', zh: 'SignFi 是用于手语识别的 WiFi
+    信道状态信息（CSI）数据集，由威廉与玛丽学院采集，对应 ACM IMWUT 2018 论文（doi:10.1145/3191755）。数据包含在实验室和家中采集的 276 种手语动作的 CSI 轨迹，动作涉及头部、手臂、手部和手指。276 手语数据集由一名用户完成，每个链路方向各有 8,280 个实例（实验室 5,520 个，家庭 2,760 个），包含下行与上行轨迹。另有一个实验室数据集，包含五名用户完成的 150 种手语动作，共 7,500 个实例，仅含下行轨迹。轨迹已分段，每个实例对应一个真值标签，以 MATLAB .mat 文件存储。仓库还包括 sign_labels.csv、采集时使用的手语视频，以及 MATLAB CNN 训练示例。页面将带宽、采样率和 WiFi 设置等细节交由论文说明。使用仅限非商业教育和研究目的，再分发需经书面许可。'}
+signal_details:
+- signal: csi
+  text: {en: 'CSI traces measured on WiFi packets with the 802.11n CSI Tool. The example code gives the lab CSI array csid_lab a size of 200 x 30 x 3 x 5520, and the labels are stored as label_lab. The traces are segmented, with one ground-truth label per instance.', zh: 基于 WiFi 数据包、使用 802.11n CSI Tool 采集的 CSI 轨迹。示例代码给出实验室 CSI 数组 csid_lab 的尺寸为 200 x 30 x 3 x 5520，标签保存于 label_lab。轨迹已分段，每个实例对应一个真值标签。}
+pipeline:
+  summary: {en: 'Participants performed sign gestures while WiFi CSI was captured with the 802.11n CSI Tool, and the traces were segmented into labeled instances and stored as MATLAB files.', zh: 参与者执行手语动作的同时，使用 802.11n CSI Tool 采集 WiFi CSI，轨迹被切分为带标签的实例，并保存为 MATLAB 文件。}
+  stages:
+  - title: {en: Gesture performance from videos, zh: 依据视频执行手语动作}
+    detail: {en: Participants learned and performed the sign gestures from videos of 276 basic sign words. The file sign_labels.csv lists the 276 sign words used in the measurement., zh: 参与者依据 276 个基础手语词的视频学习并执行手语动作。sign_labels.csv 列出了测量中使用的 276 个手语词。}
+    inputs:
+    - {en: Videos of 276 basic sign words, zh: 276 个基础手语词的视频}
+    outputs:
+    - {en: Performed sign gestures, zh: 执行的手语动作}
+  - title: {en: CSI capture, zh: CSI 采集}
+    detail: {en: CSI is measured from WiFi packets with the 802.11n CSI Tool during the gesture performances., zh: 在手语动作执行期间，利用 802.11n CSI Tool 从 WiFi 数据包中测量 CSI。}
+    inputs:
+    - {en: WiFi packets, zh: WiFi 数据包}
+    outputs:
+    - {en: Raw CSI traces, zh: 原始 CSI 轨迹}
+  - title: {en: Segmentation and labeling, zh: 分段与标注}
+    detail: {en: 'The CSI traces are segmented into instances, and each instance carries a ground-truth label.', zh: CSI 轨迹被切分为实例，每个实例带有一个真值标签。}
+    inputs:
+    - {en: CSI traces, zh: CSI 轨迹}
+    outputs:
+    - {en: Labeled CSI instances, zh: 带标签的 CSI 实例}
+  - title: {en: Storage as MATLAB files, zh: 保存为 MATLAB 文件}
+    detail: {en: 'The instances are stored as dataset_lab_276_dl.mat, dataset_lab_276_ul.mat, dataset_home_276.mat and dataset_lab_150.mat. In the lab downlink file, the CSI and label variables are csid_lab and label_lab.', zh: 实例保存为 dataset_lab_276_dl.mat、dataset_lab_276_ul.mat、dataset_home_276.mat 和 dataset_lab_150.mat 四个文件。实验室下行文件中，CSI 与标签变量分别为 csid_lab 与 label_lab。}
+    inputs:
+    - {en: Labeled CSI instances, zh: 带标签的 CSI 实例}
+    outputs:
+    - {en: MATLAB .mat dataset files, zh: MATLAB .mat 数据文件}

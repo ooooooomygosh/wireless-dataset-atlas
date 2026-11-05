@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import { t, lastUpdated, type Lang } from "../lib/data.ts";
 
-interface Props { lang: Lang; title?: string; description?: string; nav?: "datasets" | "tasks" | "papers" | "compare" | "about" | "" }
+interface Props { lang: Lang; title?: string; description?: string; nav?: "datasets" | "tasks" | "papers" | "tools" | "compare" | "about" | "" }
 const { lang, title, description, nav = "" } = Astro.props;
 const other: Lang = lang === "en" ? "zh" : "en";
 const here = Astro.url.pathname;
@@ -10,7 +10,7 @@ const swap = (l: Lang) => here.replace(/^\/(en|zh)\//, `/${l}/`);
 const fullTitle = title ? `${title} · ${t(lang, "site.name")}` : `${t(lang, "site.name")} · ${t(lang, "site.tagline")}`;
 const desc = description ?? t(lang, "site.description");
 const site = Astro.site!.origin;
-const links: [string, string][] = [["datasets", "nav.datasets"], ["tasks", "nav.tasks"], ["papers", "nav.papers"], ["compare", "nav.compare"], ["about", "nav.about"]];
+const links: [string, string][] = [["datasets", "nav.datasets"], ["tasks", "nav.tasks"], ["papers", "nav.papers"], ["tools", "nav.tools"], ["compare", "nav.compare"], ["about", "nav.about"]];
 ---
 <!doctype html>
 <html lang={lang === "zh" ? "zh-CN" : "en"}>

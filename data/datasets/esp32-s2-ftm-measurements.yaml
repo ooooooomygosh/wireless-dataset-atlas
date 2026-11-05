@@ -14,7 +14,33 @@ access: {url: 'https://ieee-dataport.org/open-access/esp32s2-ftm-measurements', 
 code: []
 paper: doi:10.1109/jiot.2022.3158701
 used_in: []
-citing: ["doi:10.1109/jsac.2023.3322812","doi:10.1109/wcnc57260.2024.10570742"]
+citing: ['doi:10.1109/jsac.2023.3322812', 'doi:10.1109/wcnc57260.2024.10570742']
 summary: {en: 'Wi-Fi fine timing measurement (FTM) round-trip time and RSSI values from ESP32-S2 devices in indoor and outdoor environments, paired with the true distance between devices. Data are provided as rosbag and MATLAB .mat files.', zh: ESP32-S2 设备在室内和室外环境中测得的 Wi-Fi 精细时间测量（FTM）往返时间与 RSSI 数值，并附有设备之间的真实距离。数据以 rosbag 和 MATLAB .mat 文件提供。}
 sources: ['https://ieee-dataport.org/open-access/esp32s2-ftm-measurements', 'https://api.crossref.org/works/10.1109/jiot.2022.3158701', 'https://api.openalex.org/works/doi:10.1109/jiot.2022.3158701?select=title,publication_year,abstract_inverted_index']
 checked: '2026-11-06'
+overview: {en: 'ESP32S2 FTM Measurements is a measured dataset of Wi-Fi fine time measurement (FTM, IEEE 802.11mc) ranging from ESP32-S2 devices. Valentín Barral at the University of A Coruña produced it, and it was published on IEEE DataPort in 2021. The measurements were taken in indoor and outdoor environments with several ESP32-S2 devices. Each FTM frame records RSSI and round-trip time (RTT) together with four timestamps, and each measurement is paired with the true distance between the devices. The data come as rosbag directories (AC, Indoor, Outdoor) and as one MATLAB .mat file with four structs (indoor, outdoor20, outdoor40, sa). The archive ESP32S2FTM.zip is 2.97 MB. The associated paper, Fine Time Measurement for the Internet of Things: A Practical Approach Using ESP32, analyzes this FTM implementation and proposes a machine-learning distance estimator that runs on the ESP32.', zh: 'ESP32S2 FTM Measurements 是 ESP32-S2 设备 Wi-Fi 精细时间测量（FTM，IEEE 802.11mc）测距的实测数据集。数据由 University of
+    A Coruña 的 Valentín Barral 制作，2021 年发布在 IEEE DataPort 上。测量在室内和室外环境中使用多台 ESP32-S2 设备完成。每个 FTM 帧记录 RSSI 与往返时间（RTT）以及四个时间戳，每次测量与设备之间的真实距离配对。数据提供为 rosbag 目录（AC、Indoor、Outdoor），以及一个包含四个结构体（indoor、outdoor20、outdoor40、sa）的 MATLAB .mat 文件。压缩包 ESP32S2FTM.zip 大小为 2.97 MB。对应论文 Fine Time Measurement for the Internet of Things: A Practical Approach Using ESP32 分析了该 FTM 实现，并提出一种可在 ESP32 上运行的机器学习距离估计方法。'}
+signal_details:
+- signal: rssi
+  text: {en: 'Per-frame RSSI in dBm, stored with the FTM round-trip time (RTT) of each frame. RTT values are in nanoseconds, and the frame timestamps t1 to t4 are in picoseconds.', zh: 每帧 RSSI，单位 dBm，与每帧的 FTM 往返时间（RTT）一同保存。RTT 值的单位为纳秒，每帧时间戳 t1 至 t4 的单位为皮秒。}
+pipeline:
+  summary: {en: 'ESP32-S2 devices run FTM ranging over Wi-Fi, the results are logged as ROS messages, and a MATLAB export produces one .mat file with four structs.', zh: ESP32-S2 设备通过 Wi-Fi 执行 FTM 测距，结果以 ROS 消息记录，再导出为包含四个结构体的一个 MATLAB .mat 文件。}
+  stages:
+  - title: {en: FTM ranging on ESP32-S2, zh: ESP32-S2 FTM 测距}
+    detail: {en: Several ESP32-S2 devices run Wi-Fi FTM (IEEE 802.11mc) ranging in indoor and outdoor scenarios. The firmware provides an RTT estimate and a distance estimate., zh: 多台 ESP32-S2 设备在室内和室外场景中运行 Wi-Fi FTM（IEEE 802.11mc）测距。固件提供 RTT 估计值和距离估计值。}
+    inputs:
+    - {en: Wi-Fi FTM exchanges between devices, zh: 设备之间的 Wi-Fi FTM 交互}
+    outputs:
+    - {en: RTT and distance estimates, zh: RTT 与距离估计值}
+  - title: {en: ROS message logging, zh: ROS 消息记录}
+    detail: {en: 'Each ranging result is logged as an ESP32S2FTMRanging message, or as an ESP32S2FTMRangingExtra message that adds an own_est field. Both carry anchorId, rtt_raw, rtt_est, dist_est, num_frames and a list of frames, where each frame holds rssi, rtt and timestamps t1 to t4. The message definitions are in the gtec_msgs package.', zh: 每条测距结果以 ESP32S2FTMRanging 消息记录；ESP32S2FTMRangingExtra 消息增加 own_est 字段。两者均包含 anchorId、rtt_raw、rtt_est、dist_est、num_frames 和 frames 列表，每一帧包含 rssi、rtt 以及时间戳 t1 至 t4。消息定义位于 gtec_msgs 包中。}
+    inputs:
+    - {en: ranging results, zh: 测距结果}
+    outputs:
+    - {en: 'rosbag directories AC, Indoor and Outdoor', zh: rosbag 目录 AC、Indoor 和 Outdoor}
+  - title: {en: MATLAB export, zh: MATLAB 导出}
+    detail: {en: 'The data are exported to one .mat file with four 1x1 structs: indoor, outdoor20, outdoor40 and sa. Each struct holds the true distance (actualDist), RTT raw averaged over frames with its mean, variance and count, mean RSSI, and a distance estimate from the author''s own algorithm.', zh: 数据导出为一个 .mat 文件，包含四个 1x1 结构体：indoor、outdoor20、outdoor40 和 sa。每个结构体包含真实距离（actualDist）、按帧平均的 RTT raw 及其均值、方差和计数、平均 RSSI，以及作者算法给出的距离估计。}
+    inputs:
+    - {en: rosbag ranging records, zh: rosbag 测距记录}
+    outputs:
+    - {en: one .mat file, zh: 一个 .mat 文件}

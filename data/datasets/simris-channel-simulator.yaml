@@ -11,8 +11,47 @@ license: GPL-2.0
 access: {url: 'https://github.com/ifyildirim/SimRIS-Channel-Simulator', type: open}
 code: ['https://github.com/ifyildirim/SimRIS-Channel-Simulator']
 paper: arxiv:2006.00468
-used_in: ["doi:10.1109/tcomm.2021.3113954"]
-citing: ["doi:10.1109/jproc.2022.3186087","doi:10.1109/ojcoms.2021.3050119"]
+used_in: ['doi:10.1109/tcomm.2021.3113954']
+citing: ['doi:10.1109/jproc.2022.3186087', 'doi:10.1109/ojcoms.2021.3050119']
 summary: {en: 'MATLAB generator of RIS channel matrices using Monte Carlo simulation. Scenarios are indoor hotspot and urban microcellular at 28 and 73 GHz, with ULA and UPA terminal arrays.', zh: 基于 MATLAB 的 RIS 信道矩阵生成器，采用 Monte Carlo 仿真生成。场景为室内热点和城市微蜂窝，频率为 28 GHz 和 73 GHz，终端阵列为 ULA 和 UPA。}
 sources: ['https://github.com/ifyildirim/SimRIS-Channel-Simulator', 'https://arxiv.org/abs/2006.00468', 'https://api.github.com/repos/ifyildirim/SimRIS-Channel-Simulator/license']
 checked: '2026-11-06'
+overview: {en: 'SimRIS Channel Simulator is an open-source MATLAB tool that generates channel matrices for reconfigurable intelligent surface (RIS)-assisted links by Monte Carlo simulation. It was developed at Koc University CoreLab, is described in the LATINCOM 2020 paper and arXiv:2006.00468, and the current version is v2.0 under GPLv2. It supports two scenarios, indoor hotspot and urban microcellular, at 28 GHz and 73 GHz, with uniform linear arrays (ULA) or uniform planar arrays (UPA) at the terminals. All parameters, including the scenario, frequency, array type and the sizes N, Nt, Nr and Nsym, are selected in the GUI. The output is the channel matrices H (N x Nt x Nsym), G (Nr x N x Nsym) and D (Nr x Nt x Nsym), which stay in the MATLAB workspace or export as a .mat file. The model covers LOS probability, array response, path loss, shadowing and environmental factors. The repository requires the MATLAB Parallel Computing Toolbox and contains only the GUI script and its files, with
+    no channel data.', zh: 'SimRIS Channel Simulator 是开源的 MATLAB 工具，通过 Monte Carlo 仿真生成可重构智能表面（RIS）辅助链路的信道矩阵。该工具由 Koc University CoreLab 开发，相关论文为 LATINCOM 2020 与 arXiv:2006.00468，当前版本为 v2.0，采用 GPLv2 许可。工具支持 28 GHz 和 73 GHz 两个频段下的室内热点与城市微蜂窝两种场景，终端采用均匀线阵（ULA）或均匀面阵（UPA）。场景、频率、阵列类型，以及 N、Nt、Nr、Nsym 的规模均在 GUI 中选择。输出为信道矩阵 H（N x Nt x Nsym）、G（Nr x N x Nsym）和 D（Nr x Nt x Nsym），可保留在 MATLAB 工作区中，或导出为 .mat 文件。模型涵盖 LOS 概率、阵列响应、路径损耗、阴影衰落和环境因素。运行需要 MATLAB Parallel Computing Toolbox。仓库仅包含 GUI 脚本及相关文件，不含信道数据。'}
+signal_details:
+- signal: csi
+  text: {en: 'Channel matrices for each of the Nsym channel realizations: H (N x Nt x Nsym), G (Nr x N x Nsym) and D (Nr x Nt x Nsym). The matrices are available in the MATLAB workspace, and the Save as button exports them to a .mat file.', zh: 每个信道实现（共 Nsym 个）对应的信道矩阵：H（N x Nt x Nsym）、G（Nr x N x Nsym）和 D（Nr x Nt x Nsym）。矩阵保存在 MATLAB 工作区中，Save as 按钮可将其导出为 .mat 文件。}
+pipeline:
+  summary: {en: 'A MATLAB GUI takes the scenario and array settings, and a Monte Carlo loop then generates the channel matrices for each realization.', zh: MATLAB GUI 接收场景与阵列设置，随后通过 Monte Carlo 循环为每次信道实现生成信道矩阵。}
+  stages:
+  - title: {en: Scenario and parameter selection, zh: 场景与参数选择}
+    detail: {en: 'The user runs SimRIS_GUI.m in MATLAB and selects the frequency (28 GHz or 73 GHz), the scenario (indoor hotspot or urban microcellular), the terminal array (ULA or UPA), N (number of transmit reflectors), Nt, Nr and Nsym. The Parallel Computing Toolbox is required.', zh: 用户在 MATLAB 中运行 SimRIS_GUI.m，选择频率（28 GHz 或 73 GHz）、场景（室内热点或城市微蜂窝）、终端阵列（ULA 或 UPA）、N（发射反射体数量）、Nt、Nr 和 Nsym。运行需要 Parallel Computing Toolbox。}
+    inputs:
+    - {en: 'Scenario, frequency and array settings', zh: 场景、频率与阵列设置}
+    - {en: 'Sizes N, Nt, Nr and Nsym', zh: 规模参数 N、Nt、Nr 与 Nsym}
+    outputs:
+    - {en: Configured simulation run, zh: 已配置的仿真运行}
+  - title: {en: Random draws per realization, zh: 每次实现的随机抽取}
+    detail: {en: 'For each of the Nsym realizations, the simulator draws the random variables β(c,s) from CN(0,1) and η from U[0, 2π], together with a Bernoulli line-of-sight indicator I_h.', zh: '对每个信道实现（共 Nsym 个），仿真器抽取服从 CN(0,1) 的随机变量 β(c,s)、服从 U[0, 2π] 的 η，以及伯努利分布的视距指示变量 I_h。'}
+    inputs:
+    - {en: Realization index, zh: 实现序号}
+    outputs:
+    - {en: Random channel variables, zh: 随机信道变量}
+  - title: {en: 'Path loss, LOS probability and array response', zh: 路径损耗、视距概率与阵列响应}
+    detail: {en: 'Path loss and LOS probability follow the 5G channel model, with a close-in free-space reference distance and a frequency-dependent path-loss exponent. Array responses a(φ, θ) depend on azimuth and elevation angles, and each RIS element has a controllable amplitude and phase.', zh: '路径损耗与视距概率采用 5G 信道模型，使用近距离自由空间参考距离与随频率变化的路径损耗指数。阵列响应 a(φ, θ) 取决于方位角与俯仰角，每个 RIS 单元具有可控的幅度与相位。'}
+    inputs:
+    - {en: Scenario and frequency, zh: 场景与频率}
+    outputs:
+    - {en: 'Path loss, LOS state and array responses', zh: 路径损耗、视距状态与阵列响应}
+  - title: {en: Cluster-based channel assembly, zh: 基于簇的信道组装}
+    detail: {en: 'The channels are built from C clusters with Sc sub-rays each, normalized by the square root of 1 divided by the sum of Sc. The RIS response is a diagonal N x N matrix.', zh: 信道由 C 个簇构成，每个簇包含 Sc 条子径，并按 1 除以 Sc 之和的平方根进行归一化。RIS 响应为 N x N 对角矩阵。}
+    inputs:
+    - {en: Cluster and sub-ray counts, zh: 簇数与子径数}
+    outputs:
+    - {en: Channel components per realization, zh: 每次实现的信道分量}
+  - title: {en: Matrix output, zh: 矩阵输出}
+    detail: {en: 'The H, G and D matrices, sized N x Nt x Nsym, Nr x N x Nsym and Nr x Nt x Nsym, are returned in the MATLAB workspace. The Save as button writes them to a .mat file.', zh: H、G 和 D 矩阵（尺寸分别为 N x Nt x Nsym、Nr x N x Nsym 和 Nr x Nt x Nsym）返回到 MATLAB 工作区。Save as 按钮可将其写入 .mat 文件。}
+    inputs:
+    - {en: Channel components per realization, zh: 每次实现的信道分量}
+    outputs:
+    - {en: 'H, G, D channel matrices (.mat)', zh: H、G、D 信道矩阵（.mat）}

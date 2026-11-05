@@ -14,7 +14,42 @@ access: {url: 'https://research.engr.oregonstate.edu/hamdaoui/datasets/', type: 
 code: []
 paper: doi:10.1109/access.2021.3121606
 used_in: []
-citing: ["doi:10.1109/tmc.2023.3340039","doi:10.1109/tmc.2023.3240971","doi:10.1109/tccn.2023.3329012"]
+citing: ['doi:10.1109/tmc.2023.3340039', 'doi:10.1109/tmc.2023.3240971', 'doi:10.1109/tccn.2023.3329012']
 summary: {en: 'Time-domain I/Q samples and FFT representations of LoRa transmissions from 25 IoT devices, received by USRP B210 receivers at 915 MHz and sampled at 1 MS/s. The setups cover indoor and outdoor scenarios with different days, distances, LoRa configurations, locations and receivers.', zh: 25 台 IoT 设备 LoRa 传输的时域 I/Q 采样与 FFT 表示，由 USRP B210 接收机在 915 MHz 下以 1 MS/s 采样。数据覆盖室内与室外场景，并包含不同日期、距离、LoRa 配置、地点和接收机等设置。}
 sources: ['https://research.engr.oregonstate.edu/hamdaoui/datasets/', 'https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_lora_datasets_final_oct2023_v2.pdf', 'https://arxiv.org/abs/2201.02213', 'https://api.crossref.org/works/10.1109/access.2021.3121606']
 checked: '2026-11-06'
+overview: {en: 'The LoRa RF fingerprinting datasets from Oregon State University contain time-domain I/Q samples and FFT representations of LoRa transmissions from 25 Pycom IoT devices. Abdurrahman Elmaghbub and Bechir Hamdaoui describe the release in arXiv:2201.02213 (submitted January 2022), and the datasets are hosted on the NetSTAR Lab site. An Ettus USRP B210 recorded the transmissions at a center frequency of 915 MHz and a sampling rate of 1 MS/s, and the testbed transmitters used a 125 kHz LoRa bandwidth, spreading factor 7, preamble 8, coding rate 4/5 and 20 dBm transmit power. The seven experimental setups cover five consecutive days indoors, outdoors and on a wired connection, four transmitter-receiver distances (5, 10, 15 and 20 m), four LoRa configurations, three locations (room, outdoor and office) and two USRP B210 receivers. In the day-based setups, each device sends 10 transmissions of 20 s per day, spaced 1 minute apart, and each recording holds about 20 million complex
+    samples on average. Each binary file is SigMF-compliant and has a JSON metadata file, and the FFT representation is stored in parallel binary files.', zh: 'Oregon State University 发布的 LoRa RF 指纹数据集包含 25 台 Pycom IoT 设备 LoRa 传输的时域 I/Q 采样与 FFT 表示。Abdurrahman Elmaghbub 与 Bechir Hamdaoui 在 arXiv:2201.02213（提交于 2022 年 1 月）中描述了本次发布，数据托管于 NetSTAR Lab 网站。Ettus USRP B210 以 915 MHz 中心频率与 1 MS/s 采样率记录传输；测试平台发射端的配置为 125 kHz LoRa 带宽、扩频因子 7、前导码 8、编码率 4/5 与 20 dBm 发射功率。七组实验设置包括：连续五天的室内、室外与有线连接场景，四种收发距离（5、10、15 与 20 m），四种 LoRa 配置，三个地点（房间、室外与办公室），以及两台 USRP B210 接收机。按天划分的场景中，每台设备每天发送 10 次、每次 20 s 的传输，间隔 1 分钟，每段录制平均包含约 2000 万个复数采样。每个二进制文件符合 SigMF 规范，并配有 JSON 元数据文件；FFT 表示以并行的二进制文件存储。'}
+signal_details:
+- signal: iq
+  text: {en: 'Time-domain complex samples recorded by the USRP B210 at a 915 MHz center frequency and 1 MS/s, stored as float32 with I and Q interleaved (I values at odd indices and Q values at even indices, as the paper states). The stored bandwidth is 1 MHz, which covers the 125 kHz LoRa channel and adjacent out-of-band spectrum. Each transmission lasts 20 s and each recording holds about 20 million complex samples on average. Each binary file has a SigMF-style JSON metadata file that records the sampling rate, the time and day of recording, and the carrier frequency.', zh: 由 USRP B210 以 915 MHz 中心频率与 1 MS/s 采样率记录的时域复数采样，以 float32 存储，I 与 Q 交错排列（论文所述：I 值位于奇数索引，Q 值位于偶数索引）。存储带宽为 1 MHz，覆盖 125 kHz 的 LoRa 信道及相邻带外频谱。每次传输时长 20 s，每段录制平均约含 2000 万个复数采样。每个二进制文件配有 SigMF 风格的 JSON 元数据文件，记录采样率、录制时间与日期以及载频。}
+- signal: spectrum
+  text: {en: 'FFT-based representation generated in the GNU Radio flowgraph with an FFT size of 1.024k, forward transform, shift enabled and a Blackman-family window. The FFT data are stored as separate binary files (fft_n.dat) with a SigMF-style metadata file each.', zh: 在 GNU Radio 流图中生成的 FFT 表示，FFT 点数为 1.024k，采用正向变换，启用 shift，窗函数为 Blackman 系列。FFT 数据以独立的二进制文件（fft_n.dat）存储，每个文件配有一个 SigMF 风格的元数据文件。}
+pipeline:
+  summary: {en: LoRa transmissions from 25 Pycom devices are received by a USRP B210 through a GNU Radio flowgraph and saved as SigMF-style I/Q and FFT files., zh: 25 台 Pycom 设备的 LoRa 传输由 USRP B210 经 GNU Radio 流图接收，并保存为符合 SigMF 风格的 I/Q 与 FFT 文件。}
+  stages:
+  - title: {en: Transmitter configuration, zh: 发射端配置}
+    detail: {en: '25 Pycom boards (23 Lopy4 and 2 Fipy) with Semtech SX1276 LoRa transceivers run MicroPython. They transmit in Raw-LoRa mode in the 915 MHz US band with 125 kHz bandwidth, spreading factor 7, preamble 8, TX power 20 dBm and coding rate 4/5, each through a dedicated LoRa antenna.', zh: 25 块 Pycom 开发板（23 块 Lopy4，2 块 Fipy）搭载 Semtech SX1276 LoRa 收发器，运行 MicroPython。设备以 Raw-LoRa 模式在 915 MHz 美国频段发射，参数为 125 kHz 带宽、扩频因子 7、前导码 8、20 dBm 发射功率与编码率 4/5，每台设备连接独立的 LoRa 天线。}
+    inputs:
+    - {en: MicroPython programs, zh: MicroPython 程序}
+    outputs:
+    - {en: LoRa transmissions at 915 MHz, zh: 915 MHz 的 LoRa 传输}
+  - title: {en: Transmission schedule, zh: 传输调度}
+    detail: {en: 'In the day-based setups each device sends 10 transmissions of 20 s per day for five consecutive days, 1 minute apart. The distance, configuration, location and receiver setups record one 20 s transmission per device per condition. In the wired setup each board connects to the USRP through an SMA cable and a 30 dB attenuator.', zh: 按天划分的场景中，每台设备连续五天、每天发送 10 次 20 s 的传输，间隔 1 分钟。距离、配置、地点与接收机场景中，每台设备在每种条件下录制一次 20 s 传输。有线场景中，每块开发板通过 SMA 线缆与 30 dB 衰减器连接至 USRP。}
+    inputs:
+    - {en: device list and setup plan, zh: 设备列表与场景计划}
+    outputs:
+    - {en: timed transmission sequences, zh: 定时传输序列}
+  - title: {en: Reception and processing, zh: 接收与处理}
+    detail: {en: 'A USRP B210 on SuperSpeed USB 3.0 is driven by GNU Radio. The flowgraph uses a UHD USRP Source at 915 MHz center frequency and 1 MS/s sample rate on Ch0 with antenna RX2 and gain 0 dB (absolute). A Head block limits each recording to 20M items. A File Sink writes IQ_file.dat, and an FFT block of size 1.024k feeds a second File Sink that writes fft_file.dat.', zh: USRP B210 通过 SuperSpeed USB 3.0 连接，由 GNU Radio 驱动。流图使用 UHD USRP Source，中心频率 915 MHz，采样率 1 MS/s，Ch0 使用天线 RX2，增益 0 dB（绝对值）。Head 模块将每段录制限制为 20M 个元素。File Sink 写入 IQ_file.dat；大小为 1.024k 的 FFT 模块将结果送入另一个 File Sink，写入 fft_file.dat。}
+    inputs:
+    - {en: LoRa transmissions at 915 MHz, zh: 915 MHz 的 LoRa 传输}
+    outputs:
+    - {en: IQ_file.dat, zh: IQ_file.dat}
+    - {en: fft_file.dat, zh: fft_file.dat}
+  - title: {en: Metadata and file layout, zh: 元数据与文件结构}
+    detail: {en: 'Each binary file is paired with a plain-text JSON metadata file that follows SigMF. It records the sampling rate, the time and day of recording, and the carrier frequency. Files are grouped by setup, then by day, condition or location, then by device, and are named IQ_n.dat, fft_n.dat and matching .sigmf-meta files.', zh: 每个二进制文件配有一个遵循 SigMF 的纯文本 JSON 元数据文件，记录采样率、录制时间与日期以及载频。文件按场景、再按天数或条件与地点、最后按设备分组，命名为 IQ_n.dat、fft_n.dat 及对应的 .sigmf-meta 文件。}
+    inputs:
+    - {en: IQ_file.dat and fft_file.dat, zh: IQ_file.dat 与 fft_file.dat}
+    outputs:
+    - {en: SigMF-style I/Q and FFT datasets, zh: SigMF 风格的 I/Q 与 FFT 数据集}

@@ -20,3 +20,29 @@ citing: []
 summary: {en: 'Raw IQ transmissions from 31 Seeed Studio XIAO boards (ESP32-C3) sending Bluetooth Low Energy traffic, captured with two USRP B210 receivers at 6 MS/s with a 2 MHz front-end filter in outdoor and indoor setups. The captures cover different days, locations, channels, receivers and temperatures.', zh: 来自31台Seeed Studio XIAO开发板（基于ESP32-C3）发送的蓝牙低功耗（BLE）流量的原始IQ数据，由两台USRP B210接收机以6 MS/s采样、2 MHz前端滤波采集，覆盖室外和室内场景。采集涵盖不同日期、位置、信道、接收机和温度。}
 sources: ['https://research.engr.oregonstate.edu/hamdaoui/datasets', 'https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_datasets_ble_august2025_v1.pdf', 'https://arxiv.org/abs/2611.00332', 'https://arxiv.org/html/2611.00332v1']
 checked: '2026-11-06'
+overview: {en: 'The Bluetooth RF Fingerprinting Datasets were produced by the NetSTAR Laboratory at Oregon State University. The paper arXiv:2611.00332 describes a set of unprocessed IQ captures from 31 commercial devices and a case study of domain-robust RF fingerprinting. The transmitters are 31 Seeed Studio XIAO boards based on the ESP32-C3, which send Bluetooth Low Energy traffic. Two Ettus Research USRP B210 receivers recorded the signals at 6 MS/s with a 2 MHz front-end filter on channels 1, 2, 14 and 32 (2.406, 2.408, 2.434 and 2.470 GHz). The scenarios cover indoor placements at 1.5 m line-of-sight, 1.5 m non-line-of-sight and 7.5 m line-of-sight with rich multipath, wired coaxial connections, and outdoor placements at 1 m, 2 m, 3 m and 1.5 m line-of-sight. Thermal runs add a temperature record for each device, read from the transmitter''s internal sensor. The data are stored per device as complex64 frame matrices in NumPy arrays, and the data are raw IQ frames rather than demodulated
+    packets.', zh: '蓝牙射频指纹数据集由Oregon State University（俄勒冈州立大学）NetSTAR实验室制作，arXiv:2611.00332论文对其进行了描述。论文给出了来自31台商用设备的未处理IQ采集数据，并包含领域鲁棒射频指纹识别的案例研究。发射端为31块基于ESP32-C3的Seeed Studio XIAO开发板，发送蓝牙低功耗（BLE）流量。两台Ettus Research USRP B210接收机以6 MS/s采样、2 MHz前端滤波，在信道1、2、14和32（2.406、2.408、2.434和2.470 GHz）上记录信号。场景包括1.5 m视距、1.5 m非视距和7.5 m富多径视距的室内布置，有线同轴连接，以及1 m、2 m、3 m和1.5 m视距的室外布置。热态测试会为每台设备附加温度记录，读取自发射端的内部传感器。数据按设备以complex64帧矩阵形式存储于NumPy数组中，数据为原始IQ帧，而非解调后的数据包。'}
+signal_details:
+- signal: iq
+  text: {en: 'Raw complex IQ frames captured with two Ettus Research USRP B210 SDRs (Rx1 and Rx2), controlled from Ubuntu through GNU Radio. The sampling rate is 6 MS/s with a 2 MHz front-end filter. Channel center frequencies are 2.406 GHz (Ch1), 2.408 GHz (Ch2), 2.434 GHz (Ch14) and 2.470 GHz (Ch32). Each device has a complex64 matrix X_k of D frames by N samples. In scenarios D1 to D3, D is 33,000 frames and N is 4,096 samples. In scenarios D4 to D15, D is 3,000 frames and N is 1,664 samples. Thermal scenarios add a float32 temperature vector T_k per device.', zh: '由两台Ettus Research USRP B210 SDR（Rx1和Rx2）在Ubuntu上通过GNU Radio控制采集的原始复数IQ帧。采样率为6 MS/s，前端滤波器带宽为2 MHz。信道中心频率为2.406 GHz（Ch1）、2.408 GHz（Ch2）、2.434 GHz（Ch14）和2.470 GHz（Ch32）。每台设备对应一个complex64矩阵X_k，行数为帧数D，列数为每帧采样点数N。在场景D1至D3中，D为33,000帧，N为4,096个采样点；在场景D4至D15中，D为3,000帧，N为1,664个采样点。热态场景还为每台设备提供一个float32温度向量T_k。'}
+pipeline:
+  summary: {en: 'Transmitters send BLE traffic, two USRP B210 receivers capture the signals at 6 MS/s, and the captures are stored as per-device frame matrices, with temperature vectors for the thermal scenarios.', zh: 发射端发送BLE流量，两台USRP B210接收机以6 MS/s采集信号，采集结果按设备存储为帧矩阵，热态场景另附温度向量。}
+  stages:
+  - title: {en: Transmitters, zh: 发射端}
+    detail: {en: '31 Seeed Studio XIAO boards with ESP32-C3 chips send Bluetooth Low Energy traffic. Each transmitter reports its internal temperature sensor reading in the last two payload bytes. In the wireless thermal runs the devices run for 20 minutes, with a warm-up of about 6 minutes.', zh: 31块搭载ESP32-C3芯片的Seeed Studio XIAO开发板发送蓝牙低功耗（BLE）流量。每个发射端在最后两个负载字节中报告其内部温度传感器读数。无线热态测试中，设备运行20分钟，预热约6分钟。}
+    inputs:
+    - {en: ESP32-C3 boards, zh: ESP32-C3开发板}
+    outputs:
+    - {en: BLE traffic with temperature bytes, zh: 带温度字节的BLE流量}
+  - title: {en: Reception, zh: 接收}
+    detail: {en: 'Two USRP B210 receivers, controlled from an Ubuntu host through GNU Radio, sample the transmissions at 6 MS/s through a 2 MHz front-end filter. The receivers cover channels 1, 2, 14 and 32 at 2.406, 2.408, 2.434 and 2.470 GHz. Outdoor runs use transmitter-receiver distances of 1 m, 2 m, 3 m and 1.5 m line-of-sight, after a stable period of 10 minutes.', zh: 两台USRP B210接收机由Ubuntu主机通过GNU Radio控制，以6 MS/s采样，并经过2 MHz前端滤波器。接收覆盖信道1、2、14和32，对应2.406、2.408、2.434和2.470 GHz。室外测试的收发距离为1 m、2 m、3 m和1.5 m视距，稳定10分钟后开始采集。}
+    inputs:
+    - {en: BLE traffic, zh: BLE流量}
+    outputs:
+    - {en: Raw IQ samples, zh: 原始IQ采样}
+  - title: {en: Per-device storage, zh: 按设备存储}
+    detail: {en: 'Each device is stored as a complex64 matrix X_k with D frames and N samples per frame, held as NumPy arrays. In thermal scenarios a float32 temperature vector T_k is stored alongside each device. D is 33,000 and N is 4,096 in scenarios D1 to D3, and D is 3,000 and N is 1,664 in scenarios D4 to D15.', zh: '每台设备存储为一个complex64矩阵X_k，包含D帧，每帧N个采样点，以NumPy数组形式保存。热态场景中，每台设备还保存一个float32温度向量T_k。场景D1至D3中D为33,000、N为4,096；场景D4至D15中D为3,000、N为1,664。'}
+    inputs:
+    - {en: Raw IQ samples, zh: 原始IQ采样}
+    outputs:
+    - {en: Per-device matrices X_k and temperature vectors T_k, zh: 按设备的矩阵X_k与温度向量T_k}

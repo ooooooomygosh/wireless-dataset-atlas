@@ -6,7 +6,6 @@ origin: measured
 tasks: [beam-management, channel-modeling]
 signals: [iq]
 bands_ghz: [60.48, 65.34]
-bandwidth_mhz: 1200
 environment: [indoor]
 samples: 1,580 IQ samples per RX capture; 25 locations; 64 TX and 64 RX AWV indices
 format: MAT
@@ -15,7 +14,45 @@ access: {url: 'https://ieee-dataport.org/documents/iq-data-given-tx-rx-beam-inde
 code: ['https://github.com/alphansahin/mmWaveSDR']
 paper: arxiv:2302.08444
 used_in: []
-citing: ["doi:10.1109/jsac.2024.3413978","doi:10.1145/3570361.3614087","doi:10.1109/tmlcn.2024.3449834"]
+citing: ['doi:10.1109/jsac.2024.3413978', 'doi:10.1145/3570361.3614087', 'doi:10.1109/tmlcn.2024.3449834']
 summary: {en: 'IQ captures from a 60 GHz beam sweep in an indoor office, over 64 TX and 64 RX beam index pairs at 60.48 GHz and 65.34 GHz. Each RX capture contains 1,580 IQ samples, and the data covers 25 locations.', zh: '在室内办公环境中，对64个发射与64个接收波束索引对进行60 GHz波束扫描得到的IQ采样，载波频率为60.48 GHz和65.34 GHz。每次接收采集包含1,580个IQ样本，数据覆盖25个位置。'}
 sources: ['https://ieee-dataport.org/documents/iq-data-given-tx-rx-beam-index-pair-link-level-analysis-60-ghz-band', 'https://arxiv.org/abs/2302.08444', 'https://arxiv.org/html/2302.08444', 'https://github.com/alphansahin/mmWaveSDR', 'https://api.crossref.org/works/10.21227/cm3m-2f84']
 checked: '2026-11-06'
+overview: {en: 'This dataset holds IQ captures from a 60 GHz beam sweep in an indoor office, produced by the University of South Carolina. It covers all 64 transmit and 64 receive beam indices (AWV), giving 4,096 beam pairs, at 60.48 GHz and 65.34 GHz. The data accompany the INFOCOM 2023 paper on the mmWaveSDR platform. A fixed and a mobile software-defined radio, each built on a Xilinx RFSoC2x2 board with a Sivers EVK06002 front end, made the measurements. Measurements were taken at 25 link distances, from 9.75 m down to 2.44 m in 12-inch steps. Each receive capture contains 1,580 IQ samples, and entries are indexed by location, RX beam and transfer. The data are two MATLAB .mat files, one per carrier frequency, with 542.67 MB of raw MATLAB files, and the sources give no total capture count.', zh: '该数据集为室内办公环境中 60 GHz 波束扫描得到的 IQ 采样，由南卡罗来纳大学制作。数据覆盖 64 个发射波束索引（AWV）与 64 个接收波束索引的全部组合，共 4,096 个波束对，载波频率为 60.48 GHz 和 65.34 GHz。数据对应 INFOCOM 2023 关于 mmWaveSDR 平台的论文。一台固定式与一台移动式软件无线电完成测量，二者均基于 Xilinx
+    RFSoC2x2 板卡，并配有 Sivers EVK06002 前端。测量在 25 个链路距离上进行，距离从 9.75 m 按 12 英寸步长减小到 2.44 m。每次接收采集包含 1,580 个 IQ 样本，条目按位置、接收波束与传输序号索引。数据为两个 MATLAB .mat 文件，分别对应一个载波频率，原始 MATLAB 文件合计 542.67 MB。'}
+signal_details:
+- signal: iq
+  text: {en: '1,580 IQ samples per RX capture, each sample carried as 16 bits, from converters running at 1.536 Gsps. Each entry in the MAT files holds IQdata, locationIndex, beamIndexRX, beamIndexTXdetect and PPDUinfo, indexed as location{i}.rxBeam{j}.transfer{k}.', zh: '每次接收采集包含 1,580 个 IQ 样本，每个样本以 16 bit 表示，转换器运行速率为 1.536 Gsps。MAT 文件中每个条目保存 IQdata、locationIndex、beamIndexRX、beamIndexTXdetect 与 PPDUinfo，索引形式为 location{i}.rxBeam{j}.transfer{k}。'}
+pipeline:
+  summary: {en: 'A mobile SDR announces 64 transmit beams, and a fixed SDR captures 1,580 IQ samples for each of its 64 receive beams. On-board detection and PPDU decoding then give the SNR, CFR and CIR of each transfer.', zh: '移动式 SDR 依次发送 64 个发射波束，固定式 SDR 对 64 个接收波束各采集 1,580 个 IQ 样本。随后由板上检测与 PPDU 解码得到每次传输的 SNR、CFR 与 CIR。'}
+  stages:
+  - title: {en: TX beam announcement, zh: 发射波束宣告}
+    detail: {en: 'The mobile SDR, a Xilinx RFSoC2x2 with a Sivers EVK06002 front end, sets each of the 64 default AWVs for 60.48 GHz, which sweep azimuth from -45 to 45 degrees. For each index it transmits a 1,280-sample OFDM PPDU that encodes the TX AWV index in its header bits. All 64 announcements finish in less than 2 s.', zh: '移动式 SDR 由 Xilinx RFSoC2x2 与 Sivers EVK06002 前端组成，依次设置 60.48 GHz 下的 64 个默认 AWV，方位角从 -45 度扫描到 45 度。对每个索引，它发送一个 1,280 个样本的 OFDM PPDU，并在帧头比特中编码发射 AWV 索引。64 次宣告在 2 s 内全部完成。'}
+    inputs:
+    - {en: 64 default AWVs at 60.48 GHz, zh: 60.48 GHz 下的 64 个默认 AWV}
+    outputs:
+    - {en: PPDUs with the announced TX AWV index, zh: 携带发射 AWV 索引的 PPDU}
+  - title: {en: RX capture with trigger detection, zh: 接收采集与触发检测}
+    detail: {en: 'The fixed SDR sets an RX AWV index, waits 2 s, and then captures 1,580 IQ samples of 16 bits each once the FPGA detects the trigger. Detection uses a normalised correlation over 128 lags, with threshold 1/4 that must be exceeded four times, 128 samples apart, in eight parallel detectors.', zh: '固定式 SDR 设置一个接收 AWV 索引并等待 2 s，待 FPGA 检测到触发信号后采集 1,580 个 IQ 样本，每个样本 16 bit。检测采用 128 个延迟的归一化相关，阈值为 1/4，需连续四次超过阈值且间隔 128 个样本，由八个并行检测器完成。'}
+    inputs:
+    - {en: RX AWV index and xSYNC trigger waveform, zh: 接收 AWV 索引与 xSYNC 触发波形}
+    outputs:
+    - {en: '1,580 IQ samples per transfer', zh: '每次传输 1,580 个 IQ 样本'}
+  - title: {en: PPDU decoding and metrics, zh: PPDU 解码与指标计算}
+    detail: {en: 'The companion computer pulls the 1,580 samples, decodes the PPDU to recover the TX AWV index, and computes the SNR, CFR and CIR.', zh: '伴随计算机读取这 1,580 个样本，解码 PPDU 以恢复发射 AWV 索引，并计算 SNR、CFR 与 CIR。'}
+    inputs:
+    - {en: IQ transfer, zh: IQ 传输数据}
+    outputs:
+    - {en: 'TX AWV index, SNR, CFR and CIR', zh: 发射 AWV 索引、SNR、CFR 与 CIR}
+  - title: {en: Storage in MATLAB files, zh: 保存为 MATLAB 文件}
+    detail: {en: 'Transfers are stored per RX AWV index, location and carrier frequency, in measurement_lab_f6048.mat and measurement_lab_f6534.mat. Each entry holds the raw IQ samples, the decoded TX AWV index, and a PPDUinfo structure.', zh: 传输数据按接收 AWV 索引、位置与载波频率保存在 measurement_lab_f6048.mat 与 measurement_lab_f6534.mat 中。每个条目包含原始 IQ 样本、解码得到的发射 AWV 索引，以及 PPDUinfo 结构。}
+    inputs:
+    - {en: decoded transfers, zh: 已解码的传输数据}
+    outputs:
+    - {en: 'two MATLAB .mat files, one per carrier frequency', zh: 两个 MATLAB .mat 文件，每个载波频率一个}
+  - title: {en: Analysis scripts, zh: 分析脚本}
+    detail: {en: 'The dataset includes the scripts mainAnalysis.m, main_postProcessing.py and libraryCommunications.py. The paper shows SNR results as matrices with RX AWV on one axis and TX AWV on the other, for each distance.', zh: 数据集包含脚本 mainAnalysis.m、main_postProcessing.py 与 libraryCommunications.py。论文将各距离下的 SNR 结果展示为接收 AWV 与发射 AWV 为坐标轴的矩阵。}
+    inputs:
+    - {en: MATLAB .mat files, zh: MATLAB .mat 文件}
+    outputs:
+    - {en: SNR matrices per distance, zh: 各距离下的 SNR 矩阵}

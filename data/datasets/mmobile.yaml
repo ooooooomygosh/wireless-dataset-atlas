@@ -17,7 +17,119 @@ access: {url: 'https://github.com/ucsdwcsng/mMobile', type: open}
 code: ['https://github.com/ucsdwcsng/mMobile']
 paper: doi:10.1145/3412060.3418433
 used_in: []
-citing: ["doi:10.1145/3452296.3472924","doi:10.1109/infocom53939.2023.10229065","doi:10.1109/jsac.2024.3413978"]
+citing: ['doi:10.1145/3452296.3472924', 'doi:10.1109/infocom53939.2023.10229065', 'doi:10.1109/jsac.2024.3413978']
 summary: {en: '28 GHz CSI measurements with 256 subcarriers at 240 kHz spacing, tagged by UE location and beam index, for indoor 2.5 m and 4.2 m and outdoor 10 m and 30 m gNB-UE links. The four configurations contain 129 UE locations in total.', zh: 28 GHz 信道状态信息（CSI）测量，包含 256 个子载波（子载波间隔 240 kHz），按用户位置和波束索引标注，覆盖室内 2.5 m 和 4.2 m、室外 10 m 和 30 m 的 gNB–UE 链路。四种配置共 129 个用户位置。}
 sources: ['https://github.com/ucsdwcsng/mMobile', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/README.md', 'https://api.github.com/repos/ucsdwcsng/mMobile/contents/dataset', 'https://api.crossref.org/works?query.title=mMobile+mobility+dataset&rows=3&select=DOI,title,issued']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: A fixed gNB and mobile UE sweep transmit beams at discrete stopping positions. OFDM training yields each beam's effective complex frequency-domain channel; position geometry and the analysis script jointly define the data axes., zh: 固定gNB与移动UE在离散停靠位置进行发射波束扫描，OFDM训练得到每波束的等效复数频域信道；位置几何与分析脚本共同定义数据轴。}
+  stages:
+  - title: {en: Set up indoor/outdoor links and stopping positions, zh: 设置室内外链路与停靠位置}
+    detail: {en: 'Measure 21, 32, 31, and 45 positions on links of 2.5, 4.2, 10, and 30 m, respectively. The UE is measured at specified discrete positions; the deployment table and script provide relative movement directions and step sizes.', zh: 在2.5、4.2、10、30 m链路中分别测量21、32、31、45个位置。UE在指定离散位置采集，部署表与脚本给出相对移动方向和步长。}
+    inputs:
+    - {en: 'Fixed gNB, UE, and 28 GHz hardware', zh: 固定gNB、UE和28 GHz硬件}
+    - {en: 4 deployments and position step sizes, zh: 4种部署与位置步长}
+    outputs:
+    - {en: Deployment and position indices, zh: 部署和位置索引}
+    - {en: Relative geometry parameters, zh: 相对几何参数}
+    controls:
+    - {en: The Outdoor 30 m step is 0.6 m in the README and 0.3 m in the script; verify the original files, zh: Outdoor 30 m步长在README为0.6 m、脚本为0.3 m，需核实原文件}
+    checks:
+    - {en: 'Reproduction check: confirm the step-size version before calculating positions/angles from distance and direction', zh: 复现检查：先确认步长版本，再由距离和方向计算位置/角度}
+  - title: {en: Sweep beams sequentially at each position, zh: 在每个位置顺序扫描波束}
+    detail: {en: 'At each stopping position, acquire data sequentially with multiple transmit beams, making beam a conditioning axis of the channel array. Each beam observation is an effective link under a fixed front-end configuration.', zh: 每个停靠位置依次使用多个发射波束采集，使beam成为信道数组的一条条件轴。各beam观测来自固定前端配置下的等效链路。}
+    inputs:
+    - {en: Transmit-beam set, zh: 发射波束集合}
+    - {en: Radio link at the current position, zh: 当前位置的无线链路}
+    outputs:
+    - {en: Position×beam sounding observations, zh: 位置×beam的声探观测}
+    controls:
+    - {en: The public interface has no verified UE-motion acquisition timestamps; organize by measurement position, zh: 公开接口没有已核实的UE运动采集时间戳；依测量位置组织}
+    checks:
+    - {en: 'Reproduction check: keep codebook indices, transmit power, and gain settings consistent; record whether the environment changes during a sweep', zh: 复现检查：保持码本索引、发射功率与增益设置一致；记录扫描中环境是否变化}
+  - title: {en: Estimate frequency-domain channels from OFDM, zh: 由OFDM估计频域信道}
+    detail: {en: 'The sounder uses 256 subcarriers at 240 kHz spacing, estimating a complex frequency-domain channel for each beam and saving received power. The official script reads rssi and rx_h_est_vec from MAT files.', zh: 声探设置使用256子载波、240 kHz间隔，估计每波束的复数频域信道并保存接收功率。MAT中由官方脚本读取rssi和rx_h_est_vec。}
+    inputs:
+    - {en: 28 GHz OFDM signal, zh: 28 GHz OFDM信号}
+    - {en: Received samples for each beam, zh: 每波束接收样本}
+    outputs:
+    - {en: beam-conditioned CFR, zh: beam-conditioned CFR}
+    - {en: Received power, zh: 接收功率}
+    controls:
+    - {en: The complex effective channel corresponds to the applied beam; hardware clock/calibration details require the specific acquisition documentation, zh: 复数等效信道对应已施加的波束；硬件时钟/校准细节需从具体采集资料补齐}
+    checks:
+    - {en: 'Reproduction check: inspect subcarriers and complex encoding, and verify consistent trends in received power and channel amplitude', zh: 复现检查：检查子载波和复数编码，验证功率与信道幅度趋势一致}
+  - title: {en: Reconstruct geometry and CIR views using the official script, zh: 用官方脚本重建几何与CIR视图}
+    detail: {en: 'The script reads data by position and beam, deriving relative angles from sampling steps, direction, and link distance. Frequency-domain channels are transformed or processed with cosineInterpolateCIR to form delay views. The script''s time_axis expresses propagation delay in ns.', zh: 脚本按位置和beam读取数据，用采样步长、方向与链路距离推导相对角度；频域信道经转换或cosineInterpolateCIR形成时延视图。脚本time_axis以ns表示传播时延。}
+    inputs:
+    - {en: 4 MAT files, zh: 4个MAT文件}
+    - {en: analyse_mmobile_data.m and interpolation functions, zh: analyse_mmobile_data.m及插值函数}
+    outputs:
+    - {en: Position/angle-to-channel associations, zh: 位置/角度与信道关联}
+    - {en: CIR and analysis plots, zh: CIR及分析图}
+    controls:
+    - {en: Interpret propagation-delay and mobility-acquisition time axes separately, zh: 传播时延轴与移动采集时间轴分别解释}
+    checks:
+    - {en: 'Reproduction check: verify IFFT length, delay zero, and units; record interpolation parameters', zh: 复现检查：复核IFFT长度、时延零点和单位；记录插值参数}
+  - title: {en: Construct position holdouts and beam tasks, zh: 构建位置留出和波束任务}
+    detail: {en: 'Compute the best observed beam among candidates at the same position, then evaluate beam selection using region or complete-deployment holdouts. Compare position nearest neighbors, geometric directions, and fixed beams, reporting received-power loss.', zh: 从同一位置的候选beam中计算最佳观测波束，再做按区域或完整部署留出的选束实验。比较位置近邻、几何方向和固定beam，报告接收功率损失。}
+    inputs:
+    - {en: Per-position beam power or CFR, zh: 每位置的beam功率或CFR}
+    - {en: Verified geometry, zh: 已确认几何}
+    outputs:
+    - {en: Oracle beam within the candidate set, zh: 候选集合内的oracle beam}
+    - {en: Position/deployment-level splits, zh: 位置/部署级split}
+    controls:
+    - {en: 'When constructing motion sequences across positions, explicitly specify the motion model and sampling interval', zh: 跨位置构造运动序列时显式指定运动模型和采样间隔}
+    checks:
+    - {en: 'Reproduction check: inspect leakage between adjacent positions; provide separate noise and power assumptions when SE is needed', zh: 复现检查：检查相邻位置泄漏；需要SE时另给噪声和功率假设}
+  scope: {en: 4 official MAT measurement files and analyse_mmobile_data.m; 28 GHz position×beam channels., zh: 官方4个MAT测量文件与analyse_mmobile_data.m；28 GHz位置×beam信道。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• rssi and rx_h_est_vec from 4 MAT files
+
+      • Measurement layout and official analysis script', zh: '• 4个MAT的rssi和rx_h_est_vec
+
+      • 测量布局与官方分析脚本'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Relative positions/angles, CIR, and beam gains
+
+      • Spatial-holdout splits and sequences under an explicit motion model', zh: '• 相对位置/角度、CIR和波束收益
+
+      • 空间留出split与显式运动模型下的序列'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• Hardware synchronization and calibration are not fully disclosed in the README/loading script read in this audit.
+
+      • Retain the conflicting 30 m deployment step sizes until resolved using the original data or an author clarification.', zh: '• 硬件同步与校准流程未在本轮已读README/加载脚本中完整披露。
+
+      • 保留30 m部署步长冲突，待原数据或作者说明解决。'}
+provenance:
+- {en: Real indoor/outdoor fixed gNB and mobile UE → transmit-beam sweeps at each position, zh: 真实室内外固定gNB与移动UE → 各位置发射波束扫描}
+- {en: OFDM sounding → complex frequency-domain channel for each beam → position/beam indices, zh: OFDM声探 → 每波束复数频域信道 → 位置/beam索引}
+technical_notes:
+- {en: 'Verified: beams are scanned sequentially at each position; the data are beam-conditioned channels.', zh: 已确认：各位置顺序扫描beam；数据是beam-conditioned信道。}
+- {en: 'Inference: effective channels from all beams cannot be directly combined into an uncalibrated raw antenna-element channel.', zh: 推断：不能直接把所有beam的等效信道拼成未校准的原始天线元素信道。}
+limitations:
+- {en: Random splits among a small number of adjacent positions can overstate generalization., zh: 少量相邻位置随机划分会夸大泛化。}
+- {en: A route with blockage is not a benchmark covering every LoS/NLoS mechanism., zh: 有遮挡路线不是覆盖所有LoS/NLoS机理的benchmark。}
+- {en: 'The official README and script specify Outdoor 30 m position steps of 0.6 m and 0.3 m, respectively; resolve this source conflict before using position labels.', zh: 官方README与脚本对Outdoor 30 m位置步长分别写0.6 m与0.3 m；使用位置标签前须核对这一来源冲突。}
+history:
+- {en: '2020: original ACM mmNets paper and data release.', zh: 2020：ACM mmNets原论文和数据发布。}
+usage:
+- {en: Use the official analyse_mmobile_data.m to inspect channel dimensions for each position and beam., zh: 用官方 analyse_mmobile_data.m 检查每位置每beam信道维度。}
+- {en: Compute average subcarrier power for each beam at the same position; test with spatial-block holdouts., zh: 对同一位置各beam计算平均子载波功率；位置块留出测试。}
+- {en: Preserve measurement intervals and report temporal prediction horizons only when the time axis is known., zh: 保留测量间隔，只有已知时间轴时报告时间预测horizon。}
+field_notes:
+- label: {en: Paths, zh: 路径}
+  text: {en: 'This field denotes per-path angles at both ends and interaction records, which the public interface does not provide. CIR/PDP and delay-related representations can be computed; the script provides cosineInterpolateCIR, not direct geometric MPC interactions or complete AoA/AoD.', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。可计算CIR/PDP与时延相关表征；脚本提供cosineInterpolateCIR，不直接提供几何MPC交互或完整AoA/AoD。}
+- label: {en: RGB, zh: RGB}
+  text: {en: 'The public data directory contains 4 MAT channel files. figures contains analysis outputs, not synchronized camera-observation sequences.', zh: 公开数据目录为4个MAT信道文件；figures为分析输出图，不是同步相机观测序列。}
+- label: {en: Time, zh: 时间}
+  text: {en: The README and script read by discrete stopping positions and beam indices. The script's time_axis is in ns and denotes CIR propagation delay; UE-motion acquisition timestamps are not publicly provided., zh: README和脚本按离散停靠位置及beam索引读取；脚本time_axis单位ns表示CIR传播时延，没有公开的UE运动采集时间戳。}
+- label: {en: Position, zh: 位置}
+  text: {en: Relative positions/angles are computed from sampling steps and geometry. The Outdoor 30 m step is 0.6 m in the README and 0.3 m in the script; verify against the original data rather than silently choosing one value., zh: 相对位置/角度由采样步长和几何计算。Outdoor 30 m步长README写0.6 m，脚本写0.3 m，需向原数据核验，不能静默采用某一值。}
+overview: {en: 'mMobile is a 28 GHz channel measurement dataset from the University of California San Diego, described in a 2020 mmNets''20 paper. It contains full CSI measurements for a mobile user at four gNB-UE link configurations: indoor at 2.5 m (21 positions) and 4.2 m (32 positions), and outdoor at 10 m (31 positions) and 30 m (45 positions), 129 UE positions in total. At each position the transmit beam is scanned, so each record is tagged by UE location and beam index. The channel uses 256 subcarriers at 240 kHz spacing, which the authors state matches 5G NR numerology at FR2. The spatial resolutions are 0.1 m, 0.1 m, 0.2 m, and 0.6 m, and the 30 m outdoor configuration includes a blockage between 3.9 m and 4.8 m. The public GitHub repository holds the data in a dataset/ folder, with the MATLAB scripts analyse_mmobile_data.m and cosineInterpolateCIR.m.', zh: mMobile 是一个 28 GHz 信道测量数据集，由美国加州大学圣地亚哥分校发布，对应 2020 年 mmNets'20 论文。数据包含移动用户在四种 gNB–UE 链路配置下的完整 CSI 测量：室内 2.5 m（21 个位置）与 4.2
+    m（32 个位置），室外 10 m（31 个位置）与 30 m（45 个位置），共 129 个 UE 位置。每个位置都扫描发射波束，因此每条记录按 UE 位置和波束索引标注。信道使用 256 个子载波，间隔 240 kHz，作者称其与 FR2 的 5G NR 参数集一致。空间分辨率分别为 0.1 m、0.1 m、0.2 m 和 0.6 m，其中 30 m 室外配置包含 3.9 m 至 4.8 m 之间的遮挡。公开的 GitHub 仓库将数据保存在 dataset/ 文件夹中，并附有 MATLAB 脚本 analyse_mmobile_data.m 和 cosineInterpolateCIR.m。}
+signal_details:
+- signal: csi
+  text: {en: 'Full channel (CSI) measurements at 28 GHz with 256 subcarriers at 240 kHz spacing. Each record is tagged by UE position and beam index, and the transmit beam is scanned at every position.', zh: 28 GHz 完整信道（CSI）测量，256 个子载波，间隔 240 kHz。每条记录按 UE 位置与波束索引标注，每个位置均扫描发射波束。}

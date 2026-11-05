@@ -14,3 +14,37 @@ citing: []
 summary: {en: 'OFDM channel-estimation datasets generated with the Sionna link-level simulator across different system models and propagation conditions, bundled with ten deep learning and traditional baselines. Each dataset contains complex tensors x, h and y, and the benchmark varies pilot count, pilot arrangement and number of receive antennas.', zh: 基于 Sionna 链路级仿真器生成的 OFDM 信道估计数据集，涵盖不同系统模型和传播条件，并附带十种深度学习与传统基线方法。每个数据集包含复数张量 x、h 和 y，基准测试中变化的参数包括导频数量、导频排布和接收天线数。}
 sources: ['https://github.com/SAIC-MONTREAL/CeBed', 'https://arxiv.org/abs/2306.13761', 'https://export.arxiv.org/api/query?search_query=ti:%22CeBed%22&max_results=3']
 checked: '2026-11-06'
+overview: {en: 'CeBed is a benchmark for deep data-driven OFDM channel estimation, described by Feriani, Wu, Liu and Dudek in a 2023 arXiv preprint (arXiv:2306.13761). The datasets are generated with the Sionna link-level simulator and use the 3GPP TR 38.901 UMi and UMa channel models. A scenario is defined by the channel model, the number of receive antennas (1, 4, 8 and 16 in the spatial-correlation study), the pilot pattern, the SNR and the UE speed. Each scenario contains 15000 samples of complex tensors x, h and y, split 80%, 10% and 10% into training, validation and evaluation parts. The benchmark compares ten estimators: seven deep models (ChannelNet, ReEsNet, InReEsNet, MReEsNet, DDAE, MTRE and HA02) and three classical ones (LS, LMMSE and ALMMSE). The authors target in-distribution accuracy, out-of-distribution SNR generalization, robustness to pilot design and robustness to spatial correlation. The data are simulated only, and the paper states that the selected scenarios do not
+    cover the space of all scenarios.', zh: 'CeBed 是一个面向深度数据驱动 OFDM 信道估计的基准，由 Feriani、Wu、Liu 和 Dudek 于 2023 年以 arXiv 预印本形式发表（arXiv:2306.13761）。数据集使用 Sionna 链路级仿真器生成，信道模型采用 3GPP TR 38.901 的 UMi 和 UMa。场景由信道模型、接收天线数（空间相关性实验中为 1、4、8 和 16）、导频图样、信噪比和 UE 速度共同定义。每个场景包含 15000 个复数张量样本 x、h 和 y，按 80%、10% 和 10% 划分为训练、验证和评估部分。基准比较了十种估计器：七种深度模型（ChannelNet、ReEsNet、InReEsNet、MReEsNet、DDAE、MTRE 和 HA02）与三种经典方法（LS、LMMSE 和 ALMMSE）。作者关注同分布精度、信噪比分布外泛化、导频设计鲁棒性和空间相关性鲁棒性。数据仅为仿真生成，论文指出所选场景并未覆盖全部场景空间。'}
+signal_details:
+- signal: csi
+  text: {en: 'Complex tensors x (transmitted symbols), h (channel) and y (received symbols), produced by the Sionna link-level simulator. The README gives the shapes as x [batch_size, num_tx, num_tx_ant, num_ofdm_symbols, num_subcarriers], h [batch size, num_rx, num_rx_ant, num_tx, num_tx_ant, num_ofdm_symbols, num_subcarriers] and y [batch size, num_rx, num_rx_ant, num_ofdm_symbols, num_subcarriers]; the README calls h the channel impulse response. The resource grid has 14 OFDM symbols and 72 subcarriers at 2.1 GHz with 30 kHz subcarrier spacing. Block pilots sit at symbol locations 3 and 10 with random QPSK values, and channel realizations are normalized to unit average energy per resource element.', zh: '由 Sionna 链路级仿真器生成的复数张量 x（发送符号）、h（信道）和 y（接收符号）。README 给出的形状为 x [batch_size, num_tx, num_tx_ant, num_ofdm_symbols, num_subcarriers]、h [batch size, num_rx, num_rx_ant, num_tx, num_tx_ant, num_ofdm_symbols, num_subcarriers] 和 y [batch size, num_rx, num_rx_ant, num_ofdm_symbols, num_subcarriers]；README
+      将 h 称为信道冲激响应。资源网格为 14 个 OFDM 符号、72 个子载波，载频 2.1 GHz，子载波间隔 30 kHz。块状导频位于符号位置 3 和 10，导频值为随机 QPSK 符号，信道实现按每个资源单元平均能量为 1 进行归一化。'}
+pipeline:
+  summary: {en: 'Sionna link-level simulation turns a scenario definition into OFDM channel-estimation datasets of complex tensors, which are then split for training and evaluation.', zh: Sionna 链路级仿真将场景定义转换为复数张量形式的 OFDM 信道估计数据集，随后划分为训练集与评估集。}
+  stages:
+  - title: {en: Scenario definition, zh: 场景定义}
+    detail: {en: 'The script scripts/generate_datasets_from_sionna.py takes the scenario as command-line flags: --size, --num_rx_antennas, --path_loss, --scenario (for example umi), --num_domains, and --start_ds and --end_ds to select a range of datasets. The channel model, system model, pilot pattern, SNR level and UE speed define each scenario.', zh: 脚本 scripts/generate_datasets_from_sionna.py 通过命令行参数定义场景，参数包括 --size、--num_rx_antennas、--path_loss、--scenario（例如 umi）和 --num_domains，--start_ds 与 --end_ds 用于选择数据集范围。信道模型、系统模型、导频图样、信噪比和 UE 速度共同确定每个场景。}
+    inputs:
+    - {en: scenario parameters, zh: 场景参数}
+    outputs:
+    - {en: generator settings for each scenario, zh: 各场景的生成器设置}
+  - title: {en: Link-level OFDM simulation, zh: 链路级 OFDM 仿真}
+    detail: {en: 'Sionna simulates transmission over 3GPP TR 38.901 UMi or UMa channels with path loss and non-line-of-sight propagation. The resource grid has 14 OFDM symbols and 72 subcarriers at 2.1 GHz with 30 kHz spacing. Block pilots at symbol locations 3 and 10 carry random QPSK values, and each scenario contains 15000 samples.', zh: Sionna 在 3GPP TR 38.901 的 UMi 或 UMa 信道上仿真传输，采用路径损耗与非视距传播。资源网格为 14 个 OFDM 符号、72 个子载波，载频 2.1 GHz，间隔 30 kHz。位于符号位置 3 和 10 的块状导频承载随机 QPSK 符号，每个场景包含 15000 个样本。}
+    inputs:
+    - {en: channel model and pilot pattern, zh: 信道模型与导频图样}
+    - {en: SNR levels, zh: 信噪比档位}
+    outputs:
+    - {en: 'tensors x, h and y', zh: 张量 x、h 与 y}
+  - title: {en: Tensor layout for models, zh: 模型张量布局}
+    detail: {en: 'The model input and output use the shape [batch_size, num_ofdm_symbols, num_ofdm_subcarriers, num_channels], with num_channels = num_rx_ant * num_tx * 2. The README notes that the batch dimension is written both as batch size and as batch_size.', zh: '模型输入与输出采用形状 [batch_size, num_ofdm_symbols, num_ofdm_subcarriers, num_channels]，其中 num_channels = num_rx_ant * num_tx * 2。README 中批大小维度同时写作 batch size 与 batch_size。'}
+    inputs:
+    - {en: 'tensors x, h and y', zh: 张量 x、h 与 y}
+    outputs:
+    - {en: model input and output tensors, zh: 模型输入与输出张量}
+  - title: {en: Multi-domain split and evaluation, zh: 多域划分与评估}
+    detail: {en: 'Each dataset is randomly split 80%, 10% and 10% into training, validation and evaluation parts. Training uses SNR domains between 0 and 20 dB with batches of 512 samples, and the out-of-distribution test uses the SNR ranges [-30, 0) and [25, 30] dB. Each dataset is evaluated with five random seeds that change model initialization and the split.', zh: '每个数据集被随机划分为 80%、10% 和 10%，分别用于训练、验证和评估。训练使用 0 至 20 dB 的信噪比域，批大小为 512；分布外测试使用 [-30, 0) 与 [25, 30] dB 的信噪比范围。每个数据集使用五个随机种子评估，种子同时影响模型初始化与数据划分。'}
+    inputs:
+    - {en: multi-domain dataset, zh: 多域数据集}
+    outputs:
+    - {en: 'training, validation and evaluation parts', zh: 训练、验证与评估部分}

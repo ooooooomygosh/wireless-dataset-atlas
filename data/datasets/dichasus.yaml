@@ -13,7 +13,164 @@ access: {url: 'https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi%3A1
 code: []
 paper: arxiv:2206.15302
 used_in: []
-citing: ["doi:10.1109/tmlcn.2024.3474639","doi:10.1109/tcomm.2024.3386571","doi:10.1109/twc.2024.3426525"]
+citing: ['doi:10.1109/tmlcn.2024.3474639', 'doi:10.1109/tcomm.2024.3386571', 'doi:10.1109/twc.2024.3426525']
 summary: {en: 'Channel state information recorded at 1.272 GHz with 50 MHz bandwidth by the DICHASUS distributed massive MIMO channel sounder, with ground-truth position tags and timestamps. Two indoor sets are included: a non-line-of-sight single room and a line-of-sight lab room with distributed arrays.', zh: 由 DICHASUS 分布式大规模 MIMO 信道探测仪在 1.272 GHz、50 MHz 带宽下记录的信道状态信息（CSI），附带真值位置标签和时间戳。包含两组室内数据：非视距单室环境，以及带分布式阵列的视距实验室环境。}
 sources: ['https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi%3A10.18419%2FDARUS-2204', 'https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi%3A10.18419%2FDARUS-2218', 'https://export.arxiv.org/api/query?id_list=2206.15302', 'https://arxiv.org/abs/2206.15302']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'A mobile transmitter sends OFDM while distributed receivers synchronize using OTA reference signals. Complex CSI and tachymeter positions are associated by time, then released as TFRecord, calibration files, and auxiliary scene records.', zh: 移动发射机发送OFDM，分布式接收机利用OTA参考信号同步；复数CSI与tachymeter位置按时间关联，随后发布TFRecord、标定文件及辅助场景记录。}
+  stages:
+  - title: {en: Deploy the mobile transmitter and distributed arrays, zh: 部署移动发射机与分布式阵列}
+    detail: {en: 'Deploy distributed receive arrays in a real environment and traverse the measurement area with a robot or mobile transmitter. adxx uses 4 arrays with 64 antennas in total, a 3.440 GHz carrier, and 50.056 MHz bandwidth; 005x uses a separate 1.272 GHz, 50 MHz configuration.', zh: 在真实环境中布设分布式接收阵列，由机器人或移动发射机遍历测量区域。adxx使用4个阵列、共64天线，载频3.440 GHz、带宽50.056 MHz；005x采用另一组1.272 GHz、50 MHz设置。}
+    inputs:
+    - {en: Measurement area and robot route, zh: 测量区域、机器人路线}
+    - {en: Array and frequency configurations for each campaign, zh: 各campaign阵列与频率配置}
+    outputs:
+    - {en: Campaign-specific device and coordinate configuration, zh: campaign专属设备与坐标配置}
+    - {en: Acquisition route, zh: 采集路线}
+    controls:
+    - {en: Organize campaigns independently and fix spec.json and element ordering, zh: 不同campaign独立组织，固定spec.json和阵元顺序}
+    checks:
+    - {en: 'Reproduction check: load and plot array positions; verify a one-to-one mapping between antenna IDs and the CSI axis', zh: 复现检查：载入阵列位置并绘图；检查天线编号与CSI轴一一对应}
+  - title: {en: Synchronize receivers using an OTA reference, zh: 用OTA参考完成接收机同步}
+    detail: {en: 'DICHASUS aligns distributed receivers in frequency, time, and phase using OTA reference signals, allowing complex channels across arrays to be processed jointly. This synchronization occurs within the measurement chain; matching calibration information is still needed afterward.', zh: DICHASUS利用OTA参考信号对齐分布式接收机的频率、时间和相位，使跨阵列的复信道可共同使用。该同步发生在测量链中，后续仍需配套标定信息。}
+    inputs:
+    - {en: Local oscillators and sampling clocks of each receiver, zh: 各接收机本振与采样时钟}
+    - {en: Over-the-air reference signals, zh: 空口参考信号}
+    outputs:
+    - {en: Multi-receiver observations suitable for joint processing, zh: 可联合处理的多接收机观测}
+    - {en: Synchronization and offset records, zh: 同步与偏移记录}
+    controls:
+    - {en: Use the calibration and offset files supplied for the campaign; do not apply files from a different campaign, zh: 使用campaign提供的标定与offset文件，避免跨campaign套用}
+    checks:
+    - {en: 'Reproduction check: inspect CFO, phase continuity over time, and stationary reference segments; record whether calibration has already been applied to the release', zh: 复现检查：检查CFO、相位随时间的连续性及静止参考段；记录标定是否已由发布物应用}
+  - title: {en: Transmit OFDM and estimate complex CSI, zh: 发送OFDM并估计复数CSI}
+    detail: {en: 'The sounder estimates frequency-domain CSI for each receive antenna. adxx uses 1024 subcarriers and stores csi, cfo, snr, and time in TFRecord, allowing channel and reception quality to be checked together.', zh: 声探系统估计各接收天线的频域CSI。adxx提供1024子载波设置，并在TFRecord中保存csi、cfo、snr和time，使用户能同时检查信道与接收质量。}
+    inputs:
+    - {en: Known transmitted OFDM signal, zh: 已知OFDM发送信号}
+    - {en: Synchronized received observations, zh: 同步后的接收观测}
+    outputs:
+    - {en: Complex CSI, zh: 复数CSI}
+    - {en: 'CFO, SNR, and measurement time', zh: CFO、SNR与测量时间}
+    controls:
+    - {en: 'Read carrier frequency, bandwidth, and subcarrier ordering from the campaign parameters', zh: 载频、带宽和子载波排列从该campaign参数读取}
+    checks:
+    - {en: 'Reproduction check: inspect complex encoding, real/imaginary ordering, active subcarriers, and low-SNR samples; retain the original amplitude scale', zh: 复现检查：检查复数编码、实虚部顺序、有效子载波及低SNR样本；保留原始幅度尺度}
+  - title: {en: Interpolate positions and record ground-truth age, zh: 插值位置并记录真值年龄}
+    detail: {en: 'Associate positioning observations with CSI times. The adxx interface provides pos-tachy and gt-interp-age-tachy, distinguishing position coordinates from their interpolation age.', zh: 将定位系统观测与CSI时间关联。adxx的发布接口提供pos-tachy和gt-interp-age-tachy，使用者可以区分位置坐标与其插值年龄。}
+    inputs:
+    - {en: Tachymeter position observations, zh: tachymeter位置观测}
+    - {en: CSI timestamps, zh: CSI时间戳}
+    outputs:
+    - {en: Position associated with each CSI record, zh: 每条CSI对应的位置}
+    - {en: Position interpolation age, zh: 定位插值年龄}
+    controls:
+    - {en: 'Handle coordinate systems, time units, and position validity according to the official parser', zh: 坐标系、时间单位和位置有效性按官方parser处理}
+    checks:
+    - {en: 'Reproduction check: inspect interpolation-age distributions, maximum robot speed, and position jumps; flag long missing-data intervals separately', zh: 复现检查：检查插值年龄分布、机器人最大速度和位置跳变；长时间缺测段单独标记}
+  - title: {en: Associate video and static scene point clouds, zh: 关联视频与静态场景点云}
+    detail: {en: 'Each TFRecord file has an accompanying video whose first frame aligns with its earliest CSI time; official synchronization accuracy is approximately 1–2 video frames. Static PTS data are generated using a tachymeter as a 3D scanner and contain xyz, reflectance intensity, and RGB, providing scene geometry.', zh: 每个TFRecord文件配套视频，首帧对齐该文件最早CSI时间，官方给出约1–2视频帧同步精度。静态PTS由tachymeter作为3D scanner生成，含xyz、反射强度与RGB，可作为场景几何资料。}
+    inputs:
+    - {en: adxx MKV videos, zh: adxx的MKV视频}
+    - {en: day1/day2 PTS point clouds, zh: day1/day2 PTS点云}
+    - {en: CSI time, zh: CSI time}
+    outputs:
+    - {en: Time-associated video, zh: 带时间关联的视频}
+    - {en: Static 3D scene and colors, zh: 静态三维场景与颜色}
+    controls:
+    - {en: TFRecord records may be unordered; match video using time first. Static point clouds are separate from per-CSI sensor sequences, zh: TFRecord记录可能乱序；先按time匹配视频；静态点云独立于逐CSI传感序列}
+    checks:
+    - {en: 'Reproduction check: spot-check person/robot positions against video; retain offsets and tolerances for cross-modal samples', zh: 复现检查：抽查人/机器人位置与视频对应；给跨模态样本保留偏移和容许误差}
+  - title: {en: Parse TFRecord and apply the corresponding calibration, zh: 解析TFRecord并应用对应标定}
+    detail: {en: 'Decode CSI and auxiliary fields with the official parser and include the corresponding calibration files in the processing chain. adxx releases 411,506 records in 27 TFRecord files; file boundaries are not machine-learning training/test splits.', zh: '按官方解析函数解码CSI和辅助字段，将对应标定文件纳入处理链。adxx以27个TFRecord文件发布411,506条记录；数据分文件不等于机器学习训练/测试划分。'}
+    inputs:
+    - {en: TFRecord、spec.json, zh: TFRecord、spec.json}
+    - {en: Calibration attachments such as JSON/offset files, zh: JSON/offset等标定附件}
+    - {en: Official loading example, zh: 官方加载示例}
+    outputs:
+    - {en: Usable CSI and position arrays, zh: 可用CSI与位置数组}
+    - {en: Record-level timing and quality metadata, zh: 记录级时间及质量元数据}
+    controls:
+    - {en: 'Preserve file names, campaign identity, and calibration status to prevent double calibration', zh: 保留文件名、campaign与标定状态，防止重复标定}
+    checks:
+    - {en: 'Reproduction check: confirm that units and axes remain unchanged after correction; spot-check agreement between the official example and a custom loader', zh: 复现检查：确认校正前后量纲和轴不变；抽查官方示例输出与自写加载器一致}
+  - title: {en: 'Evaluate by route, date, or spatial region', zh: 按路线、日期或空间区域评估}
+    detail: {en: 'For localization, hold out regions with a spatial buffer. For prediction, sort by time before grouping complete runs. Channel-level multiuser construction requires explicit static-environment and user-coexistence assumptions.', zh: 复现定位时按区域留出并设置空间缓冲；复现预测时先按时间排序，再把完整运行分组。信道层多用户构造需另外声明静态环境与用户共存假设。}
+    inputs:
+    - {en: 'Corrected CSI, time, position, and campaign identity', zh: 校正后的CSI、时间、位置与campaign身份}
+    outputs:
+    - {en: Splits without mixing trajectories, zh: 无轨迹混用的数据划分}
+    - {en: Localization or prediction baselines, zh: 定位或预测基线}
+    - {en: Explicit channel-level coexistence construction, zh: 明确的信道层共存构造}
+    controls:
+    - {en: Determine all normalization and thresholds from the training set only, zh: 所有归一化与阈值仅由训练集确定}
+    checks:
+    - {en: 'Reproduction check: inspect cross-split nearest-neighbor distances, duplicate points, and window overlap; perform sensitivity analysis for poorly synchronized records', zh: 复现检查：检查最近邻跨split距离、重复点和窗口重叠；对同步质量差的记录做敏感性分析}
+  scope: {en: '005x, 0d5x, and adxx; the detailed output interface is illustrated using the official adxx documentation.', zh: 005x、0d5x与adxx；详细输出接口以adxx官方说明为例。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• TFRecord complex CSI, CFO, SNR, time, and position fields
+
+      • spec.json and calibration attachments
+
+      • adxx companion MKV videos and static PTS scenes', zh: '• TFRecord复数CSI、CFO、SNR、time和位置字段
+
+      • spec.json及标定附件
+
+      • adxx配套MKV视频和静态PTS场景'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• AoA/delay-domain features, channel-charting embeddings, and localization results
+
+      • User-defined codebook responses, prediction windows, or channel-level multiuser sets', zh: '• AoA/时延域特征、channel charting嵌入和定位结果
+
+      • 用户定义的码本响应、预测窗口或信道层多用户集合'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The two arrays in 0d5x and four arrays in adxx belong to different campaign configurations.
+
+      • Public documentation supports reconstructing the processing chain; raw-data loading and calibration have not been executed in this audit.
+
+      • Record OTA synchronization, position interpolation age, and video offset separately; one synchronization-accuracy value cannot describe all three.', zh: '• 0d5x的两个阵列与adxx的四个阵列属于不同campaign配置。
+
+      • 公开说明支持重建处理链，当前未执行原始数据加载或标定。
+
+      • OTA同步、定位插值年龄和视频偏移分别记录，三者不能共用一个同步精度数字。'}
+provenance:
+- {en: Real indoor/outdoor environment → robot or mobile transmitter sends OFDM, zh: 真实室内/室外环境 → 机器人或移动发射机发送 OFDM}
+- {en: Distributed receive arrays + OTA synchronization → coherent complex CSI, zh: 分布式接收阵列 + OTA 同步 → 相干复数 CSI}
+- {en: Position and time labels → TFRecord; spec.json describes measurement parameters, zh: 位置和时间标签 → TFRecord；spec.json 描述测量参数}
+technical_notes:
+- {en: 'Verified: OTA reference signals align receiver frequency, timing, and phase.', zh: 已确认：OTA 参考信号用于对齐接收机频率、时间和相位。}
+- {en: 'Verified: 0d5x is an indoor LoS measurement with two separated arrays and a robot-mounted transmitter.', zh: 已确认：0d5x 是两个分离阵列与机器人发射机的室内 LoS 测量。}
+- {en: 'Inference: calibration improves consistency, but the data still reflect finite measurement-system dynamic range and errors.', zh: 推断：校准处理改善一致性，但数据仍包含测量系统的有限动态范围和误差。}
+limitations:
+- {en: Distributed antennas are not directly equivalent to a multi-base-station network with scheduling/handover protocols., zh: distributed antennas 不能直接等同于含调度/切换协议的多基站网络。}
+- {en: Splits across nearby grid points or trajectories may overstate localization generalization., zh: 网格或相邻轨迹切分可能夸大定位泛化。}
+- {en: A site-coordinate mapping learned from the training set does not automatically transfer to a new room., zh: 训练集学到的站点坐标映射不自动适用于新房间。}
+history:
+- {en: '2021: sounding-system paper published at WSA and early data released.', zh: 2021：WSA 发表声探仪论文并发布早期数据。}
+- {en: '2022: 0d5x data record V1.0.', zh: 2022：0d5x 数据记录 V1.0。}
+- {en: '2026-11-05: the research index still lists recent application papers; maintenance status cannot be inferred from paper counts.', zh: 2026-11-05：研究索引仍列近期应用论文；维护状态不能由论文数量推断。}
+usage:
+- {en: 'First download the corresponding spec.json and inspect the TFRecord complex representation, array order, and position coordinates.', zh: 先下载对应 spec.json 并检查 TFRecord complex representation、阵列顺序和位置坐标。}
+- {en: Preserve timestamps and apply calibration using the official processing method., zh: 保留时间戳；使用官方处理方式完成校准。}
+- {en: 'Split by run, date, or region; first test kNN localization or persistence-based CSI prediction.', zh: 按 run、日期、区域划分；先测试 kNN 定位或 persistence CSI 预测。}
+field_notes:
+- label: {en: RGB, zh: RGB}
+  text: {en: 'adxx provides an MKV video for each TFRecord. Its first frame aligns with the earliest CSI time, with an official synchronization accuracy of 1–2 video frames. TFRecord rows are not guaranteed to be time-ordered; match using time.', zh: adxx提供与各TFRecord对应的MKV视频；首帧对齐最早CSI时间，官方给出1–2视频帧同步精度。TFRecord行不保证时间有序，须按time匹配。}
+- label: {en: LiDAR, zh: LiDAR}
+  text: {en: 'adxx directly provides static day1/day2 PTS point clouds, officially generated using a tachymeter as a 3D scanner. These are not dynamic LiDAR scans acquired with each CSI record. The static point clouds can support scene reconstruction.', zh: adxx直接提供day1/day2静态PTS点云，官方说明由tachymeter作为3D scanner生成；不是随每条CSI采集的动态LiDAR扫描。静态点云可用于场景重建。}
+- label: {en: Radar, zh: 雷达}
+  text: {en: 'Verified TFRecord fields are cfo/csi/gt-interp-age-tachy/pos-tachy/snr/time; auxiliary files contain video, point clouds, and calibration. There are no separate radar observations.', zh: 所核实TFRecord字段为cfo/csi/gt-interp-age-tachy/pos-tachy/snr/time，辅助文件是视频、点云和标定；没有独立雷达观测。}
+- label: {en: Cross-frequency pairing, zh: 跨频配对}
+  text: {en: 005x and adxx each use their own fixed carrier frequency; they are not cross-frequency pairs from the same time/trajectory. This finding applies only to the campaigns verified here., zh: 005x与adxx分别固定于自己的载频，不是同一时间/轨迹跨频配对；本结论只针对这几个已核实campaign。}
+- label: {en: Multi-user, zh: 多用户}
+  text: {en: adxx records trajectories of one robot-mounted transmitter. Coexisting users can be constructed at the channel level under an explicit static-scene assumption; this is not a synchronized multi-UE measurement., zh: adxx是一台机器人发射机的轨迹；可以在明确静态场景假设下构造信道层共存用户，不能称同步多UE实测。}
+- label: {en: Multi-BS, zh: 多基站}
+  text: {en: 'The 4 coherent distributed arrays belong to one sounding system; base-station protocols, independent clocks, and scheduling require separate modeling.', zh: 4个相干分布式阵列属于同一声探系统；基站协议、独立时钟和调度需另建模。}
+tools: [wireless-ml-data-hub]
+overview: {en: 'DICHASUS is a set of channel state information (CSI) recordings made with the DICHASUS distributed massive MIMO channel sounder of the Institute of Telecommunications, University of Stuttgart. The two records in this entry are dichasus-005x, an indoor non-line-of-sight single room with five complete runs, and dichasus-0d5x, an indoor lab room with two separated antenna arrays, mostly line-of-sight, with seven complete runs. In both records a vacuum robot carries the transmit antenna, the carrier frequency is 1.272 GHz and the bandwidth is 50 MHz. Each record stores CSI in TFRecord files together with SNR estimates, the transmitter position from the robot LiDAR, timestamps and robot rotation, and a machine-readable spec.json describes the arrays and fields. The records were published on DaRUS under CC BY 4.0, dichasus-005x in October 2021 and dichasus-0d5x in February 2022.', zh: DICHASUS 是斯图加特大学通信研究所分布式大规模 MIMO 信道探测仪采集的信道状态信息（CSI）数据集。本条目包含两条记录：dichasus-005x 为室内非视距单房间场景，含
+    5 次完整运行；dichasus-0d5x 为室内实验室场景，使用两个分离的天线阵列，以视距为主，含 7 次完整运行。两条记录中，发射天线均安装在真空吸尘器机器人上。载频为 1.272 GHz，带宽为 50 MHz。每条记录以 TFRecord 文件保存 CSI，并附带 SNR 估计、机器人激光雷达给出的发射机位置、时间戳和机器人旋转角，spec.json 以机器可读形式描述阵列与字段。两条记录均以 CC BY 4.0 许可在 DaRUS 发布，dichasus-005x 发布于 2021 年 10 月，dichasus-0d5x 发布于 2022 年 2 月。}
+signal_details:
+- signal: csi
+  text: {en: 'Complex channel coefficients (real and imaginary parts) for all antenna elements over all subcarriers, stored as tensors in TFRecord files. Carrier 1.272 GHz, bandwidth 50 MHz. dichasus-005x uses one array of 32 antenna elements arranged as 4 rows of 8, with spacing 0.118 m. dichasus-0d5x uses two arrays of 16 antenna elements each (2 rows of 8), with spacing 0.118 m. Each record also stores per-antenna SNR estimates (snr), the transmitter position from the vacuum robot LiDAR in meters (pos-lidar, X and Y, tensor64), timestamps in seconds since the start of the campaign (time), and the robot rotation in radians (rot in dichasus-005x, rot-lidar in dichasus-0d5x). dichasus-0d5x adds the measured carrier frequency offset between the transmitter and each receive antenna (cfo) and the time in seconds to the closest LiDAR position (gt-interp-age-lidar).', zh: 所有天线单元、所有子载波的复信道系数（实部与虚部），以 TFRecord 文件中的张量形式保存。载频 1.272 GHz，带宽 50 MHz。dichasus-005x 使用一个阵列，共 32 个天线单元，排列为 4 行 × 8 列，间距 0.118
+      m。dichasus-0d5x 使用两个阵列，每个阵列 16 个天线单元（2 行 × 8 列），间距 0.118 m。每条记录还保存各天线的 SNR 估计（snr）、真空吸尘器机器人激光雷达给出的发射机位置（pos-lidar，单位 m，X 与 Y 坐标，类型 tensor64）、自测量活动开始以来的时间戳（time，单位 s），以及机器人旋转角（dichasus-005x 为 rot，dichasus-0d5x 为 rot-lidar，单位 rad）。dichasus-0d5x 另有发射机与各接收天线之间测得的载波频偏（cfo），以及距最近激光雷达位置的时间（gt-interp-age-lidar，单位 s）。}

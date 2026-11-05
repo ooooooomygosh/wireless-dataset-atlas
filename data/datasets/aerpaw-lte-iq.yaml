@@ -16,7 +16,45 @@ access: {url: 'https://ieee-dataport.org/documents/lte-iq-measurement-data-sets-
 code: []
 paper: arxiv:2303.01635
 used_in: []
-citing: ["doi:10.1109/iccworkshops63917.2026.11586300"]
+citing: ['doi:10.1109/iccworkshops63917.2026.11586300']
 summary: {en: 'The dataset contains raw LTE I/Q samples from a ground SDR-based LTE base station at 3.51 GHz, recorded by a UAV-mounted SDR at about 30 to 110 m altitude over the Lake Wheeler farm area of the AERPAW platform. The data is stored as SigMF files.', zh: 该数据集包含地面基于SDR的LTE基站在3.51 GHz频点上的原始LTE I/Q采样，由无人机搭载的SDR在约30至110米高度采集，场地为AERPAW平台的Lake Wheeler农场区域。数据以SigMF格式存储。}
 sources: ['https://ieee-dataport.org/documents/lte-iq-measurement-data-sets-aerpaw-platform-air-ground-propagation-modeling', 'https://arxiv.org/abs/2303.01635']
 checked: '2026-11-06'
+overview: {en: 'AERPAW LTE I/Q Dataset contains raw LTE I/Q samples from air-to-ground field experiments on the AERPAW platform at North Carolina State University, recorded in the Lake Wheeler farm area. The ground station is an SDR-based LTE base station operating at 3.51 GHz, and the receiver is an SDR carried by a UAV flying at 30, 50, 70, 90 and 110 m. The authors are Sung Joon Maeng, Ozgur Ozdemir, Ismail Guvenc and Mihail Sichitiu, with Magreth Mushi and Rudra Dutta. The records were created on IEEE DataPort on 15 November 2022 and are described in arXiv:2303.01635, submitted on 3 March 2023. GPS latitude, longitude, altitude and timestamps are logged with the I/Q data. The stated purposes are the study of cellular coverage at different UAV altitudes and the training of machine learning methods for UAV communication and navigation.', zh: 'AERPAW LTE I/Q Dataset 包含 North Carolina State University 的 AERPAW 平台在 Lake Wheeler farm 区域进行空对地外场实验得到的原始 LTE I/Q 采样。地面站为基于 SDR 的 LTE 基站，工作频率 3.51
+    GHz；接收端为搭载在无人机上的 SDR，飞行高度为 30、50、70、90 和 110 m。作者为 Sung Joon Maeng、Ozgur Ozdemir、Ismail Guvenc 和 Mihail Sichitiu，并包括 Magreth Mushi 和 Rudra Dutta。数据记录于 2022 年 11 月 15 日在 IEEE DataPort 上创建，并在 arXiv:2303.01635（2023 年 3 月 3 日提交）中加以描述。GPS 的纬度、经度、高度和时间戳与 I/Q 数据一同记录。每个高度对应一个 SigMF 格式的 7z 压缩包，五个压缩包合计约 8.80 GB。数据的用途是研究不同无人机高度下的蜂窝覆盖，并训练用于无人机通信与导航的机器学习方法。'}
+signal_details:
+- signal: iq
+  text: {en: 'Raw LTE I/Q captured by a USRP B205mini SDR on the UAV, centred at 3.51 GHz. Each capture is a 20 ms segment at a 2 MHz sampling rate, recorded once every 100 ms. Samples are complex float64, stored in .mat files and in SigMF archives. The eNodeB transmits in a 1.4 MHz bandwidth.', zh: 无人机搭载的 USRP B205mini SDR 采集的原始 LTE I/Q，中心频率 3.51 GHz。每次采集为 20 ms 片段，采样率 2 MHz，每 100 ms 录制一次。采样以 complex float64 存储于 .mat 文件和 SigMF 归档中。eNodeB 的发射带宽为 1.4 MHz。}
+pipeline:
+  summary: {en: 'The eNodeB transmits an LTE downlink, the UAV records I/Q samples at five altitudes, and MATLAB converts the recordings into RSRP values and path-loss results.', zh: eNodeB 发射 LTE 下行信号，无人机在五个高度上记录 I/Q 采样，MATLAB 将记录转换为 RSRP 值和路径损耗结果。}
+  stages:
+  - title: {en: LTE downlink transmission, zh: LTE 下行发射}
+    detail: {en: 'An srsRAN eNodeB on a USRP B205mini at fixed node LW1 transmits at 3.51 GHz with a 1.4 MHz bandwidth, with continuous CRS, SS and PBCH. The tower is 10 m high, and both ends use a vertically oriented single dipole antenna.', zh: 固定节点 LW1 上的 srsRAN eNodeB 通过 USRP B205mini 以 1.4 MHz 带宽在 3.51 GHz 发射，并持续发送 CRS、SS 和 PBCH。天线塔高 10 m，收发两端均使用垂直放置的单偶极子天线。}
+    outputs:
+    - {en: LTE downlink signal, zh: LTE 下行信号}
+  - title: {en: UAV I/Q capture, zh: 无人机 I/Q 采集}
+    detail: {en: 'The AERPAW I/Q collection sample experiment runs on a UAV-mounted USRP B205mini. Each capture is 20 ms at 2 MHz, recorded once every 100 ms, while the UAV flies a south-north zigzag at a fixed height of 30, 50, 70, 90 or 110 m. GPS latitude, longitude, altitude and timestamps are logged to a text file.', zh: 无人机搭载的 USRP B205mini 上运行 AERPAW I/Q 采集示例程序。每次采集为 20 ms、采样率 2 MHz，每 100 ms 录制一次，同时无人机在 30、50、70、90 或 110 m 的固定高度上沿南北向折线飞行。GPS 的纬度、经度、高度和时间戳记录到文本文件中。}
+    inputs:
+    - {en: Zigzag flight at a fixed height, zh: 固定高度的折线飞行}
+    outputs:
+    - {en: .mat I/Q recording, zh: .mat I/Q 记录}
+    - {en: Text GPS log, zh: 文本 GPS 日志}
+  - title: {en: SigMF conversion, zh: SigMF 转换}
+    detail: {en: 'The SigMF Python package rewrites each recording as a NumPy array, with I/Q as complex float64 and GPS as real float64. The JSON metadata has global, capture and annotations objects, and the authors cite the SigMF specification v1.0.0.', zh: SigMF Python 包将每条记录重写为 NumPy 数组，I/Q 为 complex float64，GPS 为 real float64。JSON 元数据包含 global、capture 和 annotations 三个对象，作者引用了 SigMF 规范 v1.0.0。}
+    inputs:
+    - {en: .mat I/Q recording and GPS log, zh: .mat I/Q 记录和 GPS 日志}
+    outputs:
+    - {en: SigMF archives, zh: SigMF 归档}
+  - title: {en: Cell identification and RSRP estimation, zh: 小区识别与 RSRP 估计}
+    detail: {en: 'MATLAB with the LTE Toolbox estimates the carrier frequency offset from the OFDM cyclic prefix and compensates it. The PSS gives the physical layer ID and timing offset, the SSS gives the group ID, and together they give the physical cell identity. Channel coefficients come from CRS, with cubic interpolation for unknown resource grid entries, and RSRP is calculated from the channel estimates.', zh: MATLAB 结合 LTE Toolbox 根据 OFDM 循环前缀估计载波频偏并进行补偿。PSS 给出物理层 ID 和定时偏移，SSS 给出物理层组 ID，两者合并得到物理小区标识。信道系数由 CRS 估计，未知资源网格元素采用三次插值，RSRP 由信道估计结果计算得到。}
+    inputs:
+    - {en: Raw I/Q samples, zh: 原始 I/Q 采样}
+    outputs:
+    - {en: RSRP values, zh: RSRP 值}
+  - title: {en: Position matching and path-loss analysis, zh: 位置匹配与路径损耗分析}
+    detail: {en: 'SDR and GPS timestamps are matched and interpolated to attach a UAV position to each RSRP value. For the 50 m dataset, RSRP is modelled as P_Tx minus path loss plus a shadowing term, with free-space and two-ray path loss, and the shadowing term is fitted with Gaussian and left-skewed Gaussian distributions.', zh: SDR 与 GPS 时间戳经匹配和插值后，为每个 RSRP 值附加无人机位置。对于 50 m 数据集，RSRP 按 P_Tx 减去路径损耗再加阴影项建模，路径损耗采用自由空间模型和双径模型，阴影项分别用高斯分布和左偏高斯分布拟合。}
+    inputs:
+    - {en: RSRP values and GPS positions, zh: RSRP 值和 GPS 位置}
+    outputs:
+    - {en: 3D RSRP maps, zh: 三维 RSRP 图}
+    - {en: Path-loss and shadowing fit, zh: 路径损耗与阴影拟合}

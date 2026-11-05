@@ -38,6 +38,14 @@ export const lastUpdated: string = fs.existsSync(path.join(root, "data/papers.js
 export const tasks: Task[] = (yaml.load(fs.readFileSync(path.join(root, "data/tasks.yaml"), "utf8")) as unknown[]).map((x) =>
   taskSchema.parse(x),
 );
+type L = { en: string; zh: string };
+export interface Tool { id: string; name: string; category: L; repo: string; license: L; role: L; how_to_use: L[]; limitations: L[]; datasets: string[] }
+export interface Tutorial { id: string; title: L; file: string; status: L; description: L; environment: L; steps: L[]; code: string }
+export const tools: Tool[] = yaml.load(fs.readFileSync(path.join(root, "data/tools.yaml"), "utf8")) as Tool[];
+export const tutorials: Tutorial[] = (yaml.load(fs.readFileSync(path.join(root, "data/tutorials.yaml"), "utf8")) as Omit<Tutorial, "code">[]).map((x) => ({
+  ...x,
+  code: fs.readFileSync(path.join(root, x.file), "utf8"),
+}));
 export const taskById = (id: string) => tasks.find((x) => x.id === id)!;
 
 export async function allDatasets(): Promise<Dataset[]> {

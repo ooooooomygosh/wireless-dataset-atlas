@@ -20,3 +20,139 @@ citing: []
 summary: {en: 'Double-directional 8x8 MIMO channel measurements at 4.85 GHz on urban macro- and micro-cell routes in Yokohama, Japan, with a vehicle-mounted receiver. The data contains 3,386 valid samples across routes R3 to R6, with LoS/NLoS labels.', zh: '在日本横滨市的城市宏蜂窝和微蜂窝路线上，以车载接收机进行的 4.85 GHz 双向 8x8 MIMO 信道测量。数据包含路线 R3 至 R6 的 3,386 个有效样本，并标注了 LoS/NLoS。'}
 sources: ['https://radio.eng.niigata-u.ac.jp/datasets/sub-6ghz/', 'https://zenodo.org/records/21213882', 'https://radio.eng.niigata-u.ac.jp/datasets/mm-wave/']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Sub-6 collects 8×8 MIMO and scene information along routes. At 24/60 GHz, parallel sounding and OTA calibration are performed at measurement sites, followed by MPC extraction from CTF/CIR and joint clustering.', zh: Sub-6沿路线采集8×8 MIMO及场景资料；24/60 GHz在站点并行声探、做OTA校准，再从CTF/CIR提取MPC并联合聚类。}
+  stages:
+  - title: {en: Select Sub-6 or dual-mmWave acquisition separately, zh: 分别选择Sub-6或双mmWave采集}
+    detail: {en: 'The 4.85 GHz campaign collects 8×8 MIMO along 4 routes, totaling 3386 samples, with periodic panoramic photos. The dual-mmWave campaign performs 24/60 GHz sounding at discrete positions, recording deployments by area.', zh: 4.85 GHz campaign沿4条路线采集8×8 MIMO，共3386样本，另有间隔全景照片。双mmWave campaign在离散位置进行24/60 GHz声探，按各area记录部署。}
+    inputs:
+    - {en: Yokohama UMa/UMi sites and routes, zh: 横滨UMa/UMi站点和路线}
+    - {en: Hardware and measurement plan for the corresponding campaign, zh: 对应campaign硬件与测量计划}
+    outputs:
+    - {en: Records from two independent campaigns, zh: 两套独立campaign记录}
+    - {en: Route or measurement-point identity, zh: 路线或测量点身份}
+    controls:
+    - {en: The shared area between Sub-6 and mmWave is used only to describe the environment; cross-frequency sample pairing comes from the dual-mmWave branch, zh: Sub-6与mmWave的同区域关系只用于环境描述，跨频样本配对来自双mmWave支线}
+    checks:
+    - {en: 'Reproduction check: keep campaign, BS site, measurement point, and photo intervals independently traceable', zh: 复现检查：保持campaign、BS站点、测量点和照片间隔各自可追踪}
+  - title: {en: Deploy dual-band directional arrays and parallel sounding, zh: 部署双频定向阵列与并行声探}
+    detail: {en: 'The TVT main text uses arrays in four directions to cover 360°, with dual 4×4 TDM for parallel measurement of two bands. The arrays are a 2×8 UPA and a 16-element ULA. The main-text analysis uses 49 UMa and 25 UMi points.', zh: TVT正文使用四个方向的阵列覆盖360°，双4×4 TDM结构并行测量两个频段；两频段阵列分别使用2×8 UPA与16元ULA。正文分析49个UMa点与25个UMi点。}
+    inputs:
+    - {en: Dual-band sounder, zh: 双频声探仪}
+    - {en: Directional arrays and Tx/Rx geometry, zh: 定向阵列与Tx/Rx几何}
+    outputs:
+    - {en: 'Observations organized by band, direction, and measurement point', zh: 按频段、方向和测量点组织的观测}
+    controls:
+    - {en: The portal's 126 points and the paper's 74 points cover different release scopes; the portal's rotation description differs from the hardware in the main text, zh: 门户126点与论文74点是不同公开范围；门户的旋转描述与正文硬件存在差异}
+    checks:
+    - {en: 'Reproduction check: identify the configuration corresponding to the download package before determining beam/port axes and scan timing', zh: 复现检查：先确认下载包对应哪套配置，再确定波束/端口轴及扫描时间}
+  - title: {en: Calibrate the system and obtain CTF/CIR, zh: 校准系统并获得CTF/CIR}
+    detail: {en: Dual-band measurements use OTA calibration to account for system effects before forming channel frequency/impulse responses. Preserve measurement points and array directions for recovering path parameters from beam-scan responses., zh: 双频测量通过OTA校准处理系统影响，再形成信道频率/冲激响应。保留测量点及阵列方向，以便从波束扫描响应恢复路径参数。}
+    inputs:
+    - {en: Sounding responses, zh: 声探响应}
+    - {en: OTA calibration configuration and system response, zh: OTA校准配置与系统响应}
+    outputs:
+    - {en: Calibrated CTF/CIR, zh: 校准后的CTF/CIR}
+    - {en: Measurement-point and direction metadata, zh: 测量点与方向元数据}
+    controls:
+    - {en: 'Record calibration methods, power references, and bandwidth by campaign; parameters were not filled in from unread tables', zh: 标定方法、功率基准和带宽按该campaign记录；未从未读表格补齐参数}
+    checks:
+    - {en: 'Reproduction check: verify calibration residuals, noise thresholds, delay zero, and power units across bands', zh: 复现检查：验证校准残差、噪声门限、时延零点和跨频功率单位}
+  - title: {en: Extract and cluster multipath using CLEAN, zh: 用CLEAN提取并聚类多径}
+    detail: {en: 'The paper extracts MPCs using CLEAN, then jointly clusters paths from both bands to distinguish shared and unique clusters. Power comparisons use the 7.66 dB frequency-difference correction associated with 58.32/24.15 GHz.', zh: 论文用CLEAN提取MPC，再对两频段路径联合聚类，区分共有簇和独有簇。功率比较中使用58.32/24.15 GHz对应的7.66 dB频差校正。}
+    inputs:
+    - {en: Calibrated dual-band CTF/CIR, zh: 校准后的双频CTF/CIR}
+    - {en: Array scans and direction information, zh: 阵列扫描与方向信息}
+    outputs:
+    - {en: 'MPC angles, delays, and powers', zh: MPC角度、时延、功率}
+    - {en: Shared/unique clusters across frequencies, zh: 跨频共有/独有簇}
+    controls:
+    - {en: Clearly distinguish nominal 24/60 GHz from the 24.15/58.32 GHz values used in calculations, zh: 标称24/60 GHz与计算用24.15/58.32 GHz明确分开}
+    checks:
+    - {en: 'Reproduction check: retain extraction thresholds, path truncation, and clustering parameters; evaluate how threshold changes affect the proportion of shared clusters', zh: 复现检查：复现时保留提取阈值、路径截断与聚类参数；评估阈值变化对共有簇比例的影响}
+  - title: {en: Publish measurement and path files, zh: 发布测量与路径文件}
+    detail: {en: 'The Sub-6 portal lists MAT/CSV and panoramic photos; the mmWave portal lists XLSX/MAT, but downloads remain Coming soon. Record observable quantities in the workflow separately from files currently available.', zh: Sub-6门户列MAT/CSV和全景照片；mmWave门户列XLSX/MAT，但当前下载仍标Coming soon。流程中的可观测量与当前可取得文件分别记录。}
+    inputs:
+    - {en: Measurements and scene information for each campaign, zh: 各campaign测量及场景资料}
+    - {en: MPC/clustering outputs, zh: MPC/聚类输出}
+    outputs:
+    - {en: Sub-6 release records and files, zh: Sub-6发布记录与文件}
+    - {en: mmWave data-format documentation, zh: mmWave数据格式说明}
+    controls:
+    - {en: Webpage descriptions and path-extraction results in papers do not imply that all intermediate products are currently downloadable, zh: 网页说明和论文提取结果不自动表示当前可下载全部中间产物}
+    checks:
+    - {en: 'Reproduction check: after downloading, enumerate variables, coordinates, and units, then determine whether the package contains CTF, CIR, or only path statistics', zh: 复现检查：下载后先枚举变量、坐标和单位，再确认是否包含CTF、CIR或仅路径统计}
+  - title: {en: Hold out sites and evaluate cross-frequency mappings, zh: 按站点留出并评估跨频映射}
+    detail: {en: 'Group cross-frequency experiments by site/area. First evaluate geometric matching, path-power baselines, and oracle candidate paths. Use Sub-6 as an independent data source, building a separate cross-campaign correspondence model if needed.', zh: 以站点/area为分组单位建立跨频实验，先评估几何匹配、路径功率基线和oracle候选路径。Sub-6作为独立数据来源使用，必要时另建跨campaign对应模型。}
+    inputs:
+    - {en: Measurement points with explicit dual-band pairing, zh: 有明确双频配对的测量点}
+    - {en: Single-band and cross-frequency path features, zh: 单频与跨频路径特征}
+    outputs:
+    - {en: Site-level splits, zh: 站点级split}
+    - {en: Cross-frequency path/power mapping baselines, zh: 跨频路径/功率映射基线}
+    controls:
+    - {en: Both bands and their derived MPCs from the same measurement point must remain in the same split, zh: 同一测量点的两频段及其派生MPC必须处于同一split}
+    checks:
+    - {en: 'Reproduction check: inspect time, direction, and position pairing; analyze nearby vehicle/pedestrian effects separately', zh: 复现检查：检查时间、方向和位置配对；对附近车辆/行人影响单列分析}
+  scope: {en: Separate Yokohama Sub-6 and dual-mmWave campaigns; the dual-band production chain follows TVT Sec. II–III., zh: 横滨Sub-6和双mmWave两条独立campaign；双频生产链以TVT正文Sec.II–III为准。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Sub-6 channels, position/route records, and periodic panoramic photos
+
+      • Dual-mmWave acquisition documentation and planned XLSX/MAT releases', zh: '• Sub-6信道、位置/路线记录和间隔全景照片
+
+      • 双mmWave采集说明及计划发布的XLSX/MAT'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• MPCs extracted from CTF/CIR and cross-frequency clusters
+
+      • User-defined cross-site splits and cross-frequency tasks', zh: '• 由CTF/CIR提取的MPC和跨频聚类
+
+      • 用户设置的跨站点划分与跨频任务'}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• Hardware/count differences between the official portal and TVT main text are retained at each stage, rather than combined into one parameter table.
+
+      • Only the 24/60 GHz branch currently supports the simultaneous dual-band sounding described in the paper.', zh: '• 官方门户与TVT正文的硬件/数量差异保留在各阶段，不拼接为单一参数表。
+
+      • 当前仅24/60 GHz支线支持论文所述同时双频声探。'}
+provenance:
+- {en: Real Yokohama UMa/UMi sites → 4.85 GHz MIMO sounding or a separate 24/60 GHz phased-array sounding campaign, zh: 横滨 UMa/UMi 实际站点 → 4.85 GHz MIMO 声探或独立 24/60 GHz phased-array 声探}
+- {en: mmWave OTA calibration → CTF/CIR → CLEAN multipath extraction and cross-frequency clustering, zh: mmWave OTA 校准 → CTF/CIR → CLEAN 多径提取与跨频聚类}
+- {en: 'Position, angles, delays, and path powers → campaign-specific data', zh: 位置、角度、时延和路径功率 → campaign 专属数据}
+technical_notes:
+- {en: 'Verified: TVT Sec. II-C describes four directional arrays covering 360°, dual 4×4 TDM, and parallel acquisition at two bands; the arrays are a 2×8 UPA and a 16-element ULA.', zh: 已确认：TVT正文Sec.II-C为四副定向阵列覆盖360°、双4×4 TDM，并行采集两个频段；阵列分别为2×8 UPA与16元ULA。}
+- {en: 'Source conflict: the portal describes rotating arrays and approximately 5 minutes per point, while the TVT main text describes arrays in four directions. The portal''s duration is not treated as a verified scan period for the paper''s hardware.', zh: 来源冲突：门户写旋转阵列及约5分钟/点，TVT正文写四方向阵列；未把门户时长作为论文硬件的已核实扫描周期。}
+- {en: 'Verified: Sec. III jointly clusters extracted MPCs and distinguishes shared/unique clusters. The 7.66 dB difference associated with 58.32/24.15 GHz is used for power correction.', zh: 已确认：Sec.III对提取MPC联合聚类并区分共有/独有簇；58.32/24.15 GHz的7.66 dB差异用于功率校正。}
+- {en: 'Verified: TVT UMa/UMi measurements contain 49/25 points, respectively; the paper notes that nearby vehicles/pedestrians may affect measurements.', zh: 已确认：TVT的UMa/UMi测量分别为49/25点；原文提示附近车辆/行人可能影响测量。}
+limitations:
+- {en: An open-license indication on the portal does not mean every campaign is downloadable., zh: 门户显示开放许可不代表每个 campaign 已能下载。}
+- {en: Path-extraction algorithms have finite resolution and detection thresholds; extracted paths are not direct observations of every physical path., zh: 路径提取算法有分辨率与检测门限，提取路径不是直接观测的全部物理路径。}
+- {en: 'Campaigns, papers, and current pages on the same portal may use different hardware versions or point sets. Explicitly preserve conflicts in scan periods and licensing.', zh: 同门户不同campaign、论文和当前页面不必是相同硬件版本或完全相同点集；扫描周期与许可冲突须明确保留。}
+history:
+- {en: '2022: dual-band sounder/urban measurement paper.', zh: 2022：双频声探系统/城市测量论文。}
+- {en: '2025: site-specific channel-model paper.', zh: 2025：站点专属信道模型论文。}
+- {en: '2026-11-05: the Sub-6 Zenodo record is visible; mmWave downloads remain pending.', zh: 2026-11-05：Sub-6 Zenodo 记录可见；mmWave 下载尚待发布。}
+usage:
+- {en: 'Download parameters, coordinates, and channel files for a specific campaign; do not mix sample indices from the two portals.', zh: 从具体 campaign 下载其参数、坐标和信道文件，不混用两个门户的样本索引。}
+- {en: 'For cross-frequency analysis, verify time and position pairing before estimating shared paths. If downloads are unreleased, reproduce only the methodological workflow.', zh: 跨频分析先验证时间和位置 pairing，再估计共同路径；下载未发布时只复现方法流程。}
+field_notes:
+- label: {en: Paths, zh: 路径}
+  text: {en: Extracted MPCs for mmWave; not provided for every Sub-6 sample, zh: mmWave 提取 MPC；不是 Sub-6 每条样本都提供}
+- label: {en: Beam labels, zh: 波束标签}
+  text: {en: mmWave scans; specific public files remain to be downloaded, zh: mmWave 扫描；具体公开文件尚待下载}
+- label: {en: RGB, zh: RGB}
+  text: {en: 'The Sub-6 acquisition description includes periodic panoramic photos, not one frame per CSI record', zh: Sub-6 采集说明包含间隔全景照片；并非逐 CSI 一帧}
+- label: {en: LiDAR, zh: LiDAR}
+  text: {en: 'The two verified acquisition configurations include radio sounding and 360° cameras, with no LiDAR scan outputs. Panoramic images or maps are not treated as point clouds.', zh: 两项已核实采集配置包含无线声探和360°相机，没有LiDAR扫描输出；不把全景图像或地图当点云。}
+- label: {en: Radar, zh: 雷达}
+  text: {en: Released quantities are communication-sounding CTF/CIR/MPCs. The official modality description includes no separate radar; sounding hardware does not automatically provide RF target-sensing labels., zh: 发布对象是通信声探CTF/CIR/MPC，官方模态说明未配置独立雷达；声探硬件不自动等同RF目标感知标签。}
+- label: {en: Multi-user, zh: 多用户}
+  text: {en: Each route/measurement point corresponds to one MS. Multiple users require a separate coexistence and interference model; these are not synchronized multi-UE measurements., zh: 每条路线/测量点为一个MS；多用户需另设共存与干扰模型，不是同步多UE测量。}
+- label: {en: Multi-BS, zh: 多基站}
+  text: {en: 'Multiple independent BS sites/areas exist, but each is a separate campaign. Synchronized multi-BS service requires a separately constructed system and cross-site pairing.', zh: 存在多个独立BS站点/area，但各自独立campaign；若研究同步多BS服务，需另建系统和跨站配对。}
+- label: {en: Cross-frequency pairing, zh: 跨频配对}
+  text: {en: Direct pairing refers only to simultaneous 24/60 GHz measurements. The 4.85 GHz and mmWave data come from different campaigns; a shared area does not establish sample-level cross-frequency pairing., zh: 直接配对仅指同时24/60 GHz测量；4.85 GHz与mmWave是不同campaign，同区域不能建立逐样本跨频配对。}
+overview: {en: 'The Sub-6 GHz MIMO Channel Sounding Dataset was produced by the Radio Signal Processing Laboratory at Niigata University and published on Zenodo as version v1 in July 2026 (DOI 10.5281/zenodo.21213882). It contains double-directional 8×8 MIMO channel measurements at 4.850 GHz, taken in urban outdoor areas of Yokohama, Japan, with the receiver mounted on a vehicle. Routes R3, R4 and R5 are urban macro-cell (UMa) routes and route R6 is an urban micro-cell (UMi) route, in the areas Yuraku, NTTCom and World Porters. The release lists 3,386 valid samples across routes R3 to R6, each labelled LoS or NLoS. The main archive, 4.85GHz Dataset.zip, is 37.8 MB and holds MAT and CSV files, and a second archive, Multimodal_Dataset.zip (222.8 kB), has no described contents. Panoramic photographs are taken every 10 s during drives and do not correspond one-to-one with channel samples. The 24/60 GHz measurements form a separate dual-band campaign with 126 points in three areas, and they are
+    not part of this release.', zh: 'Sub-6 GHz MIMO Channel Sounding Dataset 由日本新潟大学无线信号处理实验室制作，于 2026 年 7 月以 Zenodo 形式发布，版本为 v1（DOI 10.5281/zenodo.21213882）。数据为 4.850 GHz 双向 8×8 MIMO 信道测量，地点为日本横滨市城市户外环境，接收机安装在车辆上。路线 R3、R4 和 R5 为城市宏蜂窝（UMa）路线，路线 R6 为城市微蜂窝（UMi）路线，区域包括 Yuraku、NTTCom 和 World Porters。发布数据列出路线 R3 至 R6 的 3,386 个有效样本，每个样本标注 LoS 或 NLoS。主压缩包 4.85GHz Dataset.zip 为 37.8 MB，包含 MAT 和 CSV 文件；另一压缩包 Multimodal_Dataset.zip（222.8 kB）的内容未作说明。驾驶测量过程中每 10 s 拍摄一张全景照片，照片与信道样本不是一一对应。24/60 GHz 测量是独立的双频段测量活动，共 126 个测点，分布在三个区域，不包含在本次发布中。'}
+signal_details:
+- signal: cir
+  text: {en: 'Double-directional 8×8 MIMO channel sounding at 4.850 GHz with 100 MHz signal bandwidth and a multitone sounding signal (N = 510 tones, 4,096-point FFT). Sampling rate 800 MSa/s, delay resolution 10 ns, delay span 5.12 μs, sample period 0.512 s, and 3,000 points per route. Transmitter: 8-element ULA at the base station, 6.5 dBi gain, about 23 dBm per antenna. Receiver: 8-element UCA on the vehicle roof at 2.7 m, 4.0 dBi gain. Back-to-back calibration removes the TX and RX hardware transfer characteristics.', zh: '4.850 GHz 双向 8×8 MIMO 信道探测，信号带宽 100 MHz，采用多音探测信号（N = 510，FFT 点数 4,096）。采样率 800 MSa/s，时延分辨率 10 ns，时延跨度 5.12 μs，采样周期 0.512 s，每条路线 3,000 个测点。发射端为基站侧 8 元 ULA，增益 6.5 dBi，每根天线发射功率约 23 dBm；接收端为车顶 8 元 UCA，高度 2.7 m，增益 4.0 dBi。背靠背（B2B）校准去除了收发硬件的传递特性。'}

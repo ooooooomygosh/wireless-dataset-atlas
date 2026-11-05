@@ -12,8 +12,120 @@ license: GPL-3.0-or-later
 access: {url: 'https://github.com/cost2100/cost2100', type: open}
 code: ['https://github.com/cost2100/cost2100']
 paper: doi:10.1109/mwc.2012.6393523
-used_in: ["doi:10.1109/twc.2013.010413.120620","doi:10.1109/twc.2023.3241841","doi:10.1109/ojcoms.2020.2987704","doi:10.1109/twc.2020.3028249","doi:10.1109/twc.2023.3261782"]
-citing: ["doi:10.1109/lwc.2018.2818160","doi:10.1109/jsac.2017.2719924","doi:10.1109/comst.2017.2783541"]
+used_in: ['doi:10.1109/twc.2013.010413.120620', 'doi:10.1109/twc.2023.3241841', 'doi:10.1109/ojcoms.2020.2987704', 'doi:10.1109/twc.2020.3028249', 'doi:10.1109/twc.2023.3261782']
+citing: ['doi:10.1109/lwc.2018.2818160', 'doi:10.1109/jsac.2017.2719924', 'doi:10.1109/comst.2017.2783541']
 summary: {en: 'A MATLAB generator of spatially consistent MIMO and massive MIMO channel transfer functions for omnidirectional, dipole, measured-response, cylindrical and VLA arrays. Scenario names cover IndoorHall and SemiUrban settings at 0.3, 2.6 and 5 GHz.', zh: 用于生成空间一致性 MIMO 与大规模 MIMO 信道传递函数的 MATLAB 生成器，支持全向、偶极子、实测天线响应、圆柱阵列及 VLA 阵列。场景名称涵盖 IndoorHall 与 SemiUrban 环境，载频为 0.3、2.6 和 5 GHz。}
 sources: ['https://github.com/cost2100/cost2100', 'https://github.com/cost2100/cost2100/blob/master/matlab/Readme.txt', 'https://api.crossref.org/works?query.title=The+COST+2100+MIMO+channel+model&rows=3&select=DOI,title,issued']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Generate clusters and visibility regions first, then use mobile-terminal positions to determine active multipath and combine antenna responses to obtain link channels. Common CSI-feedback datasets undergo additional processing.', zh: 先生成簇与可见区域，再由移动终端位置决定活跃多径，叠加天线响应得到链路信道。CSI-feedback常用数据还经过额外加工。}
+  stages:
+  - title: {en: Select a supported scenario and link layout, zh: 选择受支持场景与链路布局}
+    detail: {en: 'cost2100 inputs specify BSs/MSs, motion, and snapshot rate/count; first verify whether the scenario supports single or multiple links.', zh: cost2100输入指定BS/MS、运动及snapshot rate/count；先核验场景支持单链路还是多链路。}
+    inputs:
+    - {en: Official scenario/parameter files, zh: 官方场景/参数文件}
+    - {en: 'BS/MS positions, velocities, and snapshot configuration', zh: BS/MS位置、速度和快照配置}
+    outputs:
+    - {en: 'Scenario and link(numBS,numMS) configuration', zh: '场景与link(numBS,numMS)配置'}
+    controls:
+    - {en: 'Researcher specifies: scenario name, frequency, BS/MS counts, velocities, snapshot count, and seed', zh: 研究者固定：场景名、频率、BS/MS数量、速度、快照数及seed}
+    checks:
+    - {en: 'Check demo restrictions, including those for IndoorHall_5GHz', zh: IndoorHall_5GHz等限制按demo核对}
+    - {en: Do not extrapolate a band's parameter set to other frequencies without explanation, zh: 不把某频段参数集无说明外推到其他频率}
+  - title: {en: Generate clusters and visibility regions, zh: 生成簇及visibility regions}
+    detail: {en: 'Generate environmental clusters, MPC/DMC records, and visibility regions; visibility determines which clusters terminals can receive.', zh: 生成环境簇、MPC/DMC记录及可见区域；可见性控制终端能够接收哪些簇。}
+    inputs:
+    - {en: Layout and scenario statistics, zh: 布局和场景统计}
+    outputs:
+    - {en: env.cluster/mpc/dmc and VR-related environment records, zh: env.cluster/mpc/dmc及VR相关环境记录}
+    controls:
+    - {en: 'Researcher specifies: scenario parameterization and cluster structures to be shared', zh: 研究者固定：场景参数化与需共享的簇结构}
+    checks:
+    - {en: Preserve shared-cluster relationships across links, zh: 多链路应保留共享簇关系}
+    - {en: Random cluster coordinates are not interaction points from RT on real buildings, zh: 随机簇坐标不等于来自真实建筑RT的交互点}
+  - title: {en: Update visible multipath with position, zh: 随位置更新可见多径}
+    detail: {en: 'As mobile terminals enter or leave visibility regions, path powers and structure change with position; multi-BS/MS associations follow the corresponding model settings.', zh: 移动终端进入或离开可见区域，使路径功率与结构随位置变化；多BS/MS关联由相应模型设置决定。}
+    inputs:
+    - {en: Terminal trajectories, zh: 终端轨迹}
+    - {en: Clusters and visibility regions, zh: 簇与可见区域}
+    outputs:
+    - {en: Active cluster/path parameters per snapshot, zh: 逐快照活跃簇/路径参数}
+    controls:
+    - {en: 'Researcher specifies: velocity, sampling interval, and link associations supported by the scenario', zh: 研究者固定：速度、采样间隔和场景支持的链路关联}
+    checks:
+    - {en: Check consistency between time steps and travel distance, zh: 检查时间步与运动距离一致}
+    - {en: Independently generated clusters for each BS do not preserve cross-link correlation, zh: 不能把独立生成各BS的簇称作已保留跨链路相关}
+  - title: {en: Synthesize antenna channels, zh: 合成天线信道}
+    detail: {en: 'Map propagation parameters to complex link channels, retaining model outputs and environment records for verification.', zh: 把传播参数映射为链路复信道，保留模型输出与环境记录供复核。}
+    inputs:
+    - {en: Active multipath, zh: 活跃多径}
+    - {en: Array/antenna responses, zh: 阵列/天线响应}
+    outputs:
+    - {en: Per-link complex channels, zh: 逐链路复信道}
+    - {en: Associated positions and environment information, zh: 配套位置和环境信息}
+    controls:
+    - {en: 'Researcher specifies: antenna count, responses, frequency-domain sampling, and storage axes', zh: 研究者固定：天线数、响应、频域采样和存储轴}
+    checks:
+    - {en: Check path energy and output scale, zh: 检查路径能量与输出尺度}
+    - {en: Compare correlation under static and mobile configurations, zh: 比较静止与移动配置下的相关性}
+  - title: {en: Create feedback or prediction samples, zh: 制作反馈或预测样本}
+    detail: {en: CSI-feedback workflows may transform channels to the angle-delay domain and crop/normalize them; register these derived tensors separately from the model's original outputs., zh: CSI-feedback流程可能把信道变到角延迟域并裁剪/归一化；这些派生张量必须与模型原始输出分开登记。}
+    inputs:
+    - {en: Raw channels, zh: 原始信道}
+    - {en: 'Researcher-defined FFT, cropping, and normalization rules', zh: 研究者定义的FFT、裁剪与归一化规则}
+    outputs:
+    - {en: Task tensors and normalization parameters, zh: 任务张量与归一化参数}
+    controls:
+    - {en: 'Researcher specifies: retained angle-delay axes, antennas and subcarriers, sequence/layout splits', zh: 研究者固定：保留角延迟轴、天线和子载波、序列/布局切分}
+    checks:
+    - {en: Check energy and physical information lost through cropping, zh: 检查裁剪丢失的能量和物理信息}
+    - {en: Normalized feedback data cannot directly recover absolute link powers that were not saved, zh: 不能从归一化反馈数据直接恢复未保存的绝对链路功率}
+  scope: {en: Official COST2100 MATLAB interfaces and model paper; multilink functionality is constrained by scenario parameterization., zh: COST2100官方MATLAB接口与模型论文；多链路功能按场景参数化限定。}
+facts:
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: • Model channels and cluster/MPC/DMC records in link and env structures, zh: • link与env结构中的模型信道、簇/MPC/DMC记录}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Angle-delay-domain CSI-feedback tensors
+
+      • Beam/prediction/scheduling labels', zh: '• 角延迟域CSI-feedback张量
+
+      • 波束/预测/调度标签'}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The COST2100 model and processed datasets released by researchers such as the CsiNet authors are different resources.
+
+      • Main function and demos reviewed; MATLAB not run; joint cross-frequency correlation still requires verification.', zh: '• COST2100模型与CsiNet等研究者发布的加工数据不是同一资源。
+
+      • 已读主函数和demo，未运行MATLAB；跨频联合相关性仍需核验。'}
+provenance:
+- {en: Select scenario parameters and layout, zh: 选择场景参数与布局}
+- {en: Geometry-based stochastic clusters and spatial consistency, zh: 几何随机簇及空间一致性}
+- {en: Antenna responses, zh: 天线响应}
+- {en: Complex channels, zh: 复信道}
+- {en: Researcher applies FFT/truncation/normalization to create a derived CSI benchmark, zh: 研究者 FFT/截断/归一化形成派生 CSI benchmark}
+technical_notes:
+- {en: 'Supported by the literature: the 2012 model first generates clusters and visibility regions, then uses mobile-terminal positions to determine visible paths; the same static environment supports channels that change along trajectories.', zh: 文献支持：2012模型先生成簇和visibility regions，再由移动终端位置决定可见路径；同一静态环境支持随轨迹变化的信道。}
+- {en: 'Supported by the literature: §V.C represents multi-BS/multi-MS correlation through clusters and visibility regions shared by multiple links; independently generating clusters for each BS cannot guarantee the required link correlation.', zh: 文献支持：§V.C 用多个链路共享的簇及visibility regions描述多BS、多MS相关性；独立生成每个BS的簇不能保证所需链路相关。}
+- {en: 'Supported by the literature: the paper discusses polarization and dense multipath extensions; §VI.A lists measurement parameterizations at 400 MHz and 3.6/5.3 GHz, noting that DMC and multilink parameters still required more measurements at that time.', zh: 文献支持：论文讨论极化与dense multipath扩展；§VI.A列举400 MHz、3.6/5.3 GHz测量参数化，并指出当时DMC与多链路参数仍需更多测量。}
+- {en: 'Confirmed: the official main function accepts BS/MS positions, MS velocity, and snapshot rate/count, and outputs per-link channels and cluster/MPC/DMC records.', zh: 已确认：官方主函数接收BS/MS位置、MS速度、snapshot rate/count，输出逐链路channel及簇/MPC/DMC记录。}
+- {en: 'Confirmed: the current 5.3 GHz demo scenario is single-link only; 300 MHz multilink support is limited to LOS; the 2.6 GHz extension also includes closely spaced users and very-large-array scenarios.', zh: 已确认：当前demo的5.3 GHz场景仅单链路；300 MHz多链路限LOS；2.6 GHz扩展另含近邻用户和very-large-array场景。}
+- {en: 'Inference: derived CSI after angle-delay truncation retains only part of the channel information; recoverability depends on the retained axes and normalization.', zh: 推断：角延迟截断后的派生CSI仅保留部分信道信息，任务可恢复范围取决于保留的轴与归一化。}
+limitations:
+- {en: 'Record the model, official MATLAB implementation, and derived tensors from papers such as CsiNet separately, including versions, arrays, frequency-domain transforms, and splits.', zh: 模型、官方MATLAB实现和CsiNet等论文派生张量须分别记录版本、阵列、频域转换及划分。}
+- {en: Multiuser scheduling should use shared environments and cluster relationships; nearby users in the same environment should not be randomly distributed across train and test splits., zh: 多用户调度使用共享环境和簇关系；同一环境的近邻用户不应随机跨越训练与测试划分。}
+- {en: 'Beyond compression NMSE, evaluate precoding rates and overhead using reconstructed channels.', zh: 压缩NMSE之外，应评估重建信道驱动的预编码速率与开销。}
+- {en: 'Current verification covers interfaces, scenario restrictions, and the original model; multi-BS examples have not been run and joint cross-band parameterization has not been validated.', zh: 当前核验覆盖接口、场景限制与原始模型；尚未运行多BS示例或验证跨频段联合参数化。}
+history:
+- {en: '2012：The COST 2100 MIMO Channel Model，IEEE Wireless Communications 19(6):92–99。', zh: '2012：The COST 2100 MIMO Channel Model，IEEE Wireless Communications 19(6):92–99。'}
+- {en: The official Readme tracks versions from the 2.3 series through 3.0/3.1; 3.1 adds Indoor_CloselySpacedUser_2_6GHz and modifies the Massive MIMO extension., zh: 官方Readme从2.3系列记录到3.0/3.1；3.1新增Indoor_CloselySpacedUser_2_6GHz并修改Massive MIMO扩展。}
+usage:
+- {en: Pin the official implementation and network name; start with tested network/link/antenna/band combinations listed in the demos., zh: 固定官方实现与network名称；从demo列出的已测试network/link/antenna/band组合开始。}
+- {en: 'Explicitly set BS/MS positions, velocity, snapRate, snapNum, and frequency range; check link and env dimensions.', zh: 显式设置BS/MS位置、速度、snapRate、snapNum和频率区间，检查link与env维度。}
+- {en: 'Add the corresponding antenna responses to generate full complex channels; separately save scripts for FFT, angle-delay truncation, normalization, and group-based splits.', zh: 加入对应天线响应生成完整复数信道；另存FFT、角延迟截断、归一化和分组划分脚本。}
+- {en: 'Compare the uncompressed oracle and simple baselines such as PCA first, then compute precoding utility using reconstructed channels.', zh: 先比较未压缩oracle、PCA等简单基线，再计算重建信道驱动的预编码utility。}
+overview: {en: 'COST 2100 is a MATLAB implementation of a spatially consistent MIMO and massive MIMO channel model. Lingfeng Liu (UCL) wrote the original code, and Lund University revised it in versions 2.3 to 3.1, including the massive MIMO scenarios at 2.6 GHz. It is a channel generator, not a measured dataset: the main function cost2100 returns, for each BS-MS link, the channel information and an environment record with clusters, MPCs and DMCs, from the BS and MS positions, MS velocity, snapshot rate and snapshot count supplied by the user. The code supports five networks: IndoorHall_5GHz, SemiUrban_300MHz, Indoor_CloselySpacedUser_2_6GHz, SemiUrban_CloselySpacedUser_2_6GHz and SemiUrban_VLA_2_6GHz. The demo scripts use the bands 275-295 MHz, 2.58-2.62 GHz and 5.29-5.31 GHz. The package ships antenna pattern files, not channel data, so the output size depends on the parameters chosen when the script runs.', zh: COST 2100 是一个以 MATLAB 实现的空间一致性 MIMO 与大规模 MIMO 信道模型。原始代码由 UCL 的 Lingfeng Liu
+    编写，隆德大学（Lund University）在 2.3 至 3.1 版中对其作了修改，包括 2.6 GHz 的大规模 MIMO 场景。它是信道生成器，而非实测数据集：主函数 cost2100 根据用户给定的 BS 与 MS 位置、MS 速度、快照速率和快照数，为每条 BS-MS 链路返回信道信息，以及包含 cluster、MPC 和 DMC 的环境记录。代码支持五种网络场景：IndoorHall_5GHz、SemiUrban_300MHz、Indoor_CloselySpacedUser_2_6GHz、SemiUrban_CloselySpacedUser_2_6GHz 和 SemiUrban_VLA_2_6GHz。示例脚本使用的频段为 275-295 MHz、2.58-2.62 GHz 和 5.29-5.31 GHz。发布包中只附带天线方向图文件，不附带信道数据，输出规模取决于运行脚本时设定的参数。}
+signal_details:
+- signal: csi
+  text: {en: 'Complex channel transfer functions in MATLAB arrays, computed per BS-MS link over the snapshot count snapNum. The frequency range is given in Hz through freq, and the snapshot rate through snapRate in snapshots per second. Antenna options: SISO omni-directional, 2x2 MIMO with omni-directional elements, theoretical lambda/2-spaced linear dipole arrays, measured antenna responses, a 128-element cylindrical array (MIMO_Cyl_patch) and a 128-element omni-directional VLA with lambda/2 spacing (MIMO_VLA_omni).', zh: 以 MATLAB 复数数组表示的信道传递函数，按 BS-MS 链路并在 snapNum 个快照上计算。频率范围以 Hz 通过 freq 指定，快照速率以每秒快照数通过 snapRate 指定。天线选项包括：SISO 全向天线、全向单元的 2x2 MIMO、任意规模的 lambda/2 间距线性偶极子阵列的理论响应、实测天线响应、128 单元圆柱阵列（MIMO_Cyl_patch），以及间距为 lambda/2 的 128 单元全向 VLA（MIMO_VLA_omni）。}

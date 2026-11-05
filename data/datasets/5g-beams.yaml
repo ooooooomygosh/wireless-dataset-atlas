@@ -10,7 +10,14 @@ license: CC BY 4.0
 access: {url: 'https://ieee-dataport.org/documents/5g-beams', type: restricted}
 paper: doi:10.1109/INFOCOM48880.2022.9796693
 used_in: []
-citing: ["doi:10.1109/ojcoms.2024.3373368","doi:10.1109/jsac.2023.3334610","doi:10.1145/3544216.3544217"]
+citing: ['doi:10.1109/ojcoms.2024.3373368', 'doi:10.1109/jsac.2023.3334610', 'doi:10.1145/3544216.3544217']
 summary: {en: 'Measurements from two US commercial 5G mmWave deployments, a baseball park and a downtown urban canyon, stored as CSV files with per-beam signal strength, beam switch times and throughput. The frequency band is not stated.', zh: 来自美国两个商用 5G mmWave 部署的测量数据，场景分别为棒球场和市区峡谷，以 CSV 文件存储，包含每波束信号强度、波束切换时间和吞吐量。文中未说明频段。}
 sources: ['https://ieee-dataport.org/documents/5g-beams', 'https://api.crossref.org/works?query.title=A+Comparative+Measurement+Study+of+Commercial+5G+mmWave+Deployments&rows=3&select=DOI,title,issued']
 checked: '2026-11-06'
+overview: {en: '5G Beams contains smartphone-based measurements of two commercial 5G mmWave deployments in the United States. The data were collected by researchers at the University of Minnesota, the University of Chicago, Institut Teknologi Bandung and Celona, Inc., and accompany the INFOCOM 2022 paper ''A Comparative Measurement Study of Commercial 5G mmWave Deployments''. The two environments are an open field at a baseball park and a downtown urban canyon. The measurements cover the PHY, MAC and higher layers and record signal strength, beam switch times and throughput per beam. The deployments aggregate up to eight frequency channels on up to eight beams. The files are CSV, released as 5GBeams-v0.91.zip and 5GBeams-v0.92.zip on IEEE DataPort, which requires a login and a subscription. The target topics are beam management, deployment configuration, path loss and mmWave throughput.', zh: '5G Beams 包含对美国两个商用 5G mmWave 部署的基于智能手机的测量数据。数据由 University of Minnesota、University of Chicago、Institut
+    Teknologi Bandung 和 Celona, Inc. 的研究人员采集，并与 INFOCOM 2022 论文《A Comparative Measurement Study of Commercial 5G mmWave Deployments》配套发布。两个场景分别为棒球场的开阔场地和市区峡谷。测量涵盖 PHY、MAC 及更高层，记录每个波束的信号强度、波束切换时间和吞吐量。部署中最多可聚合 8 个频率信道，使用最多 8 个波束。文件为 CSV 格式，以 5GBeams-v0.91.zip 和 5GBeams-v0.92.zip 的形式发布在 IEEE DataPort 上，下载需要登录并具备订阅。目标研究主题为波束管理、部署配置、路径损耗和 mmWave 吞吐量。'}
+signal_details:
+- signal: beam-power
+  text: {en: Per-beam signal strength from smartphone-based measurements., zh: 基于智能手机测量得到的每波束信号强度。}
+- signal: kpi
+  text: {en: 'Per-beam beam switch times and throughput from smartphone-based measurements, stored in CSV files.', zh: 基于智能手机测量得到的每波束波束切换时间和吞吐量，以 CSV 文件存储。}

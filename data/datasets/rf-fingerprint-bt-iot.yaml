@@ -15,7 +15,39 @@ license: CC BY-NC-SA 4.0
 access: {url: 'https://ieee-dataport.org/documents/rf-fingerprint-bt-iot-real-world-frequency-hopping-bluetooth-dataset-iot-devices-rf', type: restricted}
 paper: doi:10.1109/tccn.2023.3269764
 used_in: []
-citing: ["doi:10.1109/jsac.2024.3413961","doi:10.1109/jiot.2025.3559183","doi:10.1109/mcom.001.2200725"]
+citing: ['doi:10.1109/jsac.2024.3413961', 'doi:10.1109/jiot.2025.3559183', 'doi:10.1109/mcom.001.2200725']
 summary: {en: 'Bluetooth IQ captures from 10 commercial emitters (2 laptops, 8 chips) recorded with a USRP X300 at 2.414 GHz over 2 MHz, with 40 MS of complex64 samples per capture. The data covers a line-of-sight day and a multipath day in an indoor laboratory, with SigMF-style JSON metadata per capture.', zh: 来自10个商用发射端（2台笔记本、8个商用芯片）的蓝牙IQ采集，由USRP X300在2.414 GHz、2 MHz带宽下记录，每次采集包含40 MS的complex64采样。数据包括室内实验室中的视距（LOS）日和多径日两部分，每次采集附带SigMF风格的JSON元数据。}
 sources: ['https://ieee-dataport.org/documents/rf-fingerprint-bt-iot-real-world-frequency-hopping-bluetooth-dataset-iot-devices-rf', 'https://api.crossref.org/works/10.1109/tccn.2023.3269764', 'https://api.crossref.org/works/10.36227/techrxiv.20767315.v1']
 checked: '2026-11-06'
+overview: {en: 'RF-Fingerprint-BT-IoT is a set of real-world Bluetooth IQ captures from 10 commercial emitters, 2 laptops and 8 commercial chips, recorded in indoor laboratory settings. The receiver was a National Instruments Ettus USRP X300 with a UBX160 daughterboard and a VERT2450 antenna, tuned to 2.414 GHz with a 2 MHz recorded bandwidth. Each capture contains 40 million complex samples in a binary .dat file of complex64 IQ values, with a .meta.json file that follows SigMF specifications with fingerprinting extensions. The data are split into two days: Day1BT (7.47 GB), a line-of-sight set with transmitter-receiver separations from 1.6 ft to 9.8 ft in 0.8 ft steps, and Day2BT (3 GB), a multipath set with emitters in the lab corners, the receiver at the centre and a maximum separation of 24.2 ft. The DataPort page recommends Day1BT for training and describes Day2BT as a harder test of generalization. The associated paper is ''Embedding-Assisted Attentional Deep Learning for Real-World
+    RF Fingerprinting of Bluetooth'' (IEEE TCCN, 2023).', zh: RF-Fingerprint-BT-IoT 是来自 10 个商用发射端（2 台笔记本、8 个商用芯片）的真实蓝牙 IQ 采集数据，采集于室内实验室环境。接收机为 National Instruments Ettus USRP X300，配备 UBX160 子板与 VERT2450 天线，中心频率 2.414 GHz，录制带宽 2 MHz。每次采集包含 4000 万（40 MS）个复数采样，以二进制 .dat 文件保存 complex64 IQ 数值，并附带遵循 SigMF 规范并加入指纹扩展的 .meta.json 文件。数据分为两天：Day1BT（7.47 GB）为视距数据，收发距离从 1.6 ft 到 9.8 ft，步长 0.8 ft；Day2BT（3 GB）为多径数据，发射端位于实验室角落，接收机位于中心，最大距离 24.2 ft。DataPort 页面建议使用 Day1BT 训练，并将 Day2BT 描述为更困难的泛化测试。相关论文为《Embedding-Assisted Attentional Deep Learning for Real-World RF Fingerprinting of Bluetooth》（IEEE TCCN，2023）。}
+signal_details:
+- signal: iq
+  text: {en: 'Complex64 IQ samples stored as binary .dat files, with 40 MS (40 million samples) per capture at a 2.414 GHz center frequency and 2 MHz recorded bandwidth, captured with a USRP X300 (UBX160 daughterboard, VERT2450 antenna). Each capture has a .meta.json metadata file.', zh: 以二进制 .dat 文件保存的 complex64 IQ 采样，每次采集 40 MS（4000 万个采样），中心频率 2.414 GHz，录制带宽 2 MHz，由 USRP X300（UBX160 子板，VERT2450 天线）采集。每次采集对应一个 .meta.json 元数据文件。}
+pipeline:
+  summary: {en: 'Ten Bluetooth emitters are captured with a USRP X300 receiver in an indoor laboratory, in a line-of-sight day and a multipath day, and archived as SigMF-style files.', zh: 在室内实验室中，使用 USRP X300 接收机对 10 个蓝牙发射端进行采集，分为视距与多径两天，并以 SigMF 风格文件归档。}
+  stages:
+  - title: {en: Place emitters and set distances, zh: 放置发射端并设置距离}
+    detail: {en: 'Ten commercial Bluetooth emitters are placed in an indoor laboratory. On Day1BT, transmitter-receiver separation runs from 1.6 ft to 9.8 ft in 0.8 ft steps in a line-of-sight setup. On Day2BT, the emitters are placed in the lab corners with the receiver at the centre, and the maximum separation is 24.2 ft.', zh: 十个商用蓝牙发射端被放置于室内实验室。Day1BT 为视距设置，收发距离从 1.6 ft 到 9.8 ft，步长 0.8 ft。Day2BT 中发射端位于实验室角落，接收机位于中心，最大距离为 24.2 ft。}
+    inputs:
+    - {en: 10 commercial emitters (2 laptops, 8 chips): null, zh: 10 个商用发射端（2 台笔记本、8 个芯片）}
+    outputs:
+    - {en: Line-of-sight and multipath capture layouts, zh: 视距与多径采集布局}
+  - title: {en: Capture IQ with USRP X300, zh: 使用 USRP X300 采集 IQ}
+    detail: {en: An Ettus USRP X300 with a UBX160 daughterboard and a VERT2450 antenna records at 2.414 GHz center frequency and 2 MHz recorded bandwidth. Each capture holds 40 million complex samples., zh: 配备 UBX160 子板与 VERT2450 天线的 Ettus USRP X300 以 2.414 GHz 中心频率、2 MHz 录制带宽采集。每次采集包含 4000 万个复数采样。}
+    inputs:
+    - {en: Bluetooth transmissions from each emitter, zh: 各发射端的蓝牙发射信号}
+    outputs:
+    - {en: Complex IQ captures, zh: 复数 IQ 采集}
+  - title: {en: Write capture and metadata files, zh: 写入采集与元数据文件}
+    detail: {en: 'Each capture is stored as a binary .dat file of complex64 IQ samples and a .meta.json file that follows SigMF specifications, extended for fingerprinting.', zh: 每次采集保存为 complex64 IQ 采样的二进制 .dat 文件，以及遵循 SigMF 规范并扩展用于指纹识别的 .meta.json 文件。}
+    inputs:
+    - {en: IQ samples and capture metadata, zh: IQ 采样与采集元数据}
+    outputs:
+    - {en: Paired .dat and .meta.json files, zh: 成对的 .dat 与 .meta.json 文件}
+  - title: {en: Archive by recording day, zh: 按录制日归档}
+    detail: {en: 'The captures are packed into Day1BT.tar.gz (7.47 GB, line-of-sight) and Day2BT.tar.gz (3 GB, multipath) for download from IEEE DataPort.', zh: 采集文件打包为 Day1BT.tar.gz（7.47 GB，视距）与 Day2BT.tar.gz（3 GB，多径），供从 IEEE DataPort 下载。}
+    inputs:
+    - {en: Paired capture files, zh: 成对的采集文件}
+    outputs:
+    - {en: Two daily tar.gz archives, zh: 两个按日归档的 tar.gz 文件}

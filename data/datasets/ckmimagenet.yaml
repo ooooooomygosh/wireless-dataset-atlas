@@ -12,8 +12,41 @@ format: P2M (channel data), binary matrices (environment maps)
 license: Not stated
 access: {url: 'https://github.com/zyktzCKM/CKMImageNet', type: open}
 paper: doi:10.1109/tcomm.2025.3615778
-used_in: ["doi:10.1109/tccn.2026.3739531","doi:10.1109/wcnc65185.2026.11555043"]
-citing: ["doi:10.1109/twc.2026.3678277","doi:10.1109/lwc.2026.3693360","doi:10.1109/lwc.2026.3704635"]
+used_in: ['doi:10.1109/tccn.2026.3739531', 'doi:10.1109/wcnc65185.2026.11555043']
+citing: ['doi:10.1109/twc.2026.3678277', 'doi:10.1109/lwc.2026.3693360', 'doi:10.1109/lwc.2026.3704635']
 summary: {en: 'Per-location channel gain, propagation delay, angle of arrival and angle of departure at 28 GHz, generated with Wireless InSite ray tracing for over 10,000 environment maps of 128 m x 128 m across urban, rural and indoor scenes. Grayscale channel knowledge map images at 32, 64 and 128 pixels accompany the data.', zh: '在28 GHz频段下，使用Wireless InSite光线追踪为城市、乡村和室内场景中超过10,000张128 m x 128 m环境地图生成各位置的信道增益、传播时延、到达角（AoA）和离开角（AoD）数据。配套的灰度信道知识地图图像分辨率为32、64和128像素。'}
 sources: ['https://github.com/zyktzCKM/CKMImageNet', 'https://github.com/Darwen9/CKMImagenet', 'https://raw.githubusercontent.com/zyktzCKM/CKMImageNet/main/README.md', 'https://arxiv.org/abs/2504.09849', 'https://arxiv.org/html/2504.09849', 'https://doi.org/10.1109/TCOMM.2025.3615778']
 checked: '2026-11-06'
+overview: {en: 'CKMImageNet is a channel knowledge map (CKM) dataset from Southeast University and Purple Mountain Laboratories, published in IEEE Transactions on Communications, vol. 73, no. 12 (2025). It holds location-based channel gain, propagation delay, angle of arrival (AoA) and angle of departure (AoD) at 28 GHz, computed with Wireless InSite ray tracing over 3D environment models built in Blender from OpenStreetMap regions. The dataset includes over 10,000 environment maps of 128 m × 128 m for urban, rural and indoor scenes. Each study area places a 4 × 4 grid of 16 base stations, spaced 100 m apart, inside a 300 m × 300 m block, and receivers sit every 2 m over a 700 m × 700 m area. The numerical values are stored in .p2m files, and the channel parameters are also provided as grayscale images at 32 × 32, 64 × 64 and 128 × 128 pixels. The folders follow a four-level tree of root, scenario type, location and area.', zh: 'CKMImageNet 是东南大学与紫金山实验室的信道知识地图（CKM）数据集，发表于 IEEE Transactions
+    on Communications, vol. 73, no. 12（2025）。数据包含 28 GHz 下基于位置的信道增益、传播时延、到达角（AoA）和离开角（AoD），由 Wireless InSite 光线追踪计算，三维环境模型在 Blender 中依据 OpenStreetMap 区域构建。数据集包含超过 10,000 张 128 m × 128 m 的环境地图，涵盖城市、乡村和室内场景。每个研究区域在 300 m × 300 m 范围内布设 4 × 4 共 16 个基站，间距 100 m；接收点每 2 m 一个，覆盖 700 m × 700 m 区域。数值数据存储于 .p2m 文件中，信道参数同时以 32 × 32、64 × 64 和 128 × 128 像素的灰度图像提供。目录采用根目录、场景类型、地点、区域四层结构。'}
+signal_details:
+- signal: paths
+  text: {en: 'Channel gain (dB), propagation delay, AoA and AoD (degrees) at 28 GHz, computed with Wireless InSite ray tracing with up to 25 multipath components per link, up to 6 reflections and 1 diffraction. The numerical data are stored in .p2m files, and each record pairs a 3D receiver position with the channel values. The ray-tracing grid step is 2 m in x and y (Δx = Δy = 2 m).', zh: 28 GHz 下的信道增益（dB）、传播时延、AoA 与 AoD（度），由 Wireless InSite 光线追踪计算，每条链路最多 25 条多径分量，最多 6 次反射和 1 次绕射。数值数据存储于 .p2m 文件，每条记录将三维接收机位置与信道数值配对。光线追踪网格步长为 x 与 y 方向各 2 m（Δx = Δy = 2 m）。}
+pipeline:
+  summary: {en: 'Blender and OpenStreetMap build the 3D scene, Wireless InSite ray-traces each study area at 28 GHz, and the per-receiver values are converted into grayscale channel knowledge images.', zh: Blender 与 OpenStreetMap 构建三维场景，Wireless InSite 对每个研究区域进行 28 GHz 光线追踪，逐接收点数值再转换为灰度信道知识图像。}
+  stages:
+  - title: {en: Scene construction, zh: 场景构建}
+    detail: {en: 'The blender-osm add-on selects a rectangular region from OpenStreetMap, the 3D architecture is modeled in Blender, and the model is exported as a Collada .dae file. The worked example is a region of Nanjing.', zh: blender-osm 插件在 OpenStreetMap 中选取矩形区域，在 Blender 中对三维建筑建模，并导出为 Collada .dae 文件。论文示例为南京的一个区域。}
+    inputs:
+    - {en: OpenStreetMap region, zh: OpenStreetMap 区域}
+    outputs:
+    - {en: Collada .dae 3D environment model, zh: Collada .dae 三维环境模型}
+  - title: {en: Ray-tracing setup, zh: 光线追踪设置}
+    detail: {en: 'Wireless InSite places a 4 × 4 grid of 16 base stations, spaced 100 m apart, in a 300 m × 300 m study area, extended by 200 m per side to 700 m × 700 m. Receivers are placed every 2 m, giving 351 × 351 = 123,201 points. The carrier is 28 GHz, with a maximum of 25 multipath components, 6 reflections and 1 diffraction. Ray tracing of one study area typically takes one day.', zh: 'Wireless InSite 在 300 m × 300 m 研究区域内布设 4 × 4 共 16 个基站，间距 100 m，并将区域每侧扩展 200 m 至 700 m × 700 m。接收点每 2 m 一个，共 351 × 351 = 123,201 个。载频 28 GHz，最多 25 条多径分量、6 次反射、1 次绕射。单个研究区域的光线追踪通常需要一天。'}
+    inputs:
+    - {en: 3D environment model, zh: 三维环境模型}
+    - {en: 'BS and receiver layout, 28 GHz, 25 paths, 6 reflections, 1 diffraction', zh: 基站与接收点布局、28 GHz、25 条路径、6 次反射、1 次绕射}
+    outputs:
+    - {en: Propagation paths per receiver, zh: 每个接收点的传播路径}
+  - title: {en: Channel knowledge extraction, zh: 信道知识提取}
+    detail: {en: 'For each receiver, the ray-tracing output is reduced to channel gain, propagation delay, AoA and AoD. Receivers blocked by buildings are excluded from the data points. The values are written to .p2m files, each with 3D positions.', zh: 对每个接收点，将光线追踪输出归并为信道增益、传播时延、AoA 与 AoD。被建筑遮挡的接收点不计入数据点。数值写入 .p2m 文件，每条记录包含三维位置。}
+    inputs:
+    - {en: Ray-tracing paths, zh: 光线追踪路径}
+    outputs:
+    - {en: .p2m channel knowledge files, zh: .p2m 信道知识文件}
+  - title: {en: Grayscale image generation, zh: 灰度图像生成}
+    detail: {en: 'Channel gain is mapped linearly from −250 dB (reception threshold) to −50 dB onto 0–255 with x̄ = 255(x + 250)/200. Building pixels are set to −250 dB for gain. Angles from −200° (buildings) to 180° are mapped linearly onto 0–255. Images are produced at 32 × 32, 64 × 64 and 128 × 128 pixels.', zh: 信道增益从 −250 dB（接收门限）至 −50 dB 按线性关系映射到 0–255，公式为 x̄ = 255(x + 250)/200。建筑物像素的增益设为 −250 dB。角度从 −200°（建筑物）至 180° 线性映射到 0–255。图像分辨率为 32 × 32、64 × 64 和 128 × 128 像素。}
+    inputs:
+    - {en: 'Channel gain, AoA and AoD values', zh: 信道增益、AoA 与 AoD 数值}
+    outputs:
+    - {en: 'Grayscale images at 32, 64 and 128 px', zh: 32、64、128 像素灰度图像}

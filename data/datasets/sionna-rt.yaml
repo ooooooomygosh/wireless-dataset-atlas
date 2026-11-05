@@ -11,8 +11,301 @@ license: Apache-2.0
 access: {url: 'https://github.com/NVlabs/sionna-rt', type: open}
 code: ['https://github.com/NVlabs/sionna-rt']
 paper: arxiv:2303.11103
-used_in: ["doi:10.1109/tap.2024.3451214","doi:10.1109/infocom59046.2026.11571503"]
-citing: ["doi:10.1109/tmlcn.2024.3474639","doi:10.1109/mcom.001.2400086","doi:10.1109/tmlcn.2024.3448391"]
+used_in: ['doi:10.1109/tap.2024.3451214', 'doi:10.1109/infocom59046.2026.11571503']
+citing: ['doi:10.1109/tmlcn.2024.3474639', 'doi:10.1109/mcom.001.2400086', 'doi:10.1109/tmlcn.2024.3448391']
 summary: {en: 'A differentiable ray tracing generator that computes propagation paths, channel impulse responses and coverage maps (path gain in dB) for scenes, including the integrated Munich and Etoile scenes.', zh: 可微分射线追踪生成器，用于计算场景中的传播路径、信道冲激响应和覆盖图（路径增益，单位 dB），内置场景包括 Munich 和 Etoile。}
 sources: ['https://github.com/NVlabs/sionna-rt', 'https://arxiv.org/abs/2303.11103', 'https://arxiv.org/html/2303.11103v2']
 checked: '2026-11-06'
+pipeline:
+  summary: {en: 'Fix geometry, materials, and wireless devices before running the relevant solver. Paths can become CIR/CFR; RGB and LiDAR-like point clouds need separate sensor configurations and are not automatically obtained from RF paths.', zh: 先把几何、材料和无线设备固定，再执行相应求解器。路径可转CIR/CFR；RGB和LiDAR式点云需要独立传感器配置，不能从RF路径自动获得。}
+  stages:
+  - title: {en: Model and import the scene, zh: 建模并导入场景}
+    detail: {en: Load geometry with load_scene. External scenes can be exported through Blender/Mitsuba or generated with SceneBaker before import. Sionna scenes contain objects and their material assignments., zh: 用load_scene读取几何；外部场景可经Blender/Mitsuba导出或SceneBaker生成后导入。Sionna场景包含对象及其材料关联。}
+    inputs:
+    - {en: 'Mitsuba XML and meshes, or built-in Sionna scenes', zh: Mitsuba XML与mesh，或Sionna内置场景}
+    - {en: World coordinates and scene scale, zh: 世界坐标和场景尺度}
+    outputs:
+    - {en: Scene object, zh: Scene对象}
+    - {en: 'Inspectable meshes, objects, and local coordinates', zh: 可检查的网格、对象与局部坐标}
+    controls:
+    - {en: 'Researcher specifies: metric scale, object positions/rotations, mesh simplification, and whether objects sharing a material are merged', zh: 研究者固定：米制尺度、对象位置/旋转、mesh简化、是否合并同材质对象}
+    checks:
+    - {en: Check that Tx/Rx positions are not inside solid objects, zh: 检查Tx/Rx未落入实体内部}
+    - {en: 'Check heights, normals, and imported visible geometry; successful rendering alone does not validate propagation', zh: 核对高度、法线和导入后可见几何；渲染成功不等同传播正确}
+  - title: {en: Set RF materials and devices, zh: 设置RF材料和设备}
+    detail: {en: 'Assign radio materials to objects and configure frequency, array patterns, polarization, and transmitters/receivers. Visual materials are not automatically calibrated RF materials.', zh: 给对象分配radio material，并设置频率、阵列方向图、极化与发射/接收机。可视化材质不能自动当作经校准RF材料。}
+    inputs:
+    - {en: Scene objects, zh: 场景对象}
+    - {en: 'Carrier frequency, dielectric/conductivity parameters, and scattering parameters', zh: 载频、介电/导电与散射参数}
+    - {en: 'Tx/Rx arrays, polarization, and poses', zh: Tx/Rx阵列、极化和位姿}
+    outputs:
+    - {en: Complete wireless Scene configuration, zh: 完整无线Scene配置}
+    controls:
+    - {en: 'Researcher specifies: carrier frequency, material-model validity range, element spacing, antenna orientation, and power', zh: 研究者固定：载频、材料模型适用范围、阵元间距、天线朝向和功率}
+    checks:
+    - {en: Check geometry and units using free space or one reflecting surface first, zh: 先以自由空间或单反射面检查几何和单位}
+    - {en: 'Record whether materials use defaults, measurement calibration, or assumptions', zh: 记录材料来源是默认参数、测量标定还是假设}
+  - title: {en: Solve propagation paths, zh: 求解传播路径}
+    detail: {en: PathSolver searches for and solves propagation paths. Version 2.2 supports first-order edge/wedge diffraction and thin-slab transmission; diffraction is off and synthetic_array is on by default., zh: PathSolver搜索并求解传播路径。2.2支持一阶edge/wedge绕射和薄片透射；绕射默认关闭，synthetic_array默认开启。}
+    inputs:
+    - {en: Configured Scene, zh: 已配置Scene}
+    - {en: PathSolver and explicit propagation switches, zh: PathSolver及显式传播开关}
+    outputs:
+    - {en: 'Paths: valid paths, gains, delays, and interaction information', zh: Paths：有效路径、增益、时延和交互信息}
+    controls:
+    - {en: 'Researcher explicitly sets: LoS, specular/diffuse reflection, diffraction, transmission, max_depth, sampling, and seed', zh: 研究者显式设置：LoS、镜面/漫反射、绕射、透射、max_depth、采样和seed}
+    - {en: Researcher selects synthetic_array or element-wise tracing, zh: 研究者选择synthetic_array或逐阵元追踪}
+    checks:
+    - {en: 'Check empty paths, path counts, and solver convergence', zh: 检查空路径、路径数量和求解收敛}
+    - {en: 'For near-field/large-aperture claims, verify differences between element-wise propagation and the far-field array approximation', zh: 近场/大孔径结论核验逐阵元传播与远场阵列近似差异}
+  - title: {en: Generate CIR/CFR or coverage maps, zh: 生成CIR/CFR或覆盖图}
+    detail: {en: Generate channels through paths.cir/cfr; coverage maps use the corresponding solver and receiver grid. Record absolute/normalized delays and output-normalization choices., zh: 通过paths.cir/cfr生成信道；覆盖图由对应求解器和接收网格计算。需要记录绝对/归一化时延及输出归一化选择。}
+    inputs:
+    - {en: Paths and required frequency/time samples, zh: Paths及所需频率/时间采样}
+    - {en: Or a separate RadioMapSolver configuration, zh: 或独立RadioMapSolver配置}
+    outputs:
+    - {en: Complex CIR/CFR tensors, zh: 复数CIR/CFR张量}
+    - {en: Radio map with a specified grid and metric, zh: 指定网格和指标的radio map}
+    controls:
+    - {en: 'Researcher specifies: subcarrier frequency offsets, time sampling, normalize_delays, and array axes', zh: 研究者固定：子载波频率偏移、时间采样、normalize_delays、阵列轴}
+    - {en: 'For coverage maps, also specify the grid, antennas, and metric', zh: 覆盖图另固定网格、天线与指标}
+    checks:
+    - {en: 'Check finite, nonzero outputs, CFR axis order, and units', zh: 检查有限非零输出、CFR轴顺序和量纲}
+    - {en: 'For simple paths, verify frequency-domain phase variation with frequency', zh: 对简单路径做频域相位随频率变化的核对}
+  - title: {en: Generate RGB or scan point clouds from shared geometry, zh: 共享几何生成RGB或扫描点云}
+    detail: {en: RGB uses camera rendering. Geometric scanning can cast rays into Scene.mi_scene and use Mitsuba ray_intersect to return first-hit positions. Both require separate sensor and time settings., zh: RGB走相机渲染；几何扫描可对Scene.mi_scene构造射线，用Mitsuba ray_intersect返回首命中位置。两者均需单独设置传感器与时间。}
+    inputs:
+    - {en: Scene at the same instant, zh: 同一时刻Scene}
+    - {en: 'Camera/scanner pose, field of view, and ray-direction set', zh: 相机或扫描器位姿、视场和方向集合}
+    outputs:
+    - {en: Synthetic RGB images, zh: 合成RGB图像}
+    - {en: Geometric scan point clouds with validity masks and ray indices, zh: 带有效掩码和射线索引的几何扫描点云}
+    controls:
+    - {en: 'Researcher specifies: camera intrinsics/extrinsics, exposure/render samples, scan angles, range, and sampling times', zh: 研究者固定：相机内外参、曝光/渲染样本、扫描束角、量程、采样时刻}
+    checks:
+    - {en: 'Verify that images, point clouds, and channels use the same object states and coordinates', zh: 验证图像/点云/信道使用同一对象状态与坐标}
+    - {en: 'Real LiDAR intensity, missed detections, noise, and weather response require separate models', zh: 真实LiDAR强度、漏检、噪声和天气响应需另建模型}
+  - title: {en: Dynamic or RCS-sensing branch, zh: 动态或RCS感知分支}
+    detail: {en: 'The researcher updates trajectories or object states and solves again. The RCS branch needs a target-scattering model, followed by sensing processing to form echo/detection tasks. Frame allocation and sensing costs are system-design choices.', zh: 研究者更新轨迹或对象状态并重新求解；RCS分支需给定目标散射模型，再由感知处理构造回波/检测任务。帧分配和感知成本属于系统设计。}
+    inputs:
+    - {en: Device/object states at each time, zh: 逐时刻设备/对象状态}
+    - {en: Optional RCS target and RCSSolver configuration, zh: 可选RCS target和RCSSolver配置}
+    outputs:
+    - {en: Temporal paths/channels, zh: 时序路径/信道}
+    - {en: Target-related sensing responses when the required conditions are met, zh: 条件成立时的目标相关感知响应}
+    controls:
+    - {en: 'Researcher specifies: state-update times, target model, waveform/processing window, and communication/sensing resources', zh: 研究者固定：状态更新时间、目标模型、波形/处理窗口、通信与感知资源}
+    checks:
+    - {en: Do not label resampling of a static grid as moving-blocker simulation, zh: 避免把仅对静态网格重采样称为动态blocker仿真}
+    - {en: 'Check target/background processing, absolute delays, and cost definitions', zh: 检查目标与背景处理、绝对时延和成本口径}
+  - title: {en: Export and validate task data, zh: 导出并验证任务数据}
+    detail: {en: 'Save generated physical quantities and derived labels. Separate full-information simulation truth from observations available at decision time, and scale up after simplified scenes pass validation.', zh: 研究者保存原始生成量及派生标签，区分全信息仿真真值与决策时可观测量，并在简化场景通过后扩展规模。}
+    inputs:
+    - {en: Outputs and configurations from each branch, zh: 各分支输出与配置}
+    - {en: Beam/receiver/scheduling or sensing-task definition, zh: 波束/接收机/调度或感知任务定义}
+    outputs:
+    - {en: Reconstructible synthetic samples, zh: 可重建的合成样本}
+    - {en: 'Labels, validity information, and split metadata', zh: 标签、有效性与划分元数据}
+    controls:
+    - {en: 'Researcher specifies: exported dtype, axes, seed, backend, and version', zh: 研究者固定：导出dtype、轴、seed、后端与版本}
+    - {en: 'Researcher splits by geometry, trajectory, or environment', zh: 研究者按几何/轨迹/环境划分}
+    checks:
+    - {en: Check that unacquired current modalities and future information do not enter the policy, zh: 检查未购买当前模态和未来信息不进入策略}
+    - {en: Label rendered images/synthetic point clouds separately from real OTA/sensor observations, zh: 将渲染/合成点云与真实OTA/传感器观测分别标注}
+  scope: {en: 'Sionna RT 2.2.0; RF, RGB, geometric scanning, and RCS processing are separate branches over a shared scene.', zh: Sionna RT 2.2.0；射频、RGB、几何扫描与RCS处理是共享场景上的不同分支。}
+facts:
+- label: {en: Entry inputs, zh: 入口输入}
+  text: {en: '• Inputs are a 3D mesh/XML scene, RF materials, Tx/Rx positions and orientations, antenna patterns/polarization/arrays, and solver propagation switches, depth, and sampling budgets.
+
+      • The same scene geometry can also support RGB or geometric scans; each sensor has its own configuration and output branch.', zh: '• 输入是3D mesh/XML场景、RF材料、Tx/Rx位置与姿态、天线方向图/极化/阵列，以及求解器传播开关、深度和采样预算。
+
+      • 场景内同一几何还可供RGB或几何扫描使用；这些传感器各有独立配置和输出分支。'}
+- label: {en: Physical model, zh: 物理模型}
+  text: {en: '• Sionna RT 2.2.0 searches geometry for propagation paths and then computes electromagnetic field coefficients. It supports LoS, specular/diffuse reflection, thin-slab transmission, and first-order edge/wedge diffraction, subject to enabled switches.
+
+      • The thin-slab model adjusts fields using material thickness without angular deflection when rays cross the surface. synthetic_array=True treats each device as one geometric endpoint and then synthesizes array phases.', zh: '• Sionna RT 2.2.0从几何搜索传播路径，再计算电磁场系数；支持LoS、镜面/漫反射、薄片透射以及一阶edge/wedge绕射，具体机制由开关决定。
+
+      • 薄片透射模型按材料厚度修正场，射线穿过表面时不作角度偏折。synthetic_array=True将每个设备作为单个几何端点，再合成阵列相位。'}
+- label: {en: How the channel is formed, zh: 信道形成方式}
+  text: {en: '• PathSolver executes candidate generation → image-method solution → field-coefficient/delay calculation → Paths construction.
+
+      • Paths.cir generates a baseband CIR; Paths.cfr sums that CIR at specified baseband frequency offsets. Paths retains the frequency, arrays, and path information used during solving.
+
+      • num_time_steps and sampling_frequency add time evolution based on per-path Doppler. Waveform, noise, and receiver processing belong to the downstream link layer.', zh: '• PathSolver调用顺序为候选路径生成→image method求解→field calculator计算系数/时延→构造Paths。
+
+      • Paths.cir生成基带CIR；Paths.cfr在该CIR上按指定基带频偏求和。Paths保留求解时的频率、阵列和路径信息。
+
+      • num_time_steps与sampling_frequency追加基于各路径Doppler的时间演化；波形、噪声和接收机处理属于后续链路层。'}
+- label: {en: Changing the carrier frequency, zh: 改变载频}
+  text: {en: '• Changing only subcarrier sampling around the same carrier allows reuse of Paths and another cfr call; this does not reevaluate RF materials.
+
+      • Changing scene.frequency updates frequency-dependent parameters of all radio materials. Rerun PathSolver to compute wavelength-dependent field coefficients and new Paths; old Paths still correspond to their original solved frequency.
+
+      • Geometry meshes can be reused. The public 2.2.0 PathSolver call reruns candidate generation, the image method, and field calculation. Internal separation of these steps is not a public cross-frequency cache-reuse API.
+
+      • PlanarArray spacing and normalized_positions are expressed in λ. Changing carrier frequency while retaining these values changes the physical aperture in meters; a fixed physical array requires updated normalized coordinates.', zh: '• 只改同一载频周围的子载波采样：复用已求得Paths，重新调用cfr；该步骤没有重新评估RF材料。
+
+      • 改scene.frequency：setter会更新所有radio materials的频率相关参数。随后重跑PathSolver，重算波长相关场系数及新Paths；直接使用旧Paths仍对应原求解频率。
+
+      • 几何mesh可复用。2.2.0公开PathSolver调用会再次执行候选、image method和场计算；不能把内部步骤分层描述成已公开的跨频缓存复用API。
+
+      • PlanarArray间距与normalized_positions以λ计。改载频而保持这些值，会改变实际米制孔径；固定物理阵列时需同步换算归一化坐标。'}
+- label: {en: Changing the array or codebook, zh: 改变阵列或码本}
+  text: {en: '• synthetic_array=True: path geometry uses device centers as endpoints, with elements synthesized through phases. Generate new Paths after changing the array; the public call reruns the solver.
+
+      • synthetic_array=False: every element position becomes a tracing endpoint. Changes to element positions/count or device pose require recomputing the corresponding paths and field coefficients.
+
+      • Changing only digital/analog beam weights on an already generated channel for the same array can be done as CSI postprocessing, provided antenna patterns and geometry are unchanged.
+
+      • Usage: if only the codebook changes and full complex CSI is retained, recompute codebook responses and labels under the same channel convention. Top-K powers alone cannot recover responses to arbitrary new beams.', zh: '• synthetic_array=True：路径几何以设备中心为端点，阵元通过相位合成；更换阵列后应生成新的Paths，公开调用也会重跑求解。
+
+      • synthetic_array=False：每个阵元位置成为追踪端点。改变阵元位置/数量或设备位姿，需要重新求相应路径与场系数。
+
+      • 只改变已生成同一阵列信道上的数字/模拟波束权重，且不改变天线方向图或几何，可在CSI上做后处理。
+
+      • 使用步骤：只换码本且保留完整复CSI时，按同一信道约定重算码本响应和标签即可；只保留Top-K功率时无法补出任意新波束的响应。'}
+- label: {en: Meaning of time, zh: 时间含义}
+  text: {en: '• One PathSolver call represents the current geometry. The cir/cfr Doppler time axis evolves phases on that path set; it does not retrace delays or visibility over time.
+
+      • Object velocity determines Doppler; position/orientation changes geometry. Long-term motion or path-topology changes require scene updates and per-snapshot solving.
+
+      • The data producer defines time steps, trajectories, dynamic-object behavior, and multisensor synchronization rules.', zh: '• 一次PathSolver对应当前几何状态。cir/cfr的Doppler时间轴在这组路径上施加相位演化，时延和可见性不随该时间轴重新追踪。
+
+      • 对象velocity用于Doppler；position/orientation才修改几何。长时间运动或路径拓扑变化需更新场景状态并逐快照求解。
+
+      • 时间步、轨迹、动态对象行为和多传感器同步规则由数据生产者定义。'}
+- label: {en: Changing blockage, zh: 改变遮挡}
+  text: {en: '• After moving or adding a blocker, update its position/orientation/mesh and rerun PathSolver to evaluate blockage, new paths, and their field coefficients.
+
+      • Setting object velocity alone does not advance its geometry over time or switch LoS as a vehicle passes.
+
+      • With fixed geometry but changed materials, field coefficients must at least be reevaluated; this version''s public workflow still uses PathSolver.', zh: '• 移动或增加遮挡体后，更新其position/orientation/mesh，重跑PathSolver以检查遮挡、新路径及对应场系数。
+
+      • 只设置对象velocity不会自动沿时间推进对象，也不会使LoS随车辆经过而开关。
+
+      • 若保持几何只改材料，至少需要重新评估场系数；本版本公开调用仍通过PathSolver完成。'}
+- label: {en: Cost drivers, zh: 成本来源}
+  text: {en: '• Geometry complexity, Tx/Rx endpoint counts, samples_per_src, max_depth, allowed interaction types, and max_num_paths_per_src affect path solving.
+
+      • Disabling synthetic_array expands endpoints to individual elements, increasing geometric tracing and storage costs for large arrays.
+
+      • Per-frame moving blockers require more scene updates and RT calls. More subcarriers or Doppler samples on one Paths object mainly increase CIR/CFR computation and tensor storage.
+
+      • Hardware backend, JIT compilation, and batching also affect runtime. This review verified computation steps, not a speed ranking.', zh: '• 几何复杂度、Tx/Rx端点数、samples_per_src、max_depth、允许的交互类型和max_num_paths_per_src影响路径求解。
+
+      • 关闭synthetic_array会把端点扩展到各阵元；大阵列的几何追踪和存储成本因此上升。
+
+      • 逐帧移动遮挡增加场景更新与RT次数；同一Paths上增加子载波或Doppler采样主要增加CIR/CFR计算与张量存储。
+
+      • 硬件后端、JIT编译和批处理也影响耗时；本轮仅核验计算步骤，未给出速度排名。'}
+- label: {en: Stored artifacts, zh: 产物}
+  text: {en: '• Retain XML/meshes, RF materials, antennas/poses, Sionna/Mitsuba/DrJit versions, solver parameters, and random settings.
+
+      • Save path validity, interaction points/types, delays, coefficients, angles, and Doppler, plus CIR/CFR sampling, normalization, and axis definitions.
+
+      • For dynamic data, save per-frame object states and times. When exporting formats, check path counts, powers, phase conventions, and propagation-switch metadata.', zh: '• 保留XML/mesh、RF材料、天线/位姿、Sionna/Mitsuba/DrJit版本、求解器参数和随机设置。
+
+      • 保存路径有效性、交互点/类型、时延、系数、角度与Doppler，以及CIR/CFR采样、归一化和轴定义。
+
+      • 动态数据保存每帧对象状态和时间；导出到其他格式时校验路径数、功率、相位约定及传播开关元数据。'}
+- label: {en: Common mistakes, zh: 常见混淆}
+  text: {en: '• Treating cfr frequencies as an RF-carrier change, or changing only scene.frequency while continuing to use old Paths.
+
+      • Assuming that setting velocity has moved the geometric blocker over time.
+
+      • Treating default synthetic_array=True results as element-wise spherical-wave propagation or visibility changes.', zh: '• 把cfr的frequencies参数当作重新设置RF载频，或只改scene.frequency后继续使用旧Paths。
+
+      • 设置velocity后，认为几何遮挡已随时间移动。
+
+      • 以默认synthetic_array=True的结果直接代表逐阵元球面波/可见性变化。'}
+- label: {en: Native outputs, zh: 原生输出}
+  text: {en: '• Paths and generated CIR/CFR
+
+      • RadioMapSolver outputs
+
+      • RGB and RCS results generated after configuration', zh: '• Paths与生成的CIR/CFR
+
+      • RadioMapSolver输出
+
+      • 配置后生成的RGB与RCS结果'}
+- label: {en: Derived outputs, zh: 派生输出}
+  text: {en: '• Custom geometric scan point clouds
+
+      • Beam/scheduling labels
+
+      • Sensing detections and trajectories, net goodput', zh: '• 自定义几何扫描点云
+
+      • beam/调度标签
+
+      • 感知检测与轨迹、净goodput'}
+- label: {en: What the researcher controls, zh: 研究者可控范围}
+  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+- label: {en: Reproduction notes, zh: 复现说明}
+  text: {en: '• The built-in street-canyon CFR example and a 4096-ray geometric scan ran on Sionna2.2.0/Mitsuba3.9.1/DrJit1.5.0 Metal. This does not validate the physical accuracy of external city scenes.
+
+      • The public Multimodal-NF generator uses Open3D cast_rays for its point-cloud branch; it should not be described as a native Sionna LiDAR interface.
+
+      • This card describes a composable production workflow. RGB, point clouds, and RCS are not automatic outputs of every RF simulation.', zh: '• 已在Sionna2.2.0/Mitsuba3.9.1/DrJit1.5.0 Metal实跑内置街谷CFR及4096射线几何扫描；这不验证外部城市场景的物理精度。
+
+      • Multimodal-NF公开生成器的点云分支使用Open3D cast_rays，不能把其实现误写成Sionna原生LiDAR接口。
+
+      • 本卡给出可组成的生产流程；RGB、点云、RCS并非每次RF仿真自动输出。'}
+provenance:
+- {en: Scene mesh + materials + antennas + device poses, zh: 场景 mesh + 材料 + 天线 + 设备位姿}
+- {en: Explicit PathSolver / RadioMapSolver / RCSSolver configuration, zh: 显式 PathSolver / RadioMapSolver / RCSSolver 配置}
+- {en: Path search and electromagnetic-coefficient computation, zh: 路径搜索与电磁系数计算}
+- {en: CIR/CFR and radio maps, zh: CIR/CFR 与无线地图}
+- {en: 'Array synthesis, baseband reception, or sensing processing', zh: 阵列合成、基带接收或感知处理}
+- {en: Derived decision labels, zh: 派生决策标签}
+technical_notes:
+- {en: 'Confirmed: version 1.0 rewrote RT around Dr.Jit/Mitsuba and replaced compute_paths with PathSolver. Features have not increased monotonically across releases.', zh: 已确认：1.0 曾重写为 Dr.Jit/Mitsuba 架构，compute_paths 改为 PathSolver，功能历史并非单调增加。}
+- {en: 'Confirmed: the 1.0 release explicitly lacked the earlier diffraction/RIS features at release time; 0.19 examples cannot be treated as 1.0 examples.', zh: 已确认：1.0 release 明确暂缺旧版 diffraction/RIS，不能把 0.19 示例直接当作 1.0 示例。}
+- {en: 'Confirmed: release 2.1 adds deterministic path generation and radio-map diffraction; 2.2 adds RCS sensing.', zh: 已确认：2.1 release 加入 deterministic path generation 和 radio-map diffraction；2.2 加入 RCS sensing 模块。}
+- {en: 'Inference: defaults, finite sampling, and material errors affect the path set. Check convergence with sampling and depth.', zh: 推断：默认参数、有限采样和材料误差会影响路径集合，应做采样/深度收敛诊断。}
+- {en: 'Unknown: the propagation mechanisms used in an experiment require the solver parameters at a fixed tag and the run configuration; the engine name alone is insufficient.', zh: 未知：具体实验的传播机制需读固定 tag 的 solver 参数与运行配置，不能由引擎名判断。}
+- {en: 'Supported by the literature: the original 2023 paper distinguishes element-wise RT from synthetic_array plane-wave postprocessing. Its material-learning experiment uses 400 RT-generated CIRs as targets with specular reflections only; it is not measured calibration evidence.', zh: 文献支持：2023原论文区分逐阵元RT与synthetic_array平面波后处理；材料学习实验以RT生成400条CIR作为目标，只含镜面反射，并非实测校准结果。}
+- {en: 'Confirmed: Sionna RT 2.2 PathSolver supports first-order edge/wedge diffraction, with diffraction=False by default, and thin-slab transmission. synthetic_array=True is the default; element-wise tracing must be explicitly enabled by disabling it and then validated.', zh: 已确认：Sionna RT 2.2 PathSolver支持一阶edge/wedge绕射，diffraction默认False；支持薄片透射；synthetic_array默认True，逐阵元精确追踪需明确关闭并校验。}
+- {en: 'Confirmed: underlying Mitsuba geometry intersections can implement custom LiDAR-like first-hit scans. The public Multimodal-NF implementation instead uses Open3D cast_rays; different sensor pipelines can process the same geometry.', zh: 已确认：可用底层Mitsuba几何求交自定义LiDAR式首命中扫描；Multimodal-NF公开实现则使用Open3D cast_rays，同一几何可由不同传感器仿真管线处理。}
+limitations:
+- {en: 'Updates can change APIs, backends, and defaults; pin tutorials and environments together.', zh: 软件更新会改变 API、后端和默认行为；教程与环境必须一起锁定。}
+- {en: Comparing two material configurations on one map is not equivalent to real cross-domain deployment., zh: 同地图两种材料配置的比较不等同真实跨域部署。}
+- {en: Generated channels usually omit real hardware phase drift and calibration errors; add a model or measurements separately., zh: 生成信道通常不含真实硬件相位漂移/校准误差；需另加模型或实测。}
+history:
+- {en: '2023: Sionna 0.14 integrates RT.', zh: 2023：Sionna 0.14 集成 RT。}
+- {en: '2025-03: Sionna 1.0 rewrites RT and separates it into its own module.', zh: 2025-03：Sionna 1.0 重写 RT 并改为独立模块。}
+- {en: '2026: RT 2.1 supports Metal and revised solver behavior; 2.2 adds RCS.', zh: 2026：RT 2.1 支持 Metal 与新版求解行为；2.2 新增 RCS。}
+usage:
+- {en: Install a pinned sionna-rt version in a separate environment; record Mitsuba/Dr.Jit and the CPU/GPU backend., zh: 独立环境安装固定 sionna-rt 版本，记录 Mitsuba/Dr.Jit 和 CPU/GPU 后端。}
+- {en: 'Load a minimal scene and set frequency, materials, Tx/Rx arrays, and poses.', zh: 载入最小场景；设置频率、材料、Tx/Rx 阵列与位姿。}
+- {en: 'Explicitly set propagation switches, max_depth, sampling, and seed before running PathSolver.', zh: 显式配置传播开关、max_depth、采样与 seed，再执行 PathSolver。}
+- {en: 'Generate CIR/CFR and check empty paths, delay units, array dimensions, and absolute/normalized power.', zh: 输出 CIR/CFR，检查空路径、时延单位、阵列维度与绝对/归一化功率。}
+- {en: 'First compare against an analytical free-space single-path result, then add a reflector or blocker; label execution status accurately.', zh: 先比较单径自由空间解析值，再增加反射面或 blocker；所有运行状态如实标注。}
+field_notes:
+- label: {en: LiDAR, zh: LiDAR}
+  text: {en: 'Scene.mi_scene and Mitsuba ray_intersect can generate geometric scan point clouds from the same scene. Sensor pose, ray directions, range, and sampling times must be defined. A built-in geometry example has run successfully. This is separate from PathSolver RF paths and does not automatically model real LiDAR intensity, rain/fog, or missed detections.', zh: 可通过Scene.mi_scene和Mitsuba ray_intersect实现同场景几何扫描点云；需定义传感器位姿、扫描方向、量程与采样时刻。已跑通内置几何样例；这不是PathSolver输出RF路径，也不自动包含真实LiDAR强度、雨雾和漏检模型。}
+paper_summary:
+- label: {en: System, zh: 系统}
+  text: {en: 'Mitsuba geometry and ray intersections, combined with wireless-field propagation and differentiable CIR computation.', zh: Mitsuba几何与射线求交，加无线场传播与可微CIR计算。}
+- label: {en: Prediction target, zh: 预测对象}
+  text: {en: Examples fit material parameters to generated CFR and separately optimize transmit-array orientation., zh: 示例以生成的CFR拟合材料参数；另优化发射阵列朝向。}
+- label: {en: Decision target, zh: 决策目标}
+  text: {en: Material calibration and regional received-power optimization., zh: 材料校准与区域接收功率优化。}
+- label: {en: Protocol, zh: 评估协议}
+  text: {en: 'Sec. II and Listings 1–3 demonstrate scenes, devices, paths, and CIR; Sec. III recovers materials using target channels generated by the same engine.', zh: Sec.II和Listings 1–3展示场景、设备、路径与CIR；Sec.III用同引擎生成的目标信道进行材料恢复。}
+- label: {en: Key finding, zh: 主要发现}
+  text: {en: 'Clearly distinguishes per-element RT from the synthetic-array plane-wave approximation, and path computation from short-term Doppler evolution.', zh: 明确区分逐阵元RT与synthetic-array平面波近似，以及路径计算和短时Doppler演化。}
+- label: {en: Remaining gap, zh: 尚未解决的问题}
+  text: {en: The 2023 paper uses an older interface generation; use current source code for v2.2 mechanisms and APIs. Recovery from synthetic targets still needs measurement-based calibration to support real deployment., zh: 2023论文接口属于旧代；v2.2机制和API以当前源码为准。合成目标恢复实验还需实测校准来支持现实部署。}
+materials:
+- {title: Sionna RT v2.2.0 official installation and development entry point, path: /materials/official/sionna-rt/README.md, license: Apache-2.0, source_url: 'https://github.com/NVlabs/sionna-rt/blob/v2.2.0/README.md'}
+tutorials: [sionna, sionna-lidar]
+tools: [project-scenebaker, project-mitsuba-blender, project-open3d-raycasting, project-deepmimo-sionna-bridge]
+overview: {en: 'Sionna RT is the stand-alone ray tracing package of NVIDIA''s Sionna library, released under Apache-2.0 and built on Mitsuba 3. The repository states that it is interoperable with TensorFlow, PyTorch and JAX, and recommends installation with pip install sionna-rt. It is software and not a fixed downloadable dataset. A user loads a 3D scene with materials and transmitter and receiver positions, then computes propagation paths, channel impulse responses (CIRs) and coverage maps given as path gain in dB. The 2023 paper names the munich and etoile scenes as built-in scenes. The paper''s material-learning experiment uses CIRs from 400 receivers as targets, computed for an OFDM system with 128 subcarriers spaced 30 kHz apart, and models specular reflections only. The repository citation lists version 2.2.0.', zh: Sionna RT 是 NVIDIA Sionna 库中独立的射线追踪包，采用 Apache-2.0 许可，基于 Mitsuba 3 构建。仓库说明其可与 TensorFlow、PyTorch 和 JAX 配合使用，推荐通过 pip install sionna-rt 安装。它是软件，不是可直接下载的固定数据集。用户加载包含材料以及发射机、接收机位置的三维场景后，即可计算传播路径、信道冲激响应（CIR），以及以
+    dB 表示路径增益的覆盖图。2023 年论文将 munich 和 etoile 列为内置场景。论文的材料学习实验以 400 个接收机的 CIR 作为目标，对应间隔 30 kHz 的 128 个 OFDM 子载波，且仅考虑镜面反射。仓库引用信息列出的版本为 2.2.0。}
+signal_details:
+- signal: paths
+  text: {en: 'Propagation paths from scene.compute_paths(), with optional Doppler evolution through apply_doppler(). The 2023 paper computes specular reflections with the image method, using either an exhaustive search or a heuristic that launches rays on a Fibonacci lattice over a sphere. It supports specular and diffuse reflection and first-order diffraction, and lists refraction and RIS as planned. With synthetic_array set to False, paths are traced between every transmit and receive antenna pair. With synthetic_array set to True, each array is represented by its center antenna and phase shifts follow a plane-wave assumption.', zh: 由 scene.compute_paths() 计算传播路径，可通过 apply_doppler() 加入多普勒演化。2023 年论文中，镜面反射采用镜像法，搜索方式为穷举搜索，或基于球面 Fibonacci 格点发射射线的启发式方法。支持镜面反射、漫反射和一阶绕射，折射与 RIS 列为计划中的功能。synthetic_array 设为 False 时，在每对收发天线之间追踪路径；设为 True 时，每个阵列以中心天线表示，相位偏移基于平面波假设。}
+- signal: cir
+  text: {en: 'paths.cir() returns the path coefficients and delays. The caller can include or exclude line-of-sight, reflection and diffraction paths. The paper obtains channel frequency responses by transforming the CIRs into the frequency domain.', zh: paths.cir() 返回路径系数与时延，可选择包含或排除视距、反射和绕射路径。论文通过将 CIR 变换到频域得到信道频率响应。}
+- signal: pathloss
+  text: {en: scene.coverage_map() produces a coverage map whose values are path gain in dB. The paper uses the term coverage map rather than radio map., zh: scene.coverage_map() 生成覆盖图，数值为以 dB 表示的路径增益。论文使用 coverage map 一词，而非 radio map。}

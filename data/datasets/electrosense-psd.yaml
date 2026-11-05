@@ -13,7 +13,39 @@ access: {url: 'https://zenodo.org/record/7521246', type: open}
 code: ['https://doi.org/10.5281/zenodo.7504334']
 paper: doi:10.1109/INFOCOM53939.2023.10228867
 used_in: []
-citing: ["doi:10.1109/infocom52122.2024.10621298","doi:10.1109/jsac.2025.3641910","doi:10.1109/infocom52122.2024.10621266"]
+citing: ['doi:10.1109/infocom52122.2024.10621298', 'doi:10.1109/jsac.2025.3641910', 'doi:10.1109/infocom52122.2024.10621266']
 summary: {en: 'Labeled power spectral density (PSD) arrays for licensed bands, from RTL-SDR sweeps over 24 MHz to 1.7 GHz in 2 MHz chunks, with about 6 hours of full-spectrum scanning per site.', zh: 面向授权频段的带标签功率谱密度（PSD）数组，由 RTL-SDR 以 2 MHz 分段对 24 MHz 至 1.7 GHz 进行全频谱扫描获得，每个站点约 6 小时扫描数据。}
 sources: ['https://zenodo.org/record/7521246', 'https://zenodo.org/api/records/7521246', 'https://zenodo.org/api/records/7521246/files/DATASET%20LICENCE/content', 'https://zenodo.org/api/records/7504334', 'https://api.crossref.org/works/10.1109/INFOCOM53939.2023.10228867']
 checked: '2026-11-06'
+overview: {en: 'ElectroSense PSD Spectrum Bands is a measured power spectral density (PSD) dataset produced by IMDEA Networks Institute and released on Zenodo in 2023. The spectra come from 47 ElectroSense sensors deployed across Europe. Each sensor pairs a Raspberry Pi with an RTL-SDR receiver as its radio front end. For each site, 6 hours of full-spectrum scanning were collected, with the RTL-SDR sweeping 24 MHz to 1.7 GHz in 2 MHz chunks. Specific portions of licensed bands, such as the FM bands, were filtered and labeled. The data are NumPy files organized in one folder per site, packed in spectrum_bands.tar.gz (1.7 GB). The dataset supports the paper A Framework for Wireless Technology Classification using Crowdsensing Platforms, which classifies the technology of a transmitter from single PSD measurements of at most 2 MHz bandwidth. The archive publishes the labeled spectrum portions, not the full sweeps.', zh: ElectroSense PSD Spectrum Bands 是由 IMDEA Networks Institute 制作的实测功率谱密度（PSD）数据集，2023
+    年发布在 Zenodo 上。数据来自欧洲各地部署的 47 个 ElectroSense 传感器。每个传感器由 Raspberry Pi 与作为射频前端的 RTL-SDR 接收机组成。每个站点采集 6 小时全频谱扫描数据，RTL-SDR 以 2 MHz 分段对 24 MHz 至 1.7 GHz 进行扫描。授权频段的特定部分（如 FM 频段）经过筛选并标注。数据为 NumPy 文件，每个站点一个文件夹，打包在 spectrum_bands.tar.gz（1.7 GB）中。该数据集支持论文 A Framework for Wireless Technology Classification using Crowdsensing Platforms，该论文基于不超过 2 MHz 带宽的单次 PSD 测量对发射机的无线技术进行分类。压缩包仅发布标注后的授权频段片段，不包含完整扫描数据。}
+signal_details:
+- signal: spectrum
+  text: {en: 'Power spectral density arrays measured by RTL-SDR sweeps from 24 MHz to 1.7 GHz, taken in 2 MHz chunks. Licensed-band portions are stored as labeled NumPy arrays. The full-spectrum scan lasts 6 hours per site.', zh: 由 RTL-SDR 以 2 MHz 分段扫描 24 MHz 至 1.7 GHz 得到的功率谱密度（PSD）数组。授权频段的特定部分以带标签的 NumPy 数组保存。每个站点的全频谱扫描时长为 6 小时。}
+pipeline:
+  summary: {en: 'RTL-SDR sensors on the ElectroSense platform sweep 24 MHz to 1.7 GHz, and the licensed-band PSD portions are labeled and packed as NumPy files per site.', zh: ElectroSense 平台上的 RTL-SDR 传感器对 24 MHz 至 1.7 GHz 进行扫描，授权频段的 PSD 片段经标注后，按站点打包为 NumPy 文件。}
+  stages:
+  - title: {en: Sensor platform, zh: 传感器平台}
+    detail: {en: Each ElectroSense sensor pairs a Raspberry Pi for computing and communication with an RTL-SDR as radio front end. The 47 sensors are deployed across Europe., zh: 每个 ElectroSense 传感器由负责计算和通信的 Raspberry Pi 与作为射频前端的 RTL-SDR 组成。47 个传感器部署在欧洲各地。}
+    inputs:
+    - {en: RF spectrum, zh: 射频频谱}
+    outputs:
+    - {en: PSD measurements, zh: PSD 测量数据}
+  - title: {en: Full-spectrum sweep, zh: 全频谱扫描}
+    detail: {en: The RTL-SDR hops across the spectrum from 24 MHz to 1.7 GHz in 2 MHz chunks. Each site collects 6 hours of full-spectrum scanning., zh: RTL-SDR 以 2 MHz 分段在 24 MHz 至 1.7 GHz 之间跳频扫描。每个站点采集 6 小时全频谱扫描数据。}
+    inputs:
+    - {en: 'RF spectrum, 24 MHz to 1.7 GHz', zh: 24 MHz 至 1.7 GHz 射频频谱}
+    outputs:
+    - {en: full-spectrum PSD scans, zh: 全频谱 PSD 扫描数据}
+  - title: {en: Licensed-band filtering and labeling, zh: 授权频段筛选与标注}
+    detail: {en: 'Specific portions of the licensed bands, such as the FM bands, are filtered from the scans and labeled.', zh: 从扫描数据中筛选授权频段的特定部分（如 FM 频段）并进行标注。}
+    inputs:
+    - {en: full-spectrum PSD scans, zh: 全频谱 PSD 扫描数据}
+    outputs:
+    - {en: labeled band PSD arrays, zh: 带标签的频段 PSD 数组}
+  - title: {en: Packaging, zh: 打包}
+    detail: {en: 'The labeled portions are stored as NumPy files, one folder per site. The folders are packed in spectrum_bands.tar.gz, 1.7 GB.', zh: 标注后的片段以 NumPy 文件保存，每个站点一个文件夹。文件夹打包在 spectrum_bands.tar.gz 中，大小为 1.7 GB。}
+    inputs:
+    - {en: labeled band PSD arrays, zh: 带标签的频段 PSD 数组}
+    outputs:
+    - {en: spectrum_bands.tar.gz, zh: spectrum_bands.tar.gz}

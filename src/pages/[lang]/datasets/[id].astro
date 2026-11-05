@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
 import Base from "../../../layouts/Base.astro";
-import { allDatasets, paperOf, bibtex, taskById, t, label, labels, authorsShort, LANGS, type Lang } from "../../../lib/data.ts";
+import { allDatasets, paperOf, bibtex, taskById, tools, tutorials, t, label, labels, authorsShort, LANGS, type Lang } from "../../../lib/data.ts";
 import { specRows } from "../../../lib/view.ts";
 
 export const getStaticPaths = (async () => {
@@ -12,7 +12,7 @@ export const getStaticPaths = (async () => {
 const lang = Astro.params.lang as Lang;
 const { d } = Astro.props;
 const all = await allDatasets();
-const paper = paperOf(d.paper);
+const paper = d.paper ? paperOf(d.paper) : null;
 const byCites = (ids: string[]) => ids.map((id) => ({ id, p: paperOf(id) })).sort((a, b) => b.p.cited_by - a.p.cited_by);
 const used = byCites(d.used_in);
 const citing = byCites(d.citing);
@@ -24,6 +24,27 @@ const related = all
   .slice(0, 6)
   .map((r) => r.x);
 const meta = (p: ReturnType<typeof paperOf>) => [authorsShort(p.authors), p.venue, p.year, p.cited_by ? t(lang, "papers.cited", { n: p.cited_by }) : ""].filter(Boolean).join(" · ");
+const none = t(lang, "spec.none");
+const rows = specRows(d, lang).filter(([, , v]) => v !== none);
+const myTools = tools.filter((x) => d.tools.includes(x.id));
+const myTutorials = tutorials.filter((x) => d.tutorials.includes(x.id));
+const paras = (s: string) => s.split(/\n{2,}/).filter(Boolean);
+const sections = [
+  d.overview && ["overview", "detail.overview"],
+  ["spec", "detail.spec"],
+  (d.signal_details.length > 0) && ["modalities", "detail.modalities"],
+  (d.pipeline || d.provenance.length > 0) && ["pipeline", "detail.pipeline"],
+  d.facts.length > 0 && ["facts", "detail.facts"],
+  d.variants.length > 0 && ["variants", "detail.variants"],
+  d.field_notes.length > 0 && ["fields", "detail.fieldNotes"],
+  d.technical_notes.length > 0 && ["notes", "detail.techNotes"],
+  d.limitations.length > 0 && ["limits", "detail.limitations"],
+  d.history.length > 0 && ["history", "detail.history"],
+  d.usage.length > 0 && ["usage", "detail.usage"],
+  (paper || d.paper_summary.length > 0) && ["paper", "detail.datasetPaper"],
+  (d.materials.length > 0 || myTools.length > 0 || myTutorials.length > 0) && ["extras", "detail.materials"],
+  (used.length > 0 || citing.length > 0) && ["used", "detail.usedIn"],
+].filter(Boolean) as [string, string][];
 const ld = { "@context": "https://schema.org", "@type": "Dataset", name: d.name, description: d.summary.en, url: d.access.url, license: d.license, datePublished: String(d.year), keywords: d.tasks.join(", ") };
 ---
 <Base lang={lang} nav="datasets" title={d.name} description={d.summary[lang]}>
@@ -35,63 +56,189 @@ const ld = { "@context": "https://schema.org", "@type": "Dataset", name: d.name,
       <div class="tags" style="margin-top:10px">
         <span class="tag"><i class={`dot ${d.origin}`}></i>{label(labels.origin, d.origin, lang)}</span>
         <span class="tag">{d.year}</span>
+        {d.signals.map((s) => <a class="tag" href={`/${lang}/datasets/?signal=${s}`}>{label(labels.signal, s, lang)}</a>)}
+      </div>
+      <div class="tags" style="margin-top:8px">
         {d.tasks.map((k) => <a class="tag" href={`/${lang}/tasks/${k}/`}>{taskById(k).name[lang]}</a>)}
       </div>
       <p class="lead">{d.summary[lang]}</p>
     </div>
     <div class="actions">
       <a class="btn primary" href={d.access.url} rel="noopener">{t(lang, "detail.download")} ↗</a>
-      <a class="btn" href={paper.url} rel="noopener">{t(lang, "detail.paper")} ↗</a>
+      {paper && <a class="btn" href={paper.url} rel="noopener">{t(lang, "detail.paper")} ↗</a>}
       {d.code[0] && <a class="btn" href={d.code[0]} rel="noopener">{t(lang, "detail.code")} ↗</a>}
       <button class="btn" type="button" id="cmp" data-id={d.id}>{t(lang, "compare.add")}</button>
     </div>
   </div>
 
   <div class="detail-grid">
-    <div>
-      <section>
-        <h2 style="margin-bottom:12px">{t(lang, "detail.spec")}</h2>
-        <dl class="spec">
-          {specRows(d, lang).filter(([, , v]) => v !== t(lang, "spec.none")).map(([, k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
-          {d.aliases.length > 0 && (<><dt>{t(lang, "spec.aliases")}</dt><dd>{d.aliases.join(", ")}</dd></>)}
-        </dl>
-        <p class="faint" style="margin-top:8px;font-size:13px">{t(lang, "detail.checked")} {d.checked}</p>
-      </section>
-
-      <section class="section">
-        <h2>{t(lang, "detail.datasetPaper")}</h2>
-        <div class="paper-item">
-          <a class="t" href={paper.url} rel="noopener">{paper.title}</a>
-          <div class="m">{meta(paper)}</div>
-          <div class="row" style="margin-top:8px">
-            <button class="btn" type="button" id="bib" data-bib={bibtex(d.paper)} data-done={t(lang, "detail.copied")}>{t(lang, "detail.bibtex")}</button>
-          </div>
-        </div>
-      </section>
-
-      {(used.length > 0 || citing.length === 0) && (
-      <section class="section">
-        <h2>{t(lang, "detail.usedIn")}</h2>
-        {used.length ? <p class="faint" style="margin:-6px 0 8px;font-size:13px">{t(lang, "detail.usedInNote")}</p> : null}
-        {used.length ? used.map(({ p }) => (
-          <div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{meta(p)}</div></div>
-        )) : <p class="faint">{t(lang, "detail.noUsedIn")}</p>}
-      </section>
+    <div class="detail-main">
+      {d.overview && (
+        <section id="overview" class="block">
+          <h2>{t(lang, "detail.overview")}</h2>
+          {paras(d.overview[lang]).map((p) => <p class="body">{p}</p>)}
+        </section>
       )}
 
-      {citing.length > 0 && (
-        <section class="section">
-          <h2>{t(lang, "detail.citing")}</h2>
-          <p class="faint" style="margin:-6px 0 8px;font-size:13px">{t(lang, "detail.citingNote")}</p>
-          {citing.map(({ p }) => (
-            <div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{meta(p)}</div></div>
-          ))}
+      <section id="spec" class="block">
+        <h2>{t(lang, "detail.spec")}</h2>
+        <dl class="spec">
+          {rows.map(([, k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
+          {d.aliases.length > 0 && (<><dt>{t(lang, "spec.aliases")}</dt><dd>{d.aliases.join(", ")}</dd></>)}
+        </dl>
+        <p class="faint small">{t(lang, "detail.checked")} {d.checked}</p>
+      </section>
+
+      {d.signal_details.length > 0 && (
+        <section id="modalities" class="block">
+          <h2>{t(lang, "detail.modalities")}</h2>
+          <div class="modal-grid">
+            {d.signal_details.map((s) => (
+              <div class="modal">
+                <div class="modal-h"><a href={`/${lang}/datasets/?signal=${s.signal}`}>{label(labels.signal, s.signal, lang)}</a></div>
+                <p>{s.text[lang]}</p>
+              </div>
+            ))}
+          </div>
         </section>
+      )}
+
+      {(d.pipeline || d.provenance.length > 0) && (
+        <section id="pipeline" class="block">
+          <h2>{t(lang, "detail.pipeline")}</h2>
+          {d.pipeline?.summary && <p class="body">{d.pipeline.summary[lang]}</p>}
+          {d.pipeline?.scope && <p class="body faint">{d.pipeline.scope[lang]}</p>}
+          {d.provenance.length > 0 && (
+            <>
+              <h3 class="sub">{t(lang, "detail.provenance")}</h3>
+              <ol class="chain">{d.provenance.map((x) => <li>{x[lang]}</li>)}</ol>
+            </>
+          )}
+          {d.pipeline && (
+            <ol class="stages">
+              {d.pipeline.stages.map((s, i) => (
+                <li class="stage">
+                  <div class="stage-n">{i + 1}</div>
+                  <div class="stage-b">
+                    <h3>{s.title[lang]}</h3>
+                    <p>{s.detail[lang]}</p>
+                    <div class="io">
+                      {s.inputs && <div><b>{t(lang, "detail.inputs")}</b><ul>{s.inputs.map((x) => <li>{x[lang]}</li>)}</ul></div>}
+                      {s.outputs && <div><b>{t(lang, "detail.outputs")}</b><ul>{s.outputs.map((x) => <li>{x[lang]}</li>)}</ul></div>}
+                      {s.controls && <div><b>{t(lang, "detail.controls")}</b><ul>{s.controls.map((x) => <li>{x[lang]}</li>)}</ul></div>}
+                      {s.checks && <div><b>{t(lang, "detail.checks")}</b><ul>{s.checks.map((x) => <li>{x[lang]}</li>)}</ul></div>}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
+      )}
+
+      {d.facts.length > 0 && (
+        <section id="facts" class="block">
+          <h2>{t(lang, "detail.facts")}</h2>
+          <dl class="facts">{d.facts.map((f) => (<><dt>{f.label[lang]}</dt><dd>{f.text[lang]}</dd></>))}</dl>
+        </section>
+      )}
+
+      {d.variants.length > 0 && (
+        <section id="variants" class="block">
+          <h2>{t(lang, "detail.variants")}</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>{t(lang, "detail.variants")}</th><th>{t(lang, "spec.signals")}</th><th>CSI</th></tr></thead>
+            <tbody>{d.variants.map((v) => <tr><td><b>{v.name[lang]}</b></td><td>{v.observations[lang]}</td><td>{v.csi?.[lang] ?? ""}</td></tr>)}</tbody>
+          </table></div>
+        </section>
+      )}
+
+      {d.field_notes.length > 0 && (
+        <section id="fields" class="block">
+          <h2>{t(lang, "detail.fieldNotes")}</h2>
+          <dl class="facts">{d.field_notes.map((f) => (<><dt>{f.label[lang]}</dt><dd>{f.text[lang]}</dd></>))}</dl>
+        </section>
+      )}
+
+      {d.technical_notes.length > 0 && (
+        <section id="notes" class="block"><h2>{t(lang, "detail.techNotes")}</h2><ul class="plain">{d.technical_notes.map((x) => <li>{x[lang]}</li>)}</ul></section>
+      )}
+      {d.limitations.length > 0 && (
+        <section id="limits" class="block"><h2>{t(lang, "detail.limitations")}</h2><ul class="plain">{d.limitations.map((x) => <li>{x[lang]}</li>)}</ul></section>
+      )}
+      {d.history.length > 0 && (
+        <section id="history" class="block"><h2>{t(lang, "detail.history")}</h2><ul class="plain">{d.history.map((x) => <li>{x[lang]}</li>)}</ul></section>
+      )}
+      {d.usage.length > 0 && (
+        <section id="usage" class="block"><h2>{t(lang, "detail.usage")}</h2><ol class="plain">{d.usage.map((x) => <li>{x[lang]}</li>)}</ol></section>
+      )}
+
+      {(paper || d.paper_summary.length > 0) && (
+        <section id="paper" class="block">
+          <h2>{t(lang, "detail.datasetPaper")}</h2>
+          {paper && d.paper && (
+            <div class="paper-item">
+              <a class="t" href={paper.url} rel="noopener">{paper.title}</a>
+              <div class="m">{meta(paper)}</div>
+              <div class="row" style="margin-top:8px">
+                <button class="btn" type="button" id="bib" data-bib={bibtex(d.paper)} data-done={t(lang, "detail.copied")}>{t(lang, "detail.bibtex")}</button>
+              </div>
+            </div>
+          )}
+          {d.paper_summary.length > 0 && (
+            <dl class="facts" style="margin-top:14px">{d.paper_summary.map((f) => (<><dt>{f.label[lang]}</dt><dd>{f.text[lang]}</dd></>))}</dl>
+          )}
+        </section>
+      )}
+
+      {(d.materials.length > 0 || myTools.length > 0 || myTutorials.length > 0) && (
+        <section id="extras" class="block">
+          {d.materials.length > 0 && (
+            <>
+              <h2>{t(lang, "detail.materials")}</h2>
+              <ul class="plain">{d.materials.map((m) => <li><a href={m.path}>{m.title}</a> <span class="faint">· {m.license} · <a href={m.source_url} rel="noopener">{t(lang, "detail.localCopy")} ↗</a></span></li>)}</ul>
+            </>
+          )}
+          {myTutorials.length > 0 && (
+            <>
+              <h2 style="margin-top:22px">{t(lang, "detail.tutorials")}</h2>
+              <ul class="plain">{myTutorials.map((x) => <li><a href={`/${lang}/tools/#tut-${x.id}`}>{x.title[lang]}</a></li>)}</ul>
+            </>
+          )}
+          {myTools.length > 0 && (
+            <>
+              <h2 style="margin-top:22px">{t(lang, "detail.tools")}</h2>
+              <ul class="plain">{myTools.map((x) => <li><a href={`/${lang}/tools/#${x.id}`}>{x.name}</a> <span class="faint">· {x.category[lang]}</span></li>)}</ul>
+            </>
+          )}
+        </section>
+      )}
+
+      {used.length > 0 && (
+        <section id="used" class="block">
+          <h2>{t(lang, "detail.usedIn")}</h2>
+          <p class="faint small" style="margin:-6px 0 8px">{t(lang, "detail.usedInNote")}</p>
+          {used.map(({ p }) => (<div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{meta(p)}</div></div>))}
+        </section>
+      )}
+      {citing.length > 0 && (
+        <section id={used.length > 0 ? "citing" : "used"} class="block">
+          <h2>{t(lang, "detail.citing")}</h2>
+          <p class="faint small" style="margin:-6px 0 8px">{t(lang, "detail.citingNote")}</p>
+          {citing.map(({ p }) => (<div class="paper-item"><a class="t" href={p.url} rel="noopener">{p.title}</a><div class="m">{meta(p)}</div></div>))}
+        </section>
+      )}
+      {used.length === 0 && citing.length === 0 && (
+        <section class="block"><h2>{t(lang, "detail.usedIn")}</h2><p class="faint">{t(lang, "detail.noUsedIn")}</p></section>
       )}
     </div>
 
-    <aside>
-      <h2 style="margin-bottom:12px">{t(lang, "detail.related")}</h2>
+    <aside class="detail-side">
+      <nav class="toc" aria-label="On this page">
+        <h2>{t(lang, "detail.onPage")}</h2>
+        <ul>{sections.map(([id, key]) => <li><a href={`#${id}`}>{t(lang, key)}</a></li>)}</ul>
+      </nav>
+      <h2 style="margin:22px 0 10px">{t(lang, "detail.related")}</h2>
       <ul class="side-list">
         {related.map((x) => <li><a href={`/${lang}/datasets/${x.id}/`}>{x.name}</a><div class="sub">{x.year} · {label(labels.origin, x.origin, lang)}</div></li>)}
       </ul>
@@ -105,9 +252,15 @@ const ld = { "@context": "https://schema.org", "@type": "Dataset", name: d.name,
     const sync = () => { b.textContent = getIds().includes(b.dataset.id!) ? rem : add; };
     b.addEventListener("click", () => { toggle(b.dataset.id!); sync(); });
     window.addEventListener("compare-change", sync); sync();
-    const bib = document.getElementById("bib") as HTMLButtonElement;
-    bib.addEventListener("click", async () => {
+    const bib = document.getElementById("bib") as HTMLButtonElement | null;
+    bib?.addEventListener("click", async () => {
       try { await navigator.clipboard.writeText(bib.dataset.bib!); const o = bib.textContent; bib.textContent = bib.dataset.done!; setTimeout(() => (bib.textContent = o), 1400); } catch {}
     });
+    // highlight the current section in the table of contents
+    const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc a")];
+    const obs = new IntersectionObserver((es) => {
+      for (const e of es) if (e.isIntersecting) links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
+    }, { rootMargin: "-10% 0px -80% 0px" });
+    document.querySelectorAll(".detail-main section[id]").forEach((s) => obs.observe(s));
   </script>
 </Base>
