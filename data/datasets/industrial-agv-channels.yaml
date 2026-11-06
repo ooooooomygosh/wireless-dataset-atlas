@@ -9,7 +9,7 @@ bands_ghz: []
 environment: [industrial]
 mobility: constant vehicle trajectory
 format: MAT (.mat files)
-license: CC BY 4.0
+license: Creative Commons Attribution
 access: {url: 'https://ieee-dataport.org/documents/data-set-time-varying-industrial-radio-channels-varying-environment', type: restricted}
 code: []
 paper: doi:10.1109/wcnc49053.2021.9417520
@@ -46,3 +46,75 @@ pipeline:
     outputs:
     - {en: preprocessed_data.zip, zh: preprocessed_data.zip}
     - {en: .mat arrays, zh: .mat数组}
+size_gb: 1.11
+facts:
+- label: {en: Obstacles, zh: 障碍物}
+  text: {en: 'Metallic obstacles are added between measurement repetitions, so the environment changes across the 10 scenarios.', zh: 两次重复测量之间加入金属障碍物，使10个测量场景中的环境随时间变化。}
+- label: {en: NLOS result, zh: 非视距结果}
+  text: {en: The paper reports that under non-line-of-sight conditions the loss of receive power over the full bandwidth stays moderate because of many reflections., zh: 论文报告，在非视距（NLOS）条件下，由于大量反射，全带宽范围内的接收功率损失仍然适中。}
+- label: {en: Data reading, zh: 数据读取}
+  text: {en: 'The data are MATLAB .mat arrays that load in MATLAB, or in Python with scipy.io.loadmat.', zh: 数据为MATLAB .mat数组，可在MATLAB中读取，也可在Python中使用scipy.io.loadmat读取。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Channel frequency responses stored as MATLAB arrays at a 1 kHz measurement rate; files sit behind an IEEE DataPort login, so contents are not verified.', zh: 以MATLAB数组存储的信道频率响应，测量频率1 kHz；文件需登录IEEE DataPort访问，内容未经核实。}
+- key: cir
+  status: derivable
+  note: {en: 'Inverse FFT of the stored channel frequency responses; the paper abstract mentions impulse responses, which the dataset page does not list.', zh: 对已存储的信道频率响应做逆FFT即可得到；论文摘要提及冲激响应，但数据集页面未列出该数据。}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Received power and path loss follow from the stored channel frequency responses; no power field is listed., zh: 接收功率与路径损耗可由已存储的信道频率响应计算得到；数据集页面未列出功率字段。}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: The dataset is described as a channel measurement dataset only., zh: 数据集被描述为仅含信道测量的数据集。}
+- key: depth
+  status: none
+  note: {en: The dataset is described as a channel measurement dataset only., zh: 数据集被描述为仅含信道测量的数据集。}
+- key: lidar
+  status: none
+  note: {en: The dataset is described as a channel measurement dataset only., zh: 数据集被描述为仅含信道测量的数据集。}
+- key: radar
+  status: none
+  note: {en: The dataset is described as a channel measurement dataset only., zh: 数据集被描述为仅含信道测量的数据集。}
+- key: imu
+  status: none
+  note: {en: The dataset is described as a channel measurement dataset only., zh: 数据集被描述为仅含信道测量的数据集。}
+- key: time_series
+  status: provided
+  note: {en: 'Channel recorded every millisecond over each trajectory run, giving ordered snapshots.', zh: 每次沿轨迹测量时每毫秒记录一次信道，形成有序快照序列。}
+- {key: multiuser, status: unknown}
+- {key: multibs, status: unknown}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 体现在测量本身之中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 体现在测量本身之中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 体现在测量本身之中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 体现在测量本身之中，未按路径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: last updated
+  date: '2026-04-17'
+  summary: {en: IEEE DataPort record shows a last-updated timestamp; the page does not state what changed., zh: IEEE DataPort记录显示最后更新时间；页面未说明更改内容。}
+  url: https://ieee-dataport.org/documents/data-set-time-varying-industrial-radio-channels-varying-environment
+- version: initial release
+  date: '2023-09-22'
+  summary: {en: 'Dataset record created on IEEE DataPort (DOI 10.21227/htgs-jp87) with preprocessed_data.zip (1.11 GB), MATLAB .mat arrays and Data_Description.pdf.', zh: 数据记录于IEEE DataPort创建（DOI 10.21227/htgs-jp87），包含preprocessed_data.zip（1.11 GB）、MATLAB .mat数组和Data_Description.pdf。}
+  url: https://ieee-dataport.org/documents/data-set-time-varying-industrial-radio-channels-varying-environment

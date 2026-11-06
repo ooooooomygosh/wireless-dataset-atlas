@@ -9,17 +9,17 @@ bands_ghz: [2.4]
 samples: 10 million packets from 174 transmitters captured by 41 USRP receivers over 4 captures spanning about a month
 size_gb: 76.9
 standard: Wi-Fi
-license: CC BY-NC-SA 4.0
+license: Not stated
 access: {url: 'https://cores.ee.ucla.edu/downloads/datasets/wisig/', type: open}
 code: ['https://github.com/WiSig-dataset/wisig-examples', 'https://github.com/WiSig-dataset/wisig-process-raw']
 paper: arxiv:2112.15363
 used_in: ['doi:10.1109/twc.2025.3528568', 'doi:10.1109/jiot.2025.3573713', 'doi:10.1109/jiot.2025.3598480', 'doi:10.1109/lcomm.2025.3588073', 'doi:10.1109/iccc62479.2024.10681757']
 citing: ['doi:10.1109/tmc.2023.3340039', 'doi:10.1109/twc.2024.3463740', 'doi:10.1109/twc.2024.3450972']
 summary: {en: 'About 10 million Wi-Fi packets from 174 off-the-shelf transmitters, recorded by 41 USRP receivers over four captures spanning about a month on the ORBIT testbed. Raw captures and pre-processed subsets are both provided.', zh: 来自174台商用现成（off-the-shelf）Wi-Fi发射机的约1000万个数据包，由41台USRP接收机在ORBIT测试平台上分四次采集，历时约一个月。同时提供原始采集数据和预处理子集。}
-sources: ['https://cores.ee.ucla.edu/downloads/datasets/wisig/', 'https://arxiv.org/abs/2112.15363', 'https://github.com/WiSig-dataset/wisig-examples', 'https://github.com/WiSig-dataset/wisig-process-raw', 'https://raw.githubusercontent.com/WiSig-dataset/wisig-process-raw/master/matlab_detection_screening/read_complex_binary.m']
+sources: ['https://cores.ee.ucla.edu/downloads/datasets/wisig/', 'https://arxiv.org/abs/2112.15363', 'https://github.com/WiSig-dataset/wisig-examples', 'https://github.com/WiSig-dataset/wisig-process-raw', 'https://raw.githubusercontent.com/WiSig-dataset/wisig-process-raw/master/matlab_detection_screening/read_complex_binary.m', 'https://arxiv.org/pdf/2112.15363', 'https://raw.githubusercontent.com/WiSig-dataset/wisig-process-raw/master/README.md', 'https://github.com/WiSig-dataset/wisig-process-raw/tree/master/matlab_detection_screening', 'https://github.com/WiSig-dataset/wisig-process-raw/tree/master/python_pkl_creation', 'https://raw.githubusercontent.com/WiSig-dataset/wisig-examples/master/README.md', 'https://export.arxiv.org/api/query?id_list=2112.15363', 'https://arxiv.org/abs/2112.15363v1', 'https://github.com/WiSig-dataset/wisig-examples/releases', 'https://github.com/WiSig-dataset/wisig-process-raw/releases', 'https://github.com/WiSig-dataset/wisig-examples/commits/master', 'https://api.crossref.org/works/10.1109/ACCESS.2022.3154790']
 checked: '2026-11-06'
-overview: {en: 'WiSig is a WiFi signal dataset from the UCLA CORES Lab for RF fingerprinting, described in an arXiv preprint in 2021 and in IEEE Access in 2022. It contains about 10 million WiFi packets sent by 174 off-the-shelf transmitters and recorded by 41 USRP receivers. The captures were made on the ORBIT testbed, a 20 × 20 grid of nodes, where each transmitter sent random UDP bytes to a WiFi access point on channel 13 (2462 MHz, 20 MHz). Four captures were made on 1, 8, 15 and 23 March 2021, and the receivers ran without time or frequency synchronization. The raw captures total about 1.4 TB and contain idle time and ACK responses, while the processed identification signals are 256 IQ samples per packet in equalized and non-equalized versions, forming Full WiSig at 76.9 GB. Four compact subsets (ManySig, ManyTx, ManyRx and SingleDay) are published as separate zip files and share some transmitters, receivers and signals. The authors intend the data for transmitter fingerprinting methods
-    that work regardless of receiver or channel, and Full WiSig is not balanced across Tx-Rx pairs.', zh: WiSig是UCLA CORES Lab发布的WiFi信号数据集，用于RF指纹识别，2021年发布arXiv预印本，2022年刊于IEEE Access。数据包含174台商用现成（off-the-shelf）WiFi发射机发送的约1000万个数据包，由41台USRP接收机记录。采集在ORBIT测试平台上进行，该平台为20 × 20节点网格；发射机向WiFi接入点发送随机UDP字节，使用信道13（2462 MHz，20 MHz带宽）。采集分四次进行，日期为2021年3月1日、8日、15日和23日，各接收机之间不做时间或频率同步。原始数据约1.4 TB，包含空闲时间和ACK响应；标识信号（Id signal）为每个数据包的前256个IQ采样，分为未均衡与均衡两个版本，合称Full WiSig，共76.9 GB。ManySig、ManyTx、ManyRx和SingleDay四个压缩子集以独立zip文件发布，彼此共享部分发射机、接收机和信号。作者希望该数据支持不依赖接收机和信道的发射机指纹识别方法，Full WiSig中各Tx-Rx对的信号数量不均衡。}
+overview: {en: 'WiSig is a WiFi signal dataset from the UCLA CORES Lab for RF fingerprinting, described in an arXiv preprint in 2021 and in IEEE Access in 2022. It contains about 10 million WiFi packets sent by 174 off-the-shelf transmitters and recorded by 41 USRP receivers. The captures were made on the ORBIT testbed, a 20 × 20 grid of nodes, where each transmitter sent random UDP bytes to a WiFi access point on channel 13 (2462 MHz, 20 MHz). Four captures were made on 1, 8, 15 and 23 March 2021, and the receivers ran without time or frequency synchronization. The raw captures total about 1.4 TB and contain idle time and ACK responses, while the processed identification signals are 256 IQ samples per packet in equalized and non-equalized versions, forming Full WiSig at 76.9 GB. Four compact subsets (ManySig, ManyTx, ManyRx and SingleDay) are published as separate zip files and share some transmitters, receivers and signals. The authors use the data to study how receivers and channels affect
+    transmitter identification, and Full WiSig is not balanced across Tx-Rx pairs.', zh: WiSig 是 UCLA CORES Lab 发布的 WiFi 信号数据集，面向 RF 指纹识别，2021 年发表于 arXiv 预印本，2022 年刊于 IEEE Access。数据包含 174 台商用现成（off-the-shelf）WiFi 发射机发送的约 1000 万个数据包，由 41 台 USRP 接收机记录。采集在 ORBIT 测试平台上进行，该平台为 20 × 20 的节点网格；发射机向 WiFi 接入点发送随机 UDP 字节，使用信道 13（2462 MHz，20 MHz 带宽）。采集分四次进行，日期为 2021 年 3 月 1 日、8 日、15 日和 23 日，各接收机之间不做时间或频率同步。原始采集约 1.4 TB，包含空闲时间和 ACK 响应；处理后的标识信号（Id signal）为每个数据包的 256 个 IQ 采样，分为未均衡与均衡两个版本，合称 Full WiSig，共 76.9 GB。ManySig、ManyTx、ManyRx 和 SingleDay 四个紧凑子集以独立 zip 文件发布，彼此共享部分发射机、接收机和信号。作者借助该数据研究接收机与信道如何影响发射机识别，Full WiSig 中各 Tx-Rx 对的信号数量不均衡。}
 signal_details:
 - signal: iq
   text: {en: 'Raw IQ samples from USRP B210, X310 and N210 receivers at 25 Msps and a 2462 MHz center frequency (WiFi 802.11a/g, channel 13, 20 MHz), captured for 0.512 s per transmission. The transmitters use Atheros 5212, 9220, 9280 and 9580 WiFi modules. The MATLAB reader in wisig-process-raw reads the raw files as 32-bit complex values. Identification signals contain the first 256 IQ samples of each packet, in a non-equalized and an equalized version.', zh: 来自USRP B210、X310和N210接收机的原始IQ采样，采样率25 Msps，中心频率2462 MHz（WiFi 802.11a/g，信道13，20 MHz），每次发射采集0.512 s。发射端WiFi模块为Atheros 5212、9220、9280和9580。wisig-process-raw中的MATLAB读取函数将原始文件按32位复数读取。标识信号为每个数据包的前256个IQ采样，分为未均衡和均衡两个版本。}
@@ -52,8 +52,93 @@ pipeline:
     outputs:
     - {en: 'Identification signals with Tx, Rx and day labels', zh: 带有发射机、接收机和日期标签的标识信号}
   - title: {en: Assemble one pkl file per receiver, zh: 按接收机组装pkl文件}
-    detail: {en: 'A Jupyter notebook in python_pkl_creation builds one pkl file for each receiver from the identification signals, and it can be applied to the non-equalized or the equalized data. The assembled Full WiSig dataset is 76.9 GB and is not balanced across Tx-Rx pairs.', zh: python_pkl_creation中的Jupyter notebook将标识信号按接收机生成一个pkl文件，可用于未均衡或均衡数据。组装后的Full WiSig为76.9 GB，各Tx-Rx对的信号数量不均衡。}
+    detail: {en: 'A Jupyter notebook in python_pkl_creation reads the MATLAB packet files and writes one pkl file for each receiver, for either the non-equalized or the equalized data. Tx-Rx pairs with few packets or small files are skipped. The assembled Full WiSig dataset is 76.9 GB and is not balanced across Tx-Rx pairs.', zh: python_pkl_creation中的Jupyter notebook读取MATLAB数据包文件，为每个接收机生成一个pkl文件，可用于未均衡或均衡数据。数据包数量少或文件小的Tx-Rx对会被跳过。组装后的Full WiSig为76.9 GB，各Tx-Rx对的信号数量不均衡。}
     inputs:
-    - {en: Identification signals per receiver, zh: 每个接收机的标识信号}
+    - {en: 'MATLAB packet files (.mat) per receiver, non-equalized or equalized', zh: 每个接收机的MATLAB数据包文件（.mat），未均衡或均衡}
     outputs:
     - {en: Full WiSig pkl file per receiver (76.9 GB in total), zh: 每个接收机一个Full WiSig pkl文件（合计76.9 GB）}
+bandwidth_mhz: 20
+format: raw binary IQ, MAT, PKL
+facts:
+- label: {en: Compact subsets, zh: 紧凑子集}
+  text: {en: 'ManySig has 6 Tx, 12 Rx and 1000 signals per Tx-Rx pair over 4 days (1.4 GB zipped); ManyTx has 150 Tx, 18 Rx and 50 signals per pair (2.5 GB); ManyRx has 10 Tx, 32 Rx and 200 signals per pair (1.2 GB); SingleDay has 28 Tx, 10 Rx and 800 signals per pair on one day (1 GB).', zh: ManySig 含 6 个发射机、12 个接收机，每个 Tx-Rx 对 1000 个信号，覆盖 4 天（压缩包 1.4 GB）；ManyTx 含 150 个发射机、18 个接收机，每对 50 个信号（2.5 GB）；ManyRx 含 10 个发射机、32 个接收机，每对 200 个信号（1.2 GB）；SingleDay 含 28 个发射机、10 个接收机，每对 800 个信号，仅覆盖 1 天（1 GB）。}
+- label: {en: Balance and overlap, zh: 均衡性与重叠}
+  text: {en: 'Only ManySig and SingleDay are perfectly balanced; the other two subsets have at least 90% of Tx per Rx meeting the signal count. The subsets share some transmitters, receivers and signals, so they should not be treated as distinct.', zh: 只有 ManySig 和 SingleDay 完全均衡；其余两个子集中，每个接收机至少 90% 的发射机满足信号数量要求。各子集之间共享部分发射机、接收机和信号，不应视为相互独立的数据。}
+- label: {en: Full WiSig size, zh: Full WiSig 大小}
+  text: {en: Full WiSig is 76.9 GB unzipped and 42 GB zipped; the zipped archive for each file is about 8 GB., zh: Full WiSig 解压后为 76.9 GB，压缩后为 42 GB；每个压缩文件约 8 GB。}
+- label: {en: Raw layout, zh: 原始数据结构}
+  text: {en: 'Raw WiSig has 4 day folders, one folder per receiver within each day, and 9 tar files per receiver, each with captures from up to 20 transmitters.', zh: 原始 WiSig 包含 4 个日期文件夹，每天每个接收机一个文件夹，每个接收机 9 个 tar 文件，每个文件包含最多 20 个发射机的采集数据。}
+capabilities:
+- {key: csi, status: unknown}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Received power is not stored; the examples repository includes a notebook that plots average received power per Rx., zh: 接收功率未直接存储；示例仓库中有一个绘制每个Rx平均接收功率的notebook。}
+- key: iq
+  status: provided
+  note: {en: 'Raw USRP captures and 256-sample packet preambles are released, both unprocessed and equalized.', zh: 发布原始USRP采集数据以及每个数据包256个采样点的前导码，包括未处理和均衡两个版本。}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: The dataset contains WiFi captures only., zh: 数据集仅包含WiFi采集数据。}
+- key: depth
+  status: none
+  note: {en: The UCLA page describes only WiFi captures., zh: UCLA页面仅描述WiFi采集数据。}
+- key: lidar
+  status: none
+  note: {en: The UCLA page describes only WiFi captures., zh: UCLA页面仅描述WiFi采集数据。}
+- key: radar
+  status: none
+  note: {en: The UCLA page describes only WiFi captures., zh: UCLA页面仅描述WiFi采集数据。}
+- key: imu
+  status: none
+  note: {en: The UCLA page describes only WiFi captures., zh: UCLA页面仅描述WiFi采集数据。}
+- key: time_series
+  status: provided
+  note: {en: Four captures on different days over about a month; per-packet timestamps are not described., zh: 在约一个月内的四个不同日期采集；未描述逐包时间戳。}
+- key: multiuser
+  status: none
+  note: {en: 'Transmitters are captured one at a time, not simultaneously.', zh: 发射机逐一采集，而非同时采集。}
+- key: multibs
+  status: none
+  note: {en: The sources state that receivers are not time-synchronized with each other; no multi-BS set is described., zh: 来源称各接收机之间未做时间同步；未描述多基站数据集。}
+- key: crossfreq
+  status: none
+  note: {en: Single band at 2.4 GHz., zh: 仅单一2.4 GHz频段。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Transmitters and receivers are fixed ORBIT grid nodes; no mobile nodes are described., zh: 收发节点均为固定的ORBIT网格节点；未描述移动节点。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: arXiv v2
+  date: '2022-01-12'
+  summary: {en: Revised arXiv posting of the WiSig paper; the arXiv comment records a correction to the second author's name., zh: WiSig论文的修订版arXiv版本；arXiv备注记录了对第二作者姓名的更正。}
+  url: https://arxiv.org/abs/2112.15363v2
+- version: IEEE Access 2022
+  date: '2022'
+  summary: {en: 'Journal publication of the WiSig paper in IEEE Access, vol. 10, pp. 22808-22818.', zh: WiSig论文发表于IEEE Access第10卷，第22808-22818页。}
+  url: https://doi.org/10.1109/ACCESS.2022.3154790
+- version: arXiv v1
+  date: '2021-12-31'
+  summary: {en: First arXiv posting of the WiSig dataset paper., zh: WiSig数据集论文首次发布于arXiv。}
+  url: https://arxiv.org/abs/2112.15363v1

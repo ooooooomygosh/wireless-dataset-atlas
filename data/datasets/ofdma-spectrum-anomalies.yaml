@@ -4,7 +4,7 @@ year: 2026
 origin: ray-tracing
 tasks: [spectrum-sensing]
 signals: [spectrum]
-bands_ghz: []
+bands_ghz: [3.75]
 environment: [industrial]
 samples: 20,000 samples
 size_gb: 23.5
@@ -16,13 +16,14 @@ paper: arxiv:2606.02102
 used_in: []
 citing: []
 summary: {en: 'Simulated OFDMA spectrograms from 21 spatially distributed sensing units per sample in an industrial indoor setting, covering 20,000 samples with normal operation and five jammer types. Each sample also has resource allocation maps, and the labels give jammer type, power and location with per-unit SNR and SJR.', zh: '面向工业室内环境的 OFDMA 仿真频谱图，每个样本包含 21 个分布式感知单元的频谱图，共 20,000 个样本，涵盖正常样本与五种干扰类型。每个样本还包含资源分配图，标签给出干扰类型、功率、位置以及每个感知单元的 SNR 和 SJR。'}
-sources: ['https://arxiv.org/abs/2606.02102', 'https://zenodo.org/doi/10.5281/zenodo.20341906', 'https://github.com/akdd11/ofdma-spectrum-anomalies-simulation']
+sources: ['https://arxiv.org/abs/2606.02102', 'https://zenodo.org/doi/10.5281/zenodo.20341906', 'https://github.com/akdd11/ofdma-spectrum-anomalies-simulation', 'https://arxiv.org/html/2606.02102v1', 'https://zenodo.org/api/records/20341906/versions', 'https://doi.org/10.5281/zenodo.20341906', 'https://github.com/akdd11/ofdma-spectrum-anomalies-simulation/releases', 'https://github.com/akdd11/ofdma-spectrum-anomalies-simulation/commits/main', 'https://arxiv.org/html/2606.02102', 'https://zenodo.org/api/records/20341906', 'https://zenodo.org/api/records/20341906/files/labels.csv/content', 'https://zenodo.org/api/records/20341906/files/spectrogram_min_max.csv/content', 'https://raw.githubusercontent.com/akdd11/ofdma-spectrum-anomalies-simulation/main/README.md', 'https://raw.githubusercontent.com/akdd11/ofdma-spectrum-anomalies-simulation/main/src/conf/dataset_generation.yaml', 'https://raw.githubusercontent.com/akdd11/ofdma-spectrum-anomalies-simulation/main/requirements_simulation.txt',
+  'https://raw.githubusercontent.com/akdd11/ofdma-spectrum-anomalies-simulation/main/blender-python/conf/scene_attributes.yaml']
 checked: '2026-11-06'
 overview: {en: 'This dataset is a simulated OFDMA spectrum-anomaly benchmark from Technische Universität Dresden, with Anton Schösser as first author. It is described in arXiv:2606.02102 and archived on Zenodo (DOI 10.5281/zenodo.20341906, version 1.0, published 2026-05-22). Channels are computed by ray tracing with Sionna RT 1.2.1 in a 40 m × 40 m × 5 m factory hall with production-line obstacles, at a 3.75 GHz carrier with a 20 MHz OFDMA system. The dataset has 20,000 samples, half normal and half anomalous, and the anomalies come from five jammer types (deceptive, sweep, barrage, pilot and random hopping tone), 2,000 samples each. Each sample holds 21 sensing-unit spectrograms, one resource allocation map and metadata, and labels.csv gives jammer type, jammer power in dBm, jammer location in m, the number of legitimate transmitters, and per-unit SNR and SJR in dB. The authors provide supervised ResNet-18 and unsupervised VAE baselines evaluated with F1 and AUC, and they suggest use in
     network digital twins. The images archive is 23.5 GB, and the data are released under CC BY 4.0.', zh: '该数据集是一个仿真的 OFDMA 频谱异常基准，来自 Technische Universität Dresden，第一作者为 Anton Schösser，论文见 arXiv:2606.02102，并在 Zenodo 归档（DOI 10.5281/zenodo.20341906，1.0 版，发布于 2026-05-22）。信道由 Sionna RT 1.2.1 光线追踪计算，场景为 40 m × 40 m × 5 m 的工厂车间，内含生产线障碍物，载波频率 3.75 GHz，系统为 20 MHz 的 OFDMA。数据集共 20,000 个样本，正常与异常各占一半，异常来自五类干扰（deceptive、sweep、barrage、pilot 与 random_hop），每类 2,000 个样本。每个样本包含 21 个感知单元的频谱图、一张资源分配图和元数据；labels.csv 给出干扰类型、干扰功率（dBm）、干扰位置（m）、合法发射机数量，以及每个感知单元的 SNR 和 SJR（dB）。作者给出基于 F1 与 AUC 评估的有监督 ResNet-18 与无监督 VAE 基线，并建议用于网络数字孪生。图像压缩包为 23.5 GB，数据以 CC BY 4.0 许可发布。'}
 signal_details:
 - signal: spectrum
-  text: {en: 'Spectrograms of 1320 subcarriers by 70 OFDM symbols per sensing unit, 21 units per sample. Log-scale PSD from an STFT with a 2048-sample Blackman-Harris window, saved as 8-bit grayscale PNG and min-max scaled across the dataset. Resource allocation maps are 110 resource blocks by 5 slots, 8-bit, where the pixel value gives the legitimate transmitter index and 0 means unallocated. An HDF5 export (dataset.h5, uint8 arrays) is available with the --output-format hdf5 option.', zh: 每个感知单元的频谱图为 1320 个子载波 × 70 个 OFDM 符号，每个样本含 21 个感知单元。对 2048 点 Blackman-Harris 窗的 STFT 取对数尺度 PSD，保存为 8 位灰度 PNG，并在整个数据集上做 min-max 缩放。资源分配图为 110 个资源块 × 5 个时隙，8 位，像素值给出合法发射机编号，0 表示未分配。使用 --output-format hdf5 选项时，可导出 uint8 数组的 HDF5 文件 dataset.h5。}
+  text: {en: 'Spectrograms of 1320 subcarriers by 70 OFDM symbols per sensing unit, 21 units per sample. Log-scale PSD from an STFT with a 2048-sample Blackman-Harris window, saved as 8-bit grayscale PNG and min-max scaled across the dataset. Resource allocation maps are 110 resource blocks by 5 slots, 8-bit, where the pixel value gives the legitimate transmitter index and 0 means unallocated. The repository''s export script can also write the same 8-bit arrays to dataset.h5 (uint8) with --output-format hdf5; the Zenodo archive contains PNG files.', zh: 每个感知单元的频谱图为 1320 个子载波 × 70 个 OFDM 符号，每个样本含 21 个感知单元。对 2048 点 Blackman-Harris 窗的 STFT 取对数尺度 PSD，保存为 8 位灰度 PNG，并在整个数据集上做 min-max 缩放。资源分配图为 110 个资源块 × 5 个时隙，8 位，像素值给出合法发射机编号，0 表示未分配。仓库中的导出脚本还可通过 --output-format hdf5 选项将相同的 8 位数组写入 uint8 格式的 dataset.h5；Zenodo 归档中为 PNG 文件。}
 pipeline:
   summary: {en: 'A Blender scene and Sionna ray tracing produce the channels, which an open-source framework converts into spectrograms, allocation maps, labels and PNG files.', zh: Blender 场景与 Sionna 光线追踪生成信道，开源框架再将其转换为频谱图、资源分配图、标签与 PNG 文件。}
   stages:
@@ -40,16 +41,121 @@ pipeline:
     outputs:
     - {en: intermediate sample batches (pkl), zh: 中间样本批次（pkl）}
   - title: {en: Spectrogram computation, zh: 频谱图计算}
-    detail: {en: 'The received signal at each sensing unit is converted by STFT with a Blackman-Harris window of 2048 samples and a hop of one OFDM symbol duration into a log-scale PSD. Values are clipped from the 0.1st percentile to the maximum of the non-jammed samples plus 6 dB, then scaled to 8 bit.', zh: 各感知单元的接收信号经 2048 点 Blackman-Harris 窗的 STFT 转换为对数尺度 PSD，跳步为一个 OFDM 符号时长。数值从 0.1 百分位裁剪到未受干扰样本的最大值加 6 dB，再缩放到 8 位。}
+    detail: {en: 'The received signal at each sensing unit is converted by STFT with a Blackman-Harris window of 2048 samples and a hop of one OFDM symbol duration into a log-scale PSD. The repository''s export step clips the values to a dataset-wide range, from the 0.1st percentile of all values to the maximum of the non-jammed samples plus 6 dB, and scales them to 8 bit. The bounds are written to spectrogram_min_max.csv; the released file holds -183.39 dB and 27.15 dB.', zh: 各感知单元的接收信号经 2048 点 Blackman-Harris 窗的 STFT 转换为对数尺度 PSD，跳步为一个 OFDM 符号时长。仓库中的导出步骤将数值裁剪到数据集级范围（从所有数值的 0.1 百分位到未受干扰样本的最大值加 6 dB），再缩放到 8 位。裁剪边界写入 spectrogram_min_max.csv，发布文件中的边界为 -183.39 dB 与 27.15 dB。}
     inputs:
     - {en: intermediate sample batches, zh: 中间样本批次}
     outputs:
     - {en: 8-bit spectrograms, zh: 8 位频谱图}
     - {en: spectrogram_min_max.csv, zh: spectrogram_min_max.csv}
   - title: {en: Image and label export, zh: 图像与标签导出}
-    detail: {en: 'custom_data_export.py -d <dataset_number> writes the PNG spectrograms and allocation maps, labels.csv and spectrogram_min_max.csv, and the --output-format hdf5 option adds dataset.h5. labels.csv also carries the default supervised split assignments, which for normal samples are 5900, 100 and 1000 for training, validation and test.', zh: custom_data_export.py -d <dataset_number> 输出 PNG 频谱图与资源分配图、labels.csv 和 spectrogram_min_max.csv；--output-format hdf5 选项额外生成 dataset.h5。labels.csv 还包含默认的有监督划分，正常样本的训练、验证、测试数量分别为 5900、100 和 1000。}
+    detail: {en: 'custom_data_export.py -d <dataset_number> writes the PNG spectrograms and allocation maps, labels.csv and spectrogram_min_max.csv. The --output-format hdf5 option adds dataset.h5 instead of the PNG files.', zh: custom_data_export.py -d <dataset_number> 输出 PNG 频谱图与资源分配图、labels.csv 和 spectrogram_min_max.csv；--output-format hdf5 选项则改为生成 dataset.h5，而不输出 PNG 文件。}
     inputs:
     - {en: 8-bit spectrograms, zh: 8 位频谱图}
     outputs:
     - {en: images/spectrogram-XXXXX-XX.png and alloc_res-XXXXX.png, zh: images/spectrogram-XXXXX-XX.png 与 alloc_res-XXXXX.png}
     - {en: labels.csv, zh: labels.csv}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: 'Not released; the Sionna RT generator computes the per-link channels, so a rerun is needed to obtain them.', zh: 未发布；信道由 Sionna RT 生成器计算，需重新运行生成器才能获得。}
+- key: cir
+  status: simulate
+  note: {en: Not released; the paper estimates a CIR per LTX-to-SU link inside the generator., zh: 未发布；论文在生成器内部为每条 LTX 到 SU 的链路估计 CIR。}
+- key: paths
+  status: simulate
+  note: {en: Not released; ray paths are computed inside the Sionna RT generator., zh: 未发布；射线路径在 Sionna RT 生成器内部计算。}
+- key: interaction
+  status: unknown
+  note: {en: 'The paper does not list which interaction mechanisms are enabled, and no per-path interaction data is released.', zh: 论文未列出启用的相互作用机制，发布数据中也没有逐径相互作用信息。}
+- key: power
+  status: provided
+  note: {en: 'Log-scale PSD per sensing unit as 8-bit spectrograms; labels.csv gives jammer power (dBm), and SNR and SJR (dB) per unit.', zh: 每个感知单元以 8 位图像提供对数尺度 PSD；labels.csv 给出干扰功率（dBm）以及每个单元的 SNR 与 SJR（dB）。}
+- key: iq
+  status: simulate
+  note: {en: Not released; the paper states that IQ sequences can be extracted from the framework., zh: 未发布；论文称可从该框架中提取 IQ 序列。}
+- key: beam_labels
+  status: none
+  note: {en: 'Transmitters use isotropic antennas, and the release has no beam indices or beam gains.', zh: 发射机采用全向天线，发布数据中没有波束索引或波束增益。}
+- key: position
+  status: provided
+  note: {en: labels.csv gives the jammer location in m; transmitter and sensing unit positions are not stated., zh: labels.csv 给出干扰机位置（m）；发射机与感知单元的位置未说明。}
+- key: geometry
+  status: unknown
+  note: {en: The repository builds the factory scene from scene_attributes.yaml; the paper does not state whether scene files are in the archive., zh: 代码仓库从 scene_attributes.yaml 生成工厂场景；论文未说明归档中是否包含场景文件。}
+- key: materials
+  status: unknown
+  note: {en: The paper names concrete and metal with the ITU-R P.2040-3 reference; parameter values and release status are not stated., zh: 论文列出混凝土与金属材料并引用 ITU-R P.2040-3；未给出参数值，也未说明是否随数据发布。}
+- key: rgb
+  status: none
+  note: {en: 'The released images are spectrograms and allocation maps, not camera images.', zh: 发布的图像为频谱图与资源分配图，而非相机图像。}
+- key: depth
+  status: none
+  note: {en: 'The release contains spectrograms, allocation maps and CSV labels only.', zh: 发布内容仅包括频谱图、资源分配图和 CSV 标签。}
+- key: lidar
+  status: none
+  note: {en: 'The release contains spectrograms, allocation maps and CSV labels only.', zh: 发布内容仅包括频谱图、资源分配图和 CSV 标签。}
+- key: radar
+  status: none
+  note: {en: 'The release contains spectrograms, allocation maps and CSV labels only.', zh: 发布内容仅包括频谱图、资源分配图和 CSV 标签。}
+- key: imu
+  status: none
+  note: {en: 'The release contains spectrograms, allocation maps and CSV labels only.', zh: 发布内容仅包括频谱图、资源分配图和 CSV 标签。}
+- key: time_series
+  status: provided
+  note: {en: Each sensing unit spectrogram has 70 OFDM symbols along time; the samples are independent snapshots., zh: 每个感知单元的频谱图在时间维度上包含 70 个 OFDM 符号；各样本彼此独立。}
+- key: multiuser
+  status: simulate
+  note: {en: 'Three to ten legitimate transmitters share the OFDMA grid in each sample, but per-user channels are not released.', zh: 每个样本中 3 至 10 个合法发射机共享 OFDMA 资源网格，但未发布各用户的信道。}
+- {key: multibs, status: unknown}
+- key: crossfreq
+  status: none
+  note: {en: The paper uses a single carrier at 3.75 GHz and no paired multi-band data., zh: 论文使用单一 3.75 GHz 载波，没有成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'Each sample is a static placement of transmitters, and the paper gives no speeds or moving users.', zh: 每个样本为发射机的静态布置，论文未给出速度或移动用户。}
+- key: dynamic_blockage
+  status: none
+  note: {en: 'The factory obstacles are fixed production-line cuboids, and no moving blockers are described.', zh: 工厂障碍物为固定的生产线长方体，文中未描述移动遮挡物。}
+- key: reflection
+  status: unknown
+  note: {en: The paper names Sionna ray tracing with concrete and metal materials but does not list the enabled mechanisms., zh: 论文使用 Sionna 光线追踪并设置混凝土与金属材料，但未列出启用的传播机制。}
+- key: diffraction
+  status: unknown
+  note: {en: The paper names Sionna ray tracing with concrete and metal materials but does not list the enabled mechanisms., zh: 论文使用 Sionna 光线追踪并设置混凝土与金属材料，但未列出启用的传播机制。}
+- key: scattering
+  status: unknown
+  note: {en: The paper names Sionna ray tracing with concrete and metal materials but does not list the enabled mechanisms., zh: 论文使用 Sionna 光线追踪并设置混凝土与金属材料，但未列出启用的传播机制。}
+- key: transmission
+  status: unknown
+  note: {en: The paper names Sionna ray tracing with concrete and metal materials but does not list the enabled mechanisms., zh: 论文使用 Sionna 光线追踪并设置混凝土与金属材料，但未列出启用的传播机制。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'Outputs are spectrograms and labels, with no field components or antenna patterns.', zh: 输出为频谱图与标签，不含场分量或天线方向图。}
+versions:
+- version: v1.0 (code)
+  date: '2026-08-11'
+  summary: {en: 'GitHub release v1.0 of the simulation code, marked as the state at initial paper submission.', zh: GitHub 代码发布 v1.0，标注为初次投稿论文时的代码状态。}
+  url: https://github.com/akdd11/ofdma-spectrum-anomalies-simulation/releases
+- version: arXiv v1
+  date: '2026-06-01'
+  summary: {en: 'First arXiv version of the paper, which describes the OFDMA simulation framework and the benchmark dataset.', zh: 论文首个 arXiv 版本，描述 OFDMA 仿真框架与基准数据集。}
+  url: https://arxiv.org/abs/2606.02102v1
+- version: 1.0 (dataset)
+  date: '2026-05-22'
+  summary: {en: 'Dataset version 1.0 published on Zenodo with 20,000 samples; Zenodo lists this as the only version.', zh: 'Zenodo 发布数据集 1.0 版，包含 20,000 个样本；Zenodo 仅列出该版本。'}
+  url: https://doi.org/10.5281/zenodo.20341906
+bandwidth_mhz: 20
+subcarriers: 1320
+facts:
+- label: {en: Sample order, zh: 样本顺序}
+  text: {en: 'Samples 0 to 9999 are normal. The anomalous samples follow in blocks of 2,000 per jammer type, in the order deceptive, sweep, barrage, pilot and random hop.', zh: '样本 0 至 9999 为正常样本。异常样本按干扰类型分块排列，每类 2,000 个，顺序为 deceptive、sweep、barrage、pilot 与 random hop。'}
+- label: {en: Label definitions, zh: 标签定义}
+  text: {en: 'SNR and SJR average the signal and jammer powers over the whole observation time. A jammer active for only part of the time, such as pilot, random hop or part of the deceptive samples, therefore raises the SJR.', zh: SNR 与 SJR 对整个观测时段内的信号功率和干扰功率取平均。仅在部分时段活动的干扰机（如 pilot、random hop 以及部分 deceptive 样本）会使 SJR 升高。}
+- label: {en: Jammer placement, zh: 干扰机布置}
+  text: {en: 'Each sample holds at most one jammer, placed at random inside the hall at 1.5 m height with a power between 0 and 30 dBm. Normal samples have empty jammer power and location fields, and their SJR is inf.', zh: 每个样本至多一个干扰机，随机放置在车间内 1.5 m 高度，发射功率在 0 至 30 dBm 之间。正常样本的干扰功率与位置字段为空，其 SJR 为 inf。}
+- label: {en: Paper split, zh: 论文划分}
+  text: {en: 'Table IV of the paper uses 5,900 normal and 1,450 samples per jammer type for supervised training, with random hop excluded, and 8,800 normal samples for unsupervised training. Both test sets hold 1,000 normal samples and 500 per jammer type.', zh: '论文表 IV 中，有监督训练使用 5,900 个正常样本和每类 1,450 个样本（不含 random hop），无监督训练使用 8,800 个正常样本。两种测试集均包含 1,000 个正常样本和每类 500 个样本。'}
+usage:
+- {en: 'Paper baselines (Table V, AUC): the VAE, trained on normal samples only, reaches 0.98 for barrage, 0.85 for deceptive, 0.87 for pilot, 0.95 for sweep and 0.91 for the unseen random hop. ResNet-18 reaches 1.00, 0.91, 0.88, 0.98 and 0.84.', zh: 论文基线（表 V，AUC）：仅用正常样本训练的 VAE 在 barrage、deceptive、pilot、sweep 上分别为 0.98、0.85、0.87、0.95，在未见过的 random hop 上为 0.91。ResNet-18 对应结果为 1.00、0.91、0.88、0.98 与 0.84。}

@@ -17,10 +17,10 @@ paper: doi:10.1109/access.2021.3140146
 used_in: []
 citing: ['doi:10.1109/infocomwkshps57453.2023.10226092', 'doi:10.1109/tmlcn.2024.3449834', 'doi:10.1109/wcnc61545.2025.10978539']
 summary: {en: 'Sample covariance matrix snapshots from a four-element ULA of coherent RTL-SDR receivers (KerberosSDR), recorded from 868 MHz LoRa beacons in open-area, office, corridor and interior-to-outdoor settings. Nearly 50k measured snapshots, over 2.6 million including augmentation, with ground-truth AoA labels from -70 to 70 degrees in 10-degree steps.', zh: 来自四元件 ULA 的采样协方差矩阵快照，由四路相干 RTL-SDR 接收机（KerberosSDR）接收 868 MHz LoRa 信标，场景包括开阔区域、办公室、走廊及室内到室外。实测快照近 5 万个，含数据增强后超过 260 万个，附带 -70 至 70 度、步长 10 度的 AoA 真值标签。}
-sources: ['https://arxiv.org/abs/2112.00695', 'https://ar5iv.labs.arxiv.org/html/2112.00695', 'https://raw.githubusercontent.com/zdai257/DeepAoANet/master/README.md', 'https://aston.box.com/v/deepaoanet-zdai', 'https://api.crossref.org/works/10.1109/ACCESS.2021.3140146']
+sources: ['https://arxiv.org/abs/2112.00695', 'https://ar5iv.labs.arxiv.org/html/2112.00695', 'https://raw.githubusercontent.com/zdai257/DeepAoANet/master/README.md', 'https://aston.box.com/v/deepaoanet-zdai', 'https://api.crossref.org/works/10.1109/ACCESS.2021.3140146', 'https://api.github.com/repos/zdai257/DeepAoANet', 'https://arxiv.org/abs/2112.00695v1', 'https://arxiv.org/abs/2112.00695v2', 'http://export.arxiv.org/api/query?id_list=2112.00695', 'https://github.com/zdai257/DeepAOANet/releases', 'https://github.com/zdai257/DeepAOANet/commits/master']
 checked: '2026-11-06'
-overview: {en: 'The DeepAoANet SDR AoA dataset contains sample covariance matrix snapshots from a four-element ULA of coherent RTL-SDR receivers (KerberosSDR), recorded from intermittent LoRa beacons at 868 MHz. Dai et al. describe the dataset in the DeepAoANet paper, posted to arXiv in December 2021 and published in IEEE Access, volume 10 (2022). Nearly 50,000 measured snapshots were collected in an open area, an open area with copper reflectors, an office, a corridor and interior-to-outdoor settings, and phase-shift and synthetic superposition augmentation brings the total to over 2.6 million. Ground-truth AoA labels run from -70 to 70 degrees in 10-degree steps, and the phase-shift augmentation extends the field of view to -74 to 74 degrees. The data are distributed as ROS bags of about 48.9 GB through a Box link, and the code repository converts them to dataframes. The raw data were recorded with a LoRa transmitter only, and the README recommends fine-tuning with local signals before
-    use on other signals.', zh: DeepAoANet SDR AoA 数据集包含来自四元件 ULA 的采样协方差矩阵快照，由四路相干 RTL-SDR 接收机（KerberosSDR）接收 868 MHz 的间歇性 LoRa 信标。Dai 等人在 DeepAoANet 论文中描述了该数据集，论文于 2021 年 12 月发布在 arXiv 上，并以 IEEE Access 第 10 卷（2022 年）正式发表。实测快照近 5 万个，采集场景包括开阔区域、带铜板反射体的开阔区域、办公室、走廊以及室内到室外；经相位偏移与合成叠加增强后，总数超过 260 万。AoA 真值标签范围为 -70 至 70 度，步长 10 度；相位偏移增强将视场扩展到 -74 至 74 度。数据以约 48.9 GB 的 ROS bag 形式通过 Box 链接发布，代码仓库可将其转换为 dataframe。原始数据仅使用 LoRa 发射机采集，README 建议在用于其他信号前，先用本地信号进行微调。}
+overview: {en: 'The DeepAoANet SDR AoA dataset contains sample covariance matrix snapshots from a four-element ULA of coherent RTL-SDR receivers (KerberosSDR), recorded from intermittent LoRa beacons at 868 MHz. Dai et al. describe the dataset in the DeepAoANet paper, posted to arXiv in December 2021 and published in IEEE Access, volume 10 (2022). Nearly 50,000 measured snapshots were collected in an open area, an open area with copper reflectors, an office, a corridor and interior-to-outdoor settings, and phase-shift and synthetic superposition augmentation brings the total to over 2.6 million. Ground-truth AoA labels run from -70 to 70 degrees in 10-degree steps, and the phase-shift augmentation extends the field of view to -74 to 74 degrees. The dataset is one Archive.zip of about 48.9 GB on a Box share, and the code repository processes its raw AoA ROS bags into .pkl dataframes. The raw data were recorded with a LoRa transmitter only, and the README recommends fine-tuning with local
+    signals before use on other signals.', zh: DeepAoANet SDR AoA 数据集包含来自四元件 ULA 的采样协方差矩阵快照，由四路相干 RTL-SDR 接收机（KerberosSDR）接收 868 MHz 的间歇性 LoRa 信标。Dai 等人在 DeepAoANet 论文中描述了该数据集，论文于 2021 年 12 月发布在 arXiv 上，并以 IEEE Access 第 10 卷（2022 年）正式发表。实测快照近 5 万个，采集场景包括开阔区域、带铜板反射体的开阔区域、办公室、走廊以及室内到室外；经相位偏移与合成叠加增强后，总数超过 260 万。AoA 真值标签范围为 -70 至 70 度，步长 10 度；相位偏移增强将视场扩展到 -74 至 74 度。数据为 Box 共享站点上的一个约 48.9 GB 的 Archive.zip，代码仓库将其中的原始 AoA ROS bag 处理为 .pkl dataframe。原始数据仅使用 LoRa 发射机采集，README 建议在用于其他信号前先用本地信号进行微调。}
 signal_details:
 - signal: iq
   text: {en: 'Four-channel IQ from a KerberosSDR (four coherent RTL-SDRs) with a centre frequency of 868 MHz, a sampling rate of 2 MHz, a bandwidth of 125 kHz and a uniform gain of 22.9 dB on all channels. The sampling window is 2^15 samples, and each snapshot is a 4x4x8 sample covariance matrix, i.e. 128 floating-point values, computed from 8 sliding windows of 2^12 samples. Data are recorded in ROS bags, and the code converts them to .pkl dataframes.', zh: 来自 KerberosSDR（四路相干 RTL-SDR）的四通道 IQ，中心频率 868 MHz，采样率 2 MHz，带宽 125 kHz，四个通道统一增益 22.9 dB。采样窗口为 2^15 个样本，每个快照是 4x4x8 的采样协方差矩阵，即 128 个浮点数，由 8 个长度为 2^12 个样本的滑动窗口计算得到。数据以 ROS bag 形式记录，代码将其转换为 .pkl dataframe。}
@@ -46,7 +46,7 @@ pipeline:
     outputs:
     - {en: 128-value covariance feature per snapshot, zh: 每个快照 128 个值的协方差特征}
   - title: {en: Augmentation, zh: 数据增强}
-    detail: {en: 'Phase shifts of -4, -2, 2 and 4 degrees are applied to single-source snapshots, which extends the labels and gives a field of view from -74 to 74 degrees. Two-source samples are synthesized by superposing IQ recorded at different AoAs in non-LOS scenarios, with a random phase difference between carriers.', zh: 对单源快照施加 -4、-2、2 和 4 度的相位偏移，扩展标签并使视场达到 -74 至 74 度。双源样本由非视距场景中不同 AoA 下记录的 IQ 叠加合成，载波之间引入随机相位差。}
+    detail: {en: 'Angular shifts of -4, -2, 2 and 4 degrees are applied to the raw snapshots as phase shifts across the array elements, which extends the labels and gives a field of view from -74 to 74 degrees. Two-source samples are synthesized by superposing IQ recorded at different AoAs in non-LOS scenarios, with a random phase difference between the carriers.', zh: 对原始快照施加 -4、-2、2 和 4 度的角度偏移，并以阵元间相位偏移的形式实现，从而扩展标签并使视场达到 -74 至 74 度。双源样本由非视距场景中不同 AoA 下记录的 IQ 叠加合成，载波之间引入随机相位差。}
     inputs:
     - {en: single-source snapshots and non-LOS IQ, zh: 单源快照与非视距 IQ}
     outputs:
@@ -57,3 +57,98 @@ pipeline:
     - {en: raw AoA rosbags, zh: 原始 AoA rosbag}
     outputs:
     - {en: augmented rosbags and .pkl dataframes, zh: 增强 rosbag 与 .pkl dataframe}
+bandwidth_mhz: 0.125
+standard: LoRa
+facts:
+- label: {en: Label format, zh: 标签格式}
+  text: {en: 'Each label is (L, θ1, θ2), where L is the number of sources. θ1 is set when one source is present, and for two sources both angles are stored in ascending order.', zh: '每个标签为 (L, θ1, θ2)，其中 L 为信号源数量。存在单个信号源时填写 θ1；存在两个信号源时，两个角度按升序存放。'}
+- label: {en: Composition, zh: 数据构成}
+  text: {en: 'Table III splits the snapshots by scenario (LOS, LOS with rotating copper reflectors, NLOS office, NLOS corridor, NLOS interior-to-outdoor, and two-source combinations) into raw, phase-shifted and synthetic counts.', zh: Table III 按场景（LOS、带旋转铜板反射体的 LOS、NLOS 办公室、NLOS 走廊、NLOS 室内到室外，以及双源组合）列出快照的原始、相位偏移和合成数量。}
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: 'Per-antenna complex IQ is released; the stored 4x4x8 features are sample covariance matrices, not channel matrices.', zh: 已发布每天线的复数 IQ；存储的 4x4x8 特征为采样协方差矩阵，而非信道矩阵。}
+- {key: cir, status: unknown}
+- key: paths
+  status: unknown
+  note: {en: 'Released labels are source AoAs from GPS geometry; per-path delays, powers and phases are not described.', zh: 发布的标签为基于 GPS 几何得到的信源 AoA；未描述每径时延、功率和相位。}
+- key: interaction
+  status: unknown
+  note: {en: 'Copper-reflector and NLOS settings are described, but per-path interaction points are not labelled.', zh: 描述了铜板反射体和 NLOS 场景，但未标注每径的交互点。}
+- key: power
+  status: derivable
+  note: {en: Per-channel received power follows from the released IQ; no RSSI or beam power field is described., zh: 每通道接收功率可由发布的 IQ 计算；未描述 RSSI 或波束功率字段。}
+- key: iq
+  status: provided
+  note: {en: 'Four-channel IQ at 868 MHz, 2 MHz sampling rate, 125 kHz bandwidth, single KerberosSDR configuration.', zh: 四通道 IQ，中心频率 868 MHz，采样率 2 MHz，带宽 125 kHz，单一 KerberosSDR 配置。}
+- key: beam_labels
+  status: none
+  note: {en: No beam index or per-beam gain is described; the labels are AoA values., zh: 未描述波束索引或每波束增益；标签为 AoA 值。}
+- key: position
+  status: unknown
+  note: {en: GPS positions were used to derive the labels; the release is described with AoA labels only., zh: GPS 位置用于推导标签；发布内容描述为 AoA 标签。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: The dataset lists IQ as its only signal; no image data are described., zh: 数据集仅列出 IQ 信号；未描述图像数据。}
+- key: depth
+  status: none
+  note: {en: The dataset lists IQ as its only signal; no depth data are described., zh: 数据集仅列出 IQ 信号；未描述深度数据。}
+- key: lidar
+  status: none
+  note: {en: The dataset lists IQ as its only signal; no LiDAR data are described., zh: 数据集仅列出 IQ 信号；未描述 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: The dataset lists IQ as its only signal; no radar data are described., zh: 数据集仅列出 IQ 信号；未描述雷达数据。}
+- key: imu
+  status: none
+  note: {en: A compass is used only to align labels; no IMU stream is described., zh: 罗盘仅用于对齐标签；未描述 IMU 数据流。}
+- key: time_series
+  status: unknown
+  note: {en: Snapshots come from intermittent 0.5 Hz beacons; timestamps and temporal ordering are not described., zh: 快照来自间歇发送的 0.5 Hz 信标；未描述时间戳和时序。}
+- key: multiuser
+  status: provided
+  note: {en: 'Two-source samples are synthetic superpositions of single-source recordings at different AoAs, not jointly recorded users.', zh: 双源样本是由不同 AoA 下的单源记录合成的叠加，并非同时记录的多个用户。}
+- key: multibs
+  status: none
+  note: {en: A single four-element receiver is used., zh: 仅使用单个四元件接收机。}
+- key: crossfreq
+  status: none
+  note: {en: Single 868 MHz band only., zh: 仅有 868 MHz 单一频段。}
+- key: near_field
+  status: none
+  note: {en: The model uses a plane-wave steering vector; near-field array modelling is not described., zh: 模型采用平面波导向矢量；未描述近场阵列建模。}
+- key: high_mobility
+  status: none
+  note: {en: The receiver is static in the reported experiments; no moving users with a stated speed are described., zh: 报告的实验中接收机静止；未描述速度明确的移动用户。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 由测量本身包含，未按径标注。}
+- key: polarization
+  status: unknown
+  note: {en: Four whip antennas are described; no polarimetric measurement is described., zh: 描述了四根鞭状天线；未描述极化测量。}
+- {key: em_field, status: unknown}
+versions:
+- version: '2022'
+  date: '2022'
+  summary: {en: 'IEEE Access journal publication of the DeepAoANet paper (vol. 10, pp. 3164-3176), which describes the SDR AoA dataset. The sources do not state changes relative to arXiv v2.', zh: DeepAoANet 论文的 IEEE Access 期刊发表版（第 10 卷，第 3164-3176 页），其中描述了该 SDR AoA 数据集。来源未说明相对 arXiv v2 的改动。}
+  url: https://doi.org/10.1109/ACCESS.2021.3140146
+- version: arXiv v2
+  date: '2021-12-09'
+  summary: {en: Second arXiv version of the DeepAoANet paper. The arXiv listing does not state what changed., zh: DeepAoANet 论文的第二个 arXiv 版本。arXiv 页面未说明改动内容。}
+  url: https://arxiv.org/abs/2112.00695v2
+- version: arXiv v1
+  date: '2021-12-01'
+  summary: {en: 'First arXiv version of the DeepAoANet paper. It introduces the method and the KerberosSDR dataset: sample covariance features from a four-element ULA, with GPS-derived AoA labels from -70 to 70 degrees.', zh: DeepAoANet 论文的第一个 arXiv 版本。它介绍了该方法和 KerberosSDR 数据集：四元件 ULA 的采样协方差特征，以及由 GPS 得到的 -70 至 70 度 AoA 标签。}
+  url: https://arxiv.org/abs/2112.00695v1

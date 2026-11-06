@@ -15,45 +15,151 @@ paper: doi:10.1177/02783649241230640
 used_in: []
 citing: []
 summary: {en: 'UWB time-difference-of-arrival (TDOA) measurements from DWM1000 modules, with SNR and power-difference values under LOS and NLOS conditions, plus IMU, optical flow, laser ranging and Vicon pose ground truth from flight experiments. The flights total about 150 minutes in indoor arenas with four anchor layouts.', zh: 来自 DWM1000 模块的 UWB 到达时间差（TDOA）测量值，包括视距（LOS）与非视距（NLOS）条件下的 SNR 与功率差，并记录飞行实验中的 IMU、光流、激光测距和 Vicon 位姿真值。飞行总时长约 150 分钟，室内场地采用四种锚点布局。}
-sources: ['https://learnsyslab.github.io/util-uwb-dataset/', 'https://arxiv.org/abs/2203.14471', 'https://api.crossref.org/works/10.1177/02783649241230640', 'https://api.github.com/repos/utiasDSL/util-uwb-dataset/license']
+sources: ['https://learnsyslab.github.io/util-uwb-dataset/', 'https://arxiv.org/abs/2203.14471', 'https://api.crossref.org/works/10.1177/02783649241230640', 'https://api.github.com/repos/utiasDSL/util-uwb-dataset/license', 'https://arxiv.org/pdf/2203.14471', 'https://raw.githubusercontent.com/utiasDSL/util-uwb-dataset/master/README.md', 'https://github.com/utiasDSL/util-uwb-dataset/releases', 'https://github.com/utiasDSL/util-uwb-dataset']
 checked: '2026-11-06'
-overview: {en: 'UTIL is an ultra-wideband (UWB) time-difference-of-arrival (TDOA) indoor localization dataset from the University of Toronto Institute for Aerospace Studies (UTIAS). The authors are Wenda Zhao, Abhishek Goudar, Xinyuan Qiao and Angela P. Schoellig. The dataset was released as arXiv:2203.14471 in 2022, and the paper appeared in The International Journal of Robotics Research in 2024. The measurements use Decawave DWM1000 UWB modules. Identification experiments record TDOA, signal-to-noise ratio (SNR) and power-difference values under line-of-sight (LOS) and non-line-of-sight (NLOS) conditions. Flight experiments total about 150 minutes at an average speed of 0.45 m/s, in obstacle-free and cluttered arenas with four anchor constellations, and log UWB TDOA, IMU, optical flow, time-of-flight altitude and Vicon ground-truth poses. The data are distributed as a .7z archive organized by constellation, with Matlab and Python parsing scripts and an EKF (extended Kalman filter) baseline.
-    The page states that onboard clock drift is ignored because each sub-dataset lasts about 120 seconds.', zh: 'UTIL 是多伦多大学航空航天研究所（UTIAS）发布的超宽带（UWB）到达时间差（TDOA）室内定位数据集。作者为 Wenda Zhao、Abhishek Goudar、Xinyuan Qiao 和 Angela P. Schoellig。数据集于 2022 年以 arXiv:2203.14471 形式发布，论文于 2024 年发表在 The International Journal of Robotics Research 上。测量使用 Decawave DWM1000 UWB 模块。识别实验在视距（LOS）与非视距（NLOS）条件下记录 TDOA、信噪比（SNR）和功率差值。飞行实验累计约 150 分钟，平均速度 0.45 m/s，场地包括无障碍和杂乱两类，采用四种锚点布局，记录 UWB TDOA、IMU、光流、飞行时间（ToF）激光高度以及 Vicon 位姿真值。数据以 .7z 压缩包发布，按锚点布局组织，并附带 Matlab 与 Python 解析脚本以及 EKF（扩展卡尔曼滤波）基线。数据页说明，因每个子数据集约 120 秒，机载时钟漂移被忽略。'}
+overview: {en: 'UTIL is an ultra-wideband (UWB) time-difference-of-arrival (TDOA) indoor localization dataset from the University of Toronto Institute for Aerospace Studies (UTIAS), by Wenda Zhao, Abhishek Goudar, Xinyuan Qiao and Angela P. Schoellig. It was released as arXiv:2203.14471 in 2022 and published in The International Journal of Robotics Research in 2024. The measurements use Decawave DWM1000 UWB modules. Identification experiments record TDOA, signal-to-noise ratio (SNR) and power-difference values under line-of-sight (LOS) and non-line-of-sight (NLOS) conditions. Flight experiments total about 150 minutes at an average speed of 0.45 m/s, in obstacle-free and cluttered arenas with four anchor constellations, and log UWB TDOA, IMU, optical flow, time-of-flight altitude and Vicon ground-truth poses. The data are distributed as a .7z archive, with flight files grouped by anchor constellation, together with Matlab and Python parsing scripts and an error-state Kalman filter (ESKF)
+    baseline. The data page states that onboard clock drift is ignored because each sub-dataset lasts about 120 seconds.', zh: 'UTIL 是多伦多大学航空航天研究所（UTIAS）发布的超宽带（UWB）到达时间差（TDOA）室内定位数据集，作者为 Wenda Zhao、Abhishek Goudar、Xinyuan Qiao 和 Angela P. Schoellig。数据集以 arXiv:2203.14471 形式于 2022 年发布，论文于 2024 年发表在 The International Journal of Robotics Research 上。测量使用 Decawave DWM1000 UWB 模块。识别实验在视距（LOS）与非视距（NLOS）条件下记录 TDOA、信噪比（SNR）和功率差值。飞行实验累计约 150 分钟，平均速度 0.45 m/s，场地包括无障碍和杂乱两类，采用四种锚点布局，记录 UWB TDOA、IMU、光流、飞行时间（ToF）激光高度以及 Vicon 位姿真值。数据以 .7z 压缩包发布，飞行文件按锚点布局分组，并附带 Matlab 与 Python 解析脚本以及误差状态卡尔曼滤波（ESKF）基线。数据页说明，因每个子数据集约 120 秒，机载时钟漂移被忽略。'}
 signal_details:
 - signal: ranging
   text: {en: 'UWB TDOA from DWM1000 modules in two modes: TDOA 2 (centralized) and TDOA 3 (decentralized). Identification experiments also record SNR and power-difference values. Flight tests use a Loco Positioning System (LPS) UWB tag on the quadrotor, with eight anchors per constellation and four constellations.', zh: 来自 DWM1000 模块的 UWB TDOA，包括两种模式：TDOA 2（集中式）和 TDOA 3（分布式）。识别实验还记录 SNR 与功率差值。飞行测试中，四旋翼搭载 Loco Positioning System（LPS）UWB 标签，每种锚点布局使用 8 个锚点，共四种布局。}
 pipeline:
-  summary: {en: 'Identification runs and flights record UWB and sensor data, and the flight logs are converted to csv files and ROS1 bags for parsing with the released scripts.', zh: 识别实验与飞行实验记录 UWB 与传感器数据，飞行日志转换为 csv 文件与 ROS1 bag，再由发布的脚本解析。}
+  summary: {en: 'Identification runs and flights record UWB and sensor data. Flight logs are written to an SD card, converted to CSV and ROS1 bags, and parsed with the released scripts.', zh: 识别实验与飞行实验记录 UWB 与传感器数据。飞行日志写入 SD 卡，转换为 CSV 与 ROS1 bag，再由发布的脚本解析。}
   stages:
   - title: {en: Identification runs, zh: 识别实验}
-    detail: {en: 'Two anchors and one Crazyflie nano-quadrotor carrying a UWB tag. The tag is placed at LOS distances of 0.5 m to 6.5 m in 0.5 m steps and LOS angles of 180 degrees to 15 degrees in 15 degree steps. NLOS obstacles are cardboard, metal, wood, plastic and foam. SNR, power difference and TDOA are recorded.', zh: 两个锚点和一架搭载 UWB 标签的 Crazyflie 纳米四旋翼。标签的视距距离为 0.5 m 至 6.5 m（步长 0.5 m），视距角度为 180° 至 15°（步长 15°）。非视距障碍物为纸板、金属、木材、塑料和泡沫。记录 SNR、功率差与 TDOA。}
+    detail: {en: 'Two anchors and one Crazyflie nano-quadrotor carrying a UWB tag are mounted on wooden structures. LOS tests move the tag from 0.5 m to 6.5 m from anchor 1 in 0.5 m steps and sweep the angle between the anchors from 180 degrees to 15 degrees in 15 degree steps. NLOS tests place cardboard, metal, wood, plastic or foam obstacles in the signal path, in several orientations. SNR, power difference and TDOA are recorded, and a motion capture system provides the pose ground truth.', zh: 两个锚点与一架搭载 UWB 标签的 Crazyflie 纳米四旋翼安装在木质支架上。视距测试中，标签与锚点 1 的距离从 0.5 m 变化到 6.5 m（步长 0.5 m），两锚点之间的夹角从 180° 变化到 15°（步长 15°）。非视距测试中，在信号路径上放置纸板、金属、木材、塑料或泡沫障碍物，并改变障碍物朝向。记录 SNR、功率差与 TDOA，动作捕捉系统提供位姿真值。}
     inputs:
     - {en: two DWM1000 anchors and a UWB tag, zh: 两个 DWM1000 锚点与一个 UWB 标签}
     outputs:
-    - {en: csv of measurements, zh: 测量数据 csv}
-    - {en: txt of tag and anchor poses, zh: 标签与锚点位姿 txt}
+    - {en: csv of measurements and txt of tag and anchor poses per sub-dataset, zh: 每个子数据集一份测量 csv 与一份标签及锚点位姿 txt}
   - title: {en: Anchor survey, zh: 锚点测量}
-    detail: {en: A Leica total station surveys the anchor positions at millimeter-level accuracy. The survey is released as txt and npz files., zh: Leica 全站仪以毫米级精度测量锚点位置，测量结果以 txt 与 npz 格式发布。}
-    inputs:
-    - {en: anchor positions, zh: 锚点位置}
+    detail: {en: 'The anchors lie outside the Vicon field of view, so a Leica total station surveys the anchor positions and orientations. Six reflective markers with known positions align the survey frame to the Vicon inertial frame, with an RMSE of about 1.12 mm.', zh: 锚点位于 Vicon 视场之外，因此由 Leica 全站仪测量锚点的位置与朝向。通过六个位置已知的反光标记，将测量坐标系对齐到 Vicon 惯性坐标系，对齐的 RMSE 约为 1.12 mm。}
     outputs:
     - {en: anchor survey files in txt and npz, zh: txt 与 npz 格式的锚点测量文件}
   - title: {en: Flight experiments, zh: 飞行实验}
-    detail: {en: 'A customized Crazyflie Bolt-based quadrotor carries an LPS UWB tag, a flow deck, an IMU, a barometer and a time-of-flight sensor. Ten Vicon Vantage+ cameras provide ground truth in a 7.0 m x 8.0 m x 3.5 m arena. The quadrotor flies at an average speed of 0.45 m/s, and the sensor logs are written to an onboard SD card.', zh: 定制的 Crazyflie Bolt 四旋翼搭载 LPS UWB 标签、光流模块、IMU、气压计和飞行时间（ToF）传感器。10 台 Vicon Vantage+ 相机在 7.0 m × 8.0 m × 3.5 m 的场地中提供真值。平均速度 0.45 m/s，传感器日志写入机载 SD 卡。}
+    detail: {en: 'A customized quadrotor built on a Crazyflie Bolt carries an LPS UWB tag, an IMU, a flow deck for optical flow and time-of-flight altitude, a barometer, and a micro SD card deck that logs timestamped sensor events. Ten Vicon Vantage+ cameras track the vehicle at 200 Hz in a 7.0 m x 8.0 m x 3.5 m arena. Each of the four anchor constellations uses eight anchors placed along the arena boundary, and the vehicle flies at an average speed of 0.45 m/s with static and dynamic obstacles.', zh: 定制四旋翼基于 Crazyflie Bolt 飞控，搭载 LPS UWB 标签、IMU、提供光流与飞行时间（ToF）高度的 flow deck、气压计，以及记录带时间戳传感器事件的 micro SD 卡扩展板。10 台 Vicon Vantage+ 相机以 200 Hz 跟踪飞行器，场地尺寸为 7.0 m × 8.0 m × 3.5 m。四种锚点布局各使用八个沿场地边界布置的锚点，飞行平均速度为 0.45 m/s，场地包含静态与动态障碍物。}
     inputs:
     - {en: LPS UWB tag and onboard sensors, zh: LPS UWB 标签与机载传感器}
     outputs:
     - {en: binary SD-card logs, zh: 二进制 SD 卡日志}
   - title: {en: Log conversion, zh: 日志转换}
-    detail: {en: 'Binary SD-card logs are converted into ROS1 bags. The released flight data are one csv per sub-dataset, with timestamped TDOA, IMU, optical flow, time-of-flight, barometer and ground-truth pose data. ROS2 users are pointed to a conversion tool from SFUISE2 for the ROS1 bags.', zh: 二进制 SD 卡日志转换为 ROS1 bag。发布的飞行数据为每个子数据集一个 csv 文件，包含带时间戳的 TDOA、IMU、光流、飞行时间、气压计和真值位姿数据。ROS2 用户可使用 SFUISE2 提供的工具转换 ROS1 bag。}
+    detail: {en: 'Binary logs are converted into one CSV file per sub-dataset and into ROS1 bags. The CSV rows are timestamped UWB TDOA, accelerometer, gyroscope, optical flow, ToF, barometer and ground-truth pose data. ROS2 users can convert the ROS1 bags with ros2bag_convert_util.sh from the SFUISE2 project.', zh: 二进制日志转换为每个子数据集一个 CSV 文件与 ROS1 bag。CSV 行包含带时间戳的 UWB TDOA、加速度计、陀螺仪、光流、ToF、气压计与位姿真值数据。ROS2 用户可使用 SFUISE2 项目中的 ros2bag_convert_util.sh 转换 ROS1 bag。}
     inputs:
     - {en: binary SD-card logs, zh: 二进制 SD 卡日志}
     outputs:
     - {en: ROS1 bags, zh: ROS1 bag}
     - {en: csv per sub-dataset, zh: 每个子数据集一个 csv}
   - title: {en: Parsing and baseline, zh: 解析与基线}
-    detail: {en: 'Matlab and Python scripts parse the data, and an EKF (extended Kalman filter) is included as baseline. The scripts and the paper give the sensor translation vectors. The IMU is assumed aligned with the vehicle centre, clock drift is ignored over sub-datasets of about 120 seconds, and the ground-station-to-firmware latency is about 10 ms.', zh: Matlab 与 Python 脚本解析数据，并附带 EKF（扩展卡尔曼滤波）基线。脚本与论文给出传感器平移向量。假设 IMU 与机体中心对齐，子数据集约 120 秒，因此忽略时钟漂移。地面站到固件的延迟约 10 ms。}
+    detail: {en: 'Matlab and Python scripts parse the data. An error-state Kalman filter (ESKF) with chi-square outlier rejection and a batch estimation algorithm serve as baselines, and the IMU is assumed aligned with the vehicle centre. The data page states that the ground-station-to-firmware latency is about 10 ms and that onboard clock drift is ignored over sub-datasets of about 120 seconds.', zh: Matlab 与 Python 脚本解析数据。带卡方检验异常值剔除的误差状态卡尔曼滤波（ESKF）与批量估计算法作为基线使用，并假设 IMU 与机体中心对齐。数据页说明，地面站到固件的延迟约为 10 ms，子数据集约 120 秒，因此忽略机载时钟漂移。}
     inputs:
     - {en: csv files and ROS1 bags, zh: csv 文件与 ROS1 bag}
     outputs:
-    - {en: EKF baseline estimates, zh: EKF 基线估计}
+    - {en: ESKF and batch estimates, zh: ESKF 与批量估计结果}
+facts:
+- label: {en: SNR and power difference, zh: SNR 与功率差}
+  text: {en: SNR is the first-path amplitude divided by the standard deviation of the channel impulse response noise estimate. Power difference is the total received power minus the first-path power. A higher SNR or a lower power difference indicates better received-signal quality., zh: SNR 为首径幅度除以信道冲激响应噪声估计的标准差。功率差为总接收功率减去首径功率。SNR 越高或功率差越低，表示接收信号质量越好。}
+- label: {en: Flight TDOA row, zh: 飞行 TDOA 记录}
+  text: {en: 'Each flight TDOA row is (timestamp in ms, anchor ID i, anchor ID j, d_ij in m), where d_ij is the distance from the tag to anchor j minus the distance from the tag to anchor i.', zh: 每条飞行 TDOA 记录为（时间戳 ms，锚点 ID i，锚点 ID j，d_ij 单位 m），其中 d_ij 为标签到锚点 j 的距离减去标签到锚点 i 的距离。}
+- label: {en: Flight ground truth, zh: 飞行位姿真值}
+  text: {en: 'Flight ground truth is the Vicon pose logged onboard at 200 Hz, written as (timestamp, x, y, z, qx, qy, qz, qw) in the Vicon inertial frame.', zh: 飞行真值为机载记录的 Vicon 位姿，采样率 200 Hz，格式为（时间戳，x，y，z，qx，qy，qz，qw），位于 Vicon 惯性坐标系中。}
+- label: {en: Identification pose format, zh: 识别位姿格式}
+  text: {en: 'Each identification folder holds a CSV of measurements and a TXT with tag and anchor poses in metres. Orientations are unit quaternions (qx, qy, qz, qw), with qw as the scalar part.', zh: '每个识别数据文件夹包含一份测量 CSV 与一份标签及锚点位姿 TXT，位置单位为米。朝向为单位四元数（qx, qy, qz, qw），其中 qw 为标量部分。'}
+- label: {en: NLOS design, zh: 非视距设计}
+  text: {en: 'For each NLOS condition, six sub-datasets with different obstacle orientations were collected, plus one LOS dataset for comparison. The obstacle material appears in the file name.', zh: 每种非视距条件采集六个子数据集，障碍物朝向各不相同，另采集一个视距数据集用于对比。障碍物材料写在文件名中。}
+- label: {en: Baseline accuracy, zh: 基线精度}
+  text: {en: 'The ESKF and batch estimation baselines reach a positioning error of about 10 cm in obstacle-free constellations #1 to #3. In constellation #4, which includes obstacles, the error of both methods rises substantially.', zh: 'ESKF 与批量估计基线在无障碍的锚点布局 #1 至 #3 中定位误差约为 10 cm。包含障碍物的布局 #4 中，两种方法的误差均明显增大。'}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'Only TDOA ranges, SNR and power-difference values are stored; no channel matrices are released.', zh: 仅存储 TDOA 距离、SNR 与功率差值，不发布信道矩阵。}
+- key: cir
+  status: none
+  note: {en: The CIR values are not released; only SNR and power difference are stored per packet., zh: 未发布 CIR 数值；每个数据包仅存储 SNR 与功率差值。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle or power is released.', zh: 未发布每径时延、角度或功率。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction or surface data are released., zh: 未发布每径交互或表面数据。}
+- key: power
+  status: provided
+  note: {en: 'SNR and power difference Pd in dB per packet, identification dataset only; total received power and first-path power are not released.', zh: 识别数据集中每个数据包的 SNR 与功率差 Pd（dB）；总接收功率与首径功率未发布。}
+- key: iq
+  status: none
+  note: {en: No raw I/Q samples are released., zh: 未发布原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam or antenna-pattern labels; anchors are fixed and one tag is ranged., zh: 无波束或天线方向图标签；锚点固定，仅对一个标签测距。}
+- key: position
+  status: provided
+  note: {en: 'Vicon ground-truth poses for the tag and anchors in the identification data, and for the quadrotor in the flight data.', zh: 识别数据提供标签与锚点的 Vicon 位姿真值，飞行数据提供四旋翼的 Vicon 位姿真值。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files; the STL files cover only the quadrotor frame and tag support., zh: 无三维场景或地图文件；STL 文件仅包含四旋翼机架与标签支架。}
+- key: materials
+  status: none
+  note: {en: Obstacle material appears only as a label in file names; no material parameters are released., zh: 障碍物材料仅以文件名标签形式出现，未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: 'The flight sensors are UWB, IMU, optical flow, ToF laser and barometer; no RGB images.', zh: 飞行传感器包括 UWB、IMU、光流、ToF 激光与气压计，无 RGB 图像。}
+- key: depth
+  status: none
+  note: {en: No depth sensor data are released., zh: 未发布深度传感器数据。}
+- key: lidar
+  status: none
+  note: {en: 'Only single-beam ToF laser ranging is released, not lidar point clouds.', zh: 仅发布单点 ToF 激光测距，无激光雷达点云。}
+- key: radar
+  status: none
+  note: {en: No radar data are released., zh: 未发布雷达数据。}
+- key: imu
+  status: provided
+  note: {en: Accelerometer and gyroscope streams in the flight dataset., zh: 飞行数据包含加速度计与陀螺仪时间序列。}
+- key: time_series
+  status: provided
+  note: {en: 'UWB TDOA, IMU, optical flow, ToF, barometer and ground-truth streams are timestamped.', zh: UWB TDOA、IMU、光流、ToF、气压计与位姿真值数据均带时间戳。}
+- key: multiuser
+  status: none
+  note: {en: 'Each experiment has one tag, so there are no simultaneous channels of several users.', zh: 每次实验仅有一个标签，不存在多用户同时信道。}
+- key: multibs
+  status: none
+  note: {en: Eight UWB anchors form one localization network around one tag; they are not base stations., zh: 八个 UWB 锚点构成围绕单个标签的定位网络，并非基站。}
+- key: crossfreq
+  status: none
+  note: {en: A single UWB radio type (DWM1000) is used; no paired multi-band data., zh: 仅使用 DWM1000 一种 UWB 射频，无配对多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Flights average 0.45 m/s., zh: 飞行平均速度为 0.45 m/s。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: Constellation 4 flights include a metal cabinet moved by hand and human bodies that block anchors., zh: 第 4 组锚点布局的飞行实验包含人工移动的金属柜与人体，二者会遮挡锚点。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量本身，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量本身，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量本身，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; NLOS cases use cardboard, metal, wood, plastic and foam obstacles.', zh: 包含于测量本身，未按路径标注；NLOS 场景使用纸板、金属、木材、塑料与泡沫障碍物。}
+- key: polarization
+  status: none
+  note: {en: No polarimetric measurements are released., zh: 未发布极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: 'Only TDOA, SNR, power-difference and sensor values are released; no field-level outputs.', zh: 仅发布 TDOA、SNR、功率差与传感器数值，无场强类输出。}
+versions:
+- version: IJRR 2024
+  date: '2024-02-05'
+  summary: {en: 'Journal version published in The International Journal of Robotics Research, volume 43, issue 10, pages 1443-1456. Crossref gives the same date as arXiv v6.', zh: 期刊版本发表于 The International Journal of Robotics Research，第 43 卷第 10 期，页码 1443-1456。Crossref 记录的日期与 arXiv v6 相同。}
+  url: https://doi.org/10.1177/02783649241230640
+- version: dataset-v1.0
+  date: '2022-12-01'
+  summary: {en: 'First tagged dataset release in the GitHub repository, titled UTIL: an Ultra-wideband TDOA dataset, Version 1.0, with three release assets.', zh: 'GitHub 仓库中首个带标签的数据集发布，标题为 UTIL: an Ultra-wideband TDOA dataset，版本 1.0，附三个发布资产。'}
+  url: https://github.com/learnsyslab/util-uwb-dataset/releases/tag/dataset-v1.0
+- version: arXiv v1
+  date: '2022-03-28'
+  summary: {en: 'First arXiv posting of the dataset paper, arXiv 2203.14471.', zh: 数据集论文首次发布于 arXiv，编号 2203.14471。}
+  url: https://arxiv.org/abs/2203.14471

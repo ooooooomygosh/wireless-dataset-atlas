@@ -10,10 +10,24 @@ export const ENVIRONMENTS = [
   "uav", "industrial", "lab", "satellite",
 ] as const;
 export const ACCESS = ["open", "registration", "request", "restricted"] as const;
+export const CAPABILITIES = [
+  "csi", "cir", "paths", "interaction", "power", "iq", "beam_labels", "position", "geometry", "materials",
+  "rgb", "depth", "lidar", "radar", "imu", "time_series", "multiuser", "multibs", "crossfreq",
+  "near_field", "high_mobility", "dynamic_blockage",
+  "reflection", "diffraction", "scattering", "transmission", "polarization", "em_field",
+] as const;
+export const SUPPORT = ["provided", "derivable", "simulate", "none", "unknown"] as const;
 export const ARRAYS = ["ula", "upa", "distributed", "single", "other"] as const;
 
 const bilingual = z.object({ en: z.string().min(10), zh: z.string().min(4) });
 const L = z.object({ en: z.string().min(1), zh: z.string().min(1) });
+const version = z.object({
+  version: z.string(),
+  date: z.string().regex(/^\d{4}(-\d{2}(-\d{2})?)?$/).optional(),
+  summary: L,
+  url: z.url().optional(),
+});
+const capability = z.object({ key: z.enum(CAPABILITIES), status: z.enum(SUPPORT), note: L.optional() });
 const stage = z.object({
   title: L,
   detail: L,
@@ -61,6 +75,8 @@ export const datasetSchema = z.object({
   pipeline: z.object({ summary: L.optional(), scope: L.optional(), stages: z.array(stage).min(1) }).optional(),
   facts: z.array(z.object({ label: L, text: L })).default([]),
   variants: z.array(z.object({ name: L, observations: L, csi: L.optional() })).default([]),
+  versions: z.array(version).default([]),
+  capabilities: z.array(capability).default([]),
   provenance: z.array(L).default([]),
   technical_notes: z.array(L).default([]),
   limitations: z.array(L).default([]),
@@ -94,3 +110,53 @@ export type Task = z.infer<typeof taskSchema>;
 export const detailSchema = datasetSchema
   .pick({ overview: true, signal_details: true, pipeline: true })
   .extend({ overview: L });
+
+/** Fragment written by the verification pass: corrections and full replacements of long-form blocks. */
+export const verifySchema = z.object({
+  spec_fixes: z
+    .object({
+      year: z.number().int().optional(),
+      bands_ghz: z.array(z.number().positive()).optional(),
+      bandwidth_mhz: z.number().positive().optional(),
+      antennas: z.object({ tx: z.number().int().positive().optional(), rx: z.number().int().positive().optional(), array: z.enum(ARRAYS).optional() }).optional(),
+      subcarriers: z.number().int().positive().optional(),
+      samples: z.string().optional(),
+      size_gb: z.number().positive().optional(),
+      format: z.string().optional(),
+      mobility: z.string().optional(),
+      standard: z.string().optional(),
+      license: z.string().optional(),
+      access_type: z.enum(ACCESS).optional(),
+      organization: z.string().optional(),
+    })
+    .strict()
+    .optional(),
+  spec_remove: z.array(z.enum(["bands_ghz", "bandwidth_mhz", "antennas", "subcarriers", "samples", "size_gb", "format", "mobility", "standard", "organization"])).optional(),
+  overview: L.optional(),
+  signal_details: datasetSchema.shape.signal_details.optional(),
+  pipeline: datasetSchema.shape.pipeline.optional(),
+  facts: datasetSchema.shape.facts.optional(),
+  variants: datasetSchema.shape.variants.optional(),
+  technical_notes: datasetSchema.shape.technical_notes.optional(),
+  limitations: datasetSchema.shape.limitations.optional(),
+  history: datasetSchema.shape.history.optional(),
+  usage: datasetSchema.shape.usage.optional(),
+  field_notes: datasetSchema.shape.field_notes.optional(),
+  evidence: z.array(z.url()).min(1),
+  report: z.array(z.string()).default([]),
+});
+
+/** Fragment written by the versions pass. */
+export const versionsSchema = z.object({
+  versions: z.array(version).min(1),
+  evidence: z.array(z.url()).min(1),
+  report: z.array(z.string()).default([]),
+});
+
+/** Fragment written by the enrichment pass: version history and capability matrix. */
+export const enrichSchema = z.object({
+  versions: z.array(version).min(1),
+  capabilities: z.array(capability).min(10),
+  evidence: z.array(z.url()).min(1),
+  report: z.array(z.string()).default([]),
+});

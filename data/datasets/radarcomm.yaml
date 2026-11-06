@@ -17,7 +17,7 @@ paper: doi:10.1016/j.comnet.2021.108441
 used_in: []
 citing: ['doi:10.1038/s41467-024-51161-8', 'doi:10.1109/jiot.2025.3623318', 'doi:10.1109/ojcoms.2026.3733317']
 summary: {en: 'Synthetic GNU Radio radar and communication waveforms with 6 modulation and 8 signal-type labels, each stored as 128 I and 128 Q values at 10 MS/s, at SNR from -20 to 18 dB in 2 dB steps. Most data are GNU Radio synthetic; one over-the-air capture at 2.45 GHz is included.', zh: 由 GNU Radio 合成的雷达与通信波形，包含 6 个调制标签和 8 个信号类型标签，每个波形存储为 128 个 I 值和 128 个 Q 值，采样率 10 MS/s，SNR 范围为 -20 至 18 dB，步长 2 dB。数据以 GNU Radio 合成为主，另含一段 2.45 GHz 空口采集数据。}
-sources: ['https://github.com/ANDROComputationalSolutions/RadarCommDataset', 'https://api.crossref.org/works/10.1016/j.comnet.2021.108441']
+sources: ['https://github.com/ANDROComputationalSolutions/RadarCommDataset', 'https://api.crossref.org/works/10.1016/j.comnet.2021.108441', 'https://raw.githubusercontent.com/ANDROComputationalSolutions/RadarCommDataset/master/README.md', 'https://github.com/ANDROComputationalSolutions/RadarCommDataset/releases', 'https://github.com/ANDROComputationalSolutions/RadarCommDataset/tags', 'https://github.com/ANDROComputationalSolutions/RadarCommDataset/commits/main', 'https://github.com/ANDROComputationalSolutions/RadarCommDataset/commit/e4bbaca']
 checked: '2026-11-06'
 overview: {en: 'RadarCommDataset (RadCom) is a labelled dataset of radar and communication waveforms published by ANDRO Computational Solutions in 2021. The accompanying paper by Jagannath and Jagannath appeared in Computer Networks, vol. 199 (2021). Most of the data are synthetic waveforms generated in GNU Radio Companion, and one over-the-air capture at 2.45 GHz is included. The labels cover 6 modulation classes and 8 signal classes, and they support modulation classification and signal-type classification in multi-task and single-task learning. Each waveform is stored as 700 snapshots, and each snapshot holds 128 in-phase and 128 quadrature samples at 10 MS/s. The synthetic data cover SNR values from -20 dB to 18 dB in 2 dB steps, in an AWGN-only version and a version with dynamic channel effects. The files are in HDF5 format and are released under CC BY-NC-SA 4.0, with helper scripts for loading and visualization.', zh: RadarCommDataset（RadCom）是一个带标签的雷达与通信波形数据集，由 ANDRO Computational
     Solutions 于 2021 年发布。配套论文由 Jagannath 与 Jagannath 撰写，发表于 Computer Networks 第 199 卷（2021）。数据以 GNU Radio Companion 生成的合成波形为主，另含一段 2.45 GHz 的空口采集数据。标签包括 6 个调制类和 8 个信号类，可用于调制分类与信号类型分类，支持多任务与单任务学习。每个波形存储为 700 个快照，每个快照包含 128 个同相样本和 128 个正交样本，采样率为 10 MS/s。合成数据覆盖 -20 dB 至 18 dB 的 SNR，步长 2 dB，分为仅含 AWGN 的版本和含动态信道效应的版本。文件为 HDF5 格式，采用 CC BY-NC-SA 4.0 许可，并附带加载与可视化的辅助脚本。}
@@ -25,7 +25,7 @@ signal_details:
 - signal: iq
   text: {en: 'I/Q snapshots stored in HDF5 with keys {modulation, signal, snr, sample}. Each snapshot is a 256 × 1 tensor: 128 in-phase values followed by 128 quadrature values. Sampling rate 10 MS/s; 700 snapshots per waveform; SNR from -20 dB to 18 dB in 2 dB steps. The over-the-air capture uses a USRP N210 with a VERT2450 antenna at 2.45 GHz.', zh: 'I/Q 快照以 HDF5 存储，键为 {modulation, signal, snr, sample}。每个快照为 256 × 1 张量：128 个同相值后接 128 个正交值。采样率 10 MS/s；每个波形 700 个快照；SNR 为 -20 dB 至 18 dB，步长 2 dB。空口采集使用 USRP N210 与 VERT2450 天线，中心频率 2.45 GHz。'}
 pipeline:
-  summary: {en: 'GNU Radio Companion generates the synthetic waveforms, a dynamic channel model applies channel effects across the SNR range, and the snapshots are stored in HDF5. One over-the-air capture at 2.45 GHz is recorded separately.', zh: GNU Radio Companion 生成合成波形，动态信道模型在 SNR 范围内施加信道效应，快照以 HDF5 格式存储。另外单独记录一段 2.45 GHz 空口采集数据。}
+  summary: {en: 'GNU Radio Companion generates the synthetic waveforms. The RadComDynamic version applies dynamic channel effects across the SNR range, the RadComAWGN version applies AWGN only, and the snapshots are stored in HDF5. One over-the-air capture at 2.45 GHz is recorded separately.', zh: GNU Radio Companion 生成合成波形。RadComDynamic 版本在 SNR 范围内施加动态信道效应，RadComAWGN 版本仅施加 AWGN；快照以 HDF5 格式存储。另外单独记录一段 2.45 GHz 空口采集数据。}
   stages:
   - title: {en: Generate waveforms in GNU Radio Companion, zh: 在 GNU Radio Companion 中生成波形}
     detail: {en: 'Synthetic radar and communication waveforms are produced in GNU Radio Companion for the listed modulation and signal classes. The modulation classes are Pulsed Continuous wave, FMCW, BPSK, AM-DSB, AM-SSB and ASK.', zh: 在 GNU Radio Companion 中为所列调制类与信号类生成合成雷达与通信波形。调制类包括 Pulsed Continuous wave、FMCW、BPSK、AM-DSB、AM-SSB 和 ASK。}
@@ -33,15 +33,15 @@ pipeline:
     - {en: Modulation and signal class definitions, zh: 调制类与信号类定义}
     outputs:
     - {en: Waveforms for each class, zh: 各类别波形}
-  - title: {en: Apply dynamic channel effects over the SNR range, zh: 在 SNR 范围内施加动态信道效应}
-    detail: {en: 'The gnuradio.channels.dynamic_channel_model block is applied over SNRs from -20 dB to 18 dB in 2 dB steps. The maximum carrier frequency offset is 250 Hz, the maximum sample-rate offset is 60 Hz, the maximum Doppler frequency is 2 Hz and the Rician K-factor is 3.', zh: 在 -20 dB 至 18 dB、步长 2 dB 的 SNR 范围内应用 gnuradio.channels.dynamic_channel_model 模块。最大载波频偏为 250 Hz，最大采样率偏差为 60 Hz，最大多普勒频率为 2 Hz，莱斯 K 因子为 3。}
+  - title: {en: Apply channel effects over the SNR range, zh: 在 SNR 范围内施加信道效应}
+    detail: {en: 'The RadComDynamic version applies the gnuradio.channels.dynamic_channel_model block over SNRs from -20 dB to 18 dB in 2 dB steps, with a maximum carrier frequency offset of 250 Hz, a maximum sample-rate offset of 60 Hz, a maximum Doppler frequency of 2 Hz and a Rician K-factor of 3. The RadComAWGN version applies AWGN only.', zh: RadComDynamic 版本在 -20 dB 至 18 dB、步长 2 dB 的 SNR 范围内应用 gnuradio.channels.dynamic_channel_model 模块，最大载波频偏 250 Hz，最大采样率偏差 60 Hz，最大多普勒频率 2 Hz，莱斯 K 因子为 3。RadComAWGN 版本仅施加 AWGN。}
     inputs:
     - {en: Waveforms from the previous stage, zh: 上一步生成的波形}
     - {en: SNR values from -20 dB to 18 dB, zh: -20 dB 至 18 dB 的 SNR 值}
     outputs:
     - {en: Impaired waveforms at each SNR, zh: 各 SNR 下的受损波形}
   - title: {en: Store snapshots in HDF5, zh: 以 HDF5 格式存储快照}
-    detail: {en: 'Each waveform has 700 snapshots. Each snapshot is one 256 × 1 tensor of 128 in-phase values followed by 128 quadrature values, sampled at 10 MS/s. Snapshots are indexed by modulation, signal, SNR and sample.', zh: 每个波形包含 700 个快照。每个快照为一个 256 × 1 张量，依次为 128 个同相值和 128 个正交值，采样率 10 MS/s。快照按 modulation、signal、SNR 和 sample 索引。}
+    detail: {en: 'Each waveform has 700 snapshots. Each snapshot is one 256 x 1 tensor of 128 in-phase values followed by 128 quadrature values, sampled at 10 MS/s. Snapshots are indexed by modulation, signal, SNR and sample.', zh: 每个波形包含 700 个快照。每个快照为一个 256 x 1 张量，依次为 128 个同相值和 128 个正交值，采样率 10 MS/s。快照按 modulation、signal、SNR 和 sample 索引。}
     inputs:
     - {en: Impaired waveforms, zh: 受损波形}
     outputs:
@@ -52,3 +52,102 @@ pipeline:
     - {en: 2.45 GHz over-the-air signals, zh: 2.45 GHz 空口信号}
     outputs:
     - {en: RadComOta2.45GHz package, zh: RadComOta2.45GHz 数据包}
+facts:
+- label: {en: Signal classes, zh: 信号类}
+  text: {en: 'The eight signal classes are airborne detection radar, airborne range radar, air-ground MTI radar, ground mapping radar, radar altimeter, SATCOM, AM radio and short-range wireless.', zh: 八个信号类分别为：机载探测雷达、机载测距雷达、空对地 MTI 雷达、对地测绘雷达、雷达高度计、SATCOM、AM 广播与短距离无线。}
+- label: {en: Label naming, zh: 标签命名}
+  text: {en: 'In the RadComAWGN dataset, the signal class labelled Raw corresponds to SATCOM in the other two datasets.', zh: 在 RadComAWGN 数据集中，标签为 Raw 的信号类对应其他两个数据集中的 SATCOM。}
+- label: {en: Files and helpers, zh: 文件与辅助脚本}
+  text: {en: 'The synthetic versions are distributed as RadComDynamic.zip and RadComAWGN.zip, and the over-the-air capture as RadComOta2.45GHz.zip. The repository provides load_dataset.py and visualize.py.', zh: 合成数据分别以 RadComDynamic.zip 与 RadComAWGN.zip 发布，空口采集数据以 RadComOta2.45GHz.zip 发布。仓库提供 load_dataset.py 与 visualize.py 两个辅助脚本。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only IQ waveform tensors are released; no channel matrices are listed., zh: 仅发布 IQ 波形张量，未列出信道矩阵。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile is released; the multipath channel is applied inside GNU Radio., zh: 未发布冲激响应或功率时延谱；多径信道在 GNU Radio 内施加。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters are released; the multipath model is applied inside GNU Radio., zh: 未发布逐径参数；多径模型在 GNU Radio 内施加。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are released., zh: 未发布逐径交互数据。}
+- key: power
+  status: none
+  note: {en: No received power values are released; SNR is a labelled condition of each snapshot group., zh: 未发布接收功率值；SNR 是每组快照的标注条件。}
+- key: iq
+  status: provided
+  note: {en: '128 I and 128 Q values per snapshot at 10 MS/s, 700 snapshots per waveform.', zh: 每个快照 128 个 I 值和 128 个 Q 值，采样率 10 MS/s，每种波形 700 个快照。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are released., zh: 未发布波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: No user or device position data are released., zh: 未发布用户或设备位置数据。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files are released., zh: 未发布三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera images are released., zh: 未发布相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth data are released., zh: 未发布深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are released., zh: 未发布 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: Radar appears only as waveform classes to classify; no radar sensor measurements are released., zh: 雷达仅以待分类的波形类别出现；未发布雷达传感器测量数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data are released., zh: 未发布 IMU 数据。}
+- {key: time_series, status: unknown}
+- key: multiuser
+  status: none
+  note: {en: Each sample is a single waveform; no multi-user channel sets are described., zh: 每个样本为单一波形；未描述多用户信道集合。}
+- key: multibs
+  status: none
+  note: {en: Each sample is a single waveform; no multi-base-station sets are described., zh: 每个样本为单一波形；未描述多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: Only one band (2.45 GHz) is listed for the over-the-air capture; no paired multi-band data., zh: 空口采集仅列出一个频段（2.45 GHz）；无成对多频段数据。}
+- key: near_field
+  status: none
+  note: {en: No array or spherical-wave modelling; the dataset is a waveform set., zh: 无阵列或球面波建模；本数据集为波形集合。}
+- key: high_mobility
+  status: none
+  note: {en: The synthetic dynamic channel has a maximum Doppler frequency of 2 Hz., zh: 合成动态信道的最大多普勒频率为 2 Hz。}
+- key: dynamic_blockage
+  status: none
+  note: {en: The dynamic channel model has frequency offsets and Doppler fading but no moving blockers., zh: 动态信道模型包含频偏与多普勒衰落，但没有移动遮挡体。}
+- key: reflection
+  status: provided
+  note: {en: 'Present only in the 2.45 GHz over-the-air capture: inherent in the measurement, not labelled per path.', zh: 仅存在于 2.45 GHz 空口采集数据中：测量本身包含该机制，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Present only in the 2.45 GHz over-the-air capture: inherent in the measurement, not labelled per path.', zh: 仅存在于 2.45 GHz 空口采集数据中：测量本身包含该机制，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Present only in the 2.45 GHz over-the-air capture: inherent in the measurement, not labelled per path.', zh: 仅存在于 2.45 GHz 空口采集数据中：测量本身包含该机制，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Present only in the 2.45 GHz over-the-air capture: inherent in the measurement, not labelled per path.', zh: 仅存在于 2.45 GHz 空口采集数据中：测量本身包含该机制，未按径标注。}
+- key: polarization
+  status: none
+  note: {en: The over-the-air capture uses one VERT2450 antenna; no polarimetric data are listed., zh: 空口采集使用一个 VERT2450 天线；未列出极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: Only IQ samples are released; no field-level outputs or antenna patterns., zh: 仅发布 IQ 样本；无场量输出或天线方向图。}
+versions:
+- version: e4bbaca
+  date: '2021-11-17'
+  summary: {en: Added the zip-compressed RadComOta2.45GHz.hdf5 over-the-air capture through Git LFS., zh: 通过 Git LFS 添加压缩后的 RadComOta2.45GHz.hdf5 空口采集文件。}
+  url: https://github.com/ANDROComputationalSolutions/RadarCommDataset/commit/e4bbaca
+- version: '2021'
+  date: 2021-11
+  summary: {en: 'First release: dataset paper published in Computer Networks, vol. 199, article 108441.', zh: 首次发布：数据集论文发表于 Computer Networks 第 199 卷，文章编号 108441。}
+  url: https://doi.org/10.1016/j.comnet.2021.108441

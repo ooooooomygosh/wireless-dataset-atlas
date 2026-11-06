@@ -17,108 +17,39 @@ paper: arxiv:2412.08908
 used_in: ['doi:10.1109/twc.2026.3681311', 'doi:10.1109/lwc.2026.3664439', 'doi:10.1109/tccn.2026.3717927']
 citing: ['doi:10.1109/tmlcn.2025.3585845', 'doi:10.1109/jsac.2025.3643823', 'doi:10.1109/mcom.001.2400761']
 summary: {en: 'Simulated MISO-OFDM CSI generated with the QuaDRiGa channel generator for 3GPP scenarios (UMi, UMa, RMa and indoor) at seven 5G NR bands from 1.5 to 28 GHz, with user speeds up to 300 km/h. The 19 datasets (D1 to D19) each contain 12,000 samples.', zh: '由 QuaDRiGa 信道生成器按 3GPP 场景（UMi、UMa、RMa 与室内）生成的仿真 MISO-OFDM CSI，覆盖 1.5 至 28 GHz 的七个 5G NR 频段，用户速度最高 300 km/h。19 个数据集（D1 至 D19）各含 12,000 个样本。'}
-sources: ['https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo', 'https://github.com/PKU-PCNI/WiFo', 'https://arxiv.org/abs/2412.08908', 'https://arxiv.org/html/2412.08908']
+sources: ['https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo', 'https://github.com/PKU-PCNI/WiFo', 'https://arxiv.org/abs/2412.08908', 'https://arxiv.org/html/2412.08908', 'https://huggingface.co/api/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo', 'https://api.github.com/repos/PKU-PCNI/WiFo', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo/main/src/DataLoader.py', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo/main/src/mask_strategy.py', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo/main/src/model.py', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo/main/src/train.py', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo/main/src/main.py', 'https://arxiv.org/html/2412.08908v2', 'https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo/commits/main', 'https://github.com/PKU-PCNI/WiFo/releases', 'https://github.com/PKU-PCNI/WiFo/commits/main', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo/main/README.md']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: '19 scenario configurations generate spatial–temporal–frequency CSI. Real/imaginary representations enter a unified masked-reconstruction interface; different masks define completion, temporal extrapolation, and frequency extrapolation.', zh: 19 组场景配置生成时空频 CSI；实虚表示进入统一遮挡重建接口，以不同 mask 表达补全、时间外推和频率外推。}
-  stages:
-  - title: {en: Define scenarios and motion conditions, zh: 定义场景与移动条件}
-    detail: {en: 'The authors specify propagation scenarios, frequencies, antennas, and motion conditions for 19 configurations. UE positions are initialized randomly, with straight-line motion within each sample at speeds from the specified range.', zh: 作者为 19 组配置分别指定传播场景、频率、天线和运动条件；UE 随机初始化位置，并在样本内按给定速度范围作直线移动。}
-    inputs:
-    - {en: 3GPP scenario categories, zh: 3GPP 场景类别}
-    - {en: 'Carrier frequency, UPA, and sampling parameters', zh: 载频、UPA 与采样参数}
-    outputs:
-    - {en: Configuration and trajectory collection, zh: 配置与轨迹集合}
-    controls:
-    - {en: 'Author settings: the BS UPA uses half-wavelength spacing; the UE has a single antenna.', zh: 作者设置：BS UPA 使用半波长间距，UE 为单天线。}
-    checks:
-    - {en: 'Reproduction recommendation: take configurations individually from the paper''s table. Different D numbers do not share a single default carrier frequency, speed, or tensor size.', zh: 复现建议：从论文表格逐项取配置；不同 D 编号不共享一个默认载频、速度或张量尺寸。}
-  - title: {en: Generate continuous spatial–temporal–frequency channels with QuaDRiGa, zh: QuaDRiGa 生成连续时空频信道}
-    detail: {en: 'Run QuaDRiGa channel generation at sampled trajectory points and organize results into MISO-OFDM samples. Each configuration is reported to contain 12,000 samples.', zh: '在轨迹采样点运行 QuaDRiGa 信道生成并组织成 MISO-OFDM 样本；每组配置报告 12,000 个样本。'}
-    inputs:
-    - {en: Scenario configuration, zh: 场景配置}
-    - {en: UE trajectories, zh: UE 轨迹}
-    - {en: Sampling times and subcarrier grid, zh: 采样时刻与子载波网格}
-    outputs:
-    - {en: Complex spatial–temporal–frequency CSI, zh: 复数时空频 CSI}
-    controls:
-    - {en: 'Author settings: spatial, temporal, and frequency scales vary by configuration.', zh: 作者设置：空间、时间和频率尺度随配置变化。}
-    checks:
-    - {en: 'Reproduction recommendation: preserve sampling intervals, speeds, array order, and subcarrier order. Spatially adjacent samples are not independent trials.', zh: 复现建议：保留采样间隔、速度、阵列顺序与子载波顺序；空间相邻样本不等于独立试验。}
-  - title: {en: Load MAT files and separate real/imaginary channels, zh: MAT 加载与实虚通道化}
-    detail: {en: 'The public DataLoader reads X_val from MAT files, separates complex channels into real and imaginary components, and converts them to float tensors. Dimensions depend on each dataset''s input.', zh: 公开 DataLoader 读取 MAT 内的 X_val，将复信道拆成实部和虚部并转为 float 张量；数据集维度由各自输入决定。}
-    inputs:
-    - {en: X_test.mat for each dataset, zh: 各数据集 X_test.mat}
-    outputs:
-    - {en: Two-channel real/imaginary test tensors, zh: 实虚双通道测试张量}
-    controls:
-    - {en: 'To verify: this loader does not specify any common scaling or normalization before the MAT files were written.', zh: 待核实：MAT 写入前的统一缩放或归一化步骤未在该加载器中给出。}
-    checks:
-    - {en: 'Reproduction recommendation: check keys, dimensions, and amplitude statistics before adding processing. Do not describe the loader''s real/imaginary separation as unit-power normalization.', zh: 复现建议：先核对键名、维度和幅度统计，再增加处理；不要把加载器的实虚拆分写成单位功率归一化。}
-  - title: {en: 'Generate completion, temporal, and frequency tasks', zh: 生成补全、时间与频率任务}
-    detail: {en: 'The random strategy shuffles tokens and retains a subset; causal retains a temporal prefix; frequency retains a frequency prefix. mask=1 denotes removed positions, and the model reconstructs targets from visible portions.', zh: random 策略打乱 token 后保留一部分；causal 策略保留时间前缀；frequency 策略保留频率前缀。mask=1 表示移除位置，模型据可见部分重建目标。}
-    inputs:
-    - {en: Two-channel real/imaginary CSI, zh: 实虚双通道 CSI}
-    - {en: Mask strategy, zh: mask 策略}
-    outputs:
-    - {en: Visible tokens, zh: 可见 token}
-    - {en: Reconstruction targets, zh: 重建目标}
-    - {en: Task masks and restoration indices, zh: 任务 mask 与恢复索引}
-    controls:
-    - {en: 'Author code: interpret temporal and frequency masking according to the actual axes in the code.', zh: 作者代码：时间和频率遮挡应按代码实际轴解释。}
-    checks:
-    - {en: 'Reproduction recommendation: assert that extrapolation targets never enter the encoder; visualize small tensors to check each mask''s boundaries.', zh: 复现建议：断言外推目标未进入 encoder；用可视化小张量检查每种 mask 的边界。}
-  - title: {en: Add noise and reconstruction supervision, zh: 加噪与重建监督}
-    detail: {en: 'Current model.forward uses mean(imgs²) over the entire input batch to set noise power at 20 dB, adds Gaussian noise before encoding, and uses clean imgs as reconstruction targets.', zh: 当前 model.forward 以整个输入 batch 的 mean(imgs²) 设置 20 dB 噪声功率，加入高斯噪声后编码，干净 imgs 用作重建目标。}
-    inputs:
-    - {en: Clean CSI, zh: 干净 CSI}
-    - {en: Masked task, zh: mask 后的任务}
-    outputs:
-    - {en: Noisy visible inputs, zh: 带噪可见输入}
-    - {en: Clean reconstruction supervision, zh: 干净重建监督}
-    controls:
-    - {en: 'Author code: 20 dB is the current forward setting; the batch jointly determines the noise scale.', zh: 作者代码：20 dB 是当前 forward 的设置，噪声尺度由 batch 共同计算。}
-    checks:
-    - {en: 'Reproduction recommendation: fix batch composition and check actual per-sample SNR. Record how changing batch size affects the noise scale.', zh: 复现建议：固定 batch 组成并检查逐样本实际 SNR；改变 batch size 时记录其对噪声尺度的影响。}
-  - title: {en: 'Separate training and unseen domains, then release', zh: 划分训练域与未见域并发布}
-    detail: {en: 'D1–D16 are used for pretraining and D17–D19 for unseen-configuration testing. The data card lists 9,000/1,000/2,000 train/validation/test samples per configuration. The official repository links training data and publishes test data and model-use code.', zh: 'D1–D16 用于预训练，D17–D19 用于未见配置测试；数据卡给出每组 9,000/1,000/2,000 的 train/validation/test 数量。官方仓库链接训练数据入口，并公开测试数据和模型使用代码。'}
-    inputs:
-    - {en: CSI samples from D1–D19, zh: D1–D19 的 CSI 样本}
-    outputs:
-    - {en: Training/validation/test corpora organized by configuration, zh: 按配置组织的训练/验证/测试语料}
-    - {en: Public test data and model assets, zh: 公开测试数据与模型资产}
-    controls:
-    - {en: 'Author protocol: within-domain sample splits and out-of-domain evaluation on D17–D19 are distinct levels.', zh: 作者协议：域内样本划分和 D17–D19 的域外评测是两个层次。}
-    checks:
-    - {en: 'Reproduction recommendation: report both sample splits and whether configurations appeared in pretraining. Reusing test data does not mean obtaining the complete training corpus.', zh: 复现建议：同时报告样本划分与配置是否在预训练中出现；复用测试数据不等于获得完整训练语料。}
+  summary: {en: '19 scenario configurations generate space-time-frequency CSI with QuaDRiGa. Real and imaginary parts enter one masked-reconstruction interface, and different masks define random completion, temporal extrapolation and frequency extrapolation.', zh: 19 组场景配置用 QuaDRiGa 生成时空频 CSI。实部与虚部进入统一的掩码重建接口，不同掩码分别对应随机补全、时间外推与频率外推。}
   scope: {en: 'QuaDRiGa corpus construction in the paper, plus the official public test loader and mask/model implementation.', zh: 论文中的 QuaDRiGa 语料构建，及官方公开测试加载器与 mask/model 实现。}
+  stages:
+  - title: {en: Define scenarios and motion, zh: 定义场景与移动条件}
+    detail: {en: 'Each of the 19 configurations fixes the carrier frequency, subcarrier count and spacing, number of time samples, UPA size, 3GPP scenario and speed range (Table 1). Each sample starts the UE at a random position and moves it on a straight line at a speed drawn uniformly from the range.', zh: 19 组配置各自固定载频、子载波数与间隔、时间采样数、UPA 尺寸、3GPP 场景与速度范围（Table 1）。每个样本中 UE 从随机位置出发，以该范围内均匀抽取的速度做直线运动。}
+    controls:
+    - {en: The BS UPA uses half-wavelength spacing at the centre frequency; the UE has a single antenna., zh: 基站 UPA 采用中心频率处的半波长间距；UE 为单天线。}
+  - title: {en: Generate MISO-OFDM CSI with QuaDRiGa, zh: 用 QuaDRiGa 生成 MISO-OFDM CSI}
+    detail: {en: 'QuaDRiGa generates complex space-time-frequency CSI for each configuration, organized as MISO-OFDM samples. Each configuration has 12,000 samples, split 9,000 / 1,000 / 2,000 into training, validation and inference sets.', zh: 'QuaDRiGa 为每组配置生成复数空-时-频 CSI，组织为 MISO-OFDM 样本。每组 12,000 个样本，按 9,000 / 1,000 / 2,000 划分为训练、验证与推理集。'}
+  - title: {en: Store as MAT and load real/imaginary channels, zh: 保存为 MAT 并加载实虚通道}
+    detail: {en: 'The public DataLoader reads the X_val array from each X_test.mat, takes its complex values and stacks the real and imaginary parts as two channels, returning float tensors. It applies no normalization.', zh: 公开 DataLoader 从各数据集的 X_test.mat 读取 X_val 数组，将复数值的实部与虚部堆叠为两个通道并返回 float 张量，不做归一化。}
+    checks:
+    - {en: The loader itself does not show how the MAT files were normalized before release., zh: 加载器本身未说明 MAT 文件在发布前如何归一化。}
+  - title: {en: Build masked-reconstruction tasks, zh: 构造掩码重建任务}
+    detail: {en: 'Three mask strategies act on the token grid. random removes tokens chosen at random (mask ratio 0.85 in pretraining). temporal (named causal_masking in the code) keeps the first (1 - r) T time indices and masks the rest (ratio 0.5). fre keeps the first (1 - r) W indices along the last axis, which the code treats as frequency (ratio 0.5). Masked positions carry mask value 1.', zh: 三种掩码策略作用于 token 网格。random 随机移除 token（预训练掩码比例 0.85）；temporal（代码中为 causal_masking）保留前 (1 - r) T 个时间索引，遮挡其余部分（比例 0.5）；fre 保留最后一轴 W 上前 (1 - r) W 个索引，代码将该轴视为频率（比例 0.5）。被遮挡位置的 mask 值为 1。}
+    controls:
+    - {en: 'In the paper, time masking hides future time tokens, and frequency masking hides tokens along the frequency dimension.', zh: 论文中，时间掩码遮挡未来时刻的 token，频率掩码遮挡频率维上的 token。}
+  - title: {en: Add noise and reconstruct the masked positions, zh: 加噪并重建被遮挡位置}
+    detail: {en: 'model.forward sets the noise power from mean(imgs^2) over the whole input batch for a 20 dB SNR, adds Gaussian noise before encoding, and computes the loss on masked positions against the noisy input. The paper applies the 20 dB noise in both training and inference.', zh: model.forward 以整个输入 batch 的 mean(imgs^2) 计算对应 20 dB 信噪比的噪声功率，在编码前加入高斯噪声，并以加噪后的输入作为被遮挡位置的重建目标。论文在训练与推理中都加入 20 dB 噪声。}
+    controls:
+    - {en: 'Because the noise power is computed over the whole batch, the batch composition sets the per-sample noise scale.', zh: 噪声功率基于整个 batch 计算，因此 batch 的组成决定每个样本的噪声尺度。}
+  - title: {en: Split domains and evaluate NMSE, zh: 划分训练域与未见域并评测 NMSE}
+    detail: {en: 'D1 to D16 are used for pretraining and D17 to D19 for zero-shot testing. train.py reports NMSE per dataset and per mask strategy. The GitHub README links the pretraining data on a PKU disk, and the Hugging Face repository holds the D1 to D18 test files.', zh: D1 至 D16 用于预训练，D17 至 D19 用于零样本测试。train.py 按数据集与掩码策略报告 NMSE。GitHub README 将预训练数据链接到 PKU 网盘，Hugging Face 仓库则包含 D1 至 D18 的测试文件。}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• QuaDRiGa-derived complex CSI
-
-      • Test MAT files
-
-      • Public models and code', zh: '• QuaDRiGa 派生复 CSI
-
-      • 测试 MAT 文件
-
-      • 公开模型与代码'}
+  text: {en: QuaDRiGa-derived complex CSI; test MAT files; public models and code., zh: QuaDRiGa 派生的复数 CSI；测试用 MAT 文件；公开的模型与代码。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Real/imaginary tensors, tokens, and task masks
-
-      • Noisy inputs and clean reconstruction targets
-
-      • Per-task NMSE', zh: '• 实虚张量、token 与 task masks
-
-      • 带噪输入及干净重建目标
-
-      • 各任务 NMSE'}
+  text: {en: 'Real/imaginary tensors, tokens and task masks; noisy inputs and noisy reconstruction targets; NMSE per dataset and mask strategy.', zh: 实部/虚部张量、token 与任务掩码；带噪输入及带噪重建目标；按数据集与掩码策略统计的 NMSE。}
 - label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• The current loader does not establish how upstream MAT data were normalized.
-
-      • Original MAT files were not read. Actual shapes, dtypes, anomalies, and availability of all training files still require a file-level audit.', zh: '• 当前加载器不证明上游 MAT 的归一化方法。
-
-      • 没有读取原始 MAT；具体 shape、dtype、异常值和全部训练文件可得性仍需文件级审计。'}
+  text: {en: The loader does not show how the upstream MAT data were normalized., zh: 加载器本身未说明上游 MAT 数据的归一化方法。}
 provenance:
 - {en: '3GPP scenario types, carrier frequencies, speeds, and UPA configurations', zh: 3GPP 场景类型与载频、速度、UPA 配置}
 - {en: QuaDRiGa statistical-geometric channel generation, zh: QuaDRiGa 统计几何信道生成}
@@ -126,39 +57,131 @@ provenance:
 - {en: Generate MISO-OFDM CSI using temporal/frequency sampling, zh: 按时频采样生成 MISO-OFDM CSI}
 - {en: D1–D16 pretraining; D17–D19 generalization testing, zh: D1–D16 预训练；D17–D19 泛化测试}
 technical_notes:
-- {en: 'Official design: element spacing is half a wavelength at the center frequency; the UE has a single antenna.', zh: 官方设计：阵元间隔为中心频率半波长，UE 为单天线。}
-- {en: 'Official design: each sample''s speed is drawn from the configured range and the trajectory is straight. The realism of the time axis is constrained by generator settings.', zh: 官方设计：各样本速度从配置区间采样、轨迹为直线；时间轴真实性受生成器设置限定。}
-- {en: 'Inference: when cross-frequency subsets also change scenario, speed, or array configuration, performance changes cannot be attributed solely to frequency.', zh: 推断：跨频子集同时改变场景、速度或天线配置时，性能变化不能只归因于频率。}
+- {en: 'Official design: adjacent element spacing is half a wavelength at the centre frequency, and the UE has a single antenna.', zh: 官方设计：相邻阵元间距为中心频率处的半波长，UE 为单天线。}
+- {en: 'Official design: each sample''s speed is drawn uniformly from the configured range, and its trajectory is a straight line.', zh: 官方设计：每个样本的速度在配置范围内均匀抽取，轨迹为直线。}
 limitations:
-- {en: 'D17 at 3.5 GHz and D19 at 28 GHz are not colocated, synchronized pairs and cannot directly form Sub-6→mmWave supervised samples.', zh: D17 的 3.5 GHz 与 D19 的 28 GHz 不是同址同步配对，不能直接构成 Sub-6→mmWave 监督样本。}
-- {en: Frequency-domain extrapolation usually predicts subcarriers near the same carrier frequency; it differs from a 3.5→28 GHz cross-band mapping., zh: 频域外推通常是同一载频附近子载波外推，与 3.5→28 GHz 跨频段映射不同。}
-- {en: Group by independent channel realization/trajectory before windowing to prevent leakage between overlapping windows., zh: 窗口切分必须先按独立信道实现/轨迹分组，避免重叠窗泄漏。}
+- {en: 'D17 (3.5 GHz) and D19 (28 GHz) are independent simulated configurations with separate random initial positions and trajectories, so they do not form paired samples.', zh: D17（3.5 GHz）与 D19（28 GHz）是相互独立的仿真配置，各自具有随机初始位置与轨迹，因此不构成配对样本。}
+- {en: 'Frequency-domain masking reconstructs tokens along the frequency axis within one configuration, which has one carrier frequency; it does not map between carrier frequencies.', zh: 频域掩码在单个配置内沿频率轴重建 token，该配置只有一个载频；它不在不同载频之间做映射。}
 history:
 - {en: '2024-12-12: WiFo preprint released', zh: 2024-12-12：WiFo 预印本发布}
 - {en: '2025-03-19: Paper v2', zh: 2025-03-19：论文 v2}
 - {en: '2025: Published in Science China Information Sciences 68:162302', zh: '2025：发表于 Science China Information Sciences 68:162302'}
 - {en: '2025-11-28: Official repository announces public pretraining data', zh: 2025-11-28：官方仓库宣布预训练数据开放}
 usage:
-- {en: 'Select a D number first; fix carrier frequency, subcarrier spacing, T, and UPA from paper Table 1.', zh: 先选 D 编号，从论文 Table 1 固定载频、子载波间隔、T 和 UPA。}
-- {en: Obtain test or pretraining data through the official repository. Inspect actual splits in the current files; an HF card title is not proof that all assets are available., zh: 按官方仓库取得测试或预训练数据；检查当前文件实际 split，避免将 HF 卡标题当作全量资产证明。}
-- {en: 'Preserve complex values and antenna, time, and frequency axes. Fit normalization on the training set and blank out prediction targets.', zh: 保留复数、天线、时间、频率轴；训练集拟合归一化，预测目标置空。}
-- {en: Use persistence and linear extrapolation as baselines and report NMSE by horizon. Calculate beam gain if the data are used for communication decisions. Not run locally., zh: 以 persistence 和线性外推作基线，报告按 horizon 分层 NMSE；若用于通信决策再算波束增益。未本机运行。}
+- {en: 'Select a D number first and take the carrier frequency, subcarrier spacing, T and UPA size from Table 1 of the paper.', zh: 先选定 D 编号，再从论文 Table 1 取得载频、子载波间隔、T 与 UPA 尺寸。}
+- {en: The Hugging Face repository holds X_test.mat for D1 to D18; the GitHub README links the pretraining data on a PKU disk., zh: Hugging Face 仓库包含 D1 至 D18 的 X_test.mat；GitHub README 将预训练数据链接到 PKU 网盘。}
+- {en: The DataLoader applies no normalization; any scaling is applied outside it., zh: DataLoader 不做归一化；任何缩放都在其外部完成。}
+- {en: 'The README evaluation commands run the temporal and fre masks on D1 to D16, and the temporal mask on D17 for zero-shot evaluation.', zh: README 中的评测命令在 D1 至 D16 上运行 temporal 与 fre 掩码，并在 D17 上以 temporal 掩码进行零样本评测。}
 field_notes:
 - label: {en: Cross-frequency pairing, zh: 跨频配对}
-  text: {en: 'Independent configuration subsets at multiple frequencies, not verified dual-band pairs for the same UE/time.', zh: 多个频率的独立配置子集，不是已确认的同一 UE/时刻双频配对。}
+  text: {en: Independent configuration subsets at several frequencies; they are not dual-band pairs for the same UE and time., zh: 多个频率上相互独立的配置子集，不是同一 UE 与同一时刻的双频配对。}
 - label: {en: Time, zh: 时间}
-  text: {en: Each sample has a time axis; different samples cannot be concatenated into a continuous trajectory., zh: 样本内具有时间轴；不同样本间不可拼接成连续轨迹。}
-- label: {en: Beam labels, zh: 波束标签}
-  text: {en: Requires explicit UPA geometry and a codebook before derivation from CSI., zh: 需要明确 UPA 几何与码本后由 CSI 计算。}
+  text: {en: 'Each sample has its own time axis, starting from a random UE position on its own straight trajectory, so samples cannot be concatenated into one continuous trajectory.', zh: 每个样本拥有自己的时间轴，从随机的 UE 位置出发，沿自身的直线轨迹运动，因此样本之间不能拼接成连续轨迹。}
 - label: {en: Position, zh: 位置}
-  text: {en: The official DataLoader reads only the X_val complex-channel array from X_test.mat and returns channel samples; this interface has no coordinate labels. Random initial positions used during generation do not establish that positions are released with the evaluation arrays., zh: 官方 DataLoader 只读取 X_test.mat 中的 X_val 复信道数组，返回信道样本；该接口没有坐标标签。生成时使用随机初始位置，不等于位置随评估数组发布。}
+  text: {en: The DataLoader returns channel samples only and reads no coordinate labels from X_test.mat., zh: DataLoader 只返回信道样本，不从 X_test.mat 读取坐标标签。}
 - label: {en: Multi-BS, zh: 多基站}
-  text: {en: The public loading interface has no BS ID or set of links from one UE to multiple BSs. D1–D19 represent independent system configurations., zh: 公开加载接口没有 BS ID 或同一 UE 到多个 BS 的链路集合；D1–D19 表示独立系统配置。}
-- label: {en: Multi-user, zh: 多用户}
-  text: {en: 'Methodological derivation: within one D configuration, independent MISO channel samples can represent users, using a shared array, frequency grid, and amplitude convention to calculate multiuser interference. User grouping, power, and noise must be defined separately. The official interface has no native synchronized user groups and does not guarantee shared-scatterer correlation.', zh: 方法推导：可在同一 D 配置内把独立 MISO 信道样本作为用户，使用共同阵列、频率网格和幅度约定计算多用户干扰。用户分组、功率与噪声须另定义；官方接口没有原生同步用户组，也不保证共享散射体相关性。}
+  text: {en: The public loader has no BS ID and no set of links from one UE to several BSs; D1 to D19 are independent system configurations., zh: 公开加载接口没有基站 ID，也没有同一 UE 到多个基站的链路集合；D1 至 D19 为相互独立的系统配置。}
 tools: [awesome-channel-foundation-models]
-overview: {en: 'The WiFo pretraining channel datasets are 19 simulated MISO-OFDM CSI sets, D1 to D19, generated with the QuaDRiGa channel generator for 3GPP scenarios. The PKU-PCNI group published them with the WiFo paper (B. Liu et al., arXiv:2412.08908), which appeared in SCIENCE CHINA Information Sciences in June 2025 and uses the sets to pretrain a channel-prediction foundation model. Each dataset contains 12,000 samples, split into 9,000 for training, 1,000 for validation and 2,000 for inference. Table 1 of the paper gives, for each dataset, the carrier frequency (1.5, 2.5, 3.5, 4.9, 5.9, 6.7 or 28 GHz), K, T, the UPA size, the scenario (UMi, UMa, RMa or indoor, LoS or NLoS) and the speed range, which runs from 0-10 to 120-300 km/h. D1 to D16 are used for pretraining and D17 to D19 for testing on unseen configurations. The Hugging Face test repository holds X_test.mat files for dataset/D1 through dataset/D18; no dataset/D19 folder was found when checked, and the pretraining package
-    on a PKU cloud drive was not inspected. The official DataLoader reads the complex X_val array, splits it into real and imaginary channels and applies no normalisation. The public loading interface returns channel samples without coordinate labels, and the D numbers are independent configurations rather than paired measurements of the same UE at several frequencies.', zh: 'WiFo 预训练信道数据集是 19 组仿真 MISO-OFDM CSI 数据，编号 D1 至 D19，由 QuaDRiGa 信道生成器按 3GPP 场景生成。PKU-PCNI 团队随 WiFo 论文（B. Liu 等，arXiv:2412.08908）发布这些数据；该论文 2025 年 6 月发表于 SCIENCE CHINA Information Sciences，用这些数据对信道预测基础模型进行预训练。每组数据包含 12,000 个样本，划分为 9,000 个训练样本、1,000 个验证样本和 2,000 个推理样本。论文 Table 1 逐组给出载频（1.5、2.5、3.5、4.9、5.9、6.7 或 28 GHz）、K、T、UPA 尺寸、场景（UMi、UMa、RMa 或室内，LoS 或 NLoS）以及速度范围（0–10 至 120–300 km/h）。D1 至 D16 用于预训练，D17 至 D19 用于未见配置的测试。Hugging Face 测试仓库中包含 dataset/D1 至 dataset/D18 的 X_test.mat 文件，检查时未发现 dataset/D19 文件夹；PKU 云盘上的预训练数据包内容未经检查。官方 DataLoader 读取复数 X_val 数组，拆分为实部与虚部两个通道，不做归一化。公开加载接口只返回信道样本，不含坐标标签；各 D 编号为相互独立的配置，而非同一 UE 在多个频率下的配对测量。'}
+overview: {en: 'The WiFo pretraining channel datasets are 19 simulated MISO-OFDM CSI sets, D1 to D19, generated with the QuaDRiGa channel generator for 3GPP scenarios. The PKU-PCNI group released them with the WiFo paper (B. Liu et al., arXiv:2412.08908), published in SCIENCE CHINA Information Sciences in June 2025, where they pretrain a channel-prediction foundation model. Each dataset contains 12,000 samples, split into 9,000 for training, 1,000 for validation and 2,000 for inference. Table 1 of the paper lists, for each dataset, the carrier frequency (1.5, 2.5, 3.5, 4.9, 5.9, 6.7 or 28 GHz), K, T, the UPA size, the scenario (UMi, UMa, RMa or indoor, LoS or NLoS) and the speed range, which runs from 0-10 to 120-300 km/h. D1 to D16 are used for pretraining, and D17 to D19 are held out for zero-shot testing because their carrier frequencies (3.5, 6.7 and 28 GHz) do not appear among D1 to D16. The Hugging Face test repository holds X_test.mat files for D1 through D18 and no D19 file; the
+    official DataLoader reads the complex X_val array, splits it into real and imaginary channels, and applies no normalization. The D numbers are independent configurations, not paired measurements of the same UE at several frequencies.', zh: 'WiFo 预训练信道数据集包含 19 组仿真 MISO-OFDM CSI 数据，编号 D1 至 D19，由 QuaDRiGa 信道生成器按 3GPP 场景生成。PKU-PCNI 团队随 WiFo 论文（B. Liu 等，arXiv:2412.08908）发布这些数据；该论文于 2025 年 6 月发表于 SCIENCE CHINA Information Sciences，用于预训练信道预测基础模型。每组数据包含 12,000 个样本，划分为 9,000 个训练样本、1,000 个验证样本和 2,000 个推理样本。论文 Table 1 逐组给出载频（1.5、2.5、3.5、4.9、5.9、6.7 或 28 GHz）、K、T、UPA 尺寸、场景（UMi、UMa、RMa 或室内，LoS 或 NLoS）以及速度范围（0–10 至 120–300 km/h）。D1 至 D16 用于预训练；D17 至 D19 作为零样本测试集保留，因为其载频（3.5、6.7 和 28 GHz）未出现在 D1 至 D16 中。Hugging Face 测试仓库包含 D1 至 D18 的 X_test.mat 文件，没有 D19 文件。官方 DataLoader 读取复数 X_val 数组，拆分为实部与虚部两个通道，不做归一化。各 D 编号为相互独立的配置，而非同一 UE 在多个频率下的配对测量。'}
 signal_details:
 - signal: csi
   text: {en: 'MISO-OFDM channels: the base station uses a UPA, the UE has one antenna, and adjacent antenna spacing is half a wavelength at the centre frequency. Each sample is a complex spatial-temporal-frequency array whose size is set by the configuration in Table 1; for example, D1 has a 1x4 UPA, K = 128 and T = 24. The complex array is stored under the key X_val in each X_test.mat. Within each sample, the UE starts at a random position and moves on a straight line at a speed drawn uniformly from the scenario''s range.', zh: MISO-OFDM 信道：基站采用 UPA，UE 为单天线，相邻天线间距为中心频率处的半波长。每个样本是复数的空-时-频数组，尺寸由 Table 1 中的配置决定；例如 D1 的 UPA 为 1×4，K = 128，T = 24。复数数组保存在各 X_test.mat 的 X_val 键下。每个样本内，UE 从随机初始位置出发，以在场景速度范围内均匀抽取的速度做直线运动。}
+format: MAT
+antennas: {rx: 1, array: upa}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: Complex MISO-OFDM CSI in the X_val arrays of the X_test.mat files for D1 to D18 on Hugging Face; the loader applies no normalization., zh: Hugging Face 上 D1 至 D18 的 X_test.mat 文件中 X_val 数组含复数 MISO-OFDM CSI；加载器不做归一化。}
+- key: cir
+  status: derivable
+  note: {en: Delay-domain CIR by inverse DFT over the released subcarriers; not stored., zh: 对已发布子载波做逆 DFT 可得时延域 CIR；未存储。}
+- key: paths
+  status: simulate
+  note: {en: 'Per-path delays, angles and Doppler shifts are obtainable only by rerunning QuaDRiGa; not released.', zh: 逐径时延、角度与多普勒频移仅能通过重新运行 QuaDRiGa 获得；未发布。}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Relative channel power is computable from CSI magnitudes; absolute path loss is unknown because the MAT normalization is undocumented., zh: 相对信道功率可由 CSI 幅值计算；由于 MAT 归一化未说明，绝对路径损耗未知。}
+- key: iq
+  status: none
+  note: {en: Channel matrices only; no time-domain I/Q waveforms., zh: 仅有信道矩阵，无时域 I/Q 波形。}
+- key: beam_labels
+  status: derivable
+  note: {en: Computable from CSI with a chosen UPA codebook; the codebook is not released., zh: 可由 CSI 结合选定的 UPA 码本计算；码本未发布。}
+- {key: position, status: unknown}
+- key: geometry
+  status: none
+  note: {en: No scene or map files; the 3GPP scenario and UPA size are configuration parameters only., zh: 无场景或地图文件；3GPP 场景与 UPA 尺寸仅为配置参数。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: RF-only channel dataset., zh: 纯射频信道数据集。}
+- key: depth
+  status: none
+  note: {en: RF-only channel dataset., zh: 纯射频信道数据集。}
+- key: lidar
+  status: none
+  note: {en: RF-only channel dataset., zh: 纯射频信道数据集。}
+- key: radar
+  status: none
+  note: {en: RF-only channel dataset; no radar sensing data., zh: 纯射频信道数据集；无雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: RF-only channel dataset., zh: 纯射频信道数据集。}
+- key: time_series
+  status: provided
+  note: {en: Each sample holds 16 or 24 snapshots at 0.5 or 1 ms intervals; separate samples cannot be joined into one trajectory., zh: 每个样本包含 16 或 24 个快照，间隔 0.5 或 1 ms；不同样本不能拼接为连续轨迹。}
+- key: multiuser
+  status: derivable
+  note: {en: 'Independent single-user samples within one configuration can be combined; user grouping, power and noise are not released, and shared-scatterer correlation is not guaranteed.', zh: 同一配置内的独立单用户样本可组合为多用户集合；用户分组、功率与噪声未发布，且不保证共享散射体相关性。}
+- key: multibs
+  status: none
+  note: {en: Each configuration is one BS UPA serving a single-antenna UE; the public interface has no BS IDs., zh: 每个配置为一个基站 UPA 服务单天线 UE；公开接口无基站 ID。}
+- {key: crossfreq, status: unknown}
+- key: near_field
+  status: none
+  note: {en: Plane-wave UPA steering-vector model; no spherical-wave near-field modelling., zh: 采用平面波 UPA 导向矢量模型，无球面波近场建模。}
+- key: high_mobility
+  status: provided
+  note: {en: 'Table 1 gives user speeds of 30 to 100 km/h for D4, D7, D11, D16, D17 and D19, and 120 to 300 km/h for D2, D5, D10 and D13.', zh: 表 1 给出 D4、D7、D11、D16、D17、D19 的用户速度为 30 至 100 km/h，D2、D5、D10、D13 为 120 至 300 km/h。}
+- {key: dynamic_blockage, status: unknown}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Outputs are complex CSI arrays; no E-field components or antenna patterns., zh: 输出为复数 CSI 数组；无电场分量或天线方向图。}
+versions:
+- version: HF commit 2026-04-14
+  date: '2026-04-14'
+  summary: {en: Hugging Face dataset repository commit 'Update README.md'; the commit message does not describe the change., zh: Hugging Face 数据集仓库提交 'Update README.md'；提交信息未描述具体变更。}
+  url: https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo/commits/main
+- version: HF commit 2026-04-10
+  date: '2026-04-10'
+  summary: {en: 'Hugging Face commit uploads ''Download link for pretraining datasets.txt'', consistent with the pretraining data being released through an external link.', zh: Hugging Face 提交上传 'Download link for pretraining datasets.txt'，与预训练数据通过外部链接发布一致。}
+  url: https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo/commits/main
+- version: GitHub README 2025.11.28
+  date: '2025-11-28'
+  summary: {en: The GitHub README states that all pretraining datasets were released as open source on the PKU disk link., zh: GitHub README 记载，全部预训练数据集已在 PKU 网盘链接中开源发布。}
+  url: https://github.com/PKU-PCNI/WiFo
+- version: HF commit 2025-05-13
+  date: '2025-05-13'
+  summary: {en: 'Hugging Face commit uploads an X_test.mat file, the evaluation tensor read by the official loader.', zh: Hugging Face 提交上传一个 X_test.mat 文件，即官方加载器读取的评测张量。}
+  url: https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo/commits/main
+- version: HF initial commit 2025-03-28
+  date: '2025-03-28'
+  summary: {en: 'The first Hugging Face commits are an ''initial commit'' and an upload of 18 files, which set up the dataset repository.', zh: Hugging Face 仓库最初的提交为 'initial commit' 与一次 18 个文件的上传，用于建立数据集仓库。}
+  url: https://huggingface.co/datasets/pku-pcni-lab/RF-only_channel_dataset_for_WiFo/commits/main
+- version: arXiv v2
+  date: '2025-03-19'
+  summary: {en: The arXiv v2 revision of the WiFo paper; the arXiv page does not describe the changes., zh: WiFo 论文的 arXiv v2 修订版；arXiv 页面未描述具体修改。}
+  url: https://arxiv.org/abs/2412.08908
+- version: arXiv v1
+  date: '2024-12-12'
+  summary: {en: 'The arXiv v1 paper introduces WiFo, a space-time-frequency wireless foundation model for channel prediction, whose pretraining uses the QuaDRiGa channel datasets.', zh: arXiv v1 论文提出 WiFo，一种用于信道预测的时空频无线基础模型，其预训练使用 QuaDRiGa 信道数据集。}
+  url: https://arxiv.org/abs/2412.08908

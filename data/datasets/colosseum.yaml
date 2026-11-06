@@ -14,97 +14,46 @@ paper: arxiv:2110.10617
 used_in: ['doi:10.1109/tmc.2022.3188013', 'doi:10.1109/infocom48880.2022.9796744', 'doi:10.1109/ojcoms.2024.3447472', 'doi:10.1109/tmc.2024.3359596', 'doi:10.1109/wcnc51071.2022.9771908']
 citing: ['doi:10.1109/tcomm.2022.3171800']
 summary: {en: 'Testbed and emulator: 256 software-defined radios with a hardware channel emulator that produce channel impulse responses, IP traffic flows, and experiment logs including SINR, CQI, and downlink throughput.', zh: 试验平台与仿真器：由 256 台软件定义无线电和硬件信道仿真器组成，生成信道冲激响应、IP 业务流以及包含 SINR、CQI 和下行吞吐量的实验日志。}
-sources: ['https://advancedwireless.org/colosseum/', 'https://colosseum.sites.northeastern.edu/', 'https://openrangym.com/experimental-platforms/colosseum', 'https://arxiv.org/abs/2110.10617', 'https://ar5iv.labs.arxiv.org/html/2110.10617', 'https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator']
+sources: ['https://advancedwireless.org/colosseum/', 'https://colosseum.sites.northeastern.edu/', 'https://openrangym.com/experimental-platforms/colosseum', 'https://arxiv.org/abs/2110.10617', 'https://ar5iv.labs.arxiv.org/html/2110.10617', 'https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator', 'https://arxiv.org/abs/2110.10617v1', 'https://arxiv.org/abs/2110.10617v2', 'https://arxiv.org/html/2110.10617v2', 'https://raw.githubusercontent.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator/master/README.md', 'https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator/commits/main', 'https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator/releases', 'https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator/tags']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'A propagation model first generates a programmable FIR scenario. MCHEM connects real SDR signals through these digital channels, and protocol software then produces IQ, logs, and network results.', zh: 传播模型先生成可编程FIR场景，MCHEM把真实SDR的信号通过这些数字信道连接，协议软件再产生IQ、日志和网络结果。}
+  summary: {en: 'The official MATLAB ray-tracing generator turns an OpenStreetMap area and node trajectories into per-link channels, approximates each channel with four non-zero taps, and packages them as an RF scenario. MCHEM applies these FIR channels to the signals of real SDRs on reserved SRNs, and container logs are copied to the NAS when the experiment ends.', zh: 官方 MATLAB 射线追踪生成器将 OpenStreetMap 区域与节点轨迹转换为逐链路信道，每条信道近似为四个非零抽头，并封装为 RF 场景。MCHEM 将这些 FIR 信道作用于预约 SRN 上真实 SDR 的信号，实验结束时容器日志复制到 NAS。}
+  scope: {en: From the official MATLAB ray-tracing scenario generator to MCHEM hardware-in-the-loop experiments., zh: 从官方 MATLAB 射线追踪场景生成器到 MCHEM 硬件在环实验。}
   stages:
-  - title: {en: Select the propagation source and scenario, zh: 选择传播来源与场景}
-    detail: {en: The official MATLAB example generates channels from maps and RT. Other inputs may come from measurements or models; preserve their respective provenance., zh: 官方MATLAB示例使用地图和RT生成信道；其他输入可来自测量或模型，须保留各自来源。}
+  - title: {en: Build the ray-traced scenario, zh: 构建射线追踪场景}
+    detail: {en: 'The generator takes an OSM 3D model of the area and a node configuration: origin, carrier frequency fc, node powers, heights, antennas and azimuths, stationary positions or routes, sampling interval Ts and scenario duration. Ray-tracing settings include the number of reflections and the building and terrain materials.', zh: 生成器输入区域的 OSM 三维模型和节点配置，包括原点、载频 fc、节点功率、高度、天线与方位角、静止位置或路线、采样间隔 Ts 以及场景时长；射线追踪设置包括反射次数以及建筑和地面材料。}
     inputs:
-    - {en: OSM/3D environment or existing channels, zh: OSM/三维环境或已有信道}
-    - {en: 'Node positions, trajectories, and RF configuration', zh: 节点位置、轨迹和射频配置}
-    outputs:
-    - {en: Node and scenario configuration, zh: 节点与场景配置}
-    - {en: Traceable propagation inputs, zh: 可追溯的传播输入}
+    - {en: OSM 3D model of the area, zh: 区域的 OSM 三维模型}
+    - {en: Node configuration and mobility routes, zh: 节点配置与移动路线}
     controls:
-    - {en: 'Researcher specifies: map, fc, array/orientation, mobility trajectories, and time step', zh: 研究者固定：地图、fc、阵列/朝向、移动轨迹和时间步}
-    checks:
-    - {en: Distinguish simulated inputs from OTA-measured inputs, zh: 区分模拟输入与OTA测量输入}
-    - {en: Check node IDs and coordinate/time indices, zh: 检查节点ID和坐标/时间索引}
-  - title: {en: Generate per-link multipath and power, zh: 生成逐链路多径和功率}
-    detail: {en: 'Set parameters such as the reflection budget, calculate multipath for node pairs at each mobility instant, and generate channel and pathloss matrices.', zh: 设置反射预算等参数，对节点对和移动时刻计算多径，生成信道及pathloss矩阵。}
+    - {en: 'Researcher sets fc, node antennas and orientations, mobility type, Ts, scenario duration and the number of reflections', zh: 研究者设置 fc、节点天线与朝向、移动类型、Ts、场景时长和反射次数}
+  - title: {en: Compute multipath and path loss per snapshot, zh: 逐快照计算多径与路径损耗}
+    detail: {en: 'channelSimulator computes the multipath components between each transmitter and receiver at each snapshot, and generatePLmatrix derives the path-loss matrix from the channel matrix.', zh: channelSimulator 为每个快照计算各收发节点对之间的多径分量，generatePLmatrix 由信道矩阵推导路径损耗矩阵。}
     inputs:
-    - {en: Scenario and nodes, zh: 场景与节点}
-    - {en: MATLAB RT configuration, zh: MATLAB RT配置}
+    - {en: 'Scenario, nodes and ray-tracing configuration', zh: 场景、节点与射线追踪配置}
     outputs:
-    - {en: chMatrix、plMatrix, zh: chMatrix、plMatrix}
-    - {en: coordinates and Time, zh: coordinates与Time}
-    controls:
-    - {en: 'Researcher specifies: reflection count, path count, antennas, and output normalization', zh: 研究者固定：反射次数、路径数、天线与输出归一化}
-    checks:
-    - {en: 'Check connected-link indices, zero-path cases, and power units', zh: 检查互通链路索引、零路径和功率单位}
-    - {en: Verify stationary-node and mobility-trajectory settings, zh: 核对静止节点与移动轨迹设置}
-  - title: {en: Approximate and convert to an FIR scenario, zh: 近似并转换为FIR场景}
-    detail: {en: 'The official example approximates multipath with four nonzero taps, outputs RFscenario.mat, and converts it into a format loadable by Colosseum.', zh: 官方示例把多径近似为四个非零tap，输出RFscenario.mat后转换成Colosseum可加载格式。}
+    - {en: 'chMatrix, coordinates and Time', zh: chMatrix、coordinates 与 Time}
+  - title: {en: Approximate each channel with four non-zero taps, zh: 将每条信道近似为四个非零抽头}
+    detail: {en: chApproximation reduces each channel to four non-zero taps that MCHEM can load and returns the approximated channel and path-loss matrices. The result is saved to RFscenario.mat with the metadata required by the Colosseum scenario toolchain., zh: chApproximation 将每条信道近似为 MCHEM 可加载的四个非零抽头，并返回近似后的信道与路径损耗矩阵；结果与 Colosseum 场景工具链所需元数据一并保存为 RFscenario.mat。}
     inputs:
-    - {en: Per-path delays/gains, zh: 逐径时延/增益}
-    - {en: Channel representation supported by MCHEM, zh: MCHEM支持的信道表示}
+    - {en: Multipath channel matrix from the ray tracer, zh: 射线追踪器输出的多径信道矩阵}
     outputs:
-    - {en: Compressed FIR parameters, zh: 压缩后的FIR参数}
-    - {en: MCHEM scenario files, zh: MCHEM场景文件}
-    controls:
-    - {en: 'Researcher specifies: tap approximation, sampling rate, delay/gain quantization, and update interval', zh: 研究者固定：tap近似、采样率、时延/增益量化和更新时间}
-    checks:
-    - {en: Compare the PDP/frequency response and total power before and after approximation, zh: 比较近似前后的PDP/频域响应与总功率}
-    - {en: Record errors introduced by tap compression, zh: 记录tap压缩造成的误差}
-  - title: {en: Configure SDRs and experiment software, zh: 配置SDR与实验软件}
-    detail: {en: 'Load software and RF settings onto reserved resources, connect real transceivers to the digital channel emulator, and run network traffic.', zh: 在预约资源上加载软件和射频设置，将真实收发设备接入数字信道仿真器，运行网络业务。}
+    - {en: 'RFscenario.mat (chMatrix, plMatrix, NodesName, coordinates, Time, origin)', zh: RFscenario.mat（chMatrix、plMatrix、NodesName、coordinates、Time、origin）}
+  - title: {en: Run hardware-in-the-loop experiments, zh: 运行硬件在环实验}
+    detail: {en: 'Users reserve SRNs on the Colosseum website and choose an LXC image for each node. Containers are instantiated on the SRNs, and colosseumcli starts the RF and traffic scenarios. The RF scenario server feeds the channel taps to MCHEM at run time, and MCHEM processes the signals of the SRN USRPs through the FIR channels.', zh: 用户在 Colosseum 网站预约 SRN，并为每个节点选择 LXC 镜像；容器在 SRN 上实例化，colosseumcli 启动 RF 与业务场景。RF 场景服务器在运行时向 MCHEM 提供信道抽头，MCHEM 通过 FIR 信道处理 SRN 的 USRP 信号。}
     inputs:
-    - {en: MCHEM scenario, zh: MCHEM场景}
-    - {en: Available nodes and container/protocol software, zh: 可用节点与容器/协议软件}
+    - {en: 'RF scenario, traffic scenario and LXC images', zh: RF 场景、业务场景与 LXC 镜像}
     outputs:
-    - {en: Hardware-in-the-loop RF/protocol experiment, zh: 硬件在环射频/协议实验}
+    - {en: Network experiment on real SDR hardware with emulated channels, zh: 使用仿真信道、基于真实 SDR 硬件的网络实验}
     controls:
-    - {en: 'Researcher specifies: device mapping, center frequency, bandwidth, gain, protocol stack, and traffic', zh: 研究者固定：设备映射、中心频率、带宽、增益、协议栈和流量}
-    checks:
-    - {en: 'Check device clocks, power, and the scaling of the input FIR', zh: 核对设备时钟、功率与输入FIR的尺度}
-    - {en: Analyze hardware effects separately from propagation-model effects, zh: 将硬件因素与传播模型因素分开分析}
-  - title: {en: Collect and organize results, zh: 采集并整理结果}
-    detail: {en: 'Collect IQ or protocol traces according to the experiment configuration, associate them with nodes, times, and FIR states, then compute network KPIs.', zh: 按实验配置采集IQ或协议trace，关联节点、时间和FIR状态，再计算网络KPI。}
-    inputs:
-    - {en: SDR signals, zh: SDR信号}
-    - {en: Protocol logs and traffic statistics, zh: 协议日志和业务统计}
+    - {en: 'Researcher sets the number of SRNs, the LXC image on each node, and the scenarios; batch jobs are specified in JSON files', zh: 研究者设置 SRN 数量、各节点的 LXC 镜像和场景；批处理作业以 JSON 文件描述}
+  - title: {en: Collect logs and snapshots, zh: 收集日志与快照}
+    detail: {en: 'When the experiment ends, the contents of each container''s /logs directory are copied to the Colosseum NAS, from where the file proxy server retrieves them. Container snapshots can be saved as LXC images on the NAS.', zh: 实验结束后，各容器 /logs 目录的内容被复制到 Colosseum NAS，并可通过文件代理服务器取回；容器快照可以以 LXC 镜像形式保存在 NAS 上。}
     outputs:
-    - {en: Enabled IQ/log/KPI outputs, zh: 所启用的IQ/日志/KPI}
-    - {en: Experiment and channel configuration records, zh: 实验与信道配置记录}
-    controls:
-    - {en: 'Researcher specifies: collection points, clock alignment, number of repetitions, and statistics window', zh: 研究者固定：采集点、时钟对齐、重复次数和统计窗口}
-    checks:
-    - {en: Save channel scenarios and software versions for replay, zh: 保存信道场景和软件版本以便重播}
-    - {en: The propagation realism of hardware-in-the-loop results depends on the input scenario, zh: 硬件在环结果的传播真实性取决于输入场景}
-  scope: {en: From the official MATLAB RT scenario generator to MCHEM hardware-in-the-loop experiments; other channel inputs require their own provenance., zh: 官方MATLAB RT场景生成器到MCHEM硬件在环实验；其他信道输入需分别追溯。}
+    - {en: Container /logs contents and LXC snapshot images on the NAS, zh: NAS 上的容器 /logs 内容与 LXC 快照镜像}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• RFscenario.mat from the scenario generator
-
-      • IQ/protocol logs and KPIs produced by a reserved experiment', zh: '• 场景生成器的RFscenario.mat
-
-      • 预约实验产生的IQ/协议日志和KPI'}
-- label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Network policy samples
-
-      • Performance comparisons between channel models and hardware networks', zh: '• 网络策略样本
-
-      • 信道模型到硬件网络的性能对照'}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Generator README parameters and outputs have been read; MATLAB was not run and the platform was not reserved in this audit.
-
-      • Count platform node capacity separately from publicly available samples.', zh: '• 已读生成器README参数与输出；本轮未运行MATLAB或预约平台。
-
-      • 平台节点容量与公开样本数量分别统计。'}
+  text: {en: RFscenario.mat from the official generator; container /logs contents and LXC snapshots saved to the NAS., zh: 官方生成器输出 RFscenario.mat；容器 /logs 内容与 LXC 快照保存在 NAS 上。}
 provenance:
 - {en: RT/measurements or models supply channels, zh: RT/测量或模型提供信道}
 - {en: Convert to emulator FIR parameters, zh: 转换为 emulator FIR 参数}
@@ -112,27 +61,123 @@ provenance:
 - {en: Real software protocol stacks and traffic, zh: 真实软件协议栈和业务}
 - {en: Experiment traces / IQ / KPIs, zh: 实验 trace / IQ / KPI}
 technical_notes:
-- {en: 'Verified: the platform combines real SDRs with FPGA-based MCHEM.', zh: 已确认：平台将真实 SDR 和 FPGA MCHEM 结合。}
-- {en: 'Verified: the official MATLAB scenario generator supports OSM/RT→FIR.', zh: 已确认：官方 MATLAB scenario generator 支持 OSM/RT→FIR。}
-- {en: 'Inference: hardware-in-the-loop operation does not make the input propagation environment an OTA measurement.', zh: 推断：hardware-in-the-loop 不自动使输入传播环境成为 OTA 实测。}
-- {en: 'Verified: the official MATLAB generator explicitly configures fc, node antennas/orientations, mobility trajectories, and reflection count, and outputs chMatrix, coordinates, and Time. This example approximates paths with four nonzero taps before importing them into Colosseum.', zh: 已确认：官方MATLAB生成器显式配置fc、节点天线/方向、移动轨迹和反射次数，输出chMatrix、coordinates和Time；该示例将路径近似为四个非零tap后导入Colosseum。}
+- {en: The platform combines real SDRs with an FPGA-based channel emulator (MCHEM)., zh: 该平台将真实 SDR 与基于 FPGA 的信道仿真器 MCHEM 结合。}
+- {en: The official MATLAB scenario generator supports OpenStreetMap and ray-tracing inputs and produces FIR scenarios., zh: 官方 MATLAB 场景生成器支持 OSM 与射线追踪输入，并生成 FIR 场景。}
+- {en: 'The official generator sets fc, node antennas and orientations, mobility trajectories and the number of reflections, and outputs chMatrix, coordinates and Time. Its example approximates each channel with four non-zero taps before import into Colosseum.', zh: 官方生成器设置 fc、节点天线与朝向、移动轨迹和反射次数，并输出 chMatrix、coordinates 和 Time；其示例在导入 Colosseum 前将每条信道近似为四个非零抽头。}
 limitations:
-- {en: Platform hardware capacity is not the size of a publicly available dataset., zh: 不能把平台硬件容量当公开数据样本量。}
-- {en: Explain the 128-node and 256-SDR/link counting conventions; they are not contradictory scale figures., zh: 128 节点与256 SDR/链路口径需说明，不能当作互相矛盾的规模。}
+- {en: 'The 128 SRNs each drive one X310 with two UBX-160 daughterboards, which gives the 256 SDRs quoted for the platform.', zh: 128 个 SRN 各驱动一台带两块 UBX-160 子板的 X310，对应平台所称的 256 台 SDR。}
+- {en: 'Only 4 of the 512 taps are non-zero in generated scenarios, so the emulated channel is an approximation of the generator output.', zh: 生成的场景中 512 个抽头仅 4 个非零，因此仿真信道是生成器输出的近似。}
+- {en: 'The authors state that MCHEM was designed for terrains up to 1 km × 1 km, because of the maximum propagation delay its FPGAs can emulate.', zh: 作者指出，MCHEM 因 FPGA 可仿真的最大传播时延，设计地形上限为 1 km × 1 km。}
 history:
-- {en: '2019: DARPA announced the platform''s transfer to PAWR/Northeastern.', zh: 2019：DARPA 宣布向 PAWR/Northeastern 转移平台。}
-- {en: '2021: hardware-in-the-loop network experimentation paper.', zh: 2021：硬件在环网络实验论文。}
+- {en: The platform was originally built by DARPA and Johns Hopkins APL for the Spectrum Collaboration Challenge. Northeastern's Institute for the Wireless Internet of Things now operates it under an NSF grant., zh: 该平台最初由 DARPA 与约翰霍普金斯大学应用物理实验室为频谱协作挑战赛（SC2）建设；现由东北大学物联网研究所在 NSF 资助下运营。}
+- {en: '2020-10-02: Colosseum became generally available to researchers.', zh: 2020-10-02：Colosseum 正式向研究者开放。}
+- {en: '2021: the platform paper was published in the proceedings of IEEE DySPAN.', zh: 2021 年：平台论文发表于 IEEE DySPAN 会议论文集。}
 usage:
-- {en: Apply for a platform account and reserve a minimal set of nodes., zh: 申请平台账户并预约最小节点集。}
-- {en: Select a calibrated RF scenario and a containerized protocol stack., zh: 选择已校准 RF scenario 与容器协议栈。}
-- {en: 'Save the scenario, FIR, software image versions, and KPI traces.', zh: 保存场景、FIR、软件镜像版本和 KPI trace。}
+- {en: 'Request team access through the New Team Request form, then reserve SRNs on the Colosseum website.', zh: 通过 New Team Request 表单申请团队访问，然后在 Colosseum 网站预约 SRN。}
+- {en: 'Choose an RF scenario from the catalog and an LXC image for each SRN, either a Colosseum image or one uploaded by the user.', zh: 从场景目录中选择 RF 场景，并为每个 SRN 选择 LXC 镜像（平台提供或用户上传）。}
+- {en: 'Batch jobs are described in JSON files that specify the duration, RF and traffic scenarios, the number of SRNs and the LXC images.', zh: 批处理作业通过 JSON 文件描述，包括时长、RF 与业务场景、SRN 数量和 LXC 镜像。}
+- {en: 'After the experiment, retrieve the /logs contents from the NAS through the file proxy server.', zh: 实验结束后，通过文件代理服务器从 NAS 取回 /logs 内容。}
 tools: [project-colosseum-scenario-generator]
-overview: {en: 'Colosseum is a remotely accessible wireless network emulator at Northeastern University''s Institute for the Wireless Internet of Things, generally available since October 2, 2020. It uses 256 software-defined radios (NI USRP X310) on 128 Standard Radio Nodes, and the MCHEM channel emulator supports up to 256 × 256 independently customizable channels. The platform emulates RF scenarios of up to 1 km² with up to 65,535 wireless channels and up to 80 MHz of bandwidth, while the SDRs cover 10 MHz to 6 GHz. Each emulated channel is an FIR filter with 512 pre-computed complex-valued taps that represents the channel impulse response between two SRNs. TGEN, based on the NRL MGEN generator, emulates IP traffic flows between the SRNs. The data are produced by the experiments that users run: when an experiment ends, the contents of each container''s /logs directory are copied to the Colosseum NAS. Access is requested through a New Team Request form, and the Experiments Portal requires
-    the Colosseum VPN; no data license is stated.', zh: 'Colosseum 是东北大学物联网研究所运营的远程可访问无线网络仿真器，自 2020 年 10 月 2 日起向用户开放。平台由 128 个标准无线电节点（SRN）上的 256 台软件定义无线电（NI USRP X310）组成，MCHEM 信道仿真器支持最多 256 × 256 个可独立配置的信道。平台可仿真面积达 1 km² 的射频场景，信道数最多 65,535 个，带宽最高 80 MHz；SDR 覆盖 10 MHz 至 6 GHz。每个仿真信道是一个 FIR 滤波器，包含 512 个预先计算的复数抽头，表示两个 SRN 之间的信道冲激响应。TGEN 基于 NRL 的 MGEN 生成器，在 SRN 之间仿真 IP 业务流。数据由用户运行的实验产生：实验结束后，每个容器 /logs 目录的内容被复制到 Colosseum NAS。'}
+overview: {en: 'Colosseum is a remotely accessible wireless network emulator operated by Northeastern University''s Institute for the Wireless Internet of Things and generally available since October 2, 2020. It has 256 software-defined radios (NI USRP X310) on 128 Standard Radio Nodes, each node driving one X310 with two UBX-160 daughterboards. The MCHEM channel emulator supports up to 256 × 256 independently customizable channels, and RF scenarios cover areas of up to 1 km² with up to 65,536 wireless channels. The SDRs cover 10 MHz to 6 GHz, and the emulated bandwidth is 80 MHz in the 2021 platform paper and 100 MHz on the current website. Each emulated channel is an FIR filter with 512 pre-computed complex-valued taps that represents the channel impulse response between two SRNs. TGEN, based on the NRL MGEN generator, emulates IP traffic flows between the SRNs. Data are produced by user experiments: when an experiment ends, the contents of each container''s /logs directory are copied
+    to the Colosseum NAS. Access is requested through the New Team Request form, and the Experiments Portal is reached through the Colosseum VPN.', zh: 'Colosseum 是东北大学物联网研究所运营的远程可访问无线网络仿真器，自 2020 年 10 月 2 日起向用户开放。平台由 128 个标准无线电节点（SRN）组成，共 256 台软件定义无线电（NI USRP X310）；每个节点驱动一台 X310，每台 X310 配有两块 UBX-160 子板。MCHEM 信道仿真器支持最多 256 × 256 个可独立配置的信道，RF 场景可覆盖面积达 1 km² 的区域，信道数最多 65,536 个。SDR 覆盖 10 MHz 至 6 GHz，仿真带宽在 2021 年平台论文中为 80 MHz，在当前官网中为 100 MHz。每个仿真信道是一个 FIR 滤波器，包含 512 个预先计算的复数抽头，表示两个 SRN 之间的信道冲激响应。TGEN 基于 NRL 的 MGEN 生成器，在 SRN 之间仿真 IP 业务流。数据由用户运行的实验产生：实验结束后，每个容器 /logs 目录的内容被复制到 Colosseum NAS。访问需通过 New Team Request 表单申请，实验门户需经 Colosseum VPN 访问。'}
 signal_details:
 - signal: cir
-  text: {en: 'Channel impulse responses are implemented as 512 pre-computed complex-valued FIR taps per pair of SRNs in MCHEM. Because of computational and storage cost, only 4 taps are non-zero in the generated scenarios. The CIR can be derived from channel modeling equations, field measurements or ray-tracing tools. The official MATLAB generator saves chMatrix, plMatrix, NodesName, coordinates and Time, together with origin, to RFscenario.mat.', zh: 信道冲激响应在 MCHEM 中以每对 SRN 之间 512 个预先计算的复数 FIR 抽头实现。由于计算与存储成本，生成的场景中仅 4 个抽头为非零值。CIR 可由信道建模公式、实测或光线追踪工具得到。官方 MATLAB 生成器将 chMatrix、plMatrix、NodesName、coordinates 和 Time 以及 origin 保存至 RFscenario.mat。}
+  text: {en: 'MCHEM stores each channel as an FIR filter with 512 pre-computed complex-valued taps for each pair of SRNs. Because of the computational and storage cost, only 4 taps are non-zero in the generated scenarios. The CIR can be derived from channel modeling equations, field measurements or ray-tracing tools. The official MATLAB generator saves chMatrix, plMatrix, NodesName, coordinates, Time and origin to RFscenario.mat.', zh: MCHEM 为每对 SRN 保存一个 FIR 滤波器，包含 512 个预先计算的复数抽头。由于计算与存储成本，生成的场景中仅 4 个抽头为非零值。CIR 可由信道建模公式、实测或光线追踪工具得到。官方 MATLAB 生成器将 chMatrix、plMatrix、NodesName、coordinates、Time 和 origin 保存至 RFscenario.mat。}
 - signal: traffic
   text: {en: 'TGEN, based on the NRL MGEN generator, emulates IP traffic flows between the SRNs. A traffic scenario defines the set of flows together with their packet rate, packet size and distribution.', zh: TGEN 基于 NRL 的 MGEN 生成器，在 SRN 之间仿真 IP 业务流。流量场景定义一组业务流及其包速率、包长和分布。}
 - signal: kpi
-  text: {en: 'Experiment logs from each container''s /logs directory, copied to the NAS when the experiment ends. The platform paper''s use cases report downlink throughput, downlink spectral efficiency, CQI, uplink error rate, SINR and the resource allocation ratio. The sources give no log file schema.', zh: 实验日志来自每个容器的 /logs 目录，实验结束后复制到 NAS。平台论文的用例报告了下行吞吐量、下行频谱效率、CQI、上行误差率、SINR 和资源分配比例。}
+  text: {en: 'When an experiment ends, the contents of each container''s /logs directory are copied to the NAS. The use cases in the platform paper report downlink throughput, downlink spectral efficiency, CQI, uplink error rate, SINR and the resource allocation ratio.', zh: 实验结束后，各容器 /logs 目录的内容被复制到 NAS。平台论文的用例报告了下行吞吐量、下行频谱效率、CQI、上行误差率、SINR 以及资源分配比例。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: Channel matrices come from RF scenarios that the user generates and runs on the platform., zh: 信道矩阵来自用户生成并在平台上运行的 RF 场景。}
+- key: cir
+  status: simulate
+  note: {en: 'Each SRN pair has a 512-tap FIR filter, and generated scenarios set only 4 taps non-zero.', zh: 每对 SRN 之间为 512 抽头的 FIR 滤波器，生成的场景中仅 4 个抽头非零。}
+- key: paths
+  status: simulate
+  note: {en: 'The raw ray-tracer output holds per-path delays and gains (tau, h) before the four-tap approximation.', zh: 射线追踪器的原始输出在四抽头近似之前包含逐径时延与增益（tau、h）。}
+- {key: interaction, status: unknown}
+- key: power
+  status: simulate
+  note: {en: The generator derives a path-loss matrix (plMatrix) from the channel matrix in each run., zh: 每次运行时，生成器由信道矩阵推导路径损耗矩阵（plMatrix）。}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: simulate
+  note: {en: Node coordinates and the Time vector are generator outputs for stationary positions or routes., zh: 节点坐标与 Time 向量是生成器对静止位置或路线的输出。}
+- key: geometry
+  status: simulate
+  note: {en: The 3D scene is built from an OpenStreetMap file that the user exports for the chosen area., zh: 三维场景由用户为所选区域导出的 OpenStreetMap 文件构建。}
+- key: materials
+  status: simulate
+  note: {en: Building and terrain materials are set in the ray-tracing configuration., zh: 建筑与地面材料在射线追踪配置中设置。}
+- key: rgb
+  status: none
+  note: {en: 'The platform description lists SDRs, containers and traffic generation, with no camera input.', zh: 平台说明列出 SDR、容器和业务生成，不含摄像头输入。}
+- key: depth
+  status: none
+  note: {en: 'The platform description lists SDRs, containers and traffic generation, with no depth sensing.', zh: 平台说明列出 SDR、容器和业务生成，不含深度感知。}
+- key: lidar
+  status: none
+  note: {en: 'The platform description lists SDRs, containers and traffic generation, with no lidar input.', zh: 平台说明列出 SDR、容器和业务生成，不含激光雷达输入。}
+- key: radar
+  status: none
+  note: {en: 'The platform description lists SDRs, containers and traffic generation, with no radar sensing data.', zh: 平台说明列出 SDR、容器和业务生成，不含雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: 'The platform description lists SDRs, containers and traffic generation, with no inertial sensing.', zh: 平台说明列出 SDR、容器和业务生成，不含惯性感知。}
+- key: time_series
+  status: simulate
+  note: {en: Time-stamped KPI and traffic logs are produced by experiments that the user runs on the platform., zh: 带时间戳的 KPI 与业务日志由用户在平台上运行的实验产生。}
+- key: multiuser
+  status: simulate
+  note: {en: 'SRNs and their traffic flows are set per experiment, up to the platform''s 128 SRNs.', zh: SRN 及其业务流按实验设置，上限为平台的 128 个 SRN。}
+- key: multibs
+  status: simulate
+  note: {en: 'Several base stations run in one experiment, for example the seven base stations of the ColO-RAN experiments.', zh: 同一实验中可运行多个基站，例如 ColO-RAN 实验中的 7 个基站。}
+- key: crossfreq
+  status: simulate
+  note: {en: 'The carrier frequency fc is a generator input, and the SDRs cover 10 MHz to 6 GHz.', zh: 载频 fc 是生成器输入，SDR 覆盖 10 MHz 至 6 GHz。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: simulate
+  note: {en: Node routes are generator inputs; the sources read state no maximum speed., zh: 节点路线是生成器输入；所读资料未给出最大速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: simulate
+  note: {en: The number of reflections is a generator setting; per-path reflection flags are not documented., zh: 反射次数为生成器设置；未记录逐径反射标志。}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: 36dc34a
+  date: '2024-01-23'
+  summary: {en: 'Added the RF scenario instruction manual document (36dc34a). The README was then updated in six commits on the same day, the last being 5657db9.', zh: 新增 RF 场景说明手册文档（36dc34a）。同日 README 经六次提交更新，最后一次为 5657db9。}
+  url: https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator/commit/36dc34a196e6162f471256d6b58dedfadb83dc47
+- version: d03bc8e to b28bee8
+  date: '2022-09-16'
+  summary: {en: 'Eight commits on the main branch. Figure files were added and then three were deleted (osmSteps.png, ChanneltimeEvolution.png, LTE-WiFiCoexistenceScenario.png), and the README was updated three times.', zh: 主分支上的八次提交。先添加图片文件，随后删除其中三个（osmSteps.png、ChanneltimeEvolution.png、LTE-WiFiCoexistenceScenario.png），README 更新三次。}
+  url: https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator/commit/d03bc8e31b84d647c8d82f3ed790beaf8140189d
+- version: 040d97f to f819764
+  date: '2022-09-15'
+  summary: {en: The ColosseumScenarioGenerator repository starts with an initial commit (040d97f) and a main branch (10f30cc). The README update (90d2341) and the instruction-manual figures (f819764) follow the same day., zh: ColosseumScenarioGenerator 仓库始于初始提交（040d97f）和主分支（10f30cc）。同日随后有 README 更新（90d2341）和说明手册图片（f819764）。}
+  url: https://github.com/Colosseum-MATLAB-Project/ColosseumScenarioGenerator/commit/040d97f304181c07829ad5a09ec470eb81b1a076
+- version: arXiv v2
+  date: '2021-12-14'
+  summary: {en: 'Second arXiv version of ''Colosseum: Large-Scale Wireless Experimentation Through Hardware-in-the-Loop Network Emulation'' (7,413 KB). The arXiv listing does not state the changes.', zh: '论文 ''Colosseum: Large-Scale Wireless Experimentation Through Hardware-in-the-Loop Network Emulation'' 的第二个 arXiv 版本（7,413 KB）。arXiv 页面未说明修改内容。'}
+  url: https://arxiv.org/abs/2110.10617v2
+- version: IEEE DySPAN 2021
+  date: 2021-12
+  summary: {en: 'Platform paper published in the proceedings of IEEE DySPAN 2021 (virtual conference, December 2021).', zh: 平台论文发表于 IEEE DySPAN 2021 会议论文集（线上会议，2021 年 12 月）。}
+  url: https://openrangym.com/experimental-platforms/colosseum
+- version: arXiv v1
+  date: '2021-10-20'
+  summary: {en: 'First arXiv version of the platform paper (7,405 KB).', zh: '平台论文的第一个 arXiv 版本（7,405 KB）。'}
+  url: https://arxiv.org/abs/2110.10617v1
+- version: General availability
+  date: '2020-10-02'
+  summary: {en: Colosseum became generally available to researchers., zh: Colosseum 正式向研究者开放。}
+  url: https://colosseum.sites.northeastern.edu/

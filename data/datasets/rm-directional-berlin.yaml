@@ -15,10 +15,10 @@ paper: arxiv:2402.00878
 used_in: []
 citing: ['doi:10.1109/tccn.2024.3502492', 'doi:10.1109/tccn.2025.3570469']
 summary: {en: 'Simulated path loss radio maps with directive transmitter antennas over Berlin city maps at 3.7 GHz, with building and vegetation height maps, transmitter parameters and RGBIR aerial images. The paper reports 74,515 radio maps covering 256 m x 256 m at 1 m spatial resolution.', zh: '基于柏林城市地图的仿真路径损耗无线电地图，采用定向发射天线，载频 3.7 GHz，并配有建筑与植被高度图、发射机参数以及 RGBIR 航拍图像。论文报告共 74,515 幅无线电地图，覆盖 256 m × 256 m 区域，空间分辨率为 1 m。'}
-sources: ['https://arxiv.org/abs/2402.00878', 'https://arxiv.org/html/2402.00878', 'https://github.com/fabja19/RML', 'https://zenodo.org/records/10210089', 'https://zenodo.org/api/records/10210089']
+sources: ['https://arxiv.org/abs/2402.00878', 'https://arxiv.org/html/2402.00878', 'https://github.com/fabja19/RML', 'https://zenodo.org/records/10210089', 'https://zenodo.org/api/records/10210089', 'https://raw.githubusercontent.com/fabja19/RML/main/README.md', 'https://zenodo.org/api/records/10210089/versions', 'https://github.com/fabja19/RML_v2_img']
 checked: '2026-11-06'
-overview: {en: 'RMDirectionalBerlin is a simulated radio map dataset of path loss at 3.7 GHz over Berlin city maps, with directive transmitter antennas. It accompanies arXiv:2402.00878 and is published on Zenodo under CC BY 4.0 (DOI 10.5281/zenodo.10210089). Fabian Jaensch (TU Berlin) created the dataset, with Giuseppe Caire (USC) and Begüm Demir (TU Berlin) as supervisors. The paper reports 74,515 radio maps from 424 Berlin city maps, each covering 256 m x 256 m at 1 m resolution. The maps were produced by ray tracing in Wireless InSite, using building and vegetation height polygons derived from Berlin LiDAR data. The inputs include building and vegetation nDSMs, RGBIR aerial images, transmitter positions and parameters, antenna patterns and line-of-sight files. The main archive is 4.5 GB, the model checkpoints archive is 4.9 GB, and the GIS files archive is 56.9 MB. The data are intended for training CNN-based radio map estimators, and the code is in the RML repository.', zh: 'RMDirectionalBerlin
-    是柏林城市地图上 3.7 GHz 路径损耗的仿真无线电地图数据集，采用定向发射天线。数据集对应 arXiv:2402.00878，发布于 Zenodo，采用 CC BY 4.0 许可（DOI 10.5281/zenodo.10210089）。由柏林工业大学（TU Berlin）的 Fabian Jaensch 创建，Giuseppe Caire（USC）与 Begüm Demir（TU Berlin）为指导者。论文报告共 74,515 幅无线电地图，来自 424 张柏林城市地图，每幅覆盖 256 m x 256 m，分辨率为 1 m。地图由 Wireless InSite 射线追踪生成，使用基于柏林 LiDAR 数据得到的建筑与植被高度多边形。输入包括建筑与植被 nDSM、RGBIR 航拍图像、发射机位置与参数、天线方向图以及视距文件。主压缩包为 4.5 GB，模型检查点压缩包为 4.9 GB，GIS 文件压缩包为 56.9 MB。数据用于训练基于 CNN 的无线电地图估计模型，代码位于 RML 仓库。'}
+overview: {en: 'RMDirectionalBerlin is a simulated radio map dataset of path loss at 3.7 GHz over Berlin city maps, with directive transmitter antennas. It accompanies arXiv:2402.00878 by Fabian Jaensch, Giuseppe Caire and Begüm Demir, and is published on Zenodo under CC BY 4.0 (DOI 10.5281/zenodo.10210089, version 1, 27 November 2023). The paper reports 74,515 radio maps from 424 Berlin city maps, each covering 256 m x 256 m at 1 m resolution. The maps were produced by ray tracing in Wireless InSite, using building and vegetation height polygons derived from Berlin LiDAR data. The inputs include building and vegetation nDSMs, RGBIR aerial images, transmitter positions and parameters, antenna patterns and line-of-sight files. The main archive is 4.5 GB, the model checkpoints archive is 4.9 GB, and the GIS files archive is 56.9 MB. The data are intended for training CNN-based radio map estimators, and the code is in the RML repository.', zh: 'RMDirectionalBerlin 是柏林城市地图上 3.7 GHz 路径损耗的仿真无线电地图数据集，采用定向发射天线。数据集对应
+    arXiv:2402.00878，作者为 Fabian Jaensch、Giuseppe Caire 与 Begüm Demir，发布于 Zenodo，采用 CC BY 4.0 许可（DOI 10.5281/zenodo.10210089，第 1 版，2023 年 11 月 27 日）。论文报告共 74,515 幅无线电地图，来自 424 张柏林城市地图，每幅覆盖 256 m x 256 m，分辨率为 1 m。地图由 Wireless InSite 射线追踪生成，使用基于柏林 LiDAR 数据得到的建筑与植被高度多边形。输入包括建筑与植被 nDSM、RGBIR 航拍图像、发射机位置与参数、天线方向图以及视距文件。主压缩包为 4.5 GB，模型检查点压缩包为 4.9 GB，GIS 文件压缩包为 56.9 MB。数据用于训练基于 CNN 的无线电地图估计模型，代码位于 RML 仓库。'}
 signal_details:
 - signal: pathloss
   text: {en: 'Path loss maps computed as simulated received power minus transmit power, cut off at the -127 dB noise floor and linearly scaled to [0, 1] as grayscale images. The simulation uses a 3.7 GHz carrier, isotropic receivers at 1.5 m height on a 1 m grid, and a maximum path loss setting of -50 dB.', zh: '路径损耗图由仿真接收功率减去发射功率得到，在 -127 dB 噪声底处截断，并线性缩放到 [0, 1] 的灰度图像。仿真载频为 3.7 GHz，接收机为各向同性天线，位于 1.5 m 高度，按 1 m 间距排列；最大路径损耗设置为 -50 dB。'}
@@ -49,3 +49,116 @@ pipeline:
     - {en: Received power and transmit power, zh: 接收功率与发射功率}
     outputs:
     - {en: Grayscale path loss radio maps, zh: 灰度路径损耗无线电地图}
+organization: TU Berlin
+samples: 74,515 radio maps
+size_gb: 4.49
+facts:
+- label: {en: 'Train, validation and test split', zh: 训练、验证与测试划分}
+  text: {en: '80% of the samples are used for training, 10% for validation and 10% for testing, with city maps kept disjoint between the sets.', zh: 80% 的样本用于训练，10% 用于验证，10% 用于测试，各集合之间的城市地图互不重叠。}
+- label: {en: Path loss scale, zh: 路径损耗尺度}
+  text: {en: 'Path loss is clipped at -127 dB and mapped linearly onto [0, 1], so an RMSE in grayscale multiplied by 77 gives an RMSE in dB.', zh: '路径损耗在 -127 dB 处截断并线性映射到 [0, 1]，因此灰度 RMSE 乘以 77 即为以 dB 计的 RMSE。'}
+- label: {en: Material model, zh: 材料模型}
+  text: {en: Ground and buildings are solid structures that reflect and diffract but do not transmit. Vegetation is modelled only as an attenuating material., zh: 地面与建筑被视为实体结构，可反射与绕射但不透射。植被仅建模为衰减材料。}
+- label: {en: Archive layout, zh: 压缩包结构}
+  text: {en: 'RMBerlinDirectional.zip contains path_gain (target radio maps as PNG), gis (building and vegetation nDSMs as PNG), img (RGBIR aerial images as TIF), tx_antennas and antenna_patterns (NPY), los (NPY), and JSON files listing sample IDs and transmitter settings.', zh: RMBerlinDirectional.zip 包含 path_gain（目标无线电地图，PNG）、gis（建筑与植被 nDSM，PNG）、img（RGBIR 航拍图像，TIF）、tx_antennas 与 antenna_patterns（NPY）、los（NPY），以及列出样本编号和发射机设置的 JSON 文件。}
+limitations:
+- {en: The paper notes a few minor errors in the classification or shapes of the building and vegetation maps., zh: 论文指出，建筑与植被地图的分类或形状中仍有少量误差。}
+- {en: 'The exact materials of individual buildings and tree types are unknown, so standard material types were assigned on import.', zh: 单栋建筑与树种的具体材料无法确定，因此导入仿真时统一赋予标准材料类型。}
+history:
+- {en: 'Version 1 was published on Zenodo on 27 November 2023. The Zenodo record points to a newer version (DOI 10.5281/zenodo.10210088) with updated results on radio map prediction from images, and the code repository points to a v2 repository (RML_v2_img) for the same topic.', zh: 第 1 版于 2023 年 11 月 27 日发布于 Zenodo。Zenodo 记录指向一个较新版本（DOI 10.5281/zenodo.10210088），其中包含基于图像的无线电地图预测的更新结果；代码仓库则指向同一主题的 v2 仓库（RML_v2_img）。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: Complex channel values are not stored; only path loss maps are released. Re-running the Wireless InSite ray tracing on the released polygons and transmitter settings would produce them., zh: 未存储复数信道值，仅发布路径损耗图。需基于已发布的多边形与发射机设置重新运行 Wireless InSite 射线追踪。}
+- key: cir
+  status: simulate
+  note: {en: No impulse responses or delay profiles are released; re-running the ray tracing would produce them., zh: 未发布冲激响应或时延功率谱；重新运行射线追踪可得到。}
+- key: paths
+  status: simulate
+  note: {en: 'No per-path delays, angles or powers are released; re-running the ray tracing would produce them.', zh: 未发布逐径时延、角度或功率；重新运行射线追踪可得到。}
+- key: interaction
+  status: simulate
+  note: {en: No per-path interaction records are released; re-running the ray tracing with up to 2 reflections and 1 diffraction would produce them., zh: 未发布逐径交互记录；按最多 2 次反射、1 次绕射重新运行射线追踪可得到。}
+- key: power
+  status: provided
+  note: {en: 'Path loss maps are released as grayscale PNG images. Values are clipped at -127 dB and scaled linearly to [0, 1] over the range -127 to -50 dB, so dB values follow from the inverse scaling.', zh: '路径损耗图以灰度 PNG 形式发布。数值在 -127 dB 处截断，并线性映射到 [0, 1]（对应 -127 至 -50 dB），可通过反向缩放得到 dB 值。'}
+- key: iq
+  status: none
+  note: {en: The data are path loss radio maps; no I/Q samples are released., zh: 数据为路径损耗无线电地图，未发布 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gain labels are released; the targets are path loss maps., zh: 未发布波束索引或逐波束增益标签；目标为路径损耗图。}
+- key: position
+  status: provided
+  note: {en: Transmitter positions and parameters are released for each sample; receivers lie on a 1 m grid at 1.5 m height. No GPS data., zh: 每个样本发布发射机位置与参数；接收机位于 1.5 m 高度、1 m 间距的网格上。无 GPS 数据。}
+- key: geometry
+  status: provided
+  note: {en: Building and vegetation nDSM height maps and simplified height polygons in GeoJSON are released; a separate X3D scene file is not listed., zh: 发布建筑与植被 nDSM 高度图以及 GeoJSON 格式的简化高度多边形；文件列表中未列出单独的 X3D 场景文件。}
+- key: materials
+  status: none
+  note: {en: No material parameter files are released; standard material types are assigned on import., zh: 未发布材料参数文件；导入仿真时赋予标准材料类型。}
+- key: rgb
+  status: provided
+  note: {en: RGBIR aerial images are released as TIF files for each sample (img folder)., zh: 每个样本的 RGBIR 航拍图像以 TIF 格式发布（img 文件夹）。}
+- key: depth
+  status: none
+  note: {en: 'Height maps are nDSMs above a flat ground approximation, not camera depth images.', zh: 高度图为相对平坦地面近似的 nDSM，而非相机深度图。}
+- key: lidar
+  status: none
+  note: {en: Raw LiDAR point clouds are not released; the released height maps are derived from them., zh: 未发布原始 LiDAR 点云；已发布的高度图由其导出。}
+- key: radar
+  status: none
+  note: {en: RF simulation dataset; no radar sensing data., zh: 射频仿真数据集，无雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data are released., zh: 未发布 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: 'Static snapshots: each sample is one map for one transmitter setting, with no timestamps or ordered sequences.', zh: 静态快照：每个样本为一个发射机设置下的一幅地图，无时间戳或有序序列。}
+- key: multiuser
+  status: none
+  note: {en: Each sample is a radio map for one transmitter setting; no multi-user channel sets are released., zh: 每个样本为一个发射机设置下的无线电地图；未发布多用户信道集合。}
+- key: multibs
+  status: none
+  note: {en: Each sample is a radio map for one transmitter setting; no coherent multi-base-station set is released., zh: 每个样本为一个发射机设置下的无线电地图；未发布相干的多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: Single carrier at 3.7 GHz; no paired multi-band data., zh: 单一 3.7 GHz 载频，无成对多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Transmitters and receivers are static in the simulation; no speed is stated., zh: 仿真中收发端均为静止，文档未给出速度。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Static city maps with no moving blockers in the released data., zh: 静态城市地图，发布数据中无移动遮挡物。}
+- key: reflection
+  status: provided
+  note: {en: 'Up to 2 reflections are enabled in the ray tracing; the released output is aggregate path loss, not labelled per path.', zh: 射线追踪启用最多 2 次反射；发布的是综合路径损耗，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Up to 1 diffraction is enabled in the ray tracing; the released output is aggregate path loss, not labelled per path.', zh: 射线追踪启用最多 1 次绕射；发布的是综合路径损耗，未按路径标注。}
+- {key: scattering, status: unknown}
+- key: transmission
+  status: none
+  note: {en: Ray tracing is set to 0 transmissions; buildings and ground are solid and vegetation is only an attenuating material., zh: 射线追踪设置为 0 次透射；建筑与地面为实体，植被仅为衰减材料。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: provided
+  note: {en: Transmitter antenna patterns are released as NPY files; field components and field strength maps are not released., zh: 发射天线方向图以 NPY 格式发布；未发布电场分量或场强图。}
+versions:
+- version: Zenodo record 15721131
+  date: '2025-06-23'
+  summary: {en: 'New Zenodo record with RMBerlinDirectional.zip, additional_gis_files.zip and model_ckpts.zip (3.1 GB checkpoints). The model checkpoint files are replaced by this single archive. The description cites the IEEE TWC paper on radio map prediction from aerial images and points to the RML_v2_img code. Zenodo lists 2024 as the publication date; the record was created on 2025-06-23.', zh: 新的 Zenodo 记录，包含 RMBerlinDirectional.zip、additional_gis_files.zip 与 model_ckpts.zip（3.1 GB 检查点）。原有的检查点文件由该单一压缩包取代。描述中引用了关于航拍图像无线电地图预测的 IEEE TWC 论文，并指向 RML_v2_img 代码。Zenodo 的发布年份字段为 2024，记录创建于 2025-06-23。}
+  url: https://zenodo.org/records/15721131
+- version: Zenodo record 13834313
+  date: '2024-09-24'
+  summary: {en: 'Adds model_checkpoints_v2_img.zip with updated checkpoints and configs for predicting radio maps from images. The description points to the RML_v2_img code and to arXiv:2410.17264 for updated results. RMBerlinDirectional.zip is unchanged in size (4.49 GB).', zh: '新增 model_checkpoints_v2_img.zip，包含基于图像预测无线电地图的更新检查点与配置。描述中指向 RML_v2_img 代码及 arXiv:2410.17264 的更新结果。RMBerlinDirectional.zip 大小不变（4.49 GB）。'}
+  url: https://zenodo.org/records/13834313
+- version: arXiv:2402.00878 v1
+  date: '2024-01-12'
+  summary: {en: Paper describing the dataset and initial CNN experiments submitted to arXiv. It is the only arXiv version listed., zh: 描述该数据集及初步 CNN 实验的论文提交至 arXiv。这是目前唯一列出的 arXiv 版本。}
+  url: https://arxiv.org/abs/2402.00878
+- version: Zenodo record 10210089 (version 1)
+  date: '2023-11-27'
+  summary: {en: 'First Zenodo release: RMBerlinDirectional.zip (4.49 GB) with path loss radio maps, city maps, transmitter data, antenna patterns and RGBIR aerial images, plus additional_gis_files.zip (56.9 MB) and model_checkpoints.zip (4.86 GB).', zh: 首个 Zenodo 发布版本：RMBerlinDirectional.zip（4.49 GB），包含路径损耗无线电地图、城市地图、发射机数据、天线方向图与 RGBIR 航拍图像；另含 additional_gis_files.zip（56.9 MB）与 model_checkpoints.zip（4.86 GB）。}
+  url: https://zenodo.org/records/10210089

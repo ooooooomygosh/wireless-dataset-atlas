@@ -8,16 +8,146 @@ environment: []
 subcarriers: 30
 size_gb: 4
 standard: 802.11n
-license: GPL-3.0 (repository license)
+license: GPL-3.0 (repository LICENSE; no separate dataset license stated)
 access: {url: 'https://github.com/ermongroup/Wifi_Activity_Recognition', type: open}
 code: ['https://github.com/ermongroup/Wifi_Activity_Recognition']
 paper: doi:10.1109/mcom.2017.1700082
 used_in: ['doi:10.1109/jiot.2024.3375337', 'doi:10.1109/jiot.2022.3228820', 'doi:10.1109/jiot.2024.3400773']
 citing: ['doi:10.1109/tmc.2018.2878233', 'doi:10.1109/tvt.2018.2883796', 'doi:10.1109/jsac.2023.3310097']
 summary: {en: 'WiFi CSI amplitude and phase from 30 subcarriers and 3 antennas, recorded with the Linux 802.11n CSI Tool, with activity annotations for human activity recognition. The repository distributes about 4 GB of input and annotation files.', zh: 使用 Linux 802.11n CSI Tool 采集的 WiFi CSI 幅度与相位数据（30 个子载波、3 根天线），附带人体活动标注，用于人体活动识别。仓库提供约 4 GB 的输入文件与标注文件。}
-sources: ['https://github.com/ermongroup/Wifi_Activity_Recognition', 'https://api.crossref.org/works/10.1109/mcom.2017.1700082']
+sources: ['https://github.com/ermongroup/Wifi_Activity_Recognition', 'https://api.crossref.org/works/10.1109/mcom.2017.1700082', 'https://raw.githubusercontent.com/ermongroup/Wifi_Activity_Recognition/master/README.md', 'https://raw.githubusercontent.com/ermongroup/Wifi_Activity_Recognition/master/LICENSE', 'https://raw.githubusercontent.com/ermongroup/Wifi_Activity_Recognition/master/cross_vali_data_convert_merge.py', 'https://raw.githubusercontent.com/ermongroup/Wifi_Activity_Recognition/master/cross_vali_recurrent_network_wifi_activity.py', 'https://raw.githubusercontent.com/ermongroup/Wifi_Activity_Recognition/master/datfile_convert_final/Activity_datfile_to_csvfile.m', 'https://raw.githubusercontent.com/ermongroup/Wifi_Activity_Recognition/master/datfile_convert_final/interp_filename_change_for_input_3.m', 'https://raw.githubusercontent.com/ermongroup/Wifi_Activity_Recognition/master/datfile_convert_final/phase_calibration.m', 'https://github.com/ermongroup/Wifi_Activity_Recognition/releases',
+  'https://github.com/ermongroup/Wifi_Activity_Recognition/commits/master']
 checked: '2026-11-06'
 overview: {en: 'UT-HAR is a WiFi channel state information (CSI) dataset for behavior recognition, released with a 2017 survey in IEEE Communications Magazine by Yousefi, Narui, Dayal, Ermon and Valaee. The CSI was collected with the Linux 802.11n CSI Tool. Each row of an input file holds a timestamp, then 90 amplitude values (30 subcarriers x 3 antennas) and 90 phase values in the same layout. The data are a download of about 4 GB from an external Google Drive link given in the GitHub repository, which also contains TensorFlow code for training.', zh: UT-HAR 是面向行为识别的 WiFi 信道状态信息（CSI）数据集，与 Yousefi、Narui、Dayal、Ermon 和 Valaee 于 2017 年发表在 IEEE Communications Magazine 上的综述配套发布。CSI 使用 Linux 802.11n CSI Tool 采集。输入文件的每一行包含一个时间戳，随后是 90 个幅度值（30 个子载波 × 3 根天线）和 90 个相位值，排列方式相同。数据通过 GitHub 仓库中给出的外部 Google Drive 链接下载，约 4 GB，仓库还包含用于训练的 TensorFlow 代码。}
 signal_details:
 - signal: csi
   text: {en: 'WiFi CSI from the Linux 802.11n CSI Tool, in files with the input_ prefix. Column 1 is a timestamp, columns 2 to 91 are amplitude and columns 92 to 181 are phase, for 30 subcarriers and 3 antennas.', zh: 使用 Linux 802.11n CSI Tool 采集的 WiFi CSI，存于文件名以 input_ 为前缀的文件中。第 1 列为时间戳，第 2 至 91 列为幅度，第 92 至 181 列为相位，对应 30 个子载波与 3 根天线。}
+format: CSV
+pipeline:
+  summary: {en: 'CSI Tool recordings are converted in MATLAB into per-packet amplitude and phase rows, resampled to a 1 ms grid, and paired with activity annotations in 1000-row windows that are packaged as CSV files.', zh: CSI Tool 录制的数据先在 MATLAB 中转换为逐包的幅度与相位数据，再重采样到 1 ms 网格，并与活动标注配对，按 1000 行窗口打包为 CSV 文件。}
+  stages:
+  - title: {en: Record WiFi CSI with the Linux CSI Tool, zh: 使用 Linux CSI Tool 采集 WiFi CSI}
+    detail: {en: The CSI is recorded with the Linux 802.11n CSI Tool. Each packet carries CSI for 30 subcarriers and 3 antennas. The raw recordings are .dat files., zh: CSI 由 Linux 802.11n CSI Tool 采集，每个数据包包含 30 个子载波、3 根天线的 CSI。原始记录为 .dat 文件。}
+    outputs:
+    - {en: Raw .dat recordings, zh: 原始 .dat 记录}
+  - title: {en: Convert packets to amplitude and phase rows, zh: 将数据包转换为幅度与相位行}
+    detail: {en: 'A MATLAB script scales each packet''s CSI to linear values and writes the amplitude in dB (20 log10 of the magnitude). It removes a linear phase trend and offset across the 30 subcarriers, then writes one row per packet: timestamp, 90 amplitude values and 90 phase values.', zh: MATLAB 脚本先将每个数据包的 CSI 换算为线性值，幅度以 dB 表示（20 log10 |h|）。随后对 30 个子载波的相位去除线性趋势和常数偏移。每个数据包输出一行：时间戳、90 个幅度值和 90 个相位值。}
+    inputs:
+    - {en: Raw .dat recordings, zh: 原始 .dat 记录}
+    outputs:
+    - {en: Per-packet CSV rows, zh: 逐包 CSV 行}
+  - title: {en: Resample onto a 1 ms grid, zh: 重采样到 1 ms 网格}
+    detail: {en: 'The interpolation script replaces -Inf values with 0, removes repeated timestamps caused by a hardware issue, and holds the previous value on a 1 ms grid. The output files carry the input_ prefix.', zh: 插值脚本将 -Inf 替换为 0，删除因硬件问题产生的重复时间戳，并以前一个值保持的方式插值到 1 ms 网格上。输出文件以 input_ 为前缀。}
+    outputs:
+    - {en: input_ CSV files, zh: input_ CSV 文件}
+  - title: {en: Label windows from annotations, zh: 根据标注给窗口打标签}
+    detail: {en: 'Each annotation file gives an activity label per row. Windows of 1000 rows with a stride of 200 rows take the class that covers more than 60% of their rows, from bed, fall, walk, pickup, run, sitdown and standup. Windows with no such class are marked as unlabelled.', zh: 每个标注文件逐行给出活动标签。长度 1000 行、步长 200 行的窗口取占比超过 60% 的类别，类别为 bed、fall、walk、pickup、run、sitdown 和 standup。无此类别的窗口标记为未标注。}
+    inputs:
+    - {en: annotation_ CSV files, zh: annotation_ CSV 文件}
+    outputs:
+    - {en: Window label rows, zh: 窗口标签行}
+  - title: {en: Package per-activity CSV files, zh: 按活动打包为 CSV 文件}
+    detail: {en: 'cross_vali_data_convert_merge.py writes xx_1000_60_<activity>.csv, with each window stored as one row of 1000 x 90 amplitude values, and yy_1000_60_<activity>.csv with the labels, into input_files. Only the amplitude columns enter the feature files.', zh: cross_vali_data_convert_merge.py 将每个活动的窗口写入 input_files。特征文件 xx_1000_60_<activity>.csv 中每个窗口为一行，包含 1000 x 90 个幅度值；标签文件 yy_1000_60_<activity>.csv 保存对应标签。特征文件只包含幅度列。}
+    outputs:
+    - {en: xx_ feature and yy_ label CSV files per activity, zh: 每个活动的 xx_ 特征与 yy_ 标签 CSV 文件}
+facts:
+- label: {en: Classes, zh: 类别}
+  text: {en: 'Training uses seven activity classes: bed, fall, walk, pickup, run, sitdown and standup.', zh: 训练使用七个活动类别：bed、fall、walk、pickup、run、sitdown 和 standup。}
+- label: {en: Validation, zh: 验证方式}
+  text: {en: 'The training script runs 10-fold cross-validation. Within each class the samples are shuffled with seed 0, and one tenth of them forms the validation fold.', zh: 训练脚本采用 10 折交叉验证。每个类别内的样本以随机种子 0 打乱，其中十分之一构成验证折。}
+technical_notes:
+- {en: 'The feature files use only the 90 amplitude columns, so the phase columns are not part of the provided training features.', zh: 特征文件只使用 90 个幅度列，因此相位列不在提供的训练特征中。}
+limitations:
+- {en: Resampling to a 1 ms grid with previous-value hold means the packet timing of the original recordings is not kept in the input_ files., zh: 通过前值保持重采样到 1 ms 网格后，input_ 文件中不再保留原始录制的数据包时序。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Amplitude in dB and phase with linear trend and offset removed, for 30 subcarriers x 3 antennas.', zh: 30 个子载波 x 3 根天线的幅度（dB）与相位（已去除线性趋势和常数偏移）。}
+- key: cir
+  status: derivable
+  note: {en: An inverse FFT over the 30 subcarriers would give a coarse impulse response; the release does not store it., zh: 对 30 个子载波做逆 FFT 可得到粗略的冲激响应；发布数据中未存储。}
+- key: paths
+  status: none
+  note: {en: 'Only per-subcarrier CSI and activity labels are released, with no path parameters.', zh: 仅发布逐子载波 CSI 与活动标签，不含路径参数。}
+- key: interaction
+  status: none
+  note: {en: 'Only per-subcarrier CSI and activity labels are released, with no interaction information.', zh: 仅发布逐子载波 CSI 与活动标签，不含交互信息。}
+- key: power
+  status: derivable
+  note: {en: Per-subcarrier power follows from the dB amplitude; no power field is stored., zh: 逐子载波功率可由 dB 幅度换算；数据中未存储功率字段。}
+- key: iq
+  status: none
+  note: {en: 'The released values are amplitude and phase, not raw I/Q samples.', zh: 发布值为幅度与相位，而非原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are released., zh: 未发布波束索引或分波束增益。}
+- key: position
+  status: none
+  note: {en: The release has activity labels but no device or subject positions., zh: 发布内容含活动标签，但不含设备或人员位置。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files are released., zh: 未发布场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: The release contains CSI and activity annotations only., zh: 发布内容仅有 CSI 与活动标注。}
+- key: depth
+  status: none
+  note: {en: The release contains CSI and activity annotations only., zh: 发布内容仅有 CSI 与活动标注。}
+- key: lidar
+  status: none
+  note: {en: The release contains CSI and activity annotations only., zh: 发布内容仅有 CSI 与活动标注。}
+- key: radar
+  status: none
+  note: {en: The release contains CSI and activity annotations only., zh: 发布内容仅有 CSI 与活动标注。}
+- key: imu
+  status: none
+  note: {en: The release contains CSI and activity annotations only., zh: 发布内容仅有 CSI 与活动标注。}
+- key: time_series
+  status: provided
+  note: {en: 'Rows carry timestamps on a 1 ms grid, and 1000-row windows are labelled by activity.', zh: 数据行带有 1 ms 网格上的时间戳，1000 行窗口按活动打标签。}
+- key: multiuser
+  status: none
+  note: {en: 'Each row holds one link''s CSI, with no multi-user channels.', zh: 每行为单一链路的 CSI，不含多用户信道。}
+- key: multibs
+  status: none
+  note: {en: 'Each row holds one link''s CSI, with no multi-BS set.', zh: 每行为单一链路的 CSI，不含多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: No paired multi-band data is released., zh: 未发布成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: unknown
+  note: {en: The sources state no speeds for the subjects., zh: 来源未给出被试的速度。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: Human motion in the environment changes the recorded CSI; blockage is not labelled separately., zh: 环境中的人体运动会改变所记录的 CSI；遮挡未单独标注。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量中，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量中，未按路径单独标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量中，未按路径单独标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量中，未按路径单独标注。}
+- key: polarization
+  status: none
+  note: {en: 'The release holds per-antenna CSI only, with no polarimetric data.', zh: 发布内容仅为逐天线 CSI，无极化数据。}
+- key: em_field
+  status: none
+  note: {en: 'The release holds CSI amplitude and phase only, with no field components or antenna patterns.', zh: 发布内容仅有 CSI 幅度与相位，不含场分量或天线方向图。}
+versions:
+- version: Repository commits
+  date: '2019-09-09'
+  summary: {en: Repository commits add the LICENSE file and update cross_vali_data_convert_merge.py; the commit messages do not describe the changes., zh: 仓库提交添加了 LICENSE 文件，并更新了 cross_vali_data_convert_merge.py；提交信息未说明具体改动。}
+  url: https://github.com/ermongroup/Wifi_Activity_Recognition/commits/master
+- version: IEEE Communications Magazine
+  date: 2017-10
+  summary: {en: 'Survey paper A Survey on Behavior Recognition Using WiFi Channel State Information, which the repository README presents alongside the dataset; the repository added the paper link on 2017-10-16.', zh: 综述论文 A Survey on Behavior Recognition Using WiFi Channel State Information，仓库 README 将其与该数据集一并列出；仓库于 2017-10-16 添加了论文链接。}
+  url: https://doi.org/10.1109/mcom.2017.1700082

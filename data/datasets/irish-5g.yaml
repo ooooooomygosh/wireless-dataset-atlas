@@ -15,22 +15,22 @@ paper: doi:10.1145/3339825.3394938
 used_in: []
 citing: ['doi:10.1109/jiot.2023.3303713', 'doi:10.1109/tmc.2024.3437745', 'doi:10.1145/3651890.3672260']
 summary: {en: 'Client-side 5G KPI traces from a major Irish mobile operator, logged with G-NetTrack Pro under static and car mobility for video streaming and file download traffic. The traces include channel, context, cell and throughput metrics, and the repository adds an ns-3 5G simulation framework for synthetic data.', zh: 来自爱尔兰一家主要移动运营商的客户端 5G KPI 数据，使用 G-NetTrack Pro 记录，覆盖静止和乘车两种移动模式下的视频流和文件下载流量。数据包含信道、上下文、小区和吞吐量指标，仓库另附 ns-3 5G 仿真框架用于生成合成数据。}
-sources: ['https://github.com/uccmisl/5Gdataset', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/README.md', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/LICENSE', 'https://api.crossref.org/works/10.1145/3339825.3394938', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1145/3339825.3394938?fields=abstract']
+sources: ['https://github.com/uccmisl/5Gdataset', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/README.md', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/LICENSE', 'https://api.crossref.org/works/10.1145/3339825.3394938', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1145/3339825.3394938?fields=abstract', 'https://raw.githubusercontent.com/uccmisl/5Gdataset/master/5G-framework-README.md', 'https://api.github.com/repos/uccmisl/5Gdataset', 'https://github.com/uccmisl/5Gdataset/commits/master']
 checked: '2026-11-06'
-overview: {en: 'The Irish 5G dataset is a 5G trace collection from a major Irish mobile operator. It was presented by D. Raca, D. Leahy, C. J. Sreenan and J. J. Quinlan at the ACM Multimedia Systems Conference (MMSys) in June 2020, under the title Beyond Throughput, The Next Generation. The traces are client-side cellular KPIs recorded on a live production network with the non-rooted Android application G-NetTrack Pro. They cover two mobility patterns (static and car) and two application patterns (video streaming and file download). The KPIs are grouped into channel-related, context-related, cell-related and throughput metrics. The production traces are distributed as 5G-production-dataset.zip, and the repository is licensed under GPL-3.0. The repository also provides an ns-3 5G/mmWave multi-cell simulation framework that generates uplink and downlink logs for a user-defined number of UEs and eNodeBs.', zh: '爱尔兰5G数据集（Irish 5G dataset）是一组来自爱尔兰一家主要移动运营商的5G轨迹数据。数据由D. Raca、D. Leahy、C. J. Sreenan和J.
-    J. Quinlan提交，于2020年6月在ACM多媒体系统会议（MMSys）上发表，论文题目为Beyond Throughput, The Next Generation。轨迹数据为在商用生产网络中记录的客户端蜂窝KPI，采集工具为非root的Android应用G-NetTrack Pro。数据覆盖两种移动模式（静止和乘车）以及两种应用模式（视频流和文件下载）。KPI分为信道相关、上下文相关、小区相关和吞吐量四类指标。生产网络轨迹以5G-production-dataset.zip形式发布，仓库采用GPL-3.0许可。仓库还提供一个ns-3 5G/mmWave多小区仿真框架，可按用户设定的UE和eNodeB数量生成上行和下行日志。'}
+overview: {en: 'The Irish 5G dataset is a 5G trace collection from a major Irish mobile operator. The repository asks users to cite the paper Beyond Throughput, The Next Generation: A 5G Dataset with Channel and Context Metrics, presented by D. Raca, D. Leahy, C. J. Sreenan and J. J. Quinlan at the ACM Multimedia Systems Conference (MMSys) in June 2020. The traces are client-side cellular KPIs recorded on a live production network with the non-rooted Android application G-NetTrack Pro. They cover two mobility patterns (static and car) and two application patterns (video streaming and file download). The KPIs are grouped into channel-related, context-related, cell-related and throughput metrics. The production traces are distributed as 5G-production-dataset.zip, and the repository is licensed under GPL-3.0. The repository also provides an ns-3 5G/mmWave multi-cell simulation framework that generates uplink and downlink logs for a user-defined number of UEs and eNodeBs.', zh: '爱尔兰5G数据集（Irish
+    5G dataset）是一组来自爱尔兰一家主要移动运营商的5G轨迹数据。仓库要求引用论文Beyond Throughput, The Next Generation: A 5G Dataset with Channel and Context Metrics，作者为D. Raca、D. Leahy、C. J. Sreenan和J. J. Quinlan，论文于2020年6月在ACM多媒体系统会议（MMSys）上发表。轨迹数据为在商用生产网络中记录的客户端蜂窝KPI，采集工具为非root的Android应用G-NetTrack Pro。数据覆盖两种移动模式（静止和乘车）以及两种应用模式（视频流和文件下载）。KPI分为信道相关、上下文相关、小区相关和吞吐量四类指标。生产网络轨迹以5G-production-dataset.zip形式发布，仓库采用GPL-3.0许可。仓库还提供一个ns-3 5G/mmWave多小区仿真框架，可按用户设定的UE和eNodeB数量生成上行和下行日志。'}
 signal_details:
 - signal: kpi
   text: {en: 'Client-side cellular KPIs logged by G-NetTrack Pro on a non-rooted Android device. The metric groups are channel-related, context-related, cell-related and throughput.', zh: 由G-NetTrack Pro在非root的Android设备上记录的客户端蜂窝KPI。指标分为信道相关、上下文相关、小区相关和吞吐量四组。}
 - signal: traffic
-  text: {en: 'Two application patterns, video streaming and file download, each run under static and car mobility.', zh: 两种应用模式，即视频流和文件下载，分别在静止和乘车两种移动模式下运行。}
+  text: {en: 'Two application patterns, video streaming and file download, across the static and car mobility patterns.', zh: 两种应用模式，即视频流和文件下载，覆盖静止和乘车两种移动模式。}
 pipeline:
   summary: {en: 'Client devices on a live 5G network run video and file-download traffic, G-NetTrack Pro logs the KPIs, and a separate ns-3 framework produces simulated uplink and downlink logs.', zh: 客户端设备在商用5G网络中运行视频和文件下载流量，G-NetTrack Pro记录KPI，另有一个独立的ns-3框架生成仿真的上行和下行日志。}
   stages:
   - title: {en: Run traffic on a production 5G network, zh: 在商用5G网络中运行流量}
-    detail: {en: Client devices in a major Irish mobile operator network run video streaming and file download sessions. Each session is recorded under static or car mobility., zh: 爱尔兰一家主要移动运营商网络中的客户端设备运行视频流和文件下载会话。每个会话在静止或乘车的移动模式下记录。}
+    detail: {en: 'Client devices in a major Irish mobile operator network run video streaming and file download traffic, across the static and car mobility patterns.', zh: 爱尔兰一家主要移动运营商网络中的客户端设备运行视频流和文件下载流量，覆盖静止和乘车两种移动模式。}
     inputs:
-    - {en: Video streaming and file download sessions, zh: 视频流和文件下载会话}
+    - {en: Video streaming and file download traffic, zh: 视频流和文件下载流量}
     - {en: Static and car mobility, zh: 静止和乘车移动模式}
     outputs:
     - {en: Client-side network activity, zh: 客户端网络活动}
@@ -54,3 +54,74 @@ pipeline:
     - {en: Simulation time and interval, zh: 仿真时长和间隔}
     outputs:
     - {en: mmwave_log folder with UL and DL logs, zh: 包含上行和下行日志的mmwave_log文件夹}
+facts:
+- label: {en: Run method, zh: 运行方式}
+  text: {en: The README recommends running the framework through start_mmwave.py. Running waf directly does not generate some of the traces that the Python script produces., zh: README推荐通过start_mmwave.py运行框架。直接运行waf不会生成Python脚本产生的部分跟踪文件。}
+- label: {en: Synthetic data, zh: 合成数据}
+  text: {en: The ns-3 framework is provided so that other researchers can generate their own synthetic datasets alongside the production traces., zh: 提供ns-3框架的目的，是让其他研究者在生产网络轨迹之外生成各自的合成数据集。}
+- label: {en: Same-cell metrics, zh: 同小区指标}
+  text: {en: 'The framework adds information such as competing metrics for users connected to the same cell, which the README describes as otherwise unavailable to the end user.', zh: 该框架提供同一小区内竞争用户的指标等信息，README称这些信息对终端用户原本不可获得。}
+capabilities:
+- {key: csi, status: unknown}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- {key: power, status: unknown}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'The data are cellular KPI traces in four metric groups, and no sensor data are described.', zh: 数据为四类蜂窝KPI指标的轨迹，未描述任何传感器数据。}
+- key: depth
+  status: none
+  note: {en: 'The data are cellular KPI traces in four metric groups, and no sensor data are described.', zh: 数据为四类蜂窝KPI指标的轨迹，未描述任何传感器数据。}
+- key: lidar
+  status: none
+  note: {en: 'The data are cellular KPI traces in four metric groups, and no sensor data are described.', zh: 数据为四类蜂窝KPI指标的轨迹，未描述任何传感器数据。}
+- key: radar
+  status: none
+  note: {en: 'The data are cellular KPI traces in four metric groups, and no sensor data are described.', zh: 数据为四类蜂窝KPI指标的轨迹，未描述任何传感器数据。}
+- key: imu
+  status: none
+  note: {en: 'The data are cellular KPI traces in four metric groups, and no sensor data are described.', zh: 数据为四类蜂窝KPI指标的轨迹，未描述任何传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: Client-side traces logged over static and car runs; the sources do not describe timestamps., zh: 客户端轨迹在静止和乘车两种移动模式下记录；来源未描述时间戳。}
+- key: multiuser
+  status: simulate
+  note: {en: The ns-3 framework takes a user-defined number of UEs (-ue); the user count of the production traces is not stated., zh: ns-3框架通过-ue参数接受用户指定的UE数量；生产网络轨迹的用户数未说明。}
+- key: multibs
+  status: simulate
+  note: {en: The ns-3 framework takes a user-defined number of eNodeBs (-enb); the cell count of the production traces is not stated., zh: ns-3框架通过-enb参数接受用户指定的eNodeB数量；生产网络轨迹的基站数未说明。}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: simulate
+  note: {en: 'The ns-3 framework sets per-axis maximum velocities (-xVel, -yVel, -zVel); the production car traces have no stated speed.', zh: ns-3框架通过-xVel、-yVel、-zVel设置各轴最大速度；生产网络乘车轨迹未给出速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: diffraction
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: scattering
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: transmission
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: README update
+  date: '2020-06-19'
+  summary: {en: README.md updated in the repository; the commit message does not describe a data change., zh: 仓库中的README.md已更新；提交信息未说明数据变更。}
+  url: https://github.com/uccmisl/5Gdataset/commits/master
+- version: initial commit
+  date: '2020-04-14'
+  summary: {en: 'Repository created with an initial commit, a file upload and a LICENSE file; README.md and 5G-framework-README.md were edited the same day.', zh: 仓库以初始提交、一次文件上传和LICENSE文件建立；README.md和5G-framework-README.md在同一天进行了编辑。}
+  url: https://github.com/uccmisl/5Gdataset/commits/master

@@ -7,101 +7,76 @@ signals: [pathloss]
 format: PNG
 mobility: vehicle trajectories
 samples: 15,000 train, 5,000 validation, 5,000 test and 5,000 new-environment test sequences
-license: Not stated
+license: MIT License (repository LICENSE file)
 access: {url: 'https://github.com/UNIC-Lab/RadioMapMotion', type: open}
 code: ['https://github.com/UNIC-Lab/RadioMapMotion']
 paper: doi:10.1109/tccn.2026.3685413
 used_in: []
 citing: ['doi:10.1109/iccc70295.2026.11680295']
 summary: {en: 'Radio map sequences of path loss along vehicle trajectories in 300 numbered environments, each sequence with 8 context frames and 5 prediction frames. The frames are stored as PNG images.', zh: 沿车辆轨迹生成的无线电地图序列（路径损耗），覆盖 300 个编号环境。每个序列包含 8 个输入帧和 5 个预测帧，以 PNG 图像存储。}
-sources: ['https://github.com/UNIC-Lab/RadioMapMotion', 'https://arxiv.org/abs/2511.17526', 'https://api.openalex.org/works/doi:10.1109/TCCN.2026.3685413']
+sources: ['https://github.com/UNIC-Lab/RadioMapMotion', 'https://arxiv.org/abs/2511.17526', 'https://api.openalex.org/works/doi:10.1109/TCCN.2026.3685413', 'https://raw.githubusercontent.com/UNIC-Lab/RadioMapMotion/main/README.md', 'https://raw.githubusercontent.com/UNIC-Lab/RadioMapMotion/main/LICENSE', 'https://raw.githubusercontent.com/UNIC-Lab/RadioMapMotion/main/code/config.yaml', 'https://raw.githubusercontent.com/UNIC-Lab/RadioMapMotion/main/code/data_loader.py', 'https://api.github.com/repos/UNIC-Lab/RadioMapMotion/git/trees/main?recursive=1', 'https://arxiv.org/html/2511.17526', 'https://api.crossref.org/works/10.1109/tccn.2026.3685413', 'https://github.com/UNIC-Lab/RadioMapMotion/releases', 'https://github.com/UNIC-Lab/RadioMapMotion/tags', 'https://github.com/UNIC-Lab/RadioMapMotion/commits/main', 'https://github.com/UNIC-Lab/RadioMapMotion/commit/e835f6c', 'https://github.com/UNIC-Lab/RadioMapMotion/commit/97f2c98', 'https://arxiv.org/abs/2511.17526v1']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Vehicle rules produce continuous geometric states. WinProp DPM generates maps frame by frame, which are then packaged into historical and future windows by environment/trajectory/Tx.', zh: 车辆规则产生连续几何状态，WinProp DPM逐帧生成地图，再按环境/轨迹/Tx封装历史与未来窗口。}
+  summary: {en: 'Vehicle rules produce a sequence of geometric states frame by frame. WinProp DPM computes a pathloss map for every transmitter in every frame, and the maps are packed into fixed-length windows per environment, trajectory and transmitter.', zh: 车辆规则逐帧生成几何状态。WinProp DPM 为每一帧中的每个发射机计算路径损耗地图，再按环境、轨迹和发射机将地图打包为固定长度的窗口。}
+  scope: {en: Generation settings follow arXiv v1 and the current repository. The input window is 10 frames in the paper and 8 frames in the repository., zh: 生成设置依据 arXiv v1 与当前仓库。论文的输入窗口为10帧，仓库为8帧。}
   stages:
-  - title: {en: 'Fix the environment, vehicles, and Tx', zh: 固定环境、车辆与Tx}
-    detail: {en: 'Create a 256×256 m area with a 1 m receiver grid. The paper uses 3.5 GHz, 23 dBm, isotropic antennas, and Tx/Rx heights of 1.5 m.', zh: 建立256×256m区域和1m接收栅格；原文使用3.5GHz、23dBm、各向同性天线及1.5m收发高度。}
+  - title: {en: Fix the environment and transmitter, zh: 固定环境与发射机}
+    detail: {en: 'Each of the 300 environments is a 256 x 256 m area with a 1 m receiver grid, built by augmenting a RadioMapSeer urban layout. Each environment holds 5 trajectories and 20 transmitter positions. The paper uses 3.5 GHz, 23 dBm, isotropic antennas and 1.5 m Tx and Rx heights.', zh: 300个环境各为256 x 256 m区域，接收栅格为1 m，由RadioMapSeer城市布局扩展而来。每个环境包含5条轨迹和20个发射机位置。论文使用3.5 GHz、23 dBm、各向同性天线，收发高度均为1.5 m。}
     inputs:
-    - {en: 300 environments, zh: 300个环境}
-    - {en: 5 trajectories and 20 Tx configurations per environment, zh: 每环境5条轨迹和20个Tx配置}
+    - {en: RadioMapSeer urban layouts, zh: RadioMapSeer城市布局}
     outputs:
-    - {en: Environment and Tx configuration, zh: 环境与Tx配置}
-    - {en: Map spatial coordinates, zh: 地图空间坐标}
+    - {en: Environment and transmitter configuration on a 1 m grid, zh: 1 m栅格上的环境与发射机配置}
     controls:
-    - {en: 'Paper configuration: environment/trajectory/Tx hierarchy', zh: 论文配置：环境/轨迹/Tx层级}
-    - {en: 'Researcher specifies: vehicle geometry, buildings, and materials', zh: 研究者固定：车辆几何、建筑和材料}
+    - {en: 'Environment, trajectory and transmitter hierarchy as in the paper', zh: 论文中的环境、轨迹与发射机层级}
     checks:
-    - {en: Check consistency between pixels and physical coordinates, zh: 检查像素与物理坐标一致}
-    - {en: Samples from different Tx belong to the same environment, zh: 不同Tx样本属于同一环境}
-  - title: {en: Advance vehicles according to rules, zh: 按规则推进车辆}
-    detail: {en: Advance vehicle positions at 0.1 s frame intervals to produce 15 frames of scene evolution per sequence., zh: 以0.1s帧间隔推进车辆位置，形成每序列15帧的场景演化。}
+    - {en: Samples from different transmitters share the same environment and trajectory, zh: 不同发射机的样本共享同一环境与轨迹}
+  - title: {en: Advance vehicles by rule, zh: 按规则推进车辆}
+    detail: {en: 'Vehicles are seeded on drivable areas at least four vehicle lengths apart, with a clockwise traffic flow and collision avoidance. Each vehicle chooses among paths at about ±45° with a look-ahead of 1.5 vehicle lengths, and widens the search to ±90° after more than three stationary frames. Headings are smoothed with a factor of 0.4. Each frame is 0.1 s.', zh: 车辆放置在可行驶区域，相隔至少四个车长，沿顺时针方向行驶并避免碰撞。每辆车在约±45°的方向中选择路径，前视距离为1.5个车长；静止超过三帧后，搜索范围扩大到±90°。朝向以0.4的平滑系数插值。每帧为0.1 s。}
     inputs:
-    - {en: Road layout and initial vehicles, zh: 环境道路和初始车辆}
-    - {en: Motion rules, zh: 运动规则}
+    - {en: Road layout and initial vehicle positions, zh: 道路布局与初始车辆位置}
     outputs:
-    - {en: Continuous geometric states and frame indices, zh: 连续几何状态和frame索引}
-    controls:
-    - {en: 'Paper configuration: rule-driven vehicle motion', zh: 论文配置：规则驱动车辆运动}
-    - {en: 'For reconstruction, the researcher fixes speed, turning, collision rules, and seed', zh: 研究者重建时固定速度、转向、碰撞规则与seed}
+    - {en: 'Continuous vehicle states and frame indices, 15 frames per sequence', zh: 连续车辆状态与帧索引，每个序列15帧}
     checks:
-    - {en: Check motion continuity between frames, zh: 核对帧间运动连续性}
-    - {en: The realism of the motion rules requires validation against independent traffic data, zh: 运动规则的现实性需独立交通数据验证}
-  - title: {en: Run WinProp DPM for each frame, zh: 逐帧运行WinProp DPM}
-    detail: {en: 'Compute radio maps for every Tx in each frame, with changes determined jointly by the specified vehicle motion and DPM propagation.', zh: 计算各帧各Tx的无线地图，使变化由所设车辆运动与DPM传播共同决定。}
+    - {en: The paper states that the motion rules have not been validated against real traffic data, zh: 论文称运动规则未经真实交通数据验证}
+  - title: {en: Run WinProp DPM for each frame, zh: 对每一帧运行WinProp DPM}
+    detail: {en: 'Altair WinProp computes the pathloss map for every transmitter in every frame with the Dominant Path Model, which focuses on line-of-sight, single-reflection and diffraction paths. The paper reports 30,000 sequences and 450,000 map frames.', zh: 'Altair WinProp使用Dominant Path Model为每一帧中的每个发射机计算路径损耗地图，该模型主要考虑视距、单次反射与绕射路径。论文报告共30,000个序列、450,000帧地图。'}
     inputs:
-    - {en: Per-frame geometry and Tx, zh: 每帧几何与Tx}
-    - {en: Fixed propagation configuration, zh: 固定传播配置}
+    - {en: Per-frame geometry and transmitter positions, zh: 每帧的几何与发射机位置}
     outputs:
-    - {en: '30,000 sequences corresponding to 450,000 map frames', zh: '30,000序列对应450,000地图帧'}
+    - {en: Floating-point pathloss maps in dB, zh: 以dB表示的浮点路径损耗地图}
     controls:
-    - {en: 'Researcher specifies: WinProp version, DPM settings, receiver grid, and no-coverage encoding', zh: 研究者固定：WinProp版本、DPM设置、接收栅格和无覆盖编码}
-    checks:
-    - {en: Check for unintended changes in Tx/grid across frames, zh: 检查各帧Tx/网格不发生非预期变化}
-    - {en: Separate static error from dynamic variation under the same configuration, zh: 同一配置下分离静态误差和动态变化}
-  - title: {en: Save physical maps and images, zh: 保存物理地图与图像}
-    detail: {en: The original preprint describes physical values in .npz and 8-bit PNGs; the current README shows gain/ image sequences accessed by env/traj/tx/frame indices., zh: 原预印本描述.npz物理值及8-bit PNG；当前README展示gain/图像序列，按env/traj/tx/frame索引访问。}
+    - {en: 'Propagation settings of the paper: DPM, 3.5 GHz, 23 dBm, 1.5 m heights', zh: 论文的传播设置：DPM、3.5 GHz、23 dBm、1.5 m高度}
+  - title: {en: Store floating-point maps and PNG frames, zh: 保存浮点地图与PNG帧}
+    detail: {en: 'Each map is rasterized onto a 256 x 256 grid, clipped to [-135, -39.5] dB, scaled to [0, 1] and quantized to 8 bits as floor(255 x value). The paper also describes compressed .npz arrays. The README points to PNG frames under data/gain/, indexed by environment, trajectory, transmitter and frame.', zh: '每张地图栅格化到256 x 256网格，裁剪到[-135, -39.5] dB，缩放到[0, 1]，再按floor(255 x 数值)量化为8位。论文还描述了压缩的.npz数组。README指向data/gain/下的PNG帧，按环境、轨迹、发射机与帧号索引。'}
     inputs:
-    - {en: Floating-point pathloss maps, zh: 浮点路径损耗地图}
-    - {en: Image normalization rules, zh: 图像归一化规则}
+    - {en: Floating-point pathloss in dB, zh: 以dB表示的浮点路径损耗}
     outputs:
-    - {en: Version-specific .npz or PNG directory, zh: 版本对应的.npz或PNG目录}
-    - {en: Hierarchical indices, zh: 层级索引}
-    controls:
-    - {en: 'Researcher specifies: downloaded package, dB-to-grayscale conversion, and loader', zh: 研究者固定：所下载包、dB到灰度转换和loader}
+    - {en: 8-bit grayscale PNG frames (frame_0 to frame_14), zh: 8位灰度PNG帧（frame_0至frame_14）}
     checks:
-    - {en: Check whether the current package actually contains the original floating-point maps, zh: 检查当前包是否实际含浮点原图}
-    - {en: Use consistent signs and normalization directions for pathloss and gain, zh: 统一pathloss与gain的符号和归一化方向}
-  - title: {en: Construct prediction windows and evaluate, zh: 构造预测窗口与评估}
-    detail: {en: The preprint predicts 5 frames from 10; the current repository README uses 8→5. Fix the loader and evaluate new trajectories in known environments separately from unseen environments., zh: 预印本以10帧预测5帧；当前仓库README使用8→5。研究者固定loader并分别评估已见环境新轨迹与未见环境。}
+    - {en: The README lists only the gain PNG directory; check the downloaded package for the .npz arrays described in the paper, zh: README只列出gain的PNG目录；核对下载包中是否含论文所述的.npz数组}
+  - title: {en: Build history-to-future windows and evaluate, zh: 构造历史到未来窗口并评估}
+    detail: {en: 'The repository loader takes 8 context frames starting at index 2 (frames 2 to 9) and 5 target frames (10 to 14), following config.yaml; the paper uses 10 context frames. The metrics are NMSE, RMSE, PSNR and SSIM. The paper reports the seen-environment, unseen-trajectory test set and the unseen-environment test set separately.', zh: 仓库加载器依据config.yaml取第2至9帧共8个上下文帧作为输入，第10至14帧共5帧作为目标；论文使用10个上下文帧。评估指标为NMSE、RMSE、PSNR与SSIM。论文将已见环境未见轨迹的测试集与未见环境测试集分开报告。}
     inputs:
     - {en: Historical map sequences, zh: 历史地图序列}
-    - {en: Future maps and environment/trajectory groups, zh: 未来地图及环境/轨迹分组}
     outputs:
-    - {en: Historical/future map samples, zh: 历史/未来地图样本}
-    - {en: NMSE/RMSE/PSNR/SSIM and custom communication metrics, zh: NMSE/RMSE/PSNR/SSIM及自定义通信指标}
+    - {en: Historical and future map samples with environment and trajectory groups, zh: 带环境与轨迹分组的历史与未来地图样本}
     controls:
-    - {en: 'Researcher specifies: window, overlap stride, environment split, and source of historical observations', zh: 研究者固定：窗口、重叠步长、环境切分与历史观测来源}
+    - {en: Window, environment split and source of the historical observations: null, zh: 窗口、环境划分与历史观测的来源}
     checks:
-    - {en: Historical inputs in the original experiment are ground-truth simulated maps, zh: 原实验历史输入为仿真真值地图}
-    - {en: Deployment evaluation must include map reconstruction error and test coverage/outage gains, zh: 实际部署需加入地图重建误差并测试coverage/outage收益}
-  scope: {en: Generation settings from preprint v1 and the current repository structure; distinguish 10→5 and 8→5 input windows by version., zh: 原预印本v1生成设置与当前仓库目录；输入窗口10→5和8→5须按版本区分。}
+    - {en: The paper's experiments use ground-truth simulated historical maps as input, zh: 论文实验以仿真真值历史地图作为输入}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: • Published sequential radio maps and directory indices, zh: • 已发布的时序无线地图与目录索引}
+  text: {en: 'Pathloss maps as PNG frames under data/gain, indexed by env, traj, tx and frame. The paper also describes .npz arrays.', zh: 路径损耗地图以PNG帧存放于data/gain，按env、traj、tx与frame索引。论文还描述了.npz数组。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• History→future prediction windows
-
-      • Coverage/outage or scheduling utility', zh: '• 历史→未来预测窗口
-
-      • coverage/outage或调度utility'}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• The preprint''s main text has been read in full and the current README verified; the journal full text and downloaded files have not been audited.
-
-      • Image prediction results can help identify dynamic patterns; communication gains require an explicit signal and decision interface.', zh: '• 已通读预印本主文并核验当前README；期刊版全文与下载文件未审计。
-
-      • 图像预测结果可用于筛选动态模式；通信收益需补明确信号和决策接口。'}
+  text: {en: History-to-future prediction windows. The README uses 8 context and 5 prediction frames; the paper uses 10 and 5., zh: 历史到未来的预测窗口。README使用8个上下文帧与5个预测帧，论文使用10个与5个。}
+- label: {en: Frame indexing, zh: 帧索引}
+  text: {en: 'The loader uses context_start_frame_idx 2 with 8 context frames: frames 2 to 9 form the input and frames 10 to 14 are the targets.', zh: 加载器使用context_start_frame_idx为2、8个上下文帧：第2至9帧为输入，第10至14帧为目标。}
+- label: {en: Splits, zh: 数据划分}
+  text: {en: 'Training uses environments 000 to 249, trajectories 00 to 02. Validation uses trajectory 03 and test uses trajectory 04 in the same 250 environments. Environments 250 to 299 form the new-environment test set.', zh: 训练集为环境000至249的轨迹00至02；验证集为同一250个环境的轨迹03；测试集为轨迹04；环境250至299构成新环境测试集。}
+- label: {en: Environment source, zh: 环境来源}
+  text: {en: Static urban layouts come from RadioMapSeer. Vehicles are seeded on drivable areas with at least four vehicle lengths between them and move clockwise., zh: 静态城市布局取自RadioMapSeer。车辆放置于可行驶区域，相邻车辆至少相隔四个车长，并沿顺时针方向行驶。}
+- label: {en: Model name, zh: 模型名称}
+  text: {en: The arXiv paper calls the baseline RadioLSTM; the repository calls it RadioMotionNet., zh: arXiv论文将基线模型称为RadioLSTM，仓库则称其为RadioMotionNet。}
 provenance:
 - {en: Continuous vehicle trajectories and environment evolution, zh: 连续车辆轨迹与环境演化}
 - {en: Altair WinProp Dominant Path Model，3.5 GHz, zh: Altair WinProp Dominant Path Model，3.5 GHz}
@@ -109,23 +84,127 @@ provenance:
 - {en: Pathloss .npz and grayscale .png files organized by env/trajectory/Tx (original preprint); the current README shows only the gain image directory., zh: env/trajectory/Tx层级的pathloss .npz与灰度.png（原预印本）；当前README只展示gain图像目录}
 - {en: 'Historical maps → future maps: 10→5 in the preprint; 8→5 in the current README.', zh: 历史地图→未来地图：预印本10→5；当前README8→5}
 technical_notes:
-- {en: 'Supported by the paper: Altair WinProp DPM; 3.5 GHz, 23 dBm, Tx and Rx heights of 1.5 m, isotropic antennas, a 256×256 m area, and a 1 m grid.', zh: 文献支持：Altair WinProp DPM；3.5 GHz、23 dBm、收发高度均1.5 m、各向同性天线、256×256 m区域及1 m栅格。}
-- {en: 'Supported by the paper: rule-driven vehicles at 0.1 seconds/frame; the authors explicitly state that the motion rules were not validated against real traffic data.', zh: 文献支持：规则驱动车辆、0.1秒/帧；作者明确未以真实交通数据验证运动规则。}
-- {en: 'Supported by the paper: experiments in the original preprint use ground-truth simulated historical maps as input. Errors from reconstructing dense maps from sparse real measurements are not included in those experiments.', zh: 文献支持：原预印本实验以真实仿真历史地图作为输入；实际稀疏测量到稠密地图的重建误差未进入该实验。}
-- {en: 'Verified: official evaluation uses NMSE/RMSE/PSNR/SSIM; communication utility requires additional decision experiments.', zh: 已确认：官方评估 NMSE/RMSE/PSNR/SSIM；通信 utility 需额外决策实验。}
+- {en: 'The paper uses Altair WinProp with the Dominant Path Model at 3.5 GHz, 23 dBm, isotropic antennas, 1.5 m Tx and Rx heights, a 256 x 256 m area and a 1 m grid.', zh: 论文使用Altair WinProp的Dominant Path Model，载频3.5 GHz，发射功率23 dBm，各向同性天线，收发高度均为1.5 m，区域256 x 256 m，栅格1 m。}
+- {en: 'Vehicles move in 0.1 s frames under rule-based motion, and the paper states that these rules have not been validated against real traffic.', zh: 车辆以0.1 s为一帧按规则运动，论文称这些规则未经真实交通数据验证。}
+- {en: 'The paper''s experiments use ground-truth simulated historical maps, which removes map reconstruction error from the evaluation.', zh: 论文实验使用仿真真值历史地图，因此评估中不包含地图重建误差。}
+- {en: 'The repository test scripts report NMSE, RMSE, PSNR and SSIM.', zh: 仓库的测试脚本输出NMSE、RMSE、PSNR与SSIM。}
 limitations:
-- {en: Report new-trajectory tests in known environments separately from tests in unseen environments., zh: 同环境新轨迹测试与未见环境测试必须分别报告。}
-- {en: 'The original preprint and current README use input windows of 10 and 8 frames, respectively. Fix the code version and inspect the loader; do not mix these reproduction protocols.', zh: 原预印本与当前README的输入窗分别为10和8帧；需固定代码版本并检查loader，不能混合复现实验。}
-- {en: Image structure metrics do not replace outage/throughput evaluation., zh: 图像结构指标不替代 outage/吞吐量评价。}
+- {en: The paper states that the rule-based vehicle motion has not been validated against real-world traffic data., zh: 论文称基于规则的车辆运动尚未用真实交通数据验证。}
+- {en: 'The paper uses 10 context frames, while the current README and config use 8. The code version has to match the protocol being reproduced.', zh: 论文使用10个上下文帧，当前README与配置使用8个。须使用与所复现协议一致的代码版本。}
+- {en: The paper notes that in real deployments the quality of the input sequence depends on the upstream map reconstruction., zh: 论文指出，在实际部署中，输入序列的质量取决于上游的地图重建。}
+- {en: 'The paper reports Test Set 1 (seen environments, unseen trajectories) and Test Set 2 (unseen environments) separately.', zh: 论文将测试集1（已见环境、未见轨迹）与测试集2（未见环境）分开报告。}
 history:
-- {en: '2025: the arXiv preprint title uses Dataset and Baseline.', zh: 2025：arXiv 预印本题名使用 Dataset and Baseline。}
-- {en: '2026: the authors'' repository cites the TCCN Dataset and Benchmark article and provides data downloads.', zh: 2026：作者仓库引用 TCCN 的 Dataset and Benchmark，且已提供数据下载。}
+- {en: '2025: the arXiv preprint 2511.17526, submitted 24 October 2025, is titled A Dataset and Baseline.', zh: 2025年：arXiv预印本2511.17526（2025年10月24日提交）题为A Dataset and Baseline。}
+- {en: '2026: the IEEE TCCN article is titled A Dataset and Benchmark (vol. 12, pp. 7701-7715), and the repository cites it.', zh: 2026年：IEEE TCCN正式文章题为A Dataset and Benchmark（第12卷，第7701-7715页），仓库引用了该文章。}
 usage:
-- {en: Obtain data from the current repository and preserve the env/traj/tx file hierarchy., zh: 从当前仓库取得数据，保持 env/traj/tx 文件层级。}
-- {en: 'Compare results under the official grouping protocol, then add stricter cross-city or cross-engine evaluation.', zh: 按官方分组对照，再新增更严格城市/引擎外推。}
-- {en: Start with persistence and linear extrapolation; add a threshold-based coverage-risk task alongside image metrics., zh: 从 persistence 和线性外推开始；图像指标之外增加阈值覆盖风险任务。}
-overview: {en: 'RadioMapMotion is a simulated dataset of radio-map sequences for forecasting future pathloss maps from past maps, introduced by Jia, Cheng and Wang (arXiv 2511.17526, 2025). The maps are generated with the Altair WinProp ray tracer using the Dominant Path Model at 3.5 GHz, 23 dBm Tx power, isotropic antennas, and 1.5 m Tx and Rx heights. Each scene covers a 256 × 256 m area on a 1 m grid. Vehicles follow rule-driven motion at 0.1 s per frame in 300 numbered environments, with 5 trajectories and 20 transmitter positions per environment. The paper reports 30,000 sequences and 450,000 map frames, split into 15,000 training, 5,000 validation, 5,000 test and 5,000 new-environment test sequences. The paper uses 10 context frames and 5 prediction frames per sequence, while the README states 8 context frames and 5 prediction frames. The dataset contains only pathloss maps and no CSI, and the motion rules are not validated against real traffic data.', zh: 'RadioMapMotion 是一个仿真数据集，用于根据历史无线电地图预测未来的路径损耗地图序列，由
-    Jia、Cheng 和 Wang 在 arXiv 2511.17526（2025）中提出。地图由 Altair WinProp 射线追踪器采用 Dominant Path Model（DPM）生成，载频 3.5 GHz，发射功率 23 dBm，天线为各向同性，收发高度均为 1.5 m。每个场景覆盖 256 × 256 m 区域，网格为 1 m。车辆按规则驱动运动，每帧 0.1 s，共 300 个编号环境，每个环境包含 5 条轨迹和 20 个发射机位置。论文报告共 30,000 个序列和 450,000 帧地图，划分为 15,000 个训练序列、5,000 个验证序列、5,000 个测试序列和 5,000 个新环境测试序列。论文中每个序列包含 10 帧上下文和 5 帧预测，README 则给出 8 帧上下文和 5 帧预测。数据集仅包含路径损耗地图，不含 CSI，运动规则未经真实交通数据验证。'}
+- {en: 'Download the data from the repository''s Google Drive links and keep the env/traj/tx folder hierarchy, which the loader expects.', zh: 从仓库提供的Google Drive链接下载数据，并保持加载器所要求的env/traj/tx文件夹层级。}
+- {en: 'Set data.dynamic_data_root, context_frames, context_start_frame_idx and prediction_frames in code/config.yaml before running train.py or test.py.', zh: 运行train.py或test.py之前，在code/config.yaml中设置data.dynamic_data_root、context_frames、context_start_frame_idx与prediction_frames。}
+- {en: 'The evaluation scripts (test.py, test_new_env.py, test_new_env_framewise.py) report NMSE, RMSE, PSNR and SSIM.', zh: 评估脚本（test.py、test_new_env.py、test_new_env_framewise.py）输出NMSE、RMSE、PSNR与SSIM。}
+overview: {en: 'RadioMapMotion is a simulated dataset of radio-map sequences for forecasting future pathloss maps from past maps. Jia, Cheng and Wang introduced it in arXiv 2511.17526 (2025), and the IEEE TCCN article is titled A Dataset and Benchmark (2026). The maps are computed with the Altair WinProp ray tracer using the Dominant Path Model at 3.5 GHz, with 23 dBm Tx power, isotropic antennas and 1.5 m Tx and Rx heights, on a 256 x 256 m area with a 1 m grid. Rule-driven vehicles move at 0.1 s per frame in 300 numbered environments, which augment RadioMapSeer urban layouts, with 5 trajectories and 20 transmitter positions per environment. The paper reports 30,000 sequences and 450,000 map frames, split into 15,000 training, 5,000 validation, 5,000 test and 5,000 new-environment test sequences. Each sequence has 15 frames: the paper uses 10 context frames and 5 prediction frames, while the repository uses 8 context frames and 5 prediction frames. The maps store pathloss only, and the
+    paper states that the motion rules have not been validated against real traffic data.', zh: 'RadioMapMotion 是一个仿真数据集，用于根据历史无线电地图预测未来的路径损耗地图序列。该数据集由 Jia、Cheng 和 Wang 在 arXiv 2511.17526（2025）中提出，IEEE TCCN 的正式文章题为 A Dataset and Benchmark（2026）。地图由 Altair WinProp 射线追踪器采用 Dominant Path Model 生成，载频 3.5 GHz，发射功率 23 dBm，天线为各向同性，收发高度均为 1.5 m，区域为 256 x 256 m，栅格为 1 m。车辆按规则以每帧 0.1 s 运动，共 300 个编号环境，这些环境在 RadioMapSeer 城市布局基础上扩展而来，每个环境包含 5 条轨迹和 20 个发射机位置。论文报告共 30,000 个序列和 450,000 帧地图，划分为 15,000 个训练序列、5,000 个验证序列、5,000 个测试序列和 5,000 个新环境测试序列。每个序列包含 15 帧：论文使用 10 帧上下文和 5 帧预测，仓库则使用 8 帧上下文和 5 帧预测。地图仅存储路径损耗，论文指出运动规则未经真实交通数据验证。'}
 signal_details:
 - signal: pathloss
-  text: {en: 'Pathloss in dB on a 256 × 256 grid with 1 m spacing, computed with WinProp DPM at 3.5 GHz. The paper describes compressed floating-point .npz files in dB, and the README distributes PNG images under data/gain/. The PNG values are 8-bit grayscale: pathloss is clipped to [-135, -39.5] dB, scaled linearly to [0, 1] and quantized to integer levels 0–255. The paper does not define how uncovered cells are encoded.', zh: '路径损耗（dB），256 × 256 网格，间距 1 m，由 WinProp DPM 在 3.5 GHz 下计算。论文描述了以 dB 表示的压缩浮点 .npz 文件，README 则在 data/gain/ 下提供 PNG 图像。PNG 为 8 位灰度：路径损耗裁剪到 [-135, -39.5] dB，线性缩放到 [0, 1]，再量化为 0–255 的整数等级。论文未定义未覆盖栅格的编码方式。'}
+  text: {en: 'Pathloss in dB on a 256 x 256 grid with 1 m spacing, computed with WinProp DPM at 3.5 GHz. The paper describes compressed floating-point .npz files in dB, and the README distributes PNG images under data/gain/. The PNG values are 8-bit grayscale: pathloss is clipped to [-135, -39.5] dB, scaled linearly to [0, 1] and quantized as floor(255 x value).', zh: '路径损耗（dB），256 x 256 网格，间距 1 m，由 WinProp DPM 在 3.5 GHz 下计算。论文描述了以 dB 表示的压缩浮点 .npz 文件；README 则在 data/gain/ 下提供 PNG 图像。PNG 为 8 位灰度：路径损耗裁剪到 [-135, -39.5] dB，线性缩放到 [0, 1]，再按 floor(255 x 数值) 量化。'}
+bands_ghz: [3.5]
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only scalar pathloss values are released; no complex channel or phase., zh: 仅发布标量路径损耗值，无复数信道或相位。}
+- key: cir
+  status: none
+  note: {en: No delay profile or impulse response; each map holds one pathloss value per location., zh: 无时延谱或冲激响应；每个位置仅有一个路径损耗值。}
+- key: paths
+  status: none
+  note: {en: Per-path parameters are computed inside WinProp and not released., zh: 逐径参数在 WinProp 内计算，未发布。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are released., zh: 未发布逐径交互数据。}
+- key: power
+  status: provided
+  note: {en: 'Pathloss in dB; the PNG release is 8-bit, clipped to [-135, -39.5] dB.', zh: '路径损耗单位为 dB；PNG 发布版为 8 位，裁剪范围 [-135, -39.5] dB。'}
+- key: iq
+  status: none
+  note: {en: No I/Q samples are released., zh: 未发布 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are released., zh: 未发布波束索引或逐波束增益。}
+- key: position
+  status: derivable
+  note: {en: Receiver positions follow from the 1 m grid index of each pixel; transmitter and vehicle coordinates are not released., zh: 接收机位置可由每个像素的 1 m 栅格索引推算；发射机与车辆坐标未发布。}
+- key: geometry
+  status: none
+  note: {en: The release tree lists gain maps only; building and vehicle scene files are not listed., zh: 发布目录仅列出 gain 地图；未列出建筑与车辆场景文件。}
+- key: materials
+  status: none
+  note: {en: The release tree lists gain maps only; no material parameters are listed., zh: 发布目录仅列出 gain 地图；未列出材料参数。}
+- key: rgb
+  status: none
+  note: {en: Released data are pathloss maps only., zh: 发布数据仅为路径损耗地图。}
+- key: depth
+  status: none
+  note: {en: Released data are pathloss maps only., zh: 发布数据仅为路径损耗地图。}
+- key: lidar
+  status: none
+  note: {en: Released data are pathloss maps only., zh: 发布数据仅为路径损耗地图。}
+- key: radar
+  status: none
+  note: {en: Released data are pathloss maps only., zh: 发布数据仅为路径损耗地图。}
+- key: imu
+  status: none
+  note: {en: Released data are pathloss maps only., zh: 发布数据仅为路径损耗地图。}
+- key: time_series
+  status: provided
+  note: {en: '15-frame sequences at 0.1 s per frame, indexed frame_0 to frame_14.', zh: 每个序列 15 帧，每帧 0.1 s，索引为 frame_0 至 frame_14。}
+- key: multiuser
+  status: derivable
+  note: {en: Pathloss at several pixels of one frame can be read as several users' large-scale gains; no per-user channel or fading is released., zh: 同一帧中多个像素的路径损耗可读作多个用户的大尺度增益；未发布逐用户信道或衰落。}
+- key: multibs
+  status: provided
+  note: {en: '20 transmitter locations per environment and trajectory, each stored as its own map on the same geometry.', zh: 每个环境和轨迹有 20 个发射机位置，各自存为独立地图，几何相同。}
+- key: crossfreq
+  status: none
+  note: {en: Single 3.5 GHz carrier., zh: 仅 3.5 GHz 单一载频。}
+- key: near_field
+  status: none
+  note: {en: Isotropic antennas and pathloss-only output; no array modelling., zh: 天线为各向同性，输出仅为路径损耗，无阵列建模。}
+- key: high_mobility
+  status: provided
+  note: {en: The paper aligns vehicle motion with urban speeds and equates 1 m per 0.1 s frame to 36 km/h., zh: 论文将车辆运动与城市车速对齐，并将每 0.1 s 帧 1 m 换算为 36 km/h。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: 'Vehicles are moving obstacles in the dynamic 3D scene, so pathloss maps change as they move.', zh: 车辆是动态三维场景中的移动障碍物，因此路径损耗地图随其移动而变化。}
+- key: reflection
+  status: provided
+  note: {en: Single reflection is covered by the Dominant Path Model; not labelled per path., zh: Dominant Path Model 包含单次反射；未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: Diffraction is covered by the Dominant Path Model; not labelled per path., zh: Dominant Path Model 包含绕射；未按径标注。}
+- key: scattering
+  status: none
+  note: {en: 'The Dominant Path Model covers line-of-sight, single reflection and diffraction only.', zh: Dominant Path Model 仅覆盖视距、单次反射与绕射。}
+- key: transmission
+  status: none
+  note: {en: 'The Dominant Path Model covers line-of-sight, single reflection and diffraction only.', zh: Dominant Path Model 仅覆盖视距、单次反射与绕射。}
+- key: polarization
+  status: none
+  note: {en: Isotropic antennas and scalar pathloss output; no polarimetric data., zh: 天线为各向同性，输出为标量路径损耗；无极化数据。}
+- key: em_field
+  status: none
+  note: {en: Outputs are scalar pathloss values; no field components or antenna patterns., zh: 输出为标量路径损耗值；无场分量或天线方向图。}
+versions:
+- version: 2026-06-01 commits
+  date: '2026-06-01'
+  summary: {en: 'Repository publication: code folder with training, testing and RadioMotionNet model files, README with dataset Google Drive links, and citation update.', zh: 仓库发布：新增 code 目录（训练、测试与 RadioMotionNet 模型文件）、含数据集 Google Drive 链接的 README，并更新引用信息。}
+  url: https://github.com/UNIC-Lab/RadioMapMotion/commits/main
+- version: '2026'
+  date: '2026'
+  summary: {en: 'IEEE TCCN article ''RadioMapMotion: A Dataset and Benchmark for Proactive Spatio-Temporal Radio Environment Prediction'', vol. 12, pp. 7701-7715.', zh: 'IEEE TCCN 文章 ''RadioMapMotion: A Dataset and Benchmark for Proactive Spatio-Temporal Radio Environment Prediction''，第 12 卷，第 7701-7715 页。'}
+  url: https://doi.org/10.1109/TCCN.2026.3685413
+- version: arXiv v1
+  date: '2025-10-24'
+  summary: {en: 'arXiv preprint ''RadioMapMotion: A Dataset and Baseline'', with 300 environments, 5 trajectories and 20 transmitters per environment, 15-frame sequences at 0.1 s, and the RadioLSTM baseline.', zh: 'arXiv 预印本 ''RadioMapMotion: A Dataset and Baseline''，包含 300 个环境，每个环境 5 条轨迹与 20 个发射机，15 帧序列（每帧 0.1 s），并给出 RadioLSTM 基线。'}
+  url: https://arxiv.org/abs/2511.17526v1
+- version: e835f6c
+  date: '2025-10-11'
+  summary: {en: 'Initial commit of the repository, adding the MIT LICENSE file.', zh: 仓库初始提交，添加 MIT LICENSE 文件。}
+  url: https://github.com/UNIC-Lab/RadioMapMotion/commit/e835f6c

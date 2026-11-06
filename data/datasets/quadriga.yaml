@@ -13,230 +13,83 @@ paper: doi:10.1109/tap.2014.2310220
 used_in: ['doi:10.1109/tcomm.2023.3260242', 'doi:10.1109/tvt.2019.2907606', 'doi:10.1109/tvt.2018.2865700', 'doi:10.1109/jstsp.2019.2931206', 'doi:10.1109/tcomm.2022.3180388']
 citing: ['doi:10.1109/jsac.2017.2719924', 'doi:10.1109/comst.2017.2783541', 'doi:10.1109/tsp.2020.2976585']
 summary: {en: QuaDRiGa is a generator of geometry-based stochastic MIMO channel impulse responses for carrier frequencies from 500 MHz to 100 GHz. The output is generated on demand by the software rather than distributed as a fixed dataset., zh: QuaDRiGa 是基于几何的随机 MIMO 信道冲激响应生成器，载频范围为 500 MHz 至 100 GHz。输出由软件按需生成，而非以固定数据集形式发布。}
-sources: ['https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/README.md?plain=1', 'https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/QuaDRiGa_License.txt', 'https://quadriga-channel-model.de/software/', 'https://api.crossref.org/works/10.1109/tap.2014.2310220']
+sources: ['https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/README.md?plain=1', 'https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/QuaDRiGa_License.txt', 'https://quadriga-channel-model.de/software/', 'https://api.crossref.org/works/10.1109/tap.2014.2310220', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/README.md', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/QuaDRiGa_License.txt', 'https://api.github.com/repos/fraunhoferhhi/QuaDRiGa/git/trees/main?recursive=1', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/tutorials/t11_multi_frequency_simulations.m', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/tutorials/t15_los_detection_and_diffraction.m', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/tutorials/t09_speed_profile_interpolation.m', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/tutorials/t04_drifting_phases.m', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/quadriga_src/@qd_builder/gen_parameters.m',
+  'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/quadriga_src/@qd_builder/get_channels.m', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/quadriga_src/@qd_builder/init_sos.m', 'https://raw.githubusercontent.com/fraunhoferhhi/QuaDRiGa/main/quadriga_src/@qd_channel/fr.m', 'https://codeload.github.com/fraunhoferhhi/QuaDRiGa/tar.gz/refs/heads/main', 'https://github.com/fraunhoferhhi/QuaDRiGa/releases.atom', 'https://github.com/fraunhoferhhi/QuaDRiGa/tags.atom', 'https://api.github.com/repos/fraunhoferhhi/QuaDRiGa/releases?per_page=30']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Generates correlated large- and small-scale parameters from layouts, trajectories, antennas, and scenario statistics, then synthesizes and merges channels. Random clusters do not automatically represent reflections from real buildings.', zh: 由布局、轨迹、天线和场景统计生成相关的大/小尺度参数，再合成并拼接信道。随机簇不自动对应真实建筑反射点。}
+  summary: {en: 'QuaDRiGa draws correlated large- and small-scale parameters from a layout, trajectories, arrays and scenario statistics, then synthesizes and merges time-varying MIMO channels. The 2.8 site-specific mode uses a 3D mesh to assign LOS and NLOS states along tracks.', zh: QuaDRiGa 根据布局、轨迹、阵列与场景统计生成相关的大尺度与小尺度参数，再合成并合并时变 MIMO 信道。2.8 版本的站点特定模式利用 3D 网格沿轨迹分配 LOS 与 NLOS 状态。}
+  scope: {en: Geometry-based stochastic channel workflow following the official QuaDRiGa MATLAB tutorials., zh: 依据 QuaDRiGa 官方 MATLAB 教程整理的几何随机信道流程。}
   stages:
-  - title: {en: Fix simulation parameters and scenario, zh: 固定仿真参数与场景}
-    detail: {en: 'Choose carrier frequency, spatial sampling density, absolute-delay convention, and target scenario; tutorial values are examples, not defaults for every scenario.', zh: 选择载频、空间采样密度、绝对时延口径与目标场景；教程中的数值是示例，不是所有场景默认。}
+  - title: {en: Set the simulation parameters, zh: 设置仿真参数}
+    detail: {en: 'Choose the carrier frequency, the sample density along the track, and whether absolute delays are used. The sample density must give at least one sample per half-wavelength, and at least two when both ends move.', zh: 选择载频、沿轨迹的采样密度以及是否使用绝对时延。采样密度须至少每半波长一个采样点；收发两端均移动时至少为两个。}
     inputs:
-    - {en: qd_simulation_parameters, zh: qd_simulation_parameters}
-    - {en: Scenario parameter set and random seed, zh: 场景参数集与随机种子}
+    - {en: qd_simulation_parameters object, zh: qd_simulation_parameters对象}
     outputs:
-    - {en: Simulation parameter object, zh: 仿真参数对象}
+    - {en: 'Simulation parameter set (center_frequency, sample_density, use_absolute_delays)', zh: 仿真参数集（center_frequency、sample_density、use_absolute_delays）}
     controls:
-    - {en: 'Researcher specifies: center_frequency, sample_density or samples_per_meter, use_absolute_delays, seed', zh: 研究者固定：center_frequency、sample_density或samples_per_meter、use_absolute_delays、seed}
-    checks:
-    - {en: Check the parameter set's supported frequency/bandwidth range, zh: 检查参数集的频率/带宽适用范围}
-    - {en: Record whether pathloss is disabled or baseline options are used, zh: 记录是否禁用pathloss或使用baseline选项}
-  - title: {en: Build multilink layouts and arrays, zh: 建立多链路布局和阵列}
-    detail: {en: 'Define base stations, terminals, and antennas in qd_layout; patterns, element positions, and orientations contribute to each path''s MIMO response.', zh: 在qd_layout中定义基站、终端和天线；方向图、阵元位置与姿态参与每条路径的MIMO响应。}
+    - {en: Fix center_frequency, sample_density and use_absolute_delays before generating parameters: null, zh: 生成参数前先固定center_frequency、sample_density与use_absolute_delays}
+  - title: {en: Build the layout and arrays, zh: 建立布局与阵列}
+    detail: {en: Place transmitters and receivers in a qd_layout and assign qd_arrayant antennas to them. Element positions are given in meters. Measured or simulated far-field patterns can be imported as arrays., zh: 在 qd_layout 中放置发射机与接收机，并为其分配 qd_arrayant 天线。阵元位置以米为单位。实测或仿真的远场方向图可导入为阵列。}
     inputs:
-    - {en: Tx/Rx positions, zh: Tx/Rx位置}
-    - {en: qd_arrayant antennas and polarization, zh: qd_arrayant天线与极化}
+    - {en: Tx and Rx positions, zh: Tx与Rx位置}
+    - {en: Array patterns and element coordinates, zh: 阵列方向图与阵元坐标}
     outputs:
     - {en: Network layout with antennas, zh: 带天线的网络布局}
-    controls:
-    - {en: 'Researcher specifies: Tx/Rx counts, heights, element positions, patterns, and orientations', zh: 研究者固定：Tx/Rx数量、高度、阵元位置、方向图与朝向}
-    checks:
-    - {en: 'Check consistency of positions, patterns, and center frequency', zh: 检查位置、方向图和中心频率匹配}
-    - {en: 'Multiuser correlation should come from a shared layout, not independent random concatenation', zh: 多用户相关性应来自同一布局而非独立随机拼接}
-  - title: {en: 'Define trajectories, segments, and scenario changes', zh: 定义轨迹、分段与场景变化}
-    detail: {en: 'Interpolate trajectories, calculate orientations, and assign segment scenarios; drifting during motion and spatial consistency at each location are mechanisms that must be explicitly selected.', zh: 插值轨迹、计算朝向，并分配分段场景；移动时的drifting和逐位置空间一致性是需明确选择的机制。}
+  - title: {en: Define tracks, speed profiles and segments: null, zh: 定义轨迹、速度曲线与分段}
+    detail: {en: 'Trajectories are qd_track objects. Speed profiles convert positions into time, and channels are generated on spatial samples that can be interpolated to a varying speed. LOS or NLOS scenarios are assigned to track sections, and merge joins the segments into one continuous channel.', zh: 轨迹由 qd_track 对象定义。速度曲线将位置映射到时间，信道在空间采样点上生成，并可插值到变化的速度上。LOS 或 NLOS 场景被分配到各轨迹片段，merge 将各段拼接为连续信道。}
     inputs:
     - {en: qd_track trajectories, zh: qd_track轨迹}
-    - {en: LOS/NLOS scenario sequences and segment locations, zh: LOS/NLOS场景序列及分段位置}
+    - {en: LOS/NLOS scenario sequences and segment boundaries, zh: LOS/NLOS场景序列与分段边界}
     outputs:
-    - {en: 'Sampled trajectories, orientations, and segment/scenario mapping', zh: 采样轨迹、朝向和segment/scenario映射}
-    controls:
-    - {en: 'Researcher specifies: path length, sampling interval, speed-to-time mapping, segment boundaries', zh: 研究者固定：路径长度、采样间隔、速度到时间映射、分段边界}
-    checks:
-    - {en: Check that displacement/time is consistent with the Doppler interpretation, zh: 检查位移/时间与Doppler解释一致}
-    - {en: Do not treat independently randomized segment channels as continuous mobility sequences, zh: 不要将每段独立随机信道当连续移动序列}
+    - {en: Sampled trajectories, orientations and segment-to-scenario mapping: null, zh: 采样轨迹、朝向及分段与场景的对应关系}
   - title: {en: Initialize the builder and generate correlated parameters, zh: 初始化builder并生成相关参数}
-    detail: {en: init_builder creates generators; gen_parameters generates LSP and cluster/subpath parameters. SC_lambda controls small-scale spatial correlation; setting it to 0 disables this mechanism., zh: init_builder建立生成器，gen_parameters生成LSP与簇/子径参数。SC_lambda控制小尺度空间相关，设0会关闭该相关机制。}
+    detail: {en: 'init_builder creates the random generators. gen_parameters produces correlated large-scale parameters, small-scale fading parameters and scatterer positions for each link. SC_lambda sets the small-scale spatial correlation, and SC_lambda = 0 disables it.', zh: init_builder 创建随机生成器。gen_parameters 为每条链路生成相关的大尺度参数、小尺度衰落参数与散射体位置。SC_lambda 控制小尺度空间相关，设为 0 时关闭该相关。}
     inputs:
     - {en: Layout and scenario parameters, zh: 布局与场景参数}
-    - {en: Large-scale correlation matrix/correlation distances and cluster configuration, zh: 大尺度相关矩阵/相关距离及簇配置}
     outputs:
-    - {en: Correlated large-scale parameters, zh: 相关大尺度参数}
-    - {en: 'Cluster delays, powers, angles, and polarization parameters', zh: 簇时延、功率、角度和极化参数}
+    - {en: Correlated large-scale and small-scale parameters, zh: 相关的大尺度与小尺度参数}
+    - {en: 'Cluster delays, powers, angles and polarization parameters', zh: 簇时延、功率、角度与极化参数}
     controls:
-    - {en: 'Researcher specifies: parameter correlations, cluster count, PerClusterDS, SC_lambda; disclose modifications', zh: 研究者固定：参数相关、簇数、PerClusterDS、SC_lambda；改动须声明}
-    checks:
-    - {en: Compare correlation between nearby locations against the configuration, zh: 比较邻近位置的相关性与设定一致性}
-    - {en: Distinguish scenario statistics from manually modified parameters, zh: 保持场景统计与人为修改参数可区分}
-  - title: {en: Synthesize and merge time-varying channels, zh: 合成并合并时变信道}
-    detail: {en: 'get_channels generates qd_channel coeff and delay; merge joins segment outputs into a continuous trajectory. Drifting updates angles, delays, and phases; check continuity at segment transitions.', zh: get_channels生成qd_channel的coeff和delay；分段输出经merge形成连续轨迹。drifting更新角度、时延及相位，分段切换需检查连续性。}
+    - {en: 'usage option of gen_parameters: 0 clears all LSF and SSF parameters, 1 regenerates only LSF parameters', zh: gen_parameters的usage选项：0清除全部LSF与SSF参数，1仅重新生成LSF参数}
+  - title: {en: Synthesize and merge the channels, zh: 合成并合并信道}
+    detail: {en: 'get_channels combines antenna patterns, geometry and trajectories to produce coefficients and delays for each link. With drifting enabled, angles, delays and phases evolve during motion; merge handles the transitions between segments.', zh: get_channels 结合天线方向图、几何与轨迹，为各链路生成系数与时延。启用 drifting 时，运动过程中的角度、时延与相位随之演化；merge 处理各段之间的过渡。}
     inputs:
-    - {en: Builder parameters, zh: builder参数}
-    - {en: Arrays and trajectories, zh: 阵列与轨迹}
+    - {en: Builder parameters, arrays and trajectories: null, zh: builder参数、阵列与轨迹}
     outputs:
-    - {en: Per-link complex coefficients and delays, zh: 逐链路复系数与时延}
-    - {en: Merged trajectory CIR, zh: 合并后的轨迹CIR}
-    controls:
-    - {en: 'Researcher specifies: drifting/baseline mode, segment merging method, storage axes', zh: 研究者固定：drifting/baseline模式、segment合并方式、存储轴}
+    - {en: Complex coefficients and delays per link (qd_channel), zh: 各链路的复系数与时延（qd_channel）}
     checks:
-    - {en: Check for phase/power jumps at segment boundaries, zh: 检查分段边界是否出现相位/功率跳变}
-    - {en: 'Recompute SF, K-factor, and delay spread from coefficients and compare with the builder', zh: 从系数重算SF、K-factor和delay spread对照builder}
-  - title: {en: Frequency-domain and multifrequency generation, zh: 频域与多频生成}
-    detail: {en: 'fr projects path coefficients/delays into the frequency domain; the multifrequency tutorial generates paired outputs using a shared layout, correlated propagation parameters, and per-frequency antennas and losses.', zh: fr把路径系数/时延投影到频域；多频教程通过共享布局及相关传播参数、逐频天线和损耗生成配对输出。}
+    - {en: use_3GPP_baseline switches off the SOS spatial-consistency generators in the builder, zh: use_3GPP_baseline会关闭builder中的SOS空间一致性生成器}
+  - title: {en: Project to the frequency domain, zh: 投影到频域}
+    detail: {en: 'qd_channel.fr projects coefficients and delays onto baseband frequency points for a chosen bandwidth. For several carriers, tutorial t11 sets center_frequency as a vector, which generates correlated outputs on a shared layout.', zh: qd_channel.fr 按所选带宽将系数与时延投影到基带频点。对于多个载频，教程 t11 将 center_frequency 设为向量，在共享布局上生成相关输出。}
     inputs:
-    - {en: qd_channel, zh: qd_channel}
-    - {en: 'Bandwidth and frequency-point count, or a vector of carrier frequencies', zh: 带宽与频点数，或多载频向量}
+    - {en: qd_channel object and bandwidth or carrier list, zh: qd_channel对象与带宽或载频列表}
     outputs:
     - {en: CFR arrays, zh: CFR数组}
-    - {en: Correlated channels indexed by carrier frequency, zh: 按载频索引的相关信道}
-    controls:
-    - {en: 'Researcher specifies: bandwidth, frequency-point count, per-band arrays, and parameter coupling', zh: 研究者固定：带宽、频点数、每频段阵列和参数耦合}
-    - {en: Record each shared and varying parameter in the official multifrequency tutorial, zh: 官方多频教程的共同/变化参数应逐项记录}
-    checks:
-    - {en: Do not mistake frequency indices for time or independent random samples, zh: 不要把频率索引误当时间或独立随机样本}
-    - {en: Distinguish model-defined cross-frequency correlation from measured cross-frequency pairing, zh: 区分模型设定的跨频相关与实测跨频配对}
-  - title: {en: Construct task samples and validate statistics, zh: 构造任务样本和验证统计}
-    detail: {en: 'Generate codebook responses, CSI compression targets, or future windows for the task, retaining the original scale and trajectory grouping.', zh: 研究者按任务生成码本响应、CSI压缩目标或未来窗口，保留原始尺度与轨迹分组。}
+  - title: {en: 'Optional: site-specific LOS and indoor states', zh: 可选：站点特定的LOS与室内状态}
+    detail: {en: 'In the 2.8 site-specific mode a 3D mesh (qd_mesh) is imported, and intersect_mesh determines the LOS and indoor state of grid points and tracks. diff_trans gives a relative LOS weighting from 0 (NLOS) to 1 (LOS), which can weight two path-loss models.', zh: 在 2.8 站点特定模式中，导入 3D 网格（qd_mesh），由 intersect_mesh 判定网格点与轨迹的 LOS 及室内状态。diff_trans 给出从 0（NLOS）到 1（LOS）的相对 LOS 权重，可用于对两种路径损耗模型加权。}
     inputs:
-    - {en: CIR/CFR and trajectory metadata, zh: CIR/CFR及轨迹元数据}
-    - {en: Beam/scheduling or feedback task interfaces, zh: 波束/调度或反馈任务接口}
+    - {en: 3D model (qd_mesh) and Tx and Rx positions, zh: 3D模型（qd_mesh）及Tx、Rx位置}
     outputs:
-    - {en: Task tensors and labels, zh: 任务张量与标签}
-    - {en: Statistical consistency and downstream utility results, zh: 统计一致性及下游utility结果}
-    controls:
-    - {en: 'Researcher specifies: normalization, angle-delay truncation, sequence windows, and train/test layouts', zh: 研究者固定：归一化、角延迟截断、序列窗口和训练/测试布局}
-    checks:
-    - {en: Do not report absolute throughput directly from normalized feedback tensors, zh: 不要用被归一化后的反馈张量直接报告绝对吞吐}
-    - {en: Split adjacent windows from the same trajectory as a group, zh: 同轨迹相邻窗口按组切分}
-  scope: {en: Geometry-based stochastic channel workflow from official QuaDRiGa MATLAB tutorials; list site-specific inputs separately., zh: QuaDRiGa官方MATLAB教程中的几何随机信道流程；site-specific模式需另列输入。}
+    - {en: LOS/NLOS and indoor states, zh: LOS/NLOS与室内状态}
 facts:
-- label: {en: Entry inputs, zh: 入口输入}
-  text: {en: '• Typical inputs are scenario statistical parameters, BS/terminal layouts, qd_track trajectories and segments, qd_arrayant arrays, and random state; the generator uses these to produce clusters and propagation parameters.
-
-      • The site-specific extension in 2.8 also accepts 3D meshes to assist LOS/NLOS and indoor-state classification and trajectory scenario segmentation.', zh: '• 常规输入为场景统计参数集、BS/终端布局、qd_track轨迹与分段、qd_arrayant阵列及随机状态；生成器据此产生簇和传播参数。
-
-      • 2.8的site-specific扩展还可输入3D mesh，辅助判定LOS/NLOS、室内状态和轨迹场景分段。'}
-- label: {en: Physical model, zh: 物理模型}
-  text: {en: '• The core is a geometry-based stochastic channel model: correlated large-scale parameters → cluster/subpath delays, angles, powers, polarization, and scatterer locations → array channels. Random clusters usually are not traced reflection surfaces in a real-world map.
-
-      • Drifting updates path delays, angles, and phases during motion based on scattering geometry; the use_3GPP_baseline branch uses a plane-wave approximation.
-
-      • The official site-specific tutorial determines propagation states from meshes, then invokes the corresponding statistical scenarios; its diff_trans example weights LOS/NLOS powers. This operates at a different level from full multipath RT.', zh: '• 核心是几何随机信道模型：相关大尺度参数→簇/子径时延、角度、功率、极化与散射位置→阵列信道。随机簇通常不是一张实景地图中的已追踪反射面。
-
-      • drifting按散射几何更新运动中的路径时延、角度和相位；use_3GPP_baseline分支使用平面波近似。
-
-      • 官方site-specific教程通过mesh判传播状态，再调用对应统计场景；diff_trans的示例用于LOS/NLOS功率加权。它的作用层次与完整多径RT不同。'}
-- label: {en: How the channel is formed, zh: 信道形成方式}
-  text: {en: '• layout.init_builder creates generators; gen_parameters produces correlated LSP, SSF, and scatterer locations; get_channels combines antenna patterns, geometry, and trajectories to generate coeff/delay.
-
-      • merge handles transitions between channel segments; qd_channel.fr then projects coefficients and delays onto specified baseband frequencies.
-
-      • The usage option of gen_parameters controls reuse of random fields, LSP, SSF, or generation of missing parameters only; preserve the same propagation realization for controlled comparisons instead of redrawing the random environment whenever arrays change.', zh: '• layout.init_builder建立生成器；gen_parameters产生相关LSP、SSF和散射位置；get_channels结合阵列方向图、几何与轨迹生成coeff/delay。
-
-      • 分段信道经merge处理过渡；qd_channel.fr再把系数和时延投影到指定基带频率。
-
-      • gen_parameters的usage可控制复用随机场、LSP、SSF或仅补缺参数；用于受控对比时应保留同一传播实现，避免每次改阵列都重抽随机环境。'}
-- label: {en: Changing the carrier frequency, zh: 改变载频}
-  text: {en: '• Changing only fr bandwidth/carriers reuses existing coeff/delay and repeats the baseband frequency-domain projection; it does not change the propagation scenario''s center frequency.
-
-      • Changing center frequency requires regeneration of statistical propagation parameters, pathloss, array responses, and channel coefficients for the target band; also check the trajectory''s spatial sampling density.
-
-      • The official multifrequency tutorial uses a center_frequency vector to generate correlated outputs on a shared layout. LOS/NLOS, node positions, and cluster delays/angles are shared; pathloss, path powers, antennas, spread statistics, K-factor, and XPR vary by frequency.
-
-      • This is an explicitly specified cross-frequency joint model. Label independent runs in two bands separately from paired data generated by a shared model.', zh: '• 只改fr的bandwidth/carriers：复用已有coeff/delay，重新进行基带频域投影；没有改变传播场景的中心频率。
-
-      • 改中心频率：重新生成匹配目标频段的统计传播参数、路径损耗、阵列响应和信道系数；同时检查轨迹的空间采样密度。
-
-      • 官方多频教程用center_frequency向量在共同布局上生成相关输出。LOS/NLOS、节点位置、簇时延/角度等共享；路径损耗、路径功率、天线、扩展统计量、K-factor和XPR按频率变化。
-
-      • 这是一种显式设定的跨频联合模型。独立运行两个频段与共享模型生成的配对数据，应分别标注。'}
-- label: {en: Changing the array or codebook, zh: 改变阵列或码本}
-  text: {en: '• With layout, frequency, and generated LSP/SSF/scatterer locations fixed, update the Tx/Rx arrays in the builder, then run get_channels and fr to obtain channels for the new arrays.
-
-      • get_channels recomputes patterns, polarization, element phases, and per-element geometric delays in drifting mode; array-only comparisons do not require randomly regenerating clusters.
-
-      • qd_arrayant.element_position is in meters. When changing center_frequency, reconstruct or adjust element positions if the study requires fixed spacing in wavelengths; for a fixed physical aperture, preserve actual positions and use suitable patterns.
-
-      • Usage: if only the codebook changes and full complex CSI is retained, recompute codebook responses and labels under the same channel convention. Top-K powers alone cannot recover responses to arbitrary new beams.', zh: '• 固定布局、频率和已生成的LSP/SSF/散射位置时，更新builder中的Tx/Rx阵列，再运行get_channels和fr即可得到新阵列的信道。
-
-      • get_channels重新计算方向图、极化、阵元相位，以及drifting模式下的逐阵元几何时延；不需要为单纯阵列对照重新随机生成簇。
-
-      • qd_arrayant.element_position以米为单位。改变center_frequency时，若研究目标是固定λ间距，应重新构造或调整阵元位置；固定米制孔径则保留实际位置并更换适用的方向图。
-
-      • 使用步骤：只换码本且保留完整复CSI时，按同一信道约定重算码本响应和标签即可；只保留Top-K功率时无法补出任意新波束的响应。'}
-- label: {en: Meaning of time, zh: 时间含义}
-  text: {en: '• Trajectories first define spatial positions and segments; speed/motion profiles map positions to time to generate spatially continuous channels.
-
-      • Drifting handles evolution within a segment, while merge handles transitions between adjacent scenarios/clusters. This represents model-defined motion and statistical nonstationarity.
-
-      • When changing only the speed profile along the same path, sufficiently dense spatial channel samples can be remapped in time using interpolate_movement and channel.interpolate as in the official tutorial; changes to trajectory shape, scenario segmentation, or propagation states require recomputing the affected channels.', zh: '• 轨迹首先定义空间位置和分段；速度/运动profile将位置映射到时间，生成空间连续的信道。
-
-      • drifting负责段内演化，merge负责相邻场景/簇的过渡。它表达模型设定的运动和统计非平稳性。
-
-      • 仅改同一路径的速度profile，在原信道空间采样足够时可按官方教程用interpolate_movement和channel.interpolate重新映射时间；改变轨迹形状、场景分段或传播状态则需重算相关信道。'}
-- label: {en: Changing blockage, zh: 改变遮挡}
-  text: {en: '• In the standard statistical model, blockage changes require explicit updates to the LOS/NLOS scenario sequence, clusters/powers, or a separate blockage model, followed by channel generation and merging; terminal motion alone does not simulate an independently moving blocker.
-
-      • When using site-specific meshes, geometry changes require repeating intersect_mesh state detection or diff_trans calculations, then updating scenario segmentation/channels for affected trajectories.
-
-      • Specific reflections, diffractions, and path births/deaths caused by a moving vehicle require per-geometry RT or a validated dedicated model; the site-specific tutorial alone does not provide such per-path ground truth.', zh: '• 常规统计模型中，遮挡变化需要明确更新LOS/NLOS场景序列、簇/功率或另设遮挡模型，再生成并合并信道；终端移动本身不等于仿真了一个独立移动blocker。
-
-      • 使用site-specific mesh时，几何变化后应重新进行intersect_mesh状态检测或diff_trans计算，并更新受影响轨迹的场景分段/信道。
-
-      • 若要求某辆车移动后产生的特定反射、绕射及路径出生/消失，需另接逐几何RT或经过验证的专门模型；仅靠该site-specific教程不能提供这些逐径真值。'}
-- label: {en: Cost drivers, zh: 成本来源}
-  text: {en: '• Link count, cluster/subpath count, antenna-element pair count, trajectory snapshot count, and band count determine the work required for parameter generation and coefficient synthesis.
-
-      • Drifting, per-element delays, and dual mobility increase computation; denser spatial sampling of trajectories directly generates more snapshots.
-
-      • Where sampling requirements permit, the official tutorial reduces repeated generation using coarser spatial channel samples followed by interpolation; FR-stage cost also grows with frequency-point count.', zh: '• 链路数、簇/子径数、阵元对数、轨迹快照数与频段数决定参数生成和系数合成工作量。
-
-      • drifting、逐阵元时延及双端移动增加计算；轨迹空间采样越密，直接生成的快照越多。
-
-      • 在满足采样要求时，官方教程用稀一些的空间信道采样再插值以减少重复生成；FR阶段成本另随频点数增长。'}
-- label: {en: Stored artifacts, zh: 产物}
-  text: {en: '• Preserve simpar, scenario parameters and modifications, layout/track/segment, random state, and arrays, including element coordinates in meters.
-
-      • For controlled experiments, preserve realization parameters in the builder, qd_channel coeff/delay, positions, and time mapping; CFR generated by fr also needs frequency points/bandwidth.
-
-      • For site-specific mode, also preserve the mesh and LOS classification/segmentation rules; multifrequency data should record shared and frequency-dependent parameters.', zh: '• 保留simpar、场景参数及修改项、layout/track/segment、随机状态和阵列（含米制阵元坐标）。
-
-      • 受控实验宜保留builder中的实现参数，以及qd_channel coeff/delay、位置和时间映射；由fr生成的CFR还需附频点/带宽。
-
-      • site-specific模式另保留mesh、LOS判定/分段规则；多频数据记录共享与逐频变化的参数。'}
-- label: {en: Common mistakes, zh: 常见混淆}
-  text: {en: '• Interpreting random cluster coordinates as RT reflection points in a real city, or equating mesh-assisted LOS segmentation with full site-specific multipath tracing.
-
-      • Claiming propagation samples from another RF band after changing only the fr frequency grid.
-
-      • Redrawing LSP/SSF whenever arrays change, confounding array effects with random-environment effects; or adding time indices to independent drops and calling them continuous mobility.', zh: '• 把随机簇坐标解释成真实城市的RT反射点，或把mesh辅助LOS分段等同完整站点多径追踪。
-
-      • 只改fr的频率网格就声称获得了另一RF频段的传播样本。
-
-      • 每次改阵列同时重抽LSP/SSF，使阵列差异与随机环境差异混在一起；或给独立drop加时间索引后称为连续移动。'}
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Model-generated qd_channel coeff/delay
-
-      • Layout, trajectory, and builder parameters', zh: '• 模型生成的qd_channel coeff/delay
-
-      • 布局、轨迹与builder参数'}
+  text: {en: 'Model-generated complex coefficients and delays (qd_channel coeff and delay), together with the layout, trajectory and builder parameters that produced them.', zh: 模型生成的复系数与时延（qd_channel的coeff与delay），以及生成它们所用的布局、轨迹与builder参数。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• CFR, PDP, beam, and CSI-feedback samples
-
-      • Multiuser/multifrequency task data', zh: '• CFR、PDP、beam与CSI-feedback样本
-
-      • 多用户/多频任务数据'}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Official tutorial source code reviewed; MATLAB/Octave generation was not executed in this round.
-
-      • Tutorial options that disable pathloss, reduce cluster counts, or change XPR for demonstration cannot be copied directly as the default physical system.
-
-      • Verify the code license and published-data license separately; sharing a stochastic model does not establish real-scene calibration.', zh: '• 已读官方教程源代码，未在本轮执行MATLAB/Octave生成。
-
-      • 教程中为演示关闭pathloss、减少簇数或改XPR的选项不能直接照搬为默认物理系统。
-
-      • 代码许可与发布数据许可分别确认；共享随机模型不证明真实场景校准。'}
+  text: {en: CFR obtained with qd_channel.fr at the chosen bandwidth and frequency points., zh: 通过qd_channel.fr按所选带宽与频点得到的CFR。}
+- label: {en: Entry inputs, zh: 入口输入}
+  text: {en: 'Typical inputs are scenario statistical parameters, BS and terminal layouts, qd_track trajectories and segments, qd_arrayant arrays and a random state.', zh: 常见输入为场景统计参数、BS与终端布局、qd_track轨迹与分段、qd_arrayant阵列以及随机状态。}
+- label: {en: Site-specific mode, zh: 站点特定模式}
+  text: {en: The 2.8 site-specific mode imports a 3D mesh (qd_mesh) to classify LOS and indoor states and to assign LOS or NLOS sections to track sections., zh: 2.8的站点特定模式导入3D网格（qd_mesh），用于判定LOS与室内状态，并将LOS或NLOS分段分配给轨迹片段。}
+- label: {en: Spatial consistency, zh: 空间一致性}
+  text: {en: 'Large- and small-scale parameters are consistent across positions. SC_lambda sets the small-scale spatial correlation, and SC_lambda = 0 disables it.', zh: 大尺度与小尺度参数在不同位置之间保持一致。SC_lambda控制小尺度空间相关，设为0时关闭。}
+- label: {en: Drifting and Doppler, zh: Drifting与多普勒}
+  text: {en: 'Drifting updates path delays, angles, phases and large-scale parameters during motion within a segment. Without drifting, the Doppler component is computed with a plane-wave approximation from the initial position.', zh: Drifting在段内运动过程中更新路径时延、角度、相位与大尺度参数。不使用drifting时，多普勒分量按起始位置采用平面波近似计算。}
+- label: {en: Multi-frequency tutorial, zh: 多频教程}
+  text: {en: 'Tutorial t11 simulates 2.6 GHz and 28 GHz in an urban macrocell. Shared between the two frequencies: LOS/NLOS state, BS and MT positions, cluster delays and angles, and the spatial consistency of the LSPs. Varying with frequency: pathloss, path powers, antenna patterns, delay and angular spreads, K-factor and XPR.', zh: 教程t11在城市宏蜂窝中模拟2.6 GHz与28 GHz。两个频率之间共享：LOS/NLOS状态、BS与MT位置、簇时延与角度，以及LSP的空间一致性。随频率变化：路径损耗、路径功率、天线方向图、时延与角度扩展、K-factor与XPR。}
+- label: {en: Changing bandwidth or carriers, zh: 改变带宽或载频}
+  text: {en: 'qd_channel.fr changes only the baseband frequency grid, so changing bandwidth or carriers reuses the existing coefficients and delays.', zh: qd_channel.fr只改变基带频率网格，因此改变带宽或载频时复用已有的系数与时延。}
+- label: {en: Element positions, zh: 阵元位置}
+  text: {en: qd_arrayant.element_position is given in meters in local Cartesian coordinates., zh: qd_arrayant.element_position以米为单位，表示局部笛卡尔坐标系中的阵元位置。}
 provenance:
 - {en: 'Network layout, trajectories, array patterns', zh: 网络布局、轨迹、阵列方向图}
 - {en: Select a 3GPP/WINNER/mmMAGIC parameterization, zh: 选择 3GPP/WINNER/mmMAGIC 参数化}
@@ -245,31 +98,159 @@ provenance:
 - {en: Multilink CIR/CFR, zh: 多链路 CIR/CFR}
 - {en: Decision algorithms and user-defined datasets, zh: 决策算法与用户定义数据集}
 technical_notes:
-- {en: 'Confirmed: officially defined as a 3D geometry-based stochastic model, with large- and small-scale consistency across locations.', zh: 已确认：官方将其定义为三维几何随机模型，并提供跨位置的大/小尺度一致性。}
-- {en: 'Confirmed: can import measured/simulated far-field antenna patterns; includes spherical waves and time-varying cluster evolution.', zh: 已确认：可导入实测/仿真的远场天线图；包含球面波与时变簇演化能力。}
-- {en: 'Confirmed: 2.8 adds site-specific functionality and partial CUDA acceleration; this does not mean all outputs are field-calibrated.', zh: 已确认：2.8 增加 site-specific 功能和部分 CUDA 加速；不代表所有输出经过现场校准。}
-- {en: 'Inference: generating different carrier frequencies with the same random seed does not recover actual paths unique to low bands or absent at high bands.', zh: 推断：使用同一随机种子产生不同载频，不等于恢复实际低频独有或高频消失路径。}
-- {en: 'Inference: standardized parameterizations support controlled mechanism comparisons; generalization to real deployments requires independent measurement validation.', zh: 推断：标准参数化可用于受控机制比较，真实部署泛化需独立测量验证。}
+- {en: The README describes QuaDRiGa as a three-dimensional geometry-based stochastic channel model with large- and small-scale fading consistency across locations., zh: README将QuaDRiGa描述为三维几何随机信道模型，大尺度与小尺度衰落在不同位置之间保持一致。}
+- {en: 'Version 1.4 added import of measured and simulated far-field antenna patterns, spherical waves and time-varying cluster evolution.', zh: 1.4版本加入了实测与仿真远场天线方向图的导入、球面波以及时变簇演化。}
+- {en: 'The README states that the model is calibrated against 3GPP channel models, including 3GPP-3D and the New Radio model.', zh: README称该模型以3GPP信道模型（包括3GPP-3D与NR信道模型）进行了校准。}
+- {en: Site-specific simulations in 2.8 include partial CUDA acceleration. The GPU extension has to be compiled for the target CPU and GPU., zh: 2.8的站点特定仿真包含部分CUDA加速。GPU扩展须针对目标CPU与GPU编译。}
 limitations:
-- {en: Free software does not imply unrestricted commercial use; read the official noncommercial terms., zh: 自由软件不等于商业用途无限制；应阅读官方非商业条款。}
-- {en: Different 3GPP specification versions/implementation parameters change the statistical distributions., zh: 不同 3GPP 规范版本/实现参数会改变统计分布。}
-- {en: More synthetic samples do not increase the number of independent cities or hardware platforms., zh: 大量合成样本不增加独立城市或硬件的数量。}
+- {en: 'The license allows non-commercial use only, for scientific, educational and standardization purposes.', zh: 许可仅允许非商业用途，包括科研、教育与标准化用途。}
+- {en: 'Standards compatibility is stated per version: TR 36.873 v12.5.0, TR 38.901 v16.1.0 and mmMAGIC D2.2.', zh: 标准兼容性按版本说明：TR 36.873 v12.5.0、TR 38.901 v16.1.0与mmMAGIC D2.2。}
 history:
-- {en: '2013-06-20: the official version history lists 1.0.7.', zh: 2013-06-20：官网历史列出 1.0.7。}
-- {en: '2017-08-01: 2.0 adds 38.901, multifrequency support, and spatial consistency.', zh: 2017-08-01：2.0 加入 38.901、多频与空间一致性。}
-- {en: '2019-06-27: 2.2 adds dual mobility.', zh: 2019-06-27：2.2 双端移动。}
-- {en: '2020-11-03: 2.4 adds CDL/TDL, InF, and satellite support.', zh: 2020-11-03：2.4 CDL/TDL、InF 与卫星。}
-- {en: '2021-07-12: 2.6.1 adds semideterministic clusters.', zh: 2021-07-12：2.6.1 半确定性簇。}
-- {en: 2023-12-13：2.8.1 site-specific。, zh: 2023-12-13：2.8.1 site-specific。}
+- {en: '2013-06-20: version 1.0.7 is the earliest entry in the official version list.', zh: 2013-06-20：1.0.7是官方版本列表中最早的条目。}
+- {en: '2017-08-01: version 2.0 adds 3D spatial consistency, multi-frequency simulations and 3GPP 38.901 outdoor-to-indoor penetration loss models.', zh: 2017-08-01：2.0版本加入3D空间一致性、多频仿真以及3GPP 38.901室外到室内穿透损耗模型。}
+- {en: '2019-06-27: version 2.2 adds dual mobility and an industrial indoor scenario.', zh: 2019-06-27：2.2版本加入双端移动与工业室内场景。}
+- {en: '2020-11-03: version 2.4 adds CDL/TDL models, 3GPP InF models and satellite channel models.', zh: 2020-11-03：2.4版本加入CDL/TDL模型、3GPP InF模型与卫星信道模型。}
+- {en: '2021-07-12: version 2.6.1 adds semi-deterministic clusters and Octave 6.2 compatibility.', zh: 2021-07-12：2.6.1版本加入半确定性簇与Octave 6.2兼容性。}
+- {en: Version 2.6 adds save and load functions for channel data., zh: 2.6版本加入信道数据的保存与加载函数。}
+- {en: '2023-12-13: version 2.8.1 adds site-specific simulations.', zh: 2023-12-13：2.8.1版本加入站点特定仿真。}
 usage:
-- {en: Pin 2.8.1 and the MATLAB/Octave version; first run the official minimal layout tutorial., zh: 固定 2.8.1 与 MATLAB/Octave 版本，先运行官方最小 layout 教程。}
-- {en: 'Explicitly configure the center frequency, arrays, scenario model, Tx/Rx positions, and trajectories.', zh: 显式配置中心频率、阵列、场景模型、Tx/Rx 位置和轨迹。}
-- {en: 'Generate CIR first, then compute CFR at the target subcarriers; distinguish absolute-power and normalized copies.', zh: 先生成 CIR，再按目标子载波计算 CFR；保留绝对功率和归一化副本的区别。}
-- {en: Split by independent layout/trajectory/seed; evaluate persistence/analytical baselines and a perfect-CSI oracle., zh: 用独立布局/轨迹/种子划分；计算 persistence/解析基线与 perfect-CSI oracle。}
+- {en: Start with the official tutorials in the repository (t01 to t15). Tutorial t11 covers multi-frequency simulation and t15 covers site-specific simulation., zh: 从仓库中的官方教程（t01至t15）开始。教程t11介绍多频仿真，t15介绍站点特定仿真。}
+- {en: 'Generate CIRs first, then compute CFRs with qd_channel.fr at the target bandwidth and frequency points.', zh: 先生成CIR，再用qd_channel.fr在目标带宽与频点上计算CFR。}
+- {en: The official software page lists 2.8.1 as the current version. The software is distributed under the non-commercial license., zh: 官方软件页面将2.8.1列为当前版本。该软件以非商业许可分发。}
 materials:
 - {title: QuaDRiGa official dual-band simulation tutorial source, path: /materials/official/quadriga/t11_multi_frequency_simulations.m, license: QuaDRiGa custom non-commercial source license, source_url: 'https://github.com/fraunhoferhhi/QuaDRiGa/blob/main/tutorials/t11_multi_frequency_simulations.m'}
-overview: {en: 'QuaDRiGa is a MATLAB/Octave software package for generating geometry-based stochastic MIMO channel impulse responses. Fraunhofer HHI developed it, and Jaeckel, Raschkowski, Börner and Thiele described it in IEEE Transactions on Antennas and Propagation (2014). It is a channel generator rather than a fixed dataset: channels are produced on demand from the user''s configuration, and no precomputed channel data are distributed. The README gives a carrier frequency range of 500 MHz to 100 GHz, with 100 MHz bandwidth in standard configurations and 2 GHz in the mmMAGIC configurations. The model implements the 3GPP TR 36.873 and TR 38.901 channel models and the mmMAGIC channel model. Array antennas are freely configurable, and measured or simulated far-field antenna patterns can be imported. Version 2.8 adds site-specific simulations and optional partial GPU acceleration with NVIDIA CUDA. The software license permits non-commercial use only.', zh: QuaDRiGa 是一个 MATLAB/Octave 软件包，用于生成基于几何的随机
-    MIMO 信道冲激响应。它由 Fraunhofer HHI 开发，Jaeckel、Raschkowski、Börner 和 Thiele 在 IEEE Transactions on Antennas and Propagation（2014）中对其进行了介绍。它是信道生成器，而非固定数据集：信道根据用户配置按需生成，不发布预先计算的信道数据。README 给出的载频范围为 500 MHz 至 100 GHz，标准配置带宽为 100 MHz，mmMAGIC 配置带宽为 2 GHz。该模型实现了 3GPP TR 36.873 和 TR 38.901 信道模型以及 mmMAGIC 信道模型。阵列天线可自由配置，并可导入实测或仿真的远场天线方向图。2.8 版本增加了站点特定仿真，并可选支持基于 NVIDIA CUDA 的部分 GPU 加速。软件许可仅允许非商业用途。}
+overview: {en: 'QuaDRiGa (QUAsi Deterministic RadIo channel GenerAtor) is a MATLAB/Octave software package from Fraunhofer HHI that generates geometry-based stochastic MIMO channel impulse responses. Jaeckel, Raschkowski, Börner and Thiele describe it in IEEE Transactions on Antennas and Propagation (2014). The README lists compatibility with 3GPP TR 36.873 v12.5.0, TR 38.901 v16.1.0 and the mmMAGIC channel model, a carrier frequency range of 500 MHz to 100 GHz, and a bandwidth of 100 MHz in standard configurations or 2 GHz in mmMAGIC configurations. Array antennas are freely configurable, and measured or simulated far-field antenna patterns can be imported. The software generates channels from the user''s configuration, and the GitHub repository distributes source code, tutorials and documentation rather than channel data sets. Version 2.8.1 adds site-specific simulations, which use a 3D mesh to determine LOS and indoor states, and optional partial GPU acceleration with NVIDIA CUDA. The
+    software license allows non-commercial use only.', zh: QuaDRiGa（QUAsi Deterministic RadIo channel GenerAtor）是 Fraunhofer HHI 开发的 MATLAB/Octave 软件包，用于生成基于几何的随机 MIMO 信道冲激响应。Jaeckel、Raschkowski、Börner 和 Thiele 在 IEEE Transactions on Antennas and Propagation（2014）中对其进行了描述。README 列出的兼容标准包括 3GPP TR 36.873 v12.5.0、TR 38.901 v16.1.0 以及 mmMAGIC 信道模型；载频范围为 500 MHz 至 100 GHz，标准配置带宽为 100 MHz，mmMAGIC 配置带宽为 2 GHz。阵列天线可自由配置，并可导入实测或仿真的远场天线方向图。软件根据用户配置生成信道，GitHub 仓库发布的是源代码、教程与文档，而非信道数据集。2.8.1 版本增加了站点特定仿真，利用 3D 网格判定 LOS 与室内状态，并可选支持基于 NVIDIA CUDA 的部分 GPU 加速。软件许可仅允许非商业用途。}
 signal_details:
 - signal: cir
   text: {en: 'Complex MIMO channel impulse responses (CIR) generated on demand by the software. Carrier frequency 500 MHz to 100 GHz. Bandwidth 100 MHz in standard configurations and 2 GHz in mmMAGIC configurations, per the README. Channel data can be written and read with the software''s save and load functions (version 2.6).', zh: 软件按需生成的复数 MIMO 信道冲激响应（CIR）。载频范围为 500 MHz 至 100 GHz。依 README，标准配置带宽为 100 MHz，mmMAGIC 配置带宽为 2 GHz。信道数据可通过软件的保存与加载函数读写（2.6 版本）。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: Frequency-domain channel computed from the generated coefficients and delays (qd_channel.fr); produced by a generator run., zh: 由生成器运行得到的系数与时延计算频域信道（qd_channel.fr）。}
+- key: cir
+  status: simulate
+  note: {en: 'Complex tap coefficients and delays, generated per link and track segment by a generator run.', zh: 由生成器运行按链路与轨迹分段生成的复数抽头系数与时延。}
+- key: paths
+  status: simulate
+  note: {en: 'Cluster delays, angles and powers are drawn per link during generation (documentation section 3.3); the output keeps coefficients and delays.', zh: 簇时延、角度与功率在生成时按链路抽取（文档第 3.3 节）；输出保留系数与时延。}
+- key: interaction
+  status: simulate
+  note: {en: First- and last-bounce scatterer positions are generated per cluster (single- or two-bounce); no surface labels are recorded., zh: 每个簇生成首次与末次反弹散射体位置（单次或双次反弹）；不记录表面标签。}
+- key: power
+  status: simulate
+  note: {en: 'Path loss, O2I penetration loss and shadow fading are computed by a generator run (get_pl, power_map).', zh: 路径损耗、O2I 穿透损耗与阴影衰落由生成器运行计算（get_pl、power_map）。}
+- key: iq
+  status: none
+  note: {en: The output is channel coefficients and delays; no transmitted or received waveform samples are produced., zh: 输出为信道系数与时延，不产生发射或接收波形采样。}
+- key: beam_labels
+  status: simulate
+  note: {en: Beam indices or per-beam gains need a generator run with a chosen array and codebook (qd_arrayant calc_gain)., zh: 波束索引或每波束增益需选定阵列与码本后运行生成器获得（qd_arrayant calc_gain）。}
+- key: position
+  status: simulate
+  note: {en: 'Transmitter and receiver positions are layout inputs, and tracks set user trajectories.', zh: 收发端位置为布局输入，轨迹定义用户运动路径。}
+- key: geometry
+  status: provided
+  note: {en: 'One example 3D scene (Madrid grid, OBJ) ships in tutorials/madrid_grid; other maps are user-supplied.', zh: 随附一个示例三维场景（Madrid grid，OBJ 格式，位于 tutorials/madrid_grid）；其他地图需用户提供。}
+- key: materials
+  status: simulate
+  note: {en: 'Relative permittivity, conductivity and thickness are set per mesh material by the user (qd_mesh).', zh: 相对介电常数、电导率与厚度由用户按网格材料设定（qd_mesh）。}
+- key: rgb
+  status: none
+  note: {en: QuaDRiGa is a channel generator with no camera output., zh: QuaDRiGa 为信道生成器，无相机输出。}
+- key: depth
+  status: none
+  note: {en: The software generates channels only and has no depth output., zh: 软件仅生成信道，无深度输出。}
+- key: lidar
+  status: none
+  note: {en: The software generates channels only and has no LiDAR output., zh: 软件仅生成信道，无 LiDAR 输出。}
+- key: radar
+  status: none
+  note: {en: The v2.8.1 documentation and code define no radar or sensing-target channel model., zh: v2.8.1 的文档与代码中未定义雷达或感知目标信道模型。}
+- key: imu
+  status: none
+  note: {en: The software generates channels only and has no inertial sensor output., zh: 软件仅生成信道，无惯性传感器输出。}
+- key: time_series
+  status: simulate
+  note: {en: Time-varying channels follow from track sampling and speed profiles and are produced per run., zh: 时变信道由轨迹采样与速度曲线生成，按运行产生。}
+- key: multiuser
+  status: simulate
+  note: {en: 'The layout holds several receivers, and the builder creates a channel object for each one.', zh: 布局可包含多个接收机，建模器为每个接收机生成信道对象。}
+- key: multibs
+  status: simulate
+  note: {en: 'The layout holds several transmitters, so multi-cell sets are generated per run.', zh: 布局可包含多个发射机，多小区数据集按运行生成。}
+- key: crossfreq
+  status: simulate
+  note: {en: center_frequency accepts a vector for multi-frequency simulations (documentation section 4.11)., zh: center_frequency 可设为向量以进行多频率仿真（文档第 4.11 节）。}
+- key: near_field
+  status: simulate
+  note: {en: Spherical waves at both ends are the default enhanced mode (use 3GPP baseline = 0)., zh: 收发两端的球面波为默认增强模式（use 3GPP baseline = 0）。}
+- key: high_mobility
+  status: simulate
+  note: {en: UT speed is a run-time input (set in m/s or km/h) with variable speed profiles; no upper speed limit is stated., zh: UT 速度为运行时输入（以 m/s 或 km/h 设定），支持可变速度曲线；文档未给出速度上限。}
+- key: dynamic_blockage
+  status: none
+  note: {en: The 3GPP blockage model (TR 38.901 section 7.6.3) is listed as not implemented in v2.8.1., zh: 文档列出 3GPP 遮挡模型（TR 38.901 第 7.6.3 节）在 v2.8.1 中未实现。}
+- key: reflection
+  status: simulate
+  note: {en: Reflection comes from cluster scatterers and an optional explicit ground-reflection model (documentation section 3.9)., zh: 反射来自簇散射体及可选的显式地面反射模型（文档第 3.9 节）。}
+- key: diffraction
+  status: simulate
+  note: {en: The site-specific mode adds diffraction and transmission loss to the direct path where a 3D mesh blocks it (diff_trans)., zh: 站点特定模式在三维网格遮挡直射路径时，为直射路径加入绕射与穿透损耗（diff_trans）。}
+- key: scattering
+  status: simulate
+  note: {en: Scattering is modelled as clusters of 20 single reflections each; the documentation describes no separate diffuse component., zh: 散射以每簇 20 个单次反射建模；文档未描述独立的漫散射分量。}
+- key: transmission
+  status: simulate
+  note: {en: 'Outdoor-to-indoor penetration loss is generated per track (gen_o2i_loss), and the site-specific mode can add transmission loss.', zh: 室外到室内穿透损耗按轨迹生成（gen_o2i_loss），站点特定模式还可加入穿透损耗。}
+- key: polarization
+  status: simulate
+  note: {en: Polarization transfer matrices and geometric polarization are generated per path; antenna polarization is defined by the array., zh: 极化传输矩阵与几何极化按径生成；天线极化由阵列定义。}
+- key: em_field
+  status: simulate
+  note: {en: 'Antenna field patterns (e_theta, e_phi) are generated or imported by qd_arrayant; the channel output holds no E-field samples.', zh: 天线场方向图（e_theta、e_phi）由 qd_arrayant 生成或导入；信道输出不含电场采样。}
+versions:
+- version: 2.8.1
+  date: '2023-12-13'
+  summary: {en: Fixes a gen_cdl_model crash on Octave and adds a simpler Makefile for the +qext module., zh: 修复 Octave 下 gen_cdl_model 崩溃的问题，并为 +qext 模块提供更易用的 Makefile。}
+  url: https://quadriga-channel-model.de/software/
+- version: 2.6.1
+  date: '2021-07-12'
+  summary: {en: 'Fixes qd_builder.get_los_channels, which ignored tx_array in some cases; the download page also lists semi-deterministic clusters and performance gains for this release.', zh: 修复 qd_builder.get_los_channels 在部分情况下忽略 tx_array 的问题；下载页还列出本版本的半确定性簇及性能改进。}
+  url: https://quadriga-channel-model.de/software/
+- version: 2.4.0
+  date: '2020-10-09'
+  summary: {en: Adds configuration files for satellite links and fixes a crash in qd_satellite.init_tracks when satellite names are undefined., zh: 新增卫星链路配置文件，并修复未定义卫星名称时 qd_satellite.init_tracks 崩溃的问题。}
+  url: https://quadriga-channel-model.de/software/
+- version: 2.2.0
+  date: '2019-06-27'
+  summary: {en: 'Adds dual-mobility, vehicular and industrial scenario support, per the download page.', zh: 新增双移动性、车载及工业场景支持（据下载页）。}
+  url: https://quadriga-channel-model.de/software/
+- version: 2.0.0
+  date: '2017-08-01'
+  summary: {en: 'Major redesign, with the 3GPP TR 38.901 model (spatial consistency, multi-frequency simulation) and the final mmMAGIC model.', zh: 大幅重构，加入 3GPP TR 38.901 模型（空间一致性、多频率仿真）及最终版 mmMAGIC 模型。}
+  url: https://quadriga-channel-model.de/software/
+- version: 1.4.8
+  date: '2016-08-05'
+  summary: {en: Fixes a sign error in array.generate_multi for electric tilt angles., zh: 修复 array.generate_multi 中电子下倾角的符号错误。}
+  url: https://quadriga-channel-model.de/software/
+- version: 1.4.1
+  date: '2016-03-22'
+  summary: {en: Stores LSPs and SSPs in channel.par and adds the qf helper package; the download page lists 3GPP-3D (TR 36.873) and mm-wave channels up to 80 GHz., zh: 将 LSP 与 SSP 存入 channel.par 并新增 qf 辅助函数包；下载页列出 3GPP-3D（TR 36.873）及 80 GHz 以内的毫米波信道。}
+  url: https://quadriga-channel-model.de/software/
+- version: 1.2.32
+  date: '2015-03-23'
+  summary: {en: 'Removes HTML help, which newer MATLAB versions no longer support, and updates the documentation.', zh: 移除新版 MATLAB 已不支持的 HTML 帮助，并更新文档。}
+  url: https://quadriga-channel-model.de/software/
+- version: 1.2.0
+  date: '2014-02-19'
+  summary: {en: Fixes the XPR in output coefficients when use_polarization_rotation is set to 2., zh: 修复 use_polarization_rotation 设为 2 时输出系数中的 XPR 与设定值不一致的问题。}
+  url: https://quadriga-channel-model.de/software/
+- version: 1.1.0
+  date: '2014-01-14'
+  summary: {en: Fixes antenna gain normalization for dipole and custom arrays and adds short-dipole and half-wave dipole array types., zh: 修复偶极子与自定义阵列的天线增益归一化问题，并新增 short-dipole 与 half-wave dipole 阵列类型。}
+  url: https://quadriga-channel-model.de/software/
+- version: 1.0.0
+  date: '2013-01-13'
+  summary: {en: First entry in the bundled version history; the entry contains only the license header., zh: 随包版本历史中的首个条目；该条目仅含许可证头部。}
+  url: https://quadriga-channel-model.de/software/

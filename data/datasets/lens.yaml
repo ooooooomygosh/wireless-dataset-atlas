@@ -15,7 +15,7 @@ paper: doi:10.1145/3625468.3652170
 used_in: []
 citing: ['doi:10.1109/infocom59046.2026.11571189']
 summary: {en: 'Ping round-trip time and IRTT one-way delay measurements from 20 Starlink dish locations across North America, Europe, Africa, Asia and Oceania, released as monthly Zenodo snapshots from 2023-11 to 2025-03.', zh: 来自北美、欧洲、非洲、亚洲和大洋洲 20 个 Starlink 终端站点的 ping RTT 与 IRTT 单向时延测量数据，以月度快照形式发布于 Zenodo，时间范围为 2023 年 11 月至 2025 年 3 月。}
-sources: ['https://github.com/clarkzjw/LENS', 'https://zenodo.org/records/15331299', 'https://api.crossref.org/works/10.1145/3625468.3652170']
+sources: ['https://github.com/clarkzjw/LENS', 'https://zenodo.org/records/15331299', 'https://api.crossref.org/works/10.1145/3625468.3652170', 'https://raw.githubusercontent.com/clarkzjw/LENS/master/README.md', 'https://raw.githubusercontent.com/clarkzjw/LENS/master/LICENSE', 'https://api.github.com/repos/clarkzjw/LENS/license', 'https://github.com/clarkzjw/LENS/releases', 'https://github.com/clarkzjw/LENS/releases/tag/mmsys24ods', 'https://zenodo.org/api/records/15331299/versions', 'https://zenodo.org/api/records/15331299', 'https://zenodo.org/api/records/15331285', 'https://zenodo.org/api/records/14625823', 'https://zenodo.org/api/records/14625802', 'https://zenodo.org/api/records/14603344', 'https://zenodo.org/api/records/13353671', 'https://zenodo.org/api/records/11537639', 'https://zenodo.org/api/records/11552317', 'https://zenodo.org/api/records/10608442', 'https://zenodo.org/api/records/10663194', 'https://zenodo.org/api/records/10445958']
 checked: '2026-11-06'
 overview: {en: 'LENS is a dataset of ping round-trip time (RTT) and IRTT one-way delay measurements from Starlink user terminals. Jinwei Zhao and Jianping Pan (University of Victoria) describe it in the ACM MMSys 2024 Open-Source Software and Dataset track, with DOI 10.1145/3625468.3652170. The probes ran from 20 Starlink dishes in 7 countries (Canada, United States, Belgium, Germany, Seychelles, Japan and Australia), with measurements taken from the user side of each terminal. The data are released as monthly snapshots; Zenodo holds the 2023-11 to 2025-03 snapshots, and later data are published on a separate site. Each snapshot is a zstd-compressed tar archive split into parts, and the RAW snapshots contain IRTT JSON and ping text output while selected months also include processed CSV files. The authors note that some one-way delay values are inaccurate or negative, because client and server clocks are synchronized by NTP on a best-effort basis, and that some dishes were inactive or paused
     for parts of the period.', zh: LENS 是 Starlink 用户终端的 ping 往返时延（RTT）与 IRTT 单向时延测量数据集。作者为 Jinwei Zhao 与 Jianping Pan（University of Victoria），论文发表于 ACM MMSys 2024 开源软件与数据集（ODS）专题，DOI 为 10.1145/3625468.3652170。探测来自 20 个 Starlink 终端，分布于 7 个国家（加拿大、美国、比利时、德国、塞舌尔、日本和澳大利亚），测量从各终端的用户侧进行。数据以月度快照形式发布，Zenodo 保存 2023-11 至 2025-03 的快照，之后的数据发布于另一站点。每个快照为经 zstd 压缩并分割为多个部分的 tar 归档；RAW 快照包含 IRTT JSON 与 ping 文本输出，部分月份还提供处理后的 CSV 文件。作者指出，由于客户端与服务器时钟仅以尽力而为的方式通过 NTP 同步，部分单向时延值不准确或为负值；部分终端在该时段内处于非活动或暂停状态。}
@@ -61,3 +61,130 @@ pipeline:
     outputs:
     - {en: Zenodo snapshots, zh: Zenodo 快照}
     - {en: lens-starlink.jinwei.me archives, zh: lens-starlink.jinwei.me 归档}
+facts:
+- label: {en: Dish coverage, zh: 终端分布}
+  text: {en: 'The 20 dish entries are spread over Canada (7), the United States (8), Belgium and Germany (2 in total), Seychelles (1), Japan (1) and Australia (1).', zh: 20个终端条目的分布为：加拿大7个、美国8个、比利时与德国共2个、塞舌尔1个、日本1个、澳大利亚1个。}
+- label: {en: Dish aliases in snapshots, zh: 快照中的终端别名}
+  text: {en: victoria_active_1 appears as victoria and louvain appears as frankfurt in the monthly snapshots., zh: 在月度快照中，victoria_active_1 记作 victoria，louvain 记作 frankfurt。}
+- label: {en: Paused and inactive periods, zh: 暂停与非活动时段}
+  text: {en: 'The vancouver subscription was paused from 2023/12/29 to 2024/01/09. The seychelles subscription has been cancelled since March 2024, and the ottawa and denver subscriptions have been paused since March 2024; their inactive measurements start in 2024/07 (ottawa, denver) and 2024/08 (seychelles).', zh: vancouver的订阅于2023/12/29至2024/01/09暂停。seychelles的订阅自2024年3月起取消，ottawa与denver的订阅自2024年3月起暂停；三者的非活动测量分别始于2024/07（ottawa、denver）和2024/08（seychelles）。}
+- label: {en: Pending Zenodo uploads, zh: 待上传至Zenodo的快照}
+  text: {en: 'Monthly snapshots from April 2025 to November 2025 are being uploaded to Zenodo gradually, and the README updates the links as each one appears.', zh: 2025年4月至11月的月度快照正逐步上传至Zenodo，README会随每个快照上线而更新链接。}
+limitations:
+- {en: 'One-way delay values can be inaccurate or negative, because client and server clocks are synchronized with NTP only on a best-effort basis.', zh: 由于客户端与服务器时钟仅以尽力而为的方式通过NTP同步，单向时延值可能不准确，甚至为负值。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The dataset holds only ping and IRTT delay measurements; it contains no channel matrices., zh: 数据集仅包含ping与IRTT时延测量，不含信道矩阵。}
+- key: cir
+  status: none
+  note: {en: The dataset holds only ping and IRTT delay measurements; it contains no impulse responses., zh: 数据集仅包含ping与IRTT时延测量，不含冲激响应。}
+- key: paths
+  status: none
+  note: {en: The dataset holds only RTT and one-way delay KPIs; it contains no path-level data., zh: 数据集仅包含RTT与单向时延KPI，不含逐径数据。}
+- key: interaction
+  status: none
+  note: {en: The dataset holds only RTT and one-way delay KPIs; it contains no interaction data., zh: 数据集仅包含RTT与单向时延KPI，不含交互数据。}
+- {key: power, status: unknown}
+- key: iq
+  status: none
+  note: {en: The dataset holds only RTT and one-way delay KPIs; it contains no I/Q samples., zh: 数据集仅包含RTT与单向时延KPI，不含I/Q采样。}
+- key: beam_labels
+  status: none
+  note: {en: The dataset holds only RTT and one-way delay KPIs; it contains no beam data., zh: 数据集仅包含RTT与单向时延KPI，不含波束数据。}
+- key: position
+  status: none
+  note: {en: Only city-level dish locations are listed in the README; no per-sample position is described., zh: README仅列出终端所在城市级位置；未描述逐样本位置。}
+- key: geometry
+  status: none
+  note: {en: The dataset contains no 3D scene or map files., zh: 数据集不包含三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: The dataset contains no material parameters., zh: 数据集不包含材料参数。}
+- key: rgb
+  status: none
+  note: {en: The dataset contains no images., zh: 数据集不包含图像。}
+- key: depth
+  status: none
+  note: {en: The dataset contains no depth data., zh: 数据集不包含深度数据。}
+- key: lidar
+  status: none
+  note: {en: The dataset contains no LiDAR data., zh: 数据集不包含LiDAR数据。}
+- key: radar
+  status: none
+  note: {en: The dataset contains no radar data., zh: 数据集不包含雷达数据。}
+- key: imu
+  status: none
+  note: {en: The dataset contains no IMU data., zh: 数据集不包含IMU数据。}
+- key: time_series
+  status: provided
+  note: {en: Timestamped ping RTT and IRTT one-way delay series are recorded for each dish., zh: 每个终端记录带时间戳的ping RTT与IRTT单向时延序列。}
+- key: multiuser
+  status: none
+  note: {en: Each series comes from one dish; the sources describe no joint multi-terminal measurement set., zh: 每条序列来自单个终端；资料中未描述多终端联合测量集合。}
+- key: multibs
+  status: none
+  note: {en: Each series comes from one terminal; the sources describe no multi-base-station set., zh: 每条序列为单个终端到PoP的路径；资料中未描述多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: 'The dataset has no radio channel data, so it has no paired multi-band measurements.', zh: 数据集不含无线信道数据，因此不存在成对的多频段测量。}
+- key: near_field
+  status: none
+  note: {en: The dataset has no array or channel model; it contains KPI series only., zh: 数据集不含阵列或信道模型，仅包含KPI序列。}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: none
+  note: {en: The dataset has no channel or field measurements; it contains RTT and delay KPIs only., zh: 数据集不含信道或场测量，仅包含RTT与时延KPI。}
+- key: diffraction
+  status: none
+  note: {en: The dataset has no channel or field measurements; it contains RTT and delay KPIs only., zh: 数据集不含信道或场测量，仅包含RTT与时延KPI。}
+- key: scattering
+  status: none
+  note: {en: The dataset has no channel or field measurements; it contains RTT and delay KPIs only., zh: 数据集不含信道或场测量，仅包含RTT与时延KPI。}
+- key: transmission
+  status: none
+  note: {en: The dataset has no channel or field measurements; it contains RTT and delay KPIs only., zh: 数据集不含信道或场测量，仅包含RTT与时延KPI。}
+- key: polarization
+  status: none
+  note: {en: The dataset has no polarimetric data; it contains RTT and delay KPIs only., zh: 数据集不含极化数据，仅包含RTT与时延KPI。}
+- key: em_field
+  status: none
+  note: {en: The dataset has no field-level outputs; it contains RTT and delay KPIs only., zh: 数据集不含场级输出，仅包含RTT与时延KPI。}
+versions:
+- version: README update 2026/06/24
+  date: '2026-06-24'
+  summary: {en: 'README updated with an overview of the testbed nodes, with more testbed information linked from the README.', zh: README更新，新增测试床节点概览，并在README中链接更多测试床信息。}
+  url: https://github.com/clarkzjw/LENS
+- version: README update 2025/11/19
+  date: '2025-11-19'
+  summary: {en: 'Collection and storage pipeline revamped from November 2025. New data are hosted at lens-starlink.jinwei.me, with per-measurement archives and weekly node snapshots, and dish gRPC metrics are added.', zh: 自2025年11月起重构采集与存储流程。新数据托管于lens-starlink.jinwei.me，按测量发布归档并每周发布节点快照，同时新增终端gRPC指标。}
+  url: https://lens-starlink.jinwei.me
+- version: Zenodo 2024-11 to 2025-03 snapshots
+  date: '2025-05-03'
+  summary: {en: 'Monthly RAW snapshots for 2024-11, 2024-12, 2025-01, 2025-02 and 2025-03 deposited on Zenodo. The 2025-03 record is the latest of these.', zh: 2024-11、2024-12、2025-01、2025-02和2025-03的月度RAW快照发布于Zenodo，其中2025-03为最新一个。}
+  url: https://zenodo.org/records/15331299
+- version: Zenodo 2024-03, 2024-08 and 2024-10 snapshots
+  date: 2025-01
+  summary: {en: 'Monthly RAW snapshots for 2024-03, 2024-08 and 2024-10 deposited on Zenodo; first-part records are dated 2025-01-06 to 2025-01-10.', zh: 2024-03、2024-08和2024-10的月度RAW快照发布于Zenodo；首个分块记录日期为2025-01-06至2025-01-10。}
+  url: https://zenodo.org/records/14625823
+- version: Zenodo 2024-07 snapshot
+  date: '2024-08-21'
+  summary: {en: Monthly RAW snapshot for 2024-07 deposited on Zenodo in four parts., zh: 2024-07的月度RAW快照以四个分块发布于Zenodo。}
+  url: https://zenodo.org/records/13353671
+- version: Zenodo 2024-05 snapshot
+  date: 2024-06
+  summary: {en: 'Monthly snapshot for 2024-05 deposited on Zenodo: RAW in three parts (dated 2024-06-09) and a separate CSV archive (dated 2024-06-10).', zh: 2024-05的月度快照发布于Zenodo：RAW为三个分块（日期2024-06-09），另有单独的CSV压缩包（日期2024-06-10）。}
+  url: https://zenodo.org/records/11537639
+- version: GitHub release mmsys24ods
+  date: '2024-05-05'
+  summary: {en: 'Release mmsys24ods marks the dataset snapshot at commit c084c11, taken when the paper was accepted at the MMSys 2024 ODS track.', zh: 发布标签mmsys24ods对应提交c084c11，即论文被MMSys 2024 ODS专题录用时的数据快照。}
+  url: https://github.com/clarkzjw/LENS/releases/tag/mmsys24ods
+- version: MMSys 2024 ODS paper
+  date: '2024-04-17'
+  summary: {en: 'Paper published online: LENS, ACM MMSys 2024 Open-Source Software and Dataset track (DOI 10.1145/3625468.3652170).', zh: 论文在线发表：LENS，ACM MMSys 2024开源软件与数据集（ODS）专题（DOI 10.1145/3625468.3652170）。}
+  url: https://doi.org/10.1145/3625468.3652170
+- version: Zenodo 2023-11 and 2024-01 snapshots
+  date: 2024-02
+  summary: {en: 'Earliest Zenodo deposits in the monthly table: RAW 2023-11 (part 1, dated 2024-02-01), CSV 2023-11 (dated 2024-02-15) and RAW 2024-01 (part 1, dated 2024-02-02).', zh: 月度表中最早的Zenodo发布：2023-11的RAW（分块1，日期2024-02-01）、2023-11的CSV（日期2024-02-15）以及2024-01的RAW（分块1，日期2024-02-02）。}
+  url: https://zenodo.org/records/10608442

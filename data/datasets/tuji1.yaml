@@ -15,29 +15,117 @@ paper: doi:10.1016/j.dib.2024.110356
 used_in: []
 citing: []
 summary: {en: 'The dataset contains Wi-Fi RSS fingerprints collected with multiple devices on a high-density measurement grid. Training and testing subsets are provided as CSV and MAT files, with coordinates for each fingerprint.', zh: 该数据集包含多款设备在高密度测量网格上采集的Wi-Fi RSS指纹。训练集和测试集以CSV及MAT文件提供，并附有每个指纹对应的坐标。}
-sources: ['https://zenodo.org/records/7641701', 'https://zenodo.org/api/records/7641701', 'https://zenodo.org/records/7641701/files/ReadMe.txt?download=1', 'https://api.crossref.org/works/10.1016/j.dib.2024.110356']
+sources: ['https://zenodo.org/records/7641701', 'https://zenodo.org/api/records/7641701', 'https://zenodo.org/records/7641701/files/ReadMe.txt?download=1', 'https://api.crossref.org/works/10.1016/j.dib.2024.110356', 'https://zenodo.org/records/7641701/files/DATASET.zip?download=1', 'https://zenodo.org/records/7641701/files/FormatRawData.m?download=1', 'https://zenodo.org/records/7641701/files/CreateDataset.m?download=1', 'https://zenodo.org/records/7641701/files/readrawfile.m?download=1', 'https://api.openalex.org/works/doi:10.1016/j.dib.2024.110356', 'https://zenodo.org/api/records/7641701/versions']
 checked: '2026-11-06'
-overview: {en: 'TUJI1 is a multi-device Wi-Fi RSS fingerprint dataset for indoor localization, created by Lucie Klus, Roman Klus, Elena Simona Lohan, Jari Nurmi, Carlos Granell Canut, Mikko Valkama, Jukka Talvitie, Sven Casteleyn and Joaquín Torres-Sospedra. The authors are affiliated with Tampere University, Universitat Jaume I and Universidade do Minho. The Zenodo record (version 1.0, DOI 10.5281/zenodo.7641701) was published on 14 February 2023, and the data descriptor appeared in Data in Brief in 2024. The title gives the focus as high measurement density, and the fingerprints were collected with several devices. The formatted package provides training and testing RSS fingerprints as CSV and MAT files, with coordinates for each subset and a device label file. The raw package stores log files per device, and MATLAB scripts convert them into the formatted dataset.', zh: TUJI1 是一个用于室内定位的多设备 Wi-Fi RSS 指纹数据集，作者为 Lucie Klus、Roman Klus、Elena Simona Lohan、Jari Nurmi、Carlos Granell Canut、Mikko
-    Valkama、Jukka Talvitie、Sven Casteleyn 和 Joaquín Torres-Sospedra。作者单位包括 Tampere University、Universitat Jaume I 和 Universidade do Minho。Zenodo 记录（1.0 版，DOI 10.5281/zenodo.7641701）发布于 2023 年 2 月 14 日，数据描述文章于 2024 年发表在 Data in Brief。标题强调的是高测量密度，指纹由多款设备采集。格式化数据包提供训练集和测试集的 RSS 指纹，分别以 CSV 和 MAT 格式存储，每个子集都附有坐标，并提供设备标签文件。原始数据包按设备保存日志文件，MATLAB 脚本将其转换为格式化数据集。}
+overview: {en: 'TUJI1 is a Wi-Fi fingerprinting dataset for indoor localization, collected with five commercial devices on a fine-grained grid. It pairs IEEE 802.11 received signal strength (RSS) measurements with the coordinates of each fingerprint, and the dataset is anonymized. The authors are Lucie Klus, Roman Klus, Elena Simona Lohan, Jari Nurmi, Carlos Granell Canut, Mikko Valkama, Jukka Talvitie, Sven Casteleyn and Joaquín Torres-Sospedra. The Zenodo record (version 1.0, DOI 10.5281/zenodo.7641701) was published on 14 February 2023 under CC BY 4.0, and the data descriptor appeared in Data in Brief in 2024. The formatted package holds training and testing RSS fingerprints as CSV and MAT files, each with coordinates, plus a device label file. The raw log files are organized by device, and MATLAB scripts convert them into the formatted dataset.', zh: TUJI1 是一个用于室内定位的 Wi-Fi 指纹数据集，使用五款商用设备在细粒度网格上采集。数据集将 IEEE 802.11 接收信号强度（RSS）测量值与每个指纹的坐标配对，且数据经过匿名化处理。作者为 Lucie Klus、Roman Klus、Elena Simona
+    Lohan、Jari Nurmi、Carlos Granell Canut、Mikko Valkama、Jukka Talvitie、Sven Casteleyn 和 Joaquín Torres-Sospedra。Zenodo 记录（1.0 版，DOI 10.5281/zenodo.7641701）于 2023 年 2 月 14 日发布，采用 CC BY 4.0 许可；数据描述文章于 2024 年发表于 Data in Brief。格式化数据包以 CSV 和 MAT 文件提供训练集和测试集的 RSS 指纹，每个子集附带坐标，并提供设备标签文件。原始日志文件按设备组织，MATLAB 脚本将其转换为格式化数据集。}
 signal_details:
 - signal: rssi
-  text: {en: 'Wi-Fi received signal strength (RSS) fingerprints in CSV and MAT files: RSS_training.csv, RSS_testing.csv and TUJI1.mat. Coordinates for the training and testing subsets are in Coordinates_training.csv and Coordinates_testing.csv. Device labels are in Device_labels.csv.', zh: Wi-Fi 接收信号强度（RSS）指纹，以 CSV 和 MAT 文件提供：RSS_training.csv、RSS_testing.csv 和 TUJI1.mat。训练集和测试集的坐标分别位于 Coordinates_training.csv 与 Coordinates_testing.csv。设备标签位于 Device_labels.csv。}
+  text: {en: 'Wi-Fi received signal strength (RSS) fingerprints in RSS_training.csv, RSS_testing.csv and TUJI1.mat. Each row has 310 columns, one per MAC address observed in the measurements, and missing or zero readings are stored as 100. Coordinates for the training and testing subsets are in Coordinates_training.csv and Coordinates_testing.csv, and device labels are in Device_labels.csv.', zh: Wi-Fi 接收信号强度（RSS）指纹，以 RSS_training.csv、RSS_testing.csv 和 TUJI1.mat 提供。每行有 310 列，对应测量中观测到的每个 MAC 地址；缺失或为零的读数记为 100。训练集和测试集的坐标分别位于 Coordinates_training.csv 与 Coordinates_testing.csv，设备标签位于 Device_labels.csv。}
 pipeline:
-  summary: {en: Raw per-device log files are formatted with MATLAB and then assembled into training and testing sets., zh: 各设备的原始日志文件先用 MATLAB 格式化，再组装为训练集和测试集。}
+  summary: {en: 'Raw per-device log files are formatted with MATLAB, then combined from five devices into training and testing sets with coordinates and device labels.', zh: 各设备的原始日志文件先用 MATLAB 格式化，再将五款设备的数据合并为带坐标和设备标签的训练集与测试集。}
   stages:
   - title: {en: Raw log files, zh: 原始日志文件}
     detail: {en: 'Measurements are stored as text log files named logfile_YYYY_MM_DD_HH_MM_SS.txt, in one folder per device under RAW. The package contains raw logs for the device folder AAA only.', zh: 测量数据以文本日志文件保存，文件名为 logfile_YYYY_MM_DD_HH_MM_SS.txt，每个设备一个文件夹，位于 RAW 目录下。本数据包中仅包含设备文件夹 AAA 的原始日志。}
     outputs:
     - {en: logfile_YYYY_MM_DD_HH_MM_SS.txt per device, zh: 每个设备的 logfile_YYYY_MM_DD_HH_MM_SS.txt}
   - title: {en: Per-device formatting, zh: 按设备格式化}
-    detail: {en: FormatRawData.m is run in MATLAB for all devices and reads the raw files with readrawfile.m. The formatted output for device AAA is Formatted_data_AAA.mat., zh: 在 MATLAB 中对所有设备运行 FormatRawData.m，并通过 readrawfile.m 读取原始文件。设备 AAA 的格式化输出为 Formatted_data_AAA.mat。}
+    detail: {en: 'FormatRawData.m is run in MATLAB once for each device, with selected_device set to A12, POCO, S7, S20 or tabS7. It reads each log with readrawfile.m, attaches labels and coordinates from map2coordinates.xlsx, and saves Formatted_data_<device>.mat.', zh: 在 MATLAB 中对每个设备运行一次 FormatRawData.m，将 selected_device 依次设为 A12、POCO、S7、S20 或 tabS7。脚本通过 readrawfile.m 读取日志，从 map2coordinates.xlsx 获取标签和坐标，并保存为 Formatted_data_<设备名>.mat。}
     inputs:
     - {en: Raw log files, zh: 原始日志文件}
+    - {en: map2coordinates.xlsx, zh: map2coordinates.xlsx}
     outputs:
     - {en: Formatted_data_<device>.mat, zh: Formatted_data_<设备名>.mat}
   - title: {en: Dataset generation, zh: 数据集生成}
-    detail: {en: 'CreateDataset.m runs after the formatting step to generate the dataset. The formatted dataset is distributed as TUJI1.mat, and as CSV files for training and testing RSS and coordinates.', zh: CreateDataset.m 在格式化步骤之后运行，用于生成数据集。格式化后的数据集以 TUJI1.mat 发布，并以 CSV 文件提供训练集和测试集的 RSS 与坐标。}
+    detail: {en: 'CreateDataset.m loads the formatted files of the five devices. It assigns a random half of the unique test-grid locations (seed 2) to the testing set, adds the other half to the training set, and writes TUJI1.mat, four CSV files with RSS and coordinates, and Device_labels.csv.', zh: CreateDataset.m 读取五款设备的格式化文件。它以随机种子 2 随机选取一半唯一的测试网格位置分配给测试集，另一半加入训练集，并写出 TUJI1.mat、四个含 RSS 和坐标的 CSV 文件以及 Device_labels.csv。}
     inputs:
     - {en: Formatted_data_<device>.mat files, zh: Formatted_data_<设备名>.mat 文件}
     outputs:
-    - {en: TUJI1.mat and CSV training and testing subsets, zh: TUJI1.mat 以及训练集和测试集 CSV 文件}
+    - {en: 'TUJI1.mat, CSV training and testing subsets, Device_labels.csv', zh: TUJI1.mat、训练集和测试集 CSV 文件、Device_labels.csv}
+samples: 6752 training and 2147 testing fingerprints
+size_gb: 0.59
+facts:
+- label: {en: Device labels, zh: 设备标签}
+  text: {en: 'Device labels 1 to 5 stand for S20, S7, POCO, tabS7 and A12, in that order.', zh: 设备标签 1 至 5 依次对应 S20、S7、POCO、tabS7 和 A12。}
+- label: {en: Testing split, zh: 测试划分}
+  text: {en: The testing set uses a random half of the unique test-grid locations (seed 2). The remaining test-grid fingerprints are added to training., zh: 测试集使用唯一测试网格位置中随机选取的一半（随机种子 2），其余测试网格指纹加入训练集。}
+- label: {en: Raw log content, zh: 原始日志内容}
+  text: {en: 'The raw logs also contain other sensor records, which readrawfile.m parses alongside the Wi-Fi entries. The dataset uses only the Wi-Fi measurements.', zh: 原始日志还包含其他传感器记录，readrawfile.m 会与 Wi-Fi 条目一并解析。数据集只使用 Wi-Fi 测量值。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no complex channel data are released., zh: 仅提供 Wi-Fi RSS 指纹，不提供复数信道数据。}
+- key: cir
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no impulse response is released., zh: 仅提供 Wi-Fi RSS 指纹，不提供信道冲激响应。}
+- key: paths
+  status: none
+  note: {en: RSS fingerprints carry no per-path parameters., zh: RSS 指纹不包含逐径参数。}
+- key: interaction
+  status: none
+  note: {en: RSS fingerprints carry no per-path interaction information., zh: RSS 指纹不包含逐径交互信息。}
+- key: power
+  status: provided
+  note: {en: 'Wi-Fi RSS for 310 observed MAC addresses, one column each; missing or zero readings are stored as 100.', zh: 310 个观测到的 MAC 地址各占一列的 Wi-Fi RSS；缺失或为零的读数记为 100。}
+- key: iq
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no raw I/Q samples are released., zh: 仅提供 Wi-Fi RSS 指纹，不提供原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no beam measurements are described., zh: 仅提供 Wi-Fi RSS 指纹，未描述任何波束测量。}
+- key: position
+  status: provided
+  note: {en: Grid coordinates for each fingerprint are stored in Coordinates_training.csv and Coordinates_testing.csv., zh: 每个指纹的网格坐标分别存储于 Coordinates_training.csv 和 Coordinates_testing.csv。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: The raw log record types defined in readrawfile.m include no camera or image record., zh: readrawfile.m 中定义的原始日志记录类型不包含相机或图像记录。}
+- key: depth
+  status: none
+  note: {en: The raw log record types defined in readrawfile.m include no depth record., zh: readrawfile.m 中定义的原始日志记录类型不包含深度记录。}
+- key: lidar
+  status: none
+  note: {en: The raw log record types defined in readrawfile.m include no lidar record., zh: readrawfile.m 中定义的原始日志记录类型不包含激光雷达记录。}
+- key: radar
+  status: none
+  note: {en: The raw log record types defined in readrawfile.m include no radar record., zh: readrawfile.m 中定义的原始日志记录类型不包含雷达记录。}
+- key: imu
+  status: provided
+  note: {en: 'The raw log format in readrawfile.m includes accelerometer, gyroscope and magnetometer records; the package has raw logs for device AAA only.', zh: readrawfile.m 中的原始日志格式包含加速度计、陀螺仪和磁力计记录；数据包仅提供设备 AAA 的原始日志。}
+- key: time_series
+  status: provided
+  note: {en: Raw log records carry AppTimestamp values; the formatted training and testing sets have no timestamps., zh: 原始日志记录带有 AppTimestamp 时间戳；格式化的训练集和测试集不含时间戳。}
+- key: multiuser
+  status: none
+  note: {en: 'Each device has its own log set, and no simultaneous users are described.', zh: 每台设备各有一组日志，未描述同时存在的多个用户。}
+- key: multibs
+  status: provided
+  note: {en: 'Each fingerprint is a vector over the 310 observed Wi-Fi MAC addresses, which are access points rather than cellular base stations.', zh: 每个指纹是 310 个观测到的 Wi-Fi MAC 地址（即接入点，而非蜂窝基站）上的向量。}
+- {key: crossfreq, status: unknown}
+- key: near_field
+  status: none
+  note: {en: RSS fingerprints carry no array or antenna model., zh: RSS 指纹不包含阵列或天线模型。}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: RSS fingerprints only; no field-level outputs such as E-field components or antenna patterns., zh: 仅提供 RSS 指纹，不包含电场分量或天线方向图等场级输出。}
+versions:
+- version: '1.0'
+  date: '2023-02-14'
+  summary: {en: 'First and only Zenodo release (1.0): formatted Wi-Fi RSS training and testing sets from five devices, in CSV and MAT, with coordinates and device labels, plus MATLAB scripts and raw logs for one device folder (AAA).', zh: 首个也是唯一的 Zenodo 版本（1.0）：提供五款设备的 Wi-Fi RSS 训练集与测试集（CSV 和 MAT 格式，含坐标和设备标签），以及 MATLAB 脚本和设备文件夹 AAA 的原始日志。}
+  url: https://zenodo.org/records/7641701

@@ -11,7 +11,7 @@ standard: Bluetooth
 samples: 40 MS per capture
 size_gb: 10.47
 format: complex64 IQ (.dat), JSON metadata (.meta.json)
-license: CC BY-NC-SA 4.0
+license: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 access: {url: 'https://ieee-dataport.org/documents/rf-fingerprint-bt-iot-real-world-frequency-hopping-bluetooth-dataset-iot-devices-rf', type: restricted}
 paper: doi:10.1109/tccn.2023.3269764
 used_in: []
@@ -27,14 +27,14 @@ signal_details:
 pipeline:
   summary: {en: 'Ten Bluetooth emitters are captured with a USRP X300 receiver in an indoor laboratory, in a line-of-sight day and a multipath day, and archived as SigMF-style files.', zh: 在室内实验室中，使用 USRP X300 接收机对 10 个蓝牙发射端进行采集，分为视距与多径两天，并以 SigMF 风格文件归档。}
   stages:
-  - title: {en: Place emitters and set distances, zh: 放置发射端并设置距离}
-    detail: {en: 'Ten commercial Bluetooth emitters are placed in an indoor laboratory. On Day1BT, transmitter-receiver separation runs from 1.6 ft to 9.8 ft in 0.8 ft steps in a line-of-sight setup. On Day2BT, the emitters are placed in the lab corners with the receiver at the centre, and the maximum separation is 24.2 ft.', zh: 十个商用蓝牙发射端被放置于室内实验室。Day1BT 为视距设置，收发距离从 1.6 ft 到 9.8 ft，步长 0.8 ft。Day2BT 中发射端位于实验室角落，接收机位于中心，最大距离为 24.2 ft。}
+  - title: {en: Place emitters and set geometry, zh: 放置发射端并设定几何布局}
+    detail: {en: 'Ten commercial Bluetooth emitters (2 laptops, 8 chips) are placed in an indoor laboratory. In Day1BT, the transmitter-receiver separation runs from 1.6 ft to 9.8 ft in 0.8 ft steps in a line-of-sight setup. In Day2BT, each emitter sits in a corner of the laboratory, the receiver stands at the centre, and the maximum separation is 24.2 ft, giving a multipath scattering scenario.', zh: 十个商用蓝牙发射端（2 台笔记本、8 个商用芯片）被放置于室内实验室。Day1BT 为视距设置，收发距离从 1.6 ft 到 9.8 ft，步长 0.8 ft。Day2BT 中每个发射端位于实验室角落，接收机位于中心，最大距离为 24.2 ft，形成多径散射场景。}
     inputs:
-    - {en: 10 commercial emitters (2 laptops, 8 chips): null, zh: 10 个商用发射端（2 台笔记本、8 个芯片）}
+    - {en: '10 commercial Bluetooth emitters (2 laptops, 8 chips)', zh: 10 个商用蓝牙发射端（2 台笔记本、8 个芯片）}
     outputs:
     - {en: Line-of-sight and multipath capture layouts, zh: 视距与多径采集布局}
   - title: {en: Capture IQ with USRP X300, zh: 使用 USRP X300 采集 IQ}
-    detail: {en: An Ettus USRP X300 with a UBX160 daughterboard and a VERT2450 antenna records at 2.414 GHz center frequency and 2 MHz recorded bandwidth. Each capture holds 40 million complex samples., zh: 配备 UBX160 子板与 VERT2450 天线的 Ettus USRP X300 以 2.414 GHz 中心频率、2 MHz 录制带宽采集。每次采集包含 4000 万个复数采样。}
+    detail: {en: An Ettus USRP X300 with a UBX160 daughterboard and a VERT2450 antenna records at 2.414 GHz center frequency and 2 MHz recorded bandwidth. Each capture holds 40 million complex samples., zh: 配备 UBX160 子板与 VERT2450 天线的 Ettus USRP X300 以 2.414 GHz 中心频率、2 MHz 录制带宽进行采集。每次采集包含 4000 万个复数采样。}
     inputs:
     - {en: Bluetooth transmissions from each emitter, zh: 各发射端的蓝牙发射信号}
     outputs:
@@ -46,8 +46,99 @@ pipeline:
     outputs:
     - {en: Paired .dat and .meta.json files, zh: 成对的 .dat 与 .meta.json 文件}
   - title: {en: Archive by recording day, zh: 按录制日归档}
-    detail: {en: 'The captures are packed into Day1BT.tar.gz (7.47 GB, line-of-sight) and Day2BT.tar.gz (3 GB, multipath) for download from IEEE DataPort.', zh: 采集文件打包为 Day1BT.tar.gz（7.47 GB，视距）与 Day2BT.tar.gz（3 GB，多径），供从 IEEE DataPort 下载。}
+    detail: {en: 'The captures are distributed as Day1BT.tar.gz (7.47 GB, line-of-sight) and Day2BT.tar.gz (3 GB, multipath) on IEEE DataPort.', zh: 采集文件以 Day1BT.tar.gz（7.47 GB，视距）与 Day2BT.tar.gz（3 GB，多径）两个压缩包的形式在 IEEE DataPort 发布。}
     inputs:
     - {en: Paired capture files, zh: 成对的采集文件}
     outputs:
     - {en: Two daily tar.gz archives, zh: 两个按日归档的 tar.gz 文件}
+facts:
+- label: {en: Train and test split, zh: 训练与测试划分}
+  text: {en: 'The authors suggest training on Day1BT and testing generalization on Day2BT. The two days were recorded in different time frames, locations and testbed setups.', zh: 作者建议使用 Day1BT 训练，并使用 Day2BT 检验泛化能力。两天的数据分别在不同时间段、不同地点、不同测试平台上采集。}
+- label: {en: File pairs, zh: 文件配对}
+  text: {en: Each capture consists of a binary .dat file with complex64 IQ samples and an associated .meta.json metadata file., zh: 每次采集包含一个 complex64 IQ 采样的二进制 .dat 文件，以及对应的 .meta.json 元数据文件。}
+- label: {en: Distance metadata, zh: 距离元数据}
+  text: {en: 'For Day1BT, the transmitter-receiver separation of each capture is given in that capture''s JSON metadata file.', zh: 对于 Day1BT，每次采集的收发距离记录在该次采集的 JSON 元数据文件中。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The release holds complex IQ captures and JSON metadata; no channel matrices are included., zh: 发布内容为 complex IQ 采集和 JSON 元数据，不含信道矩阵。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile is included., zh: 发布内容不包含冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters are included., zh: 发布内容不包含逐路径参数。}
+- key: interaction
+  status: none
+  note: {en: 'No per-path interaction labels are included, including for the multipath Day2BT set.', zh: 不包含逐路径交互标注，多径数据集 Day2BT 同样不含逐路径数据。}
+- key: power
+  status: derivable
+  note: {en: Received power can be computed from the complex64 IQ samples., zh: 接收功率可由 complex64 IQ 采样计算得到。}
+- key: iq
+  status: provided
+  note: {en: 'Complex64 IQ, 40 MS per capture, centre frequency 2.414 GHz, recorded bandwidth 2 MHz.', zh: complex64 IQ，每次采集 40 MS，中心频率 2.414 GHz，录制带宽 2 MHz。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are included., zh: 不包含波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: No coordinates are included; the Day1BT metadata gives transmitter-receiver separation only., zh: 不包含坐标；Day1BT 的元数据仅给出收发距离。}
+- key: geometry
+  status: none
+  note: {en: 'The lab layout is a figure on the DataPort page, not a released map or scene file.', zh: 实验室布局为 DataPort 页面中的示意图，并非发布的地图或场景文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are included., zh: 不包含材料参数。}
+- key: rgb
+  status: none
+  note: {en: No optical images are included., zh: 不包含光学图像。}
+- key: depth
+  status: none
+  note: {en: No depth sensor data are included., zh: 不包含深度传感器数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are included., zh: 不包含激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar sensing data are included., zh: 不包含雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: No inertial measurement data are included., zh: 不包含惯性测量数据。}
+- {key: time_series, status: unknown}
+- key: multiuser
+  status: none
+  note: {en: Each capture holds one emitter; the sources describe no simultaneous users., zh: 每次采集对应一个发射端；资料未描述同时存在的多个用户。}
+- key: multibs
+  status: none
+  note: {en: A single receiver is used; no multi-base-station data are included., zh: 使用单一接收端，不含多基站数据。}
+- key: crossfreq
+  status: none
+  note: {en: A single band at 2.414 GHz is recorded; no paired multi-band data are included., zh: 仅录制 2.414 GHz 单一频段，不含成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Emitters and the receiver are placed at fixed positions; no moving users are described., zh: 发射端和接收端均为固定放置；资料未描述移动用户。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the indoor over-the-air measurement, not labelled per path.', zh: 包含在室内空口测量之中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the indoor over-the-air measurement, not labelled per path.', zh: 包含在室内空口测量之中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the indoor over-the-air measurement, not labelled per path; Day2BT is described as a multipath scattering scenario.', zh: 包含在室内空口测量之中，未按路径标注；Day2BT 被描述为多径散射场景。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the indoor over-the-air measurement, not labelled per path.', zh: 包含在室内空口测量之中，未按路径标注。}
+- key: polarization
+  status: none
+  note: {en: The release holds IQ captures and JSON metadata; no polarimetric data are included., zh: 发布内容为 IQ 采集和 JSON 元数据，不含极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: No field-level outputs are included; the release holds IQ captures and metadata., zh: 不包含场级输出；发布内容为 IQ 采集和元数据。}
+versions:
+- version: '2022'
+  date: '2022-09-15'
+  summary: {en: 'First release on IEEE DataPort (doi:10.21227/364j-6j73): Day1BT line-of-sight archive (7.47 GB) and Day2BT multipath archive (3 GB) of Bluetooth IQ captures.', zh: '首次在 IEEE DataPort 发布（doi:10.21227/364j-6j73），包含蓝牙 IQ 采集的视距压缩包 Day1BT（7.47 GB）和多径压缩包 Day2BT（3 GB）。'}
+  url: https://ieee-dataport.org/documents/rf-fingerprint-bt-iot-real-world-frequency-hopping-bluetooth-dataset-iot-devices-rf

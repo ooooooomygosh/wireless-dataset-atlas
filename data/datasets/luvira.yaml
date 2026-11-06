@@ -6,7 +6,7 @@ organization: Lund University
 origin: measured
 tasks: [localization, multimodal-sensing]
 signals: [csi, rgb, depth, imu]
-bands_ghz: []
+bands_ghz: [3.7]
 environment: [lab]
 mobility: slowly moving service robot (MIR200) with 6DoF motion-capture ground truth
 samples: 89 trajectories
@@ -17,122 +17,95 @@ paper: doi:10.1109/icra57147.2024.10610237
 used_in: []
 citing: ['doi:10.1109/tmlcn.2023.3334712', 'doi:10.1109/icc45041.2023.10278664', 'doi:10.1109/lwc.2026.3702704']
 summary: {en: 'Indoor localization recordings with synchronized RGB, depth and IMU data, 5G massive MIMO channel responses between a testbed and user equipment, and 12-microphone audio. The camera, speaker and transmit antenna are mounted on a slowly moving service robot, and the 89 trajectories have 6DoF motion-capture ground truth.', zh: 室内定位测量数据，包含同步的 RGB、深度和 IMU 数据、测试平台与用户设备之间的 5G 大规模 MIMO 信道响应，以及 12 路麦克风音频。相机、扬声器和发射天线安装在缓慢移动的服务机器人上，89 条轨迹均带有 6DoF 动作捕捉真值。}
-sources: ['https://github.com/ilaydayaman/LuViRA_Dataset', 'https://arxiv.org/abs/2302.05309', 'https://github.com/ilaydayaman/LuViRA_Dataset/blob/main/LICENSE.txt']
+sources: ['https://github.com/ilaydayaman/LuViRA_Dataset', 'https://arxiv.org/abs/2302.05309', 'https://github.com/ilaydayaman/LuViRA_Dataset/blob/main/LICENSE.txt', 'https://api.github.com/repos/ilaydayaman/LuViRA_Dataset', 'https://raw.githubusercontent.com/ilaydayaman/LuViRA_Dataset/main/README.md', 'https://raw.githubusercontent.com/ilaydayaman/LuViRA_Dataset/main/LICENSE.txt', 'https://raw.githubusercontent.com/ilaydayaman/LuViRA_Dataset/main/Audio/README.md', 'https://raw.githubusercontent.com/ilaydayaman/LuViRA_Dataset/main/microphone_locations.txt', 'https://raw.githubusercontent.com/ilaydayaman/LuViRA_Dataset/main/vision/camera_factory_cal.txt', 'https://arxiv.org/pdf/2302.05309', 'https://github.com/ilaydayaman/LuViRA_Dataset/commits/main', 'https://github.com/ilaydayaman/LuViRA_Dataset/commits/main?page=2', 'https://github.com/ilaydayaman/LuViRA_Dataset/releases', 'https://arxiv.org/abs/2302.05309v1', 'https://arxiv.org/abs/2302.05309v2', 'https://arxiv.org/abs/2302.05309v3',
+  'https://arxiv.org/pdf/2302.05309v1', 'https://arxiv.org/pdf/2302.05309v2', 'https://arxiv.org/pdf/2302.05309v3']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'A robot moves while carrying a transmit antenna, camera, and speaker; LuMaMi, microphones, and mocap record together. Data are cropped by trajectory and time-aligned, then released as separate radio, visual, audio, and pose files.', zh: 机器人携带发射天线、相机和speaker运动，LuMaMi、麦克风及mocap共同记录；数据按轨迹裁切和时间对齐后，分别发布无线、视觉、音频与位姿文件。}
+  summary: {en: 'A service robot carries a transmit antenna, a camera and a speaker along indoor trajectories, while LuMaMi, microphones and mocap record at the same time. The published data are cropped to each trajectory and time-aligned across systems, then released as zip archives per modality.', zh: 服务机器人携带发射天线、相机与扬声器沿室内轨迹运动，LuMaMi、麦克风与动作捕捉同时记录。发布数据按轨迹裁切并在各系统之间对齐，再按模态分别打包为 zip 压缩包。}
   stages:
-  - title: {en: Deploy the robot and fixed observation systems, zh: 部署机器人和固定观测系统}
-    detail: {en: 'The robot follows indoor trajectories while LuMaMi receives radio signals, vision/audio systems record the scene, and mocap produces pose ground truth. The release contains 89 trajectories of 20–50 s each.', zh: 机器人沿室内轨迹运动，LuMaMi接收无线信号，视觉和音频系统记录场景，mocap产生位姿真值。发布集包含89条20–50 s轨迹。}
+  - title: {en: Record the robot trajectories with all systems, zh: 同步记录机器人轨迹上的全部系统}
+    detail: {en: 'The robot follows indoor trajectories in the Humanities Lab motion-capture studio. LuMaMi receives the radio signal, the camera and microphones record the scene, and mocap provides pose ground truth. The release contains 89 trajectories of 20 to 50 s: 75 grid trajectories and 14 random trajectories.', zh: 机器人在人文实验室动作捕捉工作室中沿室内轨迹运动。LuMaMi 接收无线信号，相机与麦克风记录场景，动作捕捉系统提供位姿真值。发布数据包含 89 条 20 至 50 s 的轨迹，其中 75 条为 grid 轨迹，14 条为 random 轨迹。}
     inputs:
     - {en: Indoor robot routes, zh: 室内机器人路线}
-    - {en: 'Onboard camera, speaker, and single transmit antenna', zh: 机载相机、speaker和单发射天线}
-    - {en: 'LuMaMi, 12 microphones, and mocap', zh: LuMaMi、12麦克风及mocap}
+    - {en: 'Camera, speaker and single transmit antenna on the robot', zh: 机器人上的相机、扬声器与单发射天线}
+    - {en: 'LuMaMi with 100 antennas, microphones and mocap', zh: 100 天线的 LuMaMi、麦克风与动作捕捉系统}
     outputs:
-    - {en: Multimodal records of the same robot motion, zh: 同一机器人运动的多模态记录}
-    - {en: Trajectory and device identities, zh: 轨迹与设备身份}
+    - {en: Synchronized recordings of the same robot motion, zh: 同一机器人运动的同步记录}
     controls:
-    - {en: The LuMaMi receive array belongs to one measurement system; use radio parameters to determine frequency, zh: LuMaMi接收阵列属于一个测量系统；无线频率以radio参数为准}
+    - {en: 'The camera, antenna and speaker have separate ground-truth trajectories, which a rigid 6DoF transform unifies.', zh: 相机、天线与扬声器各有独立的真值轨迹，可通过刚体 6DoF 变换统一坐标。}
     checks:
-    - {en: 'Reproduction check: verify coordinate relationships among the antenna, camera, and mocap rigid body', zh: 复现检查：核对天线、相机和mocap刚体的坐标关系}
-  - title: {en: Retain each modality's sampling timeline, zh: 保留各模态采样时序}
-    detail: {en: 'Radio is recorded at approximately 100 Hz and RGB at approximately 30 fps; other modalities use their own sampling rates. Image filenames and CSV indices retain actual times, and cross-modal alignment is performed in postprocessing.', zh: 无线约100 Hz、RGB约30 fps，其他模态按各自采样率记录。图像文件名和CSV索引保留实际时间；跨模态数据在后处理中对齐。}
+    - {en: 'Verify the coordinate relationship between the antenna, the camera and the mocap rigid body before joining the data.', zh: 拼接数据前，核对天线、相机与动作捕捉刚体之间的坐标关系。}
+  - title: {en: Keep each modality on its own timeline, zh: 各模态保留各自的时间轴}
+    detail: {en: 'Radio is recorded at about 100 Hz, RGB at 30 fps and depth at 15 fps. The gyroscope and accelerometer run at 400 Hz and 100 Hz. Image filenames carry NTP-derived timestamps, and CSV files index them. Cross-modal alignment is done in post-processing.', zh: 无线电约 100 Hz 记录，RGB 为 30 fps，深度为 15 fps。陀螺仪与加速度计分别为 400 Hz 与 100 Hz。图像文件名为基于 NTP 的时间戳，由 CSV 文件索引。跨模态对齐在后处理中完成。}
     inputs:
-    - {en: 'Radio, image, IMU, audio, and mocap streams', zh: radio、图像、IMU、音频与mocap流}
+    - {en: 'Radio, image, IMU, audio and mocap streams', zh: 无线电、图像、IMU、音频与动作捕捉数据流}
     outputs:
-    - {en: Timelines for each modality, zh: 各模态时间轴}
-    - {en: Associated trajectory intervals, zh: 关联轨迹区间}
+    - {en: Per-modality timelines, zh: 各模态时间轴}
     controls:
-    - {en: Use actual times from each file; matching array indices should not imply matching instants, zh: 按各文件实际时间使用，避免以相同数组下标代表相同时刻}
+    - {en: Use the timestamps stored in each file. Array indices do not give matching instants across modalities., zh: 使用各文件中存储的时间戳。数组下标在不同模态之间并不对应同一时刻。}
     checks:
-    - {en: 'Reproduction check: inspect sampling intervals, starting offsets, and dropped frames; record interpolation or nearest-neighbor timing error', zh: 复现检查：检查采样间隔、起始偏移和掉帧；记录插值或最近邻的时间误差}
-  - title: {en: 'Export radio, visual, and pose data', zh: 导出无线、视觉和位姿}
-    detail: {en: 'Radio is stored in MAT as time×frequency×antenna; RGB/depth are released as PNG with CSV time indices, audio as WAV, and position/attitude ground truth as CSV/TSV, with some original rosbags.', zh: 无线以MAT保存time×frequency×antenna视图；RGB/depth以PNG及CSV时间索引发布，音频为WAV，位置/姿态真值为CSV/TSV，另有部分原始rosbag。}
+    - {en: 'Check sampling intervals, starting offsets and dropped frames before assessing timing error.', zh: 评估时间误差之前，先检查采样间隔、起始偏移与丢帧。}
+  - title: {en: 'Export radio, visual, audio and pose files', zh: 导出无线、视觉、音频与位姿文件}
+    detail: {en: 'Radio is stored as MAT files with axes time, frequency and antenna. RGB and depth are PNG files with CSV time indices, audio is WAV, and ground truth is CSV or TSV. A selected set of original ROS bags is included.', zh: 无线电数据以 MAT 文件保存，轴为时间、频率与天线。RGB 与深度为带 CSV 时间索引的 PNG 文件，音频为 WAV，真值为 CSV 或 TSV。另提供部分原始 ROS bag。}
     inputs:
-    - {en: Raw records from each system, zh: 各系统原始记录}
-    - {en: Trajectory segmentation and alignment results, zh: 轨迹切分和对齐结果}
+    - {en: Raw records from each system, zh: 各系统的原始记录}
     outputs:
-    - {en: Modality ZIPs and corresponding time indices, zh: 模态ZIP与对应时间索引}
-    - {en: 6DOF ground truth, zh: 6DOF真值}
+    - {en: Modality archives and time indices, zh: 模态压缩包与时间索引}
+    - {en: Processed and raw ground truth, zh: 处理后与原始真值}
     controls:
-    - {en: Most released files have undergone alignment postprocessing; use raw and processed versions separately, zh: 多数发布文件经过对齐后处理，原始与处理后版本分开使用}
+    - {en: Most released files are post-processed and time-aligned rather than raw. Processed and raw ground truth are separate archives., zh: 多数发布文件经过后处理与时间对齐，并非原始数据。处理后真值与原始真值分属不同压缩包。}
     checks:
-    - {en: 'Reproduction check: inspect MAT axis order, complex encoding, camera depth units, and pose coordinate systems', zh: 复现检查：检查MAT轴顺序、复数编码、相机深度单位和位姿坐标系}
-  - title: {en: Verify trajectory completeness and synchronization, zh: 核对轨迹完整性与同步情况}
-    detail: {en: 'The official README describes data organization, postprocessing, and individual acquisition issues, including missing Grid120 data. Check modality completeness for each trajectory before constructing task samples.', zh: 官方README列出数据组织、后处理与个别采集问题，包含Grid120的缺失说明。使用者按轨迹确认各模态是否齐备，再构建任务所需样本。}
+    - {en: 'Inspect the MAT axis order, the complex encoding, the depth units and the pose coordinate convention.', zh: 核对 MAT 的轴顺序、复数编码、深度单位与位姿坐标约定。}
+  - title: {en: Check trajectory completeness, zh: 核对轨迹完整性}
+    detail: {en: 'The README lists the data organization, post-processing steps and acquisition issues. The Grid120 radio file was removed because LuMaMi and the UE lost synchronization, while its other modalities remain. Random_manual_people2 lacks microphone 4 (Audio README).', zh: README 列出数据组织、后处理步骤与采集问题。Grid120 的无线电文件因 LuMaMi 与 UE 失去同步而被删除，其他模态保留。Random_manual_people2 缺少 4 号麦克风的录音（见 Audio README）。}
+    outputs:
+    - {en: Per-trajectory modality inventory, zh: 逐轨迹模态清单}
+    controls:
+    - {en: 'Use only the time intersection where all required modalities are valid, and record the reason for each exclusion.', zh: 仅使用所需模态均有效的时间交集，并记录每一项被排除数据的原因。}
+    checks:
+    - {en: Flag missing modalities rather than filling them., zh: 缺失的模态应标记，而非填补。}
+  - title: {en: Build trajectory-level splits, zh: 按轨迹构建划分}
+    detail: {en: 'Split localization or fusion experiments by complete trajectory. Build radio prediction windows from actual timestamps, and record the image-input cutoff separately from the radio-target time.', zh: 定位或融合实验按完整轨迹划分。无线预测窗口依据实际时间戳构建，图像输入截止时间与无线目标时间分别记录。}
     inputs:
-    - {en: Public trajectory directory, zh: 公开轨迹目录}
-    - {en: README notes on missing data/synchronization, zh: README缺失/同步说明}
+    - {en: 'Radio CSI, poses, images and trajectory IDs', zh: 无线 CSI、位姿、图像与轨迹 ID}
     outputs:
-    - {en: Available-modality and trajectory inventory, zh: 可用模态和轨迹清单}
-    - {en: Missing-record flags, zh: 缺失记录标记}
-    controls:
-    - {en: 'Use only the time intersection where all required modalities are valid, and retain reasons for exclusion', zh: 仅使用所需模态均有效的时间交集，并保留丢弃原因}
+    - {en: Trajectory-level splits, zh: 轨迹级划分}
     checks:
-    - {en: 'Reproduction check: after alignment, spot-check images, mocap trajectories, and radio changes; do not silently fill missing modalities', zh: 复现检查：对齐后抽查图像、mocap轨迹与无线变化；不要静默填补缺失模态}
-  - title: {en: Construct task splits by complete trajectory, zh: 按整条轨迹建立任务划分}
-    detail: {en: 'Split localization or fusion experiments by complete trajectory; for cross-region evaluation, also hold out spatial regions. Build radio prediction windows using actual times, recording image-input cutoff times separately from radio-target times.', zh: 定位或融合实验按完整轨迹划分；如果研究跨区域能力，再按空间区域留出。无线预测窗口按实际时间建立，图像输入截止时间与无线目标时间分别记录。}
-    inputs:
-    - {en: 'Radio CSI, poses, images, and trajectory IDs', zh: 无线CSI、位姿、图像和轨迹ID}
-    outputs:
-    - {en: Trajectory-level splits, zh: 轨迹级split}
-    - {en: Localization/prediction or fusion task samples, zh: 定位/预测或融合任务样本}
-    controls:
-    - {en: Run radio/position single-modality and simple temporal baselines before adding vision or audio, zh: 先跑无线/位置单模态和简单时序基线，再增加视觉或音频}
-    checks:
-    - {en: 'Reproduction check: check whether repeated routes or adjacent windows cross splits; fit scale parameters on the training set only', zh: 复现检查：检查同一路线重演与相邻窗口是否跨split；训练集单独拟合尺度参数}
-  scope: {en: The official LuViRA dataset of 89 indoor robot trajectories; LuMaMi is the radio acquisition platform., zh: LuViRA官方89条室内机器人轨迹；LuMaMi为无线采集平台。}
+    - {en: 'Check that repeated routes and adjacent windows do not cross splits, and fit scale parameters on the training split only.', zh: 检查重复路线与相邻窗口不跨越划分，尺度参数仅在训练划分上拟合。}
+  scope: {en: The official LuViRA dataset of 89 indoor robot trajectories; LuMaMi is the radio acquisition platform., zh: LuViRA 官方数据集，含 89 条室内机器人轨迹；LuMaMi 为无线采集平台。}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• MAT radio data in Radio.zip
-
-      • RGB/depth images and time indices
-
-      • Audio, IMU, mocap poses, and some rosbags', zh: '• Radio.zip中的MAT无线数据
-
-      • RGB/depth图像与时间索引
-
-      • 音频、IMU、mocap位姿及部分rosbag'}
+  text: {en: 'MAT radio files, RGB and depth PNG images with CSV time indices, WAV audio, CSV and TSV ground truth, and a selected set of ROS bags that contain the IMU readings.', zh: MAT 无线电文件、带 CSV 时间索引的 RGB 与深度 PNG 图像、WAV 音频、CSV 与 TSV 真值，以及包含 IMU 读数的部分 ROS bag。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Time-matched model input windows
-
-      • Localization, radio prediction, and cross-modal fusion labels
-
-      • User-defined trajectory/region splits', zh: '• 时间匹配后的模型输入窗口
-
-      • 定位、无线预测和跨模态融合标签
-
-      • 用户定义的轨迹/区域split'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• The data chain follows the official README; modality ZIPs were not downloaded and synchronization was not rerun in this audit.
-
-      • Camera depth observations and LiDAR are outputs of different devices; name the actual modality used in each task.', zh: '• 数据链依据官方README；本轮未下载模态ZIP或重做时间同步。
-
-      • 相机深度观测与LiDAR是不同设备输出，任务中按实际模态命名。'}
+  text: {en: Processed ground truth aligned to each published sensor stream (Ground_truth.zip). Raw marker data are provided separately (Ground_truth_raw.zip)., zh: 与各发布传感器数据流对齐的处理后真值（Ground_truth.zip）。原始标记点数据单独提供（Ground_truth_raw.zip）。}
+- label: {en: Trajectory structure, zh: 轨迹结构}
+  text: {en: 75 grid trajectories (Grid101 to Grid176; Grid120 is removed from the radio data) and 14 random trajectories. Audio-only and background-noise recordings are listed separately., zh: 75 条 grid 轨迹（Grid101 至 Grid176，其中 Grid120 的无线电数据已删除）与 14 条 random 轨迹。纯音频与背景噪声录音单独列出。}
 provenance:
 - {en: 'Indoor service robot carrying a camera, speaker, and transmit antenna', zh: 室内服务机器人搭载相机、speaker、发射天线}
 - {en: 'Simultaneous vision, Massive MIMO radio, 12-microphone, and mocap acquisition', zh: 视觉、Massive MIMO radio、12麦克风、mocap 同时采集}
 - {en: 'Crop and align by trajectory → modality ZIPs, timestamps, and 6DOF ground truth', zh: 按轨迹裁切并对齐 → 模态 ZIP、时间戳和6DOF真值}
 technical_notes:
-- {en: 'Verified: most released files have undergone time-alignment postprocessing; they are not all raw recordings.', zh: 已确认：发布文件多数经过时间对齐后处理，并非全部原始录制。}
-- {en: 'Verified: modality sampling rates differ, and image filenames record actual timestamps.', zh: 已确认：模态采样率不同，图像文件名记录真实时间戳。}
+- {en: 'Most released files are time-aligned, post-processed data rather than raw recordings.', zh: 多数发布文件是经过时间对齐的后处理数据，而非原始记录。}
+- {en: 'Modality sampling rates differ, and image filenames record actual timestamps.', zh: 各模态采样率不同，图像文件名记录实际时间戳。}
+- {en: 'Audio is single-channel 96 kHz, 16-bit WAV. The raw recordings were 32-bit and are not published.', zh: 音频为 96 kHz、16 位单声道 WAV。原始录音为 32 位，目前未发布。}
 limitations:
-- {en: The 89 trajectories in one room are not 89 independent environments., zh: 同一房间的89条轨迹不能算89个独立环境。}
-- {en: RGB-D depth maps are not LiDAR; audio channels are not RF radar., zh: RGB-D 深度图不是 LiDAR；音频通道不等于 RF radar。}
-- {en: 'Grid120 radio files were removed because LuMaMi and the UE lost synchronization, while other modalities remain. Check modality-specific missing data when joining.', zh: Grid120无线文件因LuMaMi与UE失同步被删除，其他模态保留；join时必须检查逐模态缺失。}
+- {en: 'All 89 trajectories were recorded in one studio with the same system setup, so they are not 89 independent environments.', zh: 89 条轨迹均在同一工作室、相同的系统配置下录制，因此并非 89 个独立环境。}
+- {en: 'The depth maps come from an RGB-D camera. The listed sensors are the camera, IMU, microphones, LuMaMi and mocap, and none of them is a LiDAR.', zh: 深度图来自 RGB-D 相机。所列传感器为相机、IMU、麦克风、LuMaMi 与动作捕捉，其中不含 LiDAR。}
+- {en: 'Grid120 radio files were removed because LuMaMi and the UE lost synchronization, while the other modalities remain. Check modality-specific missing data when joining.', zh: Grid120 的无线电文件因 LuMaMi 与 UE 失去同步而被删除，其他模态保留。拼接时须逐模态检查缺失数据。}
 history:
-- {en: '2023-02: first preprint release.', zh: 2023-02：预印本首次发布。}
-- {en: '2024: accepted at ICRA; paper updated to v3.', zh: 2024：ICRA 接收；论文 v3 更新。}
+- {en: '2023-02-10: arXiv v1 posted (arXiv:2302.05309).', zh: '2023-02-10：arXiv v1 发布（arXiv:2302.05309）。'}
+- {en: '2024-04-26: arXiv v3, the last revision. The paper appears as an ICRA 2024 paper (DOI 10.1109/ICRA57147.2024.10610237).', zh: 2024-04-26：arXiv v3 为最后修订版。论文以 ICRA 2024 论文形式发表（DOI 10.1109/ICRA57147.2024.10610237）。}
 usage:
-- {en: 'Download radio, corresponding ground truth, and required modalities by complete trajectory.', zh: 按完整 trajectory 下载 radio、对应 ground truth 和所需模态。}
-- {en: 'The radio README specifies (time, frequency, antenna). The camera, antenna, and speaker each have separate ground-truth trajectories; use rigid-body transforms to unify coordinates.', zh: 'radio README标注(time, frequency, antenna)；相机、天线、speaker各有独立真值轨迹，使用刚体变换统一坐标。'}
-- {en: 'Join using each stream''s timestamps, rather than forcing alignment by array index.', zh: 使用各自时间戳 join，不按数组序号强制对齐。}
-- {en: 'Fix trajectory splits when comparing radio-only, vision-only, and fusion baselines.', zh: 固定轨迹划分比较 radio-only、vision-only 与融合基线。}
+- {en: 'Download radio, ground truth and the required modalities by complete trajectory.', zh: 按完整轨迹下载无线电、真值及所需模态。}
+- {en: 'The radio data are formatted as (time, frequency, antenna). The camera, antenna and speaker have separate ground-truth trajectories, so a rigid-body transform unifies their coordinates.', zh: 无线电数据格式为（时间、频率、天线）。相机、天线与扬声器各有独立的真值轨迹，因此需通过刚体变换统一坐标。}
+- {en: Join streams on their own timestamps rather than by array index., zh: 按各数据流自身的时间戳拼接，而非按数组下标对齐。}
 field_notes:
 - label: {en: Paths, zh: 路径}
-  text: {en: 'This field denotes per-path angles at both ends and interaction records, which the public interface does not provide. Frequency-domain radio CSI can yield PDP/delay-domain representations; this does not provide separated MPC interactions or angle labels at both ends.', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。可由频域radio CSI得到PDP/时延域表示；这不等于提供已分离的MPC交互和双端角度标签。}
+  text: {en: 'The release has no per-path angles or interaction records. The radio data are channel estimates stored as time, frequency and antenna arrays.', zh: 发布数据不含逐径角度或交互记录。无线电数据为以时间、频率与天线为轴的信道估计。}
 - label: {en: Multi-BS, zh: 多基站}
-  text: {en: The official structure uses one LuMaMi massive-MIMO receiving system. The antenna axis in MAT files does not represent independent multi-BS protocols or multiple sites., zh: 官方结构是一个LuMaMi massive-MIMO接收系统，MAT的antenna轴不代表独立多BS协议或多个站点。}
+  text: {en: The 100 antennas belong to one LuMaMi testbed. The antenna axis does not represent separate base stations or protocols., zh: 100 根天线属于同一套 LuMaMi 测试平台。天线轴不代表独立基站或协议。}
+- label: {en: Audio channels, zh: 音频通道}
+  text: {en: 'The paper lists 12 microphones. The README introduction and microphone_locations.txt give 11 positions (mic1 to mic11), while the Audio README and the directory description list 12 audio tracks plus a sync track.', zh: 论文列出 12 个麦克风。README 引言与 microphone_locations.txt 给出 11 个位置（mic1 至 mic11），而 Audio README 与目录说明列出 12 路音频加一路同步轨。}
 paper_summary:
 - label: {en: System, zh: 系统}
   text: {en: 'Transforms partial STF-domain CSI into the DDA domain, reconstructing channels with windowed attention and frame-structure encoding; task heads use a frozen encoder.', zh: 部分STF域CSI变换到DDA域，以窗口注意力与帧结构编码恢复信道；冻结编码器接任务头。}
@@ -146,8 +119,8 @@ paper_summary:
   text: {en: The paper separates simulation holdouts from LuViRA measurement adaptation; LuViRA results use target-domain training trajectories and therefore represent measured-domain adaptation. Current public HF assets cover only part of the derived test data., zh: 论文将仿真留出与LuViRA实测适配分开；LuViRA结果使用目标域训练轨迹，属于实测域适配。当前公开HF资产只覆盖部分测试派生数据。}
 - label: {en: Remaining gap, zh: 尚未解决的问题}
   text: {en: Test NMSE gains against low-order physics-based predictors and final rates; do not infer current public-asset coverage from the paper's 2.85M-sample training corpus., zh: 用低阶物理预测器和最终速率检验NMSE收益；当前公开资产的覆盖范围不能按论文2.85M训练语料规模直接推定。}
-overview: {en: 'LuViRA is an indoor localization dataset from Lund University, described in a 2023 arXiv preprint by Yaman et al. and in an ICRA 2024 paper. It contains synchronized color and depth images, IMU readings, 5G massive MIMO channel responses, audio from 12 microphones, and 6DoF pose ground truth. The sensors are mounted on a slowly moving service robot (MIR200) in the motion-capture studio of the Lund University Humanities Lab, and each of the 89 trajectories lasts 20 to 50 seconds. Channel responses were measured with the LuMaMi testbed, a base station with 100 antennas at 3.7 GHz and 20 MHz bandwidth, with a single antenna on the robot as user equipment. The motion-capture ground truth is sampled at 100 Hz, the radio at 100 channel estimates per second, the camera at 30 fps for RGB and 15 fps for depth, and the audio up to 96 kHz. Files are distributed as zip archives per modality: PNG images with timestamp filenames, MAT radio files, WAV audio, CSV and TSV ground truth, and
-    a selected set of ROS bags. Most released files are time-aligned, post-processed data rather than raw recordings, the radio data omit trajectory Grid120, and the full raw camera data are available on request. The authors target indoor localization and sensor fusion, and they state that the data also support channel estimation and image classification.', zh: LuViRA 是隆德大学发布的室内定位数据集，由 Yaman 等人在 2023 年的 arXiv 预印本和 ICRA 2024 论文中介绍。数据同步记录彩色图像与深度图像、IMU 读数、5G massive MIMO 信道响应、12 路麦克风音频以及 6DoF 位姿真值。传感器安装在缓慢移动的服务机器人 MIR200 上，该机器人位于隆德大学人文实验室的动作捕捉工作室中，89 条轨迹各持续 20 至 50 秒。信道响应由 LuMaMi 测试平台测得，基站 100 根天线，载频 3.7 GHz，带宽 20 MHz，机器人上的单天线作为用户设备。动作捕捉真值采样率为 100 Hz，无线电每秒 100 次信道估计，相机彩色图像 30 fps、深度图像 15 fps，音频最高 96 kHz。数据按模态分别打包为 zip 压缩包，包含带时间戳文件名的 PNG 图像、MAT 无线电文件、WAV 音频、CSV 与 TSV 真值文件，以及部分 ROS bag。已发布的大部分文件为时间对齐后的处理数据，而非原始记录；无线电数据中不含 Grid120 轨迹；完整的原始相机数据需另行申请。作者面向室内定位与传感器融合，并指出这些数据同样可用于信道估计和图像分类。}
+overview: {en: 'LuViRA is an indoor localization dataset from Lund University, described in a 2023 arXiv preprint by Yaman et al. and in an ICRA 2024 paper. It contains synchronized color and depth images, IMU readings, 5G massive MIMO channel responses, audio from 12 microphones, and 6DoF pose ground truth. The sensors are mounted on a slowly moving service robot (MIR200) in the motion-capture studio of the Lund University Humanities Lab, and each of the 89 trajectories lasts 20 to 50 seconds. Channel responses were measured with the LuMaMi testbed, a base station with 100 antennas at 3.7 GHz and 20 MHz bandwidth, with a single antenna on the robot as user equipment. The motion-capture ground truth is sampled at 100 Hz, the radio at about 100 channel estimates per second, the camera at 30 fps for RGB and 15 fps for depth, and the audio at 96 kHz. Data are distributed as zip archives per modality: PNG images with timestamp filenames, MAT radio files, WAV audio, CSV and TSV ground truth,
+    and a selected set of ROS bags. Most released files are time-aligned, post-processed data rather than raw recordings, the radio data omit trajectory Grid120, and other ROS bags are available on request. The authors state that the data can also be used for channel estimation and image classification.', zh: LuViRA 是隆德大学发布的室内定位数据集，由 Yaman 等人在 2023 年的 arXiv 预印本和 ICRA 2024 论文中介绍。数据同步记录彩色图像与深度图像、IMU 读数、5G 大规模 MIMO 信道响应、12 路麦克风音频以及 6DoF 位姿真值。传感器安装在缓慢移动的服务机器人 MIR200 上，该机器人位于隆德大学人文实验室的动作捕捉工作室中，89 条轨迹各持续 20 至 50 秒。信道响应由 LuMaMi 测试平台测得，基站为 100 根天线，载频 3.7 GHz，带宽 20 MHz，机器人上的单天线作为用户设备。动作捕捉真值采样率为 100 Hz，无线电约每秒 100 次信道估计，相机彩色图像 30 fps、深度图像 15 fps，音频为 96 kHz。数据按模态分别打包为 zip 压缩包，包含带时间戳文件名的 PNG 图像、MAT 无线电文件、WAV 音频、CSV 与 TSV 真值文件，以及部分 ROS bag。已发布的大部分文件为经时间对齐的后处理数据，而非原始记录；无线电数据中不含轨迹 Grid120；其他 ROS bag 可按需索取。作者称这些数据还可用于信道估计与图像分类。}
 signal_details:
 - signal: csi
   text: {en: 'Measured with the LuMaMi 5G massive MIMO testbed. The base station has 100 antennas in a 25×4 layout, and the user equipment on the robot is a single antenna driven by a universal software radio peripheral (NI X310). Carrier 3.7 GHz, bandwidth 20 MHz. The UE sends pilots every 10 ms, and LuMaMi produces 100 channel snapshots per second. Channel estimates are stored as MAT files named like Grid101.mat; the README gives the array shape as 100 × 100 × 100, interpreted as time, frequency and antenna.', zh: 由 LuMaMi 5G massive MIMO 测试平台测得。基站为 100 根天线，排列为 25×4；机器人上的用户设备为单天线，由通用软件无线电外设 (NI X310) 驱动。载频 3.7 GHz，带宽 20 MHz。UE 每 10 ms 发送一次导频，LuMaMi 每秒生成 100 个信道快照。信道估计以 MAT 文件保存，文件名如 Grid101.mat；README 给出的数组形状为 100 × 100 × 100，解释为时间、频率和天线维度。}
@@ -157,3 +130,115 @@ signal_details:
   text: {en: 'Depth maps from the Intel RealSense D435i, 640×480 pixels at 15 fps. They are stored as PNG files in the depth/ folder of the RGB-D archives, with timestamps in data.csv and associations.txt.', zh: Intel RealSense D435i 深度图，分辨率 640×480，15 fps。以 PNG 文件保存于 RGB-D 压缩包的 depth/ 文件夹中，时间戳记录于 data.csv 与 associations.txt。}
 - signal: imu
   text: {en: 'Built-in IMU of the RealSense D435i: gyroscope at 400 Hz and accelerometer at 100 Hz. The paper lists these readings in ROS bag (.bag) files, of which only a selected set is released.', zh: RealSense D435i 内置 IMU：陀螺仪 400 Hz，加速度计 100 Hz。论文将这些读数列为 ROS bag (.bag) 文件，但仅发布其中部分文件。}
+bandwidth_mhz: 20
+antennas: {tx: 1, rx: 100, array: upa}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Channel estimates in MAT files shaped 100 × 100 × 100 (time, frequency, antenna) at 3.7 GHz and 20 MHz; trajectory Grid120 is omitted.', zh: MAT 文件中的信道估计，形状为 100 × 100 × 100（时间、频率、天线），载频 3.7 GHz，带宽 20 MHz；轨迹 Grid120 不含在内。}
+- key: cir
+  status: derivable
+  note: {en: An inverse FFT along the frequency axis of the channel estimates gives a delay profile; no CIR is stored., zh: 对信道估计的频率轴做逆 FFT 可得时延分布；发布数据中不存储 CIR。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delays, angles or powers are released.', zh: 未发布逐径时延、角度或功率。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records., zh: 无逐径交互记录。}
+- key: power
+  status: derivable
+  note: {en: 'Received power follows from the complex channel estimates, for example as the sum of |h|² over the frequency and antenna axes.', zh: 接收功率可由复数信道估计计算，例如对频率与天线维度求 |h|² 之和。}
+- key: iq
+  status: none
+  note: {en: The radio data are processed channel estimates; no raw baseband samples are listed in the storage structure., zh: 无线电数据为处理后的信道估计；存储结构中未列出原始基带采样。}
+- key: beam_labels
+  status: derivable
+  note: {en: Per-beam gains can be computed from the 100-antenna channel estimates with a chosen codebook; no beam indices are released., zh: 可用选定码本从 100 天线的信道估计计算逐波束增益；发布数据中无波束索引。}
+- key: position
+  status: provided
+  note: {en: '6DoF motion-capture poses at 100 Hz for the camera, antenna and speaker, at 0.5 mm accuracy; 3D positions of 11 static microphones.', zh: 相机、天线与扬声器的 6DoF 动作捕捉位姿，采样率 100 Hz，精度 0.5 mm；另有 11 个静态麦克风的三维位置。}
+- key: geometry
+  status: none
+  note: {en: 'Static microphone positions and camera calibration files are released, but no 3D scene or map.', zh: 发布了静态麦克风位置与相机标定文件，但无三维场景或地图。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: provided
+  note: {en: '640×480 color PNG at 30 fps with NTP-derived timestamp filenames, in mono and RGB-D archives.', zh: 640×480 彩色 PNG，30 fps，文件名为基于 NTP 的时间戳，分布于单目与 RGB-D 压缩包中。}
+- key: depth
+  status: provided
+  note: {en: '640×480 depth PNG at 15 fps, in the RGB-D archives.', zh: 640×480 深度 PNG，15 fps，位于 RGB-D 压缩包中。}
+- key: lidar
+  status: none
+  note: {en: No lidar in the sensor list or storage structure., zh: 传感器列表与存储结构中均无激光雷达。}
+- key: radar
+  status: none
+  note: {en: No radar in the sensor list or storage structure., zh: 传感器列表与存储结构中均无雷达。}
+- key: imu
+  status: provided
+  note: {en: The gyroscope at 400 Hz and accelerometer at 100 Hz are in the selected ROS bags only., zh: 陀螺仪 400 Hz 与加速度计 100 Hz 数据仅位于部分所选 ROS bag 中。}
+- key: time_series
+  status: provided
+  note: {en: 'Trajectories last 20 to 50 s, with timestamped files for each modality; ground truth at 100 Hz.', zh: 轨迹长 20 至 50 s，各模态文件带时间戳，真值采样率 100 Hz。}
+- key: multiuser
+  status: none
+  note: {en: One user-equipment antenna on the robot; no second user., zh: 机器人上仅一根用户设备天线，无第二个用户。}
+- key: multibs
+  status: none
+  note: {en: One LuMaMi base station with 100 antennas; no second site., zh: 一台 LuMaMi 基站，配备 100 根天线；无第二个站点。}
+- key: crossfreq
+  status: none
+  note: {en: Single 3.7 GHz band with 20 MHz bandwidth., zh: 单一 3.7 GHz 频段，带宽 20 MHz。}
+- key: near_field
+  status: unknown
+  note: {en: The 100-antenna array is a 25 × 4 UPA; near-field modelling is not described., zh: 100 天线为 25 × 4 的 UPA 阵列；文档未描述近场建模。}
+- key: high_mobility
+  status: none
+  note: {en: 'The robot moves at about 0.1 m/s on grid trajectories; manual trajectories are faster, with no speed given.', zh: 格点轨迹中机器人速度约为 0.1 m/s；手动轨迹更快，但未给出速度。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: People walk in some random trajectories and sometimes block the line of sight between LuMaMi and the UE., zh: 部分随机轨迹中有人员走动，有时会阻挡 LuMaMi 与 UE 之间的视距路径。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含于空口测量中，未逐径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含于空口测量中，未逐径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含于空口测量中，未逐径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含于空口测量中，未逐径标注。}
+- key: polarization
+  status: none
+  note: {en: 'The radio arrays have time, frequency and antenna axes and no polarization axis.', zh: 无线电数据的维度为时间、频率与天线，无极化维度。}
+- key: em_field
+  status: none
+  note: {en: Channel estimates only; no field-level outputs., zh: 仅有信道估计，无场级输出。}
+versions:
+- version: arXiv v3
+  date: '2024-04-26'
+  summary: {en: 'Third arXiv version. The text matches v2 except for the arXiv identifier line. It reports 89 trajectories, 75 grid and 14 random.', zh: arXiv 第 3 版。正文与第 2 版相同，仅 arXiv 标识行不同。文中报告 89 条轨迹，其中 75 条 grid、14 条 random。}
+  url: https://arxiv.org/abs/2302.05309v3
+- version: arXiv v2
+  date: '2024-04-17'
+  summary: {en: 'Revised version, with the PDF title ''Synchronized Vision, Radio, and Audio Sensors for Indoor Localization''. Compared with v1, the trajectory count rises from 88 to 89 and the random trajectories from 13 to 14.', zh: '修订版，PDF 标题为 ''Synchronized Vision, Radio, and Audio Sensors for Indoor Localization''。与第 1 版相比，轨迹数由 88 增至 89，random 轨迹由 13 增至 14。'}
+  url: https://arxiv.org/abs/2302.05309v2
+- version: 'PR #1'
+  date: '2024-02-20'
+  summary: {en: Merged pull request from JensGulin that adds audio documentation and clarifies the README., zh: 合并了 JensGulin 提交的 pull request，补充音频文档并澄清 README 内容。}
+  url: https://github.com/ilaydayaman/LuViRA_Dataset/commit/c6b2139
+- version: microphone_locations.txt
+  date: '2023-12-07'
+  summary: {en: 'Added microphone_locations.txt, with the mean 3D positions of 11 microphones from the Grid1 trajectory, in millimetres.', zh: 新增 microphone_locations.txt，给出 Grid1 轨迹中 11 个麦克风的平均三维位置（单位毫米）。}
+  url: https://github.com/ilaydayaman/LuViRA_Dataset/commit/85427ed
+- version: Initial commit
+  date: '2023-08-23'
+  summary: {en: 'GitHub repository created. A LICENSE.txt was added the same day, and the README names CC-BY-4.0.', zh: GitHub 仓库创建。当天新增 LICENSE.txt，README 注明许可为 CC-BY-4.0。}
+  url: https://github.com/ilaydayaman/LuViRA_Dataset/commit/8aa93a3
+- version: arXiv v1
+  date: '2023-02-10'
+  summary: {en: 'First arXiv version, titled ''The LuViRA Dataset: Measurement Description''. It describes 88 trajectories (75 grid, 13 random) with RGB, depth, IMU, 5G channel and audio sensors.', zh: 'arXiv 首个版本，标题为 ''The LuViRA Dataset: Measurement Description''。描述 88 条轨迹（75 条 grid，13 条 random），涵盖 RGB、深度、IMU、5G 信道与音频传感器。'}
+  url: https://arxiv.org/abs/2302.05309v1

@@ -6,21 +6,21 @@ tasks: [beam-management, multimodal-sensing]
 signals: [beam-power, rgb, lidar, radar, gps]
 bands_ghz: [62.64]
 environment: [vehicular, rural]
-mobility: vehicle, up to 100 km/h
+mobility: vehicle, average 4.1 to 14.3 m/s by scenario, up to about 31 m/s on rural freeways
 format: CSV index files, 7-Zip archives
-license: Not stated
+license: CC BY-NC-ND 4.0
 access: {url: 'https://www.deepsense6g.net/scenarios36-39/', type: registration}
 paper: arxiv:2406.17908
 used_in: ['doi:10.1109/icc59461.2026.11586947']
 citing: ['doi:10.1109/tmc.2026.3674213']
 summary: {en: 'Two-vehicle recordings on intercity and rural roads, with 60 GHz beam-power vectors from phased arrays, a 360-degree camera, four radars, a 3D LiDAR and two GPS receivers. The data are synchronized at 10 Hz, with mmWave beam power as the reference.', zh: 在城际与乡村道路上采集的双车测试平台数据，包含60 GHz相位阵列的波束功率向量、360度相机、四个雷达、3D LiDAR和两个GPS接收机。数据以10 Hz同步，并以毫米波波束功率作为参考。}
-sources: ['https://arxiv.org/abs/2406.17908', 'https://arxiv.org/html/2406.17908', 'https://export.arxiv.org/api/query?id_list=2406.17908', 'https://deepsense6g.net/', 'https://www.deepsense6g.net/assets/index-D9i131kE.js']
+sources: ['https://arxiv.org/abs/2406.17908', 'https://arxiv.org/html/2406.17908', 'https://export.arxiv.org/api/query?id_list=2406.17908', 'https://deepsense6g.net/', 'https://www.deepsense6g.net/assets/index-D9i131kE.js', 'https://arxiv.org/html/2406.17908v1/macro_stats.png', 'https://arxiv.org/html/2406.17908v1/speed.png', 'https://arxiv.org/html/2406.17908v1', 'https://www.deepsense6g.net/api/scenarios/all']
 checked: '2026-11-06'
-overview: {en: 'DeepSense-V2V is a vehicle-to-vehicle multi-modal dataset from a two-vehicle testbed, described by Morais, Charan, Srinivas and Alkhateeb (arXiv:2406.17908, 2024). The vehicles drove 120 km of intercity and rural roads in Tempe, AZ, in daytime and nighttime, at speeds up to 100 km/h. The receiver vehicle carries four 16-element phased arrays at 62.64 GHz, four radars, a 360-degree camera, a 3D LiDAR and a GPS RTK receiver. The transmitter vehicle carries a quasi-omnidirectional mmWave antenna and a GPS receiver. The dataset is split into four scenarios, 36 to 39, where 36 and 37 are long intercity drives and 38 and 39 are urban commutes. The mmWave receiver sweeps a 64-beam codebook from -45 to +45 degrees in azimuth every 100 ms, and mmWave beam power at 10 Hz is the reference for all modalities. The paper''s Table I lists 756k RGB images, 126k LiDAR point clouds and 524k radar frames. The archives contain CSV index files and 7-Zip compressed parts.', zh: 'DeepSense-V2V
-    是一个车对车多模态数据集，采集自双车测试平台，由 Morais、Charan、Srinivas 与 Alkhateeb 发布（arXiv:2406.17908，2024）。两车在亚利桑那州 Tempe 的城际与乡村道路上行驶共 120 km，包括白天与夜间，速度最高 100 km/h。接收车辆搭载四个 62.64 GHz 的 16 阵元相控阵、四个雷达、一个 360 度相机、一个 3D LiDAR 和一个 GPS RTK 接收机。发射车辆搭载一个准全向毫米波天线和一个 GPS 接收机。数据集分为场景 36 至 39 四组，其中 36 和 37 为长距离城际行驶，38 和 39 为城市通勤。毫米波接收机每 100 ms 扫描一次 64 波束码本，方位角范围为 -45 至 +45 度；10 Hz 的毫米波波束功率为所有模态的参考。论文 Table I 给出 756k 张 RGB 图像、126k 个 LiDAR 点云和 524k 个雷达帧。压缩包内包含 CSV 索引文件和 7-Zip 分卷。'}
+overview: {en: 'DeepSense-V2V is a vehicle-to-vehicle multi-modal dataset from a two-vehicle testbed, described by Morais, Charan, Srinivas and Alkhateeb (arXiv:2406.17908, 2024). The receiver vehicle carries four 16-element phased arrays at 62.64 GHz, four FMCW radars, a 360-degree camera, a 3D LiDAR and a GPS RTK receiver, while the transmitter vehicle carries a quasi-omnidirectional mmWave antenna and a GPS receiver. The dataset has four scenarios, 36 to 39, recorded in the Phoenix-Tempe-Scottsdale area of Arizona in daytime and at night, with about 117.5 km of driving and over 3.5 hours of data. The paper classes Scenarios 36 and 37 as long intercity drives and Scenarios 38 and 39 as short urban commutes. The receiver sweeps a 64-beam codebook from -45 to +45 degrees in azimuth every 100 ms, and the 10 Hz mmWave beam power is the reference for all modalities. The paper''s Table I lists 756k RGB images, 126k LiDAR point clouds and 524k radar frames. The archives contain CSV index files
+    and 7-Zip compressed parts.', zh: 'DeepSense-V2V 是一个车对车多模态数据集，采集自双车测试平台，由 Morais、Charan、Srinivas 与 Alkhateeb 发布（arXiv:2406.17908，2024）。接收车辆搭载四个 62.64 GHz 的 16 阵元相控阵、四个 FMCW 雷达、一个 360 度相机、一个 3D LiDAR 和一个 GPS RTK 接收机，发射车辆搭载一个准全向毫米波天线和一个 GPS 接收机。数据集包含场景 36 至 39 共四组，采集地点位于亚利桑那州 Phoenix-Tempe-Scottsdale 地区，包括白天与夜间行驶，总里程约 117.5 km，数据时长超过 3.5 小时。论文将场景 36 和 37 归为较长的城际行驶，将场景 38 和 39 归为较短的城市通勤。接收机以 100 ms 为周期扫描 64 波束码本，方位角范围为 -45 至 +45 度；10 Hz 的毫米波波束功率作为所有模态的参考。论文 Table I 给出 756k 张 RGB 图像、126k 个 LiDAR 点云和 524k 个雷达帧。压缩包内包含 CSV 索引文件和 7-Zip 分卷。'}
 signal_details:
 - signal: beam-power
-  text: {en: The receiver unit's arrays are 16-element ULAs with a 62.64 GHz center frequency. The receiver sweeps a codebook of 64 beams from -45 to +45 degrees in azimuth. Each sample is a 64-value power vector collected every 100 ms (10 Hz). The USRP records 640 samples per beam at a 5 MHz sample rate. The transmitter unit uses a quasi-omnidirectional 60 GHz antenna., zh: 接收单元的阵列为 16 阵元 ULA，中心频率 62.64 GHz。接收端在方位角 -45 至 +45 度范围内扫描 64 个波束的码本。每个采样为 64 个数值的功率向量，每 100 ms（10 Hz）采集一次。USRP 每个波束采集 640 个样本，采样率 5 MHz。发射单元使用准全向 60 GHz 天线。}
+  text: {en: The receiver unit's arrays are 16-element ULAs with a 62.64 GHz center frequency. The receiver sweeps a codebook of 64 beams from -45 to +45 degrees in azimuth. Each sample is a 64-value power vector collected every 100 ms (10 Hz). The USRP records 640 samples per beam at a 5 MHz sample rate. The transmitter unit uses a quasi-omnidirectional mmWave antenna., zh: 接收单元的阵列为 16 阵元 ULA，中心频率 62.64 GHz。接收端在方位角 -45 至 +45 度范围内扫描 64 个波束的码本。每个采样为 64 个数值的功率向量，每 100 ms（10 Hz）采集一次。USRP 每个波束采集 640 个样本，采样率 5 MHz。发射单元使用准全向毫米波天线。}
 - signal: rgb
   text: {en: '360-degree camera on the receiver vehicle at 30 Hz, the rate stated in the paper. Table I lists 756k RGB images for the four scenarios.', zh: 接收车辆上的 360 度相机，帧率 30 Hz（论文所述）。Table I 列出四个场景共 756k 张 RGB 图像。}
 - signal: radar
@@ -33,9 +33,9 @@ pipeline:
   summary: {en: 'The two-vehicle testbed records mmWave beam power, radar, LiDAR, camera and GPS, then synchronizes them to 10 Hz with beam power as the reference and packs them into CSV-indexed 7-Zip archives.', zh: 双车测试平台同时记录毫米波波束功率、雷达、LiDAR、相机和 GPS，随后以波束功率为参考将各模态同步到 10 Hz，并打包为带 CSV 索引的 7-Zip 压缩包。}
   stages:
   - title: {en: Two-vehicle data collection, zh: 双车数据采集}
-    detail: {en: 'The transmitter and receiver vehicles drive intercity and rural roads in daytime and nighttime. The receiver unit sweeps the 64-beam codebook and records a 64-value power vector every 100 ms, while the camera, radars, LiDAR and GPS record their own streams.', zh: 发射车与接收车在城际与乡村道路上白天和夜间行驶。接收单元扫描 64 波束码本，每 100 ms 记录一个 64 值功率向量，相机、雷达、LiDAR 和 GPS 各自记录数据流。}
+    detail: {en: 'The transmitter and receiver vehicles drive intercity and urban roads in the Phoenix-Tempe-Scottsdale area of Arizona, in daytime and at night. The receiver unit sweeps the 64-beam codebook and records a 64-value power vector every 100 ms, while the camera, radars, LiDAR and GPS record their own streams.', zh: 发射车与接收车在亚利桑那州 Phoenix-Tempe-Scottsdale 地区的城际与城市道路上，于白天和夜间行驶。接收单元扫描 64 波束码本，每 100 ms 记录一个 64 值功率向量，相机、雷达、LiDAR 和 GPS 各自记录数据流。}
     inputs:
-    - {en: Intercity and rural drive routes, zh: 城际与乡村行驶路线}
+    - {en: Intercity and urban drive routes, zh: 城际与城市行驶路线}
     - {en: 64-beam sweeps every 100 ms, zh: 每 100 ms 一次的 64 波束扫描}
     outputs:
     - {en: Raw streams per modality, zh: 各模态原始数据流}
@@ -59,3 +59,93 @@ pipeline:
     outputs:
     - {en: CSV index files, zh: CSV 索引文件}
     - {en: 7-Zip parts of 8 GB, zh: 8 GB 的 7-Zip 分卷}
+samples: more than 125k data points across four scenarios
+facts:
+- label: {en: Sequences, zh: 序列}
+  text: {en: Consecutive samples in one sequence are 0.1 s apart. A gap longer than 0.1 s starts a new sequence., zh: 同一序列内的连续样本间隔 0.1 s；间隔超过 0.1 s 时开始新的序列。}
+- label: {en: Best-beam label, zh: 最佳波束标签}
+  text: {en: The best-beam label is the index of the beam with the highest received power., zh: 最佳波束标签为接收功率最高的波束索引。}
+- label: {en: Units, zh: 数值单位}
+  text: {en: Values keep the magnitudes recorded by the sensors. Normalization is applied only for visualization., zh: 数值保留传感器记录的原始量级，归一化仅用于可视化。}
+- label: {en: Privacy, zh: 隐私}
+  text: {en: Faces are blurred in the camera videos., zh: 相机视频中的人脸已做模糊处理。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'Beam power only: one 64-value power vector per 100 ms sample; no complex channel is released.', zh: 仅有波束功率：每100 ms一个64维功率向量；未发布复数信道。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile is released; the 60 GHz data are beam power vectors., zh: 未发布冲激响应或功率时延分布；60 GHz数据为波束功率向量。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters are released; the 60 GHz data are beam powers., zh: 未发布逐径参数；60 GHz数据为波束功率。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction labels are released., zh: 未发布逐径交互标签。}
+- key: power
+  status: provided
+  note: {en: 'A 64-value received power vector per 100 ms sample, covering -45 to +45 degrees in azimuth.', zh: 每个100 ms样本一个64维接收功率向量，覆盖方位角-45至+45度。}
+- key: iq
+  status: provided
+  note: {en: 'Raw radar ADC samples from the four FMCW radars: 128 chirps, 4 RX, 256 samples per chirp, 2 bytes per sample; no 60 GHz baseband IQ is listed.', zh: 四个FMCW雷达的原始雷达ADC采样：128个chirp、4个接收通道、每chirp 256个采样、每采样2字节；未列出60 GHz基带IQ。}
+- key: beam_labels
+  status: provided
+  note: {en: Per-beam received power over the 64-beam codebook; the best beam is the maximum of each power vector., zh: 64波束码本的逐波束接收功率；最佳波束为各功率向量的最大值。}
+- key: position
+  status: provided
+  note: {en: 'Two RTK GPS receivers at 10 Hz, one per vehicle.', zh: 两台10 Hz的RTK GPS接收机，每车一台。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: provided
+  note: {en: 360-degree camera on the receiver vehicle at 30 Hz., zh: 接收车辆上的360度相机，30 Hz。}
+- key: depth
+  status: none
+  note: {en: 'No depth maps are listed; the sensors are a camera, four radars, phased arrays, a 3D LiDAR and GPS receivers.', zh: 未列出深度图；传感器为相机、四个雷达、相控阵、三维LiDAR和GPS接收机。}
+- key: lidar
+  status: provided
+  note: {en: 'Ouster OS1 3D LiDAR on the receiver vehicle: 32 beams, 1024 horizontal samples per revolution, 20 Hz.', zh: 接收车辆上的Ouster OS1三维LiDAR：32线，每圈1024个水平采样，20 Hz。}
+- key: radar
+  status: provided
+  note: {en: Four 77 GHz FMCW radars (AWR2243BOOST with DCA1000EVM) on the receiver vehicle., zh: 接收车辆上的四个77 GHz FMCW雷达（AWR2243BOOST配DCA1000EVM）。}
+- key: imu
+  status: none
+  note: {en: 'The sensor list is camera, radars, phased arrays, LiDAR and GPS; no IMU is listed.', zh: 传感器列表为相机、雷达、相控阵、LiDAR和GPS；未列出IMU。}
+- key: time_series
+  status: provided
+  note: {en: All modalities are synchronized at 10 Hz with mmWave beam power as the reference., zh: 各模态以毫米波波束功率为参考同步至10 Hz。}
+- key: multiuser
+  status: none
+  note: {en: One transmitter vehicle and one receiver vehicle per recording; no simultaneous users., zh: 每段记录一台发射车和一台接收车；无同时存在的其他用户。}
+- key: multibs
+  status: none
+  note: {en: The four phased arrays face different directions on one receiver vehicle; they are not separate base stations., zh: 四个相控阵朝向不同方向，安装在同一接收车上，不是独立基站。}
+- key: crossfreq
+  status: none
+  note: {en: Communication is at 62.64 GHz; the 77 GHz radar is not paired communication CSI., zh: 通信载频为62.64 GHz；77 GHz雷达不是配对的通信CSI。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: provided
+  note: {en: 'Scenarios 36-39 include vehicle speeds up to 100 km/h, as stated in the paper.', zh: 按论文所述，场景36–39的车辆速度最高达100 km/h。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: 'Other vehicles block the 60 GHz link, which appears as interruptions in the beam power.', zh: 其他车辆遮挡60 GHz链路，表现为波束功率中断。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: arXiv v1
+  date: '2024-06-25'
+  summary: {en: 'First and only arXiv version of the DeepSense-V2V paper, which describes Scenarios 36 to 39.', zh: DeepSense-V2V 论文的首个也是唯一的 arXiv 版本，描述场景36至39。}
+  url: https://arxiv.org/abs/2406.17908v1

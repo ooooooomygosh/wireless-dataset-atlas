@@ -16,10 +16,10 @@ paper: doi:10.3390/data4010012
 used_in: []
 citing: ['doi:10.1109/jiot.2022.3230913', 'doi:10.1109/jiot.2024.3420122', 'doi:10.1109/tmc.2023.3277333']
 summary: {en: 'Bluetooth Low Energy RSS fingerprints from Accent Systems IBKS105 beacons, over 4,700 fingerprints collected in a university library and an office at Universitat Jaume I. The package includes MATLAB scripts for loading and filtering the data, and the beacon deployment and obstacle coordinates.', zh: '来自 Accent Systems IBKS105 信标的蓝牙低功耗（BLE）RSS 指纹，共超过 4,700 条，采集于 Jaume I 大学（Universitat Jaume I）的图书馆与办公室。数据包含用于加载和过滤数据的 MATLAB 脚本，以及信标部署和障碍物坐标。'}
-sources: ['https://zenodo.org/record/1618692', 'https://zenodo.org/api/records/1618692', 'https://api.crossref.org/works/10.3390/data4010012']
+sources: ['https://zenodo.org/record/1618692', 'https://zenodo.org/api/records/1618692', 'https://api.crossref.org/works/10.3390/data4010012', 'https://api.datacite.org/dois/10.5281/zenodo.1618692', 'https://api.openalex.org/works/doi:10.3390/data4010012', 'https://zenodo.org/records/1618692', 'https://zenodo.org/api/records/1618692/versions']
 checked: '2026-11-06'
-overview: {en: 'The BLE RSS Measurements Dataset is a set of Bluetooth Low Energy received signal strength (RSS) fingerprints for indoor positioning research. Universitat Jaume I in Castellon, Spain produced it. Mendoza-Silva, Matey-Sanz, Torres-Sospedra and Huerta published it in the journal Data in 2019 and released it on Zenodo on 5 December 2018. The measurements were taken in two zones of the university, a library bookshelf area and an office space, using Accent Systems IBKS105 beacons. The collection holds over 4,700 fingerprints, recorded with three smartphones in the library zone and one smartphone in the office zone. The archive UJI_BLE_DB.zip (451.2 kB) includes MATLAB scripts for loading and filtering the data, examples of common challenges in BLE RSS positioning, and the local coordinates of the beacon deployment and of the obstacles. The dataset contains RSS values only and no other signal type.', zh: 'BLE RSS测量数据集是一组用于室内定位研究的蓝牙低功耗（BLE）接收信号强度（RSS）指纹。该数据由西班牙卡斯特利翁的Universitat
-    Jaume I（Jaume I大学）制作。Mendoza-Silva、Matey-Sanz、Torres-Sospedra和Huerta于2019年在期刊Data上发表了该数据集，并于2018年12月5日在Zenodo上发布。测量在大学的两个区域进行：图书馆书架区和办公室区域，所用信标为Accent Systems IBKS105。数据集共包含超过4,700条指纹，其中图书馆区域使用三部智能手机采集，办公室区域使用一部智能手机采集。压缩包UJI_BLE_DB.zip（451.2 kB）包含用于加载和过滤数据的MATLAB脚本、BLE RSS定位常见挑战的示例，以及信标部署和障碍物的本地坐标。数据集仅包含RSS数值，不包含其他类型的信号。'}
+overview: {en: 'The BLE RSS Measurements Dataset is a set of Bluetooth Low Energy received signal strength (RSS) fingerprints for indoor positioning research. Universitat Jaume I in Spain produced it, and Mendoza-Silva, Matey-Sanz, Torres-Sospedra and Huerta described it in the journal Data in 2019. The data were released on Zenodo on 5 December 2018 under the MIT license. The measurements were taken in two zones of the university, a library area among bookshelves and an office space, using Accent Systems IBKS105 beacons. The collection holds over 4,700 fingerprints: three smartphones recorded the library zone and one smartphone recorded the office zone. The supporting material includes MATLAB scripts for loading and filtering the data, examples of common challenges in BLE RSS positioning, and the local coordinates of the beacon deployment and the obstacles.', zh: 'BLE RSS测量数据集是一组蓝牙低功耗（BLE）接收信号强度（RSS）指纹，用于室内定位研究。该数据由西班牙Universitat Jaume I（Jaume I大学）制作，Mendoza-Silva、Matey-Sanz、Torres-Sospedra和Huerta于2019年在期刊Data上对其进行了描述。数据于2018年12月5日在Zenodo上发布，采用MIT许可证。测量在大学的两个区域进行，分别是图书馆的书架区和办公区，使用Accent
+    Systems IBKS105信标。数据集共包含超过4,700条指纹：图书馆区域由三部智能手机采集，办公室区域由一部智能手机采集。配套材料包括用于加载和过滤数据的MATLAB脚本、BLE RSS定位中常见挑战的示例，以及信标部署和障碍物的本地坐标。'}
 signal_details:
 - signal: rssi
   text: {en: 'Received signal strength (RSS) of Bluetooth Low Energy advertisements from Accent Systems IBKS105 beacons, recorded by smartphones. The beacons advertise every 200 ms. In the library zone the beacons transmit at -12 dBm and the readings were taken with aBQ Aquaris X5 Plus, Samsung Galaxy S6 (SM-G920F) and Samsung Galaxy A5 2017 (SM-A520F) phones. In the office zone the beacons transmit at -4 dBm, -12 dBm and -20 dBm, and the readings were taken with one Samsung Galaxy A5 phone.', zh: 智能手机记录的Accent Systems IBKS105信标蓝牙低功耗（BLE）广播的接收信号强度（RSS）。信标每200 ms广播一次。图书馆区域信标的发射功率为-12 dBm，读数由aBQ Aquaris X5 Plus、Samsung Galaxy S6（SM-G920F）和Samsung Galaxy A5 2017（SM-A520F）手机采集。办公室区域信标的发射功率为-4 dBm、-12 dBm和-20 dBm，读数由一部Samsung Galaxy A5手机采集。}
@@ -43,4 +43,89 @@ pipeline:
     inputs:
     - {en: RSS fingerprints, zh: RSS指纹}
     outputs:
-    - {en: UJI_BLE_DB.zip (451.2 kB), zh: UJI_BLE_DB.zip（451.2 kB）}
+    - {en: 'Zenodo archive with readings, scripts and coordinates', zh: 包含读数、脚本和坐标的Zenodo归档}
+facts:
+- label: {en: Phone sets, zh: 手机组合}
+  text: {en: 'The library zone was measured with three Android smartphones of different brands and models. The office zone used one of those smartphones, a Samsung Galaxy A5.', zh: 图书馆区域使用三部不同品牌和型号的Android智能手机采集。办公室区域使用其中一部手机，即Samsung Galaxy A5。}
+- label: {en: Citation, zh: 引用}
+  text: {en: 'The citation request names the Data 2019 paper (doi:10.3390/data4010012) and the Zenodo record (DOI 10.5281/zenodo.1618692).', zh: '引用要求同时列出Data 2019论文（doi:10.3390/data4010012）和Zenodo记录（DOI 10.5281/zenodo.1618692）。'}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'The dataset contains RSS values only, with no channel state information.', zh: 数据集仅包含 RSS 数值，无信道状态信息。}
+- key: cir
+  status: none
+  note: {en: 'RSS values only, with no impulse response or power delay profile.', zh: 仅有 RSS 数值，无冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: 'RSS values only, with no per-path parameters.', zh: 仅有 RSS 数值，无逐路径参数。}
+- key: interaction
+  status: none
+  note: {en: 'RSS values only, with no per-path interaction data.', zh: 仅有 RSS 数值，无逐路径交互数据。}
+- key: power
+  status: provided
+  note: {en: 'Smartphone RSS of IBKS105 advertisements; library beacons at -12 dBm, office beacons at -4, -12 and -20 dBm transmit power.', zh: 智能手机接收的 IBKS105 广播 RSS；图书馆信标发射功率为 -12 dBm，办公室信标为 -4、-12 和 -20 dBm。}
+- key: iq
+  status: none
+  note: {en: 'RSS values only, with no raw I/Q samples.', zh: 仅有 RSS 数值，无原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains; RSS values only., zh: 无波束索引或逐波束增益；仅有 RSS 数值。}
+- key: position
+  status: unknown
+  note: {en: Beacon and obstacle local coordinates are released; the sources state no reference coordinates for the fingerprints., zh: 信标与障碍物的本地坐标已发布；来源未说明指纹的参考坐标。}
+- key: geometry
+  status: none
+  note: {en: 'Beacon and obstacle coordinates only, with no map or 3D scene file.', zh: 仅有信标与障碍物坐标，无地图或三维场景文件。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: The dataset contains RSS values only and no other signal type., zh: 数据集仅包含 RSS 数值，无其他信号类型。}
+- key: depth
+  status: none
+  note: {en: The dataset contains RSS values only and no other signal type., zh: 数据集仅包含 RSS 数值，无其他信号类型。}
+- key: lidar
+  status: none
+  note: {en: The dataset contains RSS values only and no other signal type., zh: 数据集仅包含 RSS 数值，无其他信号类型。}
+- key: radar
+  status: none
+  note: {en: The dataset contains RSS values only and no other signal type., zh: 数据集仅包含 RSS 数值，无其他信号类型。}
+- key: imu
+  status: none
+  note: {en: The dataset contains RSS values only and no other signal type., zh: 数据集仅包含 RSS 数值，无其他信号类型。}
+- {key: time_series, status: unknown}
+- key: multiuser
+  status: none
+  note: {en: 'Several phones were used per zone, with no simultaneous multi-user channels described.', zh: 每个区域使用多部手机，但未描述同时存在的多用户信道。}
+- key: multibs
+  status: unknown
+  note: {en: Beacon batches are deployed in each zone; the sources give no beacon count., zh: 每个区域部署了一批信标；来源未给出信标数量。}
+- key: crossfreq
+  status: none
+  note: {en: 'Single BLE band, with no paired multi-band data.', zh: 单一 BLE 频段，无成对的多频段数据。}
+- key: near_field
+  status: none
+  note: {en: 'RSS-only indoor data, with no array or wave modelling.', zh: 仅有室内 RSS 数据，无阵列或波动建模。}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'RSS values only, with no field strength or antenna pattern.', zh: 仅有 RSS 数值，无场强或天线方向图。}
+versions:
+- version: '1.0'
+  date: '2018-12-05'
+  summary: {en: 'Zenodo release 1.0 (DOI 10.5281/zenodo.1618692) with UJI_BLE_DB.zip (451.2 kB): over 4,700 BLE RSS fingerprints from a library zone and an office zone, MATLAB loading and filtering scripts, and beacon and obstacle local coordinates.', zh: 'Zenodo 1.0 版（DOI 10.5281/zenodo.1618692），包含 UJI_BLE_DB.zip（451.2 kB）：图书馆与办公室两个区域的 4,700 余条 BLE RSS 指纹、MATLAB 数据加载与过滤脚本，以及信标和障碍物的本地坐标。'}
+  url: https://zenodo.org/records/1618692

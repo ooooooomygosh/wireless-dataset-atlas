@@ -15,17 +15,17 @@ paper: doi:10.1145/3503161.3548262
 used_in: ['doi:10.1109/jiot.2025.3601012']
 citing: ['doi:10.1109/cvpr52733.2024.00185', 'doi:10.1109/jiot.2024.3359209', 'doi:10.1109/jiot.2024.3476350']
 summary: {en: 'Synchronized, calibrated mmWave radar point clouds and RGB(D) images of 20 volunteers performing 100 motions, with skeleton and mesh annotations. Scenes include lab settings and smoke, rain, occlusion and poor-lighting conditions.', zh: 20 名志愿者执行 100 种动作时同步、标定的毫米波雷达点云与 RGB(D) 图像，附带骨架与网格标注。场景包括实验室环境以及烟雾、降雨、遮挡和低光照条件。}
-sources: ['https://chen3110.github.io/mmbody/index.html', 'https://github.com/Chen3110/mmBody', 'https://arxiv.org/abs/2209.05070', 'https://arxiv.org/html/2209.05070v3', 'https://api.crossref.org/works/10.1145/3503161.3548262']
+sources: ['https://chen3110.github.io/mmbody/index.html', 'https://github.com/Chen3110/mmBody', 'https://arxiv.org/abs/2209.05070', 'https://arxiv.org/html/2209.05070v3', 'https://api.crossref.org/works/10.1145/3503161.3548262', 'https://raw.githubusercontent.com/Chen3110/mmBody/main/README.md', 'https://arberobotics.com/wp-content/uploads/2021/05/4D-Imaging-radar-product-overview.pdf', 'https://github.com/Chen3110/mmBody/releases', 'https://github.com/Chen3110/mmBody/commits/main', 'https://arxiv.org/abs/2209.05070v1', 'https://arxiv.org/abs/2209.05070v2', 'https://arxiv.org/abs/2209.05070v3']
 checked: '2026-11-06'
 overview: {en: 'mmBody is a mmWave radar benchmark for 3D body reconstruction. The State Key Laboratory of Industrial Control Technology at Zhejiang University produced it, and it was published at the ACM International Conference on Multimedia (ACM MM) 2022. It contains synchronized, calibrated mmWave radar point clouds and RGB and depth images from two Azure Kinect cameras, together with motion capture labels. The data cover 100 motions performed by 20 volunteers in seven scenes, with more than 200k frames. The scenes include two labs, a furnished lab, poor lighting, rain, smoke and occlusion of the radar. Labels are skeleton and SMPL-X mesh annotations, obtained by fitting SMPL-X to OptiTrack marker data with MoSh++. The benchmark tasks are 3D joint and mesh reconstruction from radar point clouds, Kinect point clouds and RGB images, with P4Transformer and VIBE as baselines. Access requires a request, and the terms allow non-commercial academic use only, without modification or redistribution.',
   zh: mmBody 是一个面向三维人体重建的毫米波雷达基准数据集。该数据集由浙江大学工业控制技术国家重点实验室（State Key Laboratory of Industrial Control Technology）制作，发表于 ACM International Conference on Multimedia（ACM MM）2022。数据包含同步、标定后的毫米波雷达点云，以及来自两台 Azure Kinect 相机的 RGB 与深度图像，并附带动作捕捉标签。数据覆盖 20 名志愿者在 7 个场景中执行的 100 种动作，超过 200k 帧。场景包括两个实验室、一个布置了家具的实验室、低光照环境、降雨、烟雾以及雷达遮挡。标签为骨架和 SMPL-X 网格标注，通过 MoSh++ 将 SMPL-X 拟合到 OptiTrack 标记点数据上得到。基准任务为基于雷达点云、Kinect 点云和 RGB 图像的三维关节与网格重建，基线方法为 P4Transformer 和 VIBE。获取数据需要提交申请，使用条款仅允许非商业学术用途，不得修改或再分发。}
 signal_details:
 - signal: radar
-  text: {en: 'Arbe Robotics Phoenix radar with a 48 transmit by 48 receive channel antenna array. Range resolution is 0.4 m and angle resolution about 2.0 degrees. The product rate is 10 to 30 FPS, and the actual capture rate is about 14 FPS. An onboard processor produces point clouds whose points carry 3D location, range velocity, amplitude and energy power. Each frame has about 1k human points at a distance of 3 to 5 m.', zh: Arbe Robotics Phoenix 雷达，发射 48 通道、接收 48 通道的天线阵列。距离分辨率 0.4 m，角度分辨率约 2.0 度。产品标称帧率为 10 至 30 FPS，实际采集帧率约 14 FPS。板载处理器生成点云，每个点包含三维位置、range velocity、幅度和能量功率。在 3 至 5 m 距离处，每帧约有 1k 个人体点。}
+  text: {en: 'Arbe Robotics Phoenix radar with a 48 transmit by 48 receive channel antenna array. Range resolution is 0.4 m and angle resolution about 2.0 degrees. The product rate is 10 to 30 FPS, and the actual capture rate is about 14 FPS. An onboard processor produces point clouds whose points carry 3D location, range velocity, amplitude and energy power. The radar is placed 3 to 5 m from the subjects.', zh: Arbe Robotics Phoenix 雷达，发射 48 通道、接收 48 通道的天线阵列。距离分辨率 0.4 m，角度分辨率约 2.0 度。产品标称帧率为 10 至 30 FPS，实际采集帧率约 14 FPS。板载处理器生成点云，每个点包含三维位置、range velocity、幅度和能量功率。雷达与受试者的距离为 3 至 5 m。}
 - signal: rgb
   text: {en: 'Color images from the two Azure Kinect units at 30 FPS. The master unit sits directly under the radar, and the sub unit sits 1.5 to 2 m from the body on one side of the radar-body line.', zh: 两台 Azure Kinect 的彩色图像，30 FPS。master 相机位于雷达正下方，sub 相机位于雷达与人体连线的一侧，距人体 1.5 至 2 m。}
 - signal: depth
-  text: {en: Depth images from the same two Azure Kinect units at 30 FPS. Depth images contain up to about 200k points. Camera intrinsics are provided as 3 x 3 matrices for the master and sub cameras., zh: 同两台 Azure Kinect 的深度图像，30 FPS。深度图最多包含约 200k 个点。提供 master 与 sub 相机的 3 x 3 内参矩阵。}
+  text: {en: Depth images from the same two Azure Kinect units at 30 FPS. Camera intrinsics are provided as 3 x 3 matrices for the master and sub cameras., zh: 同两台 Azure Kinect 的深度图像，30 FPS。提供 master 与 sub 相机的 3 x 3 内参矩阵。}
 pipeline:
   summary: {en: 'Radar, two Kinect cameras and OptiTrack motion capture are calibrated to the radar frame, and SMPL-X labels are fitted from marker data with MoSh++.', zh: 雷达、两台 Kinect 相机和 OptiTrack 动作捕捉系统标定到雷达坐标系，SMPL-X 标签由标记点数据通过 MoSh++ 拟合得到。}
   stages:
@@ -55,3 +55,106 @@ pipeline:
     - {en: 'radar and Kinect point clouds, ground-truth skeletons', zh: 雷达与 Kinect 点云、真值骨架}
     outputs:
     - {en: fixed-size cropped point clouds, zh: 固定点数的裁剪点云}
+bands_ghz: [77]
+antennas: {tx: 48, rx: 48}
+facts:
+- label: {en: Split, zh: 数据划分}
+  text: {en: 'Training uses 20 sequences from 10 subjects recorded in the two labs. The test set holds 2 sequences from 2 subjects in each of the seven scenes, and the Lab2 test subjects also appear in training. Each sequence has about 2,000 frames.', zh: '训练集使用两个实验室中 10 名受试者的 20 个序列。测试集在七个场景中各包含 2 名受试者的 2 个序列，其中 Lab2 的测试受试者同时出现在训练集中。每个序列约 2,000 帧。'}
+- label: {en: Coordinate frame, zh: 坐标系}
+  text: {en: 'The radar frame is the world frame, with X horizontal, Y depth and Z height in meters. The calib.txt transforms map each sensor frame to it.', zh: 雷达坐标系为世界坐标系，X 为水平方向，Y 为深度方向，Z 为高度方向，单位为米。calib.txt 中的变换矩阵将各传感器坐标系映射到该坐标系。}
+- label: {en: Error metrics, zh: 误差指标}
+  text: {en: Joint and vertex errors are the mean and the maximum Euclidean distance per frame. Shape error is the mean squared error between ground-truth and estimated shape parameters., zh: 关节与顶点误差取每帧的平均与最大欧氏距离。形状误差为真值与估计形状参数之间的均方误差。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Radar point clouds and Kinect images only; no channel matrices., zh: 仅有雷达点云与 Kinect 图像，无信道矩阵。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile; the radar output is a point cloud., zh: 没有冲激响应或功率时延谱；雷达输出为点云。}
+- key: paths
+  status: none
+  note: {en: 'Points carry 3D location, range velocity, amplitude and energy, but no per-path delay, phase or angle list.', zh: 点包含三维位置、径向速度、幅度和能量，但没有逐径时延、相位或角度列表。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records., zh: 没有逐径交互记录。}
+- key: power
+  status: provided
+  note: {en: 'Per-point reflected energy power in the radar point cloud, not link-level received power or RSSI.', zh: 雷达点云中每个点的反射能量功率，而非链路级接收功率或 RSSI。}
+- key: iq
+  status: none
+  note: {en: Point clouds are produced by the radar's onboard processor; raw radar signals are not part of the release., zh: 点云由雷达板载处理器生成，原始雷达信号不在发布内容中。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains; the radar output is a point cloud., zh: 没有波束索引或逐波束增益；雷达输出为点云。}
+- key: position
+  status: provided
+  note: {en: MoCap 3D joint and vertex coordinates of the subject in the radar frame; no device or GPS position., zh: MoCap 给出的受试者关节与网格顶点三维坐标（雷达坐标系）；无设备位置或 GPS。}
+- key: geometry
+  status: none
+  note: {en: Only human meshes and calibration files are released; no 3D scene or map files., zh: 仅发布人体网格与标定文件，无三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: 'Occluding materials (paper, plastic wrap, foam board, cloth) are named but no material parameters are released.', zh: 遮挡材料（纸、塑料包装膜、泡沫板、布）有名称，但不提供材料参数。}
+- key: rgb
+  status: provided
+  note: {en: Color images from two Azure Kinect cameras at 30 FPS., zh: 两台 Azure Kinect 的彩色图像，30 FPS。}
+- key: depth
+  status: provided
+  note: {en: Depth images from the same two Azure Kinect cameras., zh: 同两台 Azure Kinect 的深度图像。}
+- key: lidar
+  status: none
+  note: {en: 'The capture system has a radar, Kinect cameras and MoCap only.', zh: 采集系统仅包含雷达、Kinect 相机与 MoCap。}
+- key: radar
+  status: provided
+  note: {en: 'Arbe Phoenix radar point clouds at about 14 FPS; each point has 3D location, range velocity, amplitude and energy.', zh: Arbe Phoenix 雷达点云，约 14 FPS；每个点包含三维位置、径向速度、幅度和能量。}
+- key: imu
+  status: none
+  note: {en: No IMU in the capture system., zh: 采集系统中无 IMU。}
+- key: time_series
+  status: provided
+  note: {en: 'Frame sequences of about 2000 frames per test sequence; radar frames carry reception timestamps, not exact capture times; Kinect at 30 FPS.', zh: 帧序列，每个测试序列约 2000 帧；雷达帧带接收时间戳，并非精确采集时刻；Kinect 为 30 FPS。}
+- {key: multiuser, status: unknown}
+- key: multibs
+  status: none
+  note: {en: Single radar; no multi-base-station set., zh: 单个雷达，无多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: Single radar and camera system; no paired multi-band data., zh: 单雷达与相机系统，无成对多频段数据。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- key: dynamic_blockage
+  status: none
+  note: {en: Occlusion means the radar covered by static materials; no moving blockers are described., zh: 遮挡指雷达被静态材料覆盖；未描述移动遮挡物。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; the occlusion scenes test penetration through materials.', zh: 由测量本身包含，未按径标注；遮挡场景测试了穿透材料的能力。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'Outputs are point clouds, images and meshes; no field-level quantities or antenna patterns.', zh: 输出为点云、图像与网格，无场量或天线方向图。}
+versions:
+- version: v3
+  date: '2023-09-21'
+  summary: {en: arXiv revision v3 of the paper that introduces the mmBody dataset. The arXiv record gives no change description., zh: 介绍 mmBody 数据集的论文 arXiv 修订版 v3。arXiv 页面未给出修改说明。}
+  url: https://arxiv.org/abs/2209.05070v3
+- version: v2
+  date: '2023-04-14'
+  summary: {en: arXiv revision v2 of the same paper. The arXiv record gives no change description., zh: 同一论文的 arXiv 修订版 v2。arXiv 页面未给出修改说明。}
+  url: https://arxiv.org/abs/2209.05070v2
+- version: ACM MM 2022
+  date: '2022-10-10'
+  summary: {en: 'Published in the Proceedings of the 30th ACM International Conference on Multimedia (MM ''22, Lisbon). The paper introduces the mmBody dataset and benchmark.', zh: 发表于第 30 届 ACM 国际多媒体会议（MM '22，里斯本）论文集。论文介绍了 mmBody 数据集与基准。}
+  url: https://doi.org/10.1145/3503161.3548262
+- version: v1
+  date: '2022-09-12'
+  summary: {en: 'First arXiv version, introducing synchronized Arbe radar point clouds, Azure Kinect RGB-D images and MoCap-based SMPL-X annotations.', zh: 首个 arXiv 版本，介绍同步的 Arbe 雷达点云、Azure Kinect RGB-D 图像以及基于 MoCap 的 SMPL-X 标注。}
+  url: https://arxiv.org/abs/2209.05070v1

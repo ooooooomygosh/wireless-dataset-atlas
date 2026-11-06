@@ -13,15 +13,15 @@ paper: arxiv:1705.02882
 used_in: []
 citing: ['doi:10.1109/comst.2018.2869350', 'doi:10.1109/comst.2022.3171135', 'doi:10.1109/mcom.001.2000224']
 summary: {en: 'This generator is an ns-3 module for 5G mmWave cellular network simulation with 3GPP TR 38.901-based channel models, and it outputs simulated network-level metrics.', zh: 该生成器是用于 5G mmWave 蜂窝网络仿真的 ns-3 模块，采用基于 3GPP TR 38.901 的信道模型，输出仿真得到的网络级指标。}
-sources: ['https://github.com/nyuwireless-unipd/ns3-mmwave', 'https://raw.githubusercontent.com/nyuwireless-unipd/ns3-mmwave/master/README.md', 'https://arxiv.org/abs/1705.02882']
+sources: ['https://github.com/nyuwireless-unipd/ns3-mmwave', 'https://raw.githubusercontent.com/nyuwireless-unipd/ns3-mmwave/master/README.md', 'https://arxiv.org/abs/1705.02882', 'https://arxiv.org/pdf/1705.02882', 'https://raw.githubusercontent.com/nyuwireless-unipd/ns3-mmwave/master/LICENSE', 'https://github.com/nyuwireless-unipd/ns3-mmwave/releases', 'https://github.com/nyuwireless-unipd/ns3-mmwave/releases?page=2', 'https://github.com/nyuwireless-unipd/ns3-mmwave/tags', 'https://github.com/nyuwireless-unipd/ns3-mmwave/tags?after=v1.2', 'https://github.com/nyuwireless-unipd/ns3-mmwave/commits/master', 'https://arxiv.org/html/1705.02882v3']
 checked: '2026-11-06'
-overview: {en: 'ns-3 mmWave is an open-source module for the ns-3 network simulator that models 5G mmWave cellular networks. The GitHub repository and the paper End-to-End Simulation of 5G mmWave Networks (arXiv:1705.02882, first submitted in 2017, revised in February 2018) by Mezzavilla et al. describe the module. The module is built on the ns-3 LTE (LENA) module, reuses its RLC, EPC and RRC layers, and adds custom mmWave PHY and MAC layers. It supports LTE and mmWave dual connectivity and is released under GPL-2.0. Its outputs are simulated network metrics such as throughput, latency and fairness, written as ns-3 trace and pcap files, so the records are simulation results rather than measurements.', zh: 'ns-3 mmWave 是 ns-3 网络仿真器的一个开源模块，用于仿真 5G mmWave 蜂窝网络。GitHub 仓库以及论文 End-to-End Simulation of 5G mmWave Networks（arXiv:1705.02882，2017 年首次提交，2018 年 2 月修订，作者为 Mezzavilla 等）对该模块作了说明。该模块基于 ns-3 LTE（LENA）模块，复用其 RLC、EPC 和 RRC 层，并新增自定义的 mmWave PHY 与 MAC 层。模块支持 LTE 与 mmWave 双连接，以 GPL-2.0 许可发布。输出为仿真得到的网络指标，如吞吐量、时延和公平性，以
-    ns-3 trace 与 pcap 文件保存，因此记录为仿真结果而非实测数据。'}
+overview: {en: 'ns-3 mmWave is an open-source module for the ns-3 network simulator that models 5G mmWave cellular networks. The GitHub repository and the paper End-to-End Simulation of 5G mmWave Networks by Mezzavilla et al. (arXiv:1705.02882, first submitted in May 2017 and last revised in February 2018) describe the module. It is built on the ns-3 LTE (LENA) module: it reuses LENA''s EPC and RRC layers and inherits its RLC layer, with a modified acknowledged-mode retransmission entity and optional active queue management, and it adds custom mmWave PHY and MAC layers. The paper describes LTE and mmWave dual connectivity, which the README places on the new-handover branch. The module is released under GPL-2.0. Its outputs are simulated network KPIs such as PHY throughput, IP-layer latency, fairness index and utilization, so the records are simulation results rather than measurements.', zh: 'ns-3 mmWave 是 ns-3 网络仿真器的一个开源模块，用于仿真 5G mmWave 蜂窝网络。GitHub 仓库以及 Mezzavilla 等人的论文 End-to-End Simulation
+    of 5G mmWave Networks（arXiv:1705.02882，2017 年 5 月首次提交，2018 年 2 月最后修订）对该模块作了说明。该模块基于 ns-3 LTE（LENA）模块：复用 LENA 的 EPC 与 RRC 层，继承其 RLC 层并修改了确认模式的重传实体，同时可选启用主动队列管理，另外新增自定义的 mmWave PHY 与 MAC 层。论文描述了 LTE 与 mmWave 双连接，README 将该功能列在 new-handover 分支中。模块以 GPL-2.0 许可发布。输出为仿真得到的网络 KPI，如 PHY 吞吐量、IP 层时延、公平性指数和利用率，因此记录为仿真结果而非实测数据。'}
 signal_details:
 - signal: kpi
-  text: {en: 'Simulated network KPIs written to ns-3 trace (.tr) and pcap files. The paper''s multi-user examples report downlink PHY throughput in Mbit/s (cell, mean UE, 5% worst UE and max UE), IP-layer latency in ms, and fairness index and utilization for the Round Robin (RR), Proportional Fair (PF), Maximum Rate (MR) and Earliest Deadline First (EDF) schedulers. The example cases are 70 UEs at 10 Mbps and 7 UEs at 100 Mbps, with 10 drops each.', zh: 仿真生成的网络 KPI，以 ns-3 trace（.tr）与 pcap 文件保存。论文中的多用户示例给出下行 PHY 吞吐量（单位 Mbit/s，包括小区、平均 UE、最差 5% UE 和最大 UE）、IP 层时延（单位 ms），以及 RR、PF、MR、EDF 调度器的公平性指数与利用率。示例场景为 70 个 UE、10 Mbps 与 7 个 UE、100 Mbps，各运行 10 次 drop。}
+  text: {en: 'Simulated network KPIs from the paper''s multi-user examples: downlink PHY throughput in Mbit/s (cell, mean UE, 5% worst UE and max UE), IP-layer latency in ms, and Jain''s fairness index and utilization (received IP-layer rate over allocated PHY rate) for the RR, PF, MR and EDF schedulers. The two cases are 70 UEs at 10 Mbps each and 7 UEs at 100 Mbps each, with 10 drops per case.', zh: 论文多用户示例中仿真得到的网络 KPI：下行 PHY 吞吐量（单位 Mbit/s，包括小区、平均 UE、最差 5% UE 和最大 UE）、IP 层时延（单位 ms），以及 RR、PF、MR、EDF 调度器的 Jain 公平性指数和利用率（接收的 IP 层速率与分配的 PHY 速率之比）。两组场景分别为 70 个 UE 每个 10 Mbps，以及 7 个 UE 每个 100 Mbps，每组运行 10 次 drop。}
 pipeline:
-  summary: {en: 'The module runs inside ns-3: the user builds ns-3 with the mmWave module, selects a channel model and scheduler, and the run writes trace and pcap files with network KPIs.', zh: 该模块在 ns-3 内运行：用户编译包含 mmWave 模块的 ns-3，选择信道模型与调度器，运行后输出包含网络 KPI 的 trace 与 pcap 文件。}
+  summary: {en: 'The module runs inside ns-3: the user builds ns-3 with the mmWave module, selects a channel model and a scheduler, and the simulation reports PHY throughput, IP-layer latency, fairness index and utilization.', zh: 该模块在 ns-3 内运行：用户编译包含 mmWave 模块的 ns-3，选择信道模型与调度器，仿真输出 PHY 吞吐量、IP 层时延、公平性指数和利用率。}
   stages:
   - title: {en: Build ns-3 with the mmWave module, zh: 编译包含 mmWave 模块的 ns-3}
     detail: {en: 'The README builds the module with ./waf configure --enable-examples followed by ./waf. The paper cites ns-3 version 3.27 as the base platform, with the LTE LENA module underneath.', zh: README 通过 ./waf configure --enable-examples 随后执行 ./waf 完成编译。论文引用 ns-3 3.27 版本作为基础平台，底层为 LTE LENA 模块。}
@@ -37,13 +37,127 @@ pipeline:
     outputs:
     - {en: 'channel for each link, updated over time', zh: 各链路随时间更新的信道}
   - title: {en: 'Simulate PHY, MAC and scheduling', zh: 仿真 PHY、MAC 与调度}
-    detail: {en: 'Default numerology: 1 ms frame with 10 subframes of 100 µs, 24 symbols of 4.16 µs per subframe, and 1 GHz bandwidth in 72 subbands of 13.89 MHz. Four variable-TTI TDMA schedulers are available (Round Robin, Proportional Fair, Earliest Deadline First and Maximum Rate), with 20 HARQ processes and up to 3 HARQ attempts.', zh: 默认参数：1 ms 帧，每帧 10 个子帧，每子帧 100 µs，含 24 个符号（每符号 4.16 µs），带宽 1 GHz，分为 72 个子带，每子带 13.89 MHz。提供四种可变 TTI 的 TDMA 调度器（Round Robin、Proportional Fair、Earliest Deadline First 与 Maximum Rate），HARQ 进程数为 20，最多 3 次 HARQ 重传。}
+    detail: {en: 'Default numerology: 1 ms frame with 10 subframes of 100 µs, 24 symbols of 4.16 µs per subframe, and 1 GHz bandwidth in 72 subbands of 13.89 MHz. Four variable-TTI TDMA schedulers are available (Round Robin, Proportional Fair, Earliest Deadline First and Maximum Rate), with 20 HARQ processes and up to 3 HARQ attempts per transport block.', zh: 默认参数：1 ms 帧，每帧 10 个子帧，每子帧 100 µs，含 24 个符号（每符号约 4.16 µs），带宽 1 GHz，分为 72 个子带，每子带 13.89 MHz。提供四种可变 TTI 的 TDMA 调度器（Round Robin、Proportional Fair、Earliest Deadline First 与 Maximum Rate），HARQ 进程数为 20，每个传输块最多 3 次传输尝试。}
     inputs:
     - {en: UE traffic and channel for each link, zh: UE 业务与各链路信道}
     outputs:
     - {en: 'per-UE throughput, latency and fairness', zh: 各 UE 的吞吐量、时延与公平性}
-  - title: {en: Write trace and pcap output, zh: 写出 trace 与 pcap 输出}
-    detail: {en: The README example ./waf --run simple-global-routing writes a simple-global-routing.tr text trace and pcap files readable with tcpdump., zh: README 示例 ./waf --run simple-global-routing 生成 simple-global-routing.tr 文本 trace，以及可用 tcpdump 读取的 pcap 文件。}
+  - title: {en: Collect the KPIs, zh: 收集 KPI}
+    detail: {en: 'The paper''s multi-user examples report the KPIs in its Tables II to IV. The README''s example ./waf --run simple-global-routing is a generic ns-3 example, not part of the mmWave module; it writes a simple-global-routing.tr text trace and pcap files readable with tcpdump.', zh: 论文的多用户示例在表 II 至表 IV 中给出 KPI。README 中的示例 ./waf --run simple-global-routing 属于通用 ns-3 示例，不属于 mmWave 模块；它生成 simple-global-routing.tr 文本 trace 以及可用 tcpdump 读取的 pcap 文件。}
+    inputs:
+    - {en: 'simulation run with the chosen channel model, scheduler and traffic', zh: 使用所选信道模型、调度器与业务的仿真运行}
     outputs:
-    - {en: simple-global-routing.tr trace, zh: simple-global-routing.tr trace}
-    - {en: pcap files, zh: pcap 文件}
+    - {en: 'PHY throughput, IP-layer latency, fairness index and utilization', zh: PHY 吞吐量、IP 层时延、公平性指数与利用率}
+bandwidth_mhz: 1000
+organization: NYU WIRELESS, NYU Tandon School of Engineering; University of Padova
+facts:
+- label: {en: Trace input format, zh: trace 输入格式}
+  text: {en: 'Ray-tracing and measurement traces must contain the number of paths and, for each path, the propagation loss, delay, angle of arrival and angle of departure.', zh: 光线追踪与测量 trace 须包含路径数量，以及每条路径的传播损耗、时延、到达角与离开角。}
+- label: {en: Frequency coverage, zh: 频率覆盖范围}
+  text: {en: 'The 3GPP model covers 6 to 100 GHz, QuaDRiGa is listed for 10, 28, 43, 60 and 82 GHz, and the NYU statistical model is available only at 28 and 73 GHz.', zh: 3GPP 模型覆盖 6 至 100 GHz，QuaDRiGa 列出的频点为 10、28、43、60 和 82 GHz，NYU 统计模型仅适用于 28 和 73 GHz。}
+- label: {en: Example mobility, zh: 示例中的移动性}
+  text: {en: 'In the multi-user examples, UEs are at similar distances from the eNB and move at a constant 25 m/s, typical of vehicular users.', zh: 多用户示例中，各 UE 与 eNB 的距离相近，并以恒定 25 m/s 的速度移动，该速度为典型车辆用户速度。}
+technical_notes:
+- {en: The README places the LTE and mmWave integration and the dual connectivity features on the new-handover branch of the repository., zh: README 将 LTE 与 mmWave 的集成及双连接功能置于仓库的 new-handover 分支中。}
+- {en: 'The mmWave frame structure is shorter than the LTE one, so the RLC acknowledged-mode retransmission timers are modified to match it.', zh: mmWave 帧结构比 LTE 短，因此 RLC 确认模式的重传定时器经过修改以与之匹配。}
+limitations:
+- {en: Ray-tracing and measurement traces constrain the simulation to the routes for which they were generated., zh: 光线追踪与测量 trace 将仿真限定在生成这些 trace 的路线上。}
+- {en: 'Only TDMA operation is supported at present, so UE data are not assigned to individual subbands as they would be in OFDMA.', zh: 目前仅支持 TDMA 操作，因此 UE 数据不能像 OFDMA 那样分配到各个子带。}
+- {en: 'The Maximum Rate scheduler gives very poor fairness when users have mixed rates, and the paper describes it as mainly useful for testing system capacity.', zh: 用户速率差异较大时，Maximum Rate 调度器的公平性很差，论文称其主要用于测试系统容量。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: 'The per-link channel is updated over time inside a run, but the documented outputs are network KPIs only.', zh: 各链路信道在运行过程中随时间更新，但文档记录的输出仅为网络 KPI。}
+- {key: cir, status: unknown}
+- key: paths
+  status: simulate
+  note: {en: 'The 3GPP model draws up to 20 clusters per link, and trace input carries per-path loss, delay, angle of arrival and angle of departure.', zh: 3GPP 模型为每条链路生成最多 20 个簇，trace 输入则包含逐路径的损耗、时延、到达角与离开角。}
+- {key: interaction, status: unknown}
+- key: power
+  status: simulate
+  note: {en: 'Path loss comes from the selected channel model during a run, and the documented outputs are KPIs.', zh: 路径损耗在运行中由所选信道模型给出，文档记录的输出为 KPI。}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- key: geometry
+  status: simulate
+  note: {en: 'Obstacles and buildings can be placed in a scenario, and v1.1 uses the ns-3 buildings module for 3D scenes.', zh: 场景中可放置障碍物与建筑物，v1.1 借助 ns-3 buildings 模块构建三维场景。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'The documented outputs are network KPIs only, with no image data.', zh: 文档记录的输出仅为网络 KPI，不含图像数据。}
+- key: depth
+  status: none
+  note: {en: 'The documented outputs are network KPIs only, with no sensor data.', zh: 文档记录的输出仅为网络 KPI，不含传感器数据。}
+- key: lidar
+  status: none
+  note: {en: 'The documented outputs are network KPIs only, with no sensor data.', zh: 文档记录的输出仅为网络 KPI，不含传感器数据。}
+- key: radar
+  status: none
+  note: {en: 'The documented outputs are network KPIs only, with no sensor data.', zh: 文档记录的输出仅为网络 KPI，不含传感器数据。}
+- key: imu
+  status: none
+  note: {en: 'The documented outputs are network KPIs only, with no sensor data.', zh: 文档记录的输出仅为网络 KPI，不含传感器数据。}
+- key: time_series
+  status: simulate
+  note: {en: 'Mobility-based runs keep spatial consistency across time, but the reported KPIs are per-run aggregates.', zh: 基于移动性的运行在时间上保持空间一致性，但报告的 KPI 为每次运行的汇总值。}
+- key: multiuser
+  status: simulate
+  note: {en: The multi-user examples run 70 UEs at 10 Mbps each and 7 UEs at 100 Mbps each., zh: 多用户示例分别运行 70 个 UE（每个 10 Mbps）与 7 个 UE（每个 100 Mbps）。}
+- {key: multibs, status: unknown}
+- key: crossfreq
+  status: simulate
+  note: {en: 'The 3GPP model covers 6 to 100 GHz, so a rerun can change the carrier frequency, but paired multi-band output is not documented.', zh: 3GPP 模型覆盖 6 至 100 GHz，因此重新运行时可改变载频，但文档未记录成对的多频段输出。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: simulate
+  note: {en: 'The multi-user examples fix the UE speed at 25 m/s (90 km/h), typical of vehicular users.', zh: 多用户示例将 UE 速度固定为 25 m/s（90 km/h），与车辆用户的典型速度相符。}
+- key: dynamic_blockage
+  status: simulate
+  note: {en: 'The 3GPP blockage model A randomly generates blocking regions and can be switched on, but the paper does not say whether blockers move.', zh: 3GPP 遮挡模型 A 随机生成遮挡区域且可选择开启，但论文未说明遮挡体是否移动。}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: none
+  note: {en: The paper's channel computation considers only vertically polarized antennas., zh: 论文的信道计算仅考虑垂直极化天线。}
+- {key: em_field, status: unknown}
+versions:
+- version: v8.0
+  date: '2024-06-26'
+  summary: {en: 'Moves the baseline to ns-3.42, which brings the 3GPP TR 38.811 non-terrestrial network channel model, and includes bug fixes and memory optimizations.', zh: 将基线升级至 ns-3.42，引入 3GPP TR 38.811 非地面网络信道模型，并包含缺陷修复与内存优化。}
+  url: https://github.com/nyuwireless-unipd/ns3-mmwave/releases
+- version: v7.0
+  date: '2023-03-21'
+  summary: {en: 'Moves the baseline to ns-3.38, which includes the spectrum module optimizations from the GSoC 2022 project, and fixes a few memory leaks.', zh: 将基线升级至 ns-3.38，包含 GSoC 2022 项目带来的频谱模块优化，并修复若干内存泄漏。}
+- version: v6.1
+  date: '2022-10-21'
+  summary: {en: 'Minor release that restores multi-user support in MmWaveSpectrumPhy, corrects its FDD/TDD error message, removes a hard-coded -Werror flag, and makes the NR error model the default.', zh: 小版本，恢复 MmWaveSpectrumPhy 的多用户支持，修正其 FDD/TDD 错误信息，移除硬编码的 -Werror 编译选项，并将 NR 误差模型设为默认。}
+- version: v6.0
+  date: '2022-09-23'
+  summary: {en: 'Moves the baseline to ns-3.36.1 with a CMake build system in place of Waf, widens the NR frame number to uint32_t, and assumes 12 OFDM symbols for transport block error estimation in CQI determination.', zh: 将基线升级至 ns-3.36.1，以 CMake 构建系统替代 Waf，将 NR 帧号扩展为 uint32_t，并在 CQI 确定中采用 12 个 OFDM 符号估计传输块误码率。}
+- version: v5.0
+  date: '2022-05-02'
+  summary: {en: Moves the baseline to ns-3.35 and updates the antenna and beamforming models., zh: 将基线升级至 ns-3.35，并更新天线与波束成形模型。}
+- version: '4.0'
+  date: '2021-06-01'
+  summary: {en: 'Adds NR-compliant error models adapted from 5G-LENA 1.0, support for an external energy-consumption module for mmWave devices, and moves the code to ns-3.33.', zh: 新增改编自 5G-LENA 1.0 的 NR 兼容误差模型，支持用于 mmWave 设备的外部能耗分析模块，并将代码迁移至 ns-3.33。}
+- version: v3.0
+  date: '2020-09-15'
+  summary: {en: 'Updates the PHY and MAC layers to the 3GPP NR frame structure and numerology, adds a 3GPP TR 38.901 channel model and ray-tracing or measurement trace input, adds SVD- and DFT-based beamforming, and moves the other modules to ns-3.31.', zh: 将 PHY 与 MAC 层更新为 3GPP NR 帧结构与参数集，新增 3GPP TR 38.901 信道模型以及光线追踪或测量 trace 输入，新增基于 SVD 与 DFT 的波束成形，并将其他模块更新至 ns-3.31。}
+- version: V2.0
+  date: '2018-09-07'
+  summary: {en: Updates the module to ns-3.29 and adds carrier aggregation and multi-sector antennas., zh: 将模块更新至 ns-3.29，并新增载波聚合与多扇区天线。}
+- version: v1.2
+  date: '2017-10-05'
+  summary: {en: Updates the new-handover branch to ns-3.27 and adds a dual-connectivity example., zh: 将 new-handover 分支更新至 ns-3.27，并新增双连接示例。}
+- version: mmWave-dc-3.27
+  date: '2017-10-05'
+  summary: {en: 'Release of the new-handover branch with LTE/mmWave dual connectivity, updated to ns-3.27.', zh: 发布带有 LTE/mmWave 双连接功能的 new-handover 分支，并更新至 ns-3.27。}
+- version: v1.1
+  date: '2017-02-13'
+  summary: {en: 'Adds the 3GPP channel model for 6 to 100 GHz with spatial consistency and blockage options, a MIMO beamforming architecture with two computation methods, and an example script.', zh: 新增 6 至 100 GHz 的 3GPP 信道模型，包含空间一致性与遮挡选项，新增含两种计算方法的 MIMO 波束成形架构，并附示例脚本。}
+- version: v1.0
+  date: '2017-02-13'
+  summary: {en: 'Tag only, with no release page; the tagged commit is titled ''Reduce simulation time''.', zh: 仅有标签，没有发布页面；标签对应的提交标题为 'Reduce simulation time'。}

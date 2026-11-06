@@ -7,16 +7,16 @@ tasks: [isac, localization]
 signals: [iq, paths]
 bands_ghz: [60]
 environment: [indoor]
-license: CC BY 4.0
+license: Creative Commons Attribution
 access: {url: 'https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset', type: registration}
 paper: arxiv:2312.13741
 used_in: []
 citing: ['doi:10.1109/tvt.2024.3524118', 'doi:10.1109/lwc.2024.3489653', 'doi:10.1109/jsac.2025.3640150']
 summary: {en: 'Raw I/Q of a bistatic 5G PRS-based OFDM radar at 60 GHz recorded in an indoor building at Tampere University, with path-wise AoD, AoA, ToA and power estimates. MATLAB scripts for loading and visualizing the data are included.', zh: 在坦佩雷大学室内建筑中采集的 60 GHz 双基地 5G PRS OFDM 雷达原始 I/Q 数据，并附带逐径 AoD、AoA、ToA 与功率估计值。数据包含用于加载与可视化的 MATLAB 脚本。}
-sources: ['https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset', 'https://ieee-dataport.org/node/12854', 'https://arxiv.org/abs/2312.13741']
+sources: ['https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset', 'https://ieee-dataport.org/node/12854', 'https://arxiv.org/abs/2312.13741', 'https://arxiv.org/html/2312.13741']
 checked: '2026-11-06'
-overview: {en: 'Millimeter-Wave Radio SLAM is a 60 GHz indoor sensing dataset from Tampere University and Chalmers University of Technology, released in 2024 with the arXiv preprint 2312.13741 and a related IEEE JSAC article. The measurements were taken on the ground floor of the Kampusareena (Campus Arena) building on the Hervanta campus in Tampere, Finland. A bistatic link built from Sivers EVK06002 kits sends 5G NR positioning reference signals (PRS) with a 400 MHz bandwidth, sweeping up to 126 TX beams and 252 RX beams; a FLIR PTU-46 pan-tilt unit provides rotation beyond the electronic steering range of ±45°. The release contains six raw I/Q archives (TAU_raw_IQdata_1 to 6), a post-processed archive of estimated per-path AoD, AoA, ToA, and power, and MATLAB scripts for loading and visualization. The stated uses are indoor positioning, SLAM, and channel parameter estimation.', zh: Millimeter-Wave Radio SLAM 是一个 60 GHz 室内感知数据集，由坦佩雷大学与查尔姆斯理工大学发布，2024 年发布，附有 arXiv 预印本 2312.13741 及相关的 IEEE
-    JSAC 文章。测量在芬兰坦佩雷 Hervanta 校区 Kampusareena（Campus Arena）建筑的一层进行。双站链路由 Sivers EVK06002 套件构成，发送 5G NR 定位参考信号（PRS），带宽 400 MHz，扫描多达 126 个 TX 波束和 252 个 RX 波束；FLIR PTU-46 云台提供超出 ±45° 电子扫描范围的旋转。数据包含六个原始 I/Q 压缩包（TAU_raw_IQdata_1 至 6）、一个后处理压缩包（逐路径 AoD、AoA、ToA 和功率估计），以及用于加载和可视化的 MATLAB 脚本。文中说明的用途为室内定位、SLAM 和信道参数估计。}
+overview: {en: 'Millimeter-Wave Radio SLAM is a 60 GHz indoor sensing dataset from Tampere University and Chalmers University of Technology, released on IEEE DataPort in 2024 alongside the arXiv preprint 2312.13741 and a related IEEE JSAC article. The measurements were taken in the Campus Arena building on the Hervanta campus of Tampere University, Finland. A bistatic link built from Sivers EVK06002 kits sends 5G NR positioning reference signals (PRS) with a 400 MHz bandwidth, sweeping up to 126 TX beams and 252 RX beams. A FLIR PTU-46 pan-tilt unit provides rotation beyond the electronic steering range of ±45°. The release contains six raw I/Q archives (TAU_raw_IQdata_1 to 6), a post-processed archive of estimated per-path AoD, AoA, ToA, and power, and MATLAB scripts for loading and visualization. The stated uses are indoor positioning, SLAM, and channel parameter estimation.', zh: Millimeter-Wave Radio SLAM 是一个 60 GHz 室内感知数据集，由坦佩雷大学与查尔姆斯理工大学发布。数据于 2024 年在 IEEE DataPort 发布，同时附有 arXiv 预印本
+    2312.13741 及相关的 IEEE JSAC 文章。测量在芬兰坦佩雷大学 Hervanta 校区的 Campus Arena 建筑中进行。双站链路由 Sivers EVK06002 套件构成，发送带宽为 400 MHz 的 5G NR 定位参考信号（PRS），扫描多达 126 个 TX 波束和 252 个 RX 波束。FLIR PTU-46 云台提供超出 ±45° 电子扫描范围的旋转。数据包含六个原始 I/Q 压缩包（TAU_raw_IQdata_1 至 6）、一个后处理压缩包（逐路径 AoD、AoA、ToA 和功率估计），以及用于加载和可视化的 MATLAB 脚本。文中说明的用途为室内定位、SLAM 和信道参数估计。}
 signal_details:
 - signal: iq
   text: {en: 'Raw I/Q samples from the bistatic 5G NR PRS OFDM system, with 400 MHz PRS bandwidth. The release has six archives, TAU_raw_IQdata_1.zip to TAU_raw_IQdata_6.zip, listed at 20.04, 17.18, 17.18, 25.76, 25.76, and 22.9 GB. Beam-based measurements use up to 126 TX beams and 252 RX beams.', zh: 双站 5G NR PRS OFDM 系统的原始 I/Q 采样，PRS 带宽 400 MHz。数据共六个压缩包 TAU_raw_IQdata_1.zip 至 TAU_raw_IQdata_6.zip，列出大小分别为 20.04、17.18、17.18、25.76、25.76 和 22.9 GB。基于波束的测量使用最多 126 个 TX 波束和 252 个 RX 波束。}
@@ -53,3 +53,117 @@ pipeline:
     - {en: PRS sequences and estimated beam angles, zh: PRS 序列与估计的波束角度}
     outputs:
     - {en: Per-path ToA, zh: 逐路径 ToA}
+format: ZIP, MAT, m, TXT, bin
+size_gb: 128.82
+standard: 5G NR PRS
+bandwidth_mhz: 400
+antennas: {tx: 64, rx: 64, array: upa}
+facts:
+- label: {en: Ground truth and sync, zh: 真值与同步}
+  text: {en: True UE locations were recorded for ground truth. TX and RX were synchronized to one clock by a coaxial cable to give a ToA reference., zh: 记录了 UE 的真实位置作为真值。TX 与 RX 通过同轴线缆同步到同一时钟，为 ToA 测量提供参考。}
+- label: {en: Trajectory, zh: 轨迹}
+  text: {en: The UE trajectory has 45 points spaced 0.5 m apart., zh: UE 轨迹包含 45 个点，点间距为 0.5 m。}
+- label: {en: Clock bias, zh: 时钟偏差}
+  text: {en: ToA values include the unknown UE clock bias. The paper also reports SLAM with a known bias as a reference., zh: ToA 数值包含未知的 UE 时钟偏差。论文还给出了已知时钟偏差条件下的 SLAM 结果作为参考。}
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: 'Per-beam-pair subcarrier channel responses can be estimated from the raw I/Q of the beamformed PRS, following the signal model in the paper.', zh: 可依据论文中的信号模型，由波束成形 PRS 的原始 I/Q 估计每个收发波束对的子载波信道响应。}
+- key: cir
+  status: derivable
+  note: {en: Path-wise ToA and power estimates give a sparse delay profile without phase. A dense CIR can be derived from the raw I/Q., zh: 逐径 ToA 与功率估计给出不含相位的稀疏时延分布。稠密 CIR 可由原始 I/Q 推导。}
+- key: paths
+  status: provided
+  note: {en: 'Path-wise AoD, AoA, ToA and power estimates. Complex path coefficients are not listed.', zh: 提供逐径 AoD、AoA、ToA 与功率估计。未列出复数路径系数。}
+- key: interaction
+  status: none
+  note: {en: 'The path estimates list AoD, AoA, ToA and power only, with no interaction field.', zh: 路径估计只列出 AoD、AoA、ToA 与功率，没有交互字段。}
+- key: power
+  status: provided
+  note: {en: Path-wise power estimates are released. Received power per beam pair is derivable from the raw I/Q., zh: 发布了逐径功率估计。每个波束对的接收功率可由原始 I/Q 推导。}
+- key: iq
+  status: provided
+  note: {en: 'Raw I/Q of the 5G PRS OFDM sensing signal, in six archives of about 20–26 GB each.', zh: 5G PRS OFDM 感知信号的原始 I/Q，共六个压缩包，每个约 20–26 GB。}
+- key: beam_labels
+  status: provided
+  note: {en: 'I/Q is organized per TX and RX beam pair from a dense angular sweep, so beam indices are present.', zh: I/Q 按发射与接收波束对组织（密集角度扫描），因此波束索引存在于数据中。}
+- key: position
+  status: unknown
+  note: {en: The paper says true UE locations were recorded. The DataPort description does not list a position file., zh: 论文称记录了真实 UE 位置。DataPort 说明中未列出位置文件。}
+- key: geometry
+  status: none
+  note: {en: The floor plan appears in the paper only. The complete data are the ZIP archives listed on DataPort., zh: 平面图仅出现在论文中。完整数据为 DataPort 列出的 ZIP 压缩包。}
+- key: materials
+  status: none
+  note: {en: The ITU 60 GHz material models were used only for the paper's ray-tracing simulations., zh: ITU 60 GHz 材料模型仅用于论文的射线追踪仿真。}
+- key: rgb
+  status: none
+  note: {en: Not in the listed data files., zh: 不在所列数据文件中。}
+- key: depth
+  status: none
+  note: {en: Not in the listed data files., zh: 不在所列数据文件中。}
+- key: lidar
+  status: none
+  note: {en: Not in the listed data files., zh: 不在所列数据文件中。}
+- key: radar
+  status: provided
+  note: {en: 'Bistatic 60 GHz OFDM radar sensing with 5G PRS, released as raw I/Q.', zh: 基于 5G PRS 的双基地 60 GHz OFDM 雷达感知，以原始 I/Q 形式发布。}
+- key: imu
+  status: none
+  note: {en: Not in the listed data files., zh: 不在所列数据文件中。}
+- key: time_series
+  status: provided
+  note: {en: Ordered UE snapshots. The paper's trajectory has 45 points spaced 0.5 m apart., zh: 有序的 UE 快照。论文中的轨迹包含 45 个点，间距 0.5 m。}
+- key: multiuser
+  status: simulate
+  note: {en: One UE trajectory in the campaign. Multi-UE sets need a new measurement campaign., zh: 测量中只有一条 UE 轨迹。多 UE 数据需要新的测量活动。}
+- key: multibs
+  status: simulate
+  note: {en: One BS in the campaign. More BSs need a new measurement campaign., zh: 测量中只有一个基站。更多基站需要新的测量活动。}
+- key: crossfreq
+  status: simulate
+  note: {en: Single 60 GHz band. Another band needs a new measurement campaign., zh: 仅 60 GHz 单一频段。其他频段需要新的测量活动。}
+- key: near_field
+  status: unknown
+  note: {en: Near-field modelling is not discussed., zh: 论文未讨论近场建模。}
+- key: high_mobility
+  status: unknown
+  note: {en: UE speed is not stated. The measurement uses discrete trajectory points., zh: 未说明 UE 速度。测量使用离散的轨迹点。}
+- key: dynamic_blockage
+  status: unknown
+  note: {en: The paper mentions movable objects such as a phone booth. Moving blockers during measurement are not described., zh: 论文提到可移动物体（如电话亭）。未描述测量期间的移动遮挡物。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: polarization
+  status: unknown
+  note: {en: The arrays have elements for each polarization. The released data are not described as polarimetric., zh: 阵列包含各极化的阵元。发布数据未被描述为极化数据。}
+- key: em_field
+  status: none
+  note: {en: 'The complete data are I/Q, path estimates and scripts. No field-level output is listed.', zh: 完整数据为 I/Q、路径估计与脚本。未列出场量级输出。}
+versions:
+- version: arXiv v2
+  date: '2024-05-20'
+  summary: {en: Revised preprint posted. The arXiv listing does not state what changed., zh: 修订版预印本发布。arXiv 页面未说明变更内容。}
+  url: https://arxiv.org/abs/2312.13741v2
+- version: DataPort last updated
+  date: '2024-04-29'
+  summary: {en: IEEE DataPort record was last updated. The page does not state what changed., zh: IEEE DataPort 记录最后更新。页面未说明变更内容。}
+  url: https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset
+- version: DataPort created
+  date: '2024-04-26'
+  summary: {en: 'Dataset created on IEEE DataPort. The page lists six raw I/Q archives, post-processed path estimates (AoD, AoA, ToA, power) and MATLAB sensing scripts.', zh: 数据集在 IEEE DataPort 创建。页面列出六个原始 I/Q 压缩包、逐径估计结果（AoD、AoA、ToA、功率）以及 MATLAB 感知脚本。}
+  url: https://ieee-dataport.org/open-access/millimeter-wave-radio-slam-60-ghz-indoor-sensing-dataset
+- version: arXiv v1
+  date: '2023-12-21'
+  summary: {en: First arXiv preprint of the Radio SLAM paper. The arXiv listing does not describe its contents., zh: Radio SLAM 论文的首个 arXiv 预印本。arXiv 页面未说明内容。}
+  url: https://arxiv.org/abs/2312.13741v1

@@ -8,50 +8,146 @@ tasks: [channel-estimation, mimo-detection]
 signals: [iq]
 bands_ghz: []
 license: Academic use license
-access: {url: 'https://www.tuwien.at/etit/tc/en/vienna-simulators/request-simulator-downloads/', type: request}
+access: {url: 'https://www.tuwien.at/etit/tc/en/vienna-simulators/request-simulator-downloads/', type: registration}
 code: []
 paper: doi:10.1186/s13638-018-1239-6
 used_in: []
 citing: ['doi:10.1109/icc40277.2020.9149151', 'doi:10.1109/twc.2022.3232379', 'doi:10.1109/jsac.2025.3531577']
 summary: {en: 'A MATLAB-based link-level simulator for standard-compliant 4G LTE and 5G NR physical-layer chains that processes the transmitter and receiver down to individual signal samples. Its results are PHY performance metrics such as throughput, BER and FER.', zh: 基于 MATLAB 的链路级仿真器，面向符合标准的 4G LTE 与 5G NR 物理层链路，对发射机和接收机的处理细化到单个信号采样点。仿真结果为 PHY 性能指标，如吞吐量、BER 和 FER。}
-sources: ['https://jwcn-eurasipjournals.springeropen.com/counter/pdf/10.1186/s13638-018-1239-6.pdf', 'https://doi.org/10.1186/s13638-018-1239-6', 'https://api.crossref.org/works/10.1186/s13638-018-1239-6', 'https://www.tuwien.at/etit/tc/en/vienna-simulators/request-simulator-downloads/', 'https://www.tuwien.at/etit/tc/en/vienna-simulators/vienna-5g-simulators/']
+sources: ['https://jwcn-eurasipjournals.springeropen.com/counter/pdf/10.1186/s13638-018-1239-6.pdf', 'https://doi.org/10.1186/s13638-018-1239-6', 'https://api.crossref.org/works/10.1186/s13638-018-1239-6', 'https://www.tuwien.at/etit/tc/en/vienna-simulators/request-simulator-downloads/', 'https://www.tuwien.at/etit/tc/en/vienna-simulators/vienna-5g-simulators/', 'https://www.tuwien.at/etit/tc/wp-content/uploads/2022/10/5gll-usermanual.pdf', 'https://www.tuwien.at/etit/tc/wp-content/uploads/2023/11/listoffeatures-v1-4.pdf']
 checked: '2026-11-06'
-overview: {en: 'The Vienna 5G Link Level Simulator is a MATLAB-based physical-layer simulator developed at the TU Wien Institute of Telecommunications and described in a 2018 EURASIP Journal on Wireless Communications and Networking article. It models the 4G LTE and 5G NR transmitter and receiver chains down to individual signal samples. Path loss is entered as an input parameter, and the channel model covers small-scale fading only. Outputs are PHY metrics such as throughput, bit error ratio (BER) and frame error ratio (FER), obtained from Monte Carlo runs with 95 percent confidence intervals by default. The simulator is distributed under an academic use license on request. The stated scope is channel coding, MIMO processing, multicarrier modulation, channel estimation and equalization in standard-compliant setups.', zh: Vienna 5G 链路级仿真器是基于 MATLAB 的物理层仿真工具，由 TU Wien 通信研究所开发，相关论文发表于 2018 年 EURASIP Journal on Wireless Communications and Networking。它在单个信号采样点的粒度上建模符合标准的 4G LTE 与 5G NR 发射机和接收机链路。路径损耗作为输入参数设定，信道模型仅包含小尺度衰落。输出为吞吐量、误码率（BER）和误帧率（FER）等
-    PHY 指标，默认通过 Monte Carlo 仿真计算并给出 95% 置信区间。软件以学术使用许可的方式申请获取。仿真范围包括信道编码、MIMO 处理、多载波调制，以及信道估计与均衡。}
+overview: {en: 'The Vienna 5G Link Level Simulator is a MATLAB-based physical-layer simulator from the Institute of Telecommunications at TU Wien, described in a 2018 article in the EURASIP Journal on Wireless Communications and Networking. It simulates complex baseband transmitter and receiver chains with LTE-Advanced compliant settings and with user-defined 5G physical-layer settings. A scenario file defines the nodes and links, and the path loss of each link is an input parameter unless the geometric layout option is enabled. The channel model includes small-scale fading, with time-varying and frequency-selective channels, and the average link power is set by the path loss. Outputs are PHY metrics such as throughput, bit error ratio (BER) and frame error ratio (FER), obtained by Monte Carlo averaging over random channel realizations and plotted with confidence intervals. Release 1.3 is dated October 2022 and is distributed under an academic use license, free of charge for academic purposes
+    after a download form is submitted. The stated scope covers channel coding, MIMO processing, multicarrier and filtered waveforms, and channel estimation and equalization.', zh: Vienna 5G 链路级仿真器是 TU Wien 通信研究所开发的基于 MATLAB 的物理层仿真工具，相关文章 2018 年发表于 EURASIP Journal on Wireless Communications and Networking。它以复数基带方式仿真发射机与接收机链路，支持符合 LTE-Advanced 的参数设置以及用户自定义的 5G 物理层参数。场景文件定义节点与链路，除非启用几何布局选项，每条链路的路径损耗作为输入参数给定。信道模型包含小尺度衰落，可模拟时变与频率选择性信道，平均链路功率由路径损耗决定。输出为吞吐量、误码率（BER）和误帧率（FER）等 PHY 指标，通过对随机信道实现做蒙特卡洛平均得到，并附带置信区间。1.3 版本发布于 2022 年 10 月，以学术使用许可分发，提交下载表单后可免费用于学术目的。仿真范围包括信道编码、MIMO 处理、多载波与滤波波形，以及信道估计与均衡。}
 signal_details:
 - signal: iq
-  text: {en: 'Transmitted and received signals at the level of individual signal samples, across the whole transmitter and receiver chain. Waveforms follow standard-compliant 4G LTE and 5G NR setups.', zh: 发射与接收信号以单个信号采样点的粒度贯穿整个发射机和接收机链路。波形遵循符合标准的 4G LTE 与 5G NR 配置。}
+  text: {en: 'Complex baseband transmit and receive signals for the whole transmitter and receiver chain, with waveforms such as OFDM, filtered OFDM, UFMC and FBMC configured for LTE-Advanced or user-defined 5G settings.', zh: 覆盖整个发射机与接收机链路的复数基带发射与接收信号，波形包括 OFDM、滤波 OFDM、UFMC 和 FBMC，可按 LTE-Advanced 或用户定义的 5G 参数配置。}
 pipeline:
-  summary: {en: 'A MATLAB, object-oriented simulator reads a scenario file, runs the link-level PHY chain under a fixed path loss and noise model, and averages Monte Carlo realizations into PHY metrics.', zh: 基于 MATLAB 面向对象实现的仿真器读取场景文件，在给定路径损耗和噪声模型下运行链路级 PHY 链路，并对蒙特卡洛实现取平均，得到 PHY 指标。}
+  summary: {en: 'A MATLAB, object-oriented simulator reads a scenario file, runs the link-level PHY chain with fixed per-node transmit power and constant noise power spectral density, and averages Monte Carlo realizations into PHY metrics.', zh: 基于 MATLAB 面向对象实现的仿真器读取场景文件，在每个节点发射功率固定、噪声功率谱密度恒定的条件下运行链路级 PHY 链路，并对蒙特卡洛实现取平均，得到 PHY 指标。}
   stages:
   - title: {en: Specify the scenario file, zh: 编写场景文件}
-    detail: {en: 'The user supplies a scenario file that defines the network topology. Nodes are base stations or users, and links can be downlink, uplink or sidelink in arbitrary meshes. The path loss of each link is entered as an input parameter, because the simulator contains no network geometry.', zh: 用户提供定义网络拓扑的场景文件。节点为基站或用户，链路可为下行、上行或侧链路（sidelink），并支持任意网状连接。每条链路的路径损耗作为输入参数给定，仿真器不包含网络几何。}
+    detail: {en: 'The user edits or creates a scenario file that lists the topology nodes, which are base stations, users and RIS nodes. Primary links are end-to-end downlink or uplink connections between a base station and a user, and secondary links connect users or base stations to a RIS. The path loss of each link is an input parameter, or is computed from distance when the geometric layout option is enabled.', zh: 用户编辑或创建场景文件，列出拓扑节点，包括基站、用户与 RIS 节点。主链路为基站与用户之间端到端的下行或上行连接，次链路连接用户或基站与 RIS。每条链路的路径损耗作为输入参数给定；启用几何布局选项后，路径损耗由距离计算得到。}
     inputs:
-    - {en: Scenario file with nodes and links, zh: 包含节点与链路的场景文件}
-    - {en: Path loss per link, zh: 每条链路的路径损耗}
+    - {en: scenario file with nodes and links, zh: 包含节点与链路的场景文件}
+    - {en: 'path loss per link, or the geometric layout option', zh: 每条链路的路径损耗，或几何布局选项}
     outputs:
-    - {en: Configured network topology, zh: 已配置的网络拓扑}
-  - title: {en: Generate standard-compliant waveforms, zh: 生成符合标准的波形}
-    detail: {en: 'The transmitter chain performs channel coding, MIMO processing and multicarrier modulation according to the LTE or NR configuration. Transmit power and noise power are fixed, and the SNR is determined by the applied waveform.', zh: 发射链路按 LTE 或 NR 配置完成信道编码、MIMO 处理和多载波调制。发射功率与噪声功率固定，SNR 由所用波形决定。}
+    - {en: configured topology, zh: 已配置的拓扑}
+  - title: {en: Generate the PHY waveforms, zh: 生成 PHY 波形}
+    detail: {en: 'The transmitter performs channel coding, MIMO processing and multicarrier modulation for each link according to its LTE-Advanced or user-defined 5G configuration. Transmit power is fixed per node and the noise power spectral density is constant, so the SNR depends on the bandwidth of the chosen waveform.', zh: 发射机按每条链路的 LTE-Advanced 或用户定义 5G 配置，完成信道编码、MIMO 处理与多载波调制。每个节点的发射功率固定，噪声功率谱密度恒定，因此 SNR 取决于所选波形的带宽。}
     inputs:
     - {en: PHY configuration per link, zh: 各链路的 PHY 配置}
     outputs:
-    - {en: Transmitted signal samples, zh: 发射信号采样}
-  - title: {en: Apply the wireless channel, zh: 施加无线信道}
-    detail: {en: 'The channel model includes small-scale fading only. Frequency-selective and time-selective fading channels are available, and their average power is set by the path-loss input. Multi-link transmissions take an individual path loss per link, which sets the SIR of each connection.', zh: 信道模型只包含小尺度衰落。提供频率选择性与时间选择性衰落信道，其平均功率由路径损耗输入决定。多链路传输为每条链路单独设置路径损耗，从而控制各连接的 SIR。}
+    - {en: transmitted signal samples, zh: 发射信号采样}
+  - title: {en: Apply the channel, zh: 施加信道}
+    detail: {en: 'Each link receives a channel realization with small-scale fading, for example block fading with Pedestrian A profiles, or a time-varying channel whose Doppler shift follows the carrier frequency and user velocity. The link path loss sets the average channel power.', zh: 每条链路获得一个包含小尺度衰落的信道实现，例如采用 Pedestrian A 时延轮廓的块衰落，或多普勒频移由载频与用户速度决定的时变信道。链路路径损耗决定平均信道功率。}
     inputs:
-    - {en: Path loss per link, zh: 每条链路的路径损耗}
+    - {en: path loss per link, zh: 每条链路的路径损耗}
     outputs:
-    - {en: Faded signal samples at each receiver, zh: 各接收端的衰落信号采样}
+    - {en: faded signal samples at each receiver, zh: 各接收端的衰落信号采样}
   - title: {en: 'Receive, estimate and equalize', zh: 接收、估计与均衡}
-    detail: {en: 'The receiver chain runs channel estimation and equalization on the received samples. Both steps are part of the simulated PHY chain, which covers the whole transmitter and receiver at sample level.', zh: 接收链路对接收采样进行信道估计与均衡，二者都是被仿真 PHY 链路的组成部分，该链路在采样级覆盖整个发射机与接收机。}
+    detail: {en: The receiver chain runs channel estimation and equalization on the received samples for each link. The topology determines which links interfere with each other., zh: 接收链路对各条链路的接收采样进行信道估计与均衡。拓扑决定哪些链路之间存在干扰。}
     inputs:
-    - {en: Received signal samples, zh: 接收信号采样}
+    - {en: received signal samples, zh: 接收信号采样}
     outputs:
-    - {en: Per-link receiver results, zh: 各链路的接收结果}
+    - {en: per-link receiver results, zh: 各链路的接收结果}
   - title: {en: Average over Monte Carlo realizations, zh: 对蒙特卡洛实现取平均}
-    detail: {en: 'Results are averaged over a set number of channel, noise and data realizations. The simulator reports throughput, BER and FER, with 95 percent confidence intervals by default.', zh: 结果对设定数量的信道、噪声和数据实现取平均。仿真器默认输出吞吐量、BER 和 FER，并给出 95% 置信区间。}
+    detail: {en: 'Results are averaged over many random channel realizations. Throughput, BER and FER are plotted with confidence intervals that indicate their statistical reliability.', zh: 结果对大量随机信道实现取平均。吞吐量、BER 与 FER 以置信区间的形式输出，用于说明统计可靠性。}
     inputs:
-    - {en: Number of Monte Carlo realizations, zh: 蒙特卡洛实现次数}
+    - {en: number of Monte Carlo realizations, zh: 蒙特卡洛实现次数}
     outputs:
-    - {en: 'Throughput, BER and FER with confidence intervals', zh: 带置信区间的吞吐量、BER 与 FER}
+    - {en: 'throughput, BER and FER with confidence intervals', zh: 带置信区间的吞吐量、BER 与 FER}
+technical_notes:
+- {en: 'The simulator is written in MATLAB using object-oriented programming, and its parallelized simulation loop requires the Parallel Computing Toolbox.', zh: 仿真器使用 MATLAB 面向对象编程实现，并行仿真循环需要 Parallel Computing Toolbox。}
+- {en: 'No cell geometry is modelled by default: a cell is a group of nodes, with no physical cell size or user distance. Path loss is computed from distance only when the geometric layout option is enabled.', zh: 默认不建模小区几何：小区是一组节点，不包含物理小区尺寸或用户距离。只有启用几何布局选项后，路径损耗才由距离计算得到。}
+limitations:
+- {en: Device-to-device (D2D) communication is not implemented in the current version; the manual states that the simulator structure allows future D2D support., zh: 当前版本未实现设备到设备（D2D）通信；手册说明仿真器结构允许未来加入 D2D 支持。}
+history:
+- {en: Release 1.3 is dated October 2022 and is distributed under an academic use license., zh: 1.3 版本发布于 2022 年 10 月，以学术使用许可分发。}
+usage:
+- {en: 'Simulations are run from scenario files in the Scenarios folder, either predefined ones or user-defined ones created with a scenario generator app.', zh: 仿真通过 Scenarios 文件夹中的场景文件运行，既可使用预定义场景，也可使用场景生成器应用创建自定义场景。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: MIMO channel realizations are generated per link and frame when the simulator is rerun; no channel data are released., zh: 重新运行仿真时按链路与帧生成 MIMO 信道实现；不发布信道数据。}
+- key: cir
+  status: simulate
+  note: {en: Impulse responses are generated per time sample from the chosen power delay profile and Doppler model when rerun., zh: 重新运行时，依据所选功率时延谱与多普勒模型逐时刻生成冲激响应。}
+- key: paths
+  status: simulate
+  note: {en: LOS and NLOS components with AOA and AOD are drawn from the channel model when rerun; per-path outputs are not documented., zh: 重新运行时，信道模型抽取 LOS 与 NLOS 分量及其 AOA、AOD；手册未记录每径输出。}
+- key: interaction
+  status: none
+  note: {en: 'NLOS multipath is drawn statistically, with no per-path interaction points.', zh: NLOS 多径以统计方式抽取，无每径交互点。}
+- key: power
+  status: simulate
+  note: {en: 'Average receiver SNR follows from the per-link path loss, an input unless the geometric layout is enabled.', zh: 平均接收 SNR 由每条链路的路径损耗决定；除非启用几何布局，路径损耗为输入参数。}
+- key: iq
+  status: simulate
+  note: {en: Complex baseband transmit and receive samples are generated per run; saving them is controlled by the saveData option., zh: 每次运行生成复基带收发采样；是否保存由 saveData 选项控制。}
+- key: beam_labels
+  status: simulate
+  note: {en: 5G codebook precoder indices (PMI) are generated per frame by the feedback model when rerun., zh: 重新运行时，反馈模型按帧生成 5G 码本预编码索引（PMI）。}
+- key: position
+  status: simulate
+  note: {en: Node positions are produced only when the geometric layout option is enabled., zh: 仅在启用几何布局选项时生成节点位置。}
+- key: geometry
+  status: none
+  note: {en: 'No cell geometry or map is modelled by default, and no 3D scene files are provided.', zh: 默认不建模小区几何，也不提供三维场景或地图文件。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: This is a link-level physical-layer simulator with no sensor models., zh: 这是链路级物理层仿真器，不含传感器模型。}
+- key: depth
+  status: none
+  note: {en: This is a link-level physical-layer simulator with no sensor models., zh: 这是链路级物理层仿真器，不含传感器模型。}
+- key: lidar
+  status: none
+  note: {en: This is a link-level physical-layer simulator with no sensor models., zh: 这是链路级物理层仿真器，不含传感器模型。}
+- key: radar
+  status: none
+  note: {en: This is a link-level physical-layer simulator with no sensor models., zh: 这是链路级物理层仿真器，不含传感器模型。}
+- key: imu
+  status: none
+  note: {en: This is a link-level physical-layer simulator with no sensor models., zh: 这是链路级物理层仿真器，不含传感器模型。}
+- key: time_series
+  status: simulate
+  note: {en: Time-varying channels over successive frames are generated when the user velocity is nonzero., zh: 用户速度非零时，逐帧生成时变信道。}
+- key: multiuser
+  status: simulate
+  note: {en: 'Scenario files define several users per cell, with scheduling, MU-MIMO and NOMA.', zh: 场景文件可定义每小区多个用户，并支持调度、MU-MIMO 与 NOMA。}
+- key: multibs
+  status: simulate
+  note: {en: Scenario files define several base stations and the links that interfere with each other., zh: 场景文件可定义多个基站及相互干扰的链路。}
+- key: crossfreq
+  status: none
+  note: {en: Uplink and downlink at different frequencies are not implemented; the carrier frequency only sets the maximum Doppler shift., zh: 未实现不同频率的上下行链路；载频仅用于计算最大多普勒频移。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: simulate
+  note: {en: User velocity is a scenario parameter; the manual's time-selectivity example uses 14 m/s., zh: 用户速度为场景参数；手册的时间选择性示例使用 14 m/s。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: simulate
+  note: {en: NLOS multipath is generated statistically to represent reflection and scattering; RIS reflection is configurable., zh: NLOS 多径以统计方式生成，用以表示反射与散射；RIS 反射可配置。}
+- {key: diffraction, status: unknown}
+- key: scattering
+  status: simulate
+  note: {en: Diffuse multipath comes from the statistical NLOS components of the spatial channel model., zh: 漫射多径来自空间信道模型中统计生成的 NLOS 分量。}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: simulate
+  note: {en: BS arrays are single-element vertically polarized or double-element cross-polarized; UEs are single-element vertical., zh: 基站天线阵列为单元垂直极化或双元交叉极化；用户终端为单元垂直极化。}
+- {key: em_field, status: unknown}
+versions:
+- version: '1.3'
+  date: 2022-10
+  summary: {en: 'Added a GUI for scenario generation, RIS nodes, a new localization framework, geometric layout and path loss models, single-carrier modulation, uplink interference cancellation with uplink NOMA, sphere decoding for layers with different CQIs, and the Hilly Terrain channel model. The sphere decoder no longer needs a MATLAB toolbox.', zh: 新增场景生成图形界面、RIS 节点、新的定位框架、几何布局与路径损耗模型、单载波调制、上行干扰消除及上行 NOMA、不同 CQI 层的球形译码，以及 Hilly Terrain 信道模型。球形译码器不再需要 MATLAB 工具箱。}
+  url: https://www.tuwien.at/etit/tc/en/vienna-simulators/vienna-5g-simulators/
+- version: '1.2'
+  date: 2020-05
+  summary: {en: 'Added 1024QAM with feedback, a spatially and temporally correlated spatial channel model, multi-user MIMO transmission with feedback, TDD mode with feedback, per-codeword feedback and sum-throughput plotting. Also faster LDPC and polar coding and fewer toolbox dependencies.', zh: 新增带反馈的 1024QAM、空间与时间相关的空间信道模型、带反馈的多用户 MIMO 传输、带反馈的 TDD 模式、逐码字反馈及和吞吐量绘图。同时加快 LDPC 与 polar 编码，减少工具箱依赖。}
+- version: '1.1'
+  date: 2018-06
+  summary: {en: 'Added time-correlated Rayleigh fading, TWDP fading, NOMA (3GPP MUST), CLSM and OLSM feedback and transmission modes, 256QAM with feedback, a nonlinear power amplifier model, PAPR and channel estimation MSE as results, and new channel coding algorithms.', zh: 新增时间相关瑞利衰落、TWDP 衰落、NOMA（3GPP MUST）、CLSM 与 OLSM 反馈及传输模式、带反馈的 256QAM、非线性功放模型、PAPR 与信道估计 MSE 结果输出，以及新的信道编码算法。}
+- version: '1.0'
+  date: 2017-06
+  summary: {en: First release of the 5G link level simulator. The manual changelog lists no individual changes for this version., zh: 5G 链路级仿真器的首个发布版本。用户手册的更新记录未列出该版本的具体变更。}

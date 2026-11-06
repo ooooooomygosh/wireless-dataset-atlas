@@ -9,38 +9,145 @@ samples: 60-second traces, 60 per beam-tracking period, six beam-tracking period
 size_gb: 17.67
 format: TXT
 mobility: micromobility; blocker walking at 3.5 km/h
-license: CC BY 4.0
-access: {url: 'https://ieee-dataport.org/documents/synthetic-received-signal-power-data-6g-sub-terahertz-cellular-systems', type: restricted}
+license: Creative Commons Attribution
+access: {url: 'https://ieee-dataport.org/documents/synthetic-received-signal-power-data-6g-sub-terahertz-cellular-systems', type: registration}
 paper: doi:10.1109/access.2025.3617323
 used_in: []
 citing: []
 summary: {en: 'Generator output: 60-second received-signal-power traces with micromobility attenuation and beam-tracking periods of 20-2000 ms, generated from blockage and micromobility processes measured in an empty hall.', zh: 生成器输出：60秒接收信号功率轨迹，包含微移动衰减和20至2000 ms的波束跟踪周期，由在空旷大厅中实测的遮挡与微移动过程生成。}
-sources: ['https://ieee-dataport.org/documents/synthetic-received-signal-power-data-6g-sub-terahertz-cellular-systems', 'https://api.crossref.org/works/10.1109/access.2025.3617323']
+sources: ['https://ieee-dataport.org/documents/synthetic-received-signal-power-data-6g-sub-terahertz-cellular-systems', 'https://api.crossref.org/works/10.1109/access.2025.3617323', 'https://api.openalex.org/works/doi:10.1109/access.2025.3617323', 'https://ieeexplore.ieee.org/document/11192264']
 checked: '2026-11-06'
-overview: {en: 'This dataset contains synthetic received signal power (RSP) time series for 6G sub-terahertz cellular links. The listed authors are Margarita Ershova, Alexander Shurakov, Yevgeni Koucheryavy and Gregory Gol''tsman, and the data page was created on 13 December 2024. The related paper, DOI 10.1109/access.2025.3617323, is titled ''Generating Measurement-Based Synthetic Received Signal Power Data for 6G Sub-Terahertz Research With Micromobility and Blockage''. The data page notes that practical measurements usually cover blockage and micromobility separately, so this release gives RSP traces that contain blockage, micromobility and beam tracking together. Each trace is 60 seconds long, is stored as a TXT file with four columns, and the archive data.zip is 17.67 GB. The traces were generated for an empty hall of 7.5 × 4.5 × 3 m, with base-station-to-UE distances of 3, 5 and 7 m and a blocker walking at 3.5 km/h. The stated uses are statistical tests that separate blockage events
-    from micromobility events and the design of beam-tracking algorithms.', zh: 该数据集包含面向 6G 亚太赫兹蜂窝链路的合成接收信号功率（RSP）时间序列。列出的作者为 Margarita Ershova、Alexander Shurakov、Yevgeni Koucheryavy 和 Gregory Gol'tsman，数据页面创建于 2024 年 12 月 13 日。相关论文 DOI 为 10.1109/access.2025.3617323，题为《Generating Measurement-Based Synthetic Received Signal Power Data for 6G Sub-Terahertz Research With Micromobility and Blockage》。数据页面指出，实际测量通常分别覆盖遮挡和微移动，因此本数据集的 RSP 轨迹同时包含遮挡、微移动和波束跟踪。每条轨迹时长 60 秒，以 TXT 文件存储，包含四列。轨迹针对 7.5 × 4.5 × 3 m 的空旷大厅生成，基站到 UE 的距离为 3、5 和 7 m，遮挡物以 3.5 km/h 的速度行走。压缩包 data.zip 大小为 17.67 GB。所述用途为区分遮挡事件与微移动事件的统计检验，以及波束跟踪算法设计。}
+overview: {en: 'This dataset contains synthetic received signal power (RSP) traces for 6G sub-terahertz cellular links. The data page cites Margarita Ershova, Alexander Shurakov, Yevgeni Koucheryavy and Gregory Gol''tsman, and it was created on 13 December 2024. The related IEEE Access paper (DOI 10.1109/access.2025.3617323, 2025) is titled ''Generating Measurement-Based Synthetic Received Signal Power Data for 6G Sub-Terahertz Research With Micromobility and Blockage''. Practical measurements usually cover blockage and micromobility separately, so the traces combine blockage, micromobility and beam tracking in one time series. The blockage process comes from earlier 156 GHz measurements in an empty hall of 7.5 x 4.5 x 3 m, and the micromobility process comes from 156 GHz laboratory measurements for four applications in an office. Each trace is 60 seconds long and stored as a TXT file with four columns, and the archive data.zip is 17.67 GB. The data page names statistical tests that separate
+    blockage events from micromobility events, and the design of beam-tracking algorithms, as uses.', zh: 该数据集包含面向 6G 亚太赫兹蜂窝链路的合成接收信号功率（RSP）轨迹。数据页面列出的作者为 Margarita Ershova、Alexander Shurakov、Yevgeni Koucheryavy 和 Gregory Gol'tsman，数据页面创建于 2024 年 12 月 13 日。相关 IEEE Access 论文（DOI 10.1109/access.2025.3617323，2025 年）标题为《Generating Measurement-Based Synthetic Received Signal Power Data for 6G Sub-Terahertz Research With Micromobility and Blockage》。实际测量通常将遮挡与微移动分开进行，因此本数据集的轨迹在同一时间序列中同时包含遮挡、微移动和波束跟踪。遮挡过程来自早先在 156 GHz 下、7.5 x 4.5 x 3 m 空旷大厅中的测量；微移动过程来自 156 GHz 下四种应用在办公室中的实验室测量。每条轨迹时长 60 秒，以包含四列的 TXT 文件存储，压缩包 data.zip 大小为 17.67 GB。数据页面列出的用途包括区分遮挡事件与微移动事件的统计检验，以及波束跟踪算法设计。}
 signal_details:
 - signal: beam-power
   text: {en: 'Received signal power (RSP) in dBm over time. Each trace has four columns: time, RSP regardless of micromobility (dBm), attenuation due to micromobility (dBm), and RSP with respect to micromobility (dBm). RSP is set to -100 dBm during a beam-tracking procedure. Each trace is 60 s long, with 60 traces per beam-tracking period. The beam-tracking periods are 20, 80, 160, 320, 1000 and 2000 ms.', zh: 随时间变化的接收信号功率（RSP），单位 dBm。每条轨迹包含四列：时间、不考虑微移动的 RSP（dBm）、微移动引起的衰减（dBm）以及相对微移动的 RSP（dBm）。在波束跟踪过程中，RSP 设为 -100 dBm。每条轨迹时长 60 s，每个波束跟踪周期包含 60 条轨迹。波束跟踪周期为 20、80、160、320、1000 和 2000 ms。}
 pipeline:
-  summary: {en: 'Traces are generated for an empty-hall scenario with a walking blocker and UE micromobility, beam-tracking intervals are inserted, and the output is packaged as 60 s TXT traces.', zh: 轨迹针对带有行走遮挡物和 UE 微移动的空旷大厅场景生成，插入波束跟踪时段，并打包为 60 秒的 TXT 轨迹文件。}
+  summary: {en: 'Blockage and micromobility processes measured at 156 GHz are superposed into 60 s RSP traces with beam-tracking periods, then packaged as TXT files in folders named by height, distance, application and beam-tracking type.', zh: 在 156 GHz 下测得的遮挡与微移动过程被叠加为带有波束跟踪周期的 60 秒 RSP 轨迹，再按高度、距离、应用和波束跟踪类型组织的文件夹打包为 TXT 文件。}
   stages:
-  - title: {en: Blockage and micromobility scenario, zh: 遮挡与微移动场景}
-    detail: {en: 'The scenario is an empty hall of 7.5 m × 4.5 m × 3 m, with the base-station-to-UE distance set to 3, 5 or 7 m. A blocker crosses the line of sight at the middle of the link at 3.5 km/h. The UE rotates quickly in the user''s hand, which produces micromobility.', zh: 场景为 7.5 m × 4.5 m × 3 m 的空旷大厅，基站到 UE 的距离设为 3、5 或 7 m。遮挡物在链路中点以 3.5 km/h 的速度穿过视距路径。UE 在用户手中快速旋转，产生微移动。}
+  - title: {en: Blockage process, zh: 遮挡过程}
+    detail: {en: 'Blockage attenuation comes from earlier 156 GHz measurements in an empty hall of 7.5 m x 4.5 m x 3 m, using pyramidal horn antennas. A blocker walking at 3.5 km/h crosses the line of sight at the middle of the link. The BS-to-UE distances are 3, 5 and 7 m, and the heights are 1.35 m (chest blockage) and 1.65 m (head blockage).', zh: 遮挡衰减来自早先在 7.5 m x 4.5 m x 3 m 空旷大厅中进行的 156 GHz 测量，使用角锥喇叭天线。遮挡物以 3.5 km/h 的速度在链路中点穿过视距路径。基站到 UE 的距离为 3、5 和 7 m，高度为 1.35 m（胸部遮挡）和 1.65 m（头部遮挡）。}
     inputs:
-    - {en: 'BS-to-UE distance 3, 5 or 7 m', zh: 基站到 UE 距离 3、5 或 7 m}
-    - {en: blocker at 3.5 km/h, zh: 3.5 km/h 遮挡物}
+    - {en: 'BS-to-UE distances of 3, 5 and 7 m', zh: 基站到 UE 距离 3、5 和 7 m}
+    - {en: blocker walking at 3.5 km/h, zh: 3.5 km/h 行走的遮挡物}
     outputs:
-    - {en: blockage and micromobility process, zh: 遮挡与微移动过程}
+    - {en: blockage process statistics, zh: 遮挡过程统计特性}
+  - title: {en: Micromobility process, zh: 微移动过程}
+    detail: {en: 'UE rotation is emulated with a two-axis goniometer (yaw and pitch) at 156 GHz, in an office of 5.5 m x 5.2 m x 3 m, with the transmitter and receiver 4 m apart. The rotation follows beam-centre data for four applications: video watching, phone calling, VR watching and racing game. Thirty time series are recorded per application.', zh: 在 156 GHz 下，使用二维测角台（偏航和俯仰）模拟 UE 旋转，实验环境为 5.5 m x 5.2 m x 3 m 的办公室，发射端与接收端相距 4 m。旋转依据四种应用（视频观看、电话通话、VR 观看和赛车游戏）的波束中心数据。每种应用记录 30 条时间序列。}
+    inputs:
+    - {en: beam-centre data for four applications, zh: 四种应用的波束中心数据}
+    - {en: 156 GHz goniometer measurements, zh: 156 GHz 测角台测量}
+    outputs:
+    - {en: micromobility attenuation process, zh: 微移动衰减过程}
   - title: {en: Trace synthesis, zh: 轨迹合成}
-    detail: {en: 'Each 60 s trace has four columns: time, RSP without micromobility (dBm), micromobility attenuation (dBm) and RSP with micromobility (dBm). During a beam-tracking procedure the RSP is set to -100 dBm.', zh: 每条 60 秒轨迹包含四列：时间、不含微移动的 RSP（dBm）、微移动衰减（dBm）以及含微移动的 RSP（dBm）。在波束跟踪过程中，RSP 设为 -100 dBm。}
+    detail: {en: 'The blockage process is taken as the reference signal power, and the micromobility fall is superposed on it. Beam tracking is inserted as on-demand or regular procedures with periods of 20 to 2000 ms. During a beam-tracking procedure the RSP is set to -100 dBm.', zh: 遮挡过程作为参考信号功率，微移动引起的下降叠加在其上。波束跟踪以按需或常规两种方式插入，周期为 20 至 2000 ms。在波束跟踪过程中，RSP 设为 -100 dBm。}
     inputs:
-    - {en: blockage and micromobility process, zh: 遮挡与微移动过程}
+    - {en: blockage and micromobility processes, zh: 遮挡与微移动过程}
+    - {en: 'on-demand or regular beam tracking, 20 to 2000 ms', zh: 按需或常规波束跟踪，20 至 2000 ms}
     outputs:
-    - {en: RSP time series, zh: RSP 时间序列}
-  - title: {en: Beam-tracking periods and packaging, zh: 波束跟踪周期与打包}
-    detail: {en: 'Beam-tracking periods are 20, 80, 160, 320, 1000 and 2000 ms, with 60 traces per period in each folder. Folders are named H###cm_L###cm by UE height and BS-to-UE distance, then <application>_<beam-tracking type>, with applications racing game, phone calling, VR and video watching, and types On Demand and Regular. Files are named <application>_<period ms>_<date>-<time>.txt and archived as data.zip (17.67 GB).', zh: 波束跟踪周期为 20、80、160、320、1000 和 2000 ms，每个文件夹中每个周期包含 60 条轨迹。文件夹按 UE 高度和基站到 UE 距离命名为 H###cm_L###cm，其下为 <application>_<beam-tracking type>，应用包括 racing game、phone calling、VR 和 video watching，类型为 On Demand 和 Regular。文件命名为 <application>_<period ms>_<date>-<time>.txt，并打包为 data.zip（17.67 GB）。}
+    - {en: RSP time series with four columns, zh: 包含四列的 RSP 时间序列}
+  - title: {en: Packaging, zh: 打包}
+    detail: {en: 'Each 60 s trace is saved as a TXT file. Folders are named H###cm_L###cm by UE height and BS-to-UE distance, then by application and beam-tracking type (On Demand or Regular), with 60 traces per beam-tracking period in each folder. The archive data.zip is 17.67 GB.', zh: 每条 60 秒轨迹保存为一个 TXT 文件。文件夹按 UE 高度和基站到 UE 距离命名为 H###cm_L###cm，其下按应用和波束跟踪类型（On Demand 或 Regular）分类，每个文件夹中每个波束跟踪周期包含 60 条轨迹。压缩包 data.zip 大小为 17.67 GB。}
     inputs:
     - {en: RSP traces, zh: RSP 轨迹}
     outputs:
     - {en: TXT traces in data.zip, zh: data.zip 中的 TXT 轨迹}
+bands_ghz: [156]
+facts:
+- label: {en: Blockage measurement setup, zh: 遮挡测量设置}
+  text: {en: 'The blockage data come from 156 GHz measurements with pyramidal horn antennas (gain 25 to 28.4 dB, half-power beamwidth 8 to 10 degrees) and a channel-sampling resolution of 50 microseconds.', zh: 遮挡数据来自 156 GHz 测量，使用角锥喇叭天线（增益 25 至 28.4 dB，半功率波束宽度 8 至 10 度），信道采样分辨率为 50 微秒。}
+- label: {en: Micromobility series, zh: 微移动序列}
+  text: {en: The micromobility process has 30 individual time series for each of four applications., zh: 微移动过程对四种应用各包含 30 条独立时间序列。}
+technical_notes:
+- {en: The synthesis uses a fixed outage threshold of -40 dBm., zh: 合成过程使用固定的中断阈值 -40 dBm。}
+limitations:
+- {en: All traces are at 156 GHz. The paper studies a single frequency and does not cover other sub-THz frequencies., zh: 所有轨迹均为 156 GHz。论文仅研究单一频率，未涵盖其他亚太赫兹频率。}
+- {en: Multiple blockers crossing the line of sight at the same time are not modelled., zh: 未建模多个遮挡物同时穿过视距路径的情况。}
+- {en: 'The traces omit interference, simultaneous blockage by several objects, reflections, non-linear motion and device power management, so the signal behaviour is approximate.', zh: 轨迹未包含干扰、多个物体同时遮挡、反射、非线性运动和设备功耗管理，因此信号行为为近似。}
+- {en: 'Transmitter and receiver are at the same height, whereas a practical base station is expected to be mounted slightly higher.', zh: 发射端与接收端高度相同，而实际基站预计安装在略高的位置。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only received signal power in dBm is released; no channel responses., zh: 仅发布以 dBm 为单位的接收信号功率，不含信道响应。}
+- key: cir
+  status: none
+  note: {en: Only received signal power in dBm is released; no impulse responses., zh: 仅发布以 dBm 为单位的接收信号功率，不含冲激响应。}
+- key: paths
+  status: none
+  note: {en: 'No per-path data; the traces combine blockage, micromobility and beam tracking into one power series.', zh: 不含逐路径数据；轨迹将遮挡、微移动与波束跟踪合并为一条功率时间序列。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction labels; reflections are omitted from the traces., zh: 不含逐路径交互标签；轨迹中省略了反射。}
+- key: power
+  status: provided
+  note: {en: 'Four columns per trace: time, RSP regardless of micromobility, micromobility attenuation and RSP with micromobility, all in dBm.', zh: 每条轨迹四列：时间、不考虑微移动的 RSP、微移动衰减与考虑微移动后的 RSP，单位均为 dBm。}
+- key: iq
+  status: none
+  note: {en: Scalar power traces only; no I/Q samples., zh: 仅为标量功率轨迹，无 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices are released; beam tracking appears only as RSP set to -100 dBm during tracking intervals., zh: 不发布波束索引；波束跟踪仅体现为跟踪期间 RSP 被设为 -100 dBm。}
+- key: position
+  status: none
+  note: {en: No per-sample position; UE height and BS-to-UE distance are encoded in folder names only., zh: 无逐样本位置；UE 高度与基站到 UE 距离仅编码在文件夹名中。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files; the hall and office layouts are described in the paper only., zh: 无场景或地图文件；大厅与办公室布局仅在论文中描述。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 不发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: Release contains only received-power traces; no images., zh: 发布内容仅为接收功率轨迹，不含图像。}
+- key: depth
+  status: none
+  note: {en: Release contains only received-power traces; no depth data., zh: 发布内容仅为接收功率轨迹，不含深度数据。}
+- key: lidar
+  status: none
+  note: {en: Release contains only received-power traces; no point clouds., zh: 发布内容仅为接收功率轨迹，不含点云。}
+- key: radar
+  status: none
+  note: {en: Release contains only received-power traces; no radar data., zh: 发布内容仅为接收功率轨迹，不含雷达数据。}
+- key: imu
+  status: none
+  note: {en: Release contains only received-power traces; no inertial data., zh: 发布内容仅为接收功率轨迹，不含惯性数据。}
+- key: time_series
+  status: provided
+  note: {en: '60 s traces with a time column; 60 traces per beam-tracking period for periods of 20, 80, 160, 320, 1000 and 2000 ms.', zh: 60 秒轨迹，带时间列；每个波束跟踪周期含 60 条轨迹，周期为 20、80、160、320、1000 和 2000 ms。}
+- key: multiuser
+  status: none
+  note: {en: One BS-to-UE link per trace; no simultaneous users., zh: 每条轨迹为一个基站到 UE 的链路；无同时存在的多用户。}
+- key: multibs
+  status: none
+  note: {en: One base station per trace., zh: 每条轨迹为单一基站。}
+- key: crossfreq
+  status: none
+  note: {en: All traces are at 156 GHz only., zh: 所有轨迹仅在 156 GHz。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: The UE moves by micromobility (rotation) only; the walking blocker moves at 3.5 km/h and is not a fast user., zh: UE 仅做微移动（旋转）；行走的遮挡物速度为 3.5 km/h，并非快速移动的用户。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: Blocker walking at 3.5 km/h crosses the link midpoint; blockage attenuation comes from 156 GHz measurements. Multiple simultaneous blockers are not modelled., zh: 3.5 km/h 行走的遮挡物穿过链路中点；遮挡衰减来自 156 GHz 测量。未建模多个遮挡物同时出现。}
+- key: reflection
+  status: none
+  note: {en: The source states that the traces omit reflections., zh: 来源指出轨迹省略了反射。}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: none
+  note: {en: Scalar power only; no polarimetric data., zh: 仅为标量功率，无极化数据。}
+- key: em_field
+  status: none
+  note: {en: Scalar power only; no field-level data., zh: 仅为标量功率，无场级数据。}
+versions:
+- version: IEEE Access vol. 13 (2025)
+  date: '2025'
+  summary: {en: Journal article describing how the traces were generated from 156 GHz blockage and micromobility measurements; it is the method reference for the data., zh: 期刊论文，描述如何由 156 GHz 遮挡与微移动测量生成这些轨迹，是该数据的方法参考。}
+  url: https://doi.org/10.1109/access.2025.3617323
+- version: DataPort 2024-12-13
+  date: '2024-12-13'
+  summary: {en: 'First and only listed release on IEEE DataPort (DOI 10.21227/f7qv-n928): synthetic RSP traces packaged as data.zip (17.67 GB); the page shows creation and last update on the same date.', zh: IEEE DataPort 上唯一列出的发布版本（DOI 10.21227/f7qv-n928）：合成 RSP 轨迹打包为 data.zip（17.67 GB）；页面显示创建与最后更新均为同一日期。}
+  url: https://ieee-dataport.org/documents/synthetic-received-signal-power-data-6g-sub-terahertz-cellular-systems

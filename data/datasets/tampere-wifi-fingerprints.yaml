@@ -13,10 +13,121 @@ paper: doi:10.3390/data2040032
 used_in: []
 citing: ['doi:10.1109/tmc.2020.3017176', 'doi:10.1109/jiot.2024.3430087', 'doi:10.1109/jiot.2023.3298603']
 summary: {en: 'The dataset contains 687 training and 3,951 test Wi-Fi fingerprints, recorded as MAC addresses and RSS values with 21 devices in a four-floor university building in Tampere, Finland, from January to August 2017. MATLAB and Python benchmark software for Wi-Fi indoor positioning is included.', zh: '数据集包含687条训练Wi-Fi指纹和3,951条测试Wi-Fi指纹，由21台设备在芬兰坦佩雷一栋四层大学建筑中于2017年1月至8月采集，记录MAC地址和RSS值。数据集同时包含用于Wi-Fi室内定位的MATLAB和Python基准测试软件。'}
-sources: ['https://zenodo.org/records/889798', 'https://api.crossref.org/works/10.3390/data2040032']
+sources: ['https://zenodo.org/records/889798', 'https://api.crossref.org/works/10.3390/data2040032', 'https://zenodo.org/api/records/889798', 'https://api.openalex.org/works/doi:10.3390/data2040032', 'https://zenodo.org/api/records/889798/versions']
 checked: '2026-11-06'
 overview: {en: 'This dataset is a crowdsourced Wi-Fi fingerprint database for indoor positioning, collected in a four-floor university building in Tampere, Finland, from January to August 2017. E.S. Lohan and co-authors from Tampere University of Technology and Universitat Jaume I released it on Zenodo on 12 September 2017 (DOI 10.5281/zenodo.889798). A related article in MDPI Data (DOI 10.3390/data2040032) describes the same data. The fingerprints were recorded with 21 different devices used by different users. The database has two parts: 687 training fingerprints and 3951 test or estimation fingerprints. The package also contains benchmark software in Matlab and Python that runs indoor positioning based only on Wi-Fi information. The data are distributed as one archive, DISTRIBUTED_OPENSOURCE.zip, under the MIT license.', zh: 该数据集是一个用于室内定位的众包 Wi-Fi 指纹数据库，采集地点为芬兰坦佩雷一栋四层大学建筑，时间为 2017 年 1 月至 8 月。作者为 E.S. Lohan 及其合作者，所属机构为 Tampere University of Technology 和 Universitat Jaume I，数据于 2017 年 9
     月 12 日发布在 Zenodo 上（DOI 10.5281/zenodo.889798）。MDPI Data 期刊上的相关文章（DOI 10.3390/data2040032）描述了同一数据。指纹由 21 台不同设备采集，设备由不同用户使用。数据库分为两部分：687 条训练指纹和 3951 条测试或估计指纹。数据包还包含 Matlab 和 Python 基准软件，用于仅基于 Wi-Fi 信息的室内定位。数据以单个压缩包 DISTRIBUTED_OPENSOURCE.zip 分发，采用 MIT 许可证。}
 signal_details:
 - signal: rssi
   text: {en: 'Wi-Fi received signal strength (RSS) values, each recorded together with the MAC address of the access point, stored as fingerprints. The training and test databases hold 687 and 3951 fingerprints. The data were collected in crowdsourced mode with 21 devices and different users.', zh: Wi-Fi 接收信号强度（RSS）值，每个值与接入点的 MAC 地址一同记录，以指纹形式存储。训练数据库和测试数据库分别包含 687 条和 3951 条指纹。数据以众包模式采集，使用 21 台设备和不同用户。压缩包大小为 644.8 kB。}
+pipeline:
+  summary: {en: Crowdsourced Wi-Fi received signal strength records were collected with 21 devices in a four-floor university building in Tampere. The MAC and RSS records were split into training and test databases and packaged with benchmark software., zh: 在芬兰坦佩雷一栋四层大学建筑中，21 台设备以众包模式采集 Wi-Fi 接收信号强度记录。MAC 地址与 RSS 记录被划分为训练数据库和测试数据库，并与基准软件一同打包发布。}
+  stages:
+  - title: {en: Crowdsourced collection, zh: 众包采集}
+    detail: {en: 'Wi-Fi received signal strength values were collected from January to August 2017 in a four-floor university building in Tampere, Finland, using 21 different devices held by different users.', zh: 2017 年 1 月至 8 月，在芬兰坦佩雷一栋四层大学建筑中，由不同用户使用 21 台不同设备采集 Wi-Fi 接收信号强度值。}
+    inputs:
+    - {en: 21 devices and different users, zh: 21 台设备及不同用户}
+    outputs:
+    - {en: MAC address and RSS value records, zh: MAC 地址与 RSS 值记录}
+  - title: {en: Fingerprint split, zh: 指纹划分}
+    detail: {en: Each record pairs the MAC address of an access point with its RSS value. The records form a training database of 687 fingerprints and a test or estimation database of 3951 fingerprints., zh: 每条记录将接入点的 MAC 地址与其 RSS 值配对。记录组成包含 687 条指纹的训练数据库，以及包含 3951 条指纹的测试或估计数据库。}
+    inputs:
+    - {en: crowdsourced Wi-Fi records, zh: 众包 Wi-Fi 记录}
+    outputs:
+    - {en: training and test databases, zh: 训练数据库与测试数据库}
+  - title: {en: Benchmark packaging, zh: 基准软件打包}
+    detail: {en: 'The two databases are distributed with Matlab and Python benchmark software for indoor positioning based only on Wi-Fi information. Everything is in one archive, DISTRIBUTED_OPENSOURCE.zip (644,764 bytes), under the MIT license.', zh: '两个数据库与用于仅基于 Wi-Fi 信息室内定位的 Matlab 和 Python 基准软件一同发布。全部内容位于单个压缩包 DISTRIBUTED_OPENSOURCE.zip（644,764 字节）中，采用 MIT 许可证。'}
+    inputs:
+    - {en: training and test databases, zh: 训练与测试数据库}
+    outputs:
+    - {en: DISTRIBUTED_OPENSOURCE.zip, zh: DISTRIBUTED_OPENSOURCE.zip}
+technical_notes:
+- {en: 'The MDPI article abstract gives 4648 fingerprints, but the training and test counts (687 and 3951) sum to 4638.', zh: MDPI 文章摘要给出的指纹数为 4648，但训练集和测试集数量（687 与 3951）之和为 4638。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only MAC address and RSS records are described; no complex channel matrices., zh: 仅描述了 MAC 地址和 RSS 记录，没有复数信道矩阵。}
+- key: cir
+  status: none
+  note: {en: Only RSS values per access point are released; no impulse response., zh: 仅发布每个接入点的 RSS 值，没有冲激响应。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle or power is described.', zh: 未描述逐径时延、角度或功率。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction information is described., zh: 未描述逐径交互信息。}
+- key: power
+  status: provided
+  note: {en: 'RSS values per access point MAC address, for 687 training and 3951 test fingerprints.', zh: 每个接入点 MAC 地址对应的 RSS 值，共 687 条训练指纹和 3951 条测试指纹。}
+- key: iq
+  status: none
+  note: {en: No raw I/Q samples are described; the records are RSS values., zh: 未描述原始 I/Q 采样，记录为 RSS 值。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are described., zh: 未描述波束索引或逐波束增益。}
+- key: position
+  status: unknown
+  note: {en: 'The record is for indoor positioning, but the sources read do not describe ground-truth coordinate fields.', zh: 记录用于室内定位，但已读取的来源未描述真值坐标字段。}
+- key: geometry
+  status: unknown
+  note: {en: The sources read do not describe floor plans or map files., zh: 已读取的来源未描述平面图或地图文件。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: Only Wi-Fi MAC and RSS records are described; no camera data., zh: 仅描述 Wi-Fi MAC 地址和 RSS 记录，没有相机数据。}
+- key: depth
+  status: none
+  note: {en: No depth data are described., zh: 未描述深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data are described., zh: 未描述激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data are described., zh: 未描述雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are described., zh: 未描述惯性传感器数据。}
+- key: time_series
+  status: unknown
+  note: {en: Fingerprints are stored as records; the sources do not describe per-record timestamps., zh: 指纹以记录形式存储，来源未描述每条记录的时间戳。}
+- key: multiuser
+  status: unknown
+  note: {en: Fingerprints come from 21 devices and users in crowdsourced mode; simultaneity is not described., zh: 指纹来自 21 台设备和不同用户的众包采集，来源未描述是否同时采集。}
+- key: multibs
+  status: provided
+  note: {en: 'Each record pairs a Wi-Fi access-point MAC address with an RSS value; these are access points, not cellular base stations.', zh: 每条记录将 Wi-Fi 接入点的 MAC 地址与 RSS 值配对；这些是 Wi-Fi 接入点，而非蜂窝基站。}
+- key: crossfreq
+  status: none
+  note: {en: Only Wi-Fi RSS records are described; no paired multi-band data., zh: 仅描述 Wi-Fi RSS 记录，没有配对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: unknown
+  note: {en: The sources do not state user speeds., zh: 来源未给出用户速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: &id001 {en: 'Inherent in the measurement, not labelled per path.', zh: 属于测量本身固有的现象，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: *id001
+- key: scattering
+  status: provided
+  note: *id001
+- key: transmission
+  status: provided
+  note: *id001
+- key: polarization
+  status: none
+  note: {en: Scalar RSS values only; no polarimetric data., zh: 仅有标量 RSS 值，没有极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: RSS values only; no field-level outputs., zh: 仅有 RSS 值，没有场量输出。}
+versions:
+- version: '2'
+  date: '2017-10-13'
+  summary: {en: 'Version 2 of the Zenodo record: improved README files and improved Python benchmark software.', zh: Zenodo 记录的第 2 版：改进了 README 文件和 Python 基准软件。}
+  url: https://zenodo.org/records/1001662
+- version: '1'
+  date: '2017-09-12'
+  summary: {en: 'First Zenodo release (DOI 10.5281/zenodo.889798): the training and test Wi-Fi fingerprint databases and the Matlab and Python benchmark software in DISTRIBUTED_OPENSOURCE.zip.', zh: Zenodo 首次发布（DOI 10.5281/zenodo.889798）：训练集与测试集 Wi-Fi 指纹数据库，以及 DISTRIBUTED_OPENSOURCE.zip 中的 Matlab 和 Python 基准软件。}
+  url: https://zenodo.org/records/889798

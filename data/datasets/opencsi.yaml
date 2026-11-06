@@ -19,10 +19,10 @@ paper: arxiv:2104.07963
 used_in: []
 citing: ['doi:10.1109/ojcoms.2025.3560153']
 summary: {en: 'CSI and RSSI fingerprints from an indoor LTE eNodeB with 20 MHz bandwidth and 1200 subcarriers, recorded by a software-defined radio on a wheeled robot. Reference points lie on eight parallel lines, with roughly 1,000 consecutive fingerprints recorded at each point.', zh: 室内 LTE eNodeB 的 CSI 与 RSSI 指纹，链路带宽 20 MHz，包含 1200 个子载波，由软件无线电安装在轮式机器人上采集。参考点分布于八条平行线上，每个参考点记录约 1000 条连续指纹。}
-sources: ['https://arxiv.org/abs/2104.07963', 'https://arxiv.org/pdf/2104.07963', 'https://figshare.com/articles/dataset/openCSI/19596379', 'https://api.figshare.com/v2/articles/19596379', 'https://github.com/arthurgassner/thymio-radio-map', 'https://api.github.com/repos/arthurgassner/srsLTE']
+sources: ['https://arxiv.org/abs/2104.07963', 'https://arxiv.org/pdf/2104.07963', 'https://figshare.com/articles/dataset/openCSI/19596379', 'https://api.figshare.com/v2/articles/19596379', 'https://github.com/arthurgassner/thymio-radio-map', 'https://api.github.com/repos/arthurgassner/srsLTE', 'https://arxiv.org/pdf/2104.07963v3', 'https://github.com/arthurgassner/srsLTE/releases', 'https://github.com/arthurgassner/thymio-radio-map/releases', 'https://ndownloader.figshare.com/files/34809589', 'https://raw.githubusercontent.com/arthurgassner/thymio-radio-map/master/README.md', 'https://raw.githubusercontent.com/arthurgassner/thymio-radio-map/master/run_continuous.py', 'https://raw.githubusercontent.com/arthurgassner/srsLTE/master/README.md', 'https://raw.githubusercontent.com/arthurgassner/srsLTE/master/srsue/ue.conf']
 checked: '2026-11-06'
-overview: {en: 'OpenCSI is a radio map for indoor localization that holds LTE channel state information (CSI) and RSSI fingerprints. Arthur Gassner released it on figshare on 14 April 2022, together with the software-defined radio (SDR) and robot tool that recorded it. A USRP B200mini on a Thymio II wheeled robot ran a modified srsLTE stack that connected to an indoor Ericsson Radio Dot System with 20 MHz bandwidth and 1200 subcarriers over four antenna ports. The robot followed eight straight lines, each 5 m long and spaced 50 cm apart, and reference points were placed 1 cm apart, with about 1000 consecutive fingerprints recorded at each reference point. Channel estimates were produced every millisecond (one TTI), and the same records hold RSRP, RSSI, RSRQ, SNR, CFO and noise estimate. The archive is openCSI.zip, 2.03 GB, under CC BY 4.0; the figshare record lists one zip file and no folder structure. The authors train a CNN to regress (x, y) location from the fingerprints, and the robot
-    positions come from dead reckoning, with odometry error of up to 25 cm over 10 runs on a 5 m line.', zh: 'OpenCSI 是一个用于室内定位的无线电地图，包含 LTE 信道状态信息（CSI）与 RSSI 指纹。作者 Arthur Gassner 于 2022 年 4 月 14 日在 figshare 发布该数据集，同时发布了用于采集数据的软件无线电（SDR）与机器人工具。USRP B200mini 安装在 Thymio II 轮式机器人上，运行经过修改的 srsLTE 协议栈，连接室内 Ericsson Radio Dot System，链路带宽 20 MHz，包含 1200 个子载波，使用四个天线端口。机器人沿八条平行直线行进，每条长 5 m，间距 50 cm；参考点间距 1 cm，每个参考点记录约 1000 条连续指纹。信道估计每毫秒（一个 TTI）生成一次，同一记录中还包含 RSRP、RSSI、RSRQ、SNR、CFO 和噪声估计。压缩包为 openCSI.zip，大小 2.03 GB，采用 CC BY 4.0 许可；figshare 记录中只有一个 zip 文件，没有目录结构说明。作者使用指纹训练 CNN 回归 (x, y) 位置；机器人位置由航迹推算得到，在 5 m 长的直线上 10 次运行的里程计误差最高为 25 cm。'}
+overview: {en: 'OpenCSI is a radio map for indoor localization that holds LTE channel state information (CSI) and RSSI fingerprints. Arthur Gassner released it on figshare on 14 April 2022, and the robot and SDR code is on GitHub. A USRP B200mini on a Thymio II wheeled robot ran a modified srsLTE stack that connected to an indoor Ericsson Radio Dot System with 20 MHz bandwidth and 1200 subcarriers over four antenna ports. The robot followed eight straight lines, each 5 m long and spaced 50 cm apart, and reference points were placed 1 cm apart, with about 1000 consecutive fingerprints recorded at each reference point. Channel estimates were produced every millisecond (one TTI), and the same records hold RSRP, RSSI, RSRQ, SNR, CFO and noise estimate. The figshare archive openCSI.zip (2.03 GB, CC BY 4.0) contains a single HDF5 file, data.h5, which is 2.93 GB uncompressed. The authors train a CNN to regress (x, y) location from the fingerprints, and the robot positions come from dead reckoning,
+    with odometry error of up to 25 cm over 10 runs on a 5 m line.', zh: 'OpenCSI 是一个用于室内定位的无线电地图，包含 LTE 信道状态信息（CSI）与 RSSI 指纹。作者 Arthur Gassner 于 2022 年 4 月 14 日在 figshare 发布该数据集，机器人与 SDR 的代码发布在 GitHub 上。USRP B200mini 安装在 Thymio II 轮式机器人上，运行经过修改的 srsLTE 协议栈，连接室内 Ericsson Radio Dot System，链路带宽 20 MHz，包含 1200 个子载波，使用四个天线端口。机器人沿八条平行直线行进，每条长 5 m，间距 50 cm；参考点间距 1 cm，每个参考点记录约 1000 条连续指纹。信道估计每毫秒（一个 TTI）生成一次，同一记录中还包含 RSRP、RSSI、RSRQ、SNR、CFO 和噪声估计。figshare 压缩包 openCSI.zip（2.03 GB，CC BY 4.0）内只有一个 HDF5 文件 data.h5，解压后为 2.93 GB。作者使用指纹训练 CNN 回归 (x, y) 位置；机器人位置由航迹推算得到，在 5 m 长的直线上 10 次运行的里程计误差最高为 25 cm。'}
 signal_details:
 - signal: csi
   text: {en: 'Complex frequency-domain channel estimate with one value per subcarrier: 1200 complex values per antenna port, 4 ports, one estimate every 1 ms (one TTI). The paper defines each value H_i by its magnitude and phase. The modified srsLTE writes the estimate array (ports x Rx antennas x subcarriers) to file during recording.', zh: 复数形式的频域信道估计，每个子载波一个值：每个天线端口 1200 个复数值，共 4 个端口，每 1 ms（一个 TTI）生成一次。论文中每个值 H_i 由幅度与相位定义。经过修改的 srsLTE 在采集时将估计数组（端口数 x Rx 天线数 x 子载波数）写入文件。}
@@ -57,3 +57,108 @@ pipeline:
     - {en: Raw fingerprint text files, zh: 原始指纹文本文件}
     outputs:
     - {en: 'ce_0.parquet, else_0.pkl, info_0.pkl', zh: ce_0.parquet、else_0.pkl、info_0.pkl}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: '1200 complex subcarrier values per antenna port for four ports, one estimate per 1 ms TTI.', zh: 四个天线端口，每个端口 1200 个复数子载波值，每 1 ms（一个 TTI）一次估计。}
+- key: cir
+  status: derivable
+  note: {en: Obtained by an inverse FFT of the 1200-subcarrier CSI estimate for each port., zh: 对每个端口 1200 子载波的 CSI 估计做逆 FFT 得到。}
+- key: paths
+  status: none
+  note: {en: 'Only per-port CSI and link metrics are recorded, with no per-path delay or angle fields.', zh: 仅记录各端口 CSI 与链路指标，不含逐径时延或角度字段。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction information is recorded; the measurement is not split by path., zh: 不记录逐径相互作用信息，测量数据未按路径分离。}
+- key: power
+  status: provided
+  note: {en: 'RSRP (dBm), RSSI (dB), RSRQ (dB), SNR (dB) and noise estimate (dBm), saved every TTI.', zh: 每个 TTI 保存 RSRP（dBm）、RSSI（dB）、RSRQ（dB）、SNR（dB）和噪声估计（dBm）。}
+- key: iq
+  status: none
+  note: {en: 'The modified srsLTE writes channel estimates and metrics, with no I/Q samples in the released files.', zh: 修改版 srsLTE 写出的是信道估计与指标，发布文件中没有 I/Q 采样。}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: provided
+  note: {en: 'Positions are dead-reckoned along eight 5 m lines, with up to 25 cm distance error.', zh: 位置由航迹推算得到，位于八条 5 m 直线上，距离误差最高 25 cm。}
+- key: geometry
+  status: unknown
+  note: {en: The figshare record lists one zip file and does not describe map contents., zh: figshare 记录仅列出一个 zip 文件，未说明地图内容。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'The release holds channel estimates, metrics and positions only.', zh: 发布内容仅包括信道估计、指标和位置。}
+- key: depth
+  status: none
+  note: {en: 'The release holds channel estimates, metrics and positions only.', zh: 发布内容仅包括信道估计、指标和位置。}
+- key: lidar
+  status: none
+  note: {en: 'The release holds channel estimates, metrics and positions only.', zh: 发布内容仅包括信道估计、指标和位置。}
+- key: radar
+  status: none
+  note: {en: 'The release holds channel estimates, metrics and positions only.', zh: 发布内容仅包括信道估计、指标和位置。}
+- key: imu
+  status: none
+  note: {en: 'The release holds channel estimates, metrics and positions only; no IMU readings.', zh: 发布内容仅包括信道估计、指标和位置，不含 IMU 读数。}
+- key: time_series
+  status: provided
+  note: {en: 'About 1000 consecutive TTI estimates per reference point, one every 1 ms, with the TTI index as timestamp.', zh: 每个参考点约 1000 条连续 TTI 估计，每 1 ms 一条，以 TTI 序号作为时间戳。}
+- key: multiuser
+  status: none
+  note: {en: One SDR acts as the only UE on one eNodeB., zh: 一台 SDR 作为唯一终端接入一个 eNodeB。}
+- key: multibs
+  status: none
+  note: {en: 'The link is served by a single eNodeB, and its two Radio Dots belong to that eNodeB.', zh: 链路由单个 eNodeB 提供服务，其两个 Radio Dot 属于该 eNodeB。}
+- key: crossfreq
+  status: none
+  note: {en: 'One LTE carrier, EARFCN 203, with no paired multi-band data.', zh: 单一 LTE 载波，EARFCN 为 203，没有成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'The robot stops at each reference point to record, and no fast motion is described.', zh: 机器人在每个参考点停止后再记录，文中未描述快速运动。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Recorded while the offices were unoccupied., zh: 采集时办公室无人。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径单独标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径单独标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径单独标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The data are channel estimates and link metrics, with no field components or antenna patterns.', zh: 数据为信道估计与链路指标，不含场分量或天线方向图。}
+versions:
+- version: arXiv v3
+  date: '2022-04-14'
+  summary: {en: 'Third arXiv revision of the OpenCSI paper, posted on the day the figshare dataset was published; the arXiv listing does not itemize the changes.', zh: OpenCSI 论文的第三个 arXiv 修订版，与 figshare 数据集发布于同一天；arXiv 页面未逐项列出改动。}
+  url: https://arxiv.org/abs/2104.07963v3
+- version: '1'
+  date: '2022-04-14'
+  summary: {en: 'figshare release of the openCSI dataset (openCSI.zip, 2.03 GB, CC BY 4.0); figshare lists version 1 as the only version.', zh: figshare 发布 openCSI 数据集（openCSI.zip，2.03 GB，CC BY 4.0）；figshare 仅列出版本 1。}
+  url: https://figshare.com/articles/dataset/openCSI/19596379
+- version: arXiv v2
+  date: '2021-07-31'
+  summary: {en: Second arXiv revision of the paper; the arXiv listing does not itemize the changes., zh: 论文第二个 arXiv 修订版；arXiv 页面未逐项列出改动。}
+  url: https://arxiv.org/abs/2104.07963v2
+- version: arXiv v1
+  date: '2021-04-16'
+  summary: {en: 'First arXiv version of the paper OpenCSI: An Open-Source Dataset for Indoor Localization Using CSI-Based Fingerprinting.', zh: '论文 OpenCSI: An Open-Source Dataset for Indoor Localization Using CSI-Based Fingerprinting 的首个 arXiv 版本。'}
+  url: https://arxiv.org/abs/2104.07963v1
+format: HDF5
+mobility: fixed indoor eNodeB; receiver on a wheeled robot that stops at each reference point
+facts:
+- label: {en: Radio configuration, zh: 无线电配置}
+  text: {en: 'Recordings were made with AGC disabled, a Tx gain of 80 dB, an Rx gain of 60 dB, and EARFCN 203 on the indoor eNodeB.', zh: 采集时关闭 AGC，Tx 增益为 80 dB，Rx 增益为 60 dB，室内 eNodeB 的 EARFCN 为 203。}
+- label: {en: Random test-point split, zh: 随机测试点划分}
+  text: {en: 'In the paper''s random test-point experiment, 90% of the locations (3,585) serve as reference points and the other 398 as test points. The test-point fingerprints are split evenly into validation and test sets.', zh: '论文的随机测试点实验中，90% 的位置（3,585 个）作为参考点，其余 398 个作为测试点。测试点的指纹平均分为验证集和测试集。'}
+technical_notes:
+- {en: 'In LTE, only every third subcarrier of the channel estimate comes from independent training symbols; the others are interpolated. The paper''s analysis therefore keeps 400 of the 1200 complex values per port.', zh: 在 LTE 中，信道估计仅每三个子载波来自独立的训练符号，其余子载波为插值结果。因此论文分析中每个端口只保留 1200 个复数值中的 400 个。}
+- {en: 'In roughly half of the measurements, only 80 of the 1200 subcarriers carry valid CSI because of an SDR limit during data transmission. The paper''s analysis deletes these measurements.', zh: 约一半的测量中，由于数据传输时 SDR 的限制，1200 个子载波中只有 80 个含有效 CSI。论文分析中删除了这些测量。}
+- {en: Fewer than 1% of the measurements show irregularities from concurrent writes to the output file; the affected subcarriers are replaced by interpolation., zh: 少于 1% 的测量因同时写入输出文件而出现异常，受影响的子载波通过插值替换。}

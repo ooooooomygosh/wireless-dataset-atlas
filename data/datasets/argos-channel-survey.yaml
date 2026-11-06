@@ -5,186 +5,171 @@ organization: Rice University
 origin: measured
 tasks: [channel-modeling, beam-management]
 signals: [csi, iq, rgb]
-bands_ghz: [0.5, 2.4, 5]
+bands_ghz: [2.4, 5]
 environment: [indoor, outdoor]
 format: HDF5 uplink pilot I/Q
 license: Rice custom nonexclusive usage license
 access: {url: 'https://renew.rice.edu/dataset-argos.html', type: open}
 code: []
 paper: doi:10.1145/2348543.2348553
-sources: ['https://renew.rice.edu/dataset-argos.html', 'https://yecl.org/argos/pubs/Shepard-Asilomar16.pdf']
+sources: ['https://renew.rice.edu/dataset-argos.html', 'https://yecl.org/argos/pubs/Shepard-Asilomar16.pdf', 'https://api.crossref.org/works/10.1145/2348543.2348553', 'https://web.archive.org/web/20250915092536/https://renew.rice.edu/dataset-argos.html', 'https://yecl.org/argos/']
 aliases: []
-used_in: ["doi:10.1109/mcom.2014.6736761","doi:10.1145/2500423.2505302","doi:10.1109/jsac.2023.3276057","doi:10.1109/twc.2023.3235355","doi:10.1145/2789168.2790120"]
-citing: ["doi:10.1109/tit.2014.2354403","doi:10.1109/twc.2015.2400437"]
+used_in: ['doi:10.1109/mcom.2014.6736761', 'doi:10.1145/2500423.2505302', 'doi:10.1109/jsac.2023.3276057', 'doi:10.1109/twc.2023.3235355', 'doi:10.1145/2789168.2790120']
+citing: ['doi:10.1109/tit.2014.2354403', 'doi:10.1109/twc.2015.2400437']
 summary: {en: 'Rice multi-antenna multiuser channel measurements for studying array correlation, mobility, and actual MU-MIMO, rather than relying only on a single-user position grid.', zh: Rice 多天线多用户信道测量，适合检验阵列相关性、移动性与实际 MU-MIMO，而非仅使用单用户位置网格。}
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'A base-station beacon synchronizes users each frame, and users transmit LTS pilots sequentially. Base-station nodes upload raw IQ to the central controller, which stores HDF5 traces. Official tools then estimate CSI and analyze time-varying MU-MIMO.', zh: 每帧基站beacon同步用户，用户依次发送LTS导频；各基站节点上传原始IQ至中央控制器，HDF5留存后由官方工具估计CSI并分析时变MU-MIMO。}
+  summary: {en: 'Each frame starts with a base-station beacon that synchronizes the users, and the users send LTS pilots in TDMA slots. Base-station radios report raw pilot IQ to the central controller, which stores HDF5 traces. The official Python toolbox then converts IQ to CSI, and the first LTS estimate of each frame sets the beamweights for the second.', zh: 每帧开始时基站发出 beacon 同步用户，用户在 TDMA 时隙中发送 LTS 导频。基站射频节点将原始导频 IQ 上报给中央控制器，控制器保存为 HDF5 轨迹。官方 Python 工具箱随后将 IQ 转换为 CSI，每帧的第一次 LTS 估计用于设定第二次估计所用的波束权重。}
   stages:
-  - title: {en: Select a real topology and radio platform, zh: 选择真实拓扑与无线平台}
-    detail: {en: 'The platform uses ArgosV2 at 2.4/5 GHz and WURC for the UHF extension. The core campaign serves 8 users with 96 antennas; a common array is 8×12 omnidirectional monopoles spaced 63.5 mm apart. A Python control framework configures frequency, user count, and frame length.', zh: 平台在2.4/5 GHz采用ArgosV2，UHF扩展使用WURC。核心campaign用96天线服务8用户；常见阵列是8×12全向单极天线，间距63.5 mm。频率、用户数和帧长由Python控制框架配置。}
+  - title: {en: Select topology and radio platform, zh: 选择拓扑与射频平台}
+    detail: {en: 'The platform uses ArgosV2 with WARPv3 radios at 2.4 and 5 GHz, and a WURC-based platform for UHF. The primary campaign uses 96 base-station antennas (an 8 by 12 array of omnidirectional monopoles, 63.5 mm apart) serving 8 users. A Python framework configures frequency, antenna count, user count and frame length.', zh: 平台在 2.4 与 5 GHz 采用 ArgosV2 与 WARPv3 射频模块，UHF 频段采用基于 WURC 的平台。主要测量活动使用 96 根基站天线（8×12 全向单极天线阵列，间距 63.5 mm）服务 8 个用户。Python 框架配置频率、天线数、用户数和帧长。}
     inputs:
-    - {en: Indoor LoS/NLoS or outdoor topology, zh: 室内LoS/NLoS或室外拓扑}
-    - {en: ArgosV2/WARPv3 and user devices, zh: ArgosV2/WARPv3与用户设备}
+    - {en: Indoor or outdoor topology, zh: 室内或室外拓扑}
+    - {en: 'ArgosV2/WARPv3 and WURC radios, battery-powered user devices', zh: ArgosV2/WARPv3 与 WURC 射频模块、电池供电的用户设备}
     outputs:
-    - {en: Topology and RF parameters for each run, zh: 每次run的拓扑与RF参数}
-    - {en: Antenna and user indices, zh: 天线及用户索引}
+    - {en: Topology and RF parameters for each run, zh: 每次运行的拓扑与射频参数}
     controls:
-    - {en: 63.5 mm is approximately half a wavelength at 2.4 GHz and one wavelength at 5 GHz, zh: 63.5 mm在2.4 GHz约为半波长，在5 GHz约为一波长}
-    checks:
-    - {en: 'Reproduction check: verify trace metadata against topology maps; preserve physical array-spacing differences in cross-band comparisons', zh: 复现检查：核对trace元数据与拓扑图；比较频段时保留物理阵列间距差异}
-  - title: {en: Configure user motion and gain, zh: 配置用户运动与增益}
-    detail: {en: 'Collect stationary, environmental-motion, walking-user, linear-track, and natural-use conditions. In most traces, AGC is set and then disabled to reduce gain jumps during measurement; gain settings are recorded in the trace.', zh: 采集静止、环境运动、用户步行、线性轨道和自然使用等条件。多数trace先设AGC再关闭，以减少测量中的增益跳变；增益设置记录在trace中。}
-    inputs:
-    - {en: 'Motion scripts, handheld users, or controlled tracks', zh: 运动脚本、手持用户或受控轨道}
-    - {en: Transmit/receive gain settings, zh: 收发增益设置}
-    outputs:
-    - {en: Interpretable motion conditions, zh: 可解释的运动条件}
-    - {en: Gain and acquisition settings, zh: 增益与采集设置}
+    - {en: 63.5 mm is about half a wavelength at 2.4 GHz and about one wavelength at 5 GHz., zh: 63.5 mm 在 2.4 GHz 下约为半波长，在 5 GHz 下约为一个波长。}
+  - title: {en: Configure motion and gain, zh: 配置运动与增益}
+    detail: {en: 'Traces cover stationary, environmental-motion, walking-user, linear-track and naturalistic conditions. In most traces AGC is set and then disabled to avoid gain jumps; gain settings are recorded in the trace.', zh: 轨迹覆盖静止、环境运动、用户步行、直线轨道和自然运动等条件。多数轨迹先设置 AGC 再关闭，以避免测量中出现增益跳变；增益设置记录在轨迹中。}
     controls:
-    - {en: The paper commonly uses 20–120 s traces with a 2 ms resounding interval; read other trace settings from metadata, zh: 论文常用20–120 s、2 ms重测间隔；其他trace按元数据读取}
-    checks:
-    - {en: 'Reproduction check: check for AGC changes before analyzing raw amplitudes; stratify controlled-track and free-handheld trajectories', zh: 复现检查：对原始幅度分析先检查AGC是否变化；受控轨道与自由手持轨迹分层}
-  - title: {en: Establish frame synchronization with a beacon, zh: 以beacon建立帧同步}
-    detail: {en: 'The base station sends a beacon at the start of each frame, and the Faros control channel provides user time/frequency synchronization. Users then enter their pilot slots so that multiuser channels are measured within a short acquisition window.', zh: 每帧开始时基站发出beacon，Faros控制信道提供用户时间/频率同步。随后各用户进入其导频时隙，使多用户信道在一个短采集窗口中测量。}
-    inputs:
-    - {en: Base-station frame beacon, zh: 基站frame beacon}
-    - {en: User control channel, zh: 用户控制信道}
-    outputs:
-    - {en: Aligned multiuser pilot frames, zh: 对齐的多用户导频帧}
-    - {en: User-to-slot mapping, zh: 用户与时隙映射}
-    controls:
-    - {en: Handle over-the-air frame synchronization separately from Tx/Rx RF-chain reciprocity calibration, zh: 空口帧同步与收发射频链互易性校准分别处理}
-    checks:
-    - {en: 'Reproduction check: inspect synchronization loss, dropped frames, and slot boundaries; specify RF-chain phase and power handling for downlink analysis', zh: 复现检查：检查失锁、漏帧与时隙边界；下行分析明确射频链相位和功率处理}
-  - title: {en: Transmit LTS and collect multiuser pilot IQ, zh: 发送LTS并采集多用户pilot IQ}
-    detail: {en: 'The paper uses LTS pilots with 52 subcarriers, transmitted by users in TDMA at the start of each frame. Wideband pilots for 8 users and a noise estimate can be collected within 100 μs; all base-station nodes record each user''s raw IQ.', zh: 论文使用52子载波的LTS导频，用户在帧前部按TDMA发送。8个用户的宽带导频与噪声估计可在100 μs以内采集；全部基站节点记录各用户的原始IQ。}
-    inputs:
-    - {en: 802.11 LTS training symbols, zh: 802.11 LTS训练符号}
-    - {en: TDMA slots for each user, zh: 各用户TDMA时隙}
-    - {en: Receive streams from all base-station antennas, zh: 全部基站天线接收流}
-    outputs:
-    - {en: Pilot IQ for each frame/antenna/user, zh: 每帧/天线/用户的pilot IQ}
-    - {en: Noise observations, zh: 噪声观测}
-    controls:
-    - {en: The core data use a 20 MHz platform configuration; read pilot formats and frame lengths for other traces from metadata, zh: 核心数据为20 MHz平台设置；不同trace的导频与帧长从元数据读取}
-    checks:
-    - {en: 'Reproduction check: verify LTS detection, noise segments, ADC saturation, and valid acquisition coverage for every user', zh: 复现检查：验证LTS检测、噪声段、ADC饱和及所有用户的有效采集覆盖}
-  - title: {en: Aggregate and save raw HDF5 traces, zh: 汇聚并保存原始HDF5 trace}
-    detail: {en: 'Base-station nodes upload IQ after the pilot phase, and the central controller writes HDF5 in real time. Uplink data IQ can optionally be saved. Each topology also includes experimental descriptions, maps, photos, and some videos. Single-user continuous-IQ and multiuser framed modes are organized separately.', zh: 基站节点在导频阶段结束后上传IQ，中央控制器实时写HDF5。系统可选保存上行data IQ；每个拓扑另配实验描述、地图、照片及部分视频。单用户连续IQ模式与多用户分帧模式分别组织。}
-    inputs:
-    - {en: Pilot IQ from each base-station node, zh: 各基站节点pilot IQ}
-    - {en: Central controller and Ethernet transport, zh: 中央控制器与以太网传输}
-    outputs:
-    - {en: Raw HDF5 traces, zh: HDF5原始trace}
-    - {en: 'Settings, scene, and motion descriptions', zh: 设置、场景和运动说明}
-    controls:
-    - {en: Continuous mode supports one user and must not be treated as the same protocol as multiuser framed traces, zh: 连续模式支持单用户，不能与多用户分帧trace混为同一种协议}
-    checks:
-    - {en: 'Reproduction check: inspect frame, user, and antenna counts and attachment correspondence; retain sampling rates and time scales', zh: 复现检查：检查帧数、用户数、天线数及附件对应关系；保留采样率和时间尺度}
-  - title: {en: Convert IQ to CSI with the official tools, zh: 由官方工具把IQ转为CSI}
-    detail: {en: 'The public Python toolbox uses NumPy/SciPy to convert raw pilot IQ to CSI, then computes channel correlation, coherence, condition numbers, and achievable rates under CSI delay. The full workflow preserves relative phase across antennas.', zh: 公开Python分析工具基于NumPy/SciPy把原始pilot IQ转换为CSI，再计算信道相关、相干性、条件数与CSI时延下的可达速率。完整流程保留跨天线相对相位。}
-    inputs:
-    - {en: Raw LTS IQ, zh: 原始LTS IQ}
-    - {en: Known training symbols and trace parameters, zh: 已知训练符号与trace参数}
-    outputs:
-    - {en: Complex multiuser CSI, zh: 复数多用户CSI}
-    - {en: Coherence and correlation statistics, zh: 相干性与相关性统计}
-    controls:
-    - {en: Complete pilot detection and frequency-domain estimation before array/user analysis, zh: 先完成导频定位与频域估计，再做阵列/用户分析}
-    checks:
-    - {en: 'Reproduction check: inspect CSI axes, conjugation conventions, faulty antennas, and low-SNR users; spot-check agreement between repeated LTS estimates', zh: 复现检查：检查CSI轴、共轭约定、坏天线和低SNR用户；抽查LTS重复估计的一致性}
-  - title: {en: Separate precoder estimation from performance evaluation, zh: 分离预编码估计与性能评估}
-    detail: {en: 'The paper uses the first LTS estimate to compute beamforming weights and the second to evaluate rates, reducing bias from designing and evaluating with the same noise realization. Weights computed from delayed CSI are then applied to later measurements to compare fixed methods such as conjugate beamforming and ZF.', zh: 原文以第一LTS估计计算波束权重，以第二LTS估计评估速率，减少用同一噪声实现同时设计和评估造成的偏差。再将延迟CSI计算的权重施加到后续测量，比较共轭与ZF等固定方法。}
-    inputs:
-    - {en: Two LTS estimates within one frame, zh: 一帧中两次LTS估计}
-    - {en: 'Power, noise, and CSI-delay settings', zh: 功率、噪声及CSI延迟设置}
-    outputs:
-    - {en: MU-MIMO rates evaluated with independent pilots, zh: 独立pilot评估的MU-MIMO速率}
-    - {en: Performance curves at different CSI ages, zh: 不同CSI age的性能曲线}
-    controls:
-    - {en: 'Keep power normalization, user sets, and noise definitions consistent across methods', zh: 功率归一化、用户集合和噪声定义在各方法间一致}
-    checks:
-    - {en: 'Reproduction check: reproduce the zero-delay baseline before increasing CSI age; keep the first and second LTS roles separate', zh: 复现检查：重现零延迟基准，再增加CSI age；保持第一/第二LTS的角色分离}
-  - title: {en: Group studies by trace and topology, zh: 按trace与拓扑分组研究}
-    detail: {en: 'Group learning experiments by trace or topology, preserving inter-frame timing in prediction windows. First compare current CSI, stale CSI, simple prediction, and a future-CSI oracle, using the real simultaneous-multiuser dimension to evaluate scheduling or precoding.', zh: 学习实验按trace或拓扑分组，预测窗口保留帧间时间。先比较当前CSI、stale CSI、简单预测与future-CSI oracle，利用真实同时多用户维度评估调度或预编码。}
-    inputs:
-    - {en: CSI and complete-run identities, zh: CSI与完整run身份}
-    - {en: Motion and band conditions, zh: 运动和频段条件}
-    outputs:
-    - {en: Trace-level evaluation splits, zh: trace级评估划分}
-    - {en: Future-CSI oracle and simple baselines, zh: 未来CSI oracle和简单基线}
-    - {en: 'Latency, sum-rate, and tail metrics', zh: 时延、sum-rate与尾部指标}
-    controls:
-    - {en: Construct cross-frequency labels from independent runs in different bands only when pairing evidence exists, zh: 不同频段的独立runs只有在有配对依据时才建立跨频标签}
-    checks:
-    - {en: 'Reproduction check: look for overlapping windows across splits; check whether shared user/scene identities create shortcuts', zh: 复现检查：查找重叠窗口跨split；检查相同用户/场景身份是否形成捷径}
-  scope: {en: '2016 Argos Channel Survey; the core paper analyzes 96-antenna, 8-user traces at 2.4/5 GHz.', zh: 2016 Argos Channel Survey；核心论文分析96天线、8用户的2.4/5 GHz traces。}
+    - {en: Analysis traces are 20 to 120 s long with a 2 ms channel resounding interval., zh: 分析用轨迹长 20 至 120 s，信道重探测间隔为 2 ms。}
+  - title: {en: Synchronize frames with a beacon, zh: 用 beacon 同步帧}
+    detail: {en: 'The base station sends a beacon at the start of each frame to synchronize the users, and the Faros control channel provides time and frequency synchronization. Users then send their pilots in TDMA slots at the beginning of the frame.', zh: 每帧开始时基站发出 beacon 以同步用户，Faros 控制信道提供时间与频率同步。随后各用户在帧前部的 TDMA 时隙中发送导频。}
+  - title: {en: Collect multiuser pilot IQ, zh: 采集多用户导频 IQ}
+    detail: {en: 'Users send 802.11 LTS pilots with 52 subcarriers. Wideband pilots for 8 users and a noise estimate can be collected in under 100 µs, and every base-station radio records each user''s raw IQ.', zh: 用户发送 52 个子载波的 802.11 LTS 导频。8 个用户的宽带导频与噪声估计可在 100 µs 内采集完成，各基站射频节点记录每个用户的原始 IQ。}
+  - title: {en: Store raw HDF5 traces, zh: 保存原始 HDF5 轨迹}
+    detail: {en: 'After the pilot phase, base-station radios report pilot IQ to the central controller, which writes it to HDF5 in real time. Uplink data IQ can optionally be stored in the same file.', zh: 导频阶段结束后，基站射频节点将导频 IQ 上报给中央控制器，控制器实时写入 HDF5。上行数据 IQ 可选择一并保存在同一文件中。}
+  - title: {en: Convert IQ to CSI with the official toolbox, zh: 用官方工具箱将 IQ 转为 CSI}
+    detail: {en: 'The open-source Python toolbox, which uses NumPy and SciPy, converts raw IQ samples to CSI and computes channel correlation, coherence, condition numbers and achievable rates under CSI delay.', zh: 基于 NumPy 与 SciPy 的开源 Python 工具箱将原始 IQ 转换为 CSI，并计算信道相关性、相干性、条件数以及 CSI 时延下的可达速率。}
+  - title: {en: Separate beamweight design from evaluation, zh: 将波束权重设计与性能评估分开}
+    detail: {en: 'The first LTS estimate of a frame derives the beamweights and the second LTS estimate evaluates the rate, so design and evaluation do not share a noise realization. Conjugate beamforming and zero-forcing are compared with weights computed from delayed CSI.', zh: 同一帧内第一次 LTS 估计用于计算波束权重，第二次 LTS 估计用于评估速率，从而使设计与评估不共享同一噪声实现。共轭波束成形与迫零方法在使用延迟 CSI 计算权重的条件下进行比较。}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• HDF5 uplink pilot IQ and trace configuration
-
-      • Topology descriptions, maps, photos, and some videos', zh: '• HDF5上行pilot IQ及trace配置
-
-      • 拓扑描述、地图、照片和部分视频'}
+  text: {en: 'HDF5 uplink pilot IQ with trace configuration; topology descriptions, maps, photos and some videos.', zh: HDF5 格式的上行导频 IQ 与轨迹配置；拓扑说明、地图、照片及部分视频。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Complex CSI estimated by the official toolbox
-
-      • Correlation, condition numbers, CSI aging, and achievable MU-MIMO rates
-
-      • User-created scheduling labels, prediction windows, and cross-topology splits', zh: '• 官方toolbox估计的复数CSI
-
-      • 相关性、条件数、CSI aging和MU-MIMO可达速率
-
-      • 用户新建的调度标签、预测窗口与跨拓扑split'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Use raw IQ→CSI as the analysis entry point; inspect each package to determine whether ready-made CSI is also included.
-
-      • The paper supports multiuser acquisition within short time windows; fix the exact antenna count, user count, frame length, and AGC settings for each trace.
-
-      • The processing workflow above has been verified from the paper; original traces have not been downloaded or processed in this audit.', zh: '• 分析入口应以raw IQ→CSI为准，下载包是否附现成CSI须逐文件检查。
-
-      • 原文支持多用户短时间窗采集；确切天线数、用户数、帧长及AGC按每个trace固定。
-
-      • 上述处理流程已由论文核验，当前未下载或运行原始trace。'}
+  text: {en: 'Complex CSI from the official toolbox; correlation, condition numbers, CSI aging and achievable MU-MIMO rates.', zh: 官方工具箱估计的复数 CSI；相关性、条件数、CSI 老化与 MU-MIMO 可达速率。}
+- label: {en: Bands, zh: 频段}
+  text: {en: 'UHF, 2.4 GHz and 5 GHz each use separate radios and antennas; the hardware can collect the bands simultaneously.', zh: UHF、2.4 GHz 与 5 GHz 各自使用独立的射频模块与天线；硬件可同时采集多个频段。}
 technical_notes:
-- {en: 'Verified: the file directory distinguishes static, environmental mobility, continuous mobility, and LoS/NLoS conditions.', zh: 已确认：文件目录区分 static、environmental mobility、continuous mobility、LoS/NLoS。}
-- {en: 'Inference: differences in frequency, polarization, and mobility conditions must be parsed from metadata. Fairness cannot be judged from filename prefixes alone.', zh: 推断：多频、极化和运动条件的差异必须从 metadata 解析，不能只凭文件名前缀决定公平性。}
+- {en: Frame lengths typically range from 2 ms to 50 ms., zh: 帧长通常为 2 至 50 ms。}
+- {en: Continuous mode supports a single user and differs from the multiuser framed traces., zh: 连续模式仅支持单用户，与多用户分帧轨迹不同。}
 limitations:
-- {en: Do not equate RENEW platform capabilities with the fields in every historical Argos file., zh: 不要将 RENEW 平台能力等同于每个历史 Argos 文件包含的字段。}
-- {en: Independent runs at different bands cannot directly supervise a sample-level cross-frequency mapping., zh: 不同频段独立运行不能直接监督跨频样本映射。}
+- {en: 'Each band requires separate radios and antennas, so UHF, 2.4 GHz and 5 GHz use different hardware.', zh: 每个频段需要独立的射频模块与天线，UHF、2.4 GHz 与 5 GHz 使用不同硬件。}
+- {en: Antenna and user counts vary by trace; the primary campaign uses 96 antennas and 8 users., zh: 天线数与用户数因轨迹而异；主要测量活动使用 96 根天线与 8 个用户。}
 history:
-- {en: '2016: the Argos Channel Survey measurement study and numerous original runs.', zh: 2016：Argos Channel Survey 对应测量研究与大量原始 runs。}
-- {en: '2026-11-05: the directory index was verified; no new data release was confirmed.', zh: 2026-11-05：核实目录索引，未确认新的数据 release。}
+- {en: '2016: Asilomar paper describing the Argos Channel Survey measurements.', zh: 2016 年：发表描述 Argos Channel Survey 测量的 Asilomar 论文。}
 usage:
-- {en: Select array/user configurations by experiment file and first parse the metadata for one run., zh: 按实验文件选择阵列/用户配置，先解析一个 run 的 metadata。}
-- {en: 'Compare independent beams, scheduling, and a joint oracle under the same power, noise, and user set.', zh: 在相同功率、噪声和用户集合下比较独立波束、调度和 joint oracle。}
+- {en: 'Use the first LTS estimate for beamweights and the second for rate evaluation, as in the 2016 paper.', zh: 与 2016 年论文一致，用第一次 LTS 估计计算波束权重，用第二次 LTS 估计评估速率。}
+- {en: Select configurations by array and user count; the primary campaign covers 2.4 and 5 GHz with 96 antennas and 8 users., zh: 依据阵列与用户数选择配置；主要测量活动覆盖 2.4 与 5 GHz，使用 96 根天线与 8 个用户。}
 field_notes:
 - label: {en: CSI, zh: CSI}
-  text: {en: The 2016 paper's release chain is HDF5 raw pilot IQ → CSI estimated by the official toolbox. Do not assume every historical download already contains complex CSI matrices., zh: 2016原文的发布链路是HDF5 raw pilot IQ→官方toolbox估计CSI；不假定每个历史下载包已经存有复数CSI矩阵。}
+  text: {en: The released traces are raw pilot IQ in HDF5; CSI is estimated from them with the official toolbox., zh: 发布的轨迹为 HDF5 格式的原始导频 IQ；CSI 由官方工具箱从中估计。}
 - label: {en: Paths, zh: 路径}
-  text: {en: 'This field denotes per-path angles at both ends and interaction records, which the public interface does not provide. CSI/wideband pilots can yield PDP and delay statistics; ground-truth physical interaction paths or AoA/AoD are absent.', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。CSI/宽带pilot可导出PDP与时延统计；没有逐条真实传播交互路径或AoA/AoD真值。}
+  text: {en: 'The paper reports no per-path angles, interaction records, or AoA/AoD ground truth.', zh: 论文未报告逐径角度、交互记录或 AoA/AoD 真值。}
 - label: {en: Position, zh: 位置}
-  text: {en: 'The paper provides maps for each topology, track speeds, and motion descriptions. Relative displacement on controlled tracks can be calculated from time; per-frame absolute position ground truth for general handheld users is unconfirmed.', zh: 原文提供各topology地图、track速度与运动说明；受控track可由时间计算相对位移。一般手持用户的逐帧绝对位置真值未确认。}
+  text: {en: Each topology has a map. Controlled-track runs move one user along a linear track., zh: 每个拓扑附有地图；受控轨道轨迹中一名用户沿直线轨道移动。}
 - label: {en: RGB, zh: RGB}
-  text: {en: 'Sec. IV states that each topology includes maps/photos and some traces include video. These are scene documentation, without guaranteed per-CSI synchronization, camera calibration, or machine-readable visual labels.', zh: Sec.IV说明每个topology附地图/照片，部分trace附视频；这支持场景资料，不保证逐CSI同步、相机标定或机器可读视觉标签。}
+  text: {en: 'Each topology includes maps and photos, and some traces include video.', zh: 每个拓扑包含地图与照片，部分轨迹包含视频。}
 - label: {en: LiDAR, zh: LiDAR}
-  text: {en: 'The 2016 acquisition system and traces contain radio IQ and scene descriptions/images, with no recorded LiDAR scans.', zh: 2016采集系统及trace内容为无线IQ与场景描述/图片，不含已记录的LiDAR扫描。}
+  text: {en: The paper reports no LiDAR scans., zh: 论文未报告 LiDAR 扫描数据。}
 - label: {en: Radar, zh: 雷达}
-  text: {en: The 2016 system records communication uplink pilots; it provides no independent radar observations or target-sensing labels., zh: 2016系统采集通信上行pilot；不提供独立radar观测或目标感知标签。}
+  text: {en: The paper reports no radar observations., zh: 论文未报告雷达观测数据。}
 - label: {en: Multi-BS, zh: 多基站}
-  text: {en: Each measurement topology consists of a multi-antenna BS serving multiple users under one central controller; these are not synchronized multi-BS measurements., zh: 每个测量topology为单中央控制器的多天线BS服务多个用户；不是同步多BS测量。}
-- label: {en: Cross-frequency pairing, zh: 跨频配对}
-  text: {en: 'Sec. III states that the hardware can be configured for simultaneous multiband acquisition, but currently visible files are named separately by band/time. No directly pairable cross-frequency manifest has been verified, so this remains unknown.', zh: 原文Sec.III说硬件可配置同时多频，但当前可见文件按频段/时间分别命名；没有核实可直接配对的跨频manifest，因此保留未知。}
+  text: {en: Each topology is one multi-antenna base station built from several WARP nodes under a single central controller., zh: 每个拓扑为一个多天线基站，由若干 WARP 节点在单一中央控制器下组成。}
+- label: {en: Cross-frequency, zh: 跨频}
+  text: {en: 'The hardware can collect UHF, 2.4 GHz and 5 GHz simultaneously, but each band uses separate radios and antennas.', zh: 硬件可同时采集 UHF、2.4 GHz 与 5 GHz，但每个频段使用独立的射频模块与天线。}
 provenance:
 - {en: Real indoor/outdoor environments and moving users → Argos multi-antenna platform, zh: 真实室内/室外与移动用户 → Argos 多天线平台}
 - {en: Uplink pilots → complex multiuser channel estimates → channel records organized by run, zh: 上行导频 → 多用户复数信道估计 → 按运行组织的信道记录}
-overview: {en: 'The Argos Channel Survey is a many-antenna MU-MIMO channel measurement dataset from Rice University, described in a 2016 Asilomar conference paper by Shepard, Ding, Guerra and Zhong. The measurement system is built on the ArgosV2 platform with WARP-based radios, a central controller and battery-powered user devices. The central controller saves raw uplink pilot IQ samples in real time to HDF5 files. Measurements cover the UHF, 2.4 GHz and 5 GHz bands: at 2.4 GHz and 5 GHz, up to 104 base-station antennas serve 8 users, and at UHF, up to 8 antennas serve 6 users. Topologies include indoor LOS, indoor NLOS and outdoor LOS, with stationary, environmental, user, linear-track and naturalistic mobility. Each trace comes with experimental descriptions, maps and photos, and some traces include video. The paper reports over 100 traces across 20 topologies, over one billion channel measurements and about 1 TB of data, and an open-source Python toolbox converts the raw IQ samples to
-    CSI. The paper lists no LiDAR, radar or GPS records.', zh: Argos Channel Survey 是 Rice 大学的多天线多用户（MU-MIMO）信道测量数据集，对应 Shepard、Ding、Guerra 与 Zhong 于 2016 年 Asilomar 会议发表的论文。测量系统基于 ArgosV2 平台，由 WARP 射频模块、中央控制器和电池供电的用户设备组成。中央控制器实时将原始上行导频 IQ 样本保存为 HDF5 文件。测量覆盖 UHF、2.4 GHz 和 5 GHz 频段：在 2.4 GHz 与 5 GHz 下，最多 104 根基站天线服务 8 个用户；在 UHF 下，最多 8 根基站天线服务 6 个用户。拓扑包括室内 LOS、室内 NLOS 与室外 LOS，移动方式包括静止、环境移动、用户移动、直线轨道移动与自然移动。每条轨迹附有实验说明、地图和照片，部分轨迹附有视频。论文报告共 100 余条轨迹、20 个拓扑、超过 10 亿次信道测量，数据量约 1 TB；开源 Python 工具箱将原始 IQ 样本转换为 CSI。}
+overview: {en: 'The Argos Channel Survey is a many-antenna MU-MIMO channel measurement dataset from Rice University, described in the 2016 Asilomar paper "Understanding Real Many-Antenna MU-MIMO Channels" by Shepard, Ding, Guerra and Zhong. The system is built on the ArgosV2 platform with WARPv3 and WURC radios, a central controller and battery-powered user devices. The central controller saves raw uplink pilot IQ samples in real time to HDF5 files. Measurements cover the UHF, 2.4 GHz and 5 GHz bands: at 2.4 and 5 GHz, up to 104 base-station antennas serve 8 users, and at UHF, up to 8 antennas serve 6 users. Topologies include LOS and NLOS scenarios, both indoors and outdoors, with stationary, environmental, user, linear-track and naturalistic mobility. The paper reports over 100 traces across more than 20 topologies, over one billion channel measurements and about 1 TB of data. Each topology is documented with experimental descriptions, maps and photos, and some traces include video. An
+    open-source Python toolbox converts the raw IQ samples to CSI, and the paper reports no LiDAR, radar or GPS records.', zh: Argos Channel Survey 是 Rice 大学的多天线 MU-MIMO 信道测量数据集，其论文为 Shepard、Ding、Guerra 与 Zhong 于 2016 年 Asilomar 会议发表的《Understanding Real Many-Antenna MU-MIMO Channels》。测量系统基于 ArgosV2 平台，采用 WARPv3 与 WURC 射频模块，并配有中央控制器和电池供电的用户设备。中央控制器实时将原始上行导频 IQ 样本写入 HDF5 文件。测量覆盖 UHF、2.4 GHz 与 5 GHz 频段：在 2.4 GHz 与 5 GHz，最多 104 根基站天线服务 8 个用户；在 UHF，最多 8 根基站天线服务 6 个用户。拓扑包括室内与室外的 LOS 和 NLOS 场景，移动方式包括静止、环境移动、用户移动、直线轨道移动与自然移动。论文报告了 100 余条轨迹、20 余个拓扑、超过 10 亿次信道测量，数据量约 1 TB。每个拓扑附有实验说明、地图和照片，部分轨迹附有视频。开源 Python 工具箱可将原始 IQ 样本转换为 CSI，论文未报告 LiDAR、雷达或 GPS 记录。}
 signal_details:
 - signal: csi
   text: {en: 'CSI is computed from raw uplink pilot IQ by the open-source Python channel analysis toolbox, which uses NumPy and SciPy. At the start of each frame, users send 802.11 LTS pilots with 52 subcarriers in TDMA. The system supports up to 20 MHz bandwidth and 16 simultaneous users. Analysis traces of 20 to 120 s used a 2 ms channel resounding interval, and frame lengths typically range from 2 ms to 50 ms.', zh: CSI 由开源 Python 信道分析工具箱从原始上行导频 IQ 样本计算得到，工具箱基于 NumPy 与 SciPy。每帧开始时，用户以 TDMA 方式发送 52 个子载波的 802.11 LTS 导频。系统支持最高 20 MHz 带宽与 16 个同时工作的用户。分析用轨迹长 20 至 120 s，信道重探测间隔为 2 ms；帧长通常为 2 至 50 ms。}
 - signal: iq
-  text: {en: 'Raw uplink pilot IQ samples are reported from each base-station radio to the central controller after the pilot phase and written to HDF5 files. Each trace records the AGC and gain settings. Uplink data IQ can also be stored when configured. A separate WARPLab-based mode records continuous IQ for one user, up to 6 s at 20 MHz or 3 s at 40 MHz, and saves it in the same format.', zh: 各基站射频节点在导频阶段结束后，将原始上行导频 IQ 样本上报给中央控制器，并写入 HDF5 文件。每条轨迹记录 AGC 及增益设置。配置后也可保存上行数据 IQ。另有一种基于 WARPLab 的连续采集模式，针对单个用户，20 MHz 下最长 6 s，40 MHz 下最长 3 s，数据以相同格式保存。}
+  text: {en: 'Raw uplink pilot IQ samples are reported from each base-station radio to the central controller after the pilot phase and written to HDF5 files. Each trace records the AGC and gain settings. Uplink data IQ can also be stored when configured. A separate WARPLab-based mode records continuous IQ for one user, up to 6 s at 20 MHz or 3 s at 40 MHz, and keeps the samples in memory at each WARP node.', zh: 各基站射频节点在导频阶段结束后，将原始上行导频 IQ 样本上报给中央控制器，并写入 HDF5 文件。每条轨迹记录 AGC 及增益设置。配置后也可保存上行数据 IQ。另有一种基于 WARPLab 的连续采集模式，仅针对单个用户，20 MHz 下最长 6 s，40 MHz 下最长 3 s，样本保存在各 WARP 节点的内存中。}
 - signal: rgb
   text: {en: 'Each topology has experimental descriptions, maps and photos, and some traces include video. These are published with each trace.', zh: 每个拓扑附有实验说明、地图和照片，部分轨迹附有视频，均随每条轨迹发布。}
+bandwidth_mhz: 20
+size_gb: 1000
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: 'Complex CSI is computed from raw pilot IQ by the official Python toolbox (Sec. V); release file names carry an ArgosCSI prefix, and file contents were not inspected.', zh: 复数CSI由官方Python工具箱从原始pilot IQ计算（第V节）；发布文件名带有ArgosCSI前缀，文件内容未检查。}
+- key: cir
+  status: derivable
+  note: {en: An inverse FFT over the 52 LTS subcarriers at 20 MHz gives the impulse response; the paper reports no CIR or PDP output., zh: 对20 MHz下52个LTS子载波的CSI做逆FFT即可得到冲激响应；论文未报告CIR或PDP输出。}
+- key: paths
+  status: none
+  note: {en: 'The released data are pilot IQ and CSI, with no per-path delay, angle, power or phase records.', zh: 发布内容为导频IQ与CSI，不含逐径时延、角度、功率或相位记录。}
+- key: interaction
+  status: none
+  note: {en: 'No ground-truth interaction records (reflecting surfaces, diffraction points) are described.', zh: 未描述真实交互记录（反射面、绕射点等）。}
+- key: power
+  status: derivable
+  note: {en: 'No RSSI is recorded (Sec. III); channel power per antenna and user follows from CSI and the recorded gain settings, and absolute calibration is not stated.', zh: 未记录RSSI（第III节）；逐天线、逐用户信道功率由CSI和记录的增益设置推出，绝对标定未说明。}
+- key: iq
+  status: provided
+  note: {en: Uplink pilot IQ per base-station antenna and user is stored in HDF5 per trace; uplink data IQ is saved only when configured., zh: 每条trace以HDF5存储各基站天线、各用户的上行pilot IQ；上行data IQ仅在配置时保存。}
+- key: beam_labels
+  status: derivable
+  note: {en: Conjugate and zero-forcing beamformer gains and achievable rates are computed from CSI by the toolbox (Sec. V); no beam codebook index is described., zh: 共轭与ZF波束权重增益及可达速率由工具箱从CSI计算（第V节）；未描述码本波束索引。}
+- key: position
+  status: derivable
+  note: {en: Displacement on the linear track follows from time at the stated 4.6 cm/s; no per-frame absolute position is stated for handheld users., zh: 轨道位移可由时间与文中给出的4.6 cm/s推算；手持用户的逐帧绝对位置未说明。}
+- key: geometry
+  status: provided
+  note: {en: Floor-plan maps and pictures of each environment are published; no 3D scene model is described., zh: 各环境发布平面图与照片；未描述3D场景模型。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: provided
+  note: {en: Photos are published for each topology and video for some traces; per-frame synchronization and camera calibration are not stated., zh: 每个拓扑附照片，部分trace附视频；未说明逐帧同步与相机标定。}
+- {key: depth, status: unknown}
+- key: lidar
+  status: none
+  note: {en: The system records uplink radio IQ and scene photos or maps only; no LiDAR scans are described., zh: 系统仅记录上行无线IQ及场景照片或地图，未描述LiDAR扫描。}
+- key: radar
+  status: none
+  note: {en: The system records communication uplink pilots only; no radar observations or target labels are described., zh: 系统仅采集通信上行导频，未描述雷达观测或目标标签。}
+- {key: imu, status: unknown}
+- key: time_series
+  status: provided
+  note: {en: Analysis traces run 20 to 120 s at a 2 ms resounding interval; a few 20-minute office traces use reduced time resolution (Sec. IV)., zh: 分析用trace为20至120 s、重测间隔2 ms；另有若干20分钟办公室trace，时间分辨率较低（第IV节）。}
+- key: multiuser
+  status: provided
+  note: {en: 'Up to 8 simultaneous users in the 2.4 and 5 GHz campaign with 96 BS antennas, and up to 6 users at UHF (Sec. IV).', zh: 2.4和5 GHz主测量中最多8个同时用户（96根基站天线）；UHF最多6个用户（第IV节）。}
+- key: multibs
+  status: none
+  note: {en: 'Each topology uses one multi-antenna base-station array under one central controller (Sec. III, Fig. 1).', zh: 每个拓扑使用单个多天线基站阵列，由一个中央控制器管理（第III节，图1）。}
+- key: crossfreq
+  status: unknown
+  note: {en: 'The paper says the hardware can record UHF, 2.4 and 5 GHz simultaneously, but per-trace pairing in the release is not stated.', zh: 文中称硬件可同时记录UHF、2.4与5 GHz，但发布中逐trace的配对关系未说明。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: unknown
+  note: {en: 'The core motion is pedestrian (linear track at 4.6 cm/s); file names list in-car and drive-by outdoor traces, and no speed is stated for them.', zh: 核心运动为步行速度（直线轨道4.6 cm/s）；文件名含车内与drive-by室外trace，但未给出其速度。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: Environmental-mobility traces include people walking and opening doors that occlude paths (Sec. VI-A); the file list also has drive-by and in-car outdoor traces., zh: 环境移动trace包含走动的人员与开关门，会遮挡路径（第VI-A节）；文件列表另含室外drive-by与车内trace。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按径标注。}
+- key: polarization
+  status: unknown
+  note: {en: 'The main array uses vertical monopoles (Sec. IV); UHF file names mention polarized antennas, but no dual-polarized channel data is described.', zh: 主阵列为垂直单极天线（第IV节）；UHF文件名含极化天线字样，但未描述双极化信道数据。}
+- {key: em_field, status: unknown}
+versions:
+- version: '2016'
+  date: '2016'
+  summary: {en: 'Released with the Asilomar 2016 paper: the Argos measurement system, an open-source Python toolbox, and HDF5 traces in UHF, 2.4 GHz and 5 GHz (over 100 traces, 20 topologies, about 1 TB).', zh: 随2016年Asilomar论文发布：Argos测量系统、开源Python工具箱，以及UHF、2.4 GHz和5 GHz的HDF5 trace（100余条trace、20个拓扑、约1 TB）。}
+  url: https://yecl.org/argos/pubs/Shepard-Asilomar16.pdf

@@ -20,8 +20,8 @@ citing: []
 summary: {en: 'Raw IQ transmissions from 31 Seeed Studio XIAO boards (ESP32-C3) sending Bluetooth Low Energy traffic, captured with two USRP B210 receivers at 6 MS/s with a 2 MHz front-end filter in outdoor and indoor setups. The captures cover different days, locations, channels, receivers and temperatures.', zh: 来自31台Seeed Studio XIAO开发板（基于ESP32-C3）发送的蓝牙低功耗（BLE）流量的原始IQ数据，由两台USRP B210接收机以6 MS/s采样、2 MHz前端滤波采集，覆盖室外和室内场景。采集涵盖不同日期、位置、信道、接收机和温度。}
 sources: ['https://research.engr.oregonstate.edu/hamdaoui/datasets', 'https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_datasets_ble_august2025_v1.pdf', 'https://arxiv.org/abs/2611.00332', 'https://arxiv.org/html/2611.00332v1']
 checked: '2026-11-06'
-overview: {en: 'The Bluetooth RF Fingerprinting Datasets were produced by the NetSTAR Laboratory at Oregon State University. The paper arXiv:2611.00332 describes a set of unprocessed IQ captures from 31 commercial devices and a case study of domain-robust RF fingerprinting. The transmitters are 31 Seeed Studio XIAO boards based on the ESP32-C3, which send Bluetooth Low Energy traffic. Two Ettus Research USRP B210 receivers recorded the signals at 6 MS/s with a 2 MHz front-end filter on channels 1, 2, 14 and 32 (2.406, 2.408, 2.434 and 2.470 GHz). The scenarios cover indoor placements at 1.5 m line-of-sight, 1.5 m non-line-of-sight and 7.5 m line-of-sight with rich multipath, wired coaxial connections, and outdoor placements at 1 m, 2 m, 3 m and 1.5 m line-of-sight. Thermal runs add a temperature record for each device, read from the transmitter''s internal sensor. The data are stored per device as complex64 frame matrices in NumPy arrays, and the data are raw IQ frames rather than demodulated
-    packets.', zh: '蓝牙射频指纹数据集由Oregon State University（俄勒冈州立大学）NetSTAR实验室制作，arXiv:2611.00332论文对其进行了描述。论文给出了来自31台商用设备的未处理IQ采集数据，并包含领域鲁棒射频指纹识别的案例研究。发射端为31块基于ESP32-C3的Seeed Studio XIAO开发板，发送蓝牙低功耗（BLE）流量。两台Ettus Research USRP B210接收机以6 MS/s采样、2 MHz前端滤波，在信道1、2、14和32（2.406、2.408、2.434和2.470 GHz）上记录信号。场景包括1.5 m视距、1.5 m非视距和7.5 m富多径视距的室内布置，有线同轴连接，以及1 m、2 m、3 m和1.5 m视距的室外布置。热态测试会为每台设备附加温度记录，读取自发射端的内部传感器。数据按设备以complex64帧矩阵形式存储于NumPy数组中，数据为原始IQ帧，而非解调后的数据包。'}
+overview: {en: 'The Bluetooth RF Fingerprinting Datasets were produced by the NetSTAR Laboratory at Oregon State University. The paper arXiv:2611.00332 describes raw IQ captures from 31 commercial devices and a case study of domain-robust RF fingerprinting. The transmitters are 31 Seeed Studio XIAO boards based on the ESP32-C3, which send Bluetooth Low Energy traffic. Two Ettus Research USRP B210 receivers recorded the signals at 6 MS/s with a 2 MHz front-end filter on channels 1, 2, 14 and 32 (2.406, 2.408, 2.434 and 2.470 GHz). The scenarios cover indoor placements at 1.5 m line-of-sight, 1.5 m non-line-of-sight and 7.5 m line-of-sight with rich multipath, wired coaxial connections, and outdoor placements at 1 m, 2 m, 3 m and 1.5 m line-of-sight. Thermal runs add a temperature record for each device, read from the transmitter''s internal sensor. The data are stored per device as complex64 frame matrices in NumPy arrays, and the frames are time-domain IQ samples aligned on the BLE preamble.',
+  zh: '蓝牙射频指纹数据集由Oregon State University（俄勒冈州立大学）NetSTAR实验室制作。论文arXiv:2611.00332描述了来自31台商用设备的原始IQ采集数据，以及领域鲁棒射频指纹识别的案例研究。发射端为31块基于ESP32-C3的Seeed Studio XIAO开发板，发送蓝牙低功耗（BLE）流量。两台Ettus Research USRP B210接收机以6 MS/s采样、2 MHz前端滤波器，在信道1、2、14和32（2.406、2.408、2.434和2.470 GHz）上记录信号。场景包括1.5 m视距、1.5 m非视距和7.5 m富多径视距的室内布置，有线同轴连接，以及1 m、2 m、3 m和1.5 m视距的室外布置。热态测试会为每台设备附加温度记录，读取自发射端的内部传感器。数据按设备以complex64帧矩阵形式存储于NumPy数组中，各帧为时域IQ采样，并已依据BLE前导码对齐。'}
 signal_details:
 - signal: iq
   text: {en: 'Raw complex IQ frames captured with two Ettus Research USRP B210 SDRs (Rx1 and Rx2), controlled from Ubuntu through GNU Radio. The sampling rate is 6 MS/s with a 2 MHz front-end filter. Channel center frequencies are 2.406 GHz (Ch1), 2.408 GHz (Ch2), 2.434 GHz (Ch14) and 2.470 GHz (Ch32). Each device has a complex64 matrix X_k of D frames by N samples. In scenarios D1 to D3, D is 33,000 frames and N is 4,096 samples. In scenarios D4 to D15, D is 3,000 frames and N is 1,664 samples. Thermal scenarios add a float32 temperature vector T_k per device.', zh: '由两台Ettus Research USRP B210 SDR（Rx1和Rx2）在Ubuntu上通过GNU Radio控制采集的原始复数IQ帧。采样率为6 MS/s，前端滤波器带宽为2 MHz。信道中心频率为2.406 GHz（Ch1）、2.408 GHz（Ch2）、2.434 GHz（Ch14）和2.470 GHz（Ch32）。每台设备对应一个complex64矩阵X_k，行数为帧数D，列数为每帧采样点数N。在场景D1至D3中，D为33,000帧，N为4,096个采样点；在场景D4至D15中，D为3,000帧，N为1,664个采样点。热态场景还为每台设备提供一个float32温度向量T_k。'}
@@ -46,3 +46,99 @@ pipeline:
     - {en: Raw IQ samples, zh: 原始IQ采样}
     outputs:
     - {en: Per-device matrices X_k and temperature vectors T_k, zh: 按设备的矩阵X_k与温度向量T_k}
+facts:
+- label: {en: Scenario groups, zh: 场景分组}
+  text: {en: 'Scenarios D1 to D15 form 16 datasets, with D11 split into D11-a and D11-b. Four setups group them: indoor wireless with temperature (D1 to D3), indoor wired across channels and receivers (D4 to D8), indoor wireless across receivers, channels and days (D9 to D11), and outdoor wireless across distances (D12 to D15).', zh: 场景D1至D15共形成16个数据集，其中D11分为D11-a和D11-b。四组设置分别为：带温度记录的室内无线（D1至D3）、室内有线的多信道与多接收机（D4至D8）、室内无线的多接收机、多信道与多日（D9至D11），以及室外无线的多距离（D12至D15）。}
+- label: {en: Payload, zh: 负载}
+  text: {en: The payload is random in D1 to D3 and fixed in D4 to D15., zh: D1至D3的负载内容为随机，D4至D15的负载内容为固定。}
+- label: {en: Device address, zh: 设备地址}
+  text: {en: 'All boards share the hardcoded physical address 0x12:55:55:55:55:55, so classifiers have to rely on hardware impairments rather than the default device address.', zh: '所有开发板共用硬编码的物理地址0x12:55:55:55:55:55，因此分类器需依赖硬件缺陷，而非默认的设备地址。'}
+- label: {en: Packaging in the release note, zh: 发布说明中的打包方式}
+  text: {en: 'The August 2025 release note describes 1,850 complex IQ samples per signal, power-normalized and stacked into (D, 2, N) real and imaginary tensors, with train and test NumPy files. This differs from the 4,096 and 1,664 samples per frame in the paper.', zh: '2025年8月发布说明描述的数据为每个信号1,850个复数IQ采样点，经功率归一化后堆叠为(D, 2, N)的实部与虚部张量，并以训练集与测试集NumPy文件存储。这与论文中每帧4,096和1,664个采样点不同。'}
+technical_notes:
+- {en: 'The transmitters use the LE 1M uncoded PHY, with GFSK modulation at 1 Mbit/s.', zh: 发射端使用LE 1M非编码PHY，采用GFSK调制，速率为1 Mbit/s。}
+- {en: Receiver power gain was 29 dB for wireless and 8 dB for wired collection., zh: 无线采集的接收机功率增益为29 dB，有线采集为8 dB。}
+usage:
+- {en: 'The release note links a GitHub repository, BLE-RF-Fingerprint-CNN-classifier, with code that loads the data, processes it and trains a CNN device classifier.', zh: 发布说明链接了GitHub仓库BLE-RF-Fingerprint-CNN-classifier，其中的代码可加载数据、处理数据并训练用于设备识别的CNN分类器。}
+capabilities:
+- {key: csi, status: unknown}
+- {key: cir, status: unknown}
+- key: paths
+  status: none
+  note: {en: The released data are raw IQ frames and temperature vectors; no per-path parameters are described., zh: 发布数据为原始 IQ 帧与温度向量；未描述逐径参数。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are described., zh: 未描述逐径交互信息。}
+- key: power
+  status: derivable
+  note: {en: 'Frame power is computable from the IQ samples, but the Aug 2025 release note states that the signals were power-normalized.', zh: 可由 IQ 采样计算帧功率，但 2025 年 8 月发布说明称信号经过功率归一化。}
+- key: iq
+  status: provided
+  note: {en: 'Complex64 baseband IQ frames at 6 MS/s with a 2 MHz front-end filter; 4,096 samples per frame in D1 to D3 and 1,664 in D4 to D15 (arXiv Table II).', zh: 'complex64 基带 IQ 帧，采样率 6 MS/s，前端滤波 2 MHz；D1 至 D3 每帧 4,096 个采样点，D4 至 D15 每帧 1,664 个（arXiv 表 II）。'}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are described; the testbed uses single Tilt RF antennas or coaxial cables., zh: 未描述波束索引或逐波束增益；测试平台使用单根 Tilt RF 天线或同轴线缆。}
+- key: position
+  status: none
+  note: {en: 'Tx-Rx distance is given per scenario (1 m to 7.5 m), with no device position or GPS.', zh: 收发距离按场景给出（1 m 至 7.5 m），未提供设备位置或 GPS。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files are described; indoor and outdoor placements appear only as text and figures., zh: 未描述场景或地图文件；室内外布置仅以文字和图示给出。}
+- key: materials
+  status: none
+  note: {en: No material parameters are described., zh: 未描述材料参数。}
+- key: rgb
+  status: none
+  note: {en: The testbed is RF-only; no camera data are described., zh: 测试平台仅为射频；未描述相机数据。}
+- key: depth
+  status: none
+  note: {en: The testbed is RF-only; no depth data are described., zh: 测试平台仅为射频；未描述深度数据。}
+- key: lidar
+  status: none
+  note: {en: The testbed is RF-only; no lidar data are described., zh: 测试平台仅为射频；未描述激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: The testbed is RF-only; no radar data are described., zh: 测试平台仅为射频；未描述雷达数据。}
+- key: imu
+  status: none
+  note: {en: The testbed is RF-only; no IMU data are described., zh: 测试平台仅为射频；未描述惯性测量单元数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Captures run continuously over the time horizon, and D1 to D3 pair each frame with a temperature reading across a 20 minute warm-up; no per-frame timestamps are stated.', zh: 采集连续覆盖整个时间段，D1 至 D3 将每帧与 20 分钟预热期间的温度读数配对；未给出逐帧时间戳。}
+- key: multiuser
+  status: none
+  note: {en: Each device is stored as its own matrix; no simultaneous multi-device transmissions are described., zh: 每台设备单独保存为一个矩阵；未描述多设备同时发射。}
+- key: multibs
+  status: none
+  note: {en: Rx1 and Rx2 are used in separate scenarios; no coherent multi-receiver set is described., zh: Rx1 与 Rx2 分别用于不同场景；未描述相干的多接收机数据集。}
+- key: crossfreq
+  status: provided
+  note: {en: 'Same-setup captures on four BLE channels from 2.406 to 2.470 GHz: wired D4 to D7, and Ch1 and Ch2 at 1.5 m in D9 and D10; all four channels lie in one 2.4 GHz band.', zh: 同一布置在四个 BLE 信道（2.406 至 2.470 GHz）上的采集：有线 D4 至 D7，以及 1.5 m 处 Ch1、Ch2 的 D9 与 D10；四个信道均位于同一 2.4 GHz 频段。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: The transmitters and the receiver stay at fixed placements in each scenario; no speed is stated., zh: 各场景中发射端与接收端均固定放置；未给出速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurements (D1 to D3 and D9 to D15), not labelled per path; the wired scenarios D4 to D8 exclude them.', zh: 存在于空口测量（D1 至 D3、D9 至 D15）中，未按路径标注；有线场景 D4 至 D8 不含此机制。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurements (D1 to D3 and D9 to D15), not labelled per path; the wired scenarios D4 to D8 exclude them.', zh: 存在于空口测量（D1 至 D3、D9 至 D15）中，未按路径标注；有线场景 D4 至 D8 不含此机制。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurements (D1 to D3 and D9 to D15), not labelled per path; the wired scenarios D4 to D8 exclude them.', zh: 存在于空口测量（D1 至 D3、D9 至 D15）中，未按路径标注；有线场景 D4 至 D8 不含此机制。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurements (D1 to D3 and D9 to D15), not labelled per path; the wired scenarios D4 to D8 exclude them.', zh: 存在于空口测量（D1 至 D3、D9 至 D15）中，未按路径标注；有线场景 D4 至 D8 不含此机制。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: arXiv v1
+  date: '2026-10-30'
+  summary: {en: 'arXiv paper that describes the BLE testbed and datasets D1 to D15 (D11 split into D11-a and D11-b): raw complex IQ frames from 31 Seeed XIAO devices, with per-frame temperature vectors for the warm-up scenarios D1 to D3.', zh: arXiv 论文，描述 BLE 测试平台及数据集 D1 至 D15（D11 分为 D11-a 与 D11-b）：来自 31 台 Seeed XIAO 设备的原始复数 IQ 帧，热态场景 D1 至 D3 附带逐帧温度向量。}
+  url: https://arxiv.org/abs/2611.00332
+- version: release note v1
+  date: '2025-08-04'
+  summary: {en: 'Release note ''Collected After Hardware Warm-up Period'' for three scenarios: outdoor across locations (Rx1, Ch1, transmitters at 1 m, 1.5 m, 2 m and 3 m), wired across channels (Ch1, Ch2, Ch14, Ch32) and wired across receivers (Rx1, Rx2). The note lists only these three scenarios.', zh: 发布说明《Collected After Hardware Warm-up Period》，涵盖三个场景：室外不同位置（Rx1、Ch1，发射端位于 1 m、1.5 m、2 m 与 3 m）、有线不同信道（Ch1、Ch2、Ch14、Ch32）以及有线不同接收机（Rx1、Rx2）。发布说明仅列出这三个场景。}
+  url: https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_datasets_ble_august2025_v1.pdf

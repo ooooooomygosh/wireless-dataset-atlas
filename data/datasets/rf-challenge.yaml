@@ -13,10 +13,11 @@ paper: doi:10.1109/ojcoms.2025.3556319
 used_in: ['doi:10.1109/ojcoms.2025.3597377']
 citing: ['doi:10.1109/icc59461.2026.11587724', 'doi:10.1109/lcomm.2026.3650880']
 summary: {en: 'Single-channel RF recordings of electromagnetic interference and digital communication signals, including a 5G signal, with recording bandwidths of 25 MHz and 61.44 MHz, used to form signal mixtures for interference rejection.', zh: 单通道射频录制数据，包含电磁干扰（EMI）和数字通信信号（含一个5G信号），录制带宽分别为25 MHz和61.44 MHz，用于构建干扰抑制的信号混合样本。}
-sources: ['https://rfchallenge.mit.edu/datasets/', 'https://arxiv.org/abs/2409.08839', 'https://arxiv.org/html/2409.08839', 'https://github.com/RFChallenge/rfchallenge_singlechannel_starter', 'https://raw.githubusercontent.com/RFChallenge/rfchallenge_singlechannel_starter/main/rfcutils/sigmf_helper_fn.py']
+sources: ['https://rfchallenge.mit.edu/datasets/', 'https://arxiv.org/abs/2409.08839', 'https://arxiv.org/html/2409.08839', 'https://github.com/RFChallenge/rfchallenge_singlechannel_starter', 'https://raw.githubusercontent.com/RFChallenge/rfchallenge_singlechannel_starter/main/rfcutils/sigmf_helper_fn.py', 'https://arxiv.org/pdf/2409.08839', 'https://api.crossref.org/works/10.1109/ojcoms.2025.3556319', 'https://raw.githubusercontent.com/RFChallenge/rfchallenge_singlechannel_starter/main/README.md', 'https://raw.githubusercontent.com/RFChallenge/rfchallenge_singlechannel_starter/main/LICENSE', 'https://rfchallenge.mit.edu/icassp24-single-channel/', 'https://arxiv.org/abs/2409.08839v1', 'https://arxiv.org/abs/2409.08839v2', 'https://arxiv.org/abs/2409.08839v3', 'https://arxiv.org/pdf/2409.08839v1', 'https://arxiv.org/pdf/2409.08839v2', 'https://arxiv.org/pdf/2409.08839v3', 'https://github.com/RFChallenge/rfchallenge_singlechannel_starter/releases', 'https://github.com/RFChallenge/rfchallenge_singlechannel_starter/tags',
+  'https://github.com/RFChallenge/rfchallenge_singlechannel_starter/commits/main']
 checked: '2026-11-06'
 overview: {en: 'The RF Challenge single-channel dataset from MIT contains recordings of interference and communication signals for interference rejection, described in arXiv:2409.08839 (Lancho et al.). It includes four interference types: EMISignal1, an unintentional emission from an unknown device recorded at 25 MHz bandwidth; CommSignal2 and CommSignal3, digital signals from commercial wireless devices recorded at 25 MHz; and CommSignal5G1, a 5G-compliant waveform recorded at 61.44 MHz. The three over-the-air types were recorded over the air, while CommSignal5G1 was generated and recorded in a wired laboratory with wireless impairments introduced by simulators, and most signals lie in the 2.4 GHz ISM band. The task is to recover a signal of interest (SOI) from a mixture with one interference, and the paper uses two SOIs with known generation processes, a single-carrier QPSK signal and an OFDM-QPSK signal. Each mixture is a 40,960-sample window in which the interference is scaled to a target
-    SINR, giving eight SOI-interference combinations. The files are SigMF recordings in cf32_le format.', zh: 'RF Challenge 单通道数据集由 MIT 发布，包含用于干扰抑制的干扰与通信信号录制，论文为 arXiv:2409.08839（Lancho 等）。数据包含四类干扰：EMISignal1 为未知设备的非故意辐射，录制带宽 25 MHz；CommSignal2 与 CommSignal3 为商用无线设备的数字通信信号，录制带宽 25 MHz；CommSignal5G1 为符合 5G 规范的波形，录制带宽 61.44 MHz。前三类为空口录制，CommSignal5G1 在有线实验室中生成并录制，由仿真器引入无线损伤；大多数信号位于 2.4 GHz ISM 频段。任务是从与一种干扰的混合信号中恢复感兴趣信号（SOI），论文使用两种生成过程已知的 SOI：单载波 QPSK 信号与 OFDM-QPSK 信号。每个混合样本为 40,960 个采样点的窗口，干扰按目标 SINR 缩放，共形成八种 SOI 与干扰组合。文件为 SigMF 录制，采样格式为 cf32_le。MIT 数据集页面还列出多通道与 cyber-RF 挑战数据集，本记录未覆盖；该页面未声明单通道数据集的许可。'}
+    SINR, giving eight SOI-interference combinations. The files are SigMF recordings in cf32_le format.', zh: 'RF Challenge 单通道数据集由 MIT 发布，包含用于干扰抑制的干扰与通信信号录制，论文为 arXiv:2409.08839（Lancho 等）。数据包含四类干扰：EMISignal1 为未知设备的非故意辐射，录制带宽 25 MHz；CommSignal2 与 CommSignal3 为商用无线设备的数字通信信号，录制带宽 25 MHz；CommSignal5G1 为符合 5G 规范的波形，录制带宽 61.44 MHz。前三类为空口录制，CommSignal5G1 在有线实验室中生成并录制，由仿真器引入无线损伤；大多数信号位于 2.4 GHz ISM 频段。任务是从与一种干扰的混合信号中恢复感兴趣信号（SOI），论文使用两种生成过程已知的 SOI：单载波 QPSK 信号与 OFDM-QPSK 信号。每个混合样本为 40,960 个采样点的窗口，干扰按目标 SINR 缩放，共形成八种 SOI 与干扰组合。文件为 SigMF 录制，采样格式为 cf32_le。'}
 signal_details:
 - signal: iq
   text: {en: 'Complex baseband samples in SigMF recordings with cf32_le sample format, i.e. complex64 values. Recording bandwidth is 25 MHz for EMISignal1, CommSignal2 and CommSignal3, and 61.44 MHz for CommSignal5G1. Mixture windows are 40,960 samples, and all signal datasets are normalized to unit power.', zh: 'SigMF 录制中的复数基带采样，采样格式为 cf32_le，即 complex64 数值。EMISignal1、CommSignal2 和 CommSignal3 的录制带宽为 25 MHz，CommSignal5G1 为 61.44 MHz。混合样本窗口长 40,960 个采样点；所有信号数据集均归一化为单位功率。'}
@@ -46,4 +47,118 @@ pipeline:
     inputs:
     - {en: Interference windows and SOI waveforms, zh: 干扰窗口与 SOI 波形}
     outputs:
-    - {en: Eight mixture types of 40, 960 samples each: null, zh: 八种混合类型，每种 40, 960 个采样点: null}
+    - {en: 'Eight mixture types, each 40,960 samples long', zh: '八种混合类型，每种长度 40,960 个采样点'}
+bands_ghz: [2.4]
+facts:
+- label: {en: Frame counts, zh: 帧数}
+  text: {en: 'Recorded frames per type: EMISignal1 530 frames of 230,000 samples, CommSignal2 100 frames of 43,560, CommSignal3 139 frames of 260,000, and CommSignal5G1 149 frames of 230,000.', zh: '各类录制帧数：EMISignal1 530 帧（每帧 230,000 个采样点），CommSignal2 100 帧（43,560 个采样点），CommSignal3 139 帧（260,000 个采样点），CommSignal5G1 149 帧（230,000 个采样点）。'}
+- label: {en: Centering, zh: 中心化}
+  text: {en: 'Recordings are stored at baseband with the carrier removed. EMISignal1 and CommSignal5G1 were additionally frequency-shifted so that their spectral energy lies in baseband, simulating overlap with the SOI in frequency.', zh: 录制数据以基带形式存储，载波已被移除。EMISignal1 与 CommSignal5G1 额外进行了频移，使其频谱能量位于基带，以模拟与 SOI 在频率上的重叠。}
+- label: {en: SINR instead of SIR, zh: 采用 SINR 而非 SIR}
+  text: {en: 'The paper uses SINR because some recorded interference contains additive noise, so the effective interference is a non-Gaussian component plus noise.', zh: 论文采用 SINR 而非 SIR，因为部分录制干扰本身含有加性噪声，有效干扰为非高斯干扰分量与噪声之和。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Single-channel recordings; no channel estimates are released., zh: 单通道录制数据，不提供信道估计。}
+- key: cir
+  status: none
+  note: {en: No impulse responses are released; the interference and SOI are recorded or generated waveforms., zh: 不提供冲激响应；干扰与 SOI 为录制或生成的波形。}
+- key: paths
+  status: none
+  note: {en: No per-path propagation parameters are released., zh: 不提供逐路径传播参数。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are released., zh: 不提供逐路径交互数据。}
+- key: power
+  status: none
+  note: {en: 'Signals are normalized to unit power and mixtures are scaled to a target SINR, so absolute received power is not kept.', zh: 信号归一化为单位功率，混合信号按目标 SINR 缩放，因此绝对接收功率未保留。}
+- key: iq
+  status: provided
+  note: {en: 'Complex baseband samples in SigMF cf32_le (complex64) recordings at 25 MHz for EMISignal1, CommSignal2 and CommSignal3, and 61.44 MHz for CommSignal5G1.', zh: SigMF cf32_le（complex64）格式的复数基带采样：EMISignal1、CommSignal2 与 CommSignal3 录制带宽为 25 MHz，CommSignal5G1 为 61.44 MHz。}
+- key: beam_labels
+  status: none
+  note: {en: Single-channel data with no beams or codebooks., zh: 单通道数据，无波束与码本。}
+- key: position
+  status: none
+  note: {en: No transmitter or receiver position is released., zh: 不提供收发机位置。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files are released., zh: 不提供三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 不提供材料参数。}
+- key: rgb
+  status: none
+  note: {en: No images are released., zh: 不提供图像。}
+- key: depth
+  status: none
+  note: {en: No depth sensing data are released., zh: 不提供深度感知数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are released., zh: 不提供 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar data are released., zh: 不提供雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are released., zh: 不提供惯性传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Each recorded frame is a continuous I/Q sample sequence of 43,560 to 260,000 samples; mixtures are random 40,960-sample windows of these frames.', zh: '每个录制帧为连续的 I/Q 采样序列，长度 43,560 至 260,000 个采样点；混合样本为这些帧中长度 40,960 的随机窗口。'}
+- key: multiuser
+  status: none
+  note: {en: Each mixture is one SOI plus one interferer; no multi-user channels., zh: 每个混合样本为一个 SOI 加一个干扰源，无多用户信道。}
+- key: multibs
+  status: none
+  note: {en: Single link per mixture; no multiple base stations., zh: 每个混合样本为单链路，无多基站。}
+- key: crossfreq
+  status: none
+  note: {en: Each interference type is recorded at one bandwidth; no paired multi-band recordings., zh: 每类干扰仅以一种带宽录制，无成对的多频段录制。}
+- key: near_field
+  status: none
+  note: {en: The single-channel model yields one effective channel; no array or near-field modelling., zh: 单通道模型对应一个等效信道，无阵列或近场建模。}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; applies to EMISignal1, CommSignal2 and CommSignal3, while CommSignal5G1 is recorded on a wired setup with simulated channel impairments.', zh: 包含在测量之中，未按路径标注；适用于 EMISignal1、CommSignal2 与 CommSignal3，CommSignal5G1 为有线装置录制并施加仿真信道损伤。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; applies to the over-the-air recordings, and CommSignal5G1 is recorded on a wired setup.', zh: 包含在测量之中，未按路径标注；适用于空口录制，CommSignal5G1 为有线装置录制。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; applies to the over-the-air recordings, and CommSignal5G1 is recorded on a wired setup.', zh: 包含在测量之中，未按路径标注；适用于空口录制，CommSignal5G1 为有线装置录制。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; applies to the over-the-air recordings, and CommSignal5G1 is recorded on a wired setup.', zh: 包含在测量之中，未按路径标注；适用于空口录制，CommSignal5G1 为有线装置录制。}
+- key: polarization
+  status: none
+  note: {en: Single-channel recordings; no polarimetric data., zh: 单通道录制，无极化数据。}
+- key: em_field
+  status: none
+  note: {en: 'Only I/Q samples are released, with no field-level quantities.', zh: 仅发布 I/Q 采样，无场量数据。}
+versions:
+- version: arXiv v3
+  date: '2025-07-28'
+  summary: {en: 'Discloses that the ICASSP 2024 SOIs were accidentally identical between test and validation sets, so one team''s CommSignal2 training reused validation SOIs and allowed test-set leakage.', zh: 披露 ICASSP 2024 挑战赛中 SOI 在测试集与验证集之间意外相同，其中一支团队的 CommSignal2 训练复用了验证集 SOI，造成测试集泄漏。}
+  url: https://arxiv.org/abs/2409.08839v3
+- version: arXiv v2
+  date: '2025-03-27'
+  summary: {en: 'Expands the dataset description with recording bandwidths of 25 MHz and 61.44 MHz, frame counts per interference type, the SINR definition, the 2.4 GHz ISM recordings and the cable-based generation of the 5G signal.', zh: 扩充数据集描述，补充录制带宽（25 MHz 与 61.44 MHz）、各类干扰的帧数、SINR 定义、2.4 GHz ISM 频段录制，以及 5G 信号的线缆实验室生成方式。}
+  url: https://arxiv.org/abs/2409.08839v2
+- version: ICASSP 2024 SP Grand Challenge
+  date: '2024'
+  summary: {en: Challenge built on the single-channel dataset with the TestSet1Mixture and TestSet2Mixture test sets; submission deadlines ran from October to December 2023., zh: 基于单通道数据集举办的挑战赛，设测试集 TestSet1Mixture 与 TestSet2Mixture；提交截止时间为 2023 年 10 月至 12 月。}
+  url: https://rfchallenge.mit.edu/icassp24-single-channel/
+- version: v0.1.0
+  date: '2022-08-04'
+  summary: {en: Starter code repository published as a pre-release tag v0.1.0; the tagged commit updates the LICENSE to MIT with copyright 2022., zh: 起始代码仓库以预发布标签 v0.1.0 发布；该标签对应的提交将 LICENSE 更新为 MIT，版权年份 2022。}
+  url: https://github.com/RFChallenge/rfchallenge_singlechannel_starter/releases/tag/v0.1.0
+- version: rfc_example.zip (Sep 1, 2021)
+  date: '2021-09-01'
+  summary: {en: 'Reference-method example folder (rfc_example.zip) reached its latest version on 2021-09-01, and the starter repository updated its LMMSE results on the same date.', zh: 参考方法示例文件夹（rfc_example.zip）于 2021-09-01 更新至最新版本，起始代码仓库同日更新了 LMMSE 结果。}
+  url: https://github.com/RFChallenge/rfchallenge_singlechannel_starter
+- version: rfc_dataset.zip (Jun 15, 2021)
+  date: '2021-06-15'
+  summary: {en: 'Training-set dataset (rfc_dataset.zip, SigMF recordings in cf32_le format) and the starter code were made public; the dataset page labels the single-channel set as 2021.', zh: 训练集数据（rfc_dataset.zip，SigMF 录制，cf32_le 格式）与起始代码对外公开；数据集页面将单通道数据集标注为 2021 年。}
+  url: https://rfchallenge.mit.edu/datasets/

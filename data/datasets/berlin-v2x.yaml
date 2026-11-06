@@ -5,20 +5,20 @@ organization: Fraunhofer Heinrich Hertz Institute
 origin: measured
 tasks: [network-traffic]
 signals: [rssi, kpi, gps]
-bands_ghz: []
+bands_ghz: [0.7, 2.7, 5.9]
 environment: [outdoor-urban, vehicular]
 format: Parquet
 license: CC BY 4.0
-access: {url: 'https://ieee-dataport.org/open-access/berlin-v2x', type: restricted}
+access: {url: 'https://ieee-dataport.org/open-access/berlin-v2x', type: registration}
 code: ['https://github.com/fraunhoferhhi/BerlinV2X']
 paper: doi:10.1109/vtc2023-spring57618.2023.10200750
 used_in: []
 citing: ['doi:10.1109/comst.2024.3372083', 'doi:10.1109/mcom.001.2300494', 'doi:10.1109/tmlcn.2025.3564239']
 summary: {en: 'Drive-test measurements from up to four cars in Berlin covering LTE cellular and sidelink links, with signal strength and quality, cellular resource and QoS metrics, GPS positions, and traffic and weather side information. The data is provided as two Parquet tables.', zh: 柏林市区的路测数据，涵盖 LTE 蜂窝链路和 sidelink 链路，最多使用4辆汽车采集。数据包括信号强度与质量、蜂窝资源与 QoS 指标、GPS 位置以及交通和天气辅助信息，以两个 Parquet 表格提供。}
-sources: ['https://ieee-dataport.org/open-access/berlin-v2x', 'https://github.com/fraunhoferhhi/BerlinV2X', 'https://api.crossref.org/works?query.title=Berlin+V2X%3A+A+Machine+Learning+Dataset+from+Multiple+Vehicles+and+Radio+Access+Technologies&rows=3&select=DOI,title,issued']
+sources: ['https://ieee-dataport.org/open-access/berlin-v2x', 'https://github.com/fraunhoferhhi/BerlinV2X', 'https://api.crossref.org/works?query.title=Berlin+V2X%3A+A+Machine+Learning+Dataset+from+Multiple+Vehicles+and+Radio+Access+Technologies&rows=3&select=DOI,title,issued', 'https://raw.githubusercontent.com/fraunhoferhhi/BerlinV2X/main/README.md', 'https://raw.githubusercontent.com/fraunhoferhhi/BerlinV2X/main/metadata/sidelink_scenarios.csv', 'https://raw.githubusercontent.com/fraunhoferhhi/BerlinV2X/main/ml5g-2023/README.md', 'https://arxiv.org/abs/2212.10343', 'https://arxiv.org/html/2212.10343', 'https://api.crossref.org/works/10.1109/vtc2023-spring57618.2023.10200750', 'https://github.com/fraunhoferhhi/BerlinV2X/commits/main']
 checked: '2026-11-06'
-overview: {en: 'Berlin V2X is a drive-test dataset of cellular (LTE) and sidelink radio measurements in urban Berlin, collected by the Fraunhofer Heinrich Hertz Institute with up to four cars over three days. The measurements are GPS-located. The README lists cellular and sidelink radio measurements, QoS measurements from ping and iperf, and side information from a traffic service and a weather service. Cellular data come from MobileInsight traces of the LTE modem, and sidelink data come from an SDR sidelink UE with tcpdump on the receiving side. The data are provided as two Parquet tables, cellular_dataframe.parquet and sidelink_dataframe.parquet, merged and resampled to 1 s, with CSV metadata that defines the columns. The dataset page names QoS prediction and radio resource allocation as machine learning tasks. The sources give no measurement dates, routes, row counts or column schema. The reference paper is Hernangómez et al., VTC2023-Spring.', zh: Berlin V2X 是在柏林市区进行的路测数据集，涵盖 LTE 蜂窝与
-    sidelink 两种无线接入，由 Fraunhofer Heinrich Hertz Institute 采集，最多使用 4 辆汽车，采集时长为 3 天。测量数据带有 GPS 定位。README 列出的内容包括蜂窝与 sidelink 无线测量、基于 ping 与 iperf 的 QoS 测量，以及来自交通服务和天气服务的辅助信息。蜂窝数据来自 MobileInsight 对 LTE 调制解调器的记录，sidelink 数据来自基于 SDR 的 sidelink UE 与接收端的 tcpdump。数据以两个 Parquet 表格提供，即 cellular_dataframe.parquet 和 sidelink_dataframe.parquet，已合并并重采样至 1 s，CSV 元数据文件定义了各列。数据集页面将 QoS 预测和无线资源分配列为机器学习任务。参考论文为 Hernangómez 等人发表于 VTC2023-Spring 的论文。}
+overview: {en: 'Berlin V2X is a GPS-located drive-test dataset of cellular (LTE) and sidelink radio measurements in urban Berlin, collected by the Fraunhofer Heinrich Hertz Institute with up to four cars over three days. The route is 17.2 km long, and one round takes about 45 minutes. Cellular data come from MobileInsight traces of the LTE modem on public networks of two operators, on bands between 700 MHz and 2.7 GHz, and sidelink data come from an SDR sidelink UE on 5.9 GHz with tcpdump on the receiving side. The README lists QoS measurements from ping and iperf, and side information from a traffic service and a weather service. The data are provided as two Parquet tables, cellular_dataframe.parquet and sidelink_dataframe.parquet, merged and resampled to 1 s, with CSV metadata that defines the columns. The dataset page names QoS prediction and radio resource allocation as machine learning tasks. The reference paper is Hernangómez et al., VTC2023-Spring.', zh: Berlin V2X 是在柏林市区进行的、带有 GPS
+    定位的路测数据集，包含 LTE 蜂窝与 sidelink 两种无线链路的测量，由 Fraunhofer Heinrich Hertz Institute 采集，最多使用 4 辆汽车，采集时长为 3 天。路线全长 17.2 km，每完整绕行一圈约 45 分钟。蜂窝数据来自车载 LTE 调制解调器的 MobileInsight 记录，使用两家运营商的公共网络，频段在 700 MHz 至 2.7 GHz 之间；sidelink 数据来自 5.9 GHz 上的 SDR sidelink UE，并在接收端使用 tcpdump 记录。README 列出了 ping 与 iperf 的 QoS 测量，以及来自交通服务和天气服务的辅助信息。数据以两个 Parquet 表格提供，即 cellular_dataframe.parquet 和 sidelink_dataframe.parquet，已合并并重采样至 1 s，CSV 元数据文件定义了各列。数据集页面将 QoS 预测和无线资源分配列为机器学习任务。参考论文为 Hernangómez 等人发表于 VTC2023-Spring 的论文。}
 signal_details:
 - signal: rssi
   text: {en: 'Cellular: MobileInsight PHY measurements every 10 ms, giving SNR, RSRP, RSRQ and RSSI. Sidelink: an SDR sidelink UE with tcpdump, event-based, giving SNR, RSRP, RSRQ, RSSI, noise power, Rx power and Rx gain.', zh: 蜂窝：MobileInsight PHY 测量，每 10 ms 一次，包含 SNR、RSRP、RSRQ 和 RSSI。Sidelink：基于 SDR 的 sidelink UE 与 tcpdump，事件触发，包含 SNR、RSRP、RSRQ、RSSI、噪声功率、Rx power 和 Rx gain。}
@@ -61,3 +61,83 @@ pipeline:
     - {en: per-car traces and side information, zh: 各车轨迹与辅助信息}
     outputs:
     - {en: cellular_dataframe.parquet and sidelink_dataframe.parquet, zh: cellular_dataframe.parquet 与 sidelink_dataframe.parquet}
+size_gb: 0.05
+standard: LTE and 3GPP Release 14 sidelink
+mobility: vehicular
+facts:
+- label: {en: Drive route and driving modes, zh: 行驶路线与行驶模式}
+  text: {en: 'The route runs 17.2 km through West Berlin, including a segment of the A100 urban highway with a short tunnel. Within three days, 17 clockwise rounds were driven: 11 in platoon mode, with all vehicles in one convoy, and 6 in 2x2 mode, with two pairs 1.5 km to 3 km apart.', zh: 路线全长 17.2 km，穿过西柏林，包括一段设有短隧道的 A100 城市高速。三天内共完成 17 圈顺时针行驶：11 圈为编队模式，所有车辆以固定顺序组成车队；6 圈为 2x2 模式，两对车辆相距 1.5 km 至 3 km。}
+- label: {en: Operator split, zh: 运营商分组}
+  text: {en: 'Two cars connected to one operator and two to the other. The paper aliases them as operator 1 and operator 2, and the ITU challenge built on this dataset suggests them as source and target domains.', zh: 两辆汽车接入一家运营商，另外两辆接入另一家。论文将两家运营商记为 operator 1 和 operator 2，基于该数据集的 ITU 挑战赛建议将二者分别用作源域与目标域。}
+- label: {en: Pos in Ref Round, zh: 参考路线位置（Pos in Ref Round）}
+  text: {en: 'Pos in Ref Round maps latitude and longitude to a one-dimensional distance along a reference drive, after conversion to planar coordinates.', zh: Pos in Ref Round 将经纬度转换为平面坐标后，映射为沿参考行驶路线的一维距离。}
+capabilities:
+- {key: csi, status: unknown}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: provided
+  note: {en: 'Cellular SNR, RSRP, RSRQ and RSSI from MobileInsight PHY; sidelink SNR, RSRP, RSRQ, RSSI, noise power, Rx power and Rx gain.', zh: 蜂窝链路的 SNR、RSRP、RSRQ 与 RSSI（来自 MobileInsight PHY）；sidelink 的 SNR、RSRP、RSRQ、RSSI、噪声功率、Rx power 与 Rx gain。}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: provided
+  note: {en: 'GPS latitude, longitude, altitude, velocity and heading for each device at 1 s.', zh: 每台设备 1 s 粒度的 GPS 纬度、经度、海拔、速度与航向。}
+- key: geometry
+  status: none
+  note: {en: Only street names in the traffic side information; no map or 3D scene files., zh: 仅有交通辅助信息中的街道名称；无地图或三维场景文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are listed for the urban environment., zh: 未列出城市环境的材料参数。}
+- key: rgb
+  status: none
+  note: {en: 'The released tables are radio, QoS, GPS and side-information data, with no sensor data.', zh: 发布的表格为无线电、QoS、GPS 与辅助信息数据，无传感器数据。}
+- key: depth
+  status: none
+  note: {en: 'The released tables are radio, QoS, GPS and side-information data, with no sensor data.', zh: 发布的表格为无线电、QoS、GPS 与辅助信息数据，无传感器数据。}
+- key: lidar
+  status: none
+  note: {en: 'The released tables are radio, QoS, GPS and side-information data, with no sensor data.', zh: 发布的表格为无线电、QoS、GPS 与辅助信息数据，无传感器数据。}
+- key: radar
+  status: none
+  note: {en: 'The released tables are radio, QoS, GPS and side-information data, with no sensor data.', zh: 发布的表格为无线电、QoS、GPS 与辅助信息数据，无传感器数据。}
+- key: imu
+  status: none
+  note: {en: 'The released tables are radio, QoS, GPS and side-information data, with no sensor data.', zh: 发布的表格为无线电、QoS、GPS 与辅助信息数据，无传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Labelled, GPS-located frames merged and resampled to 1 s.', zh: 带标签且含 GPS 定位的帧，合并并重采样至 1 s。}
+- key: multiuser
+  status: provided
+  note: {en: 'Up to four cars, with per-car traces and the sidelink distance between cars.', zh: 最多四辆车，含各车轨迹及 sidelink 车间距离。}
+- key: multibs
+  status: unknown
+  note: {en: Only serving-cell information (PCell and SCell) is listed., zh: 仅列出服务小区信息（PCell 与 SCell）。}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: unknown
+  note: {en: 'GPS velocity is stored per second, but the sources give no speed range.', zh: GPS 速度按秒存储，但来源未给出速度范围。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Radio KPIs and power values only; no field-level quantities., zh: 仅有无线 KPI 与功率值，无场量。}
+versions:
+- version: '2022'
+  date: '2022-12-08'
+  summary: {en: 'IEEE DataPort dataset record created (DOI 10.21227/8cj7-q373) with cellular_dataframe.parquet (24.44 MB) and sidelink_dataframe.parquet (25.27 MB), 1 s GPS-located tables merged with HERE traffic and DarkSky weather side information.', zh: IEEE DataPort 数据集记录创建（DOI 10.21227/8cj7-q373），包含 cellular_dataframe.parquet（24.44 MB）与 sidelink_dataframe.parquet（25.27 MB），为 1 s 粒度的 GPS 定位表格，并合并了 HERE 交通与 DarkSky 天气辅助信息。}
+  url: https://ieee-dataport.org/open-access/berlin-v2x

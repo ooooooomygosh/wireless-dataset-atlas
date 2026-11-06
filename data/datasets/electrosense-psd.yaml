@@ -15,24 +15,24 @@ paper: doi:10.1109/INFOCOM53939.2023.10228867
 used_in: []
 citing: ['doi:10.1109/infocom52122.2024.10621298', 'doi:10.1109/jsac.2025.3641910', 'doi:10.1109/infocom52122.2024.10621266']
 summary: {en: 'Labeled power spectral density (PSD) arrays for licensed bands, from RTL-SDR sweeps over 24 MHz to 1.7 GHz in 2 MHz chunks, with about 6 hours of full-spectrum scanning per site.', zh: 面向授权频段的带标签功率谱密度（PSD）数组，由 RTL-SDR 以 2 MHz 分段对 24 MHz 至 1.7 GHz 进行全频谱扫描获得，每个站点约 6 小时扫描数据。}
-sources: ['https://zenodo.org/record/7521246', 'https://zenodo.org/api/records/7521246', 'https://zenodo.org/api/records/7521246/files/DATASET%20LICENCE/content', 'https://zenodo.org/api/records/7504334', 'https://api.crossref.org/works/10.1109/INFOCOM53939.2023.10228867']
+sources: ['https://zenodo.org/record/7521246', 'https://zenodo.org/api/records/7521246', 'https://zenodo.org/api/records/7521246/files/DATASET%20LICENCE/content', 'https://zenodo.org/api/records/7504334', 'https://api.crossref.org/works/10.1109/INFOCOM53939.2023.10228867', 'https://api.openalex.org/works/doi:10.1109/INFOCOM53939.2023.10228867?select=title,abstract_inverted_index', 'https://github.com/scalessio/A-Framework-for-Spectrum-Classification-using-Crowdsensing-Platforms', 'https://raw.githubusercontent.com/scalessio/A-Framework-for-Spectrum-Classification-using-Crowdsensing-Platforms/master/TCpackage/TechClass.py', 'https://zenodo.org/api/records/7521246/versions', 'https://github.com/scalessio/CrowdSpectrumizer']
 checked: '2026-11-06'
-overview: {en: 'ElectroSense PSD Spectrum Bands is a measured power spectral density (PSD) dataset produced by IMDEA Networks Institute and released on Zenodo in 2023. The spectra come from 47 ElectroSense sensors deployed across Europe. Each sensor pairs a Raspberry Pi with an RTL-SDR receiver as its radio front end. For each site, 6 hours of full-spectrum scanning were collected, with the RTL-SDR sweeping 24 MHz to 1.7 GHz in 2 MHz chunks. Specific portions of licensed bands, such as the FM bands, were filtered and labeled. The data are NumPy files organized in one folder per site, packed in spectrum_bands.tar.gz (1.7 GB). The dataset supports the paper A Framework for Wireless Technology Classification using Crowdsensing Platforms, which classifies the technology of a transmitter from single PSD measurements of at most 2 MHz bandwidth. The archive publishes the labeled spectrum portions, not the full sweeps.', zh: ElectroSense PSD Spectrum Bands 是由 IMDEA Networks Institute 制作的实测功率谱密度（PSD）数据集，2023
-    年发布在 Zenodo 上。数据来自欧洲各地部署的 47 个 ElectroSense 传感器。每个传感器由 Raspberry Pi 与作为射频前端的 RTL-SDR 接收机组成。每个站点采集 6 小时全频谱扫描数据，RTL-SDR 以 2 MHz 分段对 24 MHz 至 1.7 GHz 进行扫描。授权频段的特定部分（如 FM 频段）经过筛选并标注。数据为 NumPy 文件，每个站点一个文件夹，打包在 spectrum_bands.tar.gz（1.7 GB）中。该数据集支持论文 A Framework for Wireless Technology Classification using Crowdsensing Platforms，该论文基于不超过 2 MHz 带宽的单次 PSD 测量对发射机的无线技术进行分类。压缩包仅发布标注后的授权频段片段，不包含完整扫描数据。}
+overview: {en: 'ElectroSense PSD Spectrum Dataset is a measured power spectral density (PSD) dataset from IMDEA Networks Institute, released on Zenodo in January 2023 (DOI 10.5281/zenodo.7521246). The spectra come from 47 low-cost RTL-SDR receivers deployed across Europe as part of the ElectroSense crowdsensing platform. At each site, the RTL-SDR swept 24 MHz to 1.7 GHz in 2 MHz chunks for 6 hours. Specific portions of licensed bands, such as the FM bands, were filtered from the scans and labeled. The data are NumPy files organized in one folder per site and packed in spectrum_bands.tar.gz (1.7 GB). The archive contains the labeled spectrum portions rather than the full sweeps. The dataset supports the paper A Framework for Wireless Technology Classification using Crowdsensing Platforms (IEEE INFOCOM 2023), which classifies the technology of a transmitter from single PSD measurements covering at most 2 MHz.', zh: ElectroSense PSD Spectrum Dataset 是 IMDEA Networks Institute 制作的实测功率谱密度（PSD）数据集，于
+    2023 年 1 月在 Zenodo 发布（DOI 10.5281/zenodo.7521246）。频谱数据来自欧洲各地部署的 47 个低成本 RTL-SDR 接收机，这些接收机是 ElectroSense 众包平台的一部分。在每个站点，RTL-SDR 以 2 MHz 分段对 24 MHz 至 1.7 GHz 进行扫描，持续 6 小时。授权频段的特定部分（如 FM 频段）从扫描数据中筛选并标注。数据为 NumPy 文件，每个站点一个文件夹，打包在 spectrum_bands.tar.gz（1.7 GB）中。压缩包包含标注后的频谱片段，而非完整扫描数据。该数据集支持论文 A Framework for Wireless Technology Classification using Crowdsensing Platforms（IEEE INFOCOM 2023），该论文基于不超过 2 MHz 带宽的单次 PSD 测量对发射机的无线技术进行分类。}
 signal_details:
 - signal: spectrum
-  text: {en: 'Power spectral density arrays measured by RTL-SDR sweeps from 24 MHz to 1.7 GHz, taken in 2 MHz chunks. Licensed-band portions are stored as labeled NumPy arrays. The full-spectrum scan lasts 6 hours per site.', zh: 由 RTL-SDR 以 2 MHz 分段扫描 24 MHz 至 1.7 GHz 得到的功率谱密度（PSD）数组。授权频段的特定部分以带标签的 NumPy 数组保存。每个站点的全频谱扫描时长为 6 小时。}
+  text: {en: 'Power spectral density arrays measured by RTL-SDR sweeps from 24 MHz to 1.7 GHz, taken in 2 MHz chunks. Licensed-band portions are stored as labeled NumPy arrays. Six hours of full-spectrum scanning were collected per site.', zh: 由 RTL-SDR 以 2 MHz 分段扫描 24 MHz 至 1.7 GHz 得到的功率谱密度（PSD）数组。授权频段的特定部分以带标签的 NumPy 数组保存。每个站点采集 6 小时全频谱扫描数据。}
 pipeline:
-  summary: {en: 'RTL-SDR sensors on the ElectroSense platform sweep 24 MHz to 1.7 GHz, and the licensed-band PSD portions are labeled and packed as NumPy files per site.', zh: ElectroSense 平台上的 RTL-SDR 传感器对 24 MHz 至 1.7 GHz 进行扫描，授权频段的 PSD 片段经标注后，按站点打包为 NumPy 文件。}
+  summary: {en: 'RTL-SDR receivers at 47 sensors sweep 24 MHz to 1.7 GHz, and the licensed-band PSD portions are labeled and packed as NumPy files per site.', zh: 分布于 47 个传感器的 RTL-SDR 接收机对 24 MHz 至 1.7 GHz 进行扫描，授权频段的 PSD 片段经标注后，按站点打包为 NumPy 文件。}
   stages:
   - title: {en: Sensor platform, zh: 传感器平台}
-    detail: {en: Each ElectroSense sensor pairs a Raspberry Pi for computing and communication with an RTL-SDR as radio front end. The 47 sensors are deployed across Europe., zh: 每个 ElectroSense 传感器由负责计算和通信的 Raspberry Pi 与作为射频前端的 RTL-SDR 组成。47 个传感器部署在欧洲各地。}
+    detail: {en: Each ElectroSense sensor uses a low-cost RTL-SDR receiver as its radio front end. The 47 sensors are deployed across Europe and feed PSD data to the platform backend., zh: 每个 ElectroSense 传感器以低成本 RTL-SDR 接收机作为射频前端。47 个传感器部署在欧洲各地，并将 PSD 数据送入平台后端。}
     inputs:
     - {en: RF spectrum, zh: 射频频谱}
     outputs:
     - {en: PSD measurements, zh: PSD 测量数据}
   - title: {en: Full-spectrum sweep, zh: 全频谱扫描}
-    detail: {en: The RTL-SDR hops across the spectrum from 24 MHz to 1.7 GHz in 2 MHz chunks. Each site collects 6 hours of full-spectrum scanning., zh: RTL-SDR 以 2 MHz 分段在 24 MHz 至 1.7 GHz 之间跳频扫描。每个站点采集 6 小时全频谱扫描数据。}
+    detail: {en: The RTL-SDR hops across 24 MHz to 1.7 GHz in 2 MHz chunks. Each site collects 6 hours of full-spectrum scanning., zh: RTL-SDR 以 2 MHz 分段在 24 MHz 至 1.7 GHz 之间跳频扫描。每个站点采集 6 小时全频谱扫描数据。}
     inputs:
     - {en: 'RF spectrum, 24 MHz to 1.7 GHz', zh: 24 MHz 至 1.7 GHz 射频频谱}
     outputs:
@@ -49,3 +49,88 @@ pipeline:
     - {en: labeled band PSD arrays, zh: 带标签的频段 PSD 数组}
     outputs:
     - {en: spectrum_bands.tar.gz, zh: spectrum_bands.tar.gz}
+facts:
+- label: {en: Licence, zh: 许可}
+  text: {en: 'The dataset licence allows redistribution if the copyright notice and the Zenodo citation are kept. The data are provided as is, without warranty.', zh: 数据许可允许再分发，但须保留版权声明和 Zenodo 引用。数据按原样提供，不附带任何担保。}
+- label: {en: Companion code, zh: 配套代码}
+  text: {en: The companion GitHub repository is released under the BSD 3-Clause licence and contains a Flask backend and a Docker setup for the classification framework., zh: 配套 GitHub 仓库采用 BSD 3-Clause 许可，包含分类框架的 Flask 后端和 Docker 配置。}
+- label: {en: Reported accuracy, zh: 报告的准确率}
+  text: {en: 'The paper reports an average classification accuracy close to 94.25% on its testing dataset, with a maximum latency of 3.4 seconds when integrated into the backend of a crowdsensing network.', zh: 论文报告测试数据集上的平均分类准确率接近 94.25%，集成到众包网络后端时的最大延迟为 3.4 秒。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: PSD only; no complex channel data., zh: 仅有 PSD，无复数信道数据。}
+- key: cir
+  status: none
+  note: {en: PSD only; no impulse response or power delay profile., zh: 仅有 PSD，不含冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: PSD only; no per-path parameters., zh: 仅有 PSD，不含逐径参数。}
+- key: interaction
+  status: none
+  note: {en: PSD only; no per-path interaction data., zh: 仅有 PSD，不含逐径交互信息。}
+- key: power
+  status: provided
+  note: {en: Power spectral density arrays from RTL-SDR sweeps over 24 MHz to 1.7 GHz in 2 MHz chunks; units are not stated., zh: RTL-SDR 以 2 MHz 分段扫描 24 MHz 至 1.7 GHz 得到的功率谱密度数组；未说明单位。}
+- key: iq
+  status: none
+  note: {en: PSD only; no raw I/Q samples., zh: 仅有 PSD，无原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam or array data; each sensor has a single RTL-SDR front end., zh: 无波束或阵列数据；每个传感器为单个 RTL-SDR 射频前端。}
+- {key: position, status: unknown}
+- key: geometry
+  status: none
+  note: {en: No map or 3D scene files in the archive., zh: 压缩包中没有地图或三维场景文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters in the archive., zh: 压缩包中没有材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera data in the archive., zh: 压缩包中没有相机数据。}
+- key: depth
+  status: none
+  note: {en: No depth data in the archive., zh: 压缩包中没有深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data in the archive., zh: 压缩包中没有 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar data in the archive., zh: 压缩包中没有雷达数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data in the archive., zh: 压缩包中没有 IMU 数据。}
+- {key: time_series, status: unknown}
+- key: multiuser
+  status: none
+  note: {en: Each sensor reports its own site; no simultaneous user channels are described., zh: 每个传感器报告自身站点的数据；未描述同时存在的用户信道。}
+- key: multibs
+  status: none
+  note: {en: No base stations; the sensors are spectrum monitors., zh: 没有基站；传感器为频谱监测节点。}
+- key: crossfreq
+  status: provided
+  note: {en: 'Each site sweeps 24 MHz to 1.7 GHz, so several licensed bands are measured at the same site.', zh: 每个站点扫描 24 MHz 至 1.7 GHz，同一站点包含多个授权频段的测量。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: diffraction
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: scattering
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: transmission
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'PSD only; no field components, field strength or antenna patterns.', zh: 仅有 PSD，不含场分量、场强或天线方向图。}
+versions:
+- version: '2023'
+  date: '2023-01-10'
+  summary: {en: 'Zenodo record 7521246 (DOI 10.5281/zenodo.7521246) published with spectrum_bands.tar.gz (1.7 GB): labeled licensed-band PSD arrays from 47 ElectroSense sensors, one folder per site. Zenodo lists no other version of this record.', zh: Zenodo 记录 7521246（DOI 10.5281/zenodo.7521246）发布了 spectrum_bands.tar.gz（1.7 GB）：来自 47 个 ElectroSense 传感器的带标签授权频段 PSD 数组，每个站点一个文件夹。Zenodo 未列出该记录的其他版本。}
+  url: https://zenodo.org/record/7521246

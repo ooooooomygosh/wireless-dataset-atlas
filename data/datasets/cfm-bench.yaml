@@ -14,12 +14,15 @@ paper: arxiv:2607.14975
 used_in: []
 citing: []
 summary: {en: 'CFM-Bench contains 157,900 single-frame examples from six domains: 3GPP statistical simulation, ray-tracing pipelines, terrestrial and aerial measurements, and a synchronized vehicular multimodal simulation. The vehicular domain pairs CSI at 100 Hz with four RGB cameras, LiDAR and inertial records.', zh: 'CFM-Bench 包含来自六个数据域的 157,900 个单帧样本：3GPP 统计仿真、射线追踪流程、地面与空中实测，以及同步的车载多模态仿真。车载域将 100 Hz 的 CSI 与四路 RGB 相机、LiDAR 和惯性数据对齐。'}
-sources: ['https://arxiv.org/abs/2607.14975', 'https://arxiv.org/pdf/2607.14975']
+sources: ['https://arxiv.org/abs/2607.14975', 'https://arxiv.org/pdf/2607.14975', 'https://arxiv.org/html/2607.14975v1', 'https://arxiv.org/html/2607.14975v2', 'https://export.arxiv.org/api/query?id_list=2607.14975', 'https://www.chaspark.com/#/s/CFM-Bench']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Statistical simulation, RT, measured, and multimodal links are cleaned and split separately, then turned into task views constrained by physical conditions. Each domain retains its native sampling semantics.', zh: 统计仿真、RT、测量和多模态链路分别清洗与划分，然后生成受物理条件约束的任务视图；各域保留原生采样语义。}
+  scope: {en: Describes construction and task splits for six domains based on the complete v2 text. The package's complete file schema has not been obtained., zh: 依据 v2 全文描述六个域的构建与任务划分；下载包的完整文件 schema 尚未取得。}
   stages:
-  - title: {en: Build a source catalog for six domains, zh: 建立六域来源目录}
+  - checks:
+    - {en: 'Reproduction recommendation: select domains that support the target task before deciding tensor processing.', zh: 复现建议：先选支持目标任务的域，再决定张量处理。}
+    controls:
+    - {en: 'Author protocol: different carrier frequencies across domains do not constitute synchronized dual-band pairs.', zh: 作者协议：跨域载频不同不构成同步双频配对。}
     detail: {en: 'Record domain identifiers, arrays, frequencies, sampling rates, and spatial/trajectory units by source. S1 uses three sites and nine sectors. M1 contains 28 GHz, 16×64 narrowband links and a 100 Hz multimodal run.', zh: 按来源建立域标识、阵列、频率、采样率和空间/轨迹单位。S1 使用三站九扇区；M1 是 28 GHz、16×64 窄带链路及 100 Hz 多模态 run。}
     inputs:
     - {en: S1：Sionna/3GPP, zh: S1：Sionna/3GPP}
@@ -28,11 +31,11 @@ pipeline:
     - {en: M1：Multimodal-Wireless Town05, zh: M1：Multimodal-Wireless Town05}
     outputs:
     - {en: Physical metadata and link manifests for six domains, zh: 六域物理元数据与链路清单}
+    title: {en: Build a source catalog for six domains, zh: 建立六域来源目录}
+  - checks:
+    - {en: 'Reproduction recommendation: check the ordering of R1 guard-band application, subsampling, and no-path filtering; retain mappings to original positions.', zh: 复现建议：检查 R1 guard band、抽样和无路径过滤先后关系；保留原始位置映射。}
     controls:
-    - {en: 'Author protocol: different carrier frequencies across domains do not constitute synchronized dual-band pairs.', zh: 作者协议：跨域载频不同不构成同步双频配对。}
-    checks:
-    - {en: 'Reproduction recommendation: select domains that support the target task before deciding tensor processing.', zh: 复现建议：先选支持目标任务的域，再决定张量处理。}
-  - title: {en: Process simulated and RT domains, zh: 处理仿真与 RT 域}
+    - {en: 'Author protocol: R2 frequency points form a relative baseband grid; the absolute carrier cannot be inferred from the 30 kHz spacing.', zh: 作者协议：R2 的频点是相对基带网格；其绝对载频不能由 30 kHz 间隔反推。}
     detail: {en: 'S1 generates channels from system configurations. R1 is divided into 10 spatial regions with a 1 m guard band, samples roughly 1 in every 50 points, and removes samples without valid paths. R2 computes CFR from MOCSID paths at 64 baseband frequency points spaced 30 kHz apart.', zh: S1 按系统配置产生信道；R1 划为 10 个空间区域，设 1 m guard band，抽取约每 50 个中的 1 个并去除无有效路径样本；R2 从 MOCSID 路径计算 64 个、间隔 30 kHz 的基带频点 CFR。}
     inputs:
     - {en: S1 channel samples, zh: S1 信道样本}
@@ -41,12 +44,12 @@ pipeline:
     outputs:
     - {en: Complex CSI for S1/R1/R2, zh: S1/R1/R2 复 CSI}
     - {en: 'Position, trajectory, and validity information', zh: 位置、轨迹与有效性信息}
+    title: {en: Process simulated and RT domains, zh: 处理仿真与 RT 域}
+  - checks:
+    - {en: 'Reproduction recommendation: after alignment, check time monotonicity, interpolation ranges, and removed segments. Do not treat E1''s distributed ports as a calibrated single array.', zh: 复现建议：对齐后检查时间单调性、插值范围和被删除片段；不得把 E1 的分布式端口当成已校准单阵列。}
     controls:
-    - {en: 'Author protocol: R2 frequency points form a relative baseband grid; the absolute carrier cannot be inferred from the 30 kHz spacing.', zh: 作者协议：R2 的频点是相对基带网格；其绝对载频不能由 30 kHz 间隔反推。}
-    checks:
-    - {en: 'Reproduction recommendation: check the ordering of R1 guard-band application, subsampling, and no-path filtering; retain mappings to original positions.', zh: 复现建议：检查 R1 guard band、抽样和无路径过滤先后关系；保留原始位置映射。}
-  - title: {en: Process measurements and multimodal time alignment, zh: 处理测量与多模态时间对齐}
-    detail: {en: 'E1 retains its original reference-phase/time state without assuming coherence across four physical arrays. E2 removes two all-zero segments, applies two-stage GPS interpolation, then converts to local coordinates. M1 organizes links and modalities on the original synchronized timeline.', zh: E1 保留原始参考相位/时间状态，不假设四个物理阵列跨阵列相干；E2 删除两个全零片段，对 GPS 作两阶段插值后转换本地坐标；M1 依原始同步时间轴组织链路与模态。}
+    - {en: 'Author data: E2 has 64 ports, 100 tones, and 1 ms sampling. M1 modalities belong only to that domain.', zh: 作者数据：E2 有 64 端口、100 tones、1 ms 采样；M1 的模态仅属于该域。}
+    detail: {en: 'E1 retains its original reference-phase/time state without assuming coherence across four physical arrays. E2 removes two all-zero segments, interpolates geographic coordinates in double precision, then converts them to local east-north metres. M1 organizes links and modalities on the original synchronized timeline.', zh: E1 保留原始参考相位/时间状态，不假设四个物理阵列跨阵列相干；E2 删除两个全零片段，以双精度对地理坐标插值，再转换为本地东-北坐标（米）；M1 依原始同步时间轴组织链路与模态。}
     inputs:
     - {en: E1 64-port measurements, zh: E1 64 端口测量}
     - {en: E2 CSI/GPS flight records, zh: E2 CSI/GPS 飞行记录}
@@ -55,11 +58,11 @@ pipeline:
     - {en: Valid measurement segments, zh: 有效测量片段}
     - {en: Time-aligned positions and modalities, zh: 时间对齐的位置及模态}
     - {en: Native CSI, zh: 原生 CSI}
+    title: {en: Process measurements and multimodal time alignment, zh: 处理测量与多模态时间对齐}
+  - checks:
+    - {en: 'Reproduction recommendation: task masks constrain both visible inputs and supervised positions. Add persistence baselines and document sampling intervals for extrapolation experiments.', zh: 复现建议：任务 mask 同时约束可见输入和监督位置；外推实验增加 persistence 与采样间隔说明。}
     controls:
-    - {en: 'Author data: E2 has 64 ports, 100 tones, and 1 ms sampling. M1 modalities belong only to that domain.', zh: 作者数据：E2 有 64 端口、100 tones、1 ms 采样；M1 的模态仅属于该域。}
-    checks:
-    - {en: 'Reproduction recommendation: after alignment, check time monotonicity, interpolation ranges, and removed segments. Do not treat E1''s distributed ports as a calibrated single array.', zh: 复现建议：对齐后检查时间单调性、插值范围和被删除片段；不得把 E1 的分布式端口当成已校准单阵列。}
-  - title: {en: Construct task labels and permitted inputs, zh: 构造任务标签与合法输入}
+    - {en: 'Author protocol: M1 has no official beam target. Temporal windows are alternative views and do not increase the independent sample count.', zh: 作者协议：M1 没有官方 beam 目标；时间窗口是替代视图，不新增独立样本计数。}
     detail: {en: Current beam applies to S1/R1/R2/E1/E2; future beam to R2/E1/E2; future complex-channel extrapolation to R2/M1 only. E1 beam targets are constructed within each physical array. Positioning tasks exclude inputs that reveal the position answer., zh: current beam 用于 S1/R1/R2/E1/E2，future beam 用于 R2/E1/E2，复信道未来外推限于 R2/M1。E1 的 beam 目标在每个物理阵列内部构造；定位任务排除携带位置答案的输入。}
     inputs:
     - {en: Native CSI, zh: 原生 CSI}
@@ -69,21 +72,21 @@ pipeline:
     - {en: Task-level targets, zh: 任务级 target}
     - {en: Input-permission table, zh: 输入许可表}
     - {en: validity masks, zh: validity masks}
+    title: {en: Construct task labels and permitted inputs, zh: 构造任务标签与合法输入}
+  - checks:
+    - {en: 'Reproduction recommendation: keep derived windows and multiuser sets within their original partitions. M1''s three split links must not be combined across partitions into training scenes.', zh: 复现建议：衍生窗口和多用户集合留在原分区；M1 三条划分链路不能跨区拼训练场景。}
     controls:
-    - {en: 'Author protocol: M1 has no official beam target. Temporal windows are alternative views and do not increase the independent sample count.', zh: 作者协议：M1 没有官方 beam 目标；时间窗口是替代视图，不新增独立样本计数。}
-    checks:
-    - {en: 'Reproduction recommendation: task masks constrain both visible inputs and supervised positions. Add persistence baselines and document sampling intervals for extrapolation experiments.', zh: 复现建议：任务 mask 同时约束可见输入和监督位置；外推实验增加 persistence 与采样间隔说明。}
-  - title: {en: Split by complete spatial or temporal units, zh: 按完整空间或时间单位划分}
+    - {en: 'Author protocol: do not randomly split adjacent frames after creating trajectory windows.', zh: 作者协议：不能在轨迹窗口产生后再做相邻帧随机划分。}
     detail: {en: 'R2''s 10 trajectories are separated 8/1/1, E2 flights 4/1/1, and M1''s three links 1/1/1. M1 contains 1200/256/256 samples. Other domains follow their own spatial or acquisition-unit protocols.', zh: R2 的 10 条轨迹按 8/1/1，E2 的飞行按 4/1/1，M1 的三条链路按 1/1/1 隔离；M1 对应 1200/256/256 样本。其他域按各自空间或采集单位执行协议。}
     inputs:
     - {en: 'Within-domain spatial regions, trajectories, flights, or links', zh: 域内空间区域、轨迹、飞行或链路}
     outputs:
     - {en: Official train/validation/test partitions, zh: 官方 train/validation/test 分区}
+    title: {en: Split by complete spatial or temporal units, zh: 按完整空间或时间单位划分}
+  - checks:
+    - {en: 'Reproduction recommendation: report source-level and sample-level overlap separately. Fit normalization and task heads only on authorized training data.', zh: 复现建议：将来源级重叠与样本级重叠分别报告；归一化和任务头拟合仅用获准训练数据。}
     controls:
-    - {en: 'Author protocol: do not randomly split adjacent frames after creating trajectory windows.', zh: 作者协议：不能在轨迹窗口产生后再做相邻帧随机划分。}
-    checks:
-    - {en: 'Reproduction recommendation: keep derived windows and multiuser sets within their original partitions. M1''s three split links must not be combined across partitions into training scenes.', zh: 复现建议：衍生窗口和多用户集合留在原分区；M1 三条划分链路不能跨区拼训练场景。}
-  - title: {en: Constrain pretraining exposure and downstream fitting, zh: 约束预训练暴露与下游拟合}
+    - {en: 'Author protocol: the official train split does not grant permission for foundation-model pretraining.', zh: 作者协议：官方 train split 也不是基础模型预训练许可。}
     detail: {en: 'The protocol prohibits using any official benchmark split for foundation-model pretraining. Downstream fitting uses the designated training split and reports whether models encountered related sources, scenarios, or data.', zh: 协议禁止将 benchmark 的任一官方划分用于基础模型预训练；下游拟合使用规定的训练划分，并报告模型是否接触相关来源、场景或数据。}
     inputs:
     - {en: Official partitions, zh: 官方分区}
@@ -91,11 +94,11 @@ pipeline:
     outputs:
     - {en: Traceable exposure report, zh: 可追溯的暴露报告}
     - {en: Protocol-compliant downstream training and evaluation results, zh: 合法下游训练与评测结果}
+    title: {en: Constrain pretraining exposure and downstream fitting, zh: 约束预训练暴露与下游拟合}
+  - checks:
+    - {en: 'Reproduction recommendation: after obtaining the package, check units, dimensions, missing values, and split counts domain by domain. Do not start with uniform resizing.', zh: 复现建议：取得包后逐域核对单位、维度、缺失值与 split 数量；不要先做统一 resize。}
     controls:
-    - {en: 'Author protocol: the official train split does not grant permission for foundation-model pretraining.', zh: 作者协议：官方 train split 也不是基础模型预训练许可。}
-    checks:
-    - {en: 'Reproduction recommendation: report source-level and sample-level overlap separately. Fit normalization and task heads only on authorized training data.', zh: 复现建议：将来源级重叠与样本级重叠分别报告；归一化和任务头拟合仅用获准训练数据。}
-  - title: {en: Release task views and verify file contracts, zh: 发布任务视图并核验文件契约}
+    - {en: 'To verify: complete file schemas, normalization implementations, and whether the package retains upstream per-path/radar arrays.', zh: 待核实：完整文件 schema、归一化实现和下载包是否保留上游逐径/雷达数组。}
     detail: {en: 'The paper describes task data that preserve domain semantics and provides a Chaspark entry point. The complete download manifest is unverified; a uniform file extension, key set, or all optional sensor arrays cannot be inferred from the paper.', zh: 论文描述保留域语义的任务数据并给出 Chaspark 入口；未核实完整下载 manifest，不能据论文推断统一文件后缀、键名或全部可选传感器数组。}
     inputs:
     - {en: Native representations from six domains, zh: 六域原生表示}
@@ -103,11 +106,8 @@ pipeline:
     outputs:
     - {en: Benchmark task assets defined by the paper, zh: 论文定义的 benchmark 任务资产}
     - {en: Per-domain file manifests awaiting download audit, zh: 待下载审计的分域文件清单}
-    controls:
-    - {en: 'To verify: complete file schemas, normalization implementations, and whether the package retains upstream per-path/radar arrays.', zh: 待核实：完整文件 schema、归一化实现和下载包是否保留上游逐径/雷达数组。}
-    checks:
-    - {en: 'Reproduction recommendation: after obtaining the package, check units, dimensions, missing values, and split counts domain by domain. Do not start with uniform resizing.', zh: 复现建议：取得包后逐域核对单位、维度、缺失值与 split 数量；不要先做统一 resize。}
-  scope: {en: Describes construction and task splits for six domains based on the complete v2 text. The package's complete file schema has not been obtained., zh: 依据 v2 全文描述六个域的构建与任务划分；下载包的完整文件 schema 尚未取得。}
+    title: {en: Release task views and verify file contracts, zh: 发布任务视图并核验文件契约}
+  summary: {en: 'Statistical simulation, RT, measured, and multimodal links are cleaned and split separately, then turned into task views constrained by physical conditions. Each domain retains its native sampling semantics.', zh: 统计仿真、RT、测量和多模态链路分别清洗与划分，然后生成受物理条件约束的任务视图；各域保留原生采样语义。}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
   text: {en: '• Native complex CSI from six domains and metadata listed in the paper
@@ -129,12 +129,6 @@ facts:
       • 按许可输入得到的预测与决策指标
 
       • 用户自定义多用户调度视图，须保持分区与物理系统一致'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• The paper''s main text has been read. All downloaded files have not been verified, and unknown extensions/key tables have not been invented.
-
-      • CFM-Bench is an independent evaluation asset. A split named train does not override the prohibition on pretraining.', zh: '• 论文主文已读；当前没有验证全部下载文件，也未补写未知扩展名和键表。
-
-      • CFM-Bench 是独立评测资产，其 train 命名不能覆盖预训练禁用协议。'}
 provenance:
 - {en: 3GPP、DeepMIMO O1_60、MOCSID、DICHASUS ADXX、MaMIMO-UAV、Multimodal-Wireless, zh: 3GPP、DeepMIMO O1_60、MOCSID、DICHASUS ADXX、MaMIMO-UAV、Multimodal-Wireless}
 - {en: Preserve each source's physical semantics and perform quality checks, zh: 保留各源物理语义并做质量检查}
@@ -142,21 +136,19 @@ provenance:
 - {en: 'Add task labels, validity masks, and temporal views', zh: 加入任务标签、validity masks 和时间视图}
 - {en: Unified downstream protocol and data-exposure reporting, zh: 统一下游协议与数据暴露报告}
 technical_notes:
-- {en: 'Literature-supported: E1''s original release did not apply reference-channel phase/time compensation, so complex temporal extrapolation is disabled and beam processing is performed only within each array.', zh: 文献支持：E1 原发布未应用参考信道相位/时间补偿，因此关闭复数时间外推并只做阵列内波束处理。}
-- {en: 'Literature-supported: R2''s 64 tones × 30 kHz form a relative baseband grid defined by the benchmark, not OFDM parameters published by the upstream source.', zh: 文献支持：R2 的 64 tone×30 kHz 是 Benchmark 定义的相对基带网格，不是上游已公布的 OFDM 参数。}
-- {en: 'Literature-supported: amplitude calibration and difficulty are not directly interchangeable across domains. Absolute CSI power cannot serve as a uniform comparison of signal strength.', zh: 文献支持：不同域的幅度校准和难度不可直接互换，不能用绝对 CSI 功率作统一强弱比较。}
+- {en: 'E1''s original release did not apply reference-channel phase/time compensation, so complex temporal extrapolation is disabled and beam processing is performed only within each array.', zh: E1 原发布未应用参考信道相位/时间补偿，因此关闭复数时间外推并只做阵列内波束处理。}
+- {en: 'R2''s 64 tones × 30 kHz form a relative baseband grid defined by the benchmark, not OFDM parameters published by the upstream source.', zh: R2 的 64 tone×30 kHz 是 Benchmark 定义的相对基带网格，不是上游已公布的 OFDM 参数。}
+- {en: 'Amplitude calibration differs across domains, and the six domains are not statistically exchangeable.', zh: 各域的幅度校准不同，且六个域在统计上不可互换。}
 limitations:
-- {en: Protocol-level isolation differs from isolation in actual execution. Check whether model pretraining included upstream test units., zh: 协议层隔离与实际执行隔离不同，仍需检验模型预训练是否看过上游测试单元。}
-- {en: A macro-average over six domains does not imply equal physical difficulty; also present domain-level results., zh: 对六域求宏平均不代表物理难度一致，应同时呈现域级结果。}
-- {en: 'Downloads have not been verified file by file. Public-access status should read: “Authors provide an entry point; complete download unverified.”', zh: 下载端未逐文件核验，公开性状态应写“作者提供入口，完整下载未验证”。}
+- {en: 'One fixed configuration per source cannot characterize every carrier, antenna, weather condition or deployment.', zh: 每个来源仅提供一种固定配置，无法刻画所有载频、天线、天气条件与部署方式。}
+- {en: 'The six domains are not statistically exchangeable, so the macro-average over domains is a secondary summary only.', zh: 六个域在统计上不可互换，因此跨域的宏平均仅作为次要汇总。}
 history:
-- {en: '2026-07-16: Paper v1', zh: 2026-07-16：论文 v1}
-- {en: '2026-08-14: Paper v2, including benchmark experiments and download instructions', zh: 2026-08-14：论文 v2，包含基准实验与下载说明}
+- {en: '2026-07-16: Paper v1 submitted to arXiv.', zh: 2026-07-16：论文 v1 提交至 arXiv。}
 usage:
-- {en: 'Freeze the six-domain manifest, official partitions, and task eligibility first.', zh: 先冻结六域 manifest、官方 partitions 和 task eligibility。}
-- {en: 'Audit overlap between external pretraining corpora, official test units, and their upstream data.', zh: 审计外部预训练语料与官方测试单元及其上游数据的重叠。}
-- {en: Implement preprocessing by domain; do not fit normalization across domains. Use the original valid masks., zh: 按域实现预处理，不跨域拟合归一化；使用原始 valid mask。}
-- {en: Report task metrics and inapplicable cases for each domain. Do not force all domains into one temporal-prediction task. Not run locally., zh: 逐域报告任务指标及不适用项，禁止将所有域强制拼成一个时间预测任务。未本机运行。}
+- {en: 'Use the official partitions; each source trajectory, session, flight, vehicle link or simulation realization stays inside one split.', zh: 使用官方划分；每个来源的轨迹、会话、飞行、车辆链路或仿真实现都保留在同一划分内。}
+- {en: Report source-level and sample-level overlap between pretraining data and the benchmark., zh: 分别报告预训练数据与基准之间的来源级与样本级重叠。}
+- {en: Fit normalization and task heads only on authorized training data; do not fit normalization across domains., zh: 归一化与任务头仅在获准的训练数据上拟合，不跨域拟合归一化。}
+- {en: 'Report task metrics for each domain, because the six domains are not statistically exchangeable.', zh: 逐域报告任务指标，因为六个域在统计上不可互换。}
 field_notes:
 - label: {en: RGB, zh: RGB}
   text: {en: Only in the M1 multimodal domain. The official split tests unseen vehicle links from the same Town05 run., zh: 仅 M1 模态域；官方划分测试同一 Town05 run 的未见车辆链路。}
@@ -169,11 +161,11 @@ field_notes:
 - label: {en: Cross-frequency pairing, zh: 跨频配对}
   text: {en: Domains use different frequencies; they are not synchronized dual-band observations of the same link., zh: 各域不同频率，不是同步双频同链路配对。}
 - label: {en: Multi-user, zh: 多用户}
-  text: {en: 'Methodological derivation: complex CSI with a fixed common BS, such as R1, can be regrouped into user sets to calculate interference and precoding. Groups must stay within one official partition and retain antenna, frequency, and amplitude conventions. The six official task groups have no multiuser scheduling protocol. M1''s three vehicle links are train/val/test isolation units and must not be combined across partitions into training user groups.', zh: 方法推导：R1 等固定共同 BS 的复 CSI 可另组用户集合，再计算干扰与预编码；组合须留在同一官方分区，并保留天线、频率和幅度约定。官方六组任务没有多用户调度协议；M1 的三条 vehicle links 是 train/val/test 隔离单元，不应跨分区拼成训练用户组。}
+  text: {en: 'The six official task groups define no multiuser scheduling protocol. M1 vehicle links are separate train, validation and test units, and combinations of user sets stay inside one official partition.', zh: 六个官方任务组未定义多用户调度协议。M1 的车辆链路分别为训练、验证和测试的独立单元，用户集合的组合须保留在同一官方划分内。}
 - label: {en: Paths, zh: 路径}
-  text: {en: 'The paper states that R2 computes CFR from upstream MOCSID per-path coefficients and delays. III-D gives no complete released-field dictionary. Whether the CFM-Bench package retains those per-path arrays is currently unconfirmed, so this remains unknown.', zh: 论文说明 R2 由上游 MOCSID 逐径系数与时延计算 CFR；III-D 没有给出完整发布字段字典。当前不能确认 CFM-Bench 下载包是否保留这些逐径数组，故保留未知。}
+  text: {en: R2 channel responses are computed from upstream MOCSID per-path coefficients and delays., zh: R2 的信道响应由上游 MOCSID 的逐径系数与时延计算得到。}
 - label: {en: Radar, zh: 雷达}
-  text: {en: 'The paper''s M1 release description lists four RGB streams, LiDAR, and inertial records; upstream Multimodal-Wireless provides radar. Without a complete package manifest, radar redistribution with this benchmark subset cannot be confirmed and remains unknown.', zh: 论文的 M1 发布描述列出四路 RGB、LiDAR 与惯性记录；上游 Multimodal-Wireless 提供雷达。当前缺少下载包完整清单，无法确认雷达是否随此 benchmark 子集分发，故保留未知。}
+  text: {en: 'Radar is provided upstream by Multimodal-Wireless; the CFM-Bench M1 description lists four RGB streams, LiDAR and inertial records.', zh: 雷达数据由上游 Multimodal-Wireless 提供；CFM-Bench 的 M1 说明仅列出四路 RGB、LiDAR 与惯性记录。}
 tools: [awesome-channel-foundation-models]
 overview: {en: 'CFM-Bench is an evaluation protocol and derived dataset for channel foundation models, released by Gao, Yu, Jiang, Li, Guo and Xu in arXiv:2607.14975 (submitted July 2026, revised August 2026). It combines six domains: 3GPP TR 38.901 UMi statistical simulation with Sionna (S1), ray tracing with Remcom Wireless InSite (R1) and with Sionna RT (R2), indoor and aerial measurements (E1 and E2), and a vehicular multimodal simulation built with CARLA and Sionna (M1). The benchmark holds 157,900 official single-frame examples: 132,525 for training, 17,523 for validation and 7,852 for testing. Each domain keeps its native complex CSI with physical metadata, and the official splits isolate independent units such as simulation realizations, spatial regions, pedestrian trajectories, measurement sessions, UAV flights and vehicle links. Six task groups cover CSI feedback, frequency and temporal channel extrapolation, LoS/NLoS classification, current and future beam prediction, and localization.
     The official training split is reserved for downstream adaptation, and benchmark splits are excluded from foundation-model pretraining. The release uses one fixed configuration per source and does not include dual-polarized channel configurations.', zh: 'CFM-Bench 是面向信道基础模型的评估协议与衍生数据集，由 Gao、Yu、Jiang、Li、Guo 和 Xu 于 2026 年 7 月在 arXiv:2607.14975 上提交（2026 年 8 月修订）。数据集包含六个数据域：基于 Sionna 的 3GPP TR 38.901 UMi 统计仿真（S1），分别使用 Remcom Wireless InSite 与 Sionna RT 的两条射线追踪流程（R1 与 R2），室内与空中测量（E1 与 E2），以及基于 CARLA 与 Sionna 构建的车载多模态仿真（M1）。基准包含 157,900 个官方单帧样本，其中训练 132,525 个、验证 17,523 个、测试 7,852 个。每个数据域保留原生复数 CSI 及物理元数据；官方划分以仿真实现、空间区域、行人轨迹、测量时段、无人机飞行和车辆链路等独立单元为界，以减少数据泄露。基准包含六类任务：CSI 反馈、频域与时域信道外推、LoS/NLoS 分类、当前与未来波束预测，以及定位。官方训练集用于下游适配，基准划分被排除在基础模型预训练之外。每个来源仅提供一种固定配置，不包含双极化信道配置。'}
@@ -187,3 +179,77 @@ signal_details:
   text: {en: 'LiDAR records in the M1 vehicular multimodal domain, synchronized with the CSI. No other domain contains LiDAR data.', zh: M1 车载多模态数据域中的 LiDAR 记录，与 CSI 同步。其他数据域不含 LiDAR 数据。}
 - signal: imu
   text: {en: 'Inertial records in the M1 vehicular multimodal domain, synchronized with the CSI. The sources describe them only as inertial records.', zh: M1 车载多模态数据域中的惯性记录，与 CSI 同步。来源仅将其描述为惯性记录。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: Native complex CSI in all six domains; the R2 frequency-domain CSI is computed from upstream MOCSID path coefficients and delays on a benchmark-defined grid., zh: 六个数据域均提供原生复数 CSI；R2 的频域 CSI 由上游 MOCSID 路径系数与时延在基准定义的网格上计算得到。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: 'Beam gains G(j), which define the beam labels, are computed from CSI and codebooks; the paper states no separate power field.', zh: 定义波束标签的波束增益 G(j) 由 CSI 与码本计算；论文未声明单独的功率字段。}
+- {key: iq, status: unknown}
+- key: beam_labels
+  status: provided
+  note: {en: 'Current beam in S1, R1, R2, E1 and E2; future beam in R2, E1 and E2; M1 has no beam target.', zh: S1、R1、R2、E1、E2 提供当前波束；R2、E1、E2 提供未来波束；M1 无波束目标。}
+- key: position
+  status: provided
+  note: {en: 'Position labels for R2, E2 and M1; E2 and M1 positions are three-dimensional.', zh: R2、E2 与 M1 提供位置标签；E2 与 M1 的位置为三维。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: provided
+  note: {en: 'Four vehicle-mounted RGB streams, present only in the M1 domain.', zh: 四路车载 RGB 数据流，仅存在于 M1 域。}
+- key: depth
+  status: unknown
+  note: {en: 'Upstream Multimodal-Wireless provides depth, but the paper''s M1 release description does not list it and the package manifest is unaudited.', zh: 上游 Multimodal-Wireless 提供深度数据，但论文的 M1 发布描述未列出，且下载包清单未核验。}
+- key: lidar
+  status: provided
+  note: {en: 'LiDAR records, present only in the M1 domain.', zh: LiDAR 记录，仅存在于 M1 域。}
+- key: radar
+  status: unknown
+  note: {en: 'Upstream Multimodal-Wireless provides radar, but the paper''s M1 release description does not list it and the package manifest is unaudited.', zh: 上游 Multimodal-Wireless 提供雷达数据，但论文的 M1 发布描述未列出，且下载包清单未核验。}
+- key: imu
+  status: provided
+  note: {en: Inertial records in M1; the paper describes them only as inertial records., zh: M1 中的惯性记录；论文仅将其描述为惯性记录。}
+- key: time_series
+  status: provided
+  note: {en: 'Four domains preserve temporal sequences in timestamp order; windows do not cross trajectory, session or link boundaries.', zh: 四个数据域保留时间序列并维持时间戳顺序；时间窗口不跨越轨迹、会话或链路边界。}
+- key: multiuser
+  status: derivable
+  note: {en: Fixed-BS CSI from R1 can be regrouped into user sets within one partition; the benchmark defines no multiuser scheduling protocol., zh: R1 等固定基站的 CSI 可在同一分区内重组为用户集合；基准未定义多用户调度协议。}
+- key: multibs
+  status: provided
+  note: {en: 'Multiple base stations in S1 (three sites, nine sectors) and R2 (ten BS links).', zh: S1（三站九扇区）与 R2（十条 BS 链路）包含多个基站。}
+- key: crossfreq
+  status: none
+  note: {en: Domains use different carrier frequencies and are not synchronized dual-band observations of one link., zh: 各域载频不同，并非同一链路的同步双频观测。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: Inherent in the measured E1 and E2 domains and not labelled per path; the mechanisms enabled in the ray-traced domains are not stated., zh: 存在于实测域 E1 与 E2 中，未按路径标注；射线追踪域启用的机制未说明。}
+- key: diffraction
+  status: provided
+  note: {en: Inherent in the measured E1 and E2 domains and not labelled per path; the mechanisms enabled in the ray-traced domains are not stated., zh: 存在于实测域 E1 与 E2 中，未按路径标注；射线追踪域启用的机制未说明。}
+- key: scattering
+  status: provided
+  note: {en: Inherent in the measured E1 and E2 domains and not labelled per path; the mechanisms enabled in the ray-traced domains are not stated., zh: 存在于实测域 E1 与 E2 中，未按路径标注；射线追踪域启用的机制未说明。}
+- key: transmission
+  status: provided
+  note: {en: Inherent in the measured E1 and E2 domains and not labelled per path; the mechanisms enabled in the ray-traced domains are not stated., zh: 存在于实测域 E1 与 E2 中，未按路径标注；射线追踪域启用的机制未说明。}
+- key: polarization
+  status: none
+  note: {en: The release does not provide dual-polarized channel configurations., zh: 发布内容不包含双极化信道配置。}
+- {key: em_field, status: unknown}
+versions:
+- version: v2
+  date: '2026-08-14'
+  summary: {en: 'arXiv v2 adds Section V with baseline experiments for CSI feedback, channel extrapolation, current-beam prediction and wireless positioning, and a public download link in Data Availability.', zh: arXiv v2 新增第 V 节，给出 CSI 反馈、信道外推、当前波束预测与无线定位四类任务的基线实验，并在数据可用性部分加入公开下载链接。}
+  url: https://arxiv.org/abs/2607.14975
+- version: v1
+  date: '2026-07-16'
+  summary: {en: 'First arXiv version: six-domain CFM-Bench with 157,900 single-frame examples, official partitions and task protocols; it has no benchmark experiments section and no download link.', zh: '首个 arXiv 版本：包含六个数据域、157,900 个单帧样本、官方划分与任务协议；没有基准实验章节，也没有下载链接。'}
+  url: https://arxiv.org/abs/2607.14975

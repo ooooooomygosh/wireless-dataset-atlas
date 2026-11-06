@@ -18,13 +18,13 @@ paper: arxiv:2303.01635
 used_in: []
 citing: ['doi:10.1109/iccworkshops63917.2026.11586300']
 summary: {en: 'The dataset contains raw LTE I/Q samples from a ground SDR-based LTE base station at 3.51 GHz, recorded by a UAV-mounted SDR at about 30 to 110 m altitude over the Lake Wheeler farm area of the AERPAW platform. The data is stored as SigMF files.', zh: 该数据集包含地面基于SDR的LTE基站在3.51 GHz频点上的原始LTE I/Q采样，由无人机搭载的SDR在约30至110米高度采集，场地为AERPAW平台的Lake Wheeler农场区域。数据以SigMF格式存储。}
-sources: ['https://ieee-dataport.org/documents/lte-iq-measurement-data-sets-aerpaw-platform-air-ground-propagation-modeling', 'https://arxiv.org/abs/2303.01635']
+sources: ['https://ieee-dataport.org/documents/lte-iq-measurement-data-sets-aerpaw-platform-air-ground-propagation-modeling', 'https://arxiv.org/abs/2303.01635', 'https://arxiv.org/html/2303.01635', 'https://ieee-dataport.org/documents/lte-iq-measurement-aerpaw-platform-air-ground-propagation-modeling', 'https://arxiv.org/pdf/2303.01635']
 checked: '2026-11-06'
-overview: {en: 'AERPAW LTE I/Q Dataset contains raw LTE I/Q samples from air-to-ground field experiments on the AERPAW platform at North Carolina State University, recorded in the Lake Wheeler farm area. The ground station is an SDR-based LTE base station operating at 3.51 GHz, and the receiver is an SDR carried by a UAV flying at 30, 50, 70, 90 and 110 m. The authors are Sung Joon Maeng, Ozgur Ozdemir, Ismail Guvenc and Mihail Sichitiu, with Magreth Mushi and Rudra Dutta. The records were created on IEEE DataPort on 15 November 2022 and are described in arXiv:2303.01635, submitted on 3 March 2023. GPS latitude, longitude, altitude and timestamps are logged with the I/Q data. The stated purposes are the study of cellular coverage at different UAV altitudes and the training of machine learning methods for UAV communication and navigation.', zh: 'AERPAW LTE I/Q Dataset 包含 North Carolina State University 的 AERPAW 平台在 Lake Wheeler farm 区域进行空对地外场实验得到的原始 LTE I/Q 采样。地面站为基于 SDR 的 LTE 基站，工作频率 3.51
-    GHz；接收端为搭载在无人机上的 SDR，飞行高度为 30、50、70、90 和 110 m。作者为 Sung Joon Maeng、Ozgur Ozdemir、Ismail Guvenc 和 Mihail Sichitiu，并包括 Magreth Mushi 和 Rudra Dutta。数据记录于 2022 年 11 月 15 日在 IEEE DataPort 上创建，并在 arXiv:2303.01635（2023 年 3 月 3 日提交）中加以描述。GPS 的纬度、经度、高度和时间戳与 I/Q 数据一同记录。每个高度对应一个 SigMF 格式的 7z 压缩包，五个压缩包合计约 8.80 GB。数据的用途是研究不同无人机高度下的蜂窝覆盖，并训练用于无人机通信与导航的机器学习方法。'}
+overview: {en: 'AERPAW LTE I/Q Dataset contains raw LTE I/Q samples from air-to-ground field experiments on the AERPAW platform at North Carolina State University, recorded in the Lake Wheeler farm area. The ground station is an SDR-based LTE base station operating at 3.51 GHz, and the receiver is an SDR carried by a UAV flying at 30, 50, 70, 90 and 110 m. The authors are Sung Joon Maeng, Ozgur Ozdemir, Ismail Guvenc and Mihail Sichitiu, with Magreth Mushi and Rudra Dutta. The records were created on IEEE DataPort on 15 November 2022 and are described in arXiv:2303.01635, submitted on 3 March 2023. GPS latitude, longitude, altitude and timestamps are logged with the I/Q data. Each altitude is one 7z archive of SigMF files, and the five archives total about 8.80 GB. The stated purposes are the study of cellular coverage at different UAV altitudes and the development of machine learning methods for UAV communication and navigation.', zh: 'AERPAW LTE I/Q Dataset 收录了 North Carolina State University
+    的 AERPAW 平台在 Lake Wheeler farm 区域进行空对地外场实验得到的原始 LTE I/Q 采样。地面站为基于 SDR 的 LTE 基站，工作频率 3.51 GHz；接收端为搭载在无人机上的 SDR，飞行高度为 30、50、70、90 和 110 m。作者为 Sung Joon Maeng、Ozgur Ozdemir、Ismail Guvenc 和 Mihail Sichitiu，并包括 Magreth Mushi 和 Rudra Dutta。数据于 2022 年 11 月 15 日在 IEEE DataPort 上创建，并在 arXiv:2303.01635（2023 年 3 月 3 日提交）中加以描述。GPS 的纬度、经度、高度和时间戳与 I/Q 数据一同记录。每个高度对应一个 SigMF 格式的 7z 压缩包，五个压缩包合计约 8.80 GB。数据的用途是研究不同无人机高度下的蜂窝覆盖，并开发用于无人机通信与导航的机器学习方法。'}
 signal_details:
 - signal: iq
-  text: {en: 'Raw LTE I/Q captured by a USRP B205mini SDR on the UAV, centred at 3.51 GHz. Each capture is a 20 ms segment at a 2 MHz sampling rate, recorded once every 100 ms. Samples are complex float64, stored in .mat files and in SigMF archives. The eNodeB transmits in a 1.4 MHz bandwidth.', zh: 无人机搭载的 USRP B205mini SDR 采集的原始 LTE I/Q，中心频率 3.51 GHz。每次采集为 20 ms 片段，采样率 2 MHz，每 100 ms 录制一次。采样以 complex float64 存储于 .mat 文件和 SigMF 归档中。eNodeB 的发射带宽为 1.4 MHz。}
+  text: {en: 'Raw LTE I/Q captured by a USRP B205mini SDR on the UAV, centred at 3.51 GHz. Each capture is a 20 ms segment at a 2 MHz sampling rate, recorded once every 100 ms. The SigMF archives store the samples as complex float64, and conversion code to the original .mat format is provided. The eNodeB transmits in a 1.4 MHz bandwidth.', zh: 无人机搭载的 USRP B205mini SDR 采集的原始 LTE I/Q，中心频率 3.51 GHz。每次采集为 20 ms 片段，采样率 2 MHz，每 100 ms 录制一次。SigMF 归档以 complex float64 存储采样，并提供 SigMF 与原始 .mat 格式之间的转换代码。eNodeB 的发射带宽为 1.4 MHz。}
 pipeline:
   summary: {en: 'The eNodeB transmits an LTE downlink, the UAV records I/Q samples at five altitudes, and MATLAB converts the recordings into RSRP values and path-loss results.', zh: eNodeB 发射 LTE 下行信号，无人机在五个高度上记录 I/Q 采样，MATLAB 将记录转换为 RSRP 值和路径损耗结果。}
   stages:
@@ -58,3 +58,85 @@ pipeline:
     outputs:
     - {en: 3D RSRP maps, zh: 三维 RSRP 图}
     - {en: Path-loss and shadowing fit, zh: 路径损耗与阴影拟合}
+bandwidth_mhz: 1.4
+antennas: {tx: 1, rx: 1, array: single}
+size_gb: 8.8
+technical_notes:
+- {en: 'Each altitude is a separate archive, named NRDZ_30m_dataset.7z through NRDZ_110m_dataset.7z.', zh: 每个高度对应一个单独的压缩包，文件名从 NRDZ_30m_dataset.7z 至 NRDZ_110m_dataset.7z。}
+- {en: The 30 m and 50 m archives need the processLTErecording_GPSlog.m file modified as described in readme.txt., zh: 30 m 和 50 m 压缩包需要按 readme.txt 中的说明修改 processLTErecording_GPSlog.m 文件。}
+- {en: 'The Tx and Rx 3D antenna radiation patterns, measured in an anechoic chamber, are released as a separate IEEE DataPort dataset.', zh: 在暗室中测量的收发端三维天线辐射方向图，以单独的 IEEE DataPort 数据集形式发布。}
+- {en: No other signal source was observed in the measured spectrum during the experiments., zh: 实验期间，在测量频谱内未观察到其他信号源。}
+limitations:
+- {en: The paper fits path-loss and shadowing models to the 50 m dataset only., zh: 论文仅对 50 m 数据集拟合路径损耗和阴影模型。}
+history:
+- {en: The IEEE DataPort record was created on 15 November 2022 and last updated on 31 August 2023., zh: IEEE DataPort 记录创建于 2022 年 11 月 15 日，最后更新于 2023 年 8 月 31 日。}
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: 'Channel estimates from the CRS are computed from the I/Q with MATLAB LTE Toolbox, as shown in the paper; they are not stored.', zh: CRS 信道估计由 I/Q 经 MATLAB LTE Toolbox 计算（论文所示）；数据中不存储。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: RSRP is computed from the I/Q with the LTE Toolbox procedure in the paper; whether RSRP values are shipped is not stated., zh: RSRP 由 I/Q 按论文中的 LTE Toolbox 流程计算；来源未说明数据包是否附带 RSRP 值。}
+- key: iq
+  status: provided
+  note: {en: 'Raw complex float64 I/Q at 2 MHz sampling, 20 ms captures every 100 ms, centred at 3.51 GHz with a 1.4 MHz eNodeB bandwidth.', zh: 原始复数 float64 I/Q，采样率 2 MHz，每 100 ms 采集 20 ms，中心频率 3.51 GHz，eNodeB 带宽 1.4 MHz。}
+- key: beam_labels
+  status: none
+  note: {en: One vertically oriented dipole at the eNodeB and one on the UAV; the sources describe no beams., zh: eNodeB 与无人机各使用一个垂直放置的偶极子；来源未描述任何波束。}
+- key: position
+  status: provided
+  note: {en: 'GPS latitude, longitude, altitude and timestamps are logged with the I/Q and stored in the SigMF archives.', zh: GPS 纬度、经度、高度和时间戳与 I/Q 一同记录，并存于 SigMF 归档中。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- {key: rgb, status: unknown}
+- {key: depth, status: unknown}
+- {key: lidar, status: unknown}
+- {key: radar, status: unknown}
+- {key: imu, status: unknown}
+- key: time_series
+  status: provided
+  note: {en: 'Time-ordered 20 ms captures every 100 ms along zigzag flights at fixed heights, with timestamps.', zh: 固定高度折线飞行中按时间排列的采集，每 100 ms 一段、每段 20 ms，并带时间戳。}
+- key: multiuser
+  status: none
+  note: {en: A single UAV-mounted receiver; the sources describe one receiver., zh: 仅有一个无人机搭载接收机；来源仅描述一个接收端。}
+- key: multibs
+  status: none
+  note: {en: One ground eNodeB at fixed node LW1; no other signal source was observed in the band., zh: 固定节点 LW1 上仅有一个地面 eNodeB；频段内未观测到其他信号源。}
+- key: crossfreq
+  status: none
+  note: {en: A single band at 3.51 GHz; no paired multi-band captures are described., zh: 仅 3.51 GHz 单一频段；未描述成对的多频段采集。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: unknown
+  note: {en: Flight speed is not stated; the timestamped GPS log allows it to be computed., zh: 来源未说明飞行速度；带时间戳的 GPS 日志可用于计算。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path; the paper''s two-ray fit includes a ground reflection path.', zh: 空口测量中固有存在，未按径标注；论文的双径拟合包含地面反射路径。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 空口测量中固有存在，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 空口测量中固有存在，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 空口测量中固有存在，未按径标注。}
+- key: polarization
+  status: none
+  note: {en: Each end uses one vertically oriented single dipole; no polarimetric data are described., zh: 收发两端各使用一个垂直放置的单偶极子；未描述极化测量数据。}
+- key: em_field
+  status: unknown
+  note: {en: The DataPort page links to measured Tx/Rx 3D antenna patterns; the link's relation to this record's files is not stated., zh: DataPort 页面链接了实测的收发端三维天线方向图；来源未说明该链接与本记录文件的关系。}
+versions:
+- version: arXiv v1
+  date: '2023-03-03'
+  summary: {en: 'Paper describing the released LTE I/Q data, its SigMF formatting and the MATLAB post-processing.', zh: 描述已发布的 LTE I/Q 数据、其 SigMF 格式以及 MATLAB 后处理流程的论文。}
+  url: https://arxiv.org/abs/2303.01635
+- version: initial release
+  date: '2022-11-15'
+  summary: {en: 'Initial IEEE DataPort release of raw LTE I/Q at 3.51 GHz for UAV heights of 30, 50, 70, 90 and 110 m, as five 7z archives in SigMF format.', zh: IEEE DataPort 首次发布：3.51 GHz 原始 LTE I/Q，无人机高度 30、50、70、90 和 110 m，共五个 SigMF 格式的 7z 压缩包。}
+  url: https://ieee-dataport.org/documents/lte-iq-measurement-aerpaw-platform-air-ground-propagation-modeling

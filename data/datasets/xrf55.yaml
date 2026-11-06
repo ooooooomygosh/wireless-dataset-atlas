@@ -4,7 +4,7 @@ year: 2024
 origin: measured
 tasks: [wireless-sensing, multimodal-sensing]
 signals: [csi, radar, rgb, depth]
-bands_ghz: [5.64, 60, 64]
+bands_ghz: [0.92, 5.64, 60, 64]
 environment: [indoor]
 subcarriers: 30
 samples: 42.9K samples (about 59.6 hours) from 39 subjects
@@ -14,7 +14,7 @@ paper: doi:10.1145/3643543
 used_in: ['doi:10.1109/jiot.2025.3554228', 'doi:10.1109/ton.2025.3599016', 'doi:10.1109/jiot.2026.3672036']
 citing: ['doi:10.1145/3715014.3722068', 'doi:10.1109/tmc.2025.3540863']
 summary: {en: '42.9K samples of 55 indoor human actions from 39 subjects (about 59.6 hours), with Wi-Fi CSI, RFID phase, mmWave radar and Azure Kinect RGB and depth data.', zh: 共 42.9K 个样本，涵盖 39 名受试者的 55 种室内人体动作（约 59.6 小时），包含 Wi-Fi CSI、RFID 相位、毫米波雷达以及 Azure Kinect 的 RGB 和深度数据。}
-sources: ['https://aiotgroup.github.io/XRF55', 'https://api.crossref.org/works/10.1145/3643543']
+sources: ['https://aiotgroup.github.io/XRF55', 'https://api.crossref.org/works/10.1145/3643543', 'https://raw.githubusercontent.com/aiotgroup/XRF55-repo/main/README.md', 'https://raw.githubusercontent.com/aiotgroup/XRF55-repo/main/XRF55-QA.md', 'https://www.kaggle.com/api/v1/datasets/view/xrfdataset/xrf55-rawdata', 'https://www.kaggle.com/api/v1/datasets/view/xrfdataset/xrf55', 'https://www.kaggle.com/api/v1/datasets/view/whisperyi/xrf55-2', 'https://github.com/aiotgroup/XRF55-repo/commits/main', 'https://github.com/aiotgroup/XRF55-repo/releases']
 checked: '2026-11-06'
 overview: {en: 'XRF55 is a radio frequency dataset for human indoor action analysis from Xi''an Jiaotong University and Zhejiang University, published at ACM IMWUT/Ubicomp 2024 (DOI 10.1145/3643543). It contains 42.9K samples of 55 indoor actions performed by 39 subjects, totalling 59 h 35 min. Each subject performs each action 20 times, and each repetition has a 5-second action window; the 55 actions fall into 15 human-object interactions, 7 human-human interactions, 8 fitness actions, 14 body motions and 11 human-computer interactions. The recordings were made in four scenes: Scene 1 has 30 subjects with all four sensors, and Scenes 2, 3 and 4 have three subjects each. Wi-Fi CSI, RFID phase, 60 to 64 GHz mmWave radar, and Azure Kinect RGB and depth data are included, and the page defines the split as the first 14 trials of each action per subject for training and the last 6 for testing. The project page lists 2D pose, 3D pose and human mesh data as in progress, and marks the raw mmWave
     data link as expired. The data are distributed through the project page, the Sensing Dataset Platform (sdp8.org) and Kaggle under CC BY-NC 4.0.', zh: XRF55是面向室内人体动作分析的射频数据集，由西安交通大学与浙江大学提出，发表于ACM IMWUT/Ubicomp 2024（DOI 10.1145/3643543）。数据包含39名受试者执行55种室内动作的42.9K个样本，总时长59 h 35 min。每名受试者每个动作重复20次，每次重复的动作窗口为5 s；55种动作分为人-物交互15种、人-人交互7种、健身动作8种、身体运动14种和人机交互11种。采集分为四个场景：场景1有30名受试者且四种传感器齐全，场景2、3、4各有3名受试者。数据包括Wi-Fi CSI、RFID相位、60至64 GHz毫米波雷达以及Azure Kinect的RGB和深度数据，页面定义的划分为每名受试者每个动作的前14次用于训练、后6次用于测试。项目页面将2D pose、3D pose和human mesh数据列为进行中，并标注毫米波原始数据链接已失效。数据通过项目页面、Sensing Dataset Platform（sdp8.org）和Kaggle发布，许可为CC BY-NC 4.0。}
@@ -54,3 +54,107 @@ pipeline:
     - {en: Per-trial data streams of 5 seconds, zh: 每次试验5秒的各数据流}
     outputs:
     - {en: Training set (30.0K samples) and test set (12.9K samples), zh: 训练集（30.0K个样本）和测试集（12.9K个样本）}
+organization: Xi'an Jiaotong University and Zhejiang University
+standard: 802.11n
+format: NPY, DAT, MAT
+facts:
+- label: {en: File naming, zh: 文件命名}
+  text: {en: 'Each sample file is named a_b_c.npy, where a is the volunteer ID, b is the action class ID (1 to 55) and c is the repetition number.', zh: 每个样本文件命名为 a_b_c.npy，其中 a 为志愿者 ID，b 为动作类别 ID（1 至 55），c 为该动作的重复次数序号。}
+- label: {en: Wi-Fi layout, zh: Wi-Fi 数据布局}
+  text: {en: 'Wi-Fi arrays of shape 1000 × 1 × 3 × 3 × 30 are reshaped to 1000 × 270, where each receiver fills 90 columns (3 antennas × 30 subcarriers).', zh: 形状为 1000 × 1 × 3 × 3 × 30 的 Wi-Fi 数组被重排为 1000 × 270，每台接收机占 90 列（3 根天线 × 30 个子载波）。}
+- label: {en: Mixed file types, zh: 混合文件格式}
+  text: {en: 'Some Wi-Fi files with prefixes 04, 07 and 12 are stored as .mat instead of .dat, and the repository states that the CSI content is the same.', zh: 前缀为 04、07 和 12 的部分 Wi-Fi 文件以 .mat 而非 .dat 格式保存，仓库说明两者的 CSI 内容相同。}
+- label: {en: RFID length, zh: RFID 长度}
+  text: {en: 'The repository Q&A resizes RFID arrays from 150 to 148 time rows per sample, because tag reads are sometimes one or two short of 150.', zh: 仓库问答说明，RFID 数组每个样本的时间维由 150 调整为 148，因为标签读取有时会比 150 少一到两次。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Intel 5300 Wi-Fi CSI on 9 links (1 Tx antenna, 3 Rx with 3 antennas each), 30 subcarriers per link, 200 packets per second; reshaped to 1000 × 270 per 5 s sample.', zh: Intel 5300网卡的Wi-Fi CSI，共9条链路（1根Tx天线，3台Rx各3根天线），每条链路30个子载波，200包/秒；每个5秒样本重排为1000 × 270。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- {key: power, status: unknown}
+- key: iq
+  status: unknown
+  note: {en: 'Raw mmWave ADC frames appear in the processing pipeline, but the raw mmWave download is listed as expired.', zh: 处理流程中出现毫米波原始ADC帧，但原始毫米波数据的下载链接标注为已失效。}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: provided
+  note: {en: 'Azure Kinect RGB at 1280 × 720, 15 fps; the Kaggle copy covers 19 participants who agreed to public release.', zh: Azure Kinect RGB，1280 × 720，15 fps；Kaggle版本包含19名同意公开的参与者。}
+- key: depth
+  status: provided
+  note: {en: 'Azure Kinect depth at 512 × 512, 15 fps.', zh: Azure Kinect深度，512 × 512，15 fps。}
+- key: lidar
+  status: none
+  note: {en: 'The sensor set is Wi-Fi, RFID, mmWave radar and Azure Kinect; no LiDAR is listed.', zh: 传感器包括Wi-Fi、RFID、毫米波雷达和Azure Kinect，未列出LiDAR。}
+- key: radar
+  status: provided
+  note: {en: 'TI IWR6843ISK at 60–64 GHz FMCW, 20 frames per second; range-Doppler, range-angle and angle-Doppler maps for scenes 1 to 4, point clouds for scenes 1 and 2.', zh: TI IWR6843ISK，60–64 GHz FMCW，20帧/秒；场景1至4的距离-多普勒、距离-角度、角度-多普勒图，以及场景1和2的点云。}
+- key: imu
+  status: none
+  note: {en: The sensor set does not include an IMU., zh: 传感器组成中不包含IMU。}
+- key: time_series
+  status: provided
+  note: {en: 'Each sample is a 5 s action window with 1000 CSI packets, 150 RFID reads and 100 radar frames.', zh: 每个样本为5秒动作窗口，包含1000个CSI包、150次RFID读数和100帧雷达数据。}
+- key: multiuser
+  status: none
+  note: {en: Each sample records one volunteer's action; no simultaneous multi-user channels are described., zh: 每个样本记录单个志愿者的动作；未描述同时存在的多用户信道。}
+- key: multibs
+  status: none
+  note: {en: One Wi-Fi transmitter and three receivers in one indoor setup; no multi-base-station set is described., zh: 同一室内布置中包含一个Wi-Fi发射机和三台接收机；未描述多基站数据集。}
+- key: crossfreq
+  status: provided
+  note: {en: 'Wi-Fi at 5.64 GHz, RFID at 0.92 GHz and mmWave radar at 60–64 GHz are recorded for the same action windows.', zh: 同一动作时间窗口内记录了5.64 GHz Wi-Fi、0.92 GHz RFID和60–64 GHz毫米波雷达数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Indoor human actions; no fast-moving users are described., zh: 室内人体动作；未描述高速移动用户。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: The subject performing each action moves through the RF paths and acts as a moving body in the link., zh: 执行动作的受试者在射频路径中移动，构成链路中的移动人体。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: README 2026-10-09
+  date: '2026-10-09'
+  summary: {en: 'Repository README updated with SDP links for the mmWave range-angle, range-Doppler and angle-Doppler maps and the point clouds.', zh: 仓库README更新，补充了毫米波距离-角度、距离-多普勒、角度-多普勒图及点云的SDP链接。}
+  url: https://github.com/airslab2020/XRF55-repo/commits/main
+- version: Kaggle XRF55_rawdata
+  date: '2024-05-06'
+  summary: {en: Kaggle XRF55_rawdata initial release with the Wi-Fi and RFID raw data (46.06 GB)., zh: Kaggle上XRF55_rawdata首次发布，包含Wi-Fi与RFID原始数据（46.06 GB）。}
+  url: https://www.kaggle.com/datasets/xrfdataset/xrf55-rawdata
+- version: IMWUT 2024
+  date: '2024-03-06'
+  summary: {en: 'Paper published in Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies (Ubicomp 2024), DOI 10.1145/3643543.', zh: '论文发表于ACM Interactive, Mobile, Wearable and Ubiquitous Technologies会议论文集（Ubicomp 2024），DOI为10.1145/3643543。'}
+  url: https://doi.org/10.1145/3643543
+- version: Kaggle xrf55-2
+  date: '2024-01-23'
+  summary: {en: Kaggle xrf55-2 initial release with the action samples of the last 19 subjects in scene 1 (Part 2)., zh: Kaggle上xrf55-2首次发布，包含场景1中后19名受试者的动作样本（第二部分）。}
+  url: https://www.kaggle.com/datasets/whisperyi/xrf55-2
+- version: Kaggle XRF55_1 v3
+  date: '2023-10-29'
+  summary: {en: 'Kaggle XRF55_1 version 3, noted as an update of 2023-10-27.', zh: Kaggle XRF55_1第3版，备注为2023-10-27的更新。}
+  url: https://www.kaggle.com/datasets/xrfdataset/xrf55
+- version: Kaggle XRF55_1 v2
+  date: '2023-08-15'
+  summary: {en: 'Kaggle XRF55_1 version 2, noted as a data update of 2023-08-14.', zh: Kaggle XRF55_1第2版，备注为2023-08-14的数据更新。}
+  url: https://www.kaggle.com/datasets/xrfdataset/xrf55
+- version: Kaggle XRF55_1 v1
+  date: '2023-08-14'
+  summary: {en: Kaggle XRF55_1 initial release with action samples of 3 subjects in each of scenes 2 to 4 and 11 subjects in scene 1., zh: Kaggle XRF55_1首次发布，包含场景2至4各3名受试者和场景1中11名受试者的动作样本。}
+  url: https://www.kaggle.com/datasets/xrfdataset/xrf55

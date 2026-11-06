@@ -5,11 +5,11 @@ year: 2024
 origin: ray-tracing
 tasks: [foundation-model, channel-estimation, beam-management]
 signals: [csi]
-bands_ghz: [3.5]
+bands_ghz: [3.5, 28]
 environment: [outdoor-urban]
 antennas: {tx: 32, rx: 1}
 subcarriers: 32
-samples: over 1 million channels from 15 DeepMIMO scenarios
+samples: over 1 million channels in the paper's 15-scenario pre-training collection; the Hugging Face repository holds a subset
 license: Not stated
 access: {url: 'https://huggingface.co/datasets/wi-lab/lwm', type: open}
 code: ['https://huggingface.co/wi-lab/lwm-competition-2025']
@@ -17,116 +17,73 @@ paper: arxiv:2411.08872
 used_in: ['doi:10.1109/icmlcn64995.2025.11140266']
 citing: ['doi:10.1109/icmlcn64995.2025.11140101']
 summary: {en: 'Ray-traced channels from 15 DeepMIMO scenarios, with over 1 million channels in total, generated at 3.5 GHz with 32 BS antennas, one UE antenna, 32 subcarriers and 20 paths. Pre-training uses 80% of the channels for training and 20% for validation.', zh: 来自 15 个 DeepMIMO 场景的光线追踪信道，共超过 100 万条信道，在 3.5 GHz 下生成，基站 32 天线、用户 1 天线、32 子载波、20 条路径。预训练时 80% 用于训练，20% 用于验证。}
-sources: ['https://huggingface.co/datasets/wi-lab/lwm', 'https://huggingface.co/wi-lab/lwm', 'https://huggingface.co/wi-lab/lwm-competition-2025', 'https://arxiv.org/abs/2411.08872', 'https://arxiv.org/html/2411.08872v2']
+sources: ['https://huggingface.co/datasets/wi-lab/lwm', 'https://huggingface.co/wi-lab/lwm', 'https://huggingface.co/wi-lab/lwm-competition-2025', 'https://arxiv.org/abs/2411.08872', 'https://arxiv.org/html/2411.08872v2', 'https://huggingface.co/api/datasets/wi-lab/lwm', 'https://huggingface.co/api/datasets/wi-lab/lwm/tree/main?recursive=true', 'https://huggingface.co/datasets/wi-lab/lwm/resolve/main/README.md', 'https://huggingface.co/api/models/wi-lab/lwm/tree/main?recursive=true', 'https://huggingface.co/api/models/wi-lab/lwm-competition-2025/tree/main?recursive=true', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/README.md', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/train_lwm.py', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/utils.py', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/train_heads.py', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/train_heads_config.py', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/task_1/config.json',
+  'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/task_2/config.json', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/task_3/config.json', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/task_4/config.json', 'https://huggingface.co/wi-lab/lwm-competition-2025/resolve/main/task_5/config.json', 'https://arxiv.org/abs/2411.08872v1', 'https://huggingface.co/api/datasets/wi-lab/lwm/commits/main', 'https://huggingface.co/wi-lab/lwm/resolve/main/README.md', 'https://huggingface.co/api/models/wi-lab/lwm-competition-2025', 'https://huggingface.co/api/models/wi-lab/lwm-competition-2025/commits/main']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Array and OFDM configurations convert DeepMIMO paths into complex CSI, followed by filtering, scaling, and patching. Pretraining reconstruction targets and the Challenge''s five downstream label types are generated afterward.', zh: DeepMIMO 路径被阵列与 OFDM 配置转换成复 CSI，再过滤、缩放和切块；预训练重建目标与 Challenge 的五类下游标签在此后产生。}
+  summary: {en: 'DeepMIMO ray-tracing outputs are converted into complex CSI with array and OFDM settings, filtered and scaled, then cut into 4×4 patches with masking. Task labels are generated from the same channels. The paper''s protocol and the Challenge code differ in patch layout, scaling and masking.', zh: DeepMIMO光线追踪输出按阵列与OFDM设置转换为复CSI，经过滤和缩放后切分为4×4块并进行遮挡。任务标签由同一批信道生成。论文协议与Challenge代码在块划分、缩放和遮挡设置上不同。}
+  scope: {en: 'Describes the LWM paper''s pre-training protocol and the Challenge train_lwm.py code path separately; their patch, scaling, and masking settings differ.', zh: 分别描述LWM论文的预训练协议与Challenge train_lwm.py代码路径；二者的块划分、缩放和遮挡设置不同。}
   stages:
-  - title: {en: Select DeepMIMO scenarios and links, zh: 选择 DeepMIMO 场景与链路}
-    detail: {en: 'The current generator loads DeepMIMO by scenario, BS, and receive grid; rows can further filter receiver positions. The original paper pretrains on 15 scenarios.', zh: 当前生成器按 scenario、BS 和接收网格加载 DeepMIMO；rows 可进一步筛选接收位置。原论文预训练覆盖 15 个场景。}
+  - title: {en: Select DeepMIMO scenarios and links, zh: 选择DeepMIMO场景与链路}
+    detail: {en: 'dataset_generator loads one DeepMIMO scenario by name, base station index and receiver grid, and rows can restrict the receiver positions. train_lwm.py loops over 20 city scenarios with base stations 1 to 3, plus three campus, O1 and Boston scenarios each split into 20 zones. The paper''s pre-training collection has 15 scenarios.', zh: dataset_generator按场景名、基站索引和接收网格加载单个DeepMIMO场景，rows可限定接收位置。train_lwm.py遍历20个城市场景（基站1至3），并将asu_campus、o1和boston5G三个场景各切分为20个区域。论文的预训练集合包含15个场景。}
     inputs:
-    - {en: Scenario RT outputs, zh: 场景 RT 输出}
-    - {en: Transmitter/receiver sets and UE grid rows, zh: 发射/接收集合、UE 网格行}
+    - {en: DeepMIMO scenario ray-tracing outputs, zh: DeepMIMO场景光线追踪输出}
+    - {en: Base station index and receiver grid rows, zh: 基站索引与接收网格行}
     outputs:
-    - {en: 'Link collection with positions, LoS, and path information', zh: 带位置、LoS 与路径信息的链路集合}
-    controls:
-    - {en: 'Author settings: record the original scenario collection and Challenge configurations separately.', zh: 作者设置：原论文场景集合与 Challenge 配置分别记录。}
-    checks:
-    - {en: 'Reproduction recommendation: preserve scenario names, BSs, and original UE indices so that renaming a file cannot move the same position into another split.', zh: 复现建议：保存场景名、BS、原始 UE 索引；避免同一位置换文件名后进入另一划分。}
-  - title: {en: Compute complex CSI from paths, zh: 从路径计算复 CSI}
-    detail: {en: 'The Challenge dataset_generator defaults to a 32×1 BS array, single-antenna UE, and 32 subcarriers. get_parameters uses half-wavelength spacing, 20 paths, and a bandwidth of 30 kHz × number of subcarriers before invoking DeepMIMO channel computation.', zh: Challenge 的 dataset_generator 默认 32×1 BS 阵列、单天线 UE、32 子载波；get_parameters 使用半波长间距、20 条路径及 30 kHz×子载波数的带宽，再调用 DeepMIMO 信道计算。}
+    - {en: 'Users with positions, LoS status and paths', zh: 带位置、LoS状态与路径的用户集合}
+  - title: {en: Compute complex CSI, zh: 计算复CSI}
+    detail: {en: 'get_parameters sets half-wavelength element spacing, 20 paths, a BS rotation of [0, 0, -135] degrees, and a bandwidth of 30 kHz times the number of subcarriers before DeepMIMO computes the channels. dataset_generator defaults to a 32×1 BS array, a single-antenna UE and 32 subcarriers, and outer calls can override the counts.', zh: 'get_parameters设置半波长阵元间距、20条路径、基站旋转[0, 0, -135]度，以及30 kHz乘子载波数的带宽，随后由DeepMIMO计算信道。dataset_generator默认采用32×1基站阵列、单天线用户与32个子载波，外层调用可覆盖这些数量。'}
     inputs:
-    - {en: Path parameters, zh: 路径参数}
-    - {en: Array configuration, zh: 阵列配置}
-    - {en: OFDM frequency grid, zh: OFDM 频率网格}
+    - {en: Path parameters and array configuration, zh: 路径参数与阵列配置}
+    - {en: OFDM frequency grid, zh: OFDM频率网格}
     outputs:
-    - {en: 'Complex channels ordered by UE, receive antenna, BS antenna, and subcarrier', zh: 按 UE、接收天线、BS 天线、子载波排列的复信道}
-    controls:
-    - {en: 'Author code: BS rotation is [0,0,-135] degrees; outer calls can override antenna and subcarrier counts.', zh: '作者代码：BS 旋转为 [0,0,-135] 度；外层调用可覆盖天线和子载波数。'}
-    checks:
-    - {en: 'Reproduction recommendation: inspect actual configurations and tensor shapes; entry-point defaults cannot substitute for the configuration used to generate a file.', zh: 复现建议：读取实际配置和张量形状；调用入口的默认值不能替代文件所用配置。}
-  - title: {en: Filter samples with no paths and standardize numerical scaling, zh: 过滤无路径样本并统一数值尺度}
-    detail: {en: 'Current code retains samples with los!=-1, converts them to complex64, and multiplies by 10^6. ChannelEstimation can add complex Gaussian noise based on sample power, retaining clean channels as labels.', zh: 当前代码保留 los!=-1 的样本，转 complex64 后乘 10^6；ChannelEstimation 可按样本功率添加复高斯噪声，干净信道留作标签。}
+    - {en: 'Complex channels ordered by UE, receive antenna, BS antenna and subcarrier', zh: 按UE、接收天线、基站天线与子载波排列的复信道}
+  - title: {en: Filter users and scale channels, zh: 筛选用户并缩放信道}
+    detail: {en: 'deepmimo_data_cleaning keeps users with los not equal to -1, stores the channel as complex64 and multiplies it by 10^6. Only when an SNR is given for ChannelEstimation or LosNlosClassification does generate_gaussian_noise add complex Gaussian noise scaled to that SNR; labels are built from the clean channel. The scaling is a constant factor, not per-sample normalization.', zh: deepmimo_data_cleaning保留los不等于-1的用户，以complex64保存信道并乘以10^6。仅当为ChannelEstimation或LosNlosClassification给定SNR时，generate_gaussian_noise才按该SNR加入复高斯噪声，标签仍由干净信道生成。缩放为常数倍，而非逐样本归一化。}
     inputs:
-    - {en: Complex CSI, zh: 复 CSI}
-    - {en: los field, zh: los 字段}
+    - {en: Complex CSI and los field, zh: 复CSI与los字段}
     outputs:
-    - {en: Scaled valid CSI, zh: 缩放后的有效 CSI}
-    - {en: Corresponding clean real/imaginary targets, zh: 对应的干净实部/虚部目标}
-    controls:
-    - {en: 'Author code: multiplication by a constant is scaling, not per-sample unit-norm normalization.', zh: 作者代码：乘常数是缩放，不是逐样本单位范数归一化。}
-    - {en: 'Author code: snr and task determine whether noise is added.', zh: 作者代码：是否加噪由 snr 和 task 决定。}
-    checks:
-    - {en: 'Reproduction recommendation: use the same valid indices for labels and inputs; check power before/after noise and the inverse scaling transform.', zh: 复现建议：标签与输入使用同一有效索引；核对噪声前后功率及缩放逆变换。}
-  - title: {en: Patch and generate masking tasks according to the version, zh: 按版本切块与生成遮挡任务}
-    detail: {en: 'The original paper separates real/imaginary components of 32×32 CSI into 128 tokens of 16 dimensions using 16×1 segments, selecting approximately 15% of segments in pairs for MCM. The current Challenge patch_maker uses 4×4 complex blocks, with 32 interleaved real values per token and zero padding when dimensions are not divisible.', zh: 原论文的 32×32 CSI 分实虚、以 16×1 片段组成 128 个 16 维 token，成对选择约 15% 片段做 MCM；当前 Challenge patch_maker 改用 4×4 复数块，每个 token 含交错的 32 个实数值，不整除时补零。}
+    - {en: Scaled valid CSI, zh: 缩放后的有效CSI}
+  - title: {en: Patch and mask tokens, zh: 切块并生成遮挡token}
+    detail: {en: 'patch_maker splits each channel into non-overlapping 4×4 complex blocks, interleaves real and imaginary values into 32 numbers per token, and zero-pads dimensions that are not divisible. tokenizer_train prepends a CLS token and masks int(0.40 × patches) positions by default. A masked token becomes [MASK] with probability 0.8, a random vector with probability 0.1, and stays unchanged with probability 0.1.', zh: 'patch_maker将每个信道切分为互不重叠的4×4复数块，把实部与虚部交错排成每个token 32个数，不能整除时补零。tokenizer_train默认在最前加入CLS token，并遮挡int(0.40 × 块数)个位置。被遮挡的token以0.8概率替换为[MASK]，0.1概率替换为随机向量，0.1概率保持不变。'}
     inputs:
-    - {en: Scaled CSI, zh: 缩放后的 CSI}
+    - {en: Scaled CSI, zh: 缩放后的CSI}
     outputs:
-    - {en: Token sequence, zh: token 序列}
-    - {en: masked positions, zh: masked positions}
-    - {en: Clean-token reconstruction targets, zh: 干净 token 重建目标}
-    controls:
-    - {en: 'Author paper: selected segments use 80% replacement, 10% random substitution, and 10% retention.', zh: 作者论文：被选片段采用 80% 替换、10% 随机、10% 保留。}
-    - {en: 'Author code: the current tokenizer defaults to masking_percent=0.40; this is not an original-paper hyperparameter.', zh: 作者代码：当前 tokenizer 的 masking_percent 默认 0.40；不能当成原论文超参数。}
-    checks:
-    - {en: 'Reproduction recommendation: reconstruct complex CSI and verify patch order; record padding, CLS, and mask-index rules.', zh: 复现建议：重建复 CSI 并验证 patch 顺序；记录 padding、CLS 与 mask 索引规则。}
+    - {en: 'Token sequence, masked positions and clean-token targets', zh: token序列、遮挡位置与干净token目标}
   - title: {en: Generate task labels, zh: 生成任务标签}
-    detail: {en: 'LoS classification reads los; positioning reads the first two dimensions of rx_pos; estimation and interpolation target clean real/imaginary channels. Current beam labels multiply steering vectors by channels, take the magnitude of the complex response averaged across frequency, and select the maximum.', zh: LoS 分类读取 los；定位读取 rx_pos 的前两维；估计与插值目标为干净实虚信道。当前 beam 标签先做 steering 向量与信道相乘，再取跨频复响应平均的幅度并选最大项。}
+    detail: {en: 'LoS classes come from the los field. ChannelCharting, the localization task in the Challenge, uses the first two columns of rx_pos. ChannelEstimation and ChannelInterpolation targets are the real and imaginary parts of the clean channel times 10^6. BeamPrediction takes the strongest of 64 steering beams over a 180-degree field of view, with coherent averaging across subcarriers.', zh: LoS类别取自los字段。Challenge中的定位任务ChannelCharting使用rx_pos的前两列。ChannelEstimation与ChannelInterpolation的目标为干净信道的实部与虚部乘以10^6。BeamPrediction在180度视场内取64个steering波束中响应最强者，对子载波做相干平均。}
     inputs:
-    - {en: Valid CSI, zh: 有效 CSI}
-    - {en: LoS、rx_pos, zh: LoS、rx_pos}
-    - {en: Specified steering codebook, zh: 指定 steering codebook}
+    - {en: 'Valid CSI, los field and rx_pos', zh: 有效CSI、los字段与rx_pos}
+    - {en: Steering codebook of 64 beams, zh: 64波束steering码本}
     outputs:
-    - {en: LoS classes, zh: LoS 类别}
-    - {en: 2D positions, zh: 二维位置}
-    - {en: beam index, zh: beam index}
-    - {en: Estimation/interpolation reconstruction targets, zh: 估计/插值重建目标}
-    controls:
-    - {en: 'Author code: beam labels use coherent averaging across frequency, which differs from averaging per-subcarrier powers.', zh: 作者代码：beam 标签采用相干跨频平均；它不同于逐子载波功率的平均。}
-    checks:
-    - {en: 'Reproduction recommendation: recompute sampled labels using the current formula and separately report the power/SINR definition used for communication utility.', zh: 复现建议：按当前标签公式重算抽样标签，并单独报告通信效用所用功率/SINR 定义。}
-  - title: {en: 'Split, package, and expose training entry points', zh: 划分、封装与公开训练入口}
-    detail: {en: The original paper splits pretraining data 80/20 into training and validation. The Challenge provides train/val/test_data.pt for task_1–task_5; train_heads.py reads channels and labels and configures task heads from config., zh: 原论文预训练按 80/20 划分训练与验证。Challenge 按 task_1–task_5 提供 train/val/test_data.pt，由 train_heads.py 读取 channels 与 labels，并结合 config 配置任务头。}
-    inputs:
-    - {en: token/CSI, zh: token/CSI}
-    - {en: Task labels, zh: 任务标签}
-    - {en: Scenario identity, zh: 场景身份}
+    - {en: 'LoS classes, 2D positions, beam indices and reconstruction targets', zh: LoS类别、二维位置、波束索引与重建目标}
+  - title: {en: Split and package per task, zh: 划分并按任务封装}
+    detail: {en: 'train_lwm.py splits each tokenized group 80/20 with random_split and seed 42, which leaves 0 to 2 samples in the test part. The Challenge packages task_1 to task_5 as train, val and test .pt files holding channels and labels, which train_heads.py reads. The released Challenge splits and the paper''s 80/20 pre-training split follow different protocols.', zh: train_lwm.py以random_split按80/20划分每个token分组，随机种子为42，测试部分仅余0至2个样本。Challenge将task_1至task_5封装为包含channels与labels的train、val、test .pt文件，由train_heads.py读取。Challenge发布的划分与论文的80/20预训练划分遵循不同协议。}
     outputs:
-    - {en: Per-task .pt data views, zh: 分任务的 .pt 数据视图}
-    - {en: Pretrained models and downstream training entry points, zh: 预训练模型与下游训练入口}
-    controls:
-    - {en: 'Author release: the original pretraining split and released competition splits follow different protocols.', zh: 作者发布：原论文预训练划分与比赛发布划分属于不同协议。}
-    checks:
-    - {en: 'Reproduction recommendation: preserve released splits. When adding cross-scenario evaluation, redefine the isolation unit; the original 80/20 split is not automatically an out-of-scenario test.', zh: 复现建议：保留发布划分；增加跨场景评测时重新定义隔离单位，不能把原始 80/20 自动解释为场景外测试。}
-  scope: {en: 'Describes the original LWM pretraining protocol and current 2025 Challenge code separately; their patch, scaling, and mask settings differ.', zh: 分别描述 LWM 原论文预训练协议与当前 2025 Challenge 代码；二者的 patch、缩放和 mask 设置不同。}
+    - {en: Per-task .pt data files and pre-training entry points, zh: 分任务的.pt数据文件与预训练入口}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• DeepMIMO-derived complex CSI
+  text: {en: '• Complex CSI from DeepMIMO scenarios (dataset_generator in utils.py)
 
-      • Challenge channels/labels tensors and config
+      • task_1 to task_5 train, val and test .pt files with channels and labels
 
-      • LWM pretrained weights', zh: '• DeepMIMO 派生复 CSI
+      • Pretrained checkpoints: model_checkpoint.pth in the Challenge repository and model_weights.pth in the wi-lab/lwm model repository', zh: '• 来自DeepMIMO场景的复CSI（utils.py中的dataset_generator）
 
-      • Challenge 的 channels/labels 张量与 config
+      • task_1至task_5的train、val、test .pt文件，包含channels与labels
 
-      • LWM 预训练权重'}
+      • 预训练权重：Challenge仓库中的model_checkpoint.pth，以及wi-lab/lwm模型仓库中的model_weights.pth'}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• MCM tokens, masks, and reconstruction targets
+  text: {en: '• Masked tokens, masks and reconstruction targets (make_sample, tokenizer_train)
 
-      • LoS, position, and beam labels for specified tasks
+      • LoS, localization, beam and channel targets for each task', zh: '• 遮挡token、mask与重建目标（make_sample、tokenizer_train）
 
-      • Rate or scheduling utility calculated separately by the user', zh: '• MCM token、mask 与重建目标
+      • 各任务的LoS、定位、波束与信道目标'}
+- label: {en: Operational settings, zh: 运行设置}
+  text: {en: '• The model card lists 32 BS antennas, 1 UE antenna, 32 subcarriers, 20 paths and 3.5 GHz for generated data.
 
-      • 指定任务的 LoS、位置和 beam 标签
+      • The competition README states that train_heads.py must not be modified for submission.', zh: '• 模型卡列出生成数据所用设置：32个基站天线、1个用户天线、32个子载波、20条路径、3.5 GHz。
 
-      • 用户另行计算的速率或调度效用'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• For reproduction, choose the original-paper protocol or current Challenge interface first, then freeze the input representation.
-
-      • This review inspected source code and documentation; no samples were downloaded, actual .pt shapes checked, or training executed.', zh: '• 复现时先选定原论文协议或 Challenge 当前接口，再冻结输入表示。
-
-      • 本次核查源码和文档，未下载样本、核对实际 .pt shape 或执行训练。'}
+      • 竞赛README规定提交时不得修改train_heads.py。'}
 provenance:
 - {en: DeepMIMO scenarios and RT paths generate complex CSI under specified array/OFDM configurations., zh: DeepMIMO 场景与 RT 路径，按指定阵列/OFDM 配置生成复 CSI}
 - {en: Current Challenge code filters los=-1 and multiplies by 10^6; this is not per-sample unit-norm normalization., zh: Challenge 当前代码过滤 los=-1 并乘 10^6；不是逐样本单位范数归一化}
@@ -134,36 +91,135 @@ provenance:
 - {en: 'Generate MCM masks according to the version, or form downstream labels from LoS, positions, and a specified steering codebook.', zh: 按版本生成 MCM mask，或由 LoS、位置、指定 steering codebook 形成下游标签}
 - {en: Record the original paper's pretraining collection separately from the Challenge's per-task train/val/test assets., zh: 原论文预训练集合与 Challenge 分任务 train/val/test 资产分别记录}
 technical_notes:
-- {en: 'Literature-supported: the original training collection comes from 15 DeepMIMO scenarios; it is not an independent measurement corpus.', zh: 文献支持：原论文训练集合来自 15 个 DeepMIMO 场景；不是独立测量语料。}
-- {en: 'Literature-supported: the original paper uses fixed 32×32 channel inputs. Identical tensor shapes need not have the same physical meaning after changing array spacing or subcarrier spacing.', zh: 文献支持：原论文使用固定 32×32 信道输入；改变阵列间距或子载波间隔后同一张量尺寸不保证物理同义。}
-- {en: 'Unknown: inspect each original scenario''s configuration for enabled diffraction/scattering mechanisms; these cannot be inferred from LWM.', zh: 未知：各原场景启用的绕射/散射机制应查各场景配置，不能从 LWM 推断。}
+- {en: The paper's pre-training collection is drawn from 15 DeepMIMO ray-tracing scenarios and is not a measurement corpus., zh: 论文的预训练集合取自15个DeepMIMO光线追踪场景，不是测量语料。}
+- {en: 'The paper uses fixed 32×32 channel inputs, whereas train_lwm.py generates per-scenario antenna and subcarrier counts.', zh: 论文采用固定的32×32信道输入，而train_lwm.py按场景生成不同的天线数与子载波数。}
+- {en: 'Paper settings (embedding size 64, 16×1 real and imaginary tokens, 15% masking, learning rate 1e-4, batch size 64) differ from train_lwm.py (embedding size 128, 4×4 complex patches, masking 0.40, base learning rate 5e-4, batch size 128, 50 epochs).', zh: 论文设置（嵌入维度64、16×1分实虚token、15%遮挡、学习率1e-4、批量64）与train_lwm.py（嵌入维度128、4×4复数块、遮挡0.40、基础学习率5e-4、批量128、50轮）不同。}
 limitations:
-- {en: 'Inference: if LWM and ContraWiMAE share original DeepMIMO scenarios, pretraining/test deduplication must trace upstream scenarios and UE indices.', zh: 推断：LWM 与 ContraWiMAE 若共享 DeepMIMO 原场景，预训练/测试去重必须追到上游场景及 UE 索引。}
-- {en: 'Literature-supported: the original paper''s six downstream cities were excluded from pretraining, but their downstream data still have train/validation/test splits. This is not automatically testing on cities entirely unseen during downstream learning.', zh: 文献支持：原论文下游六个城市未用于预训练，但其下游数据仍划分训练/验证/测试；不能直接称下游完全未见城市测试。}
-- {en: 'Unknown: this card has not verified whether the latest subsequent LWM models reuse or extend this corpus.', zh: 未知：本卡未验证最新后续 LWM 模型是否复用或扩展此语料。}
+- {en: 'The Hugging Face repository wi-lab/lwm does not contain the 15-scenario pre-training collection. It holds Miami plus the six downstream cities at 3.5 GHz, six 28 GHz mmWave scenarios and Challenge files, about 114 MB in total.', zh: Hugging Face仓库wi-lab/lwm不包含15个场景的预训练集合：它包含3.5 GHz的迈阿密及六个下游城市、六个28 GHz毫米波场景以及Challenge文件，合计约114 MB。}
+- {en: 'The paper excludes the six downstream cities from pre-training, but train_lwm.py generates data for city_0 to city_19, which includes all six, so that exclusion does not hold for this code path.', zh: 论文将六个下游城市排除在预训练之外，但train_lwm.py生成city_0至city_19的数据，其中包含全部六个城市，因此该代码路径不满足此排除。}
+- {en: 'In the paper, the six downstream cities are split 70%, 20% and 10% into training, validation and test sets.', zh: 论文中，六个下游城市的数据按70%、20%、10%划分为训练、验证与测试集。}
 history:
-- {en: '2024-11-13: Original LWM preprint v1', zh: 2024-11-13：LWM 原始预印本 v1}
-- {en: '2025-04-07: Paper v2; not a dataset update date', zh: 2025-04-07：论文 v2；不能当作数据更新日}
-- {en: '2025: LWM 2025 Challenge: five downstream task types and hidden-test evaluation', zh: 2025：LWM 2025 Challenge，五类下游任务和隐藏测试评估}
+- {en: '2024-11-13: arXiv preprint v1 of the LWM paper.', zh: 2024-11-13：LWM论文arXiv预印本v1。}
+- {en: '2025-04-07: arXiv v2 of the paper.', zh: 2025-04-07：论文arXiv v2。}
+- {en: '2025: LWM 2025 Challenge with five downstream tasks and hidden-test evaluation by the organizers.', zh: 2025年：LWM 2025 Challenge，包含五类下游任务，由组织方以隐藏测试集评估。}
 usage:
-- {en: Choose either the original-paper reproduction or the Challenge protocol first; record the model version and scenario list., zh: 先选择原论文复现或 Challenge 协议，记录模型版本与场景清单。}
-- {en: Read preprocessing and tensor-axis conventions from the official assets; fit normalization using training data only., zh: 从官方资产入口读取预处理与张量轴约定；只用训练数据拟合归一化。}
-- {en: 'For cross-frequency tasks, pair samples by original scenario, BS, and UE indices and verify the codebook; do not blindly join two files by row number.', zh: 对跨频任务用原始场景、BS 和 UE 索引配对，核对码本；不按两文件行号盲目拼接。}
-- {en: 'Report Top-k, beam gain, and overlap with pretraining scenarios together. This workflow has not been run locally.', zh: 同时报告 Top-k、波束收益和预训练场景重叠。此流程未在本机运行。}
+- {en: 'Use the Challenge task_N train, val and test .pt files as released; train_heads.py reads their channels and labels entries.', zh: 按发布内容使用Challenge的task_N训练、验证与测试.pt文件；train_heads.py读取其中的channels与labels。}
+- {en: 'For custom data, follow the model card''s operational settings: 32 BS antennas, 1 UE antenna, 32 subcarriers, 20 paths and 3.5 GHz.', zh: 使用自定义数据时，应遵循模型卡的运行设置：32个基站天线、1个用户天线、32个子载波、20条路径、3.5 GHz。}
+- {en: 'The model card loads scenarios by name, for example city_18_denver, from the Hugging Face dataset repository through git LFS.', zh: 模型卡通过git LFS从Hugging Face数据集仓库按场景名加载数据，例如city_18_denver。}
+- {en: Beam labels for the 28 GHz task are computed per user from 28 GHz channels generated at the same user positions., zh: 28 GHz任务的波束标签，是在同一用户位置生成28 GHz信道后逐用户计算的。}
 field_notes:
 - label: {en: Position, zh: 位置}
-  text: {en: 'The Challenge positioning task directly provides 2D coordinate labels. Other tasks use LoS, beam indices, or complex-channel targets; coordinates are not a universal field in all files.', zh: Challenge 定位任务直接提供二维坐标 labels；其他任务的 labels 分别为 LoS、beam index 或复信道目标，坐标不是所有文件的通用字段。}
+  text: {en: 'The localization task (ChannelCharting in train_heads.py) uses the first two columns of rx_pos as 2D labels. The other tasks use LoS flags, beam indices or complex-channel targets.', zh: 定位任务（train_heads.py中的ChannelCharting）以rx_pos的前两列作为二维标签。其他任务分别使用LoS标志、波束索引或复信道目标。}
 - label: {en: Beam labels, zh: 波束标签}
-  text: {en: High-frequency beams in the original paper are generated from the corresponding 28 GHz channels and a specified codebook., zh: 原论文高频波束由对应 28 GHz 信道和指定码本产生。}
-- label: {en: Multi-BS, zh: 多基站}
-  text: {en: Multiple sites across scenarios do not mean every sample contains synchronized multi-BS links., zh: 跨场景存在多个站点，不等于每个样本含同步多 BS 链路。}
+  text: {en: 'In the paper, 28 GHz beam labels are generated from the corresponding 28 GHz channels and a specified codebook.', zh: 论文中，28 GHz波束标签由对应的28 GHz信道与指定码本生成。}
+- label: {en: Single-BS samples, zh: 单基站样本}
+  text: {en: 'dataset_generator takes one base station index per call, so each sample is one BS-UE link.', zh: dataset_generator每次调用只接受一个基站索引，因此每个样本为一条基站-用户链路。}
 - label: {en: Cross-frequency pairing, zh: 跨频配对}
-  text: {en: 'Simulated cross-frequency samples, not synchronized real-world dual-band measurements.', zh: 仿真跨频样本，不是真实同步双频测量。}
+  text: {en: The 3.5 GHz inputs and 28 GHz labels are simulated for the same users; they are not synchronized dual-band measurements., zh: 3.5 GHz输入与28 GHz标签由相同用户位置仿真得到，并非同步的双频测量。}
 - label: {en: Paths, zh: 路径}
-  text: {en: 'The Challenge generator returns only channels and task labels. train_heads.py consumes channels and labels from .pt dictionaries; the interface does not expose per-path delays, angles, or interaction tables. Return to the DeepMIMO scenarios when path ground truth is needed.', zh: Challenge 的生成器只返回信道与任务标签；train_heads.py 从 .pt 字典消费 channels 和 labels，接口不提供逐径时延、角度或交互表。需要路径真值时回溯 DeepMIMO 场景。}
+  text: {en: 'The Challenge generator returns only channels and task labels. The train_heads interface exposes no per-path delays, angles or interaction tables, so path ground truth must come from the DeepMIMO scenarios.', zh: Challenge生成器只返回信道与任务标签。train_heads接口不提供逐径时延、角度或交互表，路径真值需从DeepMIMO场景获取。}
 tools: [awesome-channel-foundation-models]
-overview: {en: 'The LWM pre-training corpus is the set of wireless channels used to pre-train the Large Wireless Model, as described in arXiv:2411.08872 (2024). It contains over 1 million ray-traced channels from 15 DeepMIMO scenarios: O1, Boston5G, ASU Campus, and 12 city scenarios including New York, Los Angeles, Chicago, Houston and Seattle. Each channel is a complex 32×32 matrix with 32 base station antennas, 1 UE antenna and 32 subcarriers, and the paper splits the channels 820K for training and 200K for validation (80/20). The downstream evaluation covers six unseen scenarios (Denver, Fort Worth, Oklahoma, Indianapolis, Santa Clara, San Diego) with 14,840 samples, using 3.5 GHz channel inputs and 28 GHz beam labels from codebooks of 16 to 256 beams. The LWM Challenge release defines five downstream tasks: LoS/NLoS classification, sub-6 GHz to mmWave beam prediction, channel interpolation, channel estimation and localization. The Hugging Face dataset page cites the DeepMIMO paper and
-    lists a file size of 114 MB, but it describes neither the file structure nor the data format or license.', zh: 'LWM 预训练语料是用于预训练 Large Wireless Model 的无线信道集合，见 arXiv:2411.08872（2024）。它包含来自 15 个 DeepMIMO 场景的超过 100 万条光线追踪信道，场景包括 O1、Boston5G、ASU Campus，以及纽约、洛杉矶、芝加哥、休斯顿、西雅图等 12 个城市场景。每条信道为复数 32×32 矩阵，对应基站 32 天线、用户 1 天线、32 子载波，论文将信道按 80/20 划分为 82 万条训练样本和 20 万条验证样本。下游评测覆盖 6 个未见场景（Denver、Fort Worth、Oklahoma、Indianapolis、Santa Clara、San Diego），共 14,840 个样本，输入为 3.5 GHz 信道，标签为 28 GHz 波束，码本大小为 16 至 256 个波束。LWM Challenge 发布定义了 5 个下游任务：LoS/NLoS 分类、Sub-6 GHz 到毫米波波束预测、信道插值、信道估计和定位。'}
+overview: {en: 'The LWM pre-training corpus is the set of wireless channels used to pre-train the Large Wireless Model, as described in arXiv:2411.08872 (2024). The paper reports over 1 million ray-traced channels from 15 DeepMIMO scenarios: O1, Boston5G, ASU Campus, and 12 city scenarios including New York, Los Angeles, Chicago, Houston and Seattle. Each channel is a complex 32×32 matrix with 32 base station antennas, 1 UE antenna and 32 subcarriers, split 820K for training and 200K for validation (80/20). In the paper, the downstream evaluation uses six scenarios excluded from pre-training (Denver, Fort Worth, Oklahoma, Indianapolis, Santa Clara, San Diego), with 14,840 samples, 3.5 GHz channel inputs and 28 GHz beam labels from codebooks of 16 to 256 beams. The LWM Challenge defines five downstream tasks: LoS/NLoS classification, sub-6 GHz to mmWave beam prediction, channel interpolation, channel estimation and localization. The Hugging Face repository wi-lab/lwm holds only a subset of
+    this material: seven 3.5 GHz city scenarios, six 28 GHz mmWave scenarios and Challenge files, about 114 MB in total.', zh: 'LWM预训练语料是用于预训练Large Wireless Model的无线信道集合，见arXiv:2411.08872（2024）。论文报告了来自15个DeepMIMO场景的100多万条光线追踪信道：O1、Boston5G、ASU Campus，以及包括纽约、洛杉矶、芝加哥、休斯顿和西雅图在内的12个城市场景。每条信道为复数32×32矩阵，对应32个基站天线、1个用户天线和32个子载波，按80/20划分为82万条训练样本和20万条验证样本。论文中，下游评测使用6个未纳入预训练的场景（Denver、Fort Worth、Oklahoma、Indianapolis、Santa Clara、San Diego），共14,840个样本，输入为3.5 GHz信道，标签为码本大小16至256的28 GHz波束。LWM Challenge定义了五类下游任务：LoS/NLoS分类、Sub-6 GHz到毫米波波束预测、信道插值、信道估计和定位。Hugging Face仓库wi-lab/lwm只包含其中一部分：7个3.5 GHz城市场景、6个28 GHz毫米波场景及Challenge文件，合计约114 MB。'}
 signal_details:
 - signal: csi
-  text: {en: 'Ray-traced complex channels H ∈ C^(32×32) generated from DeepMIMO scenarios, with 32 base station antennas, 1 UE antenna and 32 subcarriers (Table I of arXiv:2411.08872). The downstream inputs are 3.5 GHz channels, and the beam labels come from 28 GHz channels through a codebook of 16 to 256 beams.', zh: '由 DeepMIMO 场景生成的复数光线追踪信道 H ∈ C^(32×32)，基站 32 天线、用户 1 天线、32 子载波（arXiv:2411.08872 表 I）。下游输入为 3.5 GHz 信道，波束标签由 28 GHz 信道经 16 至 256 个波束的码本得到。'}
+  text: {en: 'Complex channels H of size 32×32 (32 base station antennas, 1 UE antenna, 32 subcarriers) from ray-traced DeepMIMO scenarios, as in Table I of arXiv:2411.08872. Downstream inputs are 3.5 GHz channels, and beam labels come from 28 GHz channels through codebooks of 16 to 256 beams. The Challenge generator in train_lwm.py sets antenna and subcarrier counts per scenario instead, from 8 to 128 antennas and 32 to 1024 subcarriers.', zh: '由光线追踪DeepMIMO场景生成的复数信道H，尺寸为32×32（32个基站天线、1个用户天线、32个子载波），见arXiv:2411.08872表I。下游输入为3.5 GHz信道，波束标签由28 GHz信道经16至256个波束的码本得到。Challenge生成器（train_lwm.py）则按场景设置天线数与子载波数，天线数为8至128，子载波数为32至1024。'}
+size_gb: 0.114
+format: MAT and .p files
+organization: Arizona State University, Wireless Intelligence Lab
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex channels with 32 BS antennas, 1 UE antenna and 32 subcarriers; the Challenge task files store them and the HF repo holds a subset.', zh: 复信道包含32个基站天线、1个用户天线与32个子载波；Challenge任务文件保存这些信道，HF仓库仅包含其中一部分。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Per-link power follows from the complex channel matrices; no power field is stored., zh: 单链路功率可由复信道矩阵计算；数据中未存储功率字段。}
+- key: iq
+  status: none
+  note: {en: 'The release holds channel matrices only, with no raw I/Q waveform samples.', zh: 发布内容仅包含信道矩阵，无原始I/Q波形采样。}
+- key: beam_labels
+  status: provided
+  note: {en: Beam indices for the 28 GHz beam prediction task; the paper uses codebooks of 16 to 256 beams., zh: 28 GHz波束预测任务的波束索引；论文中码本大小为16至256个波束。}
+- key: position
+  status: provided
+  note: {en: The two-dimensional rx_pos labels are used only by the localization task., zh: 二维rx_pos标签仅用于定位任务。}
+- key: geometry
+  status: none
+  note: {en: 'The HF repo has only an osm_gps_origin.txt origin file per city, with no 3D scene or map files.', zh: HF仓库每个城市仅有osm_gps_origin.txt原点文件，无三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameter files are in the release., zh: 发布内容中没有材料参数文件。}
+- key: rgb
+  status: none
+  note: {en: No camera images in the release., zh: 发布内容中没有相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth data in the release., zh: 发布内容中没有深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data in the release., zh: 发布内容中没有激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data in the release., zh: 发布内容中没有雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data in the release., zh: 发布内容中没有惯性传感器数据。}
+- key: time_series
+  status: none
+  note: {en: 'Samples are static receiver-grid snapshots, with no timestamps or ordered sequences.', zh: 样本为静态接收网格快照，无时间戳，也无有序序列。}
+- key: multiuser
+  status: derivable
+  note: {en: 'Users of one BS and scenario share a snapshot, so user sets can be formed; each sample is one BS-UE link.', zh: 同一基站与场景的用户共享同一快照，因此可组成用户集合；每个样本为一条BS-UE链路。}
+- key: multibs
+  status: derivable
+  note: {en: 'Each city has BS1 to BS3 files with the same UE index range, so a joint set can be formed; each sample is one BS-UE link.', zh: 每个城市包含BS1至BS3文件且UE索引范围相同，可组成联合集合；每个样本仍为一条BS-UE链路。}
+- key: crossfreq
+  status: provided
+  note: {en: 'The 3.5 GHz city scenarios and six 28 GHz scenarios share UE index ranges; the channels are simulated, not synchronized measurements.', zh: 3.5 GHz城市场景与六个28 GHz场景的UE索引范围相同；信道为仿真生成，并非同步测量。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Users sit on static receiver grids and no speed is stated., zh: 用户位于静态接收网格上，未给出速度。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Static snapshots; the sources describe no moving blockers., zh: 静态快照；来源未描述移动遮挡体。}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The release holds channel matrices only, with no field-level outputs.', zh: 发布内容仅包含信道矩阵，无场级输出。}
+versions:
+- version: Competition package
+  date: '2025-11-08'
+  summary: {en: 'The Challenge repository lwm-competition-2025 is released with task_1 to task_5 train, validation and test .pt sets, a baseline LWM 1.1 checkpoint and train_lwm.py.', zh: 发布Challenge仓库lwm-competition-2025，包含task_1至task_5的训练、验证与测试.pt文件、基线LWM 1.1检查点及train_lwm.py。}
+  url: https://huggingface.co/wi-lab/lwm-competition-2025
+- version: arXiv v2
+  date: '2025-04-07'
+  summary: {en: Second arXiv version of the LWM paper; its pre-training section describes over 1 million ray-traced channels from 15 DeepMIMO scenarios with an 80/20 train/validation split., zh: LWM论文的第二个arXiv版本；预训练部分描述了来自15个DeepMIMO场景的100多万条光线追踪信道，按80/20划分为训练集与验证集。}
+  url: https://arxiv.org/abs/2411.08872v2
+- version: mmWave scenarios
+  date: '2025-02-11'
+  summary: {en: 'Six 28 GHz scenarios (Denver, Fort Worth, Indianapolis, Oklahoma, San Diego, Santa Clara) are added to wi-lab/lwm; six scenario_pos_multi_bs.csv files are deleted the same day.', zh: wi-lab/lwm新增六个28 GHz场景（Denver、Fort Worth、Indianapolis、Oklahoma、San Diego、Santa Clara），同日删除六个scenario_pos_multi_bs.csv文件。}
+  url: https://huggingface.co/datasets/wi-lab/lwm/commits/main
+- version: Densified Miami
+  date: '2025-01-27'
+  summary: {en: 'A densified Miami scenario (city_6_miami, receiver indices 0 to 42984) is added to wi-lab/lwm.', zh: wi-lab/lwm新增加密版Miami场景（city_6_miami，接收端索引0至42984）。}
+  url: https://huggingface.co/datasets/wi-lab/lwm/commits/main
+- version: arXiv v1
+  date: '2024-11-13'
+  summary: {en: 'First arXiv version of the LWM paper, submitted 2024-11-13.', zh: LWM论文的第一个arXiv版本，提交于2024-11-13。}
+  url: https://arxiv.org/abs/2411.08872v1
+- version: 54-file layout
+  date: '2024-09-19'
+  summary: {en: '54 scenario files are uploaded to replace dataset.zip and dataset_script.py; the zip, the loader script and .gitattributes are deleted the same day.', zh: 上传54个场景文件以替代dataset.zip与dataset_script.py；同日删除zip文件、加载脚本与.gitattributes。}
+  url: https://huggingface.co/datasets/wi-lab/lwm/commits/main
+- version: Initial dataset.zip
+  date: '2024-09-15'
+  summary: {en: 'The Hugging Face repository wi-lab/lwm is created, with dataset.zip as its first data file.', zh: Hugging Face仓库wi-lab/lwm创建，首个数据文件为dataset.zip。}
+  url: https://huggingface.co/datasets/wi-lab/lwm

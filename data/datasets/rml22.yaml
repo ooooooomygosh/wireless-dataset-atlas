@@ -13,7 +13,7 @@ paper: doi:10.1109/twc.2023.3254490
 used_in: ['doi:10.1109/tccn.2026.3683207', 'doi:10.1109/tccn.2026.3683189', 'doi:10.1109/tccn.2026.3685396', 'doi:10.1109/jiot.2026.3725259', 'doi:10.1109/iccc70295.2026.11680287']
 citing: ['doi:10.1109/twc.2024.3450972', 'doi:10.1109/twc.2024.3412234', 'doi:10.1038/s41467-025-60921-z']
 summary: {en: 'A generator of I/Q frames for 10 modulation types (QAM16, QAM64, 8PSK, WBFM, BPSK, CPFSK, AM-DSB, GFSK, PAM4, QPSK) at SNR from -20 to 20 dB in 2 dB steps. Variants include clean, AWGN, clock-effect, fading and combined impairments.', zh: 用于生成 I/Q 帧的生成器，覆盖 10 种调制类型（QAM16、QAM64、8PSK、WBFM、BPSK、CPFSK、AM-DSB、GFSK、PAM4、QPSK），SNR 范围为 -20 至 20 dB，步长 2 dB。变体包括无损伤、AWGN、时钟效应、衰落以及组合损伤。}
-sources: ['https://github.com/venkateshsathya/RML22', 'https://raw.githubusercontent.com/venkateshsathya/RML22/main/code/RML22.ipynb', 'https://api.crossref.org/works/10.1109/TWC.2023.3254490']
+sources: ['https://github.com/venkateshsathya/RML22', 'https://raw.githubusercontent.com/venkateshsathya/RML22/main/code/RML22.ipynb', 'https://api.crossref.org/works/10.1109/TWC.2023.3254490', 'https://github.com/venkateshsathya/RML22/tree/main/code', 'https://raw.githubusercontent.com/venkateshsathya/RML22/main/README.md', 'https://raw.githubusercontent.com/venkateshsathya/RML22/main/code/transmitters.py', 'https://raw.githubusercontent.com/venkateshsathya/RML22/main/code/source_alphabet.py', 'https://raw.githubusercontent.com/venkateshsathya/RML22/main/code/clockArtifacts.py', 'https://github.com/venkateshsathya/RML22/commits/main', 'https://github.com/venkateshsathya/RML22/commit/b2e7be4', 'https://github.com/venkateshsathya/RML22/commit/6771c82', 'https://github.com/venkateshsathya/RML22/releases', 'https://doi.org/10.1109/TWC.2023.3254490']
 checked: '2026-11-06'
 overview: {en: 'RML22 is a synthetic I/Q dataset for modulation classification, published in IEEE Transactions on Wireless Communications in November 2023 by Venkatesh Sathyanarayanan, Peter Gerstoft and Aly El Gamal. A GNU Radio generator in the authors'' GitHub repository creates it from random bits for 8 digital modulations and from an audio recording for 2 analog modulations. The 10 modulation types are BPSK, QPSK, 8PSK, PAM4, QAM16, QAM64, GFSK, CPFSK, WBFM and AM-DSB. Each frame holds 128 complex I/Q samples stored as a 2 x 128 float32 array, and 2000 frames are generated for each modulation and SNR. SNR runs from -20 dB to 20 dB in 2 dB steps. The generator offers five variants (clean, AWGN only, clock effects only, fading only, and all impairments combined), and the default output is the combined variant named RML22. The data are written as a pickled Python dictionary keyed by modulation name and SNR. The GitHub repository links the generated data on Google Drive; its code folder
     holds the generator, a CNN notebook and a trained model, not the dataset file.', zh: RML22 是用于调制分类的合成 I/Q 数据集，由 Venkatesh Sathyanarayanan、Peter Gerstoft 与 Aly El Gamal 于 2023 年 11 月发表于 IEEE Transactions on Wireless Communications。作者 GitHub 仓库中的 GNU Radio 生成器，以随机比特生成 8 种数字调制，以一段音频录音生成 2 种模拟调制。10 种调制类型为 BPSK、QPSK、8PSK、PAM4、QAM16、QAM64、GFSK、CPFSK、WBFM 与 AM-DSB。每帧含 128 个复数 I/Q 采样，存为 2 x 128 的 float32 数组；每种调制、每个 SNR 生成 2000 帧。SNR 范围为 -20 dB 至 20 dB，步长 2 dB。生成器提供五种变体（纯净、仅 AWGN、仅时钟效应、仅衰落，以及全部损伤叠加），默认输出为名为 RML22 的组合变体。数据以按调制名与 SNR 为键的 Python 字典形式写入 pickle 文件。GitHub 仓库通过 Google Drive 链接提供生成好的数据；代码目录包含生成器、CNN notebook 与训练后的模型，不含数据文件本身。}
@@ -56,3 +56,117 @@ pipeline:
     - {en: Frame arrays for each key, zh: 各键对应的帧数组}
     outputs:
     - {en: RML22 pickle file, zh: RML22 pickle 文件}
+organization: UC San Diego; InterDigital
+format: Python pickle
+samples: 420,000 frames of 128 complex samples
+facts:
+- label: {en: Class label and keys, zh: 类别标签与键}
+  text: {en: 'The class label is the modulation name. Each pickle key is a (modulation, SNR) tuple, with SNR from -20 to 20 dB in 2 dB steps, and each value is a float32 array of shape 2000 x 2 x 128.', zh: 类别标签为调制名称。pickle 中每个键为（调制，SNR）元组，SNR 从 -20 至 20 dB，步长 2 dB；每个值为形状 2000 x 2 x 128 的 float32 数组。}
+- label: {en: 'Train, validation and test split', zh: 训练、验证与测试划分}
+  text: {en: 'The training cell holds out 20% of the frames as a test set with sklearn train_test_split (random_state=1), then holds out 20% of the remainder as validation, leaving 64% for training.', zh: 训练代码块使用 sklearn 的 train_test_split（random_state=1），先留出 20% 的帧作为测试集，再从剩余部分留出 20% 作为验证集，训练集占 64%。}
+- label: {en: Analog source window, zh: 模拟源截取窗口}
+  text: {en: 'For WBFM and AM-DSB, the first 5 s and last 60 s of Podcast.wav are excluded before a random start point is drawn.', zh: 对于 WBFM 与 AM-DSB，在随机选取起点之前，排除 Podcast.wav 的前 5 秒与后 60 秒。}
+- label: {en: External audio file, zh: 外部音频文件}
+  text: {en: Podcast.wav is not in the code folder. It must be downloaded from the Google Drive folder linked in the README before the generator can produce the analog classes., zh: 代码目录中不包含 Podcast.wav。生成模拟调制类别前，需从 README 中链接的 Google Drive 文件夹下载该文件。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The Rayleigh fading is applied inside the generator; no channel coefficients or channel matrices are released., zh: 衰落在生成器内部施加；未发布信道系数或信道矩阵。}
+- key: cir
+  status: none
+  note: {en: The selective fading uses nine delay taps inside the generator; no impulse responses are released., zh: 选择性衰落在生成器内部使用 9 个时延抽头；未发布冲激响应。}
+- key: paths
+  status: none
+  note: {en: Synthetic channel model with no propagation paths; no per-path parameters are released., zh: 合成信道模型，不含传播路径；未发布逐径参数。}
+- key: interaction
+  status: none
+  note: {en: 'Synthetic signal generation with no propagation geometry, so no interaction points exist.', zh: 合成信号生成，不含传播几何，因此不存在交互点。}
+- key: power
+  status: none
+  note: {en: 'Each frame is normalised by the sum of its magnitudes, so absolute received power is not retained; SNR is the only level label.', zh: 每帧除以幅度之和进行归一化，绝对接收功率未被保留；SNR 是唯一的电平标签。}
+- key: iq
+  status: provided
+  note: {en: '2000 frames per modulation and SNR, each 2 x 128 float32 (real and imaginary parts), in the RML22 pickle distributed through the Google Drive link in the README.', zh: 每种调制、每个 SNR 含 2000 帧，每帧为 2 x 128 的 float32（实部与虚部），包含于 RML22 pickle 文件中，通过 README 中的 Google Drive 链接发布。}
+- key: beam_labels
+  status: none
+  note: {en: Labels are modulation types; no beam indices or per-beam gains., zh: 标签为调制类型；无波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: Synthetic signals with no device or user positions and no GPS data., zh: 合成信号，无设备或用户位置，也无 GPS 数据。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files; signal-level data only., zh: 无场景或地图文件，仅有信号级数据。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: No image data., zh: 无图像数据。}
+- key: depth
+  status: none
+  note: {en: No depth data., zh: 无深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data., zh: 无 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar sensing data., zh: 无雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data., zh: 无 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: Frames are cut at random offsets from generated streams; no timestamps or ordered sequences are kept., zh: 帧从生成的流中随机偏移截取；不保留时间戳或有序序列。}
+- key: multiuser
+  status: none
+  note: {en: Single transmitter per frame; no multi-user channels., zh: 每帧为单一发射机，无多用户信道。}
+- key: multibs
+  status: none
+  note: {en: Single transmitter per frame; no multi-base-station data., zh: 每帧为单一发射机，无多基站数据。}
+- key: crossfreq
+  status: none
+  note: {en: Single 1 GHz centre frequency; no paired multi-band data., zh: 单一 1 GHz 中心频率，无成对多频段数据。}
+- key: near_field
+  status: none
+  note: {en: No antenna array or propagation distance is modelled., zh: 未建模天线阵列或传播距离。}
+- key: high_mobility
+  status: unknown
+  note: {en: The fading profile is labelled ETU70 with a 70 Hz maximum Doppler frequency; no user speed is stated., zh: 衰落模型标注为 ETU70，最大多普勒频率为 70 Hz；文档未给出用户速度。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Synthetic channel impairments only; no moving blockers., zh: 仅有合成信道损伤，无移动遮挡物。}
+- key: reflection
+  status: none
+  note: {en: The Rayleigh fading is a statistical model; no reflecting surfaces are simulated., zh: Rayleigh 衰落为统计模型，未模拟反射面。}
+- key: diffraction
+  status: none
+  note: {en: No propagation geometry; no diffraction is simulated., zh: 无传播几何，未模拟绕射。}
+- key: scattering
+  status: unknown
+  note: {en: Rayleigh fading is a statistical model; the sources do not describe scatterers., zh: Rayleigh 衰落为统计模型；文档未描述散射体。}
+- key: transmission
+  status: none
+  note: {en: No propagation geometry; no penetration is simulated., zh: 无传播几何，未模拟穿透。}
+- key: polarization
+  status: none
+  note: {en: Single complex baseband signal; no polarization dimension., zh: 单一复数基带信号，无极化维度。}
+- key: em_field
+  status: none
+  note: {en: Baseband I/Q only; no field components or antenna patterns., zh: 仅有基带 I/Q，无场分量或天线方向图。}
+versions:
+- version: GitHub commit b2e7be4
+  date: '2024-04-22'
+  summary: {en: README links for the RML22 dataset and Podcast.wav moved to a new Google Drive folder because the old link was broken. The commit changes only link text., zh: README 中 RML22 数据集与 Podcast.wav 的链接改为新的 Google Drive 文件夹，原链接已失效。该提交仅修改链接文本。}
+  url: https://github.com/venkateshsathya/RML22/commit/b2e7be4
+- version: IEEE TWC vol. 22, pp. 7663-7675
+  date: 2023-11
+  summary: {en: 'Journal article ''RML22: Realistic Dataset Generation for Wireless Modulation Classification'' published in IEEE Transactions on Wireless Communications, describing the dataset and its generator.', zh: '期刊论文《RML22: Realistic Dataset Generation for Wireless Modulation Classification》发表于 IEEE Transactions on Wireless Communications，描述了数据集及其生成器。'}
+  url: https://doi.org/10.1109/TWC.2023.3254490
+- version: GitHub commit 6771c82
+  date: '2022-02-27'
+  summary: {en: 'Added the RML22 generation code to the code folder: RML22.ipynb, transmitters.py, clockArtifacts.py and source_alphabet.py, together with a CNN architecture and trained model files.', zh: 在 code 文件夹中加入 RML22 生成代码：RML22.ipynb、transmitters.py、clockArtifacts.py 与 source_alphabet.py，并附 CNN 结构与训练模型文件。}
+  url: https://github.com/venkateshsathya/RML22/commit/6771c82
+- version: GitHub initial commit (AMCDataset)
+  date: '2021-07-16'
+  summary: {en: 'Repository started under the name AMCDataset: an initial commit with the README, then an upload of dataset generation code for modulation classification (Datasetgeneration_Fast.py, transmitters.py, source_alphabet_New.py).', zh: 仓库以 AMCDataset 名称创建：先提交 README，随后上传用于调制分类的数据集生成代码（Datasetgeneration_Fast.py、transmitters.py、source_alphabet_New.py）。}
+  url: https://github.com/venkateshsathya/RML22/commits/main

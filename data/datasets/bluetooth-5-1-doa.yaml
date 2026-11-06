@@ -4,9 +4,9 @@ year: 2021
 origin: simulation
 tasks: [doa-estimation]
 signals: [iq]
-bands_ghz: []
+bands_ghz: [2.4]
 environment: []
-antennas: {rx: 8, array: upa}
+antennas: {rx: 8, array: other}
 standard: Bluetooth 5.1
 license: GPLv3
 access: {url: 'https://data.mendeley.com/datasets/zjn2zxcgyz/1', type: open}
@@ -15,36 +15,120 @@ paper: doi:10.1016/j.dib.2021.107576
 used_in: []
 citing: ['doi:10.1109/jiot.2025.3530866']
 summary: {en: 'Python-generated baseband Bluetooth 5.1 signals and pure-tone data for an 8-element URA, with additive noise and coherent interfering signals at random arrival angles. The dataset is distributed in four parts.', zh: 由 Python 生成器产生的 Bluetooth 5.1 基带信号与纯音数据，面向 8 元 URA 阵列，包含加性噪声以及随机到达角的相干干扰信号。数据集分为四个部分发布。}
-sources: ['https://data.mendeley.com/datasets/zjn2zxcgyz/1', 'https://api.crossref.org/works/10.1016/j.dib.2021.107576', 'https://api.openalex.org/works/doi:10.1016/j.dib.2021.107576']
+sources: ['https://data.mendeley.com/datasets/zjn2zxcgyz/1', 'https://api.crossref.org/works/10.1016/j.dib.2021.107576', 'https://api.openalex.org/works/doi:10.1016/j.dib.2021.107576', 'https://www.ebi.ac.uk/europepmc/webservices/rest/PMC8607165/fullTextXML', 'https://data.mendeley.com/datasets/gysjfpvxpm/1', 'https://data.mendeley.com/datasets/nnv3vpy4y3/1', 'https://data.mendeley.com/datasets/362szwsnc4/1', 'https://data.mendeley.com/api/datasets/zjn2zxcgyz/files?folder_id=root']
 checked: '2026-11-06'
-overview: {en: 'The Bluetooth 5.1 Direction-of-Arrival Dataset is a set of simulated baseband signals for developing and validating direction-of-arrival (DoA) algorithms. Piazzese, Perrone and Pau produced it with a Python generator built on a mathematical model of a non-uniform rectangular antenna array (URA8), and the data article appeared in Data in Brief in December 2021. The dataset is distributed in four parts on Mendeley Data, and the Python code that generated it is included. It has two branches: pure sinusoidal tones and baseband Bluetooth 5.1 signals. Each signal is mixed with additive white Gaussian noise at varying levels and with coherent interfering signals at random DoA coordinates. The data are generated, not measured, and the authors state that the code can be modified for other signal types or array topologies.', zh: Bluetooth 5.1 Direction-of-Arrival数据集是一组用于开发和验证到达方向（DoA）算法的仿真基带信号。Piazzese、Perrone和Pau使用基于非均匀矩形天线阵列（URA8）数学模型的Python生成器制作了该数据集，数据文章于2021年12月发表在Data in Brief上。数据集通过Mendeley
-    Data分四部分发布，并附有生成数据的Python代码。数据包含两个分支：纯正弦音和基带Bluetooth 5.1信号。每个信号都叠加了不同强度的加性高斯白噪声，并叠加了随机DoA坐标处的相干干扰信号。数据为生成所得，而非测量得到，作者指出代码可修改，以适用于其他信号类型或阵列拓扑。}
+overview: {en: 'The Bluetooth 5.1 Direction-of-Arrival Dataset is a set of simulated baseband signals for developing and validating direction-of-arrival (DoA) algorithms. Piazzese, Perrone and Pau generated it with a Python model of an eight-element non-uniform rectangular antenna array (URA8), and the data article appeared in the December 2021 issue of Data in Brief (volume 39). The dataset is distributed in four parts on Mendeley Data, and the Python code that generated it is included. It has two branches: pure sinusoidal tones at 2.4 GHz and baseband Bluetooth 5.1 signals with GFSK modulation at 1 Mbit/s. The signals include additive white Gaussian noise at several SNR levels and coherent interfering signals arriving from random DoA coordinates. The data are generated rather than measured, and the authors state that the code can be modified for other signal types or array topologies.', zh: Bluetooth 5.1 Direction-of-Arrival数据集是一组用于开发和验证到达方向（DoA）算法的仿真基带信号。Piazzese、Perrone和Pau使用非均匀矩形天线阵列（URA8，含八个阵元）的Python模型生成了该数据，数据文章发表于2021年12月出版的Data
+    in Brief第39卷。数据集通过Mendeley Data分为四个部分发布，并包含生成数据的Python代码。数据包含两个分支：2.4 GHz的纯正弦音，以及采用GFSK调制、速率为1 Mbit/s的基带Bluetooth 5.1信号。信号中包含多个信噪比水平的加性高斯白噪声，以及来自随机DoA坐标的相干干扰信号。数据为生成所得而非测量获得，作者指出代码可修改，以适用于其他信号类型或阵列拓扑。}
 signal_details:
 - signal: iq
   text: {en: 'Baseband Bluetooth 5.1 signals and pure sinusoidal tones, generated for the URA8 array by the Python code included with the dataset. Additive white Gaussian noise is added at varying levels, and coherent interfering signals arrive from random DoA coordinates.', zh: 由数据集随附的Python代码为URA8阵列生成的基带Bluetooth 5.1信号和纯正弦音。叠加了不同强度的加性高斯白噪声，并叠加了来自随机DoA坐标的相干干扰信号。}
 pipeline:
-  summary: {en: 'A Python generator models the URA8 array, produces Bluetooth 5.1 baseband signals and sinusoidal tones, adds noise and coherent interferers, and packages the output in four Mendeley Data parts.', zh: Python生成器对URA8阵列建模，生成Bluetooth 5.1基带信号和正弦音，叠加噪声与相干干扰，并将输出打包为Mendeley Data的四个部分。}
+  summary: {en: 'A Python generator models the URA8 array, produces Bluetooth 5.1 baseband signals and sinusoidal tones, adds noise and coherent interferers, runs MUSIC to produce reference estimates, and packages the output in four Mendeley Data parts.', zh: Python生成器对URA8阵列建模，生成Bluetooth 5.1基带信号和正弦音，叠加噪声与相干干扰，运行MUSIC生成参考估计，并将输出打包为Mendeley Data的四个部分。}
   stages:
   - title: {en: Array model, zh: 阵列模型}
-    detail: {en: The dataset is generated with a mathematical model of a non-uniform rectangular antenna array (URA8). The Python source files that implement the model are provided with the data., zh: 数据集使用非均匀矩形天线阵列（URA8）的数学模型生成。实现该模型的Python源文件随数据一同提供。}
+    detail: {en: 'The dataset is generated with a mathematical model of a non-uniform rectangular antenna array of eight patch elements, evenly spaced on a square edge with no central element. The Python source files that implement the model are provided with the data.', zh: 数据集基于一个非均匀矩形天线阵列的数学模型生成，该阵列由八个贴片阵元组成，沿方形边等间距排列，且无中心阵元。实现该模型的Python源文件随数据一同提供。}
     outputs:
     - {en: URA8 array model, zh: URA8阵列模型}
   - title: {en: Source signal generation, zh: 信源信号生成}
-    detail: {en: 'The Python code produces two branches: pure sinusoidal tones and baseband Bluetooth 5.1 signals.', zh: Python代码生成两个分支：纯正弦音和基带Bluetooth 5.1信号。}
+    detail: {en: 'The Python code produces two branches. The tone branch is an RF model at 2.4 GHz. The Bluetooth branch models binary GFSK at 1 Mbit/s, at the 16 MHz receiver ADC sampling rate, and includes constant tone extension (CTE) signals.', zh: Python代码生成两个分支。纯音分支为2.4 GHz射频模型。蓝牙分支为二进制GFSK模型，速率为1 Mbit/s，按接收机ADC的16 MHz采样率建模，并包含恒定音扩展（CTE）信号。}
     inputs:
     - {en: URA8 array model, zh: URA8阵列模型}
     outputs:
     - {en: Sinusoidal tones, zh: 正弦音}
     - {en: Baseband Bluetooth 5.1 signals, zh: 基带Bluetooth 5.1信号}
   - title: {en: Noise and interference, zh: 噪声与干扰}
-    detail: {en: Additive white Gaussian noise is added at varying levels. Coherent interfering signals are added at random DoA coordinates., zh: 以不同强度叠加加性高斯白噪声。在随机DoA坐标处叠加相干干扰信号。}
+    detail: {en: Additive white Gaussian noise is added at several SNR levels. Coherent interfering signals are added at random DoA coordinates., zh: 以多个信噪比水平叠加加性高斯白噪声。在随机DoA坐标处叠加相干干扰信号。}
     inputs:
     - {en: Sinusoidal tones and Bluetooth 5.1 signals, zh: 正弦音和Bluetooth 5.1信号}
     outputs:
     - {en: Noisy array signals with interferers, zh: 含干扰的带噪阵列信号}
+  - title: {en: MUSIC reference estimates, zh: MUSIC参考估计}
+    detail: {en: 'The MUSIC algorithm is applied to each simulated set, and its DoA estimates are saved in doares CSV files as the reference for comparing other DoA algorithms.', zh: 对每组仿真数据应用MUSIC算法，并将其DoA估计保存在doares CSV文件中，作为比较其他DoA算法的参考。}
+    inputs:
+    - {en: Noisy array signals with interferers, zh: 含干扰的带噪阵列信号}
+    outputs:
+    - {en: MUSIC azimuth and elevation estimates, zh: MUSIC方位角与仰角估计}
   - title: {en: Packaging and distribution, zh: 打包与发布}
-    detail: {en: The output is split into four parts on Mendeley Data under the GPLv3 license. The Python code that generated the data is included. All four parts must be downloaded to recreate the directory structure., zh: 输出分为Mendeley Data上的四个部分，采用GPLv3许可证发布。生成数据的Python代码随数据包含在内。需下载全部四个部分才能重建目录结构。}
+    detail: {en: The output is stored as CSV files and split into four parts on Mendeley Data under the GPLv3 license. The Python code that generated the data is included. All four parts must be downloaded to recreate the directory structure., zh: 输出以CSV文件存储，并在Mendeley Data上分为四个部分，采用GPLv3许可证发布。生成数据的Python代码随附。需下载全部四个部分才能重建目录结构。}
     inputs:
     - {en: Generated signal data, zh: 生成的信号数据}
     outputs:
     - {en: Four Mendeley Data parts, zh: Mendeley Data的四个部分}
+format: CSV
+facts:
+- label: {en: File layout, zh: 文件结构}
+  text: {en: 'Each test folder holds one sub-folder per useful-signal angle, named by azimuth and elevation. The X_m files are 8 x 70 complex IQ matrices without a header, the doares files give the MUSIC estimates, and the info files list the test parameters. All files are UTF-8 CSV with comma separators.', zh: 每个测试文件夹下按有用信号的方位角与仰角分为子文件夹。X_m文件为8 x 70的复数IQ矩阵，无表头；doares文件给出MUSIC估计值；info文件记录测试参数。所有文件均为UTF-8编码、逗号分隔的CSV。}
+- label: {en: Angle grid, zh: 角度网格}
+  text: {en: 'The useful-signal azimuth runs from 0 to 359 degrees in 1-degree steps, and the elevation runs from 0 to 90 degrees in 3-degree steps. Interfering-signal angles are drawn at random from the same ranges.', zh: 有用信号方位角从0到359度、步长1度；仰角从0到90度、步长3度。干扰信号角度在相同范围内随机取值。}
+- label: {en: SNR and SIR levels, zh: 信噪比与信干比水平}
+  text: {en: 'The Bluetooth branch uses SNR values of 30, 48 and 60 dB and SIR values from 3 to 60 dB, taken at ten values. The pure-tone branch uses SNR values of 12, 30 and 60 dB and SIR values of 6 and 12 dB.', zh: 蓝牙分支的SNR取30、48和60 dB，SIR在3至60 dB之间取十个值。纯音分支的SNR取12、30和60 dB，SIR取6和12 dB。}
+- label: {en: Hardware check, zh: 硬件验证}
+  text: {en: 'The authors compare the modelled Bluetooth signals with IQ samples from an STMicroelectronics transceiver prototype at 60 dB SNR, and report a mean error of 0 and a standard error deviation of about 1 percent.', zh: 作者将建模的蓝牙信号与STMicroelectronics收发器原型在60 dB信噪比下采集的IQ样本进行比较，报告平均误差为0，标准误差偏差约为1%。}
+limitations:
+- {en: 'The data are simulated, and the hardware comparison covers one transceiver prototype at 60 dB SNR only.', zh: 数据为仿真生成，硬件对比仅覆盖一台收发器原型，且仅在60 dB信噪比下进行。}
+- {en: 'The SNR values of the tone and Bluetooth branches are not comparable, because the noise bandwidth differs.', zh: 纯音分支与蓝牙分支的信噪比数值不可直接比较，因为噪声带宽不同。}
+- {en: 'In the Bluetooth branch the interfering signals are reflections of the useful signal, because the filter chain strongly attenuates adjacent and alternate channel power.', zh: 在蓝牙分支中，干扰信号实际上是有用信号的反射，因为滤波链大幅衰减了相邻信道和交替信道的功率。}
+history:
+- {en: Part 1 of the Mendeley Data record (version 1) was published on 11 June 2021. The Data in Brief article followed in 2021., zh: Mendeley Data记录第1部分（第1版）发布于2021年6月11日，Data in Brief文章随后于2021年发表。}
+usage:
+- {en: 'The authors state that the Python code can be extended with more than two interferers, a different array topology, more simulated measurements, or other signal types.', zh: 作者指出，Python代码可扩展为增加更多干扰源、更换阵列拓扑、增加仿真测量次数，或生成其他类型的信号。}
+capabilities:
+- {key: csi, status: unknown}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: 'Per-element received power is computable from the complex baseband samples; the sources give noise levels, not power values.', zh: 可由复基带采样计算每个阵元的接收功率；来源仅给出噪声强度，未给出功率数值。}
+- key: iq
+  status: provided
+  note: {en: 'Simulated complex baseband signals for the 8-element URA, generated rather than measured.', zh: 为 8 元 URA 生成的仿真复基带信号，非测量数据。}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: none
+  note: {en: Interferers are placed at random DoA coordinates; no user or device position or GPS is described., zh: 干扰源位于随机 DoA 坐标；未描述用户或设备位置及 GPS。}
+- key: geometry
+  status: none
+  note: {en: The URA8 array is modelled in the generator code; no 3D scene or map files are described., zh: URA8 阵列在生成代码中建模；未描述三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are described., zh: 未描述材料参数。}
+- key: rgb
+  status: none
+  note: {en: The dataset has only two generated RF branches (sinusoidal tones and Bluetooth 5.1 baseband); no camera data are described., zh: 数据集仅包含两个生成的射频分支（正弦音与 Bluetooth 5.1 基带）；未描述相机数据。}
+- key: depth
+  status: none
+  note: {en: Only the two generated RF branches are described; no depth data are described., zh: 仅描述了两个生成的射频分支；未描述深度数据。}
+- key: lidar
+  status: none
+  note: {en: Only the two generated RF branches are described; no lidar data are described., zh: 仅描述了两个生成的射频分支；未描述激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: Only the two generated RF branches are described; no radar data are described., zh: 仅描述了两个生成的射频分支；未描述雷达数据。}
+- key: imu
+  status: none
+  note: {en: Only the two generated RF branches are described; no IMU data are described., zh: 仅描述了两个生成的射频分支；未描述惯性测量单元数据。}
+- {key: time_series, status: unknown}
+- key: multiuser
+  status: provided
+  note: {en: 'Coherent interfering signals arrive together with the desired Bluetooth signal at random DoAs; they are interferers, not separate user channels.', zh: 相干干扰信号与目标 Bluetooth 信号在随机 DoA 处同时到达；它们是干扰源，而非独立的用户信道。}
+- key: multibs
+  status: none
+  note: {en: One 8-element URA receiver is described; no multiple base stations are described., zh: 仅描述一个 8 元 URA 接收端；未描述多个基站。}
+- key: crossfreq
+  status: none
+  note: {en: Only sinusoidal tones and Bluetooth 5.1 signals are described; no paired multi-band data are described., zh: 仅描述了正弦音与 Bluetooth 5.1 信号；未描述成对的多频段数据。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: Version 1
+  date: '2021-06-11'
+  summary: {en: 'Initial and only Mendeley Data release, with all four parts published 2021-06-11: URA8 Bluetooth 5.1 baseband signals and sinusoidal tones from the Python generator, with AWGN and coherent interferers. Part 1 is ST_URA8_Dataset.zip (6.6 GB).', zh: 首个也是唯一的 Mendeley Data 版本，四个部分均于 2021-06-11 发布：由 Python 生成器产生的 URA8 Bluetooth 5.1 基带信号与正弦音，包含 AWGN 与相干干扰。第一部分为 ST_URA8_Dataset.zip（6.6 GB）。}
+  url: https://data.mendeley.com/datasets/zjn2zxcgyz/1

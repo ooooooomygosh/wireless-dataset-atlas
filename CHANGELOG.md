@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0
+
+- Every dataset now carries a 28-item capability matrix (CSI, CIR, paths, power, I/Q, beam labels, position, geometry, materials, RGB, depth, LiDAR, radar, IMU, time series, multi-user, multi-BS, cross-frequency, near field, high mobility, dynamic blockage, reflection, diffraction, scattering, transmission, polarization, EM field), each marked provided, derivable, simulated, absent or unknown with a source-backed note.
+- Added a version history per dataset: dataset releases, archive snapshots and paper revisions, newest first.
+- The datasets list can be filtered by capability, and the compare view shows capability and version rows.
+- Dataset pages are split into tabs (Overview, Generation pipeline, Specification, Versions, Notes, Papers and resources) with a key-facts strip.
+- All 135 records were re-checked against their official pages and papers; incorrect or unsupported statements were corrected or removed.
+
 ## 2.0.0
 
 - Rebuilt the site with Astro: one URL per dataset, task and language (`/en/`, `/zh/`).

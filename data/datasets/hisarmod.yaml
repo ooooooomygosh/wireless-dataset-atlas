@@ -15,10 +15,10 @@ paper: arxiv:1911.04970
 used_in: ['doi:10.1109/tccn.2024.3485118', 'doi:10.1109/jiot.2024.3462544', 'doi:10.1109/tccn.2025.3535738', 'doi:10.1109/tccn.2024.3462905', 'doi:10.1109/tvt.2026.3651637']
 citing: ['doi:10.1109/lwc.2020.2999453', 'doi:10.1109/tccn.2023.3252580']
 summary: {en: '780,000 MATLAB-generated I/Q signals of 1,024 samples each, covering 26 analog, FSK, PAM, PSK and QAM modulation types at 20 SNR levels from -20 to 18 dB. The signals pass through five wireless channel conditions.', zh: '由 MATLAB 生成的 780,000 条 I/Q 信号，每条包含 1,024 个采样点，涵盖模拟调制、FSK、PAM、PSK 和 QAM 等 26 种调制类型，信噪比为 -20 至 18 dB（共 20 个等级）。信号经过五种无线信道条件。'}
-sources: ['https://ieee-dataport.org/node/1785', 'https://dx.doi.org/10.21227/8k12-2g70', 'https://arxiv.org/abs/1911.04970']
+sources: ['https://ieee-dataport.org/node/1785', 'https://dx.doi.org/10.21227/8k12-2g70', 'https://arxiv.org/abs/1911.04970', 'https://arxiv.org/pdf/1911.04970', 'http://export.arxiv.org/api/query?id_list=1911.04970', 'https://arxiv.org/abs/1911.04970v1', 'https://arxiv.org/html/1911.04970v1', 'https://arxiv.org/html/1911.04970v2']
 checked: '2026-11-06'
-overview: {en: 'HisarMod2019.1 is a synthetic dataset of 780,000 I/Q signals, generated in MATLAB 2017a and released on IEEE DataPort under CC BY 4.0, with the paper on arXiv as 1911.04970. The authors are Kürşat Tekbıyık, Cihat Keçeci, Ali Rıza Ekti, Ali Görçin and Güneş Karabulut Kurt, from Istanbul Technical University, Boğaziçi University, Balıkesir University and Yıldız Technical University. The dataset aims to increase the diversity of signal datasets, and the IEEE DataPort page reports acceptance at VTC2020-Spring. Each signal has 1,024 I/Q samples and belongs to one of 26 modulation types from five families: analog, FSK, PAM, PSK and QAM. The total of 780,000 equals 26 modulation types times 1,500 signals times 20 SNR levels, with 300 signals per channel condition and SNR level, and the SNR levels run from -20 dB to 18 dB. Each signal passes through one of five equally likely channel conditions: ideal AWGN, static, Rayleigh, Rician with K = 3, and Nakagami-m with m = 2.', zh: 'HisarMod2019.1
-    是一个合成数据集，包含 780,000 条 I/Q 信号，由 MATLAB 2017a 生成，发布于 IEEE DataPort，采用 CC BY 4.0 许可，对应论文为 arXiv:1911.04970。作者为 Kürşat Tekbıyık、Cihat Keçeci、Ali Rıza Ekti、Ali Görçin 和 Güneş Karabulut Kurt，单位为伊斯坦布尔技术大学、博阿兹奇大学、巴勒克西尔大学和伊尔迪兹技术大学。作者称该数据集旨在提高信号数据集的多样性，IEEE DataPort 页面注明其已被 VTC2020-Spring 接收。每条信号包含 1,024 个 I/Q 采样点，属于五个族中的 26 种调制类型：模拟调制、FSK、PAM、PSK 和 QAM。780,000 条信号等于 26 种调制类型乘以 1,500 条信号再乘以 20 个 SNR 等级，每种信道条件和每个 SNR 等级各有 300 条；SNR 范围为 -20 dB 至 18 dB。每条信号经过五种等概率信道条件之一：理想 AWGN、静态、Rayleigh、K = 3 的 Rician 和 m = 2 的 Nakagami-m。'}
+overview: {en: 'HisarMod2019.1 is a synthetic dataset of 780,000 I/Q signals, generated in MATLAB 2017a and released on IEEE DataPort under CC BY 4.0, with the paper on arXiv as 1911.04970. The authors are Kürşat Tekbıyık, Cihat Keçeci, Ali Rıza Ekti, Ali Görçin and Güneş Karabulut Kurt, from TÜBİTAK BİLGEM, Istanbul Technical University, Boğaziçi University, Balıkesir University and Yıldız Technical University. The dataset aims to increase the diversity of signal datasets, and the IEEE DataPort page reports acceptance at VTC2020-Spring. Each signal has 1,024 I/Q samples and belongs to one of 26 modulation types from five families: analog, FSK, PAM, PSK and QAM. The total of 780,000 equals 26 modulation types times 20 SNR levels times 1,500 signals per modulation type and SNR level, with SNR from -20 dB to 18 dB. Each modulation type and SNR level has 300 signals for each of five equally likely channel conditions: ideal AWGN, static, Rayleigh, Rician with K = 3, and Nakagami-m with m = 2.',
+  zh: 'HisarMod2019.1 是一个合成数据集，包含 780,000 条 I/Q 信号，由 MATLAB 2017a 生成，发布于 IEEE DataPort，采用 CC BY 4.0 许可，对应论文为 arXiv:1911.04970。作者为 Kürşat Tekbıyık、Cihat Keçeci、Ali Rıza Ekti、Ali Görçin 和 Güneş Karabulut Kurt，单位包括 TÜBİTAK BİLGEM、伊斯坦布尔技术大学、博阿兹奇大学、巴勒克西尔大学和伊尔迪兹技术大学。作者称该数据集旨在提高信号数据集的多样性，IEEE DataPort 页面注明其已被 VTC2020-Spring 接收。每条信号包含 1,024 个 I/Q 采样点，属于模拟、FSK、PAM、PSK 和 QAM 五个族中的 26 种调制类型。780,000 条信号等于 26 种调制类型、20 个 SNR 等级与每个调制类型和 SNR 等级 1,500 条信号的乘积，SNR 范围为 -20 dB 至 18 dB。每个调制类型和 SNR 等级下，五种等概率信道条件各有 300 条信号：理想 AWGN、静态、Rayleigh、K = 3 的 Rician 以及 m = 2 的 Nakagami-m。'}
 signal_details:
 - signal: iq
   text: {en: 'Complex I/Q samples, 1,024 per signal, generated in MATLAB 2017a with an oversampling rate of 2 and raised cosine pulse shaping with roll-off factor 0.35.', zh: '复数 I/Q 采样，每条信号 1,024 个，由 MATLAB 2017a 生成，过采样率为 2，采用滚降系数为 0.35 的升余弦脉冲成形。'}
@@ -42,9 +42,100 @@ pipeline:
     outputs:
     - {en: faded I/Q signals, zh: 经衰落的 I/Q 信号}
   - title: {en: SNR sweep and packaging, zh: SNR 扫描与打包}
-    detail: {en: 'Signals are generated at 20 SNR levels from -20 dB to 18 dB, with 300 signals per channel condition and SNR level. The signals are stored as CSV files in a ZIP archive of 5.13 GB.', zh: 信号在 -20 dB 至 18 dB 的 20 个 SNR 等级下生成，每种信道条件和每个 SNR 等级各 300 条。信号以 CSV 文件形式存储于 5.13 GB 的 ZIP 压缩包中。}
+    detail: {en: 'Signals are generated at 20 SNR levels from -20 dB to 18 dB, with 300 signals for each modulation type, channel condition and SNR level. The signals are stored as CSV files in a ZIP archive of 5.13 GB.', zh: 信号在 -20 dB 至 18 dB 的 20 个 SNR 等级下生成，每种调制类型、信道条件和 SNR 等级各 300 条。信号以 CSV 文件形式存储于 5.13 GB 的 ZIP 压缩包中。}
     inputs:
     - {en: faded I/Q signals, zh: 经衰落的 I/Q 信号}
     - {en: 20 SNR levels, zh: 20 个 SNR 等级}
     outputs:
     - {en: HisarMod2019.1.zip, zh: HisarMod2019.1.zip}
+facts:
+- label: {en: Classification target, zh: 分类目标}
+  text: {en: 'The paper''s CNN classifies the five modulation families (analog, FSK, PAM, PSK, QAM) rather than the 26 individual modulation types.', zh: 论文中的 CNN 对五个调制族（模拟、FSK、PAM、PSK、QAM）进行分类，而非 26 种具体调制类型。}
+- label: {en: Data split, zh: 数据划分}
+  text: {en: 'In its experiments, the paper splits the data 8/15 for training, 2/15 for validation and 5/15 for testing.', zh: 论文实验中将数据按 8/15 用于训练、2/15 用于验证、5/15 用于测试进行划分。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: 'Channel coefficients are drawn inside the MATLAB 2017a generator and are not described as released, so obtaining them requires rerunning the generator.', zh: 信道系数在 MATLAB 2017a 生成器内部抽取，来源未说明随数据发布，因此需重新运行生成器才能获得。}
+- key: cir
+  status: simulate
+  note: {en: The 4 or 6 multipath taps per signal (from ITU-R M.1225) are produced by the generator and are not described as released., zh: 每条信号的 4 或 6 个多径抽头（取自 ITU-R M.1225）由生成器产生，来源未说明随数据发布。}
+- key: paths
+  status: simulate
+  note: {en: 'Multipath taps are generated internally, and no per-path delays, angles or labels are described; rerunning the generator is required.', zh: 多径抽头在内部生成，来源未描述逐径时延、角度或标签；需重新运行生成器。}
+- key: interaction
+  status: none
+  note: {en: 'The channels are statistical models (AWGN, static, Rayleigh, Rician, Nakagami-m), so there are no per-path surfaces or interaction points.', zh: 信道为统计模型（AWGN、静态、Rayleigh、Rician、Nakagami-m），不存在逐径的散射体或交互点。}
+- key: power
+  status: derivable
+  note: {en: 'Per-signal power can be computed from the 1,024 I/Q samples of each signal.', zh: '每条信号的功率可由其 1,024 个 I/Q 采样点计算得到。'}
+- key: iq
+  status: provided
+  note: {en: '1,024 complex I/Q samples per signal, oversampling rate 2, raised cosine pulse shaping with roll-off 0.35, 780,000 signals in total.', zh: '每条信号 1,024 个复数 I/Q 采样点，过采样率 2，升余弦脉冲成形，滚降系数 0.35，共 780,000 条信号。'}
+- key: beam_labels
+  status: none
+  note: {en: Single-link modulation dataset with no beam indices or per-beam gains., zh: 单链路调制数据集，不含波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: Synthetic signals with no user or device position., zh: 合成信号，不含用户或设备位置。}
+- key: geometry
+  status: none
+  note: {en: Synthetic channel models with no 3D scene or map files., zh: 合成信道模型，不含三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: Synthetic channel models with no material parameters., zh: 合成信道模型，不含材料参数。}
+- key: rgb
+  status: none
+  note: {en: 'The dataset contains I/Q signals only, with no images.', zh: 数据集仅包含 I/Q 信号，不含图像。}
+- key: depth
+  status: none
+  note: {en: The dataset contains no depth sensor data., zh: 数据集不含深度传感器数据。}
+- key: lidar
+  status: none
+  note: {en: The dataset contains no lidar data., zh: 数据集不含激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: The dataset contains communication I/Q signals and no radar sensing data., zh: 数据集包含通信 I/Q 信号，不含雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: The dataset contains no IMU data., zh: 数据集不含 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: 'Each signal is a single 1,024-sample waveform, and no timestamps or ordered sequence of signals is described.', zh: '每条信号为单个 1,024 点波形，来源未描述时间戳或信号的有序序列。'}
+- key: multiuser
+  status: none
+  note: {en: 'Each signal is a single modulated stream, and no multi-user channels are described.', zh: 每条信号为单个调制数据流，来源未描述多用户信道。}
+- key: multibs
+  status: none
+  note: {en: Single link with no multiple base station sets., zh: 单链路，不含多基站数据集合。}
+- key: crossfreq
+  status: none
+  note: {en: No positions and no paired multi-band measurements; each signal is a single waveform., zh: 无位置信息，也无配对的多频段测量；每条信号为单个波形。}
+- key: near_field
+  status: none
+  note: {en: 'The channels are statistical fading models, and no spherical-wave or array modelling is described.', zh: 信道为统计衰落模型，来源未描述球面波或阵列建模。}
+- {key: high_mobility, status: unknown}
+- key: dynamic_blockage
+  status: none
+  note: {en: 'The channel conditions are static or statistical, and no moving blockers are described.', zh: 信道条件为静态或统计模型，来源未描述移动遮挡体。}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'Baseband I/Q signals only, with no field-level outputs.', zh: 仅提供基带 I/Q 信号，不含场级输出。}
+versions:
+- version: arXiv v2
+  date: '2020-03-07'
+  summary: {en: Revised paper that replaces the ICC 2020 submission note with the acceptance note for VTC2020-Spring and adds a funding acknowledgement; the body text is otherwise unchanged from v1., zh: 修订版，将 ICC 2020 投稿说明替换为 VTC2020-Spring 录用说明，并增加基金致谢；正文与 v1 相比其余部分未变。}
+  url: https://arxiv.org/abs/1911.04970v2
+- version: arXiv v1
+  date: '2019-11-12'
+  summary: {en: 'First arXiv version of the paper that introduces HisarMod2019.1 with 26 modulation types, five channel conditions and 780,000 I/Q signals; its author note states that the manuscript was submitted to ICC 2020.', zh: '论文首个 arXiv 版本，引入 HisarMod2019.1，包含 26 种调制类型、五种信道条件和 780,000 条 I/Q 信号；作者注明该稿件已投稿至 ICC 2020。'}
+  url: https://arxiv.org/abs/1911.04970v1
+- version: HisarMod2019.1
+  date: '2019-10-27'
+  summary: {en: 'Dataset first published on IEEE DataPort as ''HisarMod: A new challenging modulated signals dataset'' (page created 27 Oct 2019), with 780,000 signals of 1,024 I/Q samples in a CSV ZIP archive.', zh: '数据集首次发布于 IEEE DataPort，题为 ''HisarMod: A new challenging modulated signals dataset''（页面创建于 2019 年 10 月 27 日），包含 780,000 条、每条 1,024 个 I/Q 采样点的信号，以 CSV ZIP 压缩包提供。'}
+  url: https://ieee-dataport.org/node/1785

@@ -17,7 +17,7 @@ paper: arxiv:2305.10345
 used_in: ['doi:10.1109/jiot.2026.3665246', 'doi:10.1109/iccc65529.2025.11149317', 'doi:10.1109/tmc.2026.3716456']
 citing: ['doi:10.1109/jiot.2024.3359209', 'doi:10.1145/3715014.3722068', 'doi:10.1109/tmc.2026.3673171']
 summary: {en: 'Synchronized RGB, depth, LiDAR, mmWave radar and WiFi CSI recordings of 40 subjects performing 27 actions, in 1,080 sequences with over 320k frames. Human pose annotations accompany the data, and the WiFi CSI platform runs at 5 GHz with 40 MHz bandwidth.', zh: '来自40名受试者执行27类动作的同步RGB、深度、LiDAR、毫米波雷达和WiFi CSI记录，共1,080个序列、超过320k帧。数据附有人体姿态标注，WiFi CSI平台工作在5 GHz，带宽为40 MHz。'}
-sources: ['https://github.com/ybhbingo/MMFi_dataset', 'https://arxiv.org/html/2305.10345', 'https://export.arxiv.org/api/query?id_list=2305.10345']
+sources: ['https://github.com/ybhbingo/MMFi_dataset', 'https://arxiv.org/html/2305.10345', 'https://export.arxiv.org/api/query?id_list=2305.10345', 'https://raw.githubusercontent.com/ybhbingo/MMFi_dataset/main/README.md', 'https://ntu-aiot-lab.github.io/mm-fi', 'https://github.com/ybhbingo/MMFi_dataset/releases', 'https://github.com/ybhbingo/MMFi_dataset/releases/tag/stable', 'https://github.com/ybhbingo/MMFi_dataset/tags', 'https://zenodo.org/api/records/7983467', 'https://zenodo.org/api/records/7983467/versions', 'https://arxiv.org/abs/2305.10345', 'https://arxiv.org/pdf/2305.10345v1', 'https://arxiv.org/pdf/2305.10345v2']
 checked: '2026-11-06'
 overview: {en: 'MM-Fi is a multimodal human dataset for wireless sensing. Nanyang Technological University produced it with co-authors from the University of Edinburgh, and it was published in the NeurIPS 2023 Datasets and Benchmarks track (arXiv 2305.10345). It records 40 subjects performing 27 actions, with synchronized RGB, depth, LiDAR, mmWave radar and WiFi CSI streams in four indoor environments of 10 subjects each. The data form 1,080 sequences of 297 frames each, with over 320k synchronized frames in total. Each modality has its own sensor: an Intel RealSense D435 for RGB and depth, an Ouster OS1 32-channel LiDAR, a TI IWR6843 radar at 60 to 64 GHz, and two TP-Link N750 access points running the Atheros CSI Tool on 5 GHz with 40 MHz bandwidth. Annotations include 2D and 3D human keypoints, 3D subject position, 3D dense pose and temporal action segments. Raw RGB and infrared images are not public for privacy reasons, so 17 keypoints per frame are provided in their place. The benchmark
     covers 3D human pose estimation for each modality and multimodal fusion, under three protocols and three data splits.', zh: 'MM-Fi 是一个用于无线感知的多模态人体数据集。该数据集由南洋理工大学（Nanyang Technological University）开发，爱丁堡大学（University of Edinburgh）的合作者参与其中，发表于 NeurIPS 2023 Datasets and Benchmarks 赛道（arXiv 2305.10345）。数据记录了 40 名受试者执行 27 类动作的过程，在 4 个室内环境中每个环境 10 名受试者，同步记录 RGB、深度、LiDAR、毫米波雷达和 WiFi CSI 数据流。数据包含 1,080 个序列，每个序列 297 帧，总计超过 320k 个同步帧。每种模态由独立传感器采集：RGB 和深度由 Intel RealSense D435 获取，LiDAR 为 Ouster OS1 32 线，毫米波雷达为 TI IWR6843（60 至 64 GHz），WiFi CSI 由两台 TP-Link N750 接入点配合 Atheros CSI Tool 在 5 GHz、40 MHz 带宽下采集。标注包括 2D 和 3D 人体关键点、3D 受试者位置、3D 稠密姿态和时序动作片段。出于隐私原因，原始 RGB 与红外图像不公开，取而代之的是每帧 17 个关键点。基准任务涵盖各模态的 3D 人体姿态估计以及多模态融合，包含三种协议和三种数据划分。'}
@@ -69,3 +69,85 @@ pipeline:
     detail: {en: 'At least 5 annotators label each sequence, and breakpoints are set by majority voting. The segments are stored as CSV files.', zh: 每个序列至少由 5 名标注者标注，分段断点以多数投票确定。分段结果以 CSV 文件存储。}
     outputs:
     - {en: temporal action segments (.csv), zh: 时序动作片段（.csv）}
+format: NPY, MAT, BIN, PNG, CSV
+facts:
+- label: {en: Protocols, zh: 协议}
+  text: {en: 'Protocol 1 covers 14 daily activities performed freely in space, protocol 2 covers 13 rehabilitation exercises performed at a fixed location, and protocol 3 covers all 27 actions.', zh: 协议 1 包含 14 个在空间中自由进行的日常活动，协议 2 包含 13 个在固定位置进行的康复训练动作，协议 3 包含全部 27 个动作。}
+- label: {en: Splits, zh: 数据划分}
+  text: {en: 'S1 is a random split of samples at a 3:1 ratio. S2 splits by subject, with 32 subjects for training and 8 for testing. S3 trains on three randomly chosen environments and tests on the remaining one.', zh: 'S1 为样本级随机划分，比例为 3:1。S2 按受试者划分，32 名用于训练，8 名用于测试。S3 随机选取三个环境用于训练，其余一个环境用于测试。'}
+- label: {en: File layout, zh: 文件结构}
+  text: {en: 'Folders are organised as E01 to E04 for environments, S01 to S10 for subjects and A01 to A27 for actions, with one folder per modality such as rgb, mmwave and wifi-csi.', zh: 目录按环境 E01 至 E04、受试者 S01 至 S10、动作 A01 至 A27 组织，每种模态一个文件夹，例如 rgb、mmwave 和 wifi-csi。}
+- label: {en: Coordinates and radar points, zh: 坐标系与雷达点}
+  text: {en: 'LiDAR and mmWave point clouds follow the right-hand rule, with the RGB camera centre as the world origin. Each radar point is (x, y, z, d, I), where d is Doppler velocity and I is signal intensity.', zh: 'LiDAR 与毫米波点云采用右手坐标系，以 RGB 相机中心为世界坐标原点。每个雷达点为 (x, y, z, d, I)，其中 d 为多普勒速度，I 为信号强度。'}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Two TP-Link N750 access points run the Atheros CSI Tool at 5 GHz with 40 MHz bandwidth, 1 TX and 3 RX antennas, and 114 subcarriers; each sample is 297 x 3 x 114.', zh: 两台 TP-Link N750 接入点运行 Atheros CSI Tool，工作在 5 GHz、带宽 40 MHz，1 个发射和 3 个接收天线，114 个子载波；每个样本为 297 x 3 x 114。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- {key: power, status: unknown}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: provided
+  note: {en: '3D subject position is annotated as a circumscribed cube fused from LiDAR and camera data, with mean error within 50 mm on 2,000 frames.', zh: '标注了 3D 受试者位置，由 LiDAR 与相机数据融合得到外接立方体，在 2,000 帧上平均误差在 50 mm 以内。'}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: provided
+  note: {en: 'Raw RGB is withheld for privacy, and anonymized RGB images are distributed separately.', zh: 原始 RGB 因隐私原因不公开，匿名化 RGB 图像单独分发。}
+- key: depth
+  status: provided
+  note: {en: 'Intel RealSense D435 depth at 30 Hz, not withheld along with the RGB and infrared images.', zh: Intel RealSense D435 深度数据，采样率 30 Hz，未与 RGB 和红外图像一并隐藏。}
+- key: lidar
+  status: provided
+  note: {en: 'Ouster OS1 32-channel LiDAR with 120 m range, stored as (x, y, z) point clouds in .bin files.', zh: 'Ouster OS1 32 线 LiDAR，测距 120 m，以 (x, y, z) 点云形式存于 .bin 文件。'}
+- key: radar
+  status: provided
+  note: {en: 'TI IWR6843 at 60 to 64 GHz with 3 TX and 4 RX antennas; points are (x, y, z, d, I) with Doppler and intensity, at up to 30 FPS.', zh: 'TI IWR6843，60 至 64 GHz，3 个发射和 4 个接收天线；点为 (x, y, z, d, I)，含多普勒和强度，帧率最高 30 FPS。'}
+- key: imu
+  status: none
+  note: {en: 'IMU is not among the released modalities (rgb, infra1, infra2, depth, lidar, mmwave, wifi-csi).', zh: IMU 不在发布的模态列表中（rgb、infra1、infra2、depth、lidar、mmwave、wifi-csi）。}
+- key: time_series
+  status: provided
+  note: {en: '1,080 sequences of 297 synchronized frames each, aligned to a common 10 Hz clock.', zh: '共 1,080 个序列，每个序列 297 个同步帧，对齐到统一的 10 Hz 时钟。'}
+- {key: multiuser, status: unknown}
+- key: multibs
+  status: none
+  note: {en: 'The two access points form one WiFi link (one transmitter, one receiver), not a multi-base-station set.', zh: 两台接入点构成一条 WiFi 链路（一个发射端、一个接收端），不是多基站数据集。}
+- key: crossfreq
+  status: provided
+  note: {en: 5 GHz WiFi CSI and 60 to 64 GHz mmWave radar are recorded synchronously for the same subjects and actions., zh: 同一受试者和动作的 5 GHz WiFi CSI 与 60 至 64 GHz 毫米波雷达同步采集。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Only human activities are recorded; no user speed of about 30 km/h or more is stated., zh: 仅记录人体活动；文中未给出约 30 km/h 或更高的用户速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: arXiv v2
+  date: '2023-09-25'
+  summary: {en: Revised arXiv version of the MM-Fi paper. The text gives 27 action categories (14 daily and 13 rehabilitation) throughout; v1 gives 25 categories in Section 4.2 and 27 in the abstract. The arXiv comment field records acceptance at the NeurIPS 2023 Datasets and Benchmarks track., zh: MM-Fi 论文的修订版 arXiv v2。正文统一给出 27 类动作（14 类日常、13 类康复）；v1 第 4.2 节写为 25 类，摘要写为 27 类。arXiv 备注栏记录该文已被 NeurIPS 2023 Datasets and Benchmarks 赛道接收。}
+  url: https://arxiv.org/abs/2305.10345v2
+- version: stable
+  date: '2023-05-30'
+  summary: {en: 'The only GitHub release of the toolbox, tagged stable and archived on Zenodo as a software record (DOI 10.5281/zenodo.7983467). The release page reports 11 commits on main since the release.', zh: 工具包在 GitHub 上唯一的 release，标签为 stable，并在 Zenodo 以软件记录归档（DOI 10.5281/zenodo.7983467）。release 页面显示此后 main 分支已有 11 次提交。}
+  url: https://github.com/ybhbingo/MMFi_dataset/releases/tag/stable
+- version: arXiv v1
+  date: '2023-05-12'
+  summary: {en: 'First arXiv posting of the MM-Fi paper, describing over 320k synchronized frames of five modalities from 40 subjects. The abstract gives 27 action categories.', zh: MM-Fi 论文首次发布于 arXiv，描述来自 40 名受试者的五种模态、超过 32 万同步帧。摘要给出 27 类动作。}
+  url: https://arxiv.org/abs/2305.10345v1

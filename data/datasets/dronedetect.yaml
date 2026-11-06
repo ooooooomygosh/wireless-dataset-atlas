@@ -19,7 +19,7 @@ paper: doi:10.3390/aerospace8070179
 used_in: []
 citing: []
 summary: {en: 'Raw IQ recordings made with a BladeRF SDR of 7 drone models in on, hovering and flying modes, with no interference and with Bluetooth, Wi-Fi, or both. Each 2 s recording contains 1.2 × 10^8 complex samples, and the archive is 65.76 GB.', zh: 使用 BladeRF SDR 采集的 7 种无人机原始 IQ 数据，包含开机、悬停和飞行三种模式，干扰条件分为无干扰、仅蓝牙、仅 Wi-Fi 以及蓝牙与 Wi-Fi 同时存在。每段 2 秒录制包含 1.2 × 10^8 个复数采样，压缩包大小为 65.76 GB。}
-sources: ['https://ieee-dataport.org/open-access/dronedetect-dataset-radio-frequency-dataset-unmanned-aerial-system-uas-signals-machine', 'https://api.openalex.org/works/doi:10.3390/aerospace8070179', 'https://api.crossref.org/works/10.3390/aerospace8070179']
+sources: ['https://ieee-dataport.org/open-access/dronedetect-dataset-radio-frequency-dataset-unmanned-aerial-system-uas-signals-machine', 'https://api.openalex.org/works/doi:10.3390/aerospace8070179', 'https://api.crossref.org/works/10.3390/aerospace8070179', 'https://api.datacite.org/dois/10.21227/5jjj-1m32']
 checked: '2026-11-06'
 overview: {en: 'DroneDetect is a set of raw IQ recordings of seven drone models (six DJI, one Parrot). It was produced by Carolyn J. Swinney and John C. Woods at the University of Essex and published on IEEE DataPort in 2021. The recordings were made with a Nuand BladeRF software-defined radio running GNU Radio, at a center frequency of 2.4375 GHz and a bandwidth of 28 MHz. Each drone model is recorded when switched on, hovering and flying. Four interference conditions are included: none, Bluetooth only, Wi-Fi only, and Bluetooth and Wi-Fi together. Each 2 s recording holds 1.2 × 10^8 complex samples, and the main archive, DroneDetect_V2.zip, is 65.76 GB. Files are grouped by interference condition and then by flight mode, and the provided load_data.py script splits each recording into 20 ms segments. The associated paper evaluates UAS detection (2 classes), UAS type classification (8 classes) and flight mode classification (21 classes).', zh: DroneDetect 是一组 7 种无人机型号的原始 IQ 录制数据（6 种 DJI，1
     种 Parrot）。数据由 University of Essex 的 Carolyn J. Swinney 和 John C. Woods 制作，于 2021 年发布在 IEEE DataPort 上。录制使用 Nuand BladeRF 软件无线电设备并运行 GNU Radio，中心频率为 2.4375 GHz，带宽为 28 MHz。每种无人机型号分别在开机、悬停和飞行三种模式下录制。干扰条件包括四种：无干扰、仅蓝牙、仅 Wi-Fi，以及蓝牙和 Wi-Fi 同时存在。每段 2 s 录制包含 1.2 × 10^8 个复数采样，主压缩包 DroneDetect_V2.zip 大小为 65.76 GB。文件先按干扰条件分组，再按飞行模式分组；随附的 load_data.py 脚本将每段录制切分为 20 ms 片段。对应论文评估了 UAS 检测（2 类）、UAS 类型分类（8 类）和飞行模式分类（21 类）。}
@@ -36,7 +36,7 @@ pipeline:
     outputs:
     - {en: 2 s IQ recordings, zh: 2 s IQ 录制段}
   - title: {en: File storage and grouping, zh: 文件存储与分组}
-    detail: {en: 'Complex samples are written as interleaved floats in .dat files. Files are grouped by interference condition, then by flight mode, and their names combine model, interference and mode codes.', zh: 复数采样以交错浮点数形式写入 .dat 文件。文件先按干扰条件分组，再按飞行模式分组，文件名由机型、干扰和模式代码组成。}
+    detail: {en: 'Complex samples are written as interleaved floats in .dat files. Files are grouped by interference condition, then by flight mode.', zh: 复数采样以交错浮点数形式写入 .dat 文件。文件先按干扰条件分组，再按飞行模式分组。}
     inputs:
     - {en: 2 s IQ recordings, zh: 2 s IQ 录制段}
     outputs:
@@ -47,3 +47,94 @@ pipeline:
     - {en: .dat files, zh: .dat 文件}
     outputs:
     - {en: 20 ms IQ segments, zh: 20 ms IQ 片段}
+mobility: UAS switched on, hovering and flying
+facts:
+- label: {en: File name codes, zh: 文件名编码}
+  text: {en: 'File names carry an interference identifier: 00 for no interference, 01 for Bluetooth only, 10 for Wi-Fi only and 11 for Bluetooth and Wi-Fi. Flight modes are labelled ON (switched on), HO (hovering) and FY (flying). The example MIN_1100_00.dat is a Mavic Mini recording switched on with both Bluetooth and Wi-Fi interference.', zh: 文件名包含干扰标识：00 为无干扰，01 为仅蓝牙，10 为仅 Wi-Fi，11 为蓝牙与 Wi-Fi 同时存在。飞行模式标签为 ON（开机）、HO（悬停）和 FY（飞行）。示例 MIN_1100_00.dat 为 Mavic Mini 开机状态下、蓝牙与 Wi-Fi 同时干扰的录制。}
+- label: {en: Reported accuracy, zh: 报告的准确率}
+  text: {en: 'With both Bluetooth and Wi-Fi interference, the paper reports 100% for UAS detection (2 classes), 98.1% for UAS type classification (8 classes) and 95.4% for flight mode classification (21 classes).', zh: 在蓝牙与 Wi-Fi 同时干扰的条件下，论文报告 UAS 检测（2 类）准确率为 100%，UAS 类型分类（8 类）为 98.1%，飞行模式分类（21 类）为 95.4%。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only raw received IQ is released; no channel estimates., zh: 仅发布接收到的原始 IQ，不含信道估计。}
+- key: cir
+  status: none
+  note: {en: Only raw received IQ is released; no impulse response or power delay profile., zh: 仅发布接收到的原始 IQ，不含冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: Only raw received IQ is released; no per-path parameters., zh: 仅发布接收到的原始 IQ，不含逐径参数。}
+- key: interaction
+  status: none
+  note: {en: Only raw received IQ is released; no per-path interaction data., zh: 仅发布接收到的原始 IQ，不含逐径交互信息。}
+- key: power
+  status: derivable
+  note: {en: Received power per segment can be computed from the IQ samples; no RSSI or power field is released., zh: 可由 IQ 采样计算每段的接收功率；数据中不含 RSSI 或功率字段。}
+- key: iq
+  status: provided
+  note: {en: 'Complex IQ, centre frequency 2.4375 GHz, bandwidth 28 MHz, sample rate listed as 60 Mbits/s, 2 s per recording (1.2 × 10^8 complex samples).', zh: 复数 IQ，中心频率 2.4375 GHz，带宽 28 MHz，页面列出的采样率为 60 Mbits/s，每段录制 2 s（1.2 × 10^8 个复数采样）。}
+- key: beam_labels
+  status: none
+  note: {en: Only raw IQ is released; no beam indices or gains., zh: 仅发布原始 IQ，不含波束编号或增益。}
+- key: position
+  status: none
+  note: {en: No position or GPS fields in the release., zh: 数据中没有位置或 GPS 字段。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files in the release., zh: 数据中没有三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters in the release., zh: 数据中没有材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera data in the release., zh: 数据中没有相机数据。}
+- key: depth
+  status: none
+  note: {en: No depth data in the release., zh: 数据中没有深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data in the release., zh: 数据中没有 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar data in the release., zh: 数据中没有雷达数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data in the release., zh: 数据中没有 IMU 数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Each 2 s recording is a continuous, ordered IQ stream; per-sample timestamps are not stated.', zh: 每段 2 s 录制是连续有序的 IQ 序列；未说明逐采样时间戳。}
+- key: multiuser
+  status: none
+  note: {en: Each recording captures one UAS model; no simultaneous users are described., zh: 每段录制对应一种无人机；未描述同时存在的多个用户。}
+- key: multibs
+  status: none
+  note: {en: One SDR receiver; no multiple base stations are described., zh: 单个 SDR 接收机；未描述多个基站。}
+- key: crossfreq
+  status: none
+  note: {en: Single centre frequency of 2.4375 GHz., zh: 只有单一中心频率 2.4375 GHz。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: diffraction
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: scattering
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: transmission
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'Raw IQ only; no field components, field strength or antenna patterns.', zh: 仅有原始 IQ，不含场分量、场强或天线方向图。}
+versions:
+- version: V2
+  summary: {en: 'Current archive offered on IEEE DataPort: DroneDetect_V2.zip, 65.76 GB. The page gives no release date and no list of changes from earlier archives.', zh: IEEE DataPort 当前提供的数据压缩包为 DroneDetect_V2.zip，大小 65.76 GB。页面未给出发布日期，也未列出相对早期压缩包的改动。}
+  url: https://ieee-dataport.org/open-access/dronedetect-dataset-radio-frequency-dataset-unmanned-aerial-system-uas-signals-machine
+- version: '2021'
+  date: '2021-06-12'
+  summary: {en: 'Dataset created and published on IEEE DataPort (DOI 10.21227/5jjj-1m32): raw IQ recordings of 7 UAS models in switched-on, hovering and flying modes, with no interference, Bluetooth, Wi-Fi, or both.', zh: 数据集在 IEEE DataPort 上创建并发布（DOI 10.21227/5jjj-1m32）：7 种无人机在开机、悬停、飞行模式下的原始 IQ 录制，干扰条件为无干扰、仅蓝牙、仅 Wi-Fi 或两者同时存在。}
+  url: https://dx.doi.org/10.21227/5jjj-1m32

@@ -16,6 +16,7 @@ const facets = [
   { key: "band", title: t(lang, "filter.band"), opts: ["sub7", "mid", "mmwave", "subthz"].filter((b) => ds.some((d) => bandClasses(d).includes(b))).map((o) => [o, label(labels.band, o, lang)] as const) },
   { key: "environment", title: t(lang, "filter.environment"), opts: uniq((d) => d.environment).map((o) => [o, label(labels.environment, o, lang)] as const) },
   { key: "access", title: t(lang, "filter.access"), opts: uniq((d) => [d.access.type]).map((o) => [o, label(labels.access, o, lang)] as const) },
+  { key: "cap", title: t(lang, "filter.provides"), opts: Object.keys(labels.capability).filter((k) => ds.some((d) => d.capabilities.some((c) => c.key === k && (c.status === "provided" || c.status === "derivable")))).map((o) => [o, label(labels.capability, o, lang)] as const) },
 ];
 ---
 <Base lang={lang} nav="datasets" title={t(lang, "nav.datasets")}>

@@ -12,10 +12,10 @@ license: Code MIT; data terms per Northeastern repository
 access: {url: 'http://hdl.handle.net/2047/D20409451', type: registration}
 code: ['https://github.com/wineslab/deepbeam']
 paper: doi:10.1145/3466772.3467035
-sources: ['https://github.com/wineslab/deepbeam/blob/master/README.md', 'https://arxiv.org/pdf/2012.14350v2']
+sources: ['https://github.com/wineslab/deepbeam/blob/master/README.md', 'https://arxiv.org/pdf/2012.14350v2', 'https://raw.githubusercontent.com/wineslab/deepbeam/master/README.md', 'https://raw.githubusercontent.com/wineslab/deepbeam/master/LICENSE', 'https://raw.githubusercontent.com/wineslab/deepbeam/master/keras_code/DeepBeam.py', 'https://raw.githubusercontent.com/wineslab/deepbeam/master/keras_code/DataGenerator.py', 'https://export.arxiv.org/abs/2012.14350', 'https://api.crossref.org/works/10.1145/3466772.3467035', 'https://arxiv.org/abs/2501.03435', 'https://arxiv.org/pdf/2501.03435v1', 'https://arxiv.org/abs/2012.14350', 'https://arxiv.org/abs/2012.14350v1', 'https://arxiv.org/abs/2012.14350v2', 'http://export.arxiv.org/api/query?id_list=2012.14350', 'https://github.com/wineslab/deepbeam/releases', 'https://github.com/wineslab/deepbeam/commits/master']
 aliases: []
 used_in: []
-citing: ["doi:10.1109/infocom48880.2022.9796744","doi:10.1109/mcom.002.2200079","doi:10.1109/tmc.2023.3342711"]
+citing: ['doi:10.1109/infocom48880.2022.9796744', 'doi:10.1109/mcom.002.2200079', 'doi:10.1109/tmc.2023.3342711']
 summary: {en: Identifies the active transmit beam and discrete AoA from actual received mmWave I/Q. Four SiBeam frontends and Pi-Radio digital arrays introduce hardware variation for direct study of cross-antenna few-shot adaptation., zh: 用真实毫米波接收I/Q识别正在使用的发射波束与离散AoA。四个SiBeam前端和Pi-Radio数字阵列提供硬件变化，可直接研究跨天线few-shot适配。}
 checked: '2026-11-06'
 pipeline:
@@ -67,7 +67,7 @@ pipeline:
     checks:
     - {en: 'Cross-antenna experiments must hold out entire files; specify the split unit, hardware identity, and adjacency of consecutive blocks in the protocol.', zh: 跨天线实验须整文件留出；将划分单位、硬件身份和连续块相邻性列入协议。}
   - title: {en: Translate classification outputs into communication decisions, zh: 从分类结果进入通信决策}
-    detail: {en: 'Associate TX beams with RSRP through passive observation, adjust the receive direction using AoA, and compare observed candidates. The paper also analyzes initial-access latency using sampling wait time and FPGA inference time.', zh: 按被动观测建立TX beam与RSRP关联，利用AoA调整接收方向，再比较被观测候选。论文另外以采样等待和FPGA推理时间分析初始接入延迟。}
+    detail: {en: 'Associate TX beams with RSRP through passive observation, adjust the receive direction using AoA, and compare observed candidates. The paper also analyzes initial-access latency from the observation time (OFDM symbols monitored) and FPGA inference time.', zh: 按被动观测建立TX beam与RSRP关联，利用AoA调整接收方向，再比较被观测候选。论文另外以观测时间（监听所需的OFDM符号数）和FPGA推理时间分析初始接入延迟。}
     inputs:
     - {en: TXB/AoA predictions, zh: TXB/AoA预测}
     - {en: Received power for each observed beam, zh: 每个观测波束的接收功率}
@@ -75,10 +75,10 @@ pipeline:
     - {en: Beam candidates and alignment information, zh: 波束候选与对齐信息}
     - {en: Classification accuracy and latency analysis, zh: 分类准确率及延迟分析}
     controls:
-    - {en: 'Literature-supported: latency depends on traffic transmission order, observation coverage, and NR frame parameters.', zh: 文献支持：延迟取决于业务发送顺序、观测覆盖与NR帧参数。}
+    - {en: 'Literature-supported: the latency analysis depends on the round-robin traffic schedule, the number of observed OFDM symbols, and NR frame parameters.', zh: 文献支持：延迟分析取决于轮询（round-robin）业务调度、被观测的OFDM符号数以及NR帧参数。}
     checks:
-    - {en: 'Reproduction recommendation: report candidate coverage, power loss, and total waiting time together; test sparse traffic separately.', zh: 复现建议：同时报告候选覆盖率、功率损失和总等待时间；稀疏业务条件单独测试。}
-  scope: {en: Original DeepBeam measurements and the authors' Keras loading pipeline; ProtoBeam is a subsequent task built on these data., zh: 原始DeepBeam实测采集与作者Keras加载流程；ProtoBeam是基于该数据的后续任务。}
+    - {en: 'Reproduction recommendation: report candidate coverage, power loss, and total waiting time together.', zh: 复现建议：同时报告候选覆盖率、功率损失和总等待时间。}
+  scope: {en: 'Original DeepBeam measurements and the authors'' Keras loading pipeline; ProtoBeam (arXiv:2501.03435) uses these data for cross-antenna evaluation.', zh: '原始DeepBeam实测数据与作者的Keras加载流程；ProtoBeam（arXiv:2501.03435）使用这些数据进行跨天线评估。'}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
   text: {en: '• Unequalized I/Q waveforms
@@ -101,11 +101,7 @@ facts:
 
       • TXB/AoA预测与后续RSRP排名'}
 - label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• This review checked documentation and source code; it did not download the 4 TB raw dataset or run training.
-
-      • The Pi-Radio README mentions ''31'' gains but lists three values. Acquisition counts require checking against Sec. 4.3 of the original paper and the files; 31 is not treated as a confirmed configuration.', zh: '• 本轮核查文档和源码，未下载4 TB原始数据或运行训练。
-
-      • Pi-Radio README存在“31”增益文字与三项列表不一致；采集数量以原论文Sec.4.3及文件内容核对，未把31写成确定配置。'}
+  text: {en: 'The Pi-Radio README states 31 gain values but lists three. Check the acquisition count against Sec. 4.3 of the paper and the files; the paper gives 50,000 blocks per TXB/TX-gain combination.', zh: Pi-Radio README写有31个增益值，但只列出三项。采集数量应以原论文Sec. 4.3及文件内容为准；论文给出的是每个TXB/TX增益组合50000个block。}
 provenance:
 - {en: Actual TX/RX arrays and fixed indoor configurations, zh: 真实TX/RX阵列和固定室内配置}
 - {en: 'Set TX beams, gains, and receive directions', zh: 设置TX beam、增益及接收方向}
@@ -113,28 +109,30 @@ provenance:
 - {en: Write waveforms and configuration labels, zh: 写入波形与配置标签}
 - {en: Sample by block and partition tasks by device, zh: 按block取样和按设备划分任务}
 technical_notes:
-- {en: 'Literature-supported: NI uses analog phase-shifter arrays; Pi-Radio applies digital weights to individual RF chains. Hardware differences change I/Q distributions.', zh: 文献支持：NI使用模拟相移阵列，Pi-Radio在各RF链数字加权；硬件差异会改变I/Q分布。}
-- {en: 'Literature-supported: the chair in the obstacle configuration did not block LoS; this configuration cannot directly be labeled NLoS.', zh: 文献支持：obstacle配置中的椅子未遮断LoS，不能将该配置直接标记为NLoS。}
+- {en: 'NI platforms use analog phased arrays, while Pi-Radio uses a separate RF chain per antenna element with digital beamforming. Hardware differences matter: cross-antenna accuracy falls well below same-antenna accuracy.', zh: NI平台使用模拟相控阵，Pi-Radio则为每个阵元配置独立RF链并进行数字波束成形。硬件差异影响结果：跨天线准确率明显低于同天线准确率。}
+- {en: 'The chair in the obstacle configuration does not block the line-of-sight path, so this configuration cannot be labeled NLoS.', zh: obstacle配置中的椅子并未遮挡视距路径，因此该配置不能直接标记为NLoS。}
 limitations:
-- {en: 'Literature-supported: for 24 beams and L=1, mean accuracy is 78.51% on the same antenna and 16.97% across antennas. Hardware holdout is a key evaluation dimension.', zh: 文献支持：24-beam、L=1下同天线平均78.51%，跨天线16.97%；硬件留出是关键评估轴。}
-- {en: 'Verified: training code uses contiguous 60/40 splits within each gain/beam block. Splits within one acquisition and tests on new devices must be reported separately.', zh: 已确认：训练代码在每个gain/beam块内连续划分60/40；同次采集内划分与新设备测试须分别报告。}
-- {en: 'Verified: AoA labels are only −45°, 0°, and 45°. They support discrete recognition; continuous-angle precision requires new samples.', zh: 已确认：AoA标签只有−45°、0°、45°；可支持离散识别，连续角度精度需新增采样。}
+- {en: 'With 24 beams and L=1, the paper reports 78.51% accuracy when training and testing on the same antenna and 16.97% when testing on a different antenna.', zh: 在24波束、L=1条件下，论文报告同一天线训练测试的准确率为78.51%，训练与测试天线不同时为16.97%。}
+- {en: 'The training script splits each gain/beam block by contiguous index: the first 60% for training and the last 40% for testing, with no validation split by default.', zh: 训练脚本在每个gain/beam块内按连续索引划分：前60%用于训练，后40%用于测试；默认不划分验证集。}
+- {en: 'Same-antenna splits and cross-antenna tests answer different questions, and the paper reports them separately.', zh: 同天线划分与跨天线测试回答的问题不同，论文分别报告。}
+- {en: 'The AoA labels take only three values (−45°, 0°, 45°). They support discrete AoA classification but not continuous angle estimation.', zh: AoA标签只有−45°、0°、45°三个取值，支持离散AoA分类，但不支持连续角度估计。}
 history:
-- {en: '2021-06-07: original-paper arXiv v2, subsequently published at MobiHoc 2021.', zh: 2021-06-07：原论文arXiv v2，后发表于MobiHoc 2021}
+- {en: '2020-12-28: arXiv v1 of the paper. 2021-06-07: arXiv v2.', zh: 2020-12-28：论文arXiv v1发布。2021-06-07：arXiv v2发布。}
+- {en: '2021-07-26: published in the MobiHoc 2021 proceedings (ACM).', zh: 2021-07-26：收录于ACM MobiHoc 2021论文集。}
 usage:
 - {en: 'Use the author''s README to select TXB or AoA, devices/arrays, and 12/24/5-beam files.', zh: 从作者README选择TXB或AoA、设备/阵列和12/24/5波束文件。}
-- {en: 'Read a small amount of iq and labels first, reconstruct 2048-point blocks, and verify constant-label segments.', zh: 先读取少量iq及标签，按2048点重建block并核对标签常量段。}
-- {en: Reproduce same-device 60/40 and cross-antenna holdout separately; record the target-domain support count for few-shot evaluation., zh: 分别复现同设备60/40和跨天线留出；few-shot评估记录目标域support数量。}
+- {en: 'Read a small amount of iq and labels first, reconstruct 2048-sample blocks, and check that each block carries a single tx_beam label.', zh: 先读取少量iq及标签，按2048点重建block，并核对每个block的tx_beam标签是否唯一。}
+- {en: Reproduce the same-device 60/40 split and the cross-antenna holdout separately., zh: 分别复现同设备60/40划分与跨天线留出。}
 - {en: Then connect recognition results to received power and probing time to evaluate alignment and initial-access gains., zh: 再将识别结果与接收功率、探测时间联系，评价对齐和初始接入收益。}
 field_notes:
 - label: {en: CSI, zh: CSI}
-  text: {en: Native inputs are post-ADC I/Q waveforms. The public four-/five-key structure contains neither calibrated complex CSI nor per-path parameters., zh: 原生输入是ADC后的I/Q波形；已公开四/五键结构不含校准复CSI或逐径参数。}
+  text: {en: The HDF5 files hold unequalized post-ADC I/Q waveforms, not calibrated complex CSI or per-path parameters.: null, zh: HDF5文件保存未均衡的ADC后I/Q波形，不含校准复CSI或逐径参数。}
 - label: {en: Beam labels, zh: 波束标签}
   text: {en: tx_beam is the TX beam class active during acquisition. Selecting the best communication beam also requires the RSRP associated with each observed beam., zh: tx_beam是采集时正在使用的TX beam类别；最佳通信波束还需结合各被观测波束的RSRP。}
 - label: {en: Time, zh: 时间}
   text: {en: 'Ordered baseband samples and block organization are provided. This time axis describes waveforms, not continuous mobile trajectories with positions.', zh: 提供有序基带采样及block组织；这一时间轴描述波形，不是带位置的连续移动轨迹。}
 - label: {en: Position, zh: 位置}
-  text: {en: See original Figures 7/8 for indoor device layouts. HDF5 fields do not provide per-sample positions., zh: 室内设备布局见原文图7/8；HDF5字段未给逐样本位置。}
+  text: {en: Figure 7 of the paper shows the room layout and Figure 8 the Pi-Radio testbed. HDF5 fields do not provide per-sample positions., zh: 论文图7给出房间布局，图8给出Pi-Radio测试平台。HDF5字段未给逐样本位置。}
 - label: {en: Cross-frequency pairing, zh: 跨频配对}
   text: {en: 58 and 60.48 GHz come from different hardware acquisitions and do not form synchronized dual-band pairs., zh: 58与60.48 GHz来自不同设备采集，不构成同步双频配对。}
 - label: {en: Multi-user, zh: 多用户}
@@ -170,3 +168,98 @@ overview: {en: 'DeepBeam is a mmWave waveform dataset for beam management, relea
 signal_details:
 - signal: iq
   text: {en: 'I/Q samples are stored in the iq dataset, with one column for I and one for Q. The tx_beam, rx_beam and gain labels are stored entry by entry alongside iq. The NI TX-beam files contain 10,000 frames per (gain, TX beam) pair with 15 blocks per frame, and the README states 2,048 I/Q samples per frame. The Pi-Radio file holds five TX beams, 10,000 frames per (gain, TX beam) pair, 5 blocks per frame and 2,048 samples per frame. The NI system acquires at 60.48 GHz and the Pi-Radio at 58 GHz. The AoA files add an angle dataset with the values -45, 0 and 45.', zh: 'I/Q 采样存储在 iq 数据集中，I 与 Q 各占一列。tx_beam、rx_beam 和 gain 标签与 iq 逐条对应存储。NI 发射波束文件中，每个（增益，TX 波束）组合包含 10,000 帧，每帧 15 个 block，README 标明每帧 2,048 个 I/Q 采样。Pi-Radio 文件包含五个 TX 波束，每个（增益，TX 波束）组合 10,000 帧，每帧 5 个 block、2,048 个采样。NI 系统工作在 60.48 GHz，Pi-Radio 工作在 58 GHz。AoA 文件增加一个 angle 数据集，取值为 -45、0、45。'}
+bandwidth_mhz: 1760
+standard: IEEE 802.11ad-based PHY (NI platform)
+samples: 10,000 frames per (gain, TX beam) pair; 15 blocks per frame on NI and 5 on Pi-Radio, 2048 I/Q samples per block
+capabilities:
+- key: csi
+  status: none
+  note: {en: The HDF5 files hold unequalized post-ADC I/Q waveforms; calibrated complex CSI is not included., zh: HDF5 文件保存未均衡的 ADC 后 I/Q 波形，不含校准复数 CSI。}
+- key: cir
+  status: none
+  note: {en: The released fields are I/Q samples and labels only; no impulse response is stored., zh: 发布字段仅包含 I/Q 采样与标签；不存储冲激响应。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle, power or phase fields are released.', zh: 未发布逐径时延、角度、功率或相位字段。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are released., zh: 未发布逐径交互数据。}
+- key: power
+  status: derivable
+  note: {en: Per-block received power can be computed from the released I/Q; no RSSI or RSRP field is stored., zh: 每个 block 的接收功率可由发布的 I/Q 计算；未存储 RSSI 或 RSRP 字段。}
+- key: iq
+  status: provided
+  note: {en: Unequalized post-ADC I/Q with 2048 samples per block; NI data at 60.48 GHz and Pi-Radio data at 58 GHz., zh: 未均衡的 ADC 后 I/Q，每个 block 2048 个采样；NI 数据位于 60.48 GHz，Pi-Radio 数据位于 58 GHz。}
+- key: beam_labels
+  status: provided
+  note: {en: Per-sample TX-beam and RX-beam labels for 24 or 12 TX beams (NI) and 5 TX beams (Pi-Radio); the receive beam is fixed at the array boresight., zh: 每个采样的 TX 与 RX 波束标签，NI 为 24 或 12 个 TX 波束，Pi-Radio 为 5 个 TX 波束；接收波束固定在阵列视轴方向。}
+- key: position
+  status: none
+  note: {en: Per-sample positions are not provided; room layouts appear only as paper figures., zh: 不提供逐样本位置；房间布局仅见于论文图中。}
+- key: geometry
+  status: none
+  note: {en: The release contains only the 19 HDF5 files; no scene or map files are listed., zh: 发布内容仅为 19 个 HDF5 文件；未列出场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: The release contains only the 19 HDF5 files; no material parameters are listed., zh: 发布内容仅为 19 个 HDF5 文件；未列出材料参数。}
+- key: rgb
+  status: none
+  note: {en: The release contains only the 19 HDF5 I/Q files; no image data are listed., zh: 发布内容仅为 19 个 HDF5 I/Q 文件；未列出图像数据。}
+- key: depth
+  status: none
+  note: {en: The release contains only the 19 HDF5 I/Q files; no depth data are listed., zh: 发布内容仅为 19 个 HDF5 I/Q 文件；未列出深度数据。}
+- key: lidar
+  status: none
+  note: {en: The release contains only the 19 HDF5 I/Q files; no LiDAR data are listed., zh: 发布内容仅为 19 个 HDF5 I/Q 文件；未列出 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: The release contains only the 19 HDF5 I/Q files; no radar data are listed., zh: 发布内容仅为 19 个 HDF5 I/Q 文件；未列出雷达数据。}
+- key: imu
+  status: none
+  note: {en: The release contains only the 19 HDF5 I/Q files; no IMU data are listed., zh: 发布内容仅为 19 个 HDF5 I/Q 文件；未列出 IMU 数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Ordered frames of 2048-sample blocks within each (gain, TX beam) segment; the order describes waveform acquisition, not mobile trajectories.', zh: '每个 (gain, TX beam) 段内按顺序排列的帧及 2048 采样 block；该顺序描述波形采集，而非移动轨迹。'}
+- key: multiuser
+  status: none
+  note: {en: Only single TX/RX acquisition configurations are released; synchronized multiuser channel sets are not provided., zh: 仅发布单 TX/RX 采集配置；未提供同步的多用户信道集合。}
+- key: multibs
+  status: none
+  note: {en: Only single TX/RX acquisition configurations are released., zh: 仅发布单 TX/RX 采集配置。}
+- key: crossfreq
+  status: none
+  note: {en: 58 and 60.48 GHz come from different hardware acquisitions and do not form synchronized dual-band pairs., zh: 58 GHz 与 60.48 GHz 来自不同硬件采集，不构成同步双频配对。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Fixed indoor TX/RX configurations; no moving users are described., zh: 固定的室内 TX/RX 配置；未描述移动用户。}
+- key: dynamic_blockage
+  status: none
+  note: {en: The obstacle configuration uses a chair that does not block the line-of-sight path; no moving blockers are described., zh: obstacle 配置中的椅子不遮挡视距路径；未描述移动遮挡物。}
+- key: reflection
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 由测量本身包含，未按径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: MobiHoc 2021
+  date: '2021-07-26'
+  summary: {en: Published in the ACM MobiHoc 2021 proceedings (pp. 61-70) as the DeepBeam paper that introduces the mmWave I/Q dataset and code. The Crossref record does not state changes from arXiv v2., zh: DeepBeam 论文收录于 ACM MobiHoc 2021 论文集（第 61-70 页），该论文介绍了毫米波 I/Q 数据集和代码。Crossref 记录未说明相对 arXiv v2 的改动。}
+  url: https://doi.org/10.1145/3466772.3467035
+- version: arXiv v2
+  date: '2021-06-07'
+  summary: {en: Second arXiv version of the DeepBeam paper. The arXiv listing does not state what changed., zh: DeepBeam 论文的第二个 arXiv 版本。arXiv 页面未说明改动内容。}
+  url: https://arxiv.org/abs/2012.14350v2
+- version: arXiv v1
+  date: '2020-12-28'
+  summary: {en: First arXiv version of the DeepBeam paper. It introduces waveform-level deep learning that infers the transmit beam and AoA from mmWave I/Q without TX pilots or RX beam sweeping., zh: DeepBeam 论文的第一个 arXiv 版本。它提出基于波形的深度学习方法，无需发射端导频或接收端波束扫描，即可从毫米波 I/Q 推断发射波束和 AoA。}
+  url: https://arxiv.org/abs/2012.14350v1

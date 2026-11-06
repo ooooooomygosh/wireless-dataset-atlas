@@ -17,14 +17,137 @@ paper: doi:10.1145/3615453.3616512
 used_in: []
 citing: ['doi:10.1109/jproc.2024.3402265', 'doi:10.1109/infocomwkshps61880.2024.10620737']
 summary: {en: 'Over-the-air massive MIMO measurements at 563 MHz from a base station with 42 antennas serving six UEs at 0.64 to 3.84 km on crop and livestock farms around Ames, Iowa, with 6 to 24 MHz channel bandwidths, including raw CSI, IQ pilots, per-UE KPIs and MU-MIMO scheduling summaries.', zh: 在爱荷华州 Ames 周边农场采集的 563 MHz 空口大规模 MIMO 实测数据：基站 42 根天线服务 6 个用户终端，距离 0.64 至 3.84 km，信道带宽 6 至 24 MHz，包含原始 CSI、IQ 导频、用户级 KPI 以及 MU-MIMO 分组与调度汇总。}
-sources: ['https://ieee-dataport.org/documents/aramimo-tvws-mmimo-dataset']
+sources: ['https://ieee-dataport.org/documents/aramimo-tvws-mmimo-dataset', 'https://ieee-dataport.s3.amazonaws.com/data/docs/1488307/107685/README.txt', 'https://api.crossref.org/works/10.1145/3615453.3616512', 'https://dx.doi.org/10.21227/0y0j-g926']
 checked: '2026-11-06'
-overview: {en: 'AraMIMO TVWS is a set of over-the-air massive MIMO measurements at 563 MHz, made by Iowa State University in a campaign on June 26, 2023. The base station is a Skylark Wireless Faros V2 on a rooftop in Ames, Iowa, with 42 antennas in three radio units of 14 antennas each. Six user units with two antennas each sit 0.64 km to 3.84 km from the base station. Four fixed units are on farms, and two portable units are in the south sector, which is the sector the dataset studies. Channel bandwidth is 6, 12, 18 or 24 MHz depending on the scenario. Four scenarios are recorded: all six users connected together, users connected one at a time, all users forced into one beamforming group, and a sweep of the maximum spatial streams per group. The files hold raw CSI and IQ pilot samples in HDF5, per-sample network KPIs, one-way link latency per user, and MU-MIMO grouping and scheduling summaries, in CSV, JSON and HDF5 format in a 996.76 MB archive.', zh: AraMIMO TVWS 是在 563 MHz 频段采集的空口大规模
-    MIMO 实测数据，由爱荷华州立大学于 2023 年 6 月 26 日开展测量。基站为 Skylark Wireless Faros V2，架设在爱荷华州 Ames 的一栋楼楼顶，包含 3 个射频单元，每个单元 14 根天线，共 42 根天线。6 个用户单元各配备 2 根天线，距基站 0.64 km 至 3.84 km。其中 4 个为固定安装在农场的单元，2 个为便携单元，位于南扇区，本数据集研究的即为南扇区。信道带宽根据场景为 6、12、18 或 24 MHz。数据记录了四类场景：6 个用户同时接入、用户逐一接入、所有用户被置于同一波束成形组，以及对每组最大空间流数的扫描。文件包含 HDF5 格式的原始 CSI 和 IQ 导频样本、逐样本的网络 KPI、每个用户的单向链路时延，以及 MU-MIMO 分组与调度汇总，以 CSV、JSON 和 HDF5 格式保存在 996.76 MB 的压缩包中。}
+overview: {en: 'AraMIMO TVWS is a set of over-the-air massive MIMO measurements at 563 MHz, made by Iowa State University on June 26, 2023. The base station is a Skylark Wireless Faros V2 on the rooftop of Wilson Hall in Ames, Iowa, with 42 antennas in three radio units of 14 antennas each, plus a 2-antenna reference radio. Six user units with two antennas each sit 0.64 km to 3.84 km from the base station. Four fixed units are at farms, and two portable units are in the south sector, which is the sector the dataset studies. Channel bandwidth is 6, 12, 18 or 24 MHz in the all-UE and one-group scenarios and 20 MHz in the one-by-one and streams-per-group scenarios. Four scenarios are recorded: all six UEs connected together, UEs connected one at a time, all UEs forced into one beamforming group, and a sweep of the maximum spatial streams per group. The files hold raw uplink pilot IQ samples in HDF5, per-sample network KPIs, one-way link latency per UE, and MU-MIMO grouping and scheduling summaries
+    in JSON and HDF5, in a 996.76 MB archive.', zh: AraMIMO TVWS 是在 563 MHz 频段进行的空口大规模 MIMO 实测数据，由爱荷华州立大学于 2023 年 6 月 26 日采集。基站为 Skylark Wireless Faros V2，架设在爱荷华州 Ames 的 Wilson Hall 楼顶，共 42 根天线，分布于 3 个射频单元，每个单元 14 根天线，另有一个 2 根天线的参考射频单元。6 个用户单元各配备 2 根天线，距基站 0.64 km 至 3.84 km。其中 4 个固定安装在农场，2 个为便携单元，位于本数据集研究的南扇区。信道带宽在全部用户场景与单一波束组场景中为 6、12、18 或 24 MHz，在逐一接入与最大空间流扫描场景中为 20 MHz。数据记录四类场景：6 个用户同时接入、用户逐一接入、所有用户被置于同一波束成形组，以及对每组最大空间流数的扫描。文件包含原始上行导频 IQ 样本（HDF5 格式）、逐样本网络 KPI、每个用户的单向链路时延，以及 MU-MIMO 分组与调度汇总（JSON 与 HDF5 格式），压缩包大小为 996.76 MB。}
 signal_details:
 - signal: csi
-  text: {en: 'Raw channel state information between the 42 base-station antennas and six user units with two antennas each, at 563 MHz with 6, 12, 18 or 24 MHz channel bandwidth. Raw CSI is stored in HDF5 files together with the IQ pilots.', zh: 基站 42 根天线与 6 个用户单元（每个 2 根天线）之间的原始信道状态信息，中心频率 563 MHz，信道带宽 6、12、18 或 24 MHz。原始 CSI 与 IQ 导频一同以 HDF5 文件保存。}
+  text: {en: 'Raw channel state information from uplink pilots that the six user units transmit and the 42 base-station antennas receive, with two channels per user unit. Bandwidth is 6, 12, 18 or 24 MHz in the all-UE and one-group scenarios and 20 MHz in the one-by-one and streams-per-group scenarios. The samples are stored in HDF5 files.', zh: 六个用户单元发送、基站 42 根天线接收的上行导频原始信道状态信息，每个用户单元两个信道。全部用户场景与单一波束组场景的带宽为 6、12、18 或 24 MHz，逐一接入与最大空间流扫描场景的带宽为 20 MHz。样本以 HDF5 文件保存。}
 - signal: iq
-  text: {en: IQ pilot samples stored in HDF5 files alongside the raw CSI. The base station includes a 2-antenna reference radio used for reciprocity calibration and pilots., zh: IQ 导频样本以 HDF5 文件与原始 CSI 一并保存。基站配有 2 根天线的参考射频单元，用于互易性校准和导频。}
+  text: {en: IQ pilot samples stored in HDF5 files alongside the raw CSI. The 2-antenna reference radio records uplink and downlink pilots for reciprocity calibration., zh: IQ 导频样本与原始 CSI 一同以 HDF5 文件保存。2 根天线的参考射频单元记录上行与下行导频，用于互易性校准。}
 - signal: kpi
-  text: {en: 'Per-sample network KPIs: throughput, spectral efficiency, per-user SNR and decode rates. One-way wireless-link latency for each user. MU-MIMO grouping and scheduling summaries, and per-user radio statistics.', zh: 逐样本网络 KPI：吞吐量、频谱效率、每个用户的 SNR 和解码率。每个用户的单向无线链路时延。MU-MIMO 分组与调度汇总，以及每个用户的无线电统计量。}
+  text: {en: 'Per-sample network KPIs: throughput, spectral efficiency, per-UE SNR and decode rates. One-way wireless-link latency for each UE. MU-MIMO grouping and scheduling summaries, and per-UE radio statistics.', zh: 逐样本网络 KPI：吞吐量、频谱效率、每个用户的 SNR 和解码成功率。每个用户的单向无线链路时延。MU-MIMO 分组与调度汇总，以及每个用户的无线电统计量。}
+antennas: {tx: 42, rx: 42}
+pipeline:
+  summary: {en: 'A Faros V2 base station on a Wilson Hall rooftop serves six UEs at 563 MHz in four scenarios. It logs uplink pilot IQ, per-sample KPIs, one-way latency and MU-MIMO group summaries, and writes them into scenario folders.', zh: 位于 Wilson Hall 楼顶的 Faros V2 基站在 563 MHz 下服务 6 个用户单元，覆盖四类场景。基站记录上行导频 IQ、逐样本 KPI、单向时延以及 MU-MIMO 分组汇总，并按场景目录写入文件。}
+  stages:
+  - title: {en: Base station and UE deployment, zh: 基站与用户单元部署}
+    detail: {en: 'A Skylark Wireless Faros V2 base station with three radio units of 14 antennas each and a 2-antenna reference radio is mounted on the rooftop of Wilson Hall. Six UEs with two antennas each are placed 0.64 km to 3.84 km away, four fixed at farms and two portable in the south sector. Each UE is identified by its hardware serial number.', zh: 基站为 Skylark Wireless Faros V2，架设于 Wilson Hall 楼顶，包含 3 个射频单元（每个 14 根天线）和一个 2 根天线的参考射频单元。6 个用户单元各配备 2 根天线，距基站 0.64 km 至 3.84 km，其中 4 个固定于农场，2 个为南扇区的便携单元。每个用户单元以硬件序列号标识。}
+    inputs:
+    - {en: 'Faros V2 base station, 42 antennas plus 2 reference antennas', zh: Faros V2 基站，42 根天线加 2 根参考天线}
+    - {en: Six UE units with two antennas each, zh: 6 个各配 2 根天线的用户单元}
+    outputs:
+    - {en: Over-the-air links at 563 MHz, zh: 563 MHz 空口链路}
+  - title: {en: Scenario sweeps, zh: 场景扫描}
+    detail: {en: 'Measurements on June 26, 2023 use the AraMIMO wrapper APIs. Four scenarios are run: all UEs connected together, UEs connected one at a time, all UEs forced into one beamforming group, and a sweep of the maximum streams per group. The all-UE and one-group scenarios sweep bandwidth over 6, 12, 18 and 24 MHz, while the other two use 20 MHz.', zh: 2023 年 6 月 26 日的测量通过 AraMIMO 封装 API 进行。共运行四类场景：所有用户同时接入、用户逐一接入、所有用户置于同一波束成形组，以及对每组最大空间流数的扫描。全部用户场景与单一波束组场景在 6、12、18 和 24 MHz 之间扫描带宽，其余两类场景使用 20 MHz。}
+    inputs:
+    - {en: Scenario and bandwidth settings, zh: 场景与带宽设置}
+    outputs:
+    - {en: Measurement points per scenario, zh: 各场景的测量点}
+  - title: {en: Uplink pilot capture, zh: 上行导频采集}
+    detail: {en: 'The base station records IQ samples of the uplink pilots transmitted by the UEs at its 42 antennas, and the reference radio records uplink and downlink pilots. Each pilot capture is a vector of 512 values, and the samples are written to HDF5 files.', zh: 基站记录各用户单元发送的上行导频在 42 根天线上的 IQ 样本，参考射频单元记录上行与下行导频。每次导频采集为 512 个数值的向量，样本写入 HDF5 文件。}
+    inputs:
+    - {en: UE uplink pilots and reference-radio pilots, zh: 用户单元上行导频与参考射频单元导频}
+    outputs:
+    - {en: csi_*.h5 files of raw IQ pilots, zh: csi_*.h5 原始 IQ 导频文件}
+  - title: {en: Per-sample KPI and latency logging, zh: 逐样本 KPI 与时延记录}
+    detail: {en: 'The API logs about 120 samples per measurement point of network KPIs, including throughput, spectral efficiency, SNR and decode rates for each UE. One-way latency for each UE is the round-trip latency from the core unit to the UE divided by two. MU-MIMO group summaries are logged for about 30 samples per measurement point.', zh: API 为每个测量点记录约 120 个样本的网络 KPI，包括吞吐量、频谱效率以及每个用户的 SNR 与解码率。每个用户的单向时延为核心单元到用户单元的往返时延除以二。每个测量点记录约 30 个样本的 MU-MIMO 分组汇总。}
+    inputs:
+    - {en: Per-sample KPI and scheduler state from the API, zh: API 输出的逐样本 KPI 与调度器状态}
+    outputs:
+    - {en: 'kpis_*.json, latency_stats_*.json and group_summary_sample_*.json', zh: kpis_*.json、latency_stats_*.json 与 group_summary_sample_*.json}
+  - title: {en: Packaging by scenario, zh: 按场景打包}
+    detail: {en: 'Files are grouped into jun-26_<scenario> and jun-26-group_<scenario> folders. File names encode the centre frequency, bandwidth, index and timestamp. The dataset is distributed as one 996.76 MB zip archive.', zh: 文件按场景分入 jun-26_<场景> 与 jun-26-group_<场景> 目录，文件名包含中心频率、带宽、索引与时间戳。数据集以一个 996.76 MB 的 zip 压缩包发布。}
+    inputs:
+    - {en: 'Raw CSI, KPI, latency and group files', zh: 原始 CSI、KPI、时延与分组文件}
+    outputs:
+    - {en: AraMIMO_TVWS_mMIMO_Measurements.zip, zh: AraMIMO_TVWS_mMIMO_Measurements.zip}
+facts:
+- label: {en: Scenario folders, zh: 场景目录}
+  text: {en: 'jun-26_<scenario> holds kpis_*.json, csi-data/csi_*.h5 and latency-data/latency_stats_*.json. jun-26-group_<scenario> holds the per-sample group_summary files.', zh: jun-26_<场景> 目录包含 kpis_*.json、csi-data/csi_*.h5 与 latency-data/latency_stats_*.json，jun-26-group_<场景> 目录包含逐样本的 group_summary 文件。}
+- label: {en: UE labels, zh: 用户单元编号}
+  text: {en: 'UE-01 to UE-06 map to Skylark serials FL1B000011, FL1B000006, FL1B000016, FL1B000017, FL1B000007 and FL1B000040. Per-UE KPI keys carry the serial as a suffix.', zh: UE-01 至 UE-06 对应 Skylark 序列号 FL1B000011、FL1B000006、FL1B000016、FL1B000017、FL1B000007 和 FL1B000040，逐用户 KPI 字段以序列号作为后缀。}
+technical_notes:
+- {en: 'Each CSI record is a vector of 512 values. The first 4 values are the two reference antennas, the next 84 values are the 42 base-station antennas, and the rest are unused zeros.', zh: 每条 CSI 记录为 512 个数值的向量。前 4 个数值对应两根参考天线，接下来的 84 个数值对应 42 根基站天线，其余为未使用的零值。}
+- {en: 'Per-channel KPI fields end in _0 or _1 for the two channels of a UE, with _0 horizontally polarized and _1 vertically polarized.', zh: 逐信道 KPI 字段以 _0 或 _1 结尾，分别对应用户单元的两个信道，其中 _0 为水平极化，_1 为垂直极化。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Raw CSI pilot captures of 512 values each, covering 42 base-station antennas and 2 reference antennas.', zh: 原始 CSI 导频采集，每次 512 个数值，覆盖 42 根基站天线和 2 根参考天线。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Received power per antenna and UE can be computed from the raw CSI pilots; no RSSI or power field is described., zh: 可由原始 CSI 导频计算各天线、各用户的接收功率；数据描述中未提及 RSSI 或功率字段。}
+- key: iq
+  status: provided
+  note: {en: 'IQ samples of the uplink pilots at the base-station antennas, stored in HDF5.', zh: 基站天线上行导频的 IQ 样本，以 HDF5 存储。}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- key: geometry
+  status: provided
+  note: {en: A deployment map (cpe-locations.jpeg) shows base station and UE locations; there is no 3D scene., zh: 部署地图（cpe-locations.jpeg）给出基站与用户单元位置；无三维场景。}
+- key: materials
+  status: none
+  note: {en: No material parameters are described., zh: 未描述材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera data., zh: 无摄像头数据。}
+- key: depth
+  status: none
+  note: {en: No depth data., zh: 无深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data., zh: 无 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar sensing data., zh: 无雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data., zh: 无 IMU 数据。}
+- key: time_series
+  status: provided
+  note: {en: 'About 120 KPI samples per measurement point, logged in sequence within each scenario.', zh: 每个测量点约 120 个 KPI 样本，在各场景内按顺序记录。}
+- key: multiuser
+  status: provided
+  note: {en: All six UEs connect simultaneously in the all-UE scenarios., zh: 在全部用户场景中，6 个用户单元同时接入。}
+- key: multibs
+  status: none
+  note: {en: One base station., zh: 仅一个基站。}
+- key: crossfreq
+  status: none
+  note: {en: 'One centre frequency, 563 MHz.', zh: 仅一个中心频率，563 MHz。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Four UEs are fixed and two are portable; no users moving at a stated speed are described., zh: 四个用户单元固定，两个为便携式；未描述以特定速度移动的用户。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量中，未按路径标注。}
+- key: polarization
+  status: provided
+  note: {en: 'Each UE has horizontally and vertically polarized channels, reported as _0 and _1 KPI fields.', zh: 每个用户单元具有水平和垂直极化两个信道，分别以 _0 和 _1 KPI 字段报告。}
+- key: em_field
+  status: none
+  note: {en: 'No field-level quantities; the data hold pilots, KPIs and latency.', zh: 无场量数据；数据包括导频、KPI 和时延。}
+versions:
+- version: IEEE DataPort update
+  date: '2026-06-26'
+  summary: {en: IEEE DataPort record last updated on this date; the page does not state what changed., zh: IEEE DataPort 记录最后更新于该日期；页面未说明更新内容。}
+  url: https://dx.doi.org/10.21227/0y0j-g926
+- version: initial release
+  date: '2026-06-25'
+  summary: {en: 'IEEE DataPort record created with AraMIMO TVWS measurements from 26 June 2023: six UEs, 563 MHz, four scenarios, CSI and IQ pilots in HDF5, KPI JSON, latency and MU-MIMO group summaries, packaged as one 996.76 MB zip.', zh: IEEE DataPort 记录创建，包含 2023 年 6 月 26 日的 AraMIMO TVWS 测量数据：6 个用户单元、563 MHz、4 类场景，CSI 与 IQ 导频以 HDF5 存储，并附 KPI JSON、时延及 MU-MIMO 分组汇总，打包为一个 996.76 MB 的 zip 文件。}
+  url: https://ieee-dataport.org/documents/aramimo-tvws-mmimo-dataset

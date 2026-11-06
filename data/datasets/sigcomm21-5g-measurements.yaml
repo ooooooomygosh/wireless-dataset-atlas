@@ -16,7 +16,8 @@ paper: doi:10.1145/3452296.3472923
 used_in: []
 citing: ['doi:10.1109/ojcoms.2024.3373368', 'doi:10.1145/3544216.3544217', 'doi:10.1109/infocom48880.2022.9796693']
 summary: {en: 'Measurement artifacts for 4G and 5G network experiments, covering throughput and speedtest results, handoffs while driving, RRC state probing, power traces, and ABR video streaming and web browsing QoE. Small data files are included in the repository and the full datasets are linked externally.', zh: 面向 4G 与 5G 网络实验的测量数据与分析脚本，涵盖吞吐量与测速结果、驾驶途中的切换、RRC 状态探测、功耗轨迹，以及 ABR 视频流和网页浏览的 QoE。小型数据文件存放在仓库中，完整数据集通过外部链接提供。}
-sources: ['https://github.com/SIGCOMM21-5G/artifact', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/README.md', 'https://api.crossref.org/works/10.1145/3452296.3472923']
+sources: ['https://github.com/SIGCOMM21-5G/artifact', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/README.md', 'https://api.crossref.org/works/10.1145/3452296.3472923', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/NW-Perf-Speedtest/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/Driving-Wild/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/RRC-Probe/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/Web-Browsing/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/Video-Streaming/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/TCP-Single-Conn-Perf/README.md', 'https://github.com/SIGCOMM21-5G/artifact/releases', 'https://github.com/SIGCOMM21-5G/artifact/tags', 'https://github.com/SIGCOMM21-5G/artifact/commits/main', 'https://github.com/SIGCOMM21-5G/artifact/commits/main?after=35aaf2857550c7f4c736fe9b01e894253a777e4e+34', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/RRC-Power/README.md',
+  'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/Power-SignalStrength/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/Data-Transfer-Power/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/Power-Model/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/Benchmark-Software-Power/README.md', 'https://raw.githubusercontent.com/SIGCOMM21-5G/artifact/main/Video-Streaming/ABR-5G/README.md']
 checked: '2026-11-06'
 overview: {en: 'This is the measurement artifact release for the SIGCOMM 2021 paper ''A Variegated Look at 5G in the Wild: Performance, Power, and QoE Implications'' (DOI 10.1145/3452296.3472923). The measurements cover 4G LTE and 5G networks on phones, using the Ookla Speedtest Android app, the 5G Tracker application, iPerf3 and ping, tcpdump, and a Monsoon Power Monitor. Driving runs record handoffs and power. The data cover throughput and Speedtest results, single-connection TCP downlink performance, RRC state probing, power during RRC transitions and data transfers, a power model, and benchmarks of software-based power monitors. Adaptive video streaming experiments run seven ABR algorithms over 4G and 5G throughput traces, and web-browsing experiments compare QoE and energy efficiency on 4G and 5G. The repository has one folder per experiment, and each folder''s README names the paper figures and tables it reproduces. Small data files are stored in the repository, and full datasets are
     linked from external Google Drive folders. A complete ABR run takes more than 24 hours, so the repository provides a screencast of a trace subset, output logs and full results instead.', zh: '本仓库为 SIGCOMM 2021 论文《A Variegated Look at 5G in the Wild: Performance, Power, and QoE Implications》（DOI 10.1145/3452296.3472923）的测量数据与分析工具发布。测量在 4G LTE 与 5G 网络上以手机进行，使用 Ookla Speedtest Android 应用、5G Tracker 应用、iPerf3 与 ping、tcpdump 以及 Monsoon Power Monitor 功耗仪。驾车实验记录切换与功耗。数据涵盖吞吐量与 Speedtest 结果、单连接 TCP 下行性能、RRC 状态探测、RRC 状态转换与数据传输期间的功耗、功耗模型，以及软件功耗监测器的基准测试。自适应视频流实验在 4G 与 5G 吞吐量轨迹上运行七种 ABR 算法；网页浏览实验比较 4G 与 5G 的 QoE 与能效。仓库每个实验一个目录，各目录 README 注明其复现的论文图表。较小的数据文件存放在仓库中，完整数据集通过外部 Google Drive 文件夹链接提供。ABR 实验的完整运行超过 24 小时，因此仓库改为提供部分轨迹的录屏、输出日志与完整结果。'}
@@ -62,3 +63,104 @@ pipeline:
     - {en: Processed CSV files, zh: 处理后的 CSV 文件}
     outputs:
     - {en: 'Figures in PNG, PDF and EPS', zh: PNG、PDF 与 EPS 格式的图表}
+facts:
+- label: {en: Handover types, zh: 切换类型}
+  text: {en: 'Driving-Wild handover logs label each event as 4t4 (4G to 4G), 4t5 (4G to 5G), 5t4 (5G to 4G) or 5t5 (5G to 5G), with the active interface as NSA-5G, SA-5G or 4G (LTE).', zh: Driving-Wild 切换日志将每个事件标为 4t4（4G 到 4G）、4t5（4G 到 5G）、5t4（5G 到 4G）或 5t5（5G 到 5G），活动网络为 NSA-5G、SA-5G 或 4G（LTE）。}
+- label: {en: RRC-Probe filtering, zh: RRC-Probe 过滤}
+  text: {en: 'Each RRC-Probe point is marked keep or bad in KeepOrDrop. A point is marked bad when other RX or TX transfer occurred on the phone between two consecutive probe arrivals, and bad points are removed from the dataset.', zh: RRC-Probe 每个数据点在 KeepOrDrop 字段中标记为 keep 或 bad。若两次相邻探测包到达之间手机上发生了其他收发数据，该点标为 bad，并从数据集中移除。}
+- label: {en: Web-browsing layout, zh: 网页浏览数据布局}
+  text: {en: 'raw_dataset is organized by collection date, with har-file and tcpdump-file folders for each date. preprocessing.py writes WebSet.pickle and fileStatistics.pickle to processed_dataset.', zh: raw_dataset 按采集日期组织，每个日期下有 har-file 与 tcpdump-file 两个文件夹。preprocessing.py 将 WebSet.pickle 与 fileStatistics.pickle 写入 processed_dataset。}
+- label: {en: Video session logs, zh: 视频会话日志}
+  text: {en: 'Each video session log has one line per video chunk and seven columns: download finish time, bitrate, buffer length, stall time, chunk size, download time and QoE reward.', zh: 每个视频会话日志每个视频分块占一行，共七列：下载完成时间、码率、缓冲长度、卡顿时间、分块大小、下载时长与 QoE 奖励。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'The released measurements are throughput, latency, RRC state, power and traffic logs; no channel state information is listed.', zh: 发布的测量为吞吐量、时延、RRC 状态、功耗与流量日志；未列出信道状态信息。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile is among the released files., zh: 发布文件中不含冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle, power or phase fields are released.', zh: 发布内容不含逐径时延、角度、功率或相位字段。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction type or interaction points are released., zh: 发布内容不含逐径交互类型或交互点。}
+- key: power
+  status: provided
+  note: {en: 'RSRP signal-strength values are stored with power and throughput in the processed CSV files, and Monsoon power traces are released for the driving runs, with sample RRC-Power traces.', zh: RSRP 信号强度值与功耗、吞吐量一同存于处理后的 CSV 文件中，驾驶实验发布了 Monsoon 功耗轨迹，并附 RRC-Power 样本轨迹。}
+- key: iq
+  status: none
+  note: {en: 'Phone-side Android API, iPerf3, ping and Speedtest logs; no raw I/Q samples.', zh: 为手机端 Android API、iPerf3、ping 与 Speedtest 日志；不含原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are among the released fields., zh: 发布字段中不含波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: 'Released fields hold server city and an approximate UE-to-server distance, with no device coordinates; the Lumos5G traces hold timestamp and throughput only.', zh: 发布字段包含服务器城市与近似的 UE 至服务器距离，不含设备坐标；Lumos5G 轨迹仅包含时间戳与吞吐量。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files are released., zh: 不发布三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 不发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: 'The release contains network, power and traffic logs only.', zh: 发布内容仅包含网络、功耗与流量日志。}
+- key: depth
+  status: none
+  note: {en: 'The release contains network, power and traffic logs only.', zh: 发布内容仅包含网络、功耗与流量日志。}
+- key: lidar
+  status: none
+  note: {en: 'The release contains network, power and traffic logs only.', zh: 发布内容仅包含网络、功耗与流量日志。}
+- key: radar
+  status: none
+  note: {en: 'The release contains network, power and traffic logs only.', zh: 发布内容仅包含网络、功耗与流量日志。}
+- key: imu
+  status: none
+  note: {en: No IMU readings are among the released fields., zh: 发布字段中不含 IMU 读数。}
+- key: time_series
+  status: provided
+  note: {en: 'Timestamped logs: Speedtest Date field, RRC-Probe per-packet records, 1 s Monsoon power in the driving runs, and Lumos5G throughput traces with timestamps.', zh: 带时间戳的日志：Speedtest 的 Date 字段、RRC-Probe 逐包记录、驾驶实验中每秒的 Monsoon 功耗，以及带时间戳的 Lumos5G 吞吐量轨迹。}
+- key: multiuser
+  status: none
+  note: {en: 'The connection_mode field means single or multi TCP connections from one phone, not multiple users.', zh: connection_mode 字段指同一手机的单连接或多连接 TCP，而非多用户。}
+- {key: multibs, status: unknown}
+- key: crossfreq
+  status: unknown
+  note: {en: 'Radio types are logged per test, but paired measurements at the same positions are not described.', zh: 每次测试记录了无线制式，但未描述同一位置的成对测量。}
+- key: near_field
+  status: none
+  note: {en: Phone-side network and power logs; no antenna array or near-field modelling is involved., zh: 为手机端网络与功耗日志；不涉及天线阵列或近场建模。}
+- key: high_mobility
+  status: unknown
+  note: {en: 'Driving runs are described, but no vehicle speed is stated in the released records.', zh: 文中描述了驾驶实验，但发布记录中未给出车速。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 固有于测量之中，未按路径单独标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The released data are throughput, latency, RRC, power and video logs, with no field-level or antenna-pattern outputs.', zh: 发布数据为吞吐量、时延、RRC、功耗与视频日志，不含场量或天线方向图输出。}
+versions:
+- version: update results for Pensieve
+  date: '2021-08-18'
+  summary: {en: Commit that updates the results for the Pensieve ABR algorithm in the video streaming experiments., zh: 提交更新了视频流实验中 Pensieve ABR 算法的结果。}
+  url: https://github.com/SIGCOMM21-5G/artifact/commits/main
+- version: SIGCOMM '21 paper
+  date: '2021-08-09'
+  summary: {en: 'Paper A Variegated Look at 5G in the Wild: Performance, Power, and QoE Implications published in the ACM SIGCOMM 2021 proceedings, with the measurement artifacts released in the repository.', zh: '论文 A Variegated Look at 5G in the Wild: Performance, Power, and QoE Implications 发表于 ACM SIGCOMM 2021 论文集，测量数据与工具随仓库发布。'}
+  url: https://doi.org/10.1145/3452296.3472923
+- version: data folder and raw_dataset updates
+  date: '2021-05-26'
+  summary: {en: 'Commits update the data folder and README, the web-browsing raw_dataset and its scripts, and the RRC-Probe data and plots.', zh: 提交更新了 data 目录与 README、网页浏览的 raw_dataset 及其脚本，以及 RRC-Probe 数据与图表。}
+  url: https://github.com/SIGCOMM21-5G/artifact/commits/main

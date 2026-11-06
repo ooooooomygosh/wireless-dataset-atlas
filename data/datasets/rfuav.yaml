@@ -4,7 +4,7 @@ year: 2025
 origin: measured
 tasks: [spectrum-sensing, rf-fingerprinting]
 signals: [iq, spectrum]
-bands_ghz: []
+bands_ghz: [2.41, 2.42, 2.44, 2.45, 2.46, 2.47, 5.75, 5.76, 5.77, 5.8]
 environment: []
 size_gb: 1300
 format: binary IQ, spectrogram images, video, XML metadata
@@ -15,20 +15,20 @@ paper: arxiv:2503.09033
 used_in: []
 citing: []
 summary: {en: 'Raw RF IQ recordings of 37 UAV types captured with USRP hardware in real-world environments, totalling about 1.3 TB. The release also includes spectrogram images and XML metadata files.', zh: 来自37种无人机类型的原始射频IQ录制数据，使用USRP采集，录制于真实环境，总量约1.3 TB。数据集还包含频谱图和XML元数据文件。}
-sources: ['https://github.com/kitoweeknd/RFUAV', 'https://huggingface.co/datasets/kitofrank/RFUAV', 'https://raw.githubusercontent.com/kitoweeknd/RFUAV/main/LICENSE', 'https://arxiv.org/abs/2503.09033', 'https://arxiv.org/html/2503.09033']
+sources: ['https://github.com/kitoweeknd/RFUAV', 'https://huggingface.co/datasets/kitofrank/RFUAV', 'https://raw.githubusercontent.com/kitoweeknd/RFUAV/main/LICENSE', 'https://arxiv.org/abs/2503.09033', 'https://arxiv.org/html/2503.09033', 'https://raw.githubusercontent.com/kitoweeknd/RFUAV/main/README.md', 'https://huggingface.co/api/datasets/kitofrank/RFUAV', 'https://huggingface.co/api/datasets/kitofrank/RFUAV/commits/main', 'https://github.com/kitoweeknd/RFUAV/commits/main', 'https://github.com/kitoweeknd/RFUAV/releases', 'https://export.arxiv.org/api/query?id_list=2503.09033']
 checked: '2026-11-06'
-overview: {en: 'RFUAV is a set of raw RF recordings of 37 UAV types, described in arXiv:2503.09033 and licensed under Apache-2.0. The raw data were captured with USRP X310 units at a 100 MHz sampling rate in a real-world environment, with the center frequency tuned for each drone and the SNR between 10 dB and 48 dB per drone type. The raw data total about 1.3 TB and are stored as binary interleaved IQ streams, with one XML file of acquisition parameters per recording. The Hugging Face release is described as a public subset: it holds 37 raw data clips, spectrogram images in train and validation folders, and model weights. The GitHub repository contains MATLAB and Python code that converts raw files to spectrograms and runs the detection and classification models. The authors target UAV signal detection, UAV type identification, SNR estimation and benchmarking across SNR levels.', zh: 'RFUAV 是 37 种无人机类型的原始射频录制数据，见 arXiv:2503.09033，采用 Apache-2.0 许可证。原始数据使用 USRP X310 在真实环境中采集，采样率为 100 MHz，每种无人机分别调整中心频率，每种类型的
-    SNR 为 10 dB 至 48 dB。原始数据总量约 1.3 TB，以二进制交错 IQ 流存储，每段录制附带一个采集参数 XML 文件。Hugging Face 发布的是公开子集，包含 37 个原始数据片段、训练集与验证集中的频谱图图像以及模型权重。GitHub 仓库提供将原始文件转换为频谱图的 MATLAB 与 Python 代码，以及检测与分类模型的运行代码。作者的目标任务包括无人机信号检测、无人机类型识别、SNR 估计，以及在不同 SNR 水平下的基准测试。'}
+overview: {en: 'RFUAV is a benchmark of raw RF recordings from 37 UAV types, described in arXiv:2503.09033 and released under Apache-2.0 on Hugging Face. The raw data were captured in a real-world setting with two USRP X310 units at a 100 MHz sampling rate, with the center frequency tuned for each drone, and the SNR of the recordings ranges from 10 dB to 48 dB across drone types. The raw data total about 1.3 TB and are stored as interleaved fp32 IQ streams, with one XML parameter file per drone type. The Hugging Face release is a public subset that contains the 37 raw data clips, spectrogram images in train and valid folders, a five-drone validation set, and model weights. The GitHub repository provides MATLAB and Python code that converts raw files into spectrograms, adds noise to adjust SNR, and runs the detection and classification models. The authors target UAV signal detection, UAV type identification, SNR estimation and benchmarking across SNR levels.', zh: 'RFUAV 是 37 种无人机的原始射频录制数据集，对应论文
+    arXiv:2503.09033，在 Hugging Face 上以 Apache-2.0 许可证发布。原始数据在真实环境中由两台 USRP X310 以 100 MHz 采样率采集，每种无人机分别调整中心频率，各类型录制信号的 SNR 范围为 10 dB 至 48 dB。原始数据总量约 1.3 TB，以 fp32 交错 IQ 流存储，每种无人机类型对应一个 XML 参数文件。Hugging Face 发布的是公开子集，包含 37 个原始数据片段、train 与 valid 文件夹中的频谱图图像、一个 5 种无人机的验证集以及模型权重。GitHub 仓库提供 MATLAB 与 Python 代码，用于将原始文件转换为频谱图、通过加噪调整 SNR，并运行检测与分类模型。作者的目标任务包括无人机信号检测、无人机类型识别、SNR 估计，以及跨 SNR 水平的基准测试。'}
 signal_details:
 - signal: iq
-  text: {en: 'Binary interleaved IQ streams, each sample stored as two fp32 values. Captured with two USRP X310 units: USRPI records the raw data to a collector PC running Ubuntu 22.04 and GNU Radio v3.9.10, connected over a 10GbE link. Sampling rate 100 MHz. Center frequencies 2.41 to 5.8 GHz, tuned per drone. Raw file size per drone type from 15.71 GB to 127.71 GB. Each recording has an XML file with the USRP parameters: CenterFrequency, SampleRate, IFBandwidth, ScaleFactor in dB, and ReferenceSNRLevel.', zh: 二进制交错 IQ 流，每个采样点以两个 fp32 数值存储。使用两台 USRP X310 采集，USRPI 将原始数据录制到运行 Ubuntu 22.04 与 GNU Radio v3.9.10 的采集 PC，两者通过 10GbE 链路连接。采样率 100 MHz。中心频率 2.41 至 5.8 GHz，按无人机分别调谐。每种无人机类型的原始文件大小为 15.71 GB 至 127.71 GB。每段录制附带一个 XML 文件，记录 USRP 参数：CenterFrequency、SampleRate、IFBandwidth、以 dB 计的 ScaleFactor 以及 ReferenceSNRLevel。}
+  text: {en: 'Binary interleaved IQ streams, each sample stored as two fp32 values. Two USRP X310 units are used: USRPI records the raw data to a collector PC running Ubuntu 22.04 and GNU Radio v3.9.10 over a 10GbE link. Sampling rate 100 MHz. Center frequencies 2.41 to 5.8 GHz, tuned per drone. Raw data size per drone type from 15.71 GB to 127.71 GB. Each drone type has an XML file with the USRP parameters: DeviceType, Drone, SerialNumber, DataType, ReferenceSNRLevel, CenterFrequency, SampleRate, IFBandwidth and ScaleFactor.', zh: 二进制交错 IQ 流，每个采样点以两个 fp32 数值存储。使用两台 USRP X310，其中 USRPI 通过 10GbE 链路将原始数据录制到运行 Ubuntu 22.04 与 GNU Radio v3.9.10 的采集 PC。采样率 100 MHz。中心频率 2.41 至 5.8 GHz，按无人机分别调谐。每种无人机类型的原始数据大小为 15.71 GB 至 127.71 GB。每种无人机类型对应一个 XML 文件，记录 USRP 参数：DeviceType、Drone、SerialNumber、DataType、ReferenceSNRLevel、CenterFrequency、SampleRate、IFBandwidth 与 ScaleFactor。}
 - signal: spectrum
-  text: {en: 'Spectrograms computed from the raw IQ with STFT. The conversion function defaults to 1024 FFT points and 0.1 s per image at a 100 MHz sample rate, and writes PNG images; a second function writes spectrogram video at 5 fps. The Hugging Face release contains spectrogram image sets split into train and validation folders, one folder per drone model.', zh: 由原始 IQ 数据经 STFT 计算得到的频谱图。转换函数默认使用 1024 点 FFT、每幅图 0.1 s、100 MHz 采样率，输出 PNG 图像；另一函数以 5 fps 输出频谱视频。Hugging Face 发布的频谱图图像按训练集与验证集划分，每种无人机型号一个文件夹。}
+  text: {en: 'Spectrograms computed from the raw IQ with STFT, using a Hamming window in the paper. The example conversion function uses 1024 FFT points and 0.1 s per image at a 100 MHz sample rate, and writes PNG images; a second function writes spectrogram video at 5 fps. The Hugging Face release contains spectrogram image sets in train and valid folders, organized by drone type.', zh: 由原始 IQ 数据经 STFT 计算得到的频谱图，论文中使用汉明窗。转换函数示例使用 1024 点 FFT、每幅图 0.1 s、100 MHz 采样率，输出 PNG 图像；另一函数以 5 fps 输出频谱视频。Hugging Face 发布的频谱图图像位于 train 与 valid 文件夹中，按无人机类型组织。}
 pipeline:
-  summary: {en: 'Raw IQ is recorded with USRP hardware, cut into segments, converted to spectrograms, and augmented with AWGN to cover lower SNR levels.', zh: 原始 IQ 由 USRP 硬件录制，切分为片段，转换为频谱图，并通过 AWGN 增广以覆盖较低的 SNR 水平。}
+  summary: {en: 'Raw IQ is recorded with USRP hardware, cut into segments, converted to spectrograms, and augmented with added noise (awgn1) to cover lower SNR levels.', zh: 原始 IQ 由 USRP 硬件录制，切分为片段，转换为频谱图，并通过 awgn1 函数添加噪声以覆盖较低的 SNR 水平。}
   stages:
   - title: {en: Signal capture, zh: 信号采集}
-    detail: {en: 'USRPI records each drone''s signal to a collector PC, with the transmitter connected directly to USRPI or placed nearby. USRPO replays packets to a spectrum analyzer covering 9 kHz to 13.2 GHz for quality checks. The sampling rate is 100 MHz, and the gain is set to keep the SNR high.', zh: USRPI 将每种无人机的信号录制到采集 PC，发射机直接连接 USRPI 或放置在附近。USRPO 将数据包回放至频谱分析仪（覆盖 9 kHz 至 13.2 GHz）以检查质量。采样率为 100 MHz，增益设置以保持较高的 SNR。}
+    detail: {en: 'USRPI records each drone''s signal to a collector PC, with the transmitter connected directly to USRPI or placed nearby. USRPO replays packets to a spectrum analyzer covering 9 kHz to 13.2 GHz for quality checks. The sampling rate is 100 MHz, and the gain is adjusted to keep the SNR high.', zh: USRPI 将每种无人机的信号录制到采集 PC，发射机直接连接 USRPI 或放置在附近。USRPO 将数据包回放至频谱分析仪（覆盖 9 kHz 至 13.2 GHz）以检查质量。采样率为 100 MHz，增益经调整以保持较高的 SNR。}
     inputs:
     - {en: UAV transmitter, zh: 无人机发射机}
     outputs:
@@ -40,14 +40,127 @@ pipeline:
     outputs:
     - {en: Segmented data packets, zh: 分段数据包}
   - title: {en: Spectrogram conversion, zh: 频谱图转换}
-    detail: {en: 'The conversion function applies STFT to each IQ segment at a 100 MHz sample rate, with 1024 FFT points and 0.1 s per image by default, and writes PNG images. A second function writes the same spectrograms as video at 5 fps.', zh: 转换函数对每段 IQ 数据应用 STFT，默认采样率为 100 MHz，默认 1024 点 FFT，每幅图 0.1 s，并输出 PNG 图像。另一函数以 5 fps 将频谱图输出为视频。}
+    detail: {en: 'The conversion function applies STFT to each IQ segment at a 100 MHz sample rate, with 1024 FFT points and 0.1 s per image in the documented example, and writes PNG images. A second function writes spectrogram video at 5 fps.', zh: 转换函数对每段 IQ 数据应用 STFT，采样率为 100 MHz，文档示例使用 1024 点 FFT 与每幅图 0.1 s，并输出 PNG 图像。另一函数以 5 fps 输出频谱视频。}
     inputs:
     - {en: IQ segments with sample rate and STFT size, zh: 带采样率与 STFT 长度的 IQ 片段}
     outputs:
     - {en: PNG spectrogram images and spectrogram video, zh: PNG 频谱图与频谱视频}
   - title: {en: SNR augmentation, zh: SNR 增广}
-    detail: {en: 'The awgn1 function adds noise to reach target SNRs from -20 dB to 20 dB, in 2 dB steps by default, using an SNR estimate of the input. The data_augmentation function uses these versions to address the SNR mismatch between training and benchmark data.', zh: awgn1 函数根据输入数据的 SNR 估计值添加噪声，使其达到 -20 dB 至 20 dB 的目标 SNR，默认步长为 2 dB，也允许自定义。data_augmentation 函数利用这些版本解决训练数据与基准数据之间的 SNR 不一致问题。}
+    detail: {en: 'The awgn1 function adjusts the noise level of a recording, based on its SNR estimate, to reach target SNRs from -20 dB to 20 dB, in 2 dB steps by default; a custom scale can be set. The data_augmentation function uses these versions to address the mismatch between the training set, which holds drone images at their original SNR, and the benchmark, which covers several SNR levels.', zh: awgn1 函数依据录制数据的 SNR 估计值调整噪声水平，使其达到 -20 dB 至 20 dB 的目标 SNR，默认步长为 2 dB，也可自定义。data_augmentation 函数利用这些版本解决训练集（仅包含原始 SNR 的无人机图像）与覆盖多个 SNR 水平的基准之间的不一致问题。}
     inputs:
     - {en: Raw IQ with SNR estimate, zh: 带 SNR 估计值的原始 IQ}
     outputs:
     - {en: Noise-adjusted IQ at target SNRs, zh: 目标 SNR 下的加噪 IQ 数据}
+facts:
+- label: {en: Hugging Face archives, zh: Hugging Face 压缩包}
+  text: {en: 'The Hugging Face release stores each drone''s raw clip as a .rar archive: 37 archives for the raw data and 5 archives in a separate validation set.', zh: Hugging Face 发布版中，每种无人机的原始数据片段以 .rar 压缩包存储：原始数据共 37 个压缩包，另有 5 个压缩包构成单独的验证集。}
+- label: {en: Per-drone characteristics, zh: 各无人机特征表}
+  text: {en: 'Table 4 of the paper lists, for each drone type, the file size, reference SNR, center frequency, FHSBW, VTSBW, FHSDT, FHSDC and FHSPP.', zh: 论文表 4 按无人机类型列出文件大小、参考 SNR、中心频率、FHSBW、VTSBW、FHSDT、FHSDC 与 FHSPP。}
+- label: {en: RF drone fingerprint, zh: RF 无人机指纹}
+  text: {en: 'The paper defines an RF drone fingerprint from the frequency-hopping bandwidth, duration, duty cycle and period (FHSBW, FHSDT, FHSDC, FHSPP) together with the video transmission bandwidth (VTSBW).', zh: 论文以跳频带宽、持续时间、占空比与周期（FHSBW、FHSDT、FHSDC、FHSPP）以及图传带宽（VTSBW）定义 RF 无人机指纹。}
+- label: {en: SNR range of the benchmark, zh: 基准的 SNR 范围}
+  text: {en: 'The benchmark covers SNR levels from -20 dB to 20 dB, while the training set contains drone images at their original SNR only.', zh: 基准覆盖 -20 dB 至 20 dB 的 SNR 水平，而训练集仅包含原始 SNR 下的无人机图像。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'The release holds raw IQ streams, spectrograms and XML parameter files; no channel matrices.', zh: 发布内容为原始 IQ 流、频谱图和 XML 参数文件，不含信道矩阵。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile is included., zh: 发布内容不包含冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters are included., zh: 发布内容不包含逐路径参数。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction labels are included., zh: 发布内容不包含逐路径交互标注。}
+- key: power
+  status: derivable
+  note: {en: Received power and SNR can be computed from the raw IQ; the repository's MATLAB function snrEsti estimates SNR., zh: 接收功率和 SNR 可由原始 IQ 计算；仓库中的 MATLAB 函数 snrEsti 用于估计 SNR。}
+- key: iq
+  status: provided
+  note: {en: Interleaved fp32 IQ at 100 MHz sampling rate; the public subset holds 37 raw drone clips., zh: 交错排列的 fp32 IQ，采样率 100 MHz；公开子集包含 37 个无人机原始数据片段。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are included; the recordings are single-link IQ., zh: 不包含波束索引或逐波束增益；录制数据为单链路 IQ。}
+- key: position
+  status: none
+  note: {en: The XML files list USRP parameters only; there are no position or GPS fields., zh: XML 文件仅记录 USRP 参数，不含位置或 GPS 字段。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files are included., zh: 不包含三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are included., zh: 不包含材料参数。}
+- key: rgb
+  status: none
+  note: {en: 'The image data are spectrograms, not optical images of the scene.', zh: 图像数据为频谱图，不是场景的光学图像。}
+- key: depth
+  status: none
+  note: {en: No depth sensor data are included., zh: 不包含深度传感器数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are included., zh: 不包含激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar sensing data are included., zh: 不包含雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: No inertial measurement data are included., zh: 不包含惯性测量数据。}
+- key: time_series
+  status: provided
+  note: {en: Continuous raw IQ recordings per drone type; the MATLAB tool rawdata_crop.m cuts them into segments of a set interval (2 s in the example)., zh: 每种无人机提供连续的原始 IQ 录制；MATLAB 工具 rawdata_crop.m 可按设定间隔切分为片段（示例为 2 s）。}
+- key: multiuser
+  status: none
+  note: {en: Each recording holds one drone type; no simultaneous multi-drone scenes are described., zh: 每段录制对应一种无人机；资料未描述多机同时发射的场景。}
+- key: multibs
+  status: none
+  note: {en: A single receiver setup is described; no multi-base-station data are included., zh: 描述的是单接收端配置，不含多基站数据。}
+- key: crossfreq
+  status: none
+  note: {en: Each drone type is recorded at its own centre frequency; no paired multi-band captures are included., zh: 每种无人机以各自的中心频率录制；不含成对的多频段采集。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path; captures with a direct cable connection contain no propagation.', zh: 包含在空口测量之中，未按路径标注；直接线缆连接的采集不含传播过程。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path; captures with a direct cable connection contain no propagation.', zh: 包含在空口测量之中，未按路径标注；直接线缆连接的采集不含传播过程。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path; captures with a direct cable connection contain no propagation.', zh: 包含在空口测量之中，未按路径标注；直接线缆连接的采集不含传播过程。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path; captures with a direct cable connection contain no propagation.', zh: 包含在空口测量之中，未按路径标注；直接线缆连接的采集不含传播过程。}
+- key: polarization
+  status: none
+  note: {en: 'The release holds IQ, spectrograms and XML parameters; no polarimetric data are included.', zh: 发布内容为 IQ、频谱图和 XML 参数，不含极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: 'No field-level outputs are included; the release holds IQ, spectrograms and XML parameters.', zh: 不包含场级输出；发布内容为 IQ、频谱图和 XML 参数。}
+versions:
+- version: HF 2026-07-27
+  date: '2026-07-27'
+  summary: {en: The stage-1 model weights file RFUAV_stage1.pt was uploaded to the Hugging Face repository., zh: Hugging Face 仓库新增第一阶段模型权重文件 RFUAV_stage1.pt。}
+  url: https://huggingface.co/datasets/kitofrank/RFUAV/commits/main
+- version: HF 2025-06-06
+  date: '2025-06-06'
+  summary: {en: The model weights used in the experiments were updated., zh: 实验中使用的模型权重已更新。}
+  url: https://huggingface.co/datasets/kitofrank/RFUAV/commits/main
+- version: HF 2025-06-05
+  date: '2025-06-05'
+  summary: {en: The validation set used in the paper experiments was added., zh: 新增论文实验中使用的验证集。}
+  url: https://huggingface.co/datasets/kitofrank/RFUAV/commits/main
+- version: HF 2025-03-19
+  date: '2025-03-19'
+  summary: {en: The dataset card was revised and irrelevant tags were removed (pull request 1)., zh: '数据集说明卡已修订，并删除无关标签（Pull Request #1）。'}
+  url: https://huggingface.co/datasets/kitofrank/RFUAV/commits/main
+- version: HF 2025-03-14
+  date: '2025-03-14'
+  summary: {en: 'Raw data archives (one .rar per drone type), spectrogram image folders and the dataset README were uploaded to Hugging Face.', zh: 上传至 Hugging Face 的内容包括原始数据压缩包（每种无人机一个 .rar）、频谱图文件夹和数据集 README。}
+  url: https://huggingface.co/datasets/kitofrank/RFUAV/commits/main
+- version: arXiv v1
+  date: '2025-03-12'
+  summary: {en: The RFUAV benchmark paper was first posted to arXiv as 2503.09033., zh: 'RFUAV 基准数据集论文以 arXiv:2503.09033 首次发布。'}
+  url: https://arxiv.org/abs/2503.09033v1

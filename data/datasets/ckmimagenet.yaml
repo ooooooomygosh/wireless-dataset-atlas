@@ -15,13 +15,13 @@ paper: doi:10.1109/tcomm.2025.3615778
 used_in: ['doi:10.1109/tccn.2026.3739531', 'doi:10.1109/wcnc65185.2026.11555043']
 citing: ['doi:10.1109/twc.2026.3678277', 'doi:10.1109/lwc.2026.3693360', 'doi:10.1109/lwc.2026.3704635']
 summary: {en: 'Per-location channel gain, propagation delay, angle of arrival and angle of departure at 28 GHz, generated with Wireless InSite ray tracing for over 10,000 environment maps of 128 m x 128 m across urban, rural and indoor scenes. Grayscale channel knowledge map images at 32, 64 and 128 pixels accompany the data.', zh: '在28 GHz频段下，使用Wireless InSite光线追踪为城市、乡村和室内场景中超过10,000张128 m x 128 m环境地图生成各位置的信道增益、传播时延、到达角（AoA）和离开角（AoD）数据。配套的灰度信道知识地图图像分辨率为32、64和128像素。'}
-sources: ['https://github.com/zyktzCKM/CKMImageNet', 'https://github.com/Darwen9/CKMImagenet', 'https://raw.githubusercontent.com/zyktzCKM/CKMImageNet/main/README.md', 'https://arxiv.org/abs/2504.09849', 'https://arxiv.org/html/2504.09849', 'https://doi.org/10.1109/TCOMM.2025.3615778']
+sources: ['https://github.com/zyktzCKM/CKMImageNet', 'https://github.com/Darwen9/CKMImagenet', 'https://raw.githubusercontent.com/zyktzCKM/CKMImageNet/main/README.md', 'https://arxiv.org/abs/2504.09849', 'https://arxiv.org/html/2504.09849', 'https://doi.org/10.1109/TCOMM.2025.3615778', 'https://raw.githubusercontent.com/zyktzCKM/CKMImageNet/main/LICENSE', 'https://api.crossref.org/works/10.1109/TCOMM.2025.3615778', 'https://github.com/zyktzCKM/CKMImageNet/releases', 'https://github.com/zyktzCKM/CKMImageNet/tags', 'https://github.com/zyktzCKM/CKMImageNet/commits/main', 'https://raw.githubusercontent.com/zyktzCKM/CKMImageNet/main/Nanjing/numerical%20data/NJ2/NJ2_total_data_table_1.csv', 'https://raw.githubusercontent.com/zyktzCKM/CKMImageNet/main/London/parameter%20configuration.docx', 'https://arxiv.org/html/2504.09849v1']
 checked: '2026-11-06'
 overview: {en: 'CKMImageNet is a channel knowledge map (CKM) dataset from Southeast University and Purple Mountain Laboratories, published in IEEE Transactions on Communications, vol. 73, no. 12 (2025). It holds location-based channel gain, propagation delay, angle of arrival (AoA) and angle of departure (AoD) at 28 GHz, computed with Wireless InSite ray tracing over 3D environment models built in Blender from OpenStreetMap regions. The dataset includes over 10,000 environment maps of 128 m × 128 m for urban, rural and indoor scenes. Each study area places a 4 × 4 grid of 16 base stations, spaced 100 m apart, inside a 300 m × 300 m block, and receivers sit every 2 m over a 700 m × 700 m area. The numerical values are stored in .p2m files, and the channel parameters are also provided as grayscale images at 32 × 32, 64 × 64 and 128 × 128 pixels. The folders follow a four-level tree of root, scenario type, location and area.', zh: 'CKMImageNet 是东南大学与紫金山实验室的信道知识地图（CKM）数据集，发表于 IEEE Transactions
     on Communications, vol. 73, no. 12（2025）。数据包含 28 GHz 下基于位置的信道增益、传播时延、到达角（AoA）和离开角（AoD），由 Wireless InSite 光线追踪计算，三维环境模型在 Blender 中依据 OpenStreetMap 区域构建。数据集包含超过 10,000 张 128 m × 128 m 的环境地图，涵盖城市、乡村和室内场景。每个研究区域在 300 m × 300 m 范围内布设 4 × 4 共 16 个基站，间距 100 m；接收点每 2 m 一个，覆盖 700 m × 700 m 区域。数值数据存储于 .p2m 文件中，信道参数同时以 32 × 32、64 × 64 和 128 × 128 像素的灰度图像提供。目录采用根目录、场景类型、地点、区域四层结构。'}
 signal_details:
 - signal: paths
-  text: {en: 'Channel gain (dB), propagation delay, AoA and AoD (degrees) at 28 GHz, computed with Wireless InSite ray tracing with up to 25 multipath components per link, up to 6 reflections and 1 diffraction. The numerical data are stored in .p2m files, and each record pairs a 3D receiver position with the channel values. The ray-tracing grid step is 2 m in x and y (Δx = Δy = 2 m).', zh: 28 GHz 下的信道增益（dB）、传播时延、AoA 与 AoD（度），由 Wireless InSite 光线追踪计算，每条链路最多 25 条多径分量，最多 6 次反射和 1 次绕射。数值数据存储于 .p2m 文件，每条记录将三维接收机位置与信道数值配对。光线追踪网格步长为 x 与 y 方向各 2 m（Δx = Δy = 2 m）。}
+  text: {en: 'Channel gain (dB), propagation delay, AoA and AoD (degrees) at 28 GHz, computed with Wireless InSite ray tracing with up to 25 multipath components per link, up to 6 reflections and 1 diffraction. The numerical data are stored in .p2m files, with channel values for each receiver location. The ray-tracing grid step is 2 m in x and y (Δx = Δy = 2 m).', zh: 28 GHz 下的信道增益（dB）、传播时延、AoA 与 AoD（度），由 Wireless InSite 光线追踪计算，每条链路最多 25 条多径分量，最多 6 次反射和 1 次绕射。数值数据存储于 .p2m 文件，其中包含各接收点位置的信道数值。光线追踪网格步长为 x 与 y 方向各 2 m（Δx = Δy = 2 m）。}
 pipeline:
   summary: {en: 'Blender and OpenStreetMap build the 3D scene, Wireless InSite ray-traces each study area at 28 GHz, and the per-receiver values are converted into grayscale channel knowledge images.', zh: Blender 与 OpenStreetMap 构建三维场景，Wireless InSite 对每个研究区域进行 28 GHz 光线追踪，逐接收点数值再转换为灰度信道知识图像。}
   stages:
@@ -32,14 +32,14 @@ pipeline:
     outputs:
     - {en: Collada .dae 3D environment model, zh: Collada .dae 三维环境模型}
   - title: {en: Ray-tracing setup, zh: 光线追踪设置}
-    detail: {en: 'Wireless InSite places a 4 × 4 grid of 16 base stations, spaced 100 m apart, in a 300 m × 300 m study area, extended by 200 m per side to 700 m × 700 m. Receivers are placed every 2 m, giving 351 × 351 = 123,201 points. The carrier is 28 GHz, with a maximum of 25 multipath components, 6 reflections and 1 diffraction. Ray tracing of one study area typically takes one day.', zh: 'Wireless InSite 在 300 m × 300 m 研究区域内布设 4 × 4 共 16 个基站，间距 100 m，并将区域每侧扩展 200 m 至 700 m × 700 m。接收点每 2 m 一个，共 351 × 351 = 123,201 个。载频 28 GHz，最多 25 条多径分量、6 次反射、1 次绕射。单个研究区域的光线追踪通常需要一天。'}
+    detail: {en: 'Wireless InSite places a 4 × 4 grid of 16 base stations, spaced 100 m apart, in a 300 m × 300 m study area, extended by 200 m per side to 700 m × 700 m. Receivers are placed every 2 m, giving 351 × 351 = 123,201 points. Each base station and receiver has a single half-wave dipole antenna. The carrier is 28 GHz, with a maximum of 25 multipath components, 6 reflections and 1 diffraction. Ray tracing of one study area typically takes one day.', zh: 'Wireless InSite 在 300 m × 300 m 研究区域内布设 4 × 4 共 16 个基站，间距 100 m，并将区域每侧扩展 200 m 至 700 m × 700 m。接收点每 2 m 一个，共 351 × 351 = 123,201 个。基站与接收点均使用单根半波偶极子天线。载频 28 GHz，最多 25 条多径分量、6 次反射、1 次绕射。单个研究区域的光线追踪通常需要一天。'}
     inputs:
     - {en: 3D environment model, zh: 三维环境模型}
     - {en: 'BS and receiver layout, 28 GHz, 25 paths, 6 reflections, 1 diffraction', zh: 基站与接收点布局、28 GHz、25 条路径、6 次反射、1 次绕射}
     outputs:
     - {en: Propagation paths per receiver, zh: 每个接收点的传播路径}
   - title: {en: Channel knowledge extraction, zh: 信道知识提取}
-    detail: {en: 'For each receiver, the ray-tracing output is reduced to channel gain, propagation delay, AoA and AoD. Receivers blocked by buildings are excluded from the data points. The values are written to .p2m files, each with 3D positions.', zh: 对每个接收点，将光线追踪输出归并为信道增益、传播时延、AoA 与 AoD。被建筑遮挡的接收点不计入数据点。数值写入 .p2m 文件，每条记录包含三维位置。}
+    detail: {en: 'For each receiver, the ray-tracing output is reduced to channel gain, propagation delay, AoA and AoD. Receivers blocked by buildings are excluded from the data points. The values are written to .p2m files, each tied to its receiver location.', zh: 对每个接收点，将光线追踪输出归并为信道增益、传播时延、AoA 与 AoD。被建筑遮挡的接收点不计入数据点。数值写入 .p2m 文件，每个数据点对应其接收点位置。}
     inputs:
     - {en: Ray-tracing paths, zh: 光线追踪路径}
     outputs:
@@ -50,3 +50,92 @@ pipeline:
     - {en: 'Channel gain, AoA and AoD values', zh: 信道增益、AoA 与 AoD 数值}
     outputs:
     - {en: 'Grayscale images at 32, 64 and 128 px', zh: 32、64、128 像素灰度图像}
+facts:
+- label: {en: Obstacle maps, zh: 障碍物地图}
+  text: {en: 'Environment maps are binary matrices in which 1 marks obstacles such as buildings and vehicles, and 0 otherwise.', zh: 环境地图为二值矩阵，1 表示建筑、车辆等障碍物，其余位置为 0。}
+- label: {en: Antenna, zh: 天线}
+  text: {en: Each base station and user equipment uses a single half-wave dipole whose axis points along the z-direction., zh: 每个基站与用户设备使用单根半波偶极子天线，其轴线沿 z 方向。}
+- label: {en: Measurement status, zh: 实测数据状态}
+  text: {en: 'Real-world measurement data had not been collected when the paper was written, so the channel values come from ray tracing.', zh: 论文撰写时尚未采集实测数据，信道数值来自光线追踪。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'Only per-receiver channel gain in dB, one delay, and AoA and AoD angles are released; there is no complex CSI.', zh: 仅发布每个接收点的信道增益（dB）、一个时延以及 AoA 与 AoD 角度；无复数 CSI。}
+- key: cir
+  status: none
+  note: {en: One delay and one gain per receiver are released; no multi-tap impulse response is included., zh: 每个接收点仅发布一个时延与一个增益；未包含多抽头冲激响应。}
+- key: paths
+  status: provided
+  note: {en: 'One set of gain, delay, AoA and AoD per receiver, from up to 25 multipath components per link; the released table does not state which path it stores.', zh: 每个接收点一组增益、时延、AoA 与 AoD，来源于每条链路最多 25 条多径分量；发布表未说明保存的是哪条径。}
+- key: interaction
+  status: provided
+  note: {en: The table has first and last X and Y coordinate columns per receiver; the interaction type and the reflection or diffraction order are not in the table., zh: 表中每个接收点含首末 X、Y 坐标列；表中不含交互类型以及反射或绕射阶数。}
+- key: power
+  status: provided
+  note: {en: 'Channel gain in dB for each receiver, given in the Channel Gain column of the released tables.', zh: 发布表的 Channel Gain 列给出每个接收点的信道增益（dB）。}
+- key: iq
+  status: none
+  note: {en: The released values are ray-traced scalar gains and angles; there are no raw I/Q samples., zh: 发布值为光线追踪得到的标量增益与角度；无原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains appear in the released tables., zh: 发布表中无波束索引或逐波束增益。}
+- key: position
+  status: provided
+  note: {en: 'Receiver X and Y coordinates in metres on a 2 m grid; the released table has no Z column, although the paper describes 3D coordinates.', zh: 接收点的 X、Y 坐标（米），间隔 2 m；发布表无 Z 列，而论文描述为三维坐标。}
+- key: geometry
+  status: unknown
+  note: {en: 'The paper describes binary obstacle matrices for each area, but none were found in the GitHub file listing checked.', zh: 论文描述了每个区域的二值障碍物矩阵，但在所检查的 GitHub 文件列表中未找到。}
+- key: materials
+  status: unknown
+  note: {en: 'The simulation uses material properties, but the London parameter file lists only frequency, area, receivers and transmitters.', zh: 仿真使用了材料属性，但 London 参数文件仅列出频率、区域、接收点与发射点。}
+- key: rgb
+  status: none
+  note: {en: 'The channel knowledge images are grayscale, according to the paper.', zh: 据论文所述，信道知识图像为灰度图。}
+- key: depth
+  status: none
+  note: {en: No depth data are released; the channel images are grayscale., zh: 未发布深度数据；信道图像为灰度。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are released; the environments are built from OpenStreetMap and Blender models., zh: 未发布 LiDAR 数据；环境由 OpenStreetMap 与 Blender 模型构建。}
+- key: radar
+  status: none
+  note: {en: No radar observations are released., zh: 未发布雷达观测。}
+- key: imu
+  status: none
+  note: {en: No inertial data are released., zh: 未发布惯性数据。}
+- key: time_series
+  status: none
+  note: {en: Each receiver is a static snapshot; the paper lists dynamic environmental conditions as future work., zh: 每个接收点为静态快照；论文将动态环境条件列为未来工作。}
+- {key: multiuser, status: unknown}
+- key: multibs
+  status: provided
+  note: {en: 'Several base stations per area: the paper states 16, the Nanjing area folders hold tables numbered 1 to 16 and per-BS images, and the London parameter file lists 49 BSs.', zh: 每个区域包含多个基站：论文称为 16 个，南京区域文件夹含编号 1 至 16 的表格与按基站划分的图像，London 参数文件列出 49 个基站。}
+- key: crossfreq
+  status: none
+  note: {en: Single 28 GHz band; other bands are listed as future work., zh: 仅 28 GHz 单一频段；其他频段列为未来工作。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Static receiver grid with no speed or time field., zh: 静态接收点网格，无速度或时间字段。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Static snapshot maps in which vehicles are fixed obstacles; dynamic conditions are future work., zh: 静态快照地图，其中车辆为固定障碍物；动态条件为未来工作。}
+- key: reflection
+  status: provided
+  note: {en: Enabled in the ray tracing (up to 6 reflections); the contributions are not labelled per path., zh: 光线追踪中已启用（最多 6 次反射）；各反射贡献未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: Enabled in the ray tracing (1 diffraction); the contributions are not labelled per path., zh: 光线追踪中已启用（1 次绕射）；各绕射贡献未按径标注。}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: none
+  note: {en: 'Each node has a single antenna, and no polarimetric data are released.', zh: 每个节点为单天线，未发布极化数据。}
+- key: em_field
+  status: none
+  note: {en: 'Only gain, delay, angles and coordinates are released; there are no field-level outputs.', zh: 仅发布增益、时延、角度与坐标；无场量输出。}
+versions:
+- version: arXiv v1
+  date: '2025-04-14'
+  summary: {en: 'The first public version: the arXiv preprint that introduces CKMImageNet, with 28 GHz Wireless InSite ray-traced channel gain, propagation delay, AoA and AoD for over 10,000 environment maps of 128 m x 128 m in urban, rural and indoor scenes, plus grayscale images at 32, 64 and 128 pixels.', zh: '首个公开版本：介绍 CKMImageNet 的 arXiv 预印本，包含 28 GHz 下 Wireless InSite 光线追踪得到的信道增益、传播时延、AoA 与 AoD，覆盖城市、乡村与室内场景中超过 10,000 张 128 m x 128 m 的环境地图，并提供 32、64、128 像素的灰度图像。'}
+  url: https://arxiv.org/abs/2504.09849v1

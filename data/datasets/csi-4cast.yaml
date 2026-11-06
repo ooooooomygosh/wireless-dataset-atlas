@@ -17,10 +17,11 @@ paper: arxiv:2510.12996
 used_in: []
 citing: []
 summary: {en: 'Simulated CSI sequences for TDD and FDD massive MIMO, generated with Sionna''s implementation of the 3GPP TR 38.901 channel model, with 16 historical and 4 predicted time slots per sample. The CSI-RRG benchmark contains more than 300,000 samples over 3,060 scenarios, split into regular, robustness and generalization tests.', zh: '面向 TDD 与 FDD 大规模 MIMO 的仿真 CSI 序列，由 Sionna 实现的 3GPP TR 38.901 信道模型生成，每个样本包含 16 个历史时隙和 4 个预测时隙。CSI-RRG 基准包含 300,000 余个样本，覆盖 3,060 个场景，分为常规、鲁棒性和泛化测试。'}
-sources: ['https://huggingface.co/CSI-4CAST', 'https://huggingface.co/api/datasets?author=CSI-4CAST', 'https://github.com/AI4OPT/CSI-4CAST', 'https://export.arxiv.org/api/query?id_list=2510.12996']
+sources: ['https://huggingface.co/CSI-4CAST', 'https://huggingface.co/api/datasets?author=CSI-4CAST', 'https://github.com/AI4OPT/CSI-4CAST', 'https://export.arxiv.org/api/query?id_list=2510.12996', 'https://huggingface.co/api/datasets/CSI-4CAST/test_regular_cm_A_ds_030_ms_001', 'https://huggingface.co/api/datasets/CSI-4CAST/stats', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/README.md', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/LICENSE', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/src/utils/data_utils.py', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/src/data/generator.py', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/src/utils/norm_utils.py', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/src/noise/noise.py', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/src/noise/noise_degree.py', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/z_artifacts/data/info.md', 'https://arxiv.org/pdf/2510.12996', 'https://github.com/AI4OPT/CSI-4CAST/tags',
+  'https://github.com/AI4OPT/CSI-4CAST/releases', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/z_artifacts/weights/info.md', 'https://raw.githubusercontent.com/AI4OPT/CSI-4CAST/main/src/data/csi_simulator.py', 'https://huggingface.co/api/datasets?author=CSI-4CAST&limit=200', 'https://huggingface.co/api/models/CSI-4CAST/weights', 'https://arxiv.org/abs/2510.12996']
 checked: '2026-11-06'
-overview: {en: 'CSI-4CAST is a simulated CSI dataset for TDD and FDD massive MIMO, released by the AI4OPT group with the paper posted to arXiv on 14 October 2025. The channels come from Sionna''s implementation of the 3GPP TR 38.901 channel model, and no measured channel is included. Each sample holds 16 historical and 4 predicted time slots of CSI, and the dataset targets CSI prediction. The CSI-RRG benchmark contains more than 300,000 samples over 3,060 scenarios, split into regular, robustness and generalization test groups. Channel models are A, C and D in the regular tests and A to E in the generalization tests, delay spreads run from 30 to 400 ns, and user speeds from 1 to 45 m/s. Data are stored as PyTorch .pt tensors with normalization statistics in .pkl files, and each test configuration is its own Hugging Face repository named by test type, channel model, delay spread and minimum speed.', zh: 'CSI-4CAST 是面向 TDD 与 FDD 大规模 MIMO 的仿真 CSI 数据集，由 AI4OPT 团队发布，论文于 2025 年 10 月 14 日发布在 arXiv
-    上。信道由 Sionna 实现的 3GPP TR 38.901 信道模型生成，不包含实测信道。每个样本包含 16 个历史时隙和 4 个预测时隙的 CSI，数据集面向 CSI 预测任务。CSI-RRG 基准包含 30 万余个样本，覆盖 3,060 个场景，分为常规、鲁棒性和泛化测试三组。常规测试使用信道模型 A、C 和 D，泛化测试使用 A 至 E；时延扩展范围为 30 至 400 ns，用户速度为 1 至 45 m/s。数据以 PyTorch .pt 张量保存，归一化统计量保存在 .pkl 文件中；每个测试配置对应一个独立的 Hugging Face 仓库，仓库名由测试类型、信道模型、时延扩展和最低速度构成。'}
+overview: {en: 'CSI-4CAST is a simulated CSI dataset for TDD and FDD massive MIMO, released by the AI4OPT group with the paper posted to arXiv on 14 October 2025. All channels are synthesized with Sionna''s implementation of the 3GPP TR 38.901 channel model. Each sample holds 16 historical and 4 predicted time slots of CSI, and the dataset targets CSI prediction. The CSI-RRG benchmark has more than 300,000 samples in regular (162 scenarios), robustness (486) and generalization (3,060) test suites. Channel models are A, C and D in the regular tests and A to E in the generalization tests, delay spreads run from 30 to 400 ns, and user speeds from 1 to 45 m/s. Data are stored as PyTorch .pt tensors with normalization statistics in .pkl files, and each configuration is its own Hugging Face repository named by test type, channel model, delay spread and minimum speed. The Hugging Face organization hosts 27 training repositories, 27 regular test repositories and 510 generalization test repositories,
+    and the robustness suite has no separate repository; it reuses the regular configurations with phase, burst and packet-drop noise.', zh: 'CSI-4CAST 是面向 TDD 与 FDD 大规模 MIMO 的仿真 CSI 数据集，由 AI4OPT 团队发布，论文于 2025 年 10 月 14 日发布在 arXiv 上。所有信道均由 Sionna 实现的 3GPP TR 38.901 信道模型合成。每个样本包含 16 个历史时隙和 4 个预测时隙的 CSI，数据集面向 CSI 预测任务。CSI-RRG 基准包含 30 万余个样本，分为常规（162 个场景）、鲁棒性（486 个）和泛化（3,060 个）测试套件。常规测试使用信道模型 A、C 和 D，泛化测试使用 A 至 E；时延扩展范围为 30 至 400 ns，用户速度为 1 至 45 m/s。数据以 PyTorch .pt 张量保存，归一化统计量保存在 .pkl 文件中；每个配置对应一个独立的 Hugging Face 仓库，仓库名由测试类型、信道模型、时延扩展和最低速度构成。Hugging Face 组织下共有 27 个训练仓库、27 个常规测试仓库和 510 个泛化测试仓库，鲁棒性测试套件没有单独的仓库，而是沿用常规配置并加入相位噪声、突发噪声和丢包噪声。'}
 signal_details:
 - signal: csi
   text: {en: 'Channel tensors for each sample of 20 slots x 32 BS antennas x 750 subcarriers, from a 4x4x2 dual-polarized BS array with one UT antenna. The 750 subcarriers are 300 uplink, a 150-subcarrier gap and 300 downlink. Files per configuration: H_U_hist.pt (uplink history, model input), H_U_pred.pt (uplink prediction target) and H_D_pred.pt (downlink prediction target for cross-link cases). The simulator uses a 2.4 GHz carrier and 30 kHz subcarrier spacing.', zh: 每个样本的信道张量为 20 个时隙 x 32 个 BS 天线 x 750 个子载波，BS 天线为 4x4x2 双极化阵列，UT 为单天线。750 个子载波包括 300 个上行、150 个保护子载波和 300 个下行。每个配置的文件包括：H_U_hist.pt（上行历史，模型输入）、H_U_pred.pt（上行预测目标）以及 H_D_pred.pt（用于跨链路情形的下行预测目标）。仿真器使用 2.4 GHz 载频和 30 kHz 子载波间隔。}
@@ -40,7 +41,7 @@ pipeline:
     outputs:
     - {en: complex CSI tensors for historical and predicted slots, zh: 历史与预测时隙的复数 CSI 张量}
   - title: {en: Noise conditions for robustness sets, zh: 鲁棒性测试集的噪声条件}
-    detail: {en: 'The noise module src/noise/noise.py generates realistic noise types, and src/noise/noise_degree.py maps a target SNR to noise parameters. The robustness test sets are generated under these conditions, and the result plots name burst noise, packet drop and phase noise.', zh: 噪声模块 src/noise/noise.py 生成实际噪声类型，src/noise/noise_degree.py 将目标 SNR 映射为噪声参数。鲁棒性测试集在这些条件下生成，结果图中的条件包括突发噪声、丢包和相位噪声。}
+    detail: {en: 'The robustness suite replaces AWGN with phase and burst noise at SNRs of 10 to 25 dB, and with packet-drop noise at drop probabilities of 0.01 to 0.10. src/noise/noise.py implements the phase, burst and packet-drop generators, and src/noise/noise_degree.py maps each noise degree to the SNR it produces.', zh: 鲁棒性测试套件以相位噪声和突发噪声取代 AWGN，SNR 为 10 至 25 dB；丢包噪声的丢包概率为 0.01 至 0.10。src/noise/noise.py 实现相位噪声、突发噪声和丢包噪声的生成器，src/noise/noise_degree.py 将每个噪声程度映射为其产生的 SNR。}
     inputs:
     - {en: target SNR and noise type, zh: 目标 SNR 与噪声类型}
     outputs:
@@ -57,3 +58,106 @@ pipeline:
     - {en: stored tensor files, zh: 已保存的张量文件}
     outputs:
     - {en: normalization_stats.pkl for FDD and TDD, zh: FDD 与 TDD 的 normalization_stats.pkl}
+bands_ghz: [2.4]
+bandwidth_mhz: 9
+facts:
+- label: {en: Training split, zh: 训练划分}
+  text: {en: 'Training data use channel models A, C and D with 30, 100 and 300 ns delay spreads and 1, 10 and 30 m/s speeds. AWGN with SNR uniform in 0 to 25 dB is added only to the historical input, the clean future CSI is the target, and the training set is split 9:1 into training and validation.', zh: '训练数据使用信道模型 A、C 和 D，时延扩展为 30、100 和 300 ns，速度为 1、10 和 30 m/s。SNR 在 0 至 25 dB 之间均匀分布的 AWGN 仅加在历史输入上，干净的未来 CSI 作为目标，训练集按 9:1 划分为训练集和验证集。'}
+- label: {en: CSI reporting interval, zh: CSI 上报间隔}
+  text: {en: 'CSI reports are spaced by 5 slots, which is 2.5 ms under the simulated parameters.', zh: CSI 上报间隔为 5 个时隙，在仿真参数下为 2.5 ms。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Each sample holds 20 CSI slots x 32 BS antennas x 750 subcarriers as .pt tensors (H_U_hist, H_U_pred, H_D_pred).', zh: 每个样本为 20 个 CSI 时隙 x 32 个 BS 天线 x 750 个子载波的 .pt 张量（H_U_hist、H_U_pred、H_D_pred）。}
+- key: cir
+  status: simulate
+  note: {en: The CDL impulse response is generated inside the simulator and converted to a frequency response; it is not stored., zh: CDL 冲激响应在仿真器内部生成并转换为频率响应，不予保存。}
+- key: paths
+  status: simulate
+  note: {en: CDL cluster and path parameters are drawn inside Sionna at generation time and are not stored., zh: CDL 簇与路径参数由 Sionna 在生成时抽取，不予保存。}
+- key: interaction
+  status: none
+  note: {en: The CDL channel models are statistical; no per-path interaction points are stored., zh: CDL 信道模型为统计模型；不存储逐路径交互点。}
+- key: power
+  status: derivable
+  note: {en: Per-subcarrier channel power |H|^2 follows from the stored CSI; path loss and absolute received power are absent because the simulator normalizes the channel (normalize=True)., zh: 逐子载波信道功率 |H|^2 可由已存 CSI 计算；仿真器对信道做归一化（normalize=True），因此路径损耗与绝对接收功率不可得。}
+- key: iq
+  status: none
+  note: {en: Released data are CSI tensors and normalization statistics; no waveform samples are included., zh: 发布数据为 CSI 张量与归一化统计量，不含波形采样。}
+- key: beam_labels
+  status: none
+  note: {en: Released data hold no beam indices or per-beam gains., zh: 发布数据不含波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: 'Released data hold no UE or BS positions; the scenario grid is channel model, delay spread and speed only.', zh: 发布数据不含 UE 或 BS 位置；场景网格仅包含信道模型、时延扩展与速度。}
+- key: geometry
+  status: none
+  note: {en: The CDL model is statistical and no scene or map files are released., zh: CDL 为统计模型，且不发布场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: 'Released data hold only CSI tensors and normalization statistics, with no material parameters.', zh: 发布数据仅含 CSI 张量与归一化统计量，不含材料参数。}
+- key: rgb
+  status: none
+  note: {en: Released data hold only CSI tensors and normalization statistics., zh: 发布数据仅含 CSI 张量与归一化统计量。}
+- key: depth
+  status: none
+  note: {en: Released data hold only CSI tensors and normalization statistics., zh: 发布数据仅含 CSI 张量与归一化统计量。}
+- key: lidar
+  status: none
+  note: {en: Released data hold only CSI tensors and normalization statistics., zh: 发布数据仅含 CSI 张量与归一化统计量。}
+- key: radar
+  status: none
+  note: {en: Released data hold only CSI tensors and normalization statistics., zh: 发布数据仅含 CSI 张量与归一化统计量。}
+- key: imu
+  status: none
+  note: {en: Released data hold only CSI tensors and normalization statistics., zh: 发布数据仅含 CSI 张量与归一化统计量。}
+- key: time_series
+  status: provided
+  note: {en: 'Each sample is an ordered sequence of 20 CSI reports (16 historical, 4 predicted), spaced 5 slots apart.', zh: 每个样本为 20 个按时间排列的 CSI 报告（16 个历史、4 个预测），间隔 5 个时隙。}
+- key: multiuser
+  status: none
+  note: {en: Each sample has one UT with one antenna; no simultaneous users are stored., zh: 每个样本仅含一个单天线 UT；不存储同时在线的多用户。}
+- key: multibs
+  status: none
+  note: {en: Each sample uses one 4x4x2 BS array., zh: 每个样本使用一个 4x4x2 的 BS 阵列。}
+- key: crossfreq
+  status: none
+  note: {en: All CSI sits in one 2.4 GHz carrier with a 9 MHz bandwidth; uplink and downlink subcarriers share one 750-subcarrier grid., zh: 所有 CSI 位于同一 2.4 GHz 载频、9 MHz 带宽内；上下行子载波共享一个 750 子载波的网格。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: provided
+  note: {en: 'Speeds run from 1 to 45 m/s (3.6 to 162 km/h); the training sets use 1, 10 and 30 m/s.', zh: 速度范围为 1 至 45 m/s（3.6 至 162 km/h）；训练集使用 1、10 和 30 m/s。}
+- key: dynamic_blockage
+  status: none
+  note: {en: 'The channel models have no moving blockers; the robustness suite adds phase, burst and packet-drop noise instead.', zh: 信道模型不含移动遮挡物；鲁棒性测试集改为加入相位、突发和丢包噪声。}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: provided
+  note: {en: 'The 4x4x2 BS array is dual-polarized, so every stored CSI sample includes both polarizations.', zh: BS 阵列为 4x4x2 双极化阵列，因此每个已存 CSI 样本包含两种极化。}
+- key: em_field
+  status: none
+  note: {en: 'Released data hold CSI tensors only; no field components, field strength or antenna patterns.', zh: 发布数据仅含 CSI 张量；不含场分量、场强或天线方向图。}
+versions:
+- version: weights repository
+  date: '2026-03-25'
+  summary: {en: 'Model weights for the proposed model, the baselines and the ablation variants published in the CSI-4CAST/weights repository on Hugging Face.', zh: 在 Hugging Face 仓库 CSI-4CAST/weights 中发布提出模型、基线与消融变体的模型权重。}
+  url: https://huggingface.co/CSI-4CAST/weights
+- version: arXiv v2
+  date: '2026-03-23'
+  summary: {en: 'Paper revised with additional statistical baselines, expanded ablation experiments and discussion of the mechanism of each module.', zh: 论文修订，新增统计基线、扩展消融实验，并补充各模块机制的讨论。}
+  url: https://arxiv.org/abs/2510.12996
+- version: arXiv v1
+  date: '2025-10-14'
+  summary: {en: 'Paper posted to arXiv as CSI-4CAST: A Hybrid Deep Learning Model for CSI Prediction with Comprehensive Robustness and Generalization Testing.', zh: '论文以 CSI-4CAST: A Hybrid Deep Learning Model for CSI Prediction with Comprehensive Robustness and Generalization Testing 为题发布于 arXiv。'}
+  url: https://arxiv.org/abs/2510.12996
+- version: Hugging Face batch 2025-10-13
+  date: '2025-10-13'
+  summary: {en: 'Added 18 training repositories (channel models C and D) and 249 generalization test repositories (channel model C 45, D 102, E 102), by repository creation date.', zh: 新增 18 个训练仓库（信道模型 C 与 D）与 249 个泛化测试仓库（信道模型 C 为 45 个，D 为 102 个，E 为 102 个），依据仓库创建日期。}
+  url: https://huggingface.co/CSI-4CAST
+- version: Hugging Face initial repositories
+  date: '2025-10-11'
+  summary: {en: 'First Hugging Face repositories: normalization statistics, 9 training repositories (channel model A), 27 regular test repositories and 261 generalization test repositories (channel models A, B and C), by repository creation date.', zh: 首批 Hugging Face 仓库：归一化统计量、9 个训练仓库（信道模型 A）、27 个常规测试仓库与 261 个泛化测试仓库（信道模型 A、B 与 C），依据仓库创建日期。}
+  url: https://huggingface.co/CSI-4CAST

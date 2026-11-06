@@ -20,100 +20,193 @@ paper: arxiv:2211.05527
 used_in: []
 citing: ['doi:10.1109/tvt.2023.3340447', 'doi:10.1109/tmlcn.2023.3334712', 'doi:10.1109/tmc.2025.3573702']
 summary: {en: 'Location-labelled CSI from a 64-antenna base station at 2.61 GHz and 20 MHz bandwidth in an indoor room, with single-antenna users moved on a 5 mm grid by positioners. It contains 252,004 samples for each of four antenna topologies: URA with LoS and NLoS, ULA with LoS, and distributed with LoS.', zh: '在室内房间中，以 64 天线基站、2.61 GHz 载频和 20 MHz 带宽测得的带位置标签 CSI。单天线用户由定位器按 5 mm 步长移动，包含四种天线拓扑（URA 视距与非视距、ULA 视距、分布式视距）的数据，每种拓扑 252,004 个样本。'}
-sources: ['https://ieee-dataport.org/open-access/ultra-dense-indoor-mamimo-csi-dataset', 'https://dx.doi.org/10.21227/nr6k-8r78', 'https://www.esat.kuleuven.be/wavecorearenberg/research/NetworkedSystems/datasets', 'https://arxiv.org/abs/2211.05527', 'https://arxiv.org/html/2211.05527', 'https://github.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs']
+sources: ['https://ieee-dataport.org/open-access/ultra-dense-indoor-mamimo-csi-dataset', 'https://dx.doi.org/10.21227/nr6k-8r78', 'https://www.esat.kuleuven.be/wavecorearenberg/research/NetworkedSystems/datasets', 'https://arxiv.org/abs/2211.05527', 'https://arxiv.org/html/2211.05527', 'https://github.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs', 'https://api.github.com/repos/sibrendebast/MaMIMO-CSI-positioning-using-CNNs/git/trees/HEAD?recursive=1', 'https://raw.githubusercontent.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs/HEAD/data_generator.py', 'https://raw.githubusercontent.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs/HEAD/positioning.py', 'https://raw.githubusercontent.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs/HEAD/positioning_tl.py', 'https://raw.githubusercontent.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs/HEAD/LICENSE', 'https://github.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs/commits/HEAD', 'https://raw.githubusercontent.com/sibrendebast/MaMIMO-CSI-positioning-using-CNNs/HEAD/README.md']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'A CNC moves the antenna across 9 square meters in 5-millimeter steps, stopping for acquisition. A 64-antenna system estimates each location''s channel; complex NPY files and position labels are stored separately for each array configuration.', zh: CNC控制天线在9平方米空间以5毫米步进停靠，64天线系统估计各点信道；按阵列配置分别保存复数NPY和位置标签。}
+  summary: {en: 'Four CNC XY tables move single-antenna user antennas over 1250 mm x 1250 mm grids in 5 mm steps. The 64-antenna base station records the uplink channel at each stop, and the release stores one complex 64 x 100 NPY file per position for each array configuration.', zh: 四台 CNC XY 定位台以 5 mm 步长，在 1250 mm x 1250 mm 的网格上移动单天线用户端天线。64 天线基站在每个停靠点记录上行信道，发布数据为每种阵列配置的每个位置保存一个复数 64 x 100 的 NPY 文件。}
   stages:
-  - title: {en: Configure the indoor array and millimeter-scale position grid, zh: 配置室内阵列与毫米级位置网格}
-    detail: {en: 'Create a grid with 5 mm spacing over 9 square meters. The four configurations are URA LoS, URA NLoS, ULA, and distributed. The authors report 252,004 positions per configuration.', zh: '在9平方米区域建立5 mm步进网格，四种配置分别为URA LoS、URA NLoS、ULA与distributed。作者记录每种配置有252,004个位置。'}
+  - title: {en: Set the array configurations and 5 mm grid, zh: 设定阵列配置与 5 mm 网格}
+    detail: {en: 'Each of the four OpenBuilds ACRO 1515 tables scans a 251 x 251 grid with 5 mm spacing, which gives 63,001 positions per table and 252,004 per topology. The four configurations are URA LoS, URA NLoS, ULA LoS and distributed LoS.', zh: '四台 OpenBuilds ACRO 1515 定位台各扫描一个 251 x 251 的网格，间距 5 mm，每台 63,001 个位置，每种拓扑 252,004 个位置。四种配置为 URA LoS、URA NLoS、ULA LoS 与分布式 LoS。'}
     inputs:
-    - {en: CNC positioning platform, zh: CNC定位平台}
-    - {en: 64-antenna system and indoor area, zh: 64天线系统与室内区域}
+    - {en: Four CNC XY tables carrying the user antennas, zh: 四台承载用户天线的 CNC XY 定位台}
+    - {en: 64-antenna base station in an indoor room at KU Leuven, zh: KU Leuven 室内房间中的 64 天线基站}
     outputs:
-    - {en: Array configuration and spatial grid, zh: 阵列配置与空间网格}
-    - {en: Position ID, zh: 位置ID}
+    - {en: 'Node grid in millimetres, with the origin at the middle of the URA', zh: 以毫米为单位、原点位于 URA 中心的节点网格}
     controls:
-    - {en: Different arrays have different physical coordinates; store them separately., zh: 不同阵列对应不同物理坐标，分别保存}
-    checks:
-    - {en: 'Reproduction check: plot the sampling grid and element coordinates; verify position units and axis directions.', zh: 复现检查：绘制采样网格与阵元坐标，检查位置单位和轴方向}
-  - title: {en: Stop at each location and estimate the channel, zh: 停靠采集并估计信道}
-    detail: {en: The CNC stops at each position while the 64-antenna system estimates complex channels. The data support spatial channel analysis. The reviewed release interface is organized by position index and does not provide acquisition intervals for a moving UE., zh: CNC在每个位置停靠，64天线系统估计复数信道。数据用于空间信道分析；已读发布接口按位置编号组织，未提供移动UE的采集时间间隔。}
+    - {en: The 8 x 8 URA faces the region of interest; a metal blocker placed in front of the array creates the NLoS case., zh: 8 x 8 的 URA 正对感兴趣区域；放置于阵列前方的金属遮挡板形成 NLoS 场景。}
+    - {en: Position labels share one origin across configurations; antenna coordinates are supplied in a separate list., zh: 各配置的位置标签共享同一原点；天线坐标以单独的列表提供。}
+  - title: {en: Capture the uplink channel at each stop, zh: 在每个停靠点采集上行信道}
+    detail: {en: 'The positioner stops for 0.5 s at each node so the base station records a static user. Moving to the next node and capturing the sample take about 0.7 s, so one dense sweep takes about 12.5 hours.', zh: 定位台在每个节点停留 0.5 s，使基站记录静止用户的信道。移动到下一节点并采集一个样本约需 0.7 s，因此一次密集扫描约需 12.5 小时。}
     inputs:
-    - {en: CNC position, zh: CNC位置}
-    - {en: Wireless training observations, zh: 无线训练观测}
+    - {en: LTE-based TDD uplink pilots sent by each user antenna, zh: 各用户天线发送的基于 LTE 的 TDD 上行导频}
     outputs:
-    - {en: Complex array channels at each position, zh: 各位置的复数阵列信道}
+    - {en: One 64 x 100 complex channel estimate per position, zh: 每个位置一个 64 x 100 的复数信道估计}
     controls:
-    - {en: 'Carrier frequency, clocking, and the specific calibration procedure require further inspection of measurement parameters; do not infer them from the loader.', zh: 载频、时钟与具体校准流程需进一步读取测量参数；不由加载器推断}
-    checks:
-    - {en: 'Reproduction check: inspect element amplitude/phase consistency, noise, and outliers; retain the calibration version.', zh: 复现检查：检查阵元幅相一致性、噪声和异常点，保留校准版本}
-  - title: {en: Organize samples as NPY files and position labels, zh: 用NPY和位置标签组织样本}
-    detail: {en: The official data_generator.py reads individual channel_measurement_XXXXXX.npy samples with default dimensions of 64 antennas × 100 subcarriers and converts complex information into the model's real/imaginary representation. Position IDs connect channel files to labels., zh: 官方data_generator.py按channel_measurement_XXXXXX.npy读取单样本，默认64天线×100子载波，并将复数信息转为模型所需的实虚表示。位置ID连接信道文件与标签。}
+    - {en: 'Carrier frequency 2.61 GHz with a 20 MHz bandwidth. The user antennas and base station are synchronized with coaxial cables, and the positioners are synchronized with the base station over Ethernet.', zh: 载频 2.61 GHz，带宽 20 MHz。用户天线与基站通过同轴电缆同步，定位台通过以太网与基站同步。}
+    - {en: 'Channel capture happens on the CPU, which updates every 100 ms; logging on the FPGA would give 2000 updates per second but needs custom FPGA code.', zh: 信道在 CPU 端采集，CPU 每 100 ms 更新一次；在 FPGA 上记录可达到每秒 2000 次更新，但需要定制 FPGA 代码。}
+  - title: {en: Store each position as an NPY file with a label, zh: 将每个位置保存为带标签的 NPY 文件}
+    detail: {en: 'data_generator.py loads channel_measurement_XXXXXX.npy files for one array configuration, takes 64 antennas by 100 subcarriers by default, and splits each complex value into real and imaginary channels. The position label is read by sample ID from labels.npy.', zh: data_generator.py 读取某一阵列配置下的 channel_measurement_XXXXXX.npy 文件，默认取 64 根天线与 100 个子载波，并将每个复数拆分为实部与虚部两个通道。位置标签按样本编号从 labels.npy 读取。}
     inputs:
-    - {en: Channel matrix at each position, zh: 每位置信道矩阵}
-    - {en: Corresponding position labels, zh: 对应位置标签}
+    - {en: Complex channel matrix for each position, zh: 每个位置的复数信道矩阵}
+    - {en: Position labels in millimetres, zh: 以毫米为单位的位置标签}
     outputs:
-    - {en: Per-position complex NPY files, zh: 逐位置复数NPY}
-    - {en: Position labels and loading interface, zh: 位置标签及加载接口}
+    - {en: Per-position NPY files and labels.npy, zh: 逐位置 NPY 文件与 labels.npy}
     controls:
-    - {en: 64×100 comes from the current loader's defaults; verify other released subsets individually., zh: 64×100来自当前加载器默认配置；其他发布子集逐项确认}
-    checks:
-    - {en: 'Reproduction check: verify dtype, real/imag order, unique position IDs, and array-configuration directories.', zh: 复现检查：核对dtype、real/imag顺序、位置ID唯一性及阵列配置目录}
-  - title: {en: Split by spatial blocks and buffer zones, zh: 按空间块与缓冲区划分}
-    detail: {en: 'For positioning, compare kNN or matching baselines first, then hold out spatial blocks with a guard distance. The static grid supports spatial interpolation; temporal prediction requires explicit motion-speed and sampling-time models.', zh: 定位先比较kNN或匹配基线，再按空间块留出并设置guard distance。静态网格可用于空间插值；构建时间预测时需要显式运动速度与采样时间模型。}
+    - {en: 'Folders are named by array configuration (URA, ULA, distributed).', zh: 文件夹按阵列配置命名（URA、ULA、distributed）。}
+  - title: {en: 'Split randomly into training, validation and test sets', zh: 随机划分为训练、验证与测试集}
+    detail: {en: 'positioning.py removes the sample indices listed in bad_channels_<scenario>.npy, shuffles the remaining IDs with seed 64, and assigns the first 85% to training, the next 10% to validation and the last 5% to test.', zh: positioning.py 先去除 bad_channels_<scenario>.npy 中列出的样本编号，再以种子 64 打乱其余编号，前 85% 用于训练，接着 10% 用于验证，最后 5% 用于测试。}
     inputs:
-    - {en: 'Channels, positions, and array identities', zh: 信道、位置和阵列身份}
+    - {en: Valid sample IDs for each array configuration, zh: 每种阵列配置的有效样本编号}
     outputs:
-    - {en: Spatial holdout splits, zh: 空间留出split}
-    - {en: Interpolation/out-of-region positioning results, zh: 插值/区域外定位结果}
+    - {en: 'Training, validation and test ID arrays', zh: 训练、验证与测试编号数组}
     controls:
-    - {en: Fit scaling parameters on the training set; treat physical array changes as a separate transfer condition., zh: 训练集拟合尺度参数；物理阵列变化单独作为迁移条件}
-    checks:
-    - {en: 'Reproduction check: measure nearest-neighbor distances between training and test sets; inspect leakage between 5 mm neighbors and reuse of the same position across configurations.', zh: 复现检查：统计训练测试最近邻距离，检查5 mm邻点泄漏和相同位置跨配置混用}
-  scope: {en: KU Leuven Ultra Dense indoor grid CSI and the author's NPY loader., zh: KU Leuven Ultra Dense室内网格CSI及作者NPY加载器。}
+    - {en: The split is random over sample indices; the code builds no spatial blocks and applies no guard distance., zh: 划分是对样本编号的随机划分；代码未构建空间块，也未设置保护距离。}
+  - title: {en: Transfer the URA-trained network to ULA, zh: 将 URA 训练的网络迁移到 ULA}
+    detail: {en: 'positioning_tl.py loads the URA-trained network from bestmodels and retrains it on the ULA scenario with different numbers of training samples, recording the test results for each size.', zh: positioning_tl.py 从 bestmodels 加载 URA 训练的网络，并使用不同数量的训练样本在 ULA 场景上重新训练，记录每种规模下的测试结果。}
+    inputs:
+    - {en: URA-trained model weights in bestmodels, zh: bestmodels 中 URA 训练的模型权重}
+    outputs:
+    - {en: ULA test results for each training-set size, zh: 每种训练集规模下的 ULA 测试结果}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Per-position complex CSI NPY files
+  text: {en: '• Per-position complex CSI NPY files with 64 antennas and 100 subcarriers
 
-      • Position labels, array configurations, and loading code', zh: '• 每位置复数CSI NPY
 
-      • 位置标签、阵列配置与加载代码'}
-- label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Codebook responses, spatial correlations, and positioning features
+      • Position labels in millimetres, an antenna coordinate list, and array configurations
 
-      • Spatial block splits and trajectories defined by an explicit motion model', zh: '• 码本响应、空间相关和定位特征
 
-      • 空间block split与显式运动模型的轨迹'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Only public parameters and loading interfaces have been verified; carrier frequency and the complete calibration chain remain to be checked.
+      • Loading and positioning code (GPL-3.0)', zh: '• 逐位置的 64 天线、100 子载波复数 CSI NPY 文件
 
-      • Report dense position counts separately from independent environment counts.', zh: '• 当前只核实公开参数与加载接口；载频及完整校准链保持待核验。
 
-      • 高密度位置数量与独立环境数量分别报告。'}
+      • 毫米单位的位置标签、天线坐标列表与阵列配置
+
+
+      • 加载与定位代码（GPL-3.0）'}
+- label: {en: License, zh: 许可}
+  text: {en: • The dataset is licensed under Creative Commons Attribution on IEEE DataPort. The code repository is GPL-3.0., zh: • 数据集在 IEEE DataPort 上以 Creative Commons Attribution 许可发布。代码仓库为 GPL-3.0。}
 provenance:
 - {en: Indoor array topology + CNC position grid → pilot acquisition, zh: 室内阵列拓扑 + CNC位置网格 → 导频采集}
 - {en: 64-antenna channel estimation + high-precision coordinates → position-labeled CSI, zh: 64天线channel估计 + 高精度坐标 → 位置标签CSI}
 technical_notes:
-- {en: 'Verified: the same spatial area is covered under multiple array configurations, including URA LoS/NLoS, ULA, and distributed settings.', zh: 已确认：同一空间覆盖多个阵列配置，分别包含URA LoS/NLoS、ULA和distributed设置。}
-- {en: 'Inference: neighboring points 5 millimeters apart are highly correlated; random splits primarily test local interpolation.', zh: 推断：5毫米邻近点高度相关；随机划分主要检验局部插值。}
+- {en: 'The same 1250 mm x 1250 mm positioner area is measured for the URA LoS, URA NLoS, ULA LoS and distributed LoS configurations.', zh: 四种配置（URA LoS、URA NLoS、ULA LoS 与分布式 LoS）测量的是同一个 1250 mm x 1250 mm 定位台区域。}
+- {en: The NLoS URA case is created with a metal blocker placed in front of the array., zh: URA 的 NLoS 场景通过放置在阵列前方的金属遮挡板形成。}
+- {en: The paper gives a positioner error below 0.1 mm; the dataset page gives a positional label error below 1 mm., zh: 论文给出定位台误差低于 0.1 mm；数据集页面给出位置标签误差低于 1 mm。}
 limitations:
-- {en: Grid density cannot be converted into a count of independent propagation environments., zh: 网格密度不能换算为独立传播环境数量。}
-- {en: Reshaping data from different arrays does not give them the same physical antenna coordinates., zh: 不同阵列数据不能只reshape后当相同物理天线坐标。}
+- {en: 'The paper validates the work on one indoor area of relatively small size and names larger, 3D and outdoor recordings as future extensions.', zh: 论文仅在一个规模较小的室内区域上进行验证，并将更大范围、三维与室外的数据采集列为后续扩展。}
+- {en: 'The paper reports that moving cables reduced setup reliability, and that a full dense sweep needed several attempts.', zh: 论文报告，移动的线缆降低了装置可靠性，完整的密集扫描需要多次尝试。}
+- {en: Antenna coordinates differ between array configurations and are supplied as a separate list., zh: 天线坐标在不同阵列配置之间不同，并以单独的列表提供。}
 history:
-- {en: '2021: university author record documents the data release.', zh: 2021：大学作者记录数据发布。}
-- {en: '2022: detailed dataset-paper preprint.', zh: 2022：详细数据论文预印本。}
+- {en: '2021-02-09: dataset created on IEEE DataPort (DOI 10.21227/nr6k-8r78).', zh: 2021-02-09：数据集在 IEEE DataPort 创建（DOI 10.21227/nr6k-8r78）。}
+- {en: '2022-11-10: arXiv 2211.05527 submitted (Colpaert et al.).', zh: 2022-11-10：arXiv 2211.05527 提交（Colpaert 等）。}
 usage:
-- {en: 'Obtain array configurations, coordinates, and CSI; visualize the sampling grid first.', zh: 获取阵列配置、坐标与CSI，先可视化采样网格。}
-- {en: Split by spatial blocks with a guard distance; estimate normalization from the training set., zh: 按空间块和guard distance划分；训练集估计归一化。}
-- {en: 'Compare kNN positioning, classical matching, and neural models; report interpolation and out-of-region generalization separately.', zh: 比较kNN定位、经典匹配和神经模型，分别报告插值与区域外泛化。}
+- {en: 'The IEEE DataPort download holds the dense dataset (ultradense_dataset, 17.04 GB) and a separate nomadic archive (nomadic_dataset.zip, 474.67 MB).', zh: IEEE DataPort 下载包含密集数据集（ultradense_dataset，17.04 GB）与单独的 nomadic 压缩包（nomadic_dataset.zip，474.67 MB）。}
+- {en: 'Set data_path in data_generator.py to the local folder, because the default points to an author-specific directory.', zh: 将 data_generator.py 中的 data_path 设为本地文件夹，因为默认路径指向作者的专用目录。}
+- {en: positioning.py trains the CNN positioning model for each array configuration; the repository ships trained models in bestmodels., zh: positioning.py 为每种阵列配置训练 CNN 定位模型；仓库在 bestmodels 中附带了训练好的模型。}
+- {en: The paper uses the CNN position estimates to schedule users with the DEF method and compares spectral efficiency with the SUS algorithm., zh: 论文使用 CNN 估计的位置进行用户调度，采用 DEF 方法，并将频谱效率与 SUS 算法进行比较。}
+- {en: The dataset page states that the data can be used to visualise precoders and validate positioning algorithms., zh: 数据集页面称，这些数据可用于可视化预编码器并验证定位算法。}
 field_notes:
 - label: {en: Paths, zh: 路径}
-  text: {en: 'This field refers to per-path angles at both link ends and interaction records, which the public interface does not provide. CSI can be transformed into delay/angle-domain representations, but no independent per-path interaction ground truth is available. Identifiability depends on array geometry and bandwidth.', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。CSI可变换为时延/角度域表征，但没有独立逐径交互真值；阵列几何与带宽决定可辨识性。}
+  text: {en: The release has no per-path angles or interaction records. Each sample is a 64 x 100 CSI matrix with a position label., zh: 发布数据中没有逐径角度或交互记录。每个样本为一个 64 x 100 的 CSI 矩阵，附带位置标签。}
 - label: {en: Time, zh: 时间}
-  text: {en: The current public interface maps position IDs to CSI/position labels. Acquisition intervals suitable for dynamic channel-aging analysis are not released; turning the static grid into trajectories requires an explicit motion model., zh: 当前公开接口为位置ID→CSI/位置标签，未发布可用于动态channel aging的采集时间间隔；需显式运动模型才能把静态网格变成轨迹。}
+  text: {en: 'Each position is a static capture taken while the positioner is stopped, so the grid is not a time series of a moving user.', zh: 每个位置都是定位台停止时的静态采集，因此该网格并非移动用户的时间序列。}
+- label: {en: Nomadic subset, zh: nomadic 子集}
+  text: {en: The nomadic subset studies the influence of moving objects. The author's reply on the dataset page maps its samples to the dense-grid index at the middle of the four positioners., zh: nomadic 子集研究移动物体的影响。数据集页面上作者的回复将其样本对应到四台定位台中心的密集网格索引。}
 overview: {en: 'Ultra Dense Indoor MaMIMO CSI is a measured channel dataset from KU Leuven (ESAT, WaveCoRE), described in a 2022 arXiv paper by Colpaert, De Bast, Guevara, Cui and Pollin. A 64-antenna base station at 2.61 GHz estimates the channel from user transmitters that four CNC positioners move on a 5 mm grid, and each positioner covers 1250 mm x 1250 mm. Each grid position yields a complex 64 x 100 matrix (64 antennas, 100 subcarriers), and the release contains 252,004 positions for each antenna topology. The paper describes URA, ULA and distributed arrays, and the NLoS URA setting is referenced to a separate work. Each sample has a position label in millimetres in a local xy frame.', zh: 'Ultra Dense Indoor MaMIMO CSI 是 KU Leuven（ESAT，WaveCoRE）的实测信道数据集，由 Colpaert、De Bast、Guevara、Cui 和 Pollin 在 2022 年的 arXiv 论文中描述。64 天线基站在 2.61 GHz 下估计用户发射机的信道，四台 CNC 定位器以 5 mm 步长移动用户端，每台定位器覆盖 1250 mm x 1250 mm。每个网格位置得到一个 64 x 100 的复数矩阵（64 根天线，100 个子载波），每种天线拓扑包含 252,004 个位置。论文描述了 URA、ULA 和分布式阵列，其中
     NLoS 的 URA 设置引用另一项工作。每个样本带有以毫米为单位、局部 xy 坐标系下的位置标签。'}
 signal_details:
 - signal: csi
   text: {en: 'Uplink channel estimates from an LTE-based TDD OFDM frame. The base station has 64 antennas, built from 32 NI USRP-2942R RRHs with two RF chains each. Each estimate uses 100 of the 1200 available subcarriers, with 15 kHz spacing (numerology 0), in I and Q components at 2.61 GHz. The channel estimate is taken at the CPU, which updates it every 100 ms. Each sample is a 64 x 100 complex matrix. The paper describes each captured sample as a binary file, and the authors'' data_generator.py loads channel_measurement_XXXXXX.npy files.', zh: 来自基于 LTE 的 TDD OFDM 帧的上行信道估计。基站有 64 根天线，由 32 个 NI USRP-2942R RRH 组成，每个 RRH 含两条射频链路。每次估计使用 1200 个可用子载波中的 100 个，子载波间隔 15 kHz（numerology 0），以 I 和 Q 分量表示，载频 2.61 GHz。信道估计在 CPU 上获取，CPU 每 100 ms 更新一次。每个样本为 64 x 100 复数矩阵。论文将每个采集样本描述为二进制文件，作者的 data_generator.py 读取的是 channel_measurement_XXXXXX.npy 文件。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: '64 x 100 complex channel estimates per position, with 252,004 positions per topology.', zh: '每个位置一个 64 x 100 复数信道估计，每种拓扑 252,004 个位置。'}
+- key: cir
+  status: derivable
+  note: {en: 'Not stored; an IFFT over the 100 pilot subcarriers yields a delay profile, since each pilot occupies one subcarrier per 12-subcarrier resource block.', zh: 未存储；对 100 个导频子载波做 IFFT 可得到时延剖面，因为每个导频在每 12 个子载波的资源块中占用一个子载波。}
+- key: paths
+  status: none
+  note: {en: The release stores CSI and position labels only; no per-path parameters., zh: 发布内容仅含 CSI 与位置标签，不含逐径参数。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records; the data are measured CSI., zh: 不含逐径交互记录，数据为实测 CSI。}
+- key: power
+  status: derivable
+  note: {en: 'Not stored; received power follows from the CSI, as in the paper''s MRT maps.', zh: 未存储；接收功率可由 CSI 计算，论文的 MRT 图即由此得到。}
+- key: iq
+  status: none
+  note: {en: 'The release holds channel estimates, not raw I/Q samples.', zh: 发布内容为信道估计，不含原始 I/Q 采样。}
+- key: beam_labels
+  status: derivable
+  note: {en: 'Not stored; beam gains can be computed from the released CSI, and the paper applies MRT beamforming to it.', zh: 未存储；波束增益可由发布的 CSI 计算，论文即对其应用 MRT 波束成形。}
+- key: position
+  status: provided
+  note: {en: 'Two-dimensional xy labels in millimetres in a local frame, with the origin at the middle of the URA.', zh: 以毫米为单位、局部坐标系下的二维 xy 位置标签，原点位于 URA 中心。}
+- key: geometry
+  status: none
+  note: {en: Only the antenna coordinate list is released; no 3D scene or map file is described., zh: 仅发布天线坐标列表，来源未描述三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters; the NLoS case uses a physical metal blocker., zh: 不含材料参数；NLoS 场景使用实体金属遮挡板。}
+- key: rgb
+  status: none
+  note: {en: CSI and position labels only; no images., zh: 仅有 CSI 与位置标签，不含图像。}
+- key: depth
+  status: none
+  note: {en: CSI and position labels only., zh: 仅有 CSI 与位置标签。}
+- key: lidar
+  status: none
+  note: {en: CSI and position labels only., zh: 仅有 CSI 与位置标签。}
+- key: radar
+  status: none
+  note: {en: No radar data in this release; radar sensing is a separate study on the same facility., zh: 本发布不含雷达数据；雷达感知是同一设施上的另一项研究。}
+- key: imu
+  status: none
+  note: {en: CSI and position labels only., zh: 仅有 CSI 与位置标签。}
+- key: time_series
+  status: none
+  note: {en: Each position is a static capture; the paper lists CSI time series as future work., zh: 每个位置为静态采集；论文将 CSI 时间序列列为未来工作。}
+- key: multiuser
+  status: simulate
+  note: {en: 'One user per capture; simultaneous multi-user channels need a new campaign, although the testbed supports 12 concurrent UL pilots.', zh: 每次采集仅一个用户；同时多用户信道需要新的采集，尽管测试平台支持 12 个并发上行导频。}
+- key: multibs
+  status: simulate
+  note: {en: One 64-antenna base station is used in every configuration; a second base station needs a new campaign., zh: 所有配置均使用一台 64 天线基站；增加基站需要新的采集。}
+- key: crossfreq
+  status: none
+  note: {en: Single carrier at 2.61 GHz., zh: 单一载频 2.61 GHz。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Users are stopped during each 0.5 s capture; no moving-user data., zh: 每次 0.5 s 采集时用户保持静止，不含移动用户数据。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: The nomadic subset studies moving objects in the environment; the sources give no speed or count., zh: nomadic 子集研究环境中移动物体的影响；来源未给出速度或数量。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量之中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量之中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量之中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量之中，未按路径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Only channel estimates are released; no field-level outputs., zh: 仅发布信道估计，不含场级输出。}
+versions:
+- version: DataPort update
+  date: '2026-08-03'
+  summary: {en: IEEE DataPort record last updated; the DOCUMENTATION section now gives updated instructions for the nomadic dataset., zh: IEEE DataPort 记录最后更新；DOCUMENTATION 部分现提供 nomadic 数据集的更新使用说明。}
+  url: https://ieee-dataport.org/open-access/ultra-dense-indoor-mamimo-csi-dataset
+- version: arXiv v1
+  date: '2022-11-10'
+  summary: {en: 'arXiv v1, titled Massive MIMO Channel Measurement Data Set for Localization and Communication, describes the testbed, the dense and nomadic data sets, and CNN positioning and user-scheduling results.', zh: arXiv v1（标题为 Massive MIMO Channel Measurement Data Set for Localization and Communication）描述测试平台、dense 与 nomadic 两个数据集，以及 CNN 定位与用户调度结果。}
+  url: https://arxiv.org/abs/2211.05527
+- version: DataPort entry
+  date: '2021-02-09'
+  summary: {en: IEEE DataPort entry created with DOI 10.21227/nr6k-8r78; the CSI data are provided in NumPy format., zh: IEEE DataPort 条目创建，DOI 为 10.21227/nr6k-8r78；CSI 数据以 NumPy 格式提供。}
+  url: https://dx.doi.org/10.21227/nr6k-8r78

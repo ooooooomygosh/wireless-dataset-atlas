@@ -9,17 +9,163 @@ signals: [radar]
 bands_ghz: [3.5]
 environment: []
 format: MAT
-license: NIST open license (https://www.nist.gov/open/license)
+license: NIST licensing statement (https://www.nist.gov/open/license)
 access: {url: 'https://data.nist.gov/od/id/mds2-2116', type: open}
 code: []
 paper: doi:10.6028/jres.124.038
 used_in: []
 citing: ['doi:10.1109/ojcoms.2023.3238569', 'doi:10.1109/tccn.2022.3153004', 'doi:10.1109/tccn.2024.3519315']
 summary: {en: 'Synthetic radar waveforms for the 3.5 GHz CBRS band with added white Gaussian noise and randomized waveform parameters, intended for radar presence detection. The waveforms are distributed as .mat files in four groups.', zh: 面向 3.5 GHz CBRS 频段的合成雷达波形，叠加高斯白噪声并随机化波形参数，用于雷达存在性检测。波形以 .mat 文件形式分为四组发布。}
-sources: ['https://data.nist.gov/od/id/mds2-2116', 'https://data.nist.gov/od/ds/ark:/88434/mds2-2116/SimulatedRadarWaveforms/License.txt', 'https://data.nist.gov/od/ds/ark:/88434/mds2-2116/SimulatedRadarWaveforms/ReadMe.txt', 'https://www.nist.gov/open/license', 'https://doi.org/10.6028/jres.124.038', 'https://nvlpubs.nist.gov/nistpubs/jres/124/jres.124.038.pdf']
+sources: ['https://data.nist.gov/od/id/mds2-2116', 'https://data.nist.gov/od/ds/ark:/88434/mds2-2116/SimulatedRadarWaveforms/License.txt', 'https://data.nist.gov/od/ds/ark:/88434/mds2-2116/SimulatedRadarWaveforms/ReadMe.txt', 'https://www.nist.gov/open/license', 'https://doi.org/10.6028/jres.124.038', 'https://nvlpubs.nist.gov/nistpubs/jres/124/jres.124.038.pdf', 'https://data.nist.gov/od/ds/ark:/88434/mds2-2116/Data%20Dictionary%20of%203.5%20GHz%20Radar%20Waveforms.pdf', 'https://data.nist.gov/od/ds/ark:/88434/mds2-2116/SimulatedRadarWaveforms/allWaveformsTableCombined.csv', 'https://data.nist.gov/od/id/ark:/88434/mds2-2116/pdr:v/1.1.0', 'https://data.nist.gov/od/id/ark:/88434/mds2-2116/pdr:v/1.0.0']
 checked: '2026-11-06'
-overview: {en: 'This is a synthetic RF dataset of incumbent radar waveforms in the 3.5 GHz CBRS band, hosted by NIST and described in a NIST J. Research data article by Caromi, Souryal and Hall. The waveforms are generated synthetically, with white Gaussian noise added to each one, and the radar signals span a range of modulation types and parameters. The start time and center frequency of each radar signal are randomized within the waveform. The task is binary: decide whether a radar is present, regardless of its signal type. The authors note that an energy detector is a naive baseline. The waveforms are distributed as MAT files split into groups, and the group and file numbers serve to track waveform records during generation and algorithm development. The dataset is intended for training and testing machine learning and deep learning detectors. The data are released under the NIST open license.', zh: 这是一个合成射频数据集，包含 3.5 GHz CBRS 频段内的在役雷达波形，由 NIST 发布，并附有 Caromi、Souryal 与 Hall 撰写的 NIST Journal
-    of Research 数据论文。波形以合成方式生成，每条波形叠加高斯白噪声，雷达信号涵盖多种调制类型与参数。每个雷达信号的起始时间与中心频率在波形内随机化。任务为二分类：判断雷达是否存在，与信号类型无关。作者指出能量检测器是一个简单的基线方法。波形以 MAT 文件形式分组发布，组号与文件号用于在生成与算法开发过程中追踪波形记录。数据集用于训练与测试机器学习及深度学习检测器。数据以 NIST 开放许可发布。}
+overview: {en: 'This is a synthetic RF dataset of incumbent radar waveforms for the 3.5 GHz CBRS band, released by NIST in 2019 with a data article by Caromi, Souryal and Hall in the Journal of Research of NIST (article 124038). It contains 40000 complex IQ waveforms, half with a radar signal and half with white Gaussian noise only. Each waveform lasts 80 ms and is sampled at 10 MHz. The radar signals come from five bins, P0N#1, P0N#2 and Q3N#1 to Q3N#3, with pulse parameters drawn at random from bounds used in ESC compliance testing. Each radar signal starts at a random time within the waveform, and when its bandwidth is below the sampling rate its center frequency is randomly shifted. The task is binary detection of radar presence regardless of signal type, and the authors describe an energy detector as a naive signal detector. The data are stored as MAT files in HDF5 format, in four groups of 50 files with 200 waveforms per file, and are released under the NIST licensing statement.',
+  zh: 这是一个面向 3.5 GHz CBRS 频段在役雷达信号的合成射频数据集，由 NIST 于 2019 年发布，并附有 Caromi、Souryal 与 Hall 撰写的 Journal of Research of NIST 数据论文（文章编号 124038）。数据集包含 40000 条复数 IQ 波形，其中一半含雷达信号，另一半仅含高斯白噪声。每条波形时长 80 ms，采样率为 10 MHz。雷达信号分为五个类别 P0N#1、P0N#2 以及 Q3N#1 至 Q3N#3，脉冲参数从 ESC 合规测试所用的范围内随机选取。每个雷达信号的起始时间在波形内随机确定，当信号带宽小于采样率时，其中心频率会被随机偏移。任务为二分类，即判断雷达是否存在，与信号类型无关；作者指出能量检测器是一种朴素的信号检测器。数据以 HDF5 格式的 MAT 文件发布，共四组，每组 50 个文件，每个文件包含 200 条波形，并以 NIST 许可声明发布。}
 signal_details:
 - signal: radar
-  text: {en: 'Synthetic radar waveforms in the 3.5 GHz CBRS band with added white Gaussian noise. Modulation types and waveform parameters are randomized over wide ranges, and the start time and center frequency of each radar signal are randomized within the waveform. Distributed as .mat files in groups.', zh: 3.5 GHz CBRS 频段内的合成雷达波形，叠加高斯白噪声。调制类型与波形参数在较宽范围内随机化，每个雷达信号的起始时间与中心频率在波形内随机化。以 .mat 文件分组发布。}
+  text: {en: 'Synthetic radar waveforms in the 3.5 GHz CBRS band with white Gaussian noise added. The radar signals belong to two pulse modulation families, P0N and Q3N, split into five bins with 4000 radar-present waveforms each. Pulse width, pulse repetition rate and pulses per burst are drawn at random from ESC compliance bounds. The Q3N bins also have a chirp width, and each waveform records its chirp direction. Signal SNR ranges from 10 to 20 dB in 2 dB steps.', zh: 3.5 GHz CBRS 频段内的合成雷达波形，叠加高斯白噪声。雷达信号属于两个脉冲调制族 P0N 与 Q3N，划分为五个类别，每类含 4000 条有雷达的波形。脉冲宽度、脉冲重复频率与每突发脉冲数从 ESC 合规测试范围内随机抽取，Q3N 类别还具有线性调频带宽，每条波形记录其调频方向。信噪比在 10 至 20 dB 之间，步长为 2 dB。}
+samples: 40000 waveforms, 200 per .mat file
+size_gb: 492.7
+pipeline:
+  summary: {en: 'A MATLAB tool synthesizes radar waveforms from ESC compliance parameter bounds, adds white Gaussian noise at controlled SNR, and packages labeled IQ waveforms into MAT files.', zh: MATLAB 工具依据 ESC 合规测试的参数范围合成雷达波形，按受控信噪比叠加高斯白噪声，并将带标签的 IQ 波形打包为 MAT 文件。}
+  stages:
+  - title: {en: Parameter sampling, zh: 参数采样}
+    detail: {en: 'Each radar waveform is assigned to one of five bins, P0N#1, P0N#2 or Q3N#1 to Q3N#3. Its pulse width, pulse repetition rate and pulses per burst are drawn at random from the ESC compliance bounds. The Q3N bins also draw a chirp width from the same bounds, and the chirp direction is stored with each waveform.', zh: 每条雷达波形被分配到五个类别之一，即 P0N#1、P0N#2 或 Q3N#1 至 Q3N#3。脉冲宽度、脉冲重复频率与每突发脉冲数从 ESC 合规测试范围内随机抽取。Q3N 类别还从同一范围抽取线性调频带宽，每条波形保存其调频方向。}
+    inputs:
+    - {en: ESC compliance parameter bounds, zh: ESC 合规测试参数范围}
+    outputs:
+    - {en: generation parameters for each waveform, zh: 每条波形的生成参数}
+  - title: {en: Radar waveform synthesis, zh: 雷达波形合成}
+    detail: {en: 'The radar signal is synthesized at 10 MHz over a fixed 80 ms duration, long enough for the longest radar signal in the set. Its start time is placed at a random point in the waveform, and its baseband center frequency is randomly shifted when the signal bandwidth is below the sampling rate.', zh: 雷达信号以 10 MHz 采样率合成，时长固定为 80 ms，足以容纳集合中最长的雷达信号。其起始时间在波形内随机放置，当信号带宽小于采样率时，其基带中心频率被随机偏移。}
+    inputs:
+    - {en: generation parameters for each waveform, zh: 每条波形的生成参数}
+    outputs:
+    - {en: complex IQ radar waveforms, zh: 复数 IQ 雷达波形}
+  - title: {en: Noise addition and SNR control, zh: 噪声叠加与信噪比控制}
+    detail: {en: 'White Gaussian noise with a power density of -109 dBm/MHz is added to every waveform. The peak power of the radar signal is varied to produce SNR values from 10 to 20 dB in 2 dB steps, and the 20000 noise-only waveforms receive noise alone.', zh: 每条波形都叠加功率谱密度为 -109 dBm/MHz 的高斯白噪声。通过改变雷达信号的峰值功率，生成 10 至 20 dB、步长为 2 dB 的信噪比，20000 条纯噪声波形仅叠加噪声。}
+    inputs:
+    - {en: radar waveforms and noise-only waveforms, zh: 雷达波形与纯噪声波形}
+    outputs:
+    - {en: noisy IQ waveforms at target SNR, zh: 目标信噪比下的含噪 IQ 波形}
+  - title: {en: Labeling and shuffling, zh: 标注与打乱}
+    detail: {en: 'The set contains 20000 waveforms with a radar signal and 20000 noise-only waveforms. The order is randomized across the set, and radar presence is stored in a separate logical variable.', zh: 数据集包含 20000 条含雷达信号的波形与 20000 条纯噪声波形。整个集合的顺序被随机打乱，雷达存在性以独立的逻辑变量保存。}
+    inputs:
+    - {en: noisy IQ waveforms, zh: 含噪 IQ 波形}
+    outputs:
+    - {en: waveforms with radar presence labels, zh: 带雷达存在性标签的波形}
+  - title: {en: MAT packaging, zh: MAT 文件封装}
+    detail: {en: 'Each MAT file holds 200 waveforms, and the files are grouped into four groups of 50. Each subset stores the complex IQ data, the logical radar-status vector and a table of generation parameters, and allWaveformsTableCombined.csv lists the parameters for all 40000 waveforms.', zh: 每个 MAT 文件包含 200 条波形，文件按四组、每组 50 个划分。每个子集保存复数 IQ 数据、逻辑型雷达状态向量以及生成参数表，allWaveformsTableCombined.csv 列出全部 40000 条波形的参数。}
+    inputs:
+    - {en: labeled IQ waveforms, zh: 带标签的 IQ 波形}
+    outputs:
+    - {en: groupX_subsetY.mat files and CSV parameter tables, zh: groupX_subsetY.mat 文件与 CSV 参数表}
+facts:
+- label: {en: Labels, zh: 标签}
+  text: {en: Radar presence is a logical value per waveform that is true when a radar signal is present. The set holds 20000 radar-present and 20000 noise-only waveforms., zh: 雷达存在性是每条波形的逻辑值，存在雷达信号时为 true。数据集包含 20000 条有雷达的波形与 20000 条纯噪声波形。}
+- label: {en: Waveform counts, zh: 波形数量}
+  text: {en: 'Each of the five radar bins, P0N#1, P0N#2, Q3N#1, Q3N#2 and Q3N#3, has 4000 radar-present waveforms, and 20000 waveforms contain only noise.', zh: 五个雷达类别 P0N#1、P0N#2、Q3N#1、Q3N#2 与 Q3N#3 各有 4000 条含雷达的波形，另有 20000 条波形仅含噪声。}
+- label: {en: Sampling, zh: 采样}
+  text: {en: 'Every waveform is 80 ms long at a 10 MHz sampling rate, with a noise power density of -109 dBm/MHz.', zh: 每条波形时长 80 ms，采样率为 10 MHz，噪声功率谱密度为 -109 dBm/MHz。}
+- label: {en: Suggested split, zh: 建议划分}
+  text: {en: 'The data dictionary suggests 35% for training, 15% for validation and 50% for testing. Its example assigns Group1 and Group2 to training and validation, and Group3 and Group4 to testing.', zh: 数据字典建议训练、验证与测试的比例为 35%、15% 与 50%。其示例将 Group1 与 Group2 用于训练和验证，Group3 与 Group4 用于测试。}
+- label: {en: File layout, zh: 文件结构}
+  text: {en: 'Each groupX_subsetY.mat file holds 200 waveforms as a complex IQ variable and a logical radar-status variable, together with a table of generation parameters for the same subset. Per-file CSV copies of the tables are in CSVInfo folders.', zh: 每个 groupX_subsetY.mat 文件保存 200 条波形，包括一个复数 IQ 变量和一个逻辑型雷达状态变量，并附有同一子集的生成参数表。每个文件的 CSV 参数表副本位于 CSVInfo 文件夹中。}
+limitations:
+- {en: 'All radar waveforms are simulated from parameter bounds of ESC compliance testing, so they model test signals rather than captured fielded radars.', zh: 所有雷达波形均依据 ESC 合规测试的参数范围仿真生成，因此模拟的是测试信号，而非采集自实际部署的雷达。}
+history:
+- {en: 'Accepted December 11, 2019 and published December 17, 2019 in the Journal of Research of NIST as article 124038. The data dictionary describes dataset release version 1.0.0.', zh: 论文于 2019 年 12 月 11 日接收，并于 2019 年 12 月 17 日在 Journal of Research of NIST 以文章 124038 发表。数据字典描述的数据集发布版本为 1.0.0。}
+usage:
+- {en: 'The data dictionary recommends using the testing groups for overall accuracy and for ROC curves at each SNR point, which the authors include in the dataset for that purpose.', zh: 数据字典建议使用测试组评估整体准确率以及每个信噪比点的 ROC 曲线，作者为此在数据集中保留了足够多的测试样本。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The waveforms are synthetic with added white Gaussian noise; no channel estimates are released., zh: 波形为合成并叠加高斯白噪声；未发布信道估计。}
+- key: cir
+  status: none
+  note: {en: 'No channel model is used (Channel Model: None), so no impulse response is released.', zh: '未使用信道模型（Channel Model: None），因此未发布冲激响应。'}
+- key: paths
+  status: none
+  note: {en: 'No channel model is used, so there are no per-path parameters.', zh: 未使用信道模型，因此无逐径参数。}
+- key: interaction
+  status: none
+  note: {en: 'No channel model is used, so there is no per-path interaction data.', zh: 未使用信道模型，因此无逐径交互信息。}
+- key: power
+  status: derivable
+  note: {en: Sample power follows from the complex IQ data; each waveform's peak SNR (10 to 20 dB) is listed in the generation metadata., zh: 采样功率可由复数 IQ 数据计算；每条波形的 SNR 在生成时设为 10 至 20 dB。}
+- key: iq
+  status: provided
+  note: {en: 'Complex IQ waveforms at 10 MHz sampling, 80 ms each, stored as MATLAB .mat files.', zh: 复数 IQ 波形，采样率 10 MHz，每条 80 ms，存储为 MATLAB .mat 文件。}
+- key: beam_labels
+  status: none
+  note: {en: No beam structure is used; the release holds waveforms and presence labels., zh: 不涉及波束结构；发布内容为波形与雷达存在标签。}
+- key: position
+  status: none
+  note: {en: No positions are stated; the release holds waveforms and presence labels., zh: 未给出位置；发布内容为波形与雷达存在标签。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files are released., zh: 未发布场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: No images are released., zh: 未发布图像。}
+- key: depth
+  status: none
+  note: {en: No depth data are released., zh: 未发布深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are released., zh: 未发布激光雷达数据。}
+- key: radar
+  status: provided
+  note: {en: 'Synthetic pulsed radar waveforms in five bins of two modulation families, with white Gaussian noise; half of the 40,000 waveforms contain radar.', zh: '合成脉冲雷达波形，两类调制共五个子类，叠加高斯白噪声；40,000 条波形中一半含雷达信号。'}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are released., zh: 未发布惯性传感器数据。}
+- key: time_series
+  status: none
+  note: {en: Each record is one fixed 80 ms IQ capture with no timestamps and no snapshot sequence., zh: 每条记录为一段固定 80 ms 的 IQ 采集，无时间戳，也非快照序列。}
+- key: multiuser
+  status: none
+  note: {en: Each waveform holds one radar signal or noise only; no multiple users are modelled., zh: 每条波形仅含一个雷达信号或纯噪声；未建模多用户。}
+- key: multibs
+  status: none
+  note: {en: No base station is modelled., zh: 未建模基站。}
+- key: crossfreq
+  status: none
+  note: {en: Single band at 3.5 GHz., zh: 仅 3.5 GHz 单频段。}
+- key: near_field
+  status: none
+  note: {en: No antenna array or spatial model is used., zh: 未使用天线阵列或空间模型。}
+- key: high_mobility
+  status: none
+  note: {en: The waveforms are synthetic with no user or channel mobility., zh: 波形为合成数据，不涉及用户或信道移动。}
+- key: dynamic_blockage
+  status: none
+  note: {en: 'No channel model is used, so no moving blockers are represented.', zh: 未使用信道模型，因此不包含移动遮挡物。}
+- key: reflection
+  status: none
+  note: {en: 'No channel model is used (Channel Model: None).', zh: '未使用信道模型（Channel Model: None）。'}
+- key: diffraction
+  status: none
+  note: {en: 'No channel model is used (Channel Model: None).', zh: '未使用信道模型（Channel Model: None）。'}
+- key: scattering
+  status: none
+  note: {en: 'No channel model is used (Channel Model: None).', zh: '未使用信道模型（Channel Model: None）。'}
+- key: transmission
+  status: none
+  note: {en: 'No channel model is used (Channel Model: None).', zh: '未使用信道模型（Channel Model: None）。'}
+- key: polarization
+  status: none
+  note: {en: No antenna or polarization model is used., zh: 未使用天线或极化模型。}
+- key: em_field
+  status: none
+  note: {en: 'No antenna pattern or field data are used (Antenna pattern: None).', zh: '未使用天线方向图或场量数据（Antenna pattern: None）。'}
+versions:
+- version: 1.1.0
+  date: '2019-08-27'
+  summary: {en: 'Data update. The release history does not say which files changed, and the Data Dictionary still labels the release as 1.0.0.', zh: 数据更新。发布历史未说明更改了哪些文件，数据字典仍将该版本标注为 1.0.0。}
+  url: https://data.nist.gov/od/id/ark:/88434/mds2-2116/pdr:v/1.1.0
+- version: 1.0.0
+  date: '2019-08-27'
+  summary: {en: 'Initial release: four groups of 50 MAT files, each with 200 synthetic IQ waveforms, 40,000 waveforms in total, per the Data Dictionary.', zh: '初始版本：四组，每组 50 个 MAT 文件，每个文件含 200 条合成 IQ 波形，共 40,000 条，依据数据字典。'}
+  url: https://data.nist.gov/od/id/ark:/88434/mds2-2116/pdr:v/1.0.0

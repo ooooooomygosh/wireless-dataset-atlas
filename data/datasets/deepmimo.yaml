@@ -17,7 +17,8 @@ paper: arxiv:1902.06435
 used_in: ['doi:10.1109/infocom42981.2021.9488913', 'doi:10.1109/twc.2022.3170104', 'doi:10.1109/tmc.2022.3159697', 'doi:10.1109/lwc.2023.3294184', 'doi:10.1109/mcom.001.2400284']
 citing: ['doi:10.1109/tcomm.2020.3003670', 'doi:10.1109/mcom.006.2200730', 'doi:10.1109/tcomm.2020.3027027']
 summary: {en: 'Ray-traced channel matrices and propagation paths for the outdoor O1 scenario, with 18 base stations and 1,184,923 users, generated with Wireless InSite at 60 GHz, 0.5 GHz bandwidth and 1024 OFDM subcarriers.', zh: '基于 Wireless InSite 射线追踪生成的室外 O1 场景信道矩阵与传播路径，包含 18 个基站和 1,184,923 个用户，载频 60 GHz，带宽 0.5 GHz，1024 个 OFDM 子载波。'}
-sources: ['https://arxiv.org/abs/1902.06435', 'https://arxiv.org/html/1902.06435v1', 'https://github.com/DeepMIMO/DeepMIMO', 'https://www.deepmimo.net/docs/resources/specs.html']
+sources: ['https://arxiv.org/abs/1902.06435', 'https://arxiv.org/html/1902.06435v1', 'https://github.com/DeepMIMO/DeepMIMO', 'https://www.deepmimo.net/docs/resources/specs.html', 'https://arxiv.org/pdf/1902.06435v1', 'https://raw.githubusercontent.com/DeepMIMO/DeepMIMO/v4.0.5/README.md', 'https://raw.githubusercontent.com/DeepMIMO/DeepMIMO/v4.0.5/LICENSE', 'https://raw.githubusercontent.com/DeepMIMO/DeepMIMO/v4.0.5/docs/resources/specs.md', 'https://raw.githubusercontent.com/DeepMIMO/DeepMIMO/v4.0.5/deepmimo/generator/channel.py', 'https://raw.githubusercontent.com/DeepMIMO/DeepMIMO/v4.0.5/deepmimo/datasets/dataset.py', 'https://raw.githubusercontent.com/DeepMIMO/DeepMIMO/v4.0.5/deepmimo/datasets/load.py', 'https://raw.githubusercontent.com/DeepMIMO/DeepMIMO/v4.0.5/docs/applications/5_dynamic_rt.py', 'https://api.github.com/repos/DeepMIMO/DeepMIMO/releases/tags/v4.0.0-beta', 'https://api.github.com/repos/DeepMIMO/DeepMIMO/releases/tags/v4.0.0', 'https://api.github.com/repos/DeepMIMO/DeepMIMO/releases/tags/v4.0.5',
+  'https://github.com/DeepMIMO/DeepMIMO/releases', 'https://github.com/DeepMIMO/DeepMIMO/tags', 'https://pypi.org/pypi/deepmimo/json', 'http://export.arxiv.org/api/query?id_list=1902.06435']
 checked: '2026-11-06'
 pipeline:
   summary: {en: 'The scene and propagation engine determine the path library. DeepMIMO standardizes its format and generates CSI from the chosen array, frequency-domain settings, and users. Beam and multiuser labels belong to the downstream decision layer.', zh: 场景与传播引擎先决定路径库，DeepMIMO再统一格式并按阵列、频域和用户选择生成CSI。波束与多用户标签属于后续决策层。}
@@ -175,11 +176,11 @@ facts:
 
       • v4.0.5 processes users in chunks and stores Tx/Rx array responses separately to control intermediate memory.
 
-      • The upstream RT engine determines the cost of new frequency bands or dynamic geometry. Resampling OFDM and changing angular-response arrays usually require only postprocessing. Runtime was not measured here.', zh: '• 已有路径时，主要成本来自用户/链路数、保留路径数、Tx/Rx阵元数、子载波数和时间点数。输出尺寸按U×Nr×Nt×K×T增长。
+      • The upstream RT engine determines the cost of new frequency bands or dynamic geometry. Resampling OFDM and changing angular-response arrays usually require only postprocessing.', zh: '• 已有路径时，主要成本来自用户/链路数、保留路径数、Tx/Rx阵元数、子载波数和时间点数。输出尺寸按U×Nr×Nt×K×T增长。
 
       • v4.0.5按用户分块，并分开保存Tx/Rx阵列响应以控制中间内存。
 
-      • 重新生成频段或动态几何的成本由上游RT决定；重新采样OFDM和更换角度响应阵列通常只触发后处理。这里未测量实际耗时。'}
+      • 重新生成频段或动态几何的成本由上游RT决定；重新采样OFDM和更换角度响应阵列通常只触发后处理。'}
 - label: {en: Stored artifacts, zh: 产物}
   text: {en: '• Retain the source scenario/band, RT version and configuration, standardized path matrices, params.json, and geometry/material metadata.
 
@@ -207,27 +208,13 @@ facts:
 
       • CSI及统计量（运行生成器后获得）'}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Codebook powers and Top-K labels
+  text: {en: '• Codebook beam powers and best-beam labels, computed from complex CSI
 
-      • Trajectory-prediction windows
+      • Achievable-rate labels for candidate beams, as in the paper''s example', zh: '• 由复数CSI计算的码本波束功率与最优波束标签
 
-      • Multiuser SINR, compatibility graphs, and scheduling utility', zh: '• 码本功率与Top-K标签
-
-      • 轨迹预测窗口
-
-      • 多用户SINR、兼容图和调度utility'}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+      • 论文示例中候选波束的可达速率标签'}
 - label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Fix the software version, scenario version, and RT source separately; stating only "DeepMIMO" is insufficient.
-
-      • Items marked "Researcher" in controls/checks are reproduction choices, not official defaults.
-
-      • This atlas verified parameter instantiation and tutorial code for 4.0.5; it did not download complete scenarios or rerun their upstream RT.', zh: '• 软件版本、具体场景版本和RT来源分别固定；不能仅写“使用DeepMIMO”。
-
-      • controls/checks中标“研究者”的内容是复现设计，不是官方默认。
-
-      • 本图谱已验证4.0.5参数实例化与教程代码；没有下载全量场景或重跑其上游RT。'}
+  text: {en: '• Fix the software version, scenario version, and RT source separately; stating only “DeepMIMO” is insufficient.', zh: • 软件版本、具体场景版本和RT来源分别固定；不能仅写“使用DeepMIMO”。}
 variants:
 - name: {en: Standard static Dataset / MacroDataset, zh: 标准静态Dataset / MacroDataset}
   observations: {en: Positions and path angles/delays/phases/powers; optional interactions and scene geometry; CSI derived from array parameters., zh: 位置、路径角度/时延/相位/功率；可选交互与场景几何；由阵列参数派生CSI。}
@@ -243,21 +230,17 @@ provenance:
 - {en: 'Array, bandwidth, subcarrier, and path-selection parameters', zh: 阵列、带宽、子载波和路径选择参数}
 - {en: Derived CSI → codebook responses → beam labels, zh: 派生 CSI → 码本响应 → beam label}
 technical_notes:
-- {en: 'Confirmed: the source engine and RT configuration determine propagation mechanisms. DeepMIMO does not replace the engines'' electromagnetic models with a common model.', zh: 已确认：源引擎和 RT 配置决定传播机制，DeepMIMO 不统一替代各引擎的电磁模型。}
-- {en: 'Confirmed: v4 params.json can store engine, frequency, interaction limits, materials, and other parameters; chs is a computed field.', zh: 已确认：v4 params.json 可容纳引擎、频率、交互上限、材料等参数；chs 是计算字段。}
-- {en: 'Supported by the literature: the original 2019 paper''s O1 example uses BSs 3/4/5/6 and 5 paths. This is an experimental configuration, not a library-wide limit.', zh: 文献支持：2019 原论文 O1 示例使用 BS 3/4/5/6、5 条路径；这是该实验配置，不是全库固定上限。}
-- {en: 'Supported by the literature: the original 2019 O1 setup uses Wireless InSite X3D at 60 GHz, considers up to 4 reflections, and retains the strongest 25 paths; the application experiment truncates these to 5. This configuration does not establish the settings of other O1 frequency packages or newer scenarios.', zh: 文献支持：2019 原论文 O1 使用 Wireless InSite X3D、60 GHz，考虑至4次反射并保留最强25条路径；应用实验再截为5条。该配置不可外推到其他O1频率包或新场景。}
-- {en: 'Unknown: the original O1 project configuration was not opened in this review, so its diffraction, transmission, and diffuse-scattering settings remain unconfirmed.', zh: 未知：本轮未打开 O1 原始项目配置，故不认定其绕射、透射或漫散射启用状态。}
-- {en: 'Inference: changing only array/carrier postprocessing on one path library preserves shared structure; it is not equivalent to two independent RT runs or measured cross-frequency evidence.', zh: 推断：同一路径库只更换阵列/载频后处理会保留共同结构，不能等同两次独立 RT 或实测跨频证据。}
+- {en: The source ray tracer and its configuration determine the propagation mechanisms. DeepMIMO converts and organizes their output and does not replace their electromagnetic models., zh: 源射线追踪引擎及其配置决定传播机制。DeepMIMO负责转换和组织其输出，不替代各引擎的电磁模型。}
+- {en: 'The v4 params.json stores the engine, frequency, interaction limits and materials. chs is a computed field, not a primary matrix.', zh: v4的params.json保存引擎、频率、交互上限和材料。chs是计算字段，不属于原始矩阵。}
+- {en: 'The 2019 paper''s O1 example uses base stations 3, 4, 5 and 6 with 5 paths. This is an experimental configuration, not a library-wide limit.', zh: 2019年论文的O1示例使用BS 3、4、5、6，并取5条路径。这是实验配置，不是全库固定上限。}
+- {en: 'The 2019 O1 setup uses Wireless InSite X3D at 60 GHz, considers up to four reflections, and keeps the strongest 25 paths; the application experiment truncates these to 5. The configuration does not establish the settings of other O1 frequency packages or newer scenarios.', zh: 2019年O1设置使用Wireless InSite X3D，60 GHz，考虑至多4次反射并保留最强25条路径；应用实验再截为5条。该配置不能用于确定其他O1频率包或新场景的设置。}
 limitations:
-- {en: Randomly splitting neighboring grid points can cause spatial-neighbor leakage. Separate regions/sites and retain a buffer zone., zh: 随机划分相邻网格可产生空间近邻泄漏；按区域/站点隔离，并保留缓冲区。}
-- {en: v3 and v4 differ in data organization and indexing; compat_v3 implements only its specified compatibility behavior., zh: v3/v4 数据组织及索引方式不同；compat_v3 仅提供指定兼容行为。}
-- {en: Transfer with a shared source engine and map should be labeled cross-scenario transfer within the same source., zh: 共享源引擎与地图的迁移应标为同源跨场景。}
-- {en: 'The software license does not automatically cover maps, scenario assets, or third-party raw outputs.', zh: 软件许可证不能自动覆盖地图、场景与第三方原始输出。}
+- {en: v3 and v4 differ in data organization and indexing. dm.load offers a compat_v3 option for v3-style access., zh: v3与v4的数据组织和索引方式不同。dm.load提供compat_v3选项，用于v3式访问。}
+- {en: 'The repository''s Apache-2.0 LICENSE covers the software. Scenario maps, scenario assets and third-party ray-tracer outputs are outside that license.', zh: 仓库中的Apache-2.0 LICENSE适用于软件本身；场景地图、场景资产及第三方射线追踪输出不在该许可证覆盖范围内。}
 history:
-- {en: '2019: the original paper defines data through a scenario plus generation parameters.', zh: 2019：原始论文描述场景加生成参数定义数据。}
-- {en: '2025: v4 beta introduces a matrix format, converters, and a dynamic-scenario API.', zh: 2025：v4 beta 引入矩阵格式、转换器和动态场景 API。}
-- {en: '2026: v4.0.0 stable; v4.0.5 is the latest official release checked. Consult tag metadata for exact release dates.', zh: 2026：v4.0.0 stable；v4.0.5 当前官方最新发布；精确发布日期以 tag 元数据为准。}
+- {en: '2019: the original paper defines the dataset as a ray-tracing scenario plus generation parameters.', zh: 2019年：原论文将数据集定义为射线追踪场景加生成参数。}
+- {en: '2025-06-30: v4.0.0-beta released, with the matrix format, converters and dynamic-scenario API.', zh: 2025-06-30：v4.0.0-beta发布，包含矩阵格式、转换器和动态场景API。}
+- {en: '2026-03-29: v4.0.0 stable release. 2026-08-25: v4.0.5, the latest release checked.', zh: 2026-03-29：v4.0.0稳定版发布。2026-08-25：v4.0.5，为当前核查到的最新发布。}
 usage:
 - {en: Pin deepmimo==4.0.5 and the specific scenario name; also save the scenario identifier and RT parameters., zh: 固定 deepmimo==4.0.5 和具体场景名；另存场景标识及 RT 参数。}
 - {en: 'After dm.download / dm.load, inspect rx_pos, path dimensions, and valid UEs.', zh: 执行 dm.download / dm.load 后先检查 rx_pos、路径维度和有效 UE。}
@@ -301,3 +284,125 @@ signal_details:
   text: {en: 'Complex channel matrices stored as chs in the DeepMIMOv4 format, with shape N_RX_antennas × N_TX_antennas × N_subcarriers and type complex64. In the 2019 example the BS array is a 1×32×8 UPA with half-wavelength spacing (256 elements), and the channel uses 1024 OFDM subcarriers over 0.5 GHz bandwidth. The 2019 paper defines the channel for each BS-user pair as a sum over paths of complex gains and delay phases, multiplied by a Kronecker-product array response across the x, y and z axes.', zh: DeepMIMOv4 格式中以 chs 存储的复数信道矩阵，维度为 N_RX_antennas × N_TX_antennas × N_subcarriers，数据类型为 complex64。2019 年示例中，基站阵列为 1×32×8 的 UPA，半波长间距，共 256 个阵元；信道使用 1024 个 OFDM 子载波，带宽 0.5 GHz。2019 年论文将每个 BS-用户对的信道定义为各路径复增益与时延相位之和，并乘以跨 x、y、z 轴的 Kronecker 积阵列响应。}
 - signal: paths
   text: {en: 'Path-level arrays of shape N × MAX_PATHS (float32) for each transmitter-receiver set: aoa_az, aoa_el, aod_az and aod_el (angles of arrival and departure in azimuth and elevation), toa (time of arrival), phase and power. The inter array (int32) codes each path as 0 LoS, 1 single reflection, 2 diffraction, 3 scattering or 4 transmission, and inter_loc stores the interaction points. Transmitter and receiver locations are in tx_loc (1 × 3) and rx_loc (N × 3). The v4 params.json records the frequency, interaction limits and materials used for ray tracing.', zh: 每个收发机集合对应的路径级数组，形状为 N × MAX_PATHS（float32）：aoa_az、aoa_el、aod_az、aod_el（方位与俯仰的到达角和出发角）、toa（到达时间）、phase（相位）和 power（功率）。inter 数组（int32）将每条路径编码为 0 视距、1 单次反射、2 绕射、3 散射或 4 透射，inter_loc 存储交互点坐标。收发机位置分别存于 tx_loc（1 × 3）和 rx_loc（N × 3）。v4 的 params.json 记录射线追踪所用的频率、交互次数限制和材料。}
+format: DeepMIMOv4 MAT matrices with JSON metadata (objects.json, params.json)
+organization: Arizona State University
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: 'chs (N_RX_ant x N_TX_ant x N_subcarriers, complex64) is a computed matrix from the stored paths, array and OFDM settings, not a primary field.', zh: chs（N_RX_ant x N_TX_ant x N_subcarriers，complex64）是由已存储的路径、阵列与 OFDM 参数计算得到的矩阵，并非原始字段。}
+- key: cir
+  status: derivable
+  note: {en: 'The v4 format has no CIR matrix; the impulse response follows from the stored per-path delays, phases and powers (v2 stored CIR matrices).', zh: v4 格式没有 CIR 矩阵；冲激响应可由已存储的逐径时延、相位和功率得到（v2 曾存储 CIR 矩阵）。}
+- key: paths
+  status: provided
+  note: {en: 'Per-path azimuth and elevation AoA/AoD, time of arrival, phase, power and interaction codes are stored for every user and BS; MAX_PATHS varies per scenario, and the O1 example keeps the strongest 25 paths per TX-RX pair.', zh: 每个用户和基站的逐径方位与俯仰 AoA/AoD、到达时间、相位、功率及交互码均已存储；MAX_PATHS 随场景而异，O1 示例保留每个收发对最强的 25 条路径。}
+- key: interaction
+  status: provided
+  note: {en: 'Interaction codes (0 LoS, 1 reflection, 2 diffraction, 3 scattering, 4 transmission) and interaction point locations are stored per path, as set by each scenario''s ray-tracing settings.', zh: 逐径交互码（0 LoS、1 反射、2 绕射、3 散射、4 透射）及交互点位置已存储，具体取决于各场景的射线追踪设置。}
+- key: power
+  status: provided
+  note: {en: Per-path power is stored; pathloss is a computed matrix., zh: 逐径功率已存储；pathloss 为计算得到的矩阵。}
+- key: iq
+  status: none
+  note: {en: The v4 format stores paths and channel matrices; no raw I/Q samples are defined., zh: v4 格式存储路径与信道矩阵，未定义原始 I/Q 采样。}
+- key: beam_labels
+  status: derivable
+  note: {en: Beam gains are computed from chs with a chosen codebook; the v4 toolbox includes beamforming tools., zh: 波束增益可用所选码本由 chs 计算；v4 工具包含波束成形工具。}
+- key: position
+  status: provided
+  note: {en: 'TX and RX XYZ positions are stored (tx_loc, rx_loc), and the GPS bounding box is kept in params.json.', zh: 发射端与接收端的 XYZ 坐标（tx_loc、rx_loc）已存储，GPS 边界框保存在 params.json 中。}
+- key: geometry
+  status: provided
+  note: {en: 'Scene objects and vertices are stored: convex hulls by default, or lossless triangle meshes when exported that way.', zh: 场景对象与顶点已存储：默认为凸包，以无损三角网格导出时则保存网格。}
+- key: materials
+  status: provided
+  note: {en: 'Materials are recorded in params.json, and per-face material indices are in objects.json.', zh: 材料记录于 params.json，逐面材料索引位于 objects.json。}
+- key: rgb
+  status: none
+  note: {en: RGB is not a standard field of the format., zh: RGB 不是该格式的标准字段。}
+- key: depth
+  status: none
+  note: {en: Depth is not a standard field of the format., zh: 深度不是该格式的标准字段。}
+- key: lidar
+  status: none
+  note: {en: LiDAR is not a standard field of the format., zh: LiDAR 不是该格式的标准字段。}
+- key: radar
+  status: none
+  note: {en: Radar is not a standard field of the format., zh: 雷达不是该格式的标准字段。}
+- key: imu
+  status: none
+  note: {en: IMU data is not a standard field of the format., zh: IMU 数据不是该格式的标准字段。}
+- key: time_series
+  status: simulate
+  note: {en: The static release has one scene per scenario; ordered snapshots of moving geometry come from the dynamic ray-tracing workflow (DynamicDataset)., zh: 静态发布的每个场景只有一个快照；移动几何的有序快照需通过动态射线追踪流程（DynamicDataset）生成。}
+- key: multiuser
+  status: provided
+  note: {en: 'Paths for all users of a grid share one scene snapshot, so a selected set of users has simultaneous channels.', zh: 同一网格中所有用户的路径共享同一场景快照，因此所选用户集合具有同时的信道。}
+- key: multibs
+  status: provided
+  note: {en: 'Several BSs per scenario, with BS-to-BS paths in the same dataset; the O1 scenario has 18 BSs.', zh: 每个场景包含多个基站，同一数据集中包含 BS 到 BS 的路径；O1 场景包含 18 个基站。}
+- key: crossfreq
+  status: simulate
+  note: {en: 'Materials and ray tracing are set per carrier (ITU a/b/c/d parameters), so another band needs a new ray-tracing run.', zh: 材料与射线追踪按载频设置（ITU a/b/c/d 参数），因此其他频段需要重新运行射线追踪。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: derivable
+  note: {en: 'Doppler is added from a user-set speed, shift or scene timestamps, so motion at 30 km/h or faster is computed from the stored paths.', zh: Doppler 可由用户设定的速度、频移或场景时间戳添加，因此 30 km/h 及以上的运动可由已存储的路径计算得到。}
+- key: dynamic_blockage
+  status: simulate
+  note: {en: 'Moving geometry is handled by the dynamic (multi-snapshot) ray-tracing workflow, which generates new data.', zh: 移动几何由动态（多快照）射线追踪流程处理，需要生成新数据。}
+- key: reflection
+  status: provided
+  note: {en: Interaction code 1 is stored; the O1 example traces the first four reflections., zh: 存储交互码 1；O1 示例追踪前四次反射。}
+- key: diffraction
+  status: provided
+  note: {en: Code 2 is stored where diffraction is enabled in the scenario's ray-tracing settings; the 2019 O1 example does not describe diffraction., zh: 代码 2 在场景射线追踪设置中启用绕射时存储；2019 年的 O1 示例未描述绕射。}
+- key: scattering
+  status: provided
+  note: {en: Code 3 is stored where scattering is enabled; the v4.0.1 Sionna example runs diffraction and scattering on the Munich scene., zh: 代码 3 在启用散射时存储；v4.0.1 的 Sionna 示例在 Munich 场景中启用绕射与散射。}
+- key: transmission
+  status: unknown
+  note: {en: 'Code 4 is defined in the format, but no source states that a released scenario enables transmission.', zh: 格式中定义了代码 4，但没有来源说明已发布的场景启用了透射。}
+- key: polarization
+  status: unknown
+  note: {en: No polarimetric channel or polarization field is described., zh: 未描述极化信道或极化字段。}
+- key: em_field
+  status: unknown
+  note: {en: 'Antenna pattern functions are part of the generator, but no E-field or field-strength output is described.', zh: 生成器中包含天线方向图函数，但未描述电场或场强输出。}
+versions:
+- version: 4.0.5
+  date: '2026-08-25'
+  summary: {en: 'Adds a UAV altitude ray-tracing workflow document, an MVP MATLAB ray-tracing JSON converter, and a fix to the blender_utils project-root path computation.', zh: 新增 UAV 高度射线追踪流程文档、MATLAB 射线追踪 JSON 转换器（MVP），并修复 blender_utils 中的项目根路径计算。}
+  url: https://github.com/DeepMIMO/DeepMIMO/releases/tag/v4.0.5
+- version: 4.0.4
+  date: '2026-08-23'
+  summary: {en: 'Stability release for scene geometry and Doppler: ear-clipping triangulation for concave faces, corrected indoor geometry in the Wireless InSite converter, and a fixed Doppler crash on trimmed datasets.', zh: 面向场景几何与 Doppler 处理的稳定性版本：凹面改用耳切法三角化，修正 Wireless InSite 转换器中的室内几何，修复裁剪后数据集计算 Doppler 时的崩溃。}
+  url: https://github.com/DeepMIMO/DeepMIMO/releases/tag/v4.0.4
+- version: 4.0.2
+  date: '2026-05-31'
+  summary: {en: 'Performance release that keeps existing scenarios byte-identical: Sionna RT to DeepMIMO conversion about 66 times faster, MIMO channel generation up to about 61 times faster, an opt-in lossless mesh scene format, and complex64 channel generation at about half the memory.', zh: 性能版本，现有场景输出保持不变：Sionna RT 到 DeepMIMO 的转换约快 66 倍，MIMO 信道生成最多约快 61 倍；新增可选的无损网格场景格式；信道生成支持 complex64，内存约减半。}
+  url: https://github.com/DeepMIMO/DeepMIMO/releases/tag/v4.0.2
+- version: 4.0.1
+  date: '2026-04-20'
+  summary: {en: 'Full Sionna RT 2.0 integration (requires sionna-rt 2.0.1 or later; Sionna 0.19 and 1.x support removed), a Blender-free OpenStreetMap-to-Sionna scene pipeline, building de-duplication in converted scenes, and a test suite grown from 225 to 658 tests.', zh: 完整支持 Sionna RT 2.0（需要 sionna-rt 2.0.1 或更高版本，移除 Sionna 0.19 与 1.x 支持），新增无需 Blender 的 OpenStreetMap 到 Sionna 场景流程，转换后的场景中建筑去重，测试数从 225 增至 658。}
+  url: https://github.com/DeepMIMO/DeepMIMO/releases/tag/v4.0.1
+- version: 4.0.0
+  date: '2026-03-29'
+  summary: {en: 'Stable v4 release with a matrix-based format, explicit channel generation including Doppler, interaction types and locations, scene geometry and materials, dm.stats(), a compat_v3 load mode for migration from v3, MacroDataset merge, and MkDocs documentation. The licence changes from CC BY-NC-SA 4.0 (v3) to Apache-2.0.', zh: v4 稳定版：基于矩阵的数据格式，包含 Doppler 的显式信道生成，交互类型与交互位置，场景几何与材料，新增 dm.stats()、用于 v3 迁移的 compat_v3 加载模式、MacroDataset 合并及 MkDocs 文档。许可证由 CC BY-NC-SA 4.0（v3）改为 Apache-2.0。}
+  url: https://github.com/DeepMIMO/DeepMIMO/releases/tag/v4.0.0
+- version: 4.0.0-beta
+  date: '2025-06-30'
+  summary: {en: 'First public v4 beta: Wireless InSite, Sionna RT and AODT converters for static and dynamic scenes, the matrix format, a database API (download, upload, search) with 100+ scenarios, Doppler set by shift, speed or scene timestamps, DynamicDataset support, and Sionna 1.x compatibility.', zh: v4 首个公开测试版：Wireless InSite、Sionna RT 与 AODT 转换器（静态与动态场景），矩阵格式，数据库 API（下载、上传、检索）及 100 多个场景，Doppler 可由频移、速度或场景时间戳设定，支持 DynamicDataset 与 Sionna 1.x。}
+  url: https://github.com/DeepMIMO/DeepMIMO/releases/tag/v4.0.0-beta
+- version: 4.0.0-alpha.3
+  date: '2025-04-04'
+  summary: {en: 'Rewrite of the framework with a JSON-based data format, multiple transmitters per TX-RX pair, FoV filtering, scenario subsetting and uniform sampling, coverage-map plotting, and scenario upload and download.', zh: 框架重写，采用基于 JSON 的数据格式，支持每个 TX-RX 对多个发射机，新增 FoV 过滤、场景子集与均匀采样、覆盖图绘制，以及场景上传和下载。}
+  url: https://github.com/DeepMIMO/DeepMIMO/releases/tag/v4.0.0-alpha.3
+- version: 4.0.0-alpha.2
+  date: '2025-02-19'
+  summary: {en: 'Adds the Dataset and MacroDataset classes, a generate() method, dm.info() and dm.summary, conversion of Sionna datasets, and shared parameters and file formats for the Wireless InSite, Sionna RT and AODT ray tracers.', zh: 新增 Dataset 与 MacroDataset 类、generate() 方法、dm.info() 与 dm.summary，支持转换 Sionna 数据集，并统一 Wireless InSite、Sionna RT 与 AODT 三种射线追踪器的参数与文件格式。}
+  url: https://github.com/DeepMIMO/DeepMIMO/releases/tag/v4.0.0-alpha.2
+- version: arXiv v1
+  date: '2019-02-18'
+  summary: {en: 'First release: the original paper defines DeepMIMO as a ray-tracing scenario plus generation parameters, with the outdoor O1 scenario (18 base stations) as the example.', zh: 首次发布：原论文将 DeepMIMO 定义为射线追踪场景加生成参数，并以室外 O1 场景（18 个基站）为例。}
+  url: https://arxiv.org/abs/1902.06435v1

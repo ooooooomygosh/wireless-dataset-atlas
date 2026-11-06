@@ -15,7 +15,7 @@ paper: doi:10.1109/access.2026.3691174
 used_in: []
 citing: []
 summary: {en: 'Six labeled mmWave ISAC datasets for human sensing (gesture recognition, pose estimation, gait identification and localization), collected with IEEE 802.11ad/ay Wi-Fi hardware and custom 5G mmWave OFDM systems in bi-static, multi-static and distributed setups. The 5GmmGesture subset contains 34,496 samples.', zh: '六个带标签的 mmWave ISAC 人体感知数据集，涵盖手势识别、姿态估计、步态身份识别和定位，采用 IEEE 802.11ad/ay Wi-Fi 商用硬件与自定义 5G mmWave OFDM 系统，以双站、多站和分布式方式采集。5GmmGesture 子集包含 34,496 个样本。'}
-sources: ['https://ieee-dataport.org/documents/mmhsense-multi-modal-and-distributed-mmwave-isac-datasets-human-sensing', 'https://arxiv.org/abs/2509.21396', 'https://arxiv.org/html/2509.21396', 'https://github.com/nisarnabeel/Multi-Modal-and-Distributed-mmWave-ISAC-Datasets-for-Human-Sensing', 'https://api.crossref.org/works/10.1109/ACCESS.2026.3691174']
+sources: ['https://ieee-dataport.org/documents/mmhsense-multi-modal-and-distributed-mmwave-isac-datasets-human-sensing', 'https://arxiv.org/abs/2509.21396', 'https://arxiv.org/html/2509.21396', 'https://github.com/nisarnabeel/Multi-Modal-and-Distributed-mmWave-ISAC-Datasets-for-Human-Sensing', 'https://api.crossref.org/works/10.1109/ACCESS.2026.3691174', 'https://raw.githubusercontent.com/nisarnabeel/Multi-Modal-and-Distributed-mmWave-ISAC-Datasets-for-Human-Sensing/main/README.md', 'https://github.com/nisarnabeel/Multi-Modal-and-Distributed-mmWave-ISAC-Datasets-for-Human-Sensing/releases', 'https://github.com/nisarnabeel/Multi-Modal-and-Distributed-mmWave-ISAC-Datasets-for-Human-Sensing/commits/main']
 checked: '2026-11-06'
 overview: {en: 'mmHSense is a set of six labeled mmWave datasets for human sensing, published on IEEE DataPort and GitHub with an arXiv preprint dated 24 Sep 2025. The authors are from the University of Antwerp and imec, IMDEA Networks Institute, and Qamcom Research. The data were recorded in campaigns in Spain, Belgium, and Sweden with IEEE 802.11ad/ay devices and a custom 5G NR OFDM system at 60 GHz, plus 5 GHz IEEE 802.11ac routers as a reference. The six subsets cover gesture recognition, pose estimation, gait-based person identification, and localization, in bi-static, two-pair, and multi-static (1 Tx, 4 Rx) setups. Sample counts are 854 (mmWGesture), 2904 (mmWPose), 1318 (mmW-GaitID), 2177 (mmW-Loc), 34,496 (5GmmGesture), and 32,480 (DISAC-mmVRPose). Each subset is stored as PyTorch .pth data and label files in its own subfolder.', zh: 'mmHSense 是一组包含六个带标签 mmWave 数据集的人体感知资源，发布于 IEEE DataPort 与 GitHub，并附有 2025 年 9 月 24 日日期的 arXiv 预印本。作者来自比利时安特卫普大学与 imec、西班牙 IMDEA Networks 研究所以及瑞典 Qamcom
     Research。数据采集于西班牙、比利时和瑞典，使用 IEEE 802.11ad/ay 设备和自定义的 60 GHz 5G NR OFDM 系统，另有 5 GHz IEEE 802.11ac 路由器作为参考。六个子集涵盖手势识别、姿态估计、基于步态的身份识别和定位，采用双站、两对收发器和多站（1 Tx、4 Rx）配置。各子集样本数为：mmWGesture 854、mmWPose 2904、mmW-GaitID 1318、mmW-Loc 2177、5GmmGesture 34,496、DISAC-mmVRPose 32,480。每个子集以 PyTorch .pth 数据文件和标签文件的形式保存在独立的子文件夹中。'}
@@ -25,20 +25,18 @@ signal_details:
 - signal: beam-power
   text: {en: '5GmmGesture: power per beam pair on a 50 Tx × 56 Rx beam grid, 1540 Hz (PPBP), from a 5G NR OFDM system at 57–71 GHz with about 760 MHz bandwidth, 792 subcarriers at 960 kHz spacing, 1024-point FFT and 10 ms frames; arrays of shape 34,496×20×50×56. mmWGesture: beam SNR over 36 sectors at 10 Hz from a TP-Link Talon AD7200 (IEEE 802.11ad), sampled against a 102.4 ms beacon interval.', zh: '5GmmGesture：50 个 Tx 波束 × 56 个 Rx 波束网格上的逐波束对功率，速率 1540 Hz（PPBP），来自 57–71 GHz 的 5G NR OFDM 系统，带宽约 760 MHz，792 个子载波、间隔 960 kHz，1024 点 FFT，帧长 10 ms；数组形状为 34,496×20×50×56。mmWGesture：TP-Link Talon AD7200（IEEE 802.11ad）在 36 个扇区上的波束 SNR，速率 10 Hz，采样与 102.4 ms 信标间隔对齐。'}
 pipeline:
-  summary: {en: 'Each subset is captured with a radio link that sweeps beams, and the per-beam features are stored as labeled PyTorch arrays.', zh: 每个子集由扫描波束的无线链路采集，逐波束特征以带标签的 PyTorch 数组形式保存。}
+  summary: {en: 'Each subset records a radio link during human activity, extracts CSI, beam SNR or per-beam power, and stores the arrays with labels as PyTorch .pth files.', zh: 每个子集在人体活动过程中记录无线链路，提取 CSI、波束 SNR 或逐波束功率，并将数组与标签以 PyTorch .pth 文件保存。}
   stages:
   - title: {en: Radio hardware setup, zh: 无线硬件配置}
-    detail: {en: 'The subsets use TP-Link Talon AD7200 and MikroTik wAP 60Gx3 IEEE 802.11ad devices, a 5G NR OFDM system built from two Sivers EVK06002 kits with an RFSoC (57–71 GHz, about 760 MHz bandwidth), and a Mimorph testbed with IEEE 802.11ay at 60.48 GHz. The 5 GHz reference uses two ASUS RT-AC86U routers with Nexmon CSI extraction.', zh: 各子集使用 TP-Link Talon AD7200 与 MikroTik wAP 60Gx3 两种 IEEE 802.11ad 设备，由两块 Sivers EVK06002 套件与 RFSoC 组成的 5G NR OFDM 系统（57–71 GHz，带宽约 760 MHz），以及 Mimorph 测试平台上 60.48 GHz 的 IEEE 802.11ay 系统。5 GHz 参考采用两台 ASUS RT-AC86U 路由器，并使用 Nexmon CSI 提取。}
+    detail: {en: 'The subsets use TP-Link Talon AD7200 and MikroTik wAP 60Gx3 IEEE 802.11ad devices, a 5G NR OFDM system built from two Sivers EVK06002 kits with an RFSoC (57–71 GHz, about 760 MHz bandwidth), and a Mimorph testbed with IEEE 802.11ay at 60.48 GHz. The 5 GHz cross-frequency system uses two ASUS RT-AC86U routers with Nexmon CSI extraction.', zh: 各子集使用 TP-Link Talon AD7200 与 MikroTik wAP 60Gx3 两种 IEEE 802.11ad 设备；由两块 Sivers EVK06002 套件与 RFSoC 组成的 5G NR OFDM 系统（57–71 GHz，带宽约 760 MHz）；以及 Mimorph 测试平台上 60.48 GHz 的 IEEE 802.11ay 系统。5 GHz 跨频段系统采用两台 ASUS RT-AC86U 路由器，并通过 Nexmon 提取 CSI。}
     outputs:
     - {en: Raw radio measurements per subset, zh: 各子集的原始无线电测量}
-  - title: {en: Beam sweep and feature extraction, zh: 波束扫描与特征提取}
-    detail: {en: '5GmmGesture sweeps 50 Tx and 56 Rx beams in each 10 ms frame and stores the power per beam pair. mmWGesture records beam SNR over 36 sectors at 10 Hz, aligned to a 102.4 ms beacon interval. DISAC-mmVRPose sweeps training fields from −45° to +45° azimuth with 0.3 ms inter-frame spacing.', zh: 5GmmGesture 在每个 10 ms 帧内扫描 50 个 Tx 波束与 56 个 Rx 波束，并保存逐波束对功率。mmWGesture 记录 36 个扇区上的波束 SNR，速率 10 Hz，与 102.4 ms 信标间隔对齐。DISAC-mmVRPose 以 0.3 ms 帧间隔扫描方位角 −45° 至 +45° 的训练字段。}
-    inputs:
-    - {en: Beam-level measurements, zh: 波束级测量}
+  - title: {en: Feature extraction, zh: 特征提取}
+    detail: {en: 'The Wi-Fi subsets yield CSI amplitude from 30 antenna elements of the wAP 60Gx3 units (22 Hz for mmWPose, 10 Hz for mmW-GaitID and mmW-Loc) and beam SNR over 36 sectors from the Talon units at about 10 Hz, tied to the 102.4 ms beacon interval. The 5G system sweeps 50 Tx and 56 Rx beams with two OFDM symbols per beam pair and stores the power per beam pair at 1540 Hz. DISAC-mmVRPose sweeps training fields from −45° to +45° azimuth with 0.3 ms inter-frame spacing and keeps the channel impulse response at 2775 Hz.', zh: Wi-Fi 子集从 wAP 60Gx3 单元的 30 个天线单元提取 CSI 幅度（mmWPose 为 22 Hz，mmW-GaitID 与 mmW-Loc 为 10 Hz），Talon 单元提取 36 个扇区上的波束 SNR，速率约 10 Hz，与 102.4 ms 信标间隔对应。5G 系统以每个波束对两个 OFDM 符号扫描 50 个 Tx 波束与 56 个 Rx 波束，并以 1540 Hz 保存逐波束对功率。DISAC-mmVRPose 扫描方位角 −45° 至 +45° 的训练字段，帧间隔 0.3 ms，并以 2775 Hz 保存信道冲激响应。}
     outputs:
-    - {en: 'Beam SNR, power per beam pair, and channel impulse response', zh: 波束 SNR、逐波束对功率与信道冲激响应}
+    - {en: 'Beam SNR, CSI amplitude, power per beam pair and channel impulse response', zh: 波束 SNR、CSI 幅度、逐波束对功率与信道冲激响应}
   - title: {en: Ground-truth reference, zh: 真值参考}
-    detail: {en: 'Ground truth comes from a synchronized Kinect, which provides 25 joints for mmWPose. Per Figure 1 of the paper, skeleton data and manual labels are used only in training.', zh: 真值来自同步的 Kinect，mmWPose 使用其 25 个关节点。按论文图 1，骨架数据与人工标注仅用于训练。}
+    detail: {en: 'A synchronized Kinect provides the ground truth: 25 skeleton joints for mmWPose, and Kinect skeleton data for DISAC-mmVRPose. Per Figure 1 of the paper, skeleton data and manual labels are used only during training.', zh: 同步的 Kinect 提供真值：mmWPose 使用其 25 个骨架关节点，DISAC-mmVRPose 使用其骨架数据。按论文图 1，骨架数据与人工标签仅在训练阶段使用。}
     inputs:
     - {en: Kinect skeleton stream, zh: Kinect 骨架数据流}
     outputs:
@@ -47,3 +45,110 @@ pipeline:
     detail: {en: 'Samples are reshaped into fixed-size arrays. mmWPose goes from 145200×30 to 2904×30×50, and mmWGesture from 427000×36 to 854×36×500. Each subset is saved as PyTorch .pth data and label files, as listed in the GitHub README.', zh: 样本被重排为固定尺寸的数组：mmWPose 由 145200×30 变为 2904×30×50，mmWGesture 由 427000×36 变为 854×36×500。每个子集保存为 PyTorch .pth 数据文件与标签文件，依据 GitHub README 所列。}
     outputs:
     - {en: Data and label .pth files per subset, zh: 每个子集的数据与标签 .pth 文件}
+samples: 854 to 34,496 per subset (six subsets)
+standard: IEEE 802.11ad/ay and 802.11ac Wi-Fi; custom 5G NR OFDM
+facts:
+- label: {en: Split, zh: 数据划分}
+  text: {en: 'The reference code uses a stratified 80/10/10 train, validation and test split and keeps the checkpoint with the best validation accuracy.', zh: 参考代码采用分层 80/10/10 的训练、验证与测试划分，并保留验证准确率最高的检查点。}
+- label: {en: 5GmmGesture protocol, zh: 5GmmGesture 采集流程}
+  text: {en: 'Eight users each perform eight gestures, each held for 7 seconds and repeated 10 times.', zh: 8 名用户各执行 8 种手势，每种手势持续 7 秒，重复 10 次。}
+- label: {en: Cross-user accuracy, zh: 跨用户准确率}
+  text: {en: 'Training on seven users and testing on the held-out user gives 54% to 85% accuracy on 5GmmGesture, with an average of 71%.', zh: 用七名用户训练、在留出的一名用户上测试时，5GmmGesture 的准确率为 54% 至 85%，平均为 71%。}
+- label: {en: mmW-Loc grid, zh: mmW-Loc 网格}
+  text: {en: Localization labels are the 20 cells of a 4×5 grid. Each of 20 participants stands still for 10 seconds in every cell., zh: 定位标签对应 4×5 网格中的 20 个单元。20 名参与者在每个单元中静止站立 10 秒。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Amplitude only in the Wi-Fi subsets: 60 GHz with 30 antenna elements at 22 Hz (mmWPose) and 10 Hz (mmW-GaitID, mmW-Loc); 5 GHz with 52 subcarriers. Complex CSI is not described.', zh: Wi-Fi 子集仅提供幅度：mmWPose 为 60 GHz、30 个天线单元、22 Hz；mmW-GaitID 与 mmW-Loc 为 60 GHz、10 Hz；5 GHz 为 52 个子载波。未描述复数 CSI。}
+- key: cir
+  status: provided
+  note: {en: 'DISAC-mmVRPose only: 4 Rx, with 12 beams by 128 range bins per time sample at 2775 Hz.', zh: 仅 DISAC-mmVRPose：4 个 Rx，每个时间样本为 12 个波束 × 128 个距离单元，2775 Hz。}
+- key: paths
+  status: none
+  note: {en: 'Only beam-range grids and CSI amplitude are released; no per-path delay, angle or phase list.', zh: 仅发布波束-距离网格与 CSI 幅度，无逐径时延、角度或相位列表。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records., zh: 没有逐径交互记录。}
+- key: power
+  status: provided
+  note: {en: 'Beam SNR over 36 sectors (mmWGesture) and power per beam pair on a 50 Tx by 56 Rx grid (5GmmGesture, 1540 Hz).', zh: mmWGesture 为 36 个扇区的波束 SNR；5GmmGesture 为 50 个 Tx 与 56 个 Rx 波束对组成的逐波束对功率网格，1540 Hz。}
+- key: iq
+  status: none
+  note: {en: 'Data are beam SNR, CSI amplitude, beam-pair power and CIR; no raw I/Q samples are described.', zh: 数据为波束 SNR、CSI 幅度、波束对功率与 CIR；未描述原始 I/Q 采样。}
+- key: beam_labels
+  status: provided
+  note: {en: 'Per-beam gains: beam SNR over 36 sectors and a 50 by 56 beam-pair power grid.', zh: 逐波束增益：36 个扇区的波束 SNR 与 50×56 的波束对功率网格。}
+- key: position
+  status: provided
+  note: {en: mmW-Loc gives 20 discrete cell labels on a 4 by 5 grid; mmWPose and DISAC-mmVRPose give Kinect skeleton joint positions. No GPS., zh: mmW-Loc 提供 4×5 网格中 20 个单元的离散标签；mmWPose 与 DISAC-mmVRPose 提供 Kinect 骨架关节位置。无 GPS。}
+- key: geometry
+  status: none
+  note: {en: 'The paper describes Tx-Rx layouts and the 4 by 5 grid, but no scene or map files are released.', zh: 论文描述了收发机布局与 4×5 网格，但不发布场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 不发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: Kinect is used only for skeleton labels; no camera images are released., zh: Kinect 仅用于骨架标签；不发布相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth data are released., zh: 不发布深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar is used in the testbeds., zh: 测试平台中未使用激光雷达。}
+- key: radar
+  status: none
+  note: {en: 'Signals are Wi-Fi and 5G NR communication waveforms used for sensing, not radar point clouds or radar ADC data.', zh: 信号为用于感知的 Wi-Fi 与 5G NR 通信波形，而非雷达点云或雷达 ADC 数据。}
+- key: imu
+  status: none
+  note: {en: No IMU is used in the setups., zh: 各测试平台中未使用 IMU。}
+- key: time_series
+  status: provided
+  note: {en: 'Fixed-length sequences: 500 time steps per mmWGesture sample, 50 for mmWPose, 20 for 5GmmGesture and 67 for DISAC-mmVRPose.', zh: 固定长度序列：mmWGesture 每个样本 500 个时间步，mmWPose 为 50，5GmmGesture 为 20，DISAC-mmVRPose 为 67。}
+- key: multiuser
+  status: none
+  note: {en: Each subset records one user at a time; simultaneous users in one channel record are not described., zh: 每个子集一次记录一名用户；未描述同一信道记录中有多名用户同时存在。}
+- key: multibs
+  status: none
+  note: {en: One Tx with four Rx nodes (DISAC-mmVRPose) and single-link setups; no multi-base-station set is described., zh: DISAC-mmVRPose 为 1 个 Tx 与 4 个 Rx，其余为单链路；未描述多基站集合。}
+- key: crossfreq
+  status: provided
+  note: {en: 5 GHz CSI recorded simultaneously with 60 GHz for mmW-GaitID and mmW-Loc. mmWGesture 5 GHz files are named on IEEE DataPort but absent from the GitHub README file tree., zh: mmW-GaitID 与 mmW-Loc 同时记录 5 GHz 与 60 GHz CSI。mmWGesture 的 5 GHz 文件在 IEEE DataPort 上有命名，但不在 GitHub README 的文件列表中。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- key: dynamic_blockage
+  status: provided
+  note: {en: During mmWGesture recording a user interrupts the line-of-sight between the transceivers while gesturing., zh: mmWGesture 采集时，用户在做手势过程中打断收发机之间的视距路径。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'Outputs are CSI amplitude, beam SNR, beam-pair power and CIR; no field-level quantities or antenna patterns.', zh: 输出为 CSI 幅度、波束 SNR、波束对功率与 CIR；无场量或天线方向图。}
+versions:
+- version: DataPort update
+  date: '2026-08-11'
+  summary: {en: IEEE DataPort record was last updated. The page gives no change description., zh: IEEE DataPort 记录最后更新。页面未给出修改说明。}
+  url: https://ieee-dataport.org/documents/mmhsense-multi-modal-and-distributed-mmwave-isac-datasets-human-sensing
+- version: IEEE Access vol. 14
+  date: '2026'
+  summary: {en: 'Journal version of the dataset paper published in IEEE Access, volume 14, pages 69961-69971 (DOI 10.1109/ACCESS.2026.3691174).', zh: 数据集论文的期刊版本发表于 IEEE Access 第 14 卷，第 69961–69971 页（DOI 10.1109/ACCESS.2026.3691174）。}
+  url: https://api.crossref.org/works/10.1109/ACCESS.2026.3691174
+- version: arXiv v1
+  date: '2025-09-24'
+  summary: {en: 'arXiv preprint 2509.21396 describing the six subsets, their testbeds and signal features, with a downstream validation.', zh: arXiv 预印本 2509.21396，描述六个子集、测试平台与信号特征，并给出下游任务验证。}
+  url: https://arxiv.org/abs/2509.21396
+- version: DataPort record
+  date: '2025-09-04'
+  summary: {en: IEEE DataPort dataset record created with the six subsets as PyTorch .pth data and label files (DOI 10.21227/s6ze-xp91)., zh: IEEE DataPort 数据集记录创建，六个子集以 PyTorch .pth 数据与标签文件发布（DOI 10.21227/s6ze-xp91）。}
+  url: https://ieee-dataport.org/documents/mmhsense-multi-modal-and-distributed-mmwave-isac-datasets-human-sensing

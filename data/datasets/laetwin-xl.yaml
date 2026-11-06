@@ -6,7 +6,7 @@ tasks: [near-field, foundation-model, channel-estimation]
 signals: [csi]
 bands_ghz: [7]
 environment: [outdoor-urban, outdoor-suburban, uav]
-antennas: {array: upa}
+antennas: {array: upa, tx: 1, rx: 4096}
 samples: 57,236 pretraining samples and 13,450 downstream samples
 license: Not stated
 access: {url: 'https://huggingface.co/datasets/lmyxxn/LAETwin-XL', type: open}
@@ -15,7 +15,7 @@ paper: doi:10.1109/jstsp.2026.3705369
 used_in: []
 citing: []
 summary: {en: 'Sionna ray-traced near-field and far-field XL-MIMO channel realizations at 7 GHz for UAV trajectories in urban and suburban scenes of 13 cities, with 57,236 pretraining and 13,450 downstream samples. Time-stamped UAV coordinates and near-field and far-field labels accompany the channels.', zh: '基于Sionna射线追踪生成的7 GHz XL-MIMO近场与远场信道实现，覆盖13个城市的城市与郊区场景中的无人机轨迹，包含57,236个预训练样本和13,450个下游样本。数据同时提供带时间戳的无人机坐标以及近场和远场标签。'}
-sources: ['https://arxiv.org/html/2606.14114', 'https://arxiv.org/abs/2606.14114', 'https://github.com/Lmyxxn/LAETwin-XL', 'https://api.github.com/repos/Lmyxxn/LAETwin-XL/license', 'https://huggingface.co/datasets/lmyxxn/LAETwin-XL', 'https://api.crossref.org/works/10.1109/jstsp.2026.3705369']
+sources: ['https://arxiv.org/html/2606.14114', 'https://arxiv.org/abs/2606.14114', 'https://github.com/Lmyxxn/LAETwin-XL', 'https://api.github.com/repos/Lmyxxn/LAETwin-XL/license', 'https://huggingface.co/datasets/lmyxxn/LAETwin-XL', 'https://api.crossref.org/works/10.1109/jstsp.2026.3705369', 'https://raw.githubusercontent.com/Lmyxxn/LAETwin-XL/main/README.md', 'https://raw.githubusercontent.com/Lmyxxn/LAETwin-XL/main/LAE_data_batch_generation.py', 'https://huggingface.co/api/datasets/lmyxxn/LAETwin-XL', 'https://huggingface.co/api/datasets/lmyxxn/LAETwin-XL/commits/main', 'https://raw.githubusercontent.com/Lmyxxn/LAETwin-XL/main/Split_and_merge_single_scene_channels.py', 'https://raw.githubusercontent.com/Lmyxxn/LAETwin-XL/main/merge_all_scene_channels.py', 'https://github.com/Lmyxxn/LAETwin-XL/releases']
 checked: '2026-11-06'
 overview: {en: 'LAETwin-XL is a near-field XL-MIMO channel dataset for low-altitude economy (LAE) scenarios. It was released with the paper Digital Twin-Based Channel Generation Toolchain and Foundation Model for Low-Altitude XL-MIMO, published in IEEE Journal of Selected Topics in Signal Processing (early access, 2026) by M. Li, Y. Han, J. Tian, C.-K. Wen and S. Jin. The channels are simulated with a digital-twin toolchain: OpenStreetMap geometry and ITU-compliant materials form the scene, and Sionna RT computes per-antenna ray-traced channels. UAVs fly along road-guided trajectories in urban scenes and nearly linear trajectories in suburban scenes. The dataset covers 13 cities in urban and suburban scenarios, with 57,236 pretraining samples and 13,450 downstream samples. Each output contains site-specific XL-MIMO channels, time-stamped UAV coordinates and near-field and far-field labels. The authors target channel extrapolation, channel estimation, near/far-field user classification and
     3D user localization, and they pretrain a foundation model on the data. The Hugging Face card lists a total file size of 70.4 GB and shows no license field.', zh: 'LAETwin-XL是面向低空经济（LAE）场景的近场XL-MIMO信道数据集。数据随论文《Digital Twin-Based Channel Generation Toolchain and Foundation Model for Low-Altitude XL-MIMO》发布，该论文发表于IEEE Journal of Selected Topics in Signal Processing（2026年提前在线发表），作者为M. Li、Y. Han、J. Tian、C.-K. Wen和S. Jin。信道由数字孪生工具链仿真生成：OpenStreetMap几何数据与符合ITU标准的材料构成场景，Sionna RT计算逐天线的射线追踪信道。在城市场景中，UAV沿道路引导的轨迹飞行；在郊区场景中，UAV沿近似直线的轨迹飞行。数据集覆盖13个城市的城市与郊区场景，包含57,236个预训练样本和13,450个下游样本。每个输出包含特定场地的XL-MIMO信道、带时间戳的UAV坐标以及近场和远场标签。作者面向信道外推、信道估计、近场/远场用户分类和三维用户定位任务，并在该数据上预训练基础模型。'}
@@ -52,3 +52,126 @@ pipeline:
     - {en: Partial channel results per scene, zh: 各场景的部分信道结果}
     outputs:
     - {en: 'Aggregated dataset with channels, UAV positions and labels', zh: 汇总了信道、UAV位置和标签的数据集}
+size_gb: 70.4
+subcarriers: 32
+mobility: UAV; road-guided urban trajectories (SUMO) and near-linear suburban flights
+format: NumPy .npz subscene files (np.savez_compressed), released as zip archives
+facts:
+- label: {en: Split sizes, zh: 数据划分规模}
+  text: {en: 'Pretraining (large dataset): 49,306 train, 3,930 validation and 4,000 test samples. Downstream (small dataset): 10,450 train, 1,500 validation and 1,500 test samples.', zh: '预训练（大数据集）：训练集49,306个、验证集3,930个、测试集4,000个样本。下游任务（小数据集）：训练集10,450个、验证集1,500个、测试集1,500个样本。'}
+- label: {en: Near-field label, zh: 近场标签}
+  text: {en: 'IS_NEARFIELD is 1 when the UE-to-array-center distance is below the Rayleigh distance of the 64 x 64 UPA, 2D^2/λ, with D taken from the array aperture at half-wavelength spacing; otherwise it is 0.', zh: 当UE到阵列中心的距离小于64×64 UPA的瑞利距离（2D²/λ，D由半波长间距下的阵列孔径决定）时，IS_NEARFIELD为1，否则为0。}
+- label: {en: Altitude and array height, zh: 高度与阵列高度}
+  text: {en: UAV altitudes are sampled uniformly from 30 to 50 m in urban scenes and from 60 to 80 m in suburban scenes. The BS array center sits at 35 m in urban scenes and at 65 m in suburban scenes., zh: 城市场景中UAV高度在30至50 m之间均匀采样，郊区场景在60至80 m之间均匀采样。BS阵列中心在城市场景位于35 m，在郊区场景位于65 m。}
+- label: {en: Subscene file layout, zh: 子场景文件结构}
+  text: {en: 'Each subscene is saved as one compressed .npz file with H_list (channels stored as real and imaginary parts over 32 subcarriers), O_T_list (UAV positions), IS_NEARFIELD_list (labels) and a JSON meta field.', zh: 每个子场景保存为一个压缩的.npz文件，包含H_list（信道以实部和虚部存储，覆盖32个子载波）、O_T_list（UAV位置）、IS_NEARFIELD_list（标签）以及JSON格式的meta字段。}
+- label: {en: Near/far imbalance, zh: 近场与远场比例失衡}
+  text: {en: 'Urban London, urban Tokyo and suburban Singapore contain many more near-field samples because their sampled ROIs are small. Dense urban New York yields fewer valid samples because blockage removes all propagation paths.', zh: 伦敦城区、东京城区和新加坡郊区的近场样本明显偏多，原因是采样ROI较小。纽约等高密度城区的有效样本较少，因为遮挡会使所有传播路径中断。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex frequency responses per receive element: 4096 elements of a 64x64 UPA by 32 subcarriers, stored as real and imaginary parts.', zh: 逐接收阵元的复频率响应：64x64 UPA的4096个阵元 × 32个子载波，以实部和虚部形式存储。}
+- key: cir
+  status: derivable
+  note: {en: 'The generator does not store the CIR, but an inverse DFT over the 32 stored subcarriers (15 kHz spacing, recorded in meta) gives the delay profile.', zh: 生成器未存储CIR，但对已存储的32个子载波（间隔15 kHz，记录于meta字段）做逆DFT即可得到时延分布。}
+- key: paths
+  status: simulate
+  note: {en: 'The solver computes per-path parameters, but the generator saves only the frequency response, so paths require a rerun with per-path output added.', zh: 求解器计算逐径参数，但生成器只保存频率响应，因此需要修改输出并重新运行生成才能得到逐径参数。}
+- key: interaction
+  status: simulate
+  note: {en: Interaction types and points are not saved; obtaining them requires rerunning the generator with per-path output., zh: 交互类型与交互点未被保存，需重新运行生成器并输出逐径信息。}
+- key: power
+  status: derivable
+  note: {en: Received power per element and subcarrier follows from |H|^2 of the stored frequency response., zh: 逐阵元、逐子载波的接收功率可由已存储频率响应的|H|^2得到。}
+- key: beam_labels
+  status: derivable
+  note: {en: Beam gains follow from the per-element frequency response for any codebook; the release contains no codebook or beam labels., zh: 对任意码本，波束增益可由逐阵元频率响应计算；发布数据不含码本或波束标签。}
+- key: position
+  status: provided
+  note: {en: UAV coordinates for each sample are stored as O_T_list., zh: 每个样本的UAV坐标以O_T_list形式存储。}
+- key: geometry
+  status: simulate
+  note: {en: The 3D scene is built from OpenStreetMap by the scene notebooks; no scene files are included in the release., zh: 三维场景由场景notebook依据OpenStreetMap构建；发布数据中不含场景文件。}
+- key: materials
+  status: simulate
+  note: {en: ITU material assignments are made in the scene notebooks and are not included in the released files., zh: ITU材料参数在场景notebook中设定，不包含在发布文件中。}
+- key: iq
+  status: none
+  note: {en: Only channel frequency responses are stored; no transmitted or received waveform samples are released., zh: 仅存储信道频率响应，不包含发射或接收的波形采样。}
+- key: rgb
+  status: none
+  note: {en: 'The release contains channel, UAV position and label files only; there are no camera images.', zh: 发布内容仅包含信道、UAV位置和标签文件，不含相机图像。}
+- key: depth
+  status: none
+  note: {en: 'The release contains channel, UAV position and label files only; there is no depth data.', zh: 发布内容仅包含信道、UAV位置和标签文件，不含深度数据。}
+- key: lidar
+  status: none
+  note: {en: 'The release contains channel, UAV position and label files only; there is no LiDAR data.', zh: 发布内容仅包含信道、UAV位置和标签文件，不含LiDAR数据。}
+- key: radar
+  status: none
+  note: {en: 'The release contains channel, UAV position and label files only; there are no radar observations.', zh: 发布内容仅包含信道、UAV位置和标签文件，不含雷达观测。}
+- key: imu
+  status: none
+  note: {en: 'The release contains channel, UAV position and label files only; there is no IMU data.', zh: 发布内容仅包含信道、UAV位置和标签文件，不含IMU数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Samples are ordered snapshots along UAV trajectories, each with time-stamped UAV coordinates.', zh: 样本为沿UAV轨迹的有序快照，每个快照带有时间戳的UAV坐标。}
+- key: multiuser
+  status: none
+  note: {en: 'Each sample holds one UAV transmitter, so no simultaneous multi-user channels are stored.', zh: 每个样本只包含一个UAV发射机，因此不存储同时存在的多用户信道。}
+- key: multibs
+  status: none
+  note: {en: 'Each sample uses a single BS array, and no multi-BS set is described.', zh: 每个样本使用单个基站阵列，文件中未描述多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: All samples use one 7 GHz carrier., zh: 所有样本使用同一个7 GHz载波。}
+- key: near_field
+  status: provided
+  note: {en: The IS_NEARFIELD label marks samples whose UAV distance is below the Rayleigh distance of the 64x64 UPA; near-field channels are computed per element., zh: IS_NEARFIELD标签标记UAV距离小于64x64 UPA瑞利距离的样本；近场信道按阵元计算。}
+- key: high_mobility
+  status: provided
+  note: {en: 'The paper Doppler analysis uses a maximum UAV speed of 20 m/s (about 72 km/h); the release stores positions, not speeds.', zh: 论文多普勒分析采用的UAV最大速度为20 m/s（约72 km/h）；发布数据存储位置而非速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: Specular reflection up to order 3 is enabled in the solver and is included in the stored channels; per-path labels are not kept., zh: 求解器启用了最高3阶的镜面反射，其结果包含在已存储信道中；不保留逐径标签。}
+- key: diffraction
+  status: none
+  note: {en: The solver call does not enable diffraction., zh: 求解器调用中未启用绕射。}
+- key: scattering
+  status: none
+  note: {en: Diffuse reflection is set to False in the solver call., zh: 求解器调用中漫反射设为False。}
+- key: transmission
+  status: provided
+  note: {en: Refraction (transmission through objects) is enabled in the solver and is included in the stored channels., zh: 求解器启用了折射（穿过物体的透射），其结果包含在已存储信道中。}
+- key: polarization
+  status: none
+  note: {en: Both arrays are configured with single vertical polarization., zh: 收发天线均配置为单一垂直极化。}
+- key: em_field
+  status: none
+  note: {en: Only channel frequency responses are stored; no field components or antenna patterns are released., zh: 仅存储信道频率响应，不发布场分量或天线方向图。}
+versions:
+- version: 'HF commit: Create README.md'
+  date: '2026-06-19'
+  summary: {en: README.md added to the Hugging Face dataset repository. It describes the dataset and its digital-twin and Sionna RT generation toolchain., zh: 在Hugging Face数据集仓库中新增README.md，说明数据集及其数字孪生与Sionna RT生成工具链。}
+  url: https://huggingface.co/datasets/lmyxxn/LAETwin-XL
+- version: arXiv v2
+  date: '2026-06-15'
+  summary: {en: Second arXiv version of the paper that documents the dataset. The arXiv listing does not state the changes., zh: 记录该数据集的论文第二个arXiv版本。arXiv页面未说明修改内容。}
+  url: https://arxiv.org/abs/2606.14114
+- version: arXiv v1
+  date: '2026-06-12'
+  summary: {en: First arXiv posting of the paper that describes the Sionna RT toolchain and the XL-MIMO channel dataset., zh: 论文首次发布于arXiv，介绍Sionna RT工具链与XL-MIMO信道数据集。}
+  url: https://arxiv.org/abs/2606.14114
+- version: 'HF commit: Upload Downstream_Hybrid_Channel_UPA64X64_Train.zip'
+  date: '2026-03-09'
+  summary: {en: Downstream training archive Downstream_Hybrid_Channel_UPA64X64_Train.zip uploaded to the repository., zh: 上传下游训练压缩包Downstream_Hybrid_Channel_UPA64X64_Train.zip。}
+  url: https://huggingface.co/datasets/lmyxxn/LAETwin-XL/tree/main
+- version: 'HF commits: Upload 2 files (two commits)'
+  date: '2026-03-08'
+  summary: {en: Two commits titled "Upload 2 files" added two archive files each. The commit titles do not name the files., zh: 两次标题为"Upload 2 files"的提交，每次新增两个压缩包文件。提交标题未注明文件名。}
+  url: https://huggingface.co/datasets/lmyxxn/LAETwin-XL/tree/main
+- version: HF initial commit
+  date: '2026-03-07'
+  summary: {en: Repository created with an initial commit. The pretraining archive Hybrid_Channel_UPA64X64_Train.zip was uploaded on the same day., zh: 仓库以初始提交创建。预训练压缩包Hybrid_Channel_UPA64X64_Train.zip于同日上传。}
+  url: https://huggingface.co/datasets/lmyxxn/LAETwin-XL

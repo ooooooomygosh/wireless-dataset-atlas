@@ -8,17 +8,17 @@ bands_ghz: [2.4, 5]
 environment: [indoor]
 samples: 11,286 CSI samples of 3 seconds each, over 9.4 hours of dual-band WiFi CSI
 format: MAT, NPY, MP4, CSV
-license: Not stated
+license: CC BY-NC-SA 4.0
 access: {url: 'https://www.kaggle.com/datasets/shuokanghuang/wimans', type: open}
 code: ['https://github.com/huangshk/WiMANS']
 paper: arxiv:2402.09430
 used_in: ['doi:10.1109/jiot.2026.3654610', 'doi:10.1109/jiot.2026.3716007', 'doi:10.1109/lcomm.2026.3715770']
 citing: ['doi:10.1109/ojcoms.2024.3465216', 'doi:10.1109/jiot.2025.3580141', 'doi:10.1109/tccn.2026.3660764']
 summary: {en: 'Dual-band (2.4 and 5 GHz) WiFi CSI samples of three seconds each, with 0 to 5 simultaneous users and synchronized video, labelled with anonymized identity, location and activity. The dataset contains over 9.4 hours of CSI.', zh: 双频段（2.4 和 5 GHz）WiFi CSI 样本，每个样本时长 3 秒，包含 0 至 5 名同时活动的用户，并配有同步视频，标注了匿名身份、位置和活动。数据集包含超过 9.4 小时的 CSI。}
-sources: ['https://github.com/huangshk/WiMANS', 'https://arxiv.org/abs/2402.09430']
+sources: ['https://github.com/huangshk/WiMANS', 'https://arxiv.org/abs/2402.09430', 'https://arxiv.org/pdf/2402.09430', 'https://raw.githubusercontent.com/huangshk/WiMANS/main/README.md', 'https://www.kaggle.com/datasets/shuokanghuang/wimans', 'https://www.kaggle.com/api/v1/datasets/view/shuokanghuang/wimans', 'https://github.com/huangshk/WiMANS/releases', 'https://github.com/huangshk/WiMANS/commits/main', 'https://arxiv.org/abs/2402.09430v1', 'https://arxiv.org/abs/2402.09430v2']
 checked: '2026-11-06'
-overview: {en: 'WiMANS is a benchmark dataset for WiFi-based multi-user activity sensing, described by Huang et al. in 2024 (arXiv:2402.09430). Each sample is a 3-second recording of dual-band WiFi CSI at 2.4 GHz and 5 GHz, made while 0 to 5 users perform activities at the same time, together with a synchronized video from a monitor camera. The data were collected in three environments (a classroom, a meeting room and an empty room) with 6 volunteers forming 114 user groups. Each user in a sample is labelled with an anonymized identity, one of five locations (A to E) and one of nine activities: nothing, walking, rotation, jumping, waving, lying down, picking up, sitting down and standing up. The dataset holds 11,286 samples, over 9.4 hours of CSI, and 63.2% of the samples contain two or more users. The authors target WiFi-based and video-based recognition of identity, location and activity for multiple users, and they report benchmark results for both. The annotations contain no body-joint
-    labels, and faces in the videos are blurred. The authors state that the data should be used for academic research only.', zh: 'WiMANS 是一个基于 WiFi 的多用户活动感知基准数据集，由 Huang 等人于 2024 年发表（arXiv:2402.09430）。每个样本是时长 3 秒的双频段 WiFi CSI 记录，频段为 2.4 GHz 和 5 GHz，采集时 0 至 5 名用户同时执行活动，并配有来自监控摄像头的同步视频。数据采集于三种环境（教室、会议室和空房间），由 6 名志愿者组成 114 个用户组。样本中的每位用户都标注了匿名身份、五个位置（A 至 E）之一，以及九种活动之一：无活动（Nothing）、行走、转身、跳跃、挥手、躺下、拾取、坐下和站起。数据集共包含 11,286 个样本，CSI 总时长超过 9.4 小时，其中 63.2% 的样本包含两名或以上用户。作者面向多用户场景下基于 WiFi 和基于视频的身份、位置与活动识别，并给出了两类模型的基准结果。标注中不包含人体关节点，视频中的人脸已模糊处理。作者声明数据仅用于学术研究。'}
+overview: {en: 'WiMANS is a benchmark dataset for WiFi-based multi-user activity sensing, described by Huang et al. in 2024 (arXiv:2402.09430). The dataset covers both bands: each sample is a 3-second WiFi CSI recording on either 2.4 GHz or 5 GHz, made while 0 to 5 users perform activities at the same time, together with a synchronized video from a monitor camera. The data were collected in three environments (a classroom, a meeting room and an empty room) with 6 volunteers forming 114 user groups. Each user in a sample is labelled with an anonymized identity, one of five locations (A to E) and one of nine activities: nothing, walking, rotation, jumping, waving, lying down, picking up, sitting down and standing up. The dataset holds 11,286 samples, over 9.4 hours of CSI, and 63.2% of the samples contain two or more users. The authors target WiFi-based and video-based recognition of identity, location and activity for multiple users, and they report benchmark results for both. The annotations
+    contain no body-joint labels, and faces in the videos are blurred. The authors state that the data should be used for academic research only.', zh: 'WiMANS 是一个基于 WiFi 的多用户活动感知基准数据集，由 Huang 等人于 2024 年发表（arXiv:2402.09430）。数据集覆盖两个频段，每个样本是 2.4 GHz 或 5 GHz 其中一个频段上时长 3 秒的 WiFi CSI 记录，采集时 0 至 5 名用户同时执行活动，并配有同步的监控摄像头视频。数据采集于三种环境（教室、会议室和空房间），由 6 名志愿者组成 114 个用户组。样本中的每位用户都标注了匿名身份、五个位置（A 至 E）之一，以及九种活动之一：无活动、行走、转身、跳跃、挥手、躺下、拾取、坐下和站起。数据集共包含 11,286 个样本，CSI 总时长超过 9.4 小时，其中 63.2% 的样本包含两名或以上用户。作者面向多用户场景下基于 WiFi 和基于视频的身份、位置与活动识别，并给出了两类模型的基准结果。标注中不包含人体关节点标签，视频中的人脸已模糊处理。作者声明数据仅用于学术研究。'}
 signal_details:
 - signal: csi
   text: {en: 'Two HP EliteDesk 800 G2 TWR computers serve as transmitter and receiver, each with an Intel 5300 network interface card running the Linux 802.11n CSI tool in monitor mode. Each side has 3 antennas and each antenna pair uses 30 subcarriers, so the CSI at one time step is 3 × 3 × 30. Packets are sent at 1000 packets per second for 3 seconds, giving 3000 time steps per sample and a raw sample shape of 3000 × 3 × 3 × 30. The 2.4 GHz band uses channel 12 and the 5 GHz band uses channel 64. Average packet loss is 4.52% at 2.4 GHz and 2.31% at 5 GHz, so the 2.4 GHz samples have 2864.39 time steps on average. Raw CSI is stored as .mat files and CSI amplitude as .npy files.', zh: 两台 HP EliteDesk 800 G2 TWR 计算机分别作为发射端和接收端，各配备 Intel 5300 网卡，运行 Linux 802.11n CSI tool 并工作在 monitor mode。收发两端各有 3 根天线，每对天线使用 30 个子载波，因此每个时间步的 CSI 维度为 3 × 3 × 30。以 1000 packets/s 的速率发送 3 秒数据包，每个样本有 3000 个时间步，原始样本形状为 3000 × 3 × 3 × 30。2.4 GHz 频段使用 channel 12，5 GHz 频段使用 channel 64。平均丢包率在 2.4 GHz 为 4.52%，在 5 GHz
@@ -58,3 +58,97 @@ pipeline:
     - {en: Raw CSI .mat files, zh: 原始 CSI .mat 文件}
     outputs:
     - {en: 'CSI amplitude .npy files, video .mp4 files and annotation.csv', zh: CSI 幅度 .npy 文件、视频 .mp4 文件与 annotation.csv}
+size_gb: 68.9
+subcarriers: 30
+antennas: {tx: 3, rx: 3}
+standard: 802.11n
+organization: Imperial College London
+facts:
+- label: {en: Sample label, zh: 样本标签}
+  text: {en: 'Each sample is named act_<group>_<sample>, and its label records the environment, WiFi band, number of users, and the identity, location and activity of each user.', zh: 每个样本命名为 act_<group>_<sample>，其标签记录环境、WiFi 频段、用户数量，以及每位用户的身份、位置和活动。}
+- label: {en: Group structure, zh: 用户组结构}
+  text: {en: 'The data come from 114 user groups of 99 samples each. Within a group, each script index assigns every user an activity and a location.', zh: 数据来自 114 个用户组，每组 99 个样本。组内每个脚本索引为每位用户分配一项活动和一个位置。}
+- label: {en: Split, zh: 数据划分}
+  text: {en: The paper splits each of the three environment subsets randomly into 80% training and 20% test data., zh: 论文将三个环境子集分别随机划分为 80% 训练集和 20% 测试集。}
+- label: {en: Packet loss, zh: 丢包}
+  text: {en: 'Packet loss leaves gaps in the CSI time axis: 2.4 GHz samples average 2864.39 steps and 5 GHz samples average 2930.72, and the paper suggests zero padding.', zh: 丢包会在 CSI 时间轴上留下空缺：2.4 GHz 样本平均 2864.39 个时间步，5 GHz 样本平均 2930.72 个时间步，论文建议使用零填充。}
+- label: {en: Use restriction, zh: 使用限制}
+  text: {en: The authors limit use to academic research and forbid commercial surveillance systems., zh: 作者限定数据仅用于学术研究，并禁止用于商业监控系统。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Raw CSI in .mat files, 3000 x 3 x 3 x 30 per sample; CSI amplitude in .npy files is computed from them.', zh: 原始 CSI 存储于 .mat 文件，每个样本为 3000 x 3 x 3 x 30；CSI 幅度 .npy 文件由其计算得到。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- {key: power, status: unknown}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: provided
+  note: {en: 'Discrete location labels A to E in each environment, not coordinates.', zh: 每个环境中为离散位置标签 A 至 E，而非坐标。}
+- key: geometry
+  status: unknown
+  note: {en: Room layouts with locations A to E are shown in the paper; no 3D or map files are released., zh: 论文中给出了含位置 A 至 E 的房间布局图；未发布三维或地图文件。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: provided
+  note: {en: 'Monitor-camera MP4 video at 1920 x 1080 and 30 Hz, cut into 3-second clips; faces are blurred.', zh: 监控摄像头录制的 MP4 视频，分辨率 1920 x 1080，帧率 30 Hz，切分为 3 秒片段；人脸已模糊。}
+- key: depth
+  status: none
+  note: {en: 'The release holds raw CSI, CSI amplitude, MP4 video and annotation.csv only.', zh: 发布内容仅包括原始 CSI、CSI 幅度、MP4 视频和 annotation.csv。}
+- key: lidar
+  status: none
+  note: {en: 'Not in the release, which holds raw CSI, CSI amplitude, MP4 video and annotation.csv only.', zh: 不在发布内容中，发布内容仅包括原始 CSI、CSI 幅度、MP4 视频和 annotation.csv。}
+- key: radar
+  status: none
+  note: {en: 'Not in the release, which holds raw CSI, CSI amplitude, MP4 video and annotation.csv only.', zh: 不在发布内容中，发布内容仅包括原始 CSI、CSI 幅度、MP4 视频和 annotation.csv。}
+- key: imu
+  status: none
+  note: {en: 'Not in the release, which holds raw CSI, CSI amplitude, MP4 video and annotation.csv only.', zh: 不在发布内容中，发布内容仅包括原始 CSI、CSI 幅度、MP4 视频和 annotation.csv。}
+- key: time_series
+  status: provided
+  note: {en: Each 3-second sample has 3000 time steps at 1000 packets/s; packet loss leaves gaps (average 2864.39 steps at 2.4 GHz and 2930.72 at 5 GHz)., zh: 每个 3 秒样本有 3000 个时间步，采样率 1000 packets/s；丢包造成空缺（2.4 GHz 平均 2864.39 步，5 GHz 平均 2930.72 步）。}
+- key: multiuser
+  status: none
+  note: {en: 'Users act simultaneously in each sample, but the CSI is one shared link per sample with no per-user channels.', zh: 每个样本中多名用户同时活动，但 CSI 为每个样本一条共享链路，不含每位用户的独立信道。}
+- key: multibs
+  status: none
+  note: {en: One transmitter and one receiver form a single link per sample., zh: 每个样本由一个发射端和一个接收端构成单一链路。}
+- key: crossfreq
+  status: unknown
+  note: {en: The release holds 2.4 GHz and 5 GHz samples with a band label each; the sources do not state that the two bands are paired at the same positions., zh: 发布内容包含 2.4 GHz 和 5 GHz 样本，每个样本带有频段标签；来源未说明两个频段是否在相同位置配对。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- key: dynamic_blockage
+  status: provided
+  note: {en: 'Users walk, jump, rotate and move in the room during recording, and the paper reports occlusion by people and furniture; no separate blockage labels are given.', zh: 录制期间用户在房间内行走、跳跃、转身等活动，论文报告了人体与家具造成的遮挡；未提供单独的遮挡标签。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'Only CSI, video and labels are released.', zh: 仅发布 CSI、视频和标签。}
+versions:
+- version: arXiv v2
+  date: '2024-03-12'
+  summary: {en: Second arXiv version of the WiMANS paper. The arXiv listing gives no change note., zh: WiMANS 论文的第二个 arXiv 版本。arXiv 页面未给出变更说明。}
+  url: https://arxiv.org/abs/2402.09430v2
+- version: Kaggle version 1 (Initial release)
+  date: '2024-02-16'
+  summary: {en: 'Initial Kaggle release of the dataset, with 11,286 dual-band (2.4 and 5 GHz) WiFi CSI samples of 3 seconds each and synchronized videos. Kaggle lists version 1 as the only version.', zh: '数据集在 Kaggle 上的首次发布，包含 11,286 个双频段（2.4 和 5 GHz）WiFi CSI 样本（每个 3 秒）及同步视频。Kaggle 仅列出版本 1。'}
+  url: https://www.kaggle.com/datasets/shuokanghuang/wimans
+- version: arXiv v1
+  date: '2024-01-24'
+  summary: {en: 'First arXiv version of the WiMANS paper, which introduces the dataset as the first WiFi-based multi-user activity sensing dataset.', zh: WiMANS 论文的首个 arXiv 版本，将该数据集介绍为首个基于 WiFi 的多用户活动感知数据集。}
+  url: https://arxiv.org/abs/2402.09430v1

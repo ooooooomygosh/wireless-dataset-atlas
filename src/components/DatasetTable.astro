@@ -17,6 +17,8 @@ const attrs = (d: Dataset) => ({
   "data-environment": d.environment.join(" "),
   "data-access": d.access.type,
   "data-code": d.code.length ? "1" : "0",
+  "data-cap": d.capabilities.filter((c) => c.status === "provided" || c.status === "derivable").map((c) => c.key).join(" "),
+  "data-versions": d.versions.length,
 });
 ---
 <div class="table-wrap" id={filterable ? "view-table" : undefined}>

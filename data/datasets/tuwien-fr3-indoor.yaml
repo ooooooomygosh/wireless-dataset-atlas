@@ -16,7 +16,7 @@ paper: doi:10.23919/eucap63536.2025.11000050
 used_in: []
 citing: []
 summary: {en: 'Indoor vector network analyzer MIMO S21 measurements from 6 to 24 GHz, with 6001 frequency points, 9 Tx and 9 Rx virtual ULA ports, six Rx positions and nine far-field factors. Noise measurements with 200 repetitions are provided in the same format.', zh: 室内矢量网络分析仪测得的 MIMO S21 数据，频率范围 6 至 24 GHz，共 6001 个频点，使用 9 个发射和 9 个接收虚拟 ULA 端口，包含 6 个接收位置和 9 个远场因子。另提供格式相同的噪声测量数据，共 200 次重复。}
-sources: ['https://researchdata.tuwien.ac.at/doi/10.48436/hzn2f-hbb79', 'https://api.datacite.org/dois/10.48436/hzn2f-hbb79', 'https://api.crossref.org/works/10.23919/eucap63536.2025.11000050']
+sources: ['https://researchdata.tuwien.ac.at/doi/10.48436/hzn2f-hbb79', 'https://api.datacite.org/dois/10.48436/hzn2f-hbb79', 'https://api.crossref.org/works/10.23919/eucap63536.2025.11000050', 'https://researchdata.tuwien.ac.at/api/records/hzn2f-hbb79', 'https://researchdata.tuwien.ac.at/api/records/hzn2f-hbb79/versions', 'https://researchdata.tuwien.ac.at/api/records/hzn2f-hbb79/files/demo.py/content']
 checked: '2026-11-06'
 overview: {en: 'The TU Wien FR3 Indoor MIMO Channel Dataset contains indoor MIMO channel measurements in the 6 GHz to 24 GHz range. TU Wien published it on 15 October 2024 as version 1.0.0. The authors are Richard Prüller, Robert Langwieser and Markus Rupp, and the work was funded by the Christian Doppler Laboratory for Digital Twin assisted AI for Sustainable Radio Access Networks. A vector network analyzer recorded the channel as S21 parameters at 6001 frequency points, using virtual uniform linear arrays with 9 Tx and 9 Rx ports. The data cover 6 Rx positions and 9 far-field factors from 0.1 to 10, which describe the transition from the near field to the far field. A separate noise file contains 200 repetitions of noise measurements on a 3 by 3 port setup.', zh: TU Wien FR3 Indoor MIMO Channel Dataset 包含 6 GHz 至 24 GHz 频段的室内 MIMO 信道测量数据，由 TU Wien 发布，于 2024 年 10 月 15 日以 1.0.0 版发布。作者为 Richard Prüller、Robert Langwieser 和 Markus Rupp，工作由 Christian Doppler Laboratory for Digital Twin assisted
     AI for Sustainable Radio Access Networks 资助。矢量网络分析仪以 S21 参数记录信道，频点数为 6001，收发端分别采用 9 个端口的虚拟均匀线阵（ULA）。数据覆盖 6 个接收位置和 9 个远场因子（取值 0.1 至 10），用于刻画从近场到远场的过渡。单独的噪声文件包含 200 次重复的噪声测量，端口配置为 3×3。}
@@ -51,3 +51,83 @@ pipeline:
     outputs:
     - {en: channel.json.gz, zh: channel.json.gz}
     - {en: noise.json.gz, zh: noise.json.gz}
+size_gb: 0.66
+facts:
+- label: {en: Noise file port count, zh: 噪声文件端口数}
+  text: {en: 'The noise file has 3 Rx and 3 Tx ports, while the channel file has 9 Rx and 9 Tx ports, so the two files do not share array dimensions.', zh: 噪声文件的接收和发射端口各为 3，信道文件的接收和发射端口各为 9，因此两个文件的数组维度不同。}
+- label: {en: Coordinate convention, zh: 坐标约定}
+  text: {en: 'room_size gives the bounding box of the measurement room in metres. position_rx and position_tx hold antenna positions in room coordinates, and rotation_rx and rotation_tx convert room coordinates into the local coordinates of the Rx and Tx arrays.', zh: room_size 给出测量房间的包围盒尺寸（单位 m）。position_rx 与 position_tx 给出房间坐标系中的天线位置，rotation_rx 与 rotation_tx 将房间坐标转换为收发阵列的局部坐标。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex S21 channel matrices with 6001 frequency points from 6 to 24 GHz, 9 Rx and 9 Tx ports, for 6 Rx positions and 9 far-field factors.', zh: 复数 S21 信道矩阵，频率范围 6 至 24 GHz，共 6001 个频点，9 个接收端口和 9 个发射端口，对应 6 个接收位置和 9 个远场因子。}
+- key: cir
+  status: derivable
+  note: {en: 'Delay-domain traces are obtained by an inverse FFT of the S21 traces, as in to_delaydomain() in demo.py.', zh: 时延域迹线由 S21 迹线的逆 FFT 得到，对应 demo.py 中的 to_delaydomain() 函数。}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Received power and path loss follow from |S21| at each frequency and port pair; no power field is stored., zh: 接收功率和路径损耗可由每个频点及端口对的 |S21| 计算得到；数据中不存储功率字段。}
+- key: iq
+  status: none
+  note: {en: Only frequency-domain S21 traces are released; no time-domain I/Q samples are included., zh: 仅发布频域 S21 迹线，不包含时域 I/Q 采样。}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: provided
+  note: {en: 'Antenna positions in m, in room coordinates, for each Rx position and far-field factor, with rotation matrices to local array coordinates.', zh: 每个接收位置和远场因子下的天线位置（单位 m，房间坐标系），并提供从房间坐标到阵列局部坐标的旋转矩阵。}
+- key: geometry
+  status: none
+  note: {en: 'Only a room bounding box (room_size, in m) is stored; no 3D scene or map file is included.', zh: 仅存储房间包围盒尺寸（room_size，单位 m）；不包含三维场景或地图文件。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'The release contains only the channel and noise files, demo.py and README.md.', zh: 发布内容仅包括信道和噪声文件、demo.py 和 README.md。}
+- key: depth
+  status: none
+  note: {en: 'The release contains only the channel and noise files, demo.py and README.md.', zh: 发布内容仅包括信道和噪声文件、demo.py 和 README.md。}
+- key: lidar
+  status: none
+  note: {en: 'The release contains only the channel and noise files, demo.py and README.md.', zh: 发布内容仅包括信道和噪声文件、demo.py 和 README.md。}
+- key: radar
+  status: none
+  note: {en: 'The release contains only the channel and noise files, demo.py and README.md.', zh: 发布内容仅包括信道和噪声文件、demo.py 和 README.md。}
+- key: imu
+  status: none
+  note: {en: 'The release contains only the channel and noise files, demo.py and README.md.', zh: 发布内容仅包括信道和噪声文件、demo.py 和 README.md。}
+- key: time_series
+  status: none
+  note: {en: Measurements are indexed by Rx position and far-field factor; no timestamps are stored., zh: 测量按接收位置和远场因子索引；不存储时间戳。}
+- key: multiuser
+  status: none
+  note: {en: One Tx and one Rx virtual array are measured; no simultaneous users are described., zh: 测量的是一个发射和一个接收虚拟阵列；未描述同时存在的多个用户。}
+- key: multibs
+  status: none
+  note: {en: One Tx and one Rx virtual array are measured; no second base station is described., zh: 测量的是一个发射和一个接收虚拟阵列；未描述第二个基站。}
+- {key: crossfreq, status: unknown}
+- key: near_field
+  status: provided
+  note: {en: Nine far-field factors from 0.1 to 10 at six Rx positions cover the transition from near field to far field., zh: 6 个接收位置上 9 个远场因子（0.1 至 10）覆盖从近场到远场的过渡。}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Only S21 channel parameters are released; no field-level outputs or antenna patterns are included., zh: 仅发布 S21 信道参数；不包含场级输出或天线方向图。}
+versions:
+- version: 1.0.0
+  date: '2024-10-15'
+  summary: {en: 'Initial and only listed version (1.0.0): S21 channel traces at 6 Rx positions and 9 far-field factors, 9 Rx and 9 Tx virtual ULA ports, 6001 points from 6 to 24 GHz, a 200-repetition noise file, demo.py and README.md.', zh: 初始版本，也是目前唯一列出的版本（1.0.0）：包含 6 个接收位置和 9 个远场因子下的 S21 信道迹线（9 个接收端口和 9 个发射端口的虚拟 ULA，6 至 24 GHz 共 6001 个频点），以及 200 次重复的噪声文件、demo.py 和 README.md。}
+  url: https://researchdata.tuwien.ac.at/doi/10.48436/hzn2f-hbb79

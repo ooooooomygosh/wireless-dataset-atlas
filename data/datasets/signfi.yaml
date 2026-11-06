@@ -9,14 +9,15 @@ environment: [lab, indoor]
 standard: 802.11n
 format: MAT
 samples: 8,280 downlink and 8,280 uplink instances from one user (276 signs), plus 7,500 downlink instances from five users (150 signs)
-license: 'Custom Terms of Use (College of William and Mary): non-commercial educational and research use only; no redistribution without written approval'
+license: Terms of Use for SignFi Dataset (College of William and Mary)
 access: {url: 'https://github.com/yongsen/SignFi', type: open}
 code: ['https://github.com/yongsen/SignFi']
 paper: doi:10.1145/3191755
 used_in: ['doi:10.1109/tmc.2022.3221902', 'doi:10.1109/tccn.2024.3414390', 'doi:10.1109/jiot.2024.3400773']
 citing: ['doi:10.1109/jiot.2022.3190845', 'doi:10.1109/jiot.2020.3026732', 'doi:10.1145/3384419.3430735']
 summary: {en: 'WiFi CSI traces recorded with the 802.11n CSI Tool for 276 sign-language gestures in lab and home settings, with downlink and uplink links. A 150-sign subset is recorded from five users in the lab.', zh: 使用 802.11n CSI Tool 记录的 WiFi CSI 数据，涵盖实验室和家庭环境中的 276 个手语手势，包含下行和上行链路。另有一个 150 个手语的子集，由实验室中的五名用户采集。}
-sources: ['https://github.com/yongsen/SignFi', 'https://api.crossref.org/works/10.1145/3191755']
+sources: ['https://github.com/yongsen/SignFi', 'https://api.crossref.org/works/10.1145/3191755', 'https://raw.githubusercontent.com/yongsen/SignFi/master/README.md', 'https://raw.githubusercontent.com/yongsen/SignFi/master/csi_phase_offset.py', 'https://github.com/yongsen/SignFi/releases', 'https://github.com/yongsen/SignFi/tags', 'https://github.com/yongsen/SignFi/commits/master', 'https://raw.githubusercontent.com/yongsen/SignFi/0c9ba08ff35583b250b9589d92acc85368cd2690/README.md', 'https://raw.githubusercontent.com/yongsen/SignFi/4e898ee2450b323558e204e541b42111984aba29/README.md', 'https://raw.githubusercontent.com/yongsen/SignFi/dddcd5b85fe577dde19f09ee546d002e44da751c/README.md', 'https://raw.githubusercontent.com/yongsen/SignFi/b1a9689fe9d0bf6d2959b7ade2a44bb89c64c93c/README.md', 'https://raw.githubusercontent.com/yongsen/SignFi/0fd4b595c1af440a5d7a175213533331bca14f2b/README.md', 'https://raw.githubusercontent.com/yongsen/SignFi/8eb05a9355cc8326a0fc34feefbb40819f738bed/README.md',
+  'https://raw.githubusercontent.com/yongsen/SignFi/4c5882d658279ce5ac81c9a8920502aed59da33e/README.md', 'https://raw.githubusercontent.com/yongsen/SignFi/33460d8d50e43dafa9ebf13651b7278533abc816/README.md']
 checked: '2026-11-06'
 overview: {en: 'SignFi is a WiFi channel state information (CSI) dataset for sign language recognition, collected by the College of William and Mary and described in the ACM IMWUT 2018 paper (doi:10.1145/3191755). The data hold CSI traces of 276 sign gestures that involve the head, arm, hand and finger, recorded in a lab and in a home. The 276-sign set has 8,280 instances in each link direction, from one user (5,520 lab, 2,760 home), with downlink and uplink traces. A separate lab set holds 7,500 instances of 150 sign gestures from five users, downlink only. The traces are segmented, with one ground-truth label per instance, and stored as MATLAB .mat files. The repository also contains sign_labels.csv, the sign videos used during collection, and a MATLAB CNN training example. The page refers to the paper for bandwidth, sampling rate and WiFi settings. Use is limited to non-commercial educational and research purposes, and redistribution needs written approval.', zh: 'SignFi 是用于手语识别的 WiFi
     信道状态信息（CSI）数据集，由威廉与玛丽学院采集，对应 ACM IMWUT 2018 论文（doi:10.1145/3191755）。数据包含在实验室和家中采集的 276 种手语动作的 CSI 轨迹，动作涉及头部、手臂、手部和手指。276 手语数据集由一名用户完成，每个链路方向各有 8,280 个实例（实验室 5,520 个，家庭 2,760 个），包含下行与上行轨迹。另有一个实验室数据集，包含五名用户完成的 150 种手语动作，共 7,500 个实例，仅含下行轨迹。轨迹已分段，每个实例对应一个真值标签，以 MATLAB .mat 文件存储。仓库还包括 sign_labels.csv、采集时使用的手语视频，以及 MATLAB CNN 训练示例。页面将带宽、采样率和 WiFi 设置等细节交由论文说明。使用仅限非商业教育和研究目的，再分发需经书面许可。'}
@@ -50,3 +51,130 @@ pipeline:
     - {en: Labeled CSI instances, zh: 带标签的 CSI 实例}
     outputs:
     - {en: MATLAB .mat dataset files, zh: MATLAB .mat 数据文件}
+subcarriers: 30
+antennas: {tx: 3, rx: 3}
+size_gb: 6.07
+facts:
+- label: {en: Labels, zh: 标签}
+  text: {en: Each instance carries one ground-truth sign label. The file sign_labels.csv lists the 276 sign words used in the measurement., zh: 每个实例带有一个真值手语标签。文件 sign_labels.csv 列出测量中使用的 276 个手语词。}
+- label: {en: Instance shape, zh: 实例尺寸}
+  text: {en: 'Each CSI instance is a 200 x 30 x 3 array. The lab downlink file stacks the 5,520 instances along the last axis, so csid_lab has size 200 x 30 x 3 x 5520.', zh: '每个 CSI 实例为 200 x 30 x 3 的数组。实验室下行文件沿最后一维堆叠 5,520 个实例，因此 csid_lab 的尺寸为 200 x 30 x 3 x 5520。'}
+- label: {en: Example split, zh: 示例数据划分}
+  text: {en: 'The MATLAB example uses 5-fold cross-validation, with 20% of the instances held out for testing in each fold.', zh: MATLAB 示例采用 5 折交叉验证，每折保留 20% 的实例用于测试。}
+- label: {en: Phase correction, zh: 相位校正}
+  text: {en: 'The repository includes csi_phase_offset.py, a Python reference for removing the phase offset from the CSI.', zh: 仓库包含 csi_phase_offset.py，这是一段用于去除 CSI 相位偏移的 Python 参考代码。}
+technical_notes:
+- {en: 'The example script needs MATLAB 2017b or newer, because it uses batchNormalizationLayer and the ValidationData training option.', zh: 示例脚本需要 MATLAB 2017b 或更新版本，因为它使用了 batchNormalizationLayer 和 ValidationData 训练选项。}
+limitations:
+- {en: 'The 276-sign set was recorded from one user, while the 150-sign set covers five users.', zh: 276 手语集由一名用户采集，150 手语集由五名用户采集。}
+- {en: The 150-sign set contains downlink traces only., zh: 150 手语集仅包含下行轨迹。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 802.11n CSI Tool traces. Each instance is a 200 x 30 x 3 array; the lab downlink array csid_lab has size 200 x 30 x 3 x 5520., zh: 由 802.11n CSI Tool 采集的 CSI 轨迹。每个实例为 200 x 30 x 3 数组；实验室下行数组 csid_lab 的尺寸为 200 x 30 x 3 x 5520。}
+- key: cir
+  status: derivable
+  note: {en: The phase-offset script computes a power delay profile (pdp) by IFFT of the phase-corrected CSI; this result is not released as data., zh: 相位偏移脚本对相位校正后的 CSI 做 IFFT，得到名为 pdp 的功率时延分布；该结果未作为数据发布。}
+- key: paths
+  status: none
+  note: {en: 'Only CSI traces are released; there is no per-path delay, angle or power.', zh: 仅发布 CSI 轨迹，没有逐径的时延、角度或功率。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data; the release is CSI traces only., zh: 没有逐径的交互信息，数据仅为 CSI 轨迹。}
+- key: power
+  status: derivable
+  note: {en: Per-subcarrier power follows from the CSI magnitude; the example code uses abs(csi)., zh: 各子载波的功率可由 CSI 幅度计算；示例代码使用 abs(csi)。}
+- key: iq
+  status: none
+  note: {en: 'The release contains complex CSI, not raw I/Q samples.', zh: 数据为复数 CSI，而非原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains; the release is WiFi CSI only., zh: 没有波束索引或逐波束增益，仅有 WiFi CSI。}
+- key: position
+  status: none
+  note: {en: No position or GPS data; the labels are sign classes., zh: 没有位置或 GPS 数据，标签为手语类别。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files; the repository holds sign videos and MATLAB and Python code., zh: 没有三维场景或地图文件；仓库包含手语视频以及 MATLAB 与 Python 代码。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: The sign videos show the gestures to participants for learning; the release has no camera data as a sensing input., zh: 手语视频用于向参与者展示手势以便学习；数据中没有作为感知输入的相机数据。}
+- key: depth
+  status: none
+  note: {en: No depth data are released., zh: 未发布深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data are released., zh: 未发布激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data are released., zh: 未发布雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are released., zh: 未发布惯性传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Each instance is a sequence of 200 CSI packets along the first (time) axis, as the phase-offset script treats that axis.', zh: 每个实例是沿第一维（时间）排列的 200 个 CSI 数据包序列，与相位偏移脚本对该维的处理一致。}
+- key: multiuser
+  status: none
+  note: {en: The five-user set holds one user's gesture per instance; no simultaneous per-user channels are described., zh: 五用户数据集中每个实例对应一名用户的一次手势；未描述同时存在的逐用户信道。}
+- key: multibs
+  status: none
+  note: {en: 'Each capture measures one WiFi link, downlink or uplink; no multiple access points are described.', zh: 每次采集测量一条 WiFi 链路（下行或上行）；未描述多个接入点。}
+- key: crossfreq
+  status: none
+  note: {en: A single 802.11n WiFi capture; no paired multi-band data is described., zh: 单一 802.11n WiFi 采集；未描述成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Only sign gestures are recorded; no fast-moving users are described., zh: 仅记录手语动作，未描述快速移动的用户。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the lab and home WiFi measurement, not labelled per path.', zh: 包含在实验室与家庭 WiFi 测量之中，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the lab and home WiFi measurement, not labelled per path.', zh: 包含在实验室与家庭 WiFi 测量之中，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the lab and home WiFi measurement, not labelled per path.', zh: 包含在实验室与家庭 WiFi 测量之中，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the lab and home WiFi measurement, not labelled per path.', zh: 包含在实验室与家庭 WiFi 测量之中，未按径标注。}
+- key: polarization
+  status: none
+  note: {en: No polarimetric measurement is described., zh: 未描述极化测量。}
+- key: em_field
+  status: none
+  note: {en: 'CSI only; no field components, field strength or antenna patterns.', zh: 仅有 CSI，没有场分量、场强或天线方向图。}
+versions:
+- version: commit 95ad6642
+  date: '2025-08-20'
+  summary: {en: 'Updates default.html, the repository''s web page file. The commit message does not describe a dataset change.', zh: 更新 default.html（仓库的网页文件）。提交信息未描述数据集变更。}
+  url: https://github.com/yongsen/SignFi/commit/95ad66426df7bda758e7f38aaf6a234d421e32e3
+- version: commit 33460d8d
+  date: '2023-01-09'
+  summary: {en: 'Updates csi_phase_offset.py, the phase-offset reference script. README edits are committed on the same day.', zh: 更新 csi_phase_offset.py（相位偏移参考脚本）。同日另有 README 的编辑提交。}
+  url: https://github.com/yongsen/SignFi/commit/33460d8d50e43dafa9ebf13651b7278533abc816
+- version: commit 4c5882d6
+  date: '2022-05-09'
+  summary: {en: README adds a link to csi_phase_offset.py as an optional step before the network is trained., zh: README 增加 csi_phase_offset.py 的链接，作为训练网络前的可选步骤。}
+  url: https://github.com/yongsen/SignFi/commit/4c5882d658279ce5ac81c9a8920502aed59da33e
+- version: commit 0fd4b595
+  date: '2019-12-07'
+  summary: {en: README adds a citation to the 2019 ACM Computing Surveys paper on WiFi sensing with channel state information., zh: README 增加 2019 年 ACM Computing Surveys 关于基于信道状态信息的 WiFi 感知综述的引用。}
+  url: https://github.com/yongsen/SignFi/commit/0fd4b595c1af440a5d7a175213533331bca14f2b
+- version: commit b1a9689f
+  date: '2018-11-01'
+  summary: {en: README states that the CSI was collected with the 802.11n CSI Tool and links to the tool., zh: README 说明 CSI 使用 802.11n CSI Tool 采集，并给出该工具的链接。}
+  url: https://github.com/yongsen/SignFi/commit/b1a9689fe9d0bf6d2959b7ade2a44bb89c64c93c
+- version: commit dddcd5b8
+  date: '2018-06-05'
+  summary: {en: 'README describes the .mat files as segmented CSI traces with ground-truth labels, and the MATLAB example runs on cpu instead of parallel. A later commit the same day (2f12770b) updates signfi_cnn_example.m.', zh: README 将 .mat 文件描述为带真值标签的分段 CSI 轨迹，并将 MATLAB 示例的执行环境由 parallel 改为 cpu。同日稍晚的提交 2f12770b 更新了 signfi_cnn_example.m。}
+  url: https://github.com/yongsen/SignFi/commit/dddcd5b85fe577dde19f09ee546d002e44da751c
+- version: commit 4e898ee2
+  date: '2018-05-21'
+  summary: {en: 'First data release. The README lists four segmented .mat sets (276-sign lab downlink and uplink, 276-sign home, 150-sign lab), sign_labels.csv, the sign videos and the MATLAB CNN example. The .mat files are hosted on Box, not in the repository.', zh: 首个数据版本。README 列出四个分段 .mat 数据集（276 手语实验室下行与上行、276 手语家庭、150 手语实验室），以及 sign_labels.csv、手语视频和 MATLAB CNN 示例。.mat 文件托管于 Box，不在仓库内。}
+  url: https://github.com/yongsen/SignFi/commit/4e898ee2450b323558e204e541b42111984aba29

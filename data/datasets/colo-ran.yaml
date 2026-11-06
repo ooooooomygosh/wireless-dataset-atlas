@@ -5,7 +5,7 @@ year: 2021
 origin: simulation
 tasks: [network-traffic]
 signals: [kpi]
-bands_ghz: []
+bands_ghz: [0.98, 1.02]
 bandwidth_mhz: 10
 license: GPL-3.0
 access: {url: 'https://github.com/wineslab/colosseum-oran-coloran-dataset', type: open}
@@ -14,15 +14,17 @@ paper: doi:10.1109/tmc.2022.3188013
 used_in: []
 citing: ['doi:10.1109/tmc.2023.3266642', 'doi:10.1109/infocom48880.2022.9796744', 'doi:10.1109/comst.2024.3352910']
 summary: {en: 'The dataset contains per-base-station and per-UE radio and throughput measurements (for example DL/UL bit rate, MCS, SNR, RSRP and buffer status) from a Colosseum network with 7 base stations, 42 UEs and three scheduling policies. Traces are organized by scheduling policy, RBG allocation configuration and experiment.', zh: 该数据集包含基站级和UE级的无线电与吞吐量测量（例如DL/UL bit rate、MCS、SNR、RSRP和缓冲区状态），采集自包含7个基站、42个UE和三种调度策略的Colosseum网络。数据按调度策略、RBG分配配置和实验进行组织。}
-sources: ['https://github.com/wineslab/colosseum-oran-coloran-dataset', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/README.md', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/CITATION.cff', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/LICENSE', 'https://arxiv.org/abs/2112.09559']
+sources: ['https://github.com/wineslab/colosseum-oran-coloran-dataset', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/README.md', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/CITATION.cff', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/LICENSE', 'https://arxiv.org/abs/2112.09559', 'https://api.github.com/repos/wineslab/colosseum-oran-coloran-dataset/git/trees/master?recursive=1', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/rome_static_medium/sched0/tr0/exp1/bs1/bs1.csv', 'https://raw.githubusercontent.com/wineslab/colosseum-oran-coloran-dataset/master/rome_static_medium/sched0/tr0/exp1/bs1/ue1.csv', 'https://arxiv.org/pdf/2112.09559', 'https://api.crossref.org/works/10.1109/tmc.2022.3188013', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commits/master', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/releases', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/tags',
+  'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/bd86629d07d5fbfb778ebe3afd9d0b05e5191c6b', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/3ae354d152e0129ee566d1bbfed16eec01acf7bf', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/816c99846a628f25f4a0cc71a5aa89206597314e', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/3cd324d1836194b65bae6693bcf01187c547fa6e', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/72a1a57e255903775d17b7d46d335d27a6d67dbe', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/0f929abeceaeae74b7ff6cb8e2751535c31c8982', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/46dab685f729852be7445e5c7932a5dfb22a9b10', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/d4a901e48cf038fe6644ccd388f7bea4143d1dd3', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/27020987afd673ea0cefd991c234f2aafc4ed8bb', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/ed5dd22105d5b244c40d7e69236a45b78f575f78',
+  'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/61322f6f9740434d97999d27487a42512efbd259', 'https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/d7ac150c3c02fb30332116d687232c7c784a8776']
 checked: '2026-11-06'
-overview: {en: 'ColO-RAN is a set of per-base-station and per-UE KPI logs from a Colosseum experiment with 7 base stations, 42 UEs and a 10 MHz channel (50 PRBs). It accompanies the 2022 IEEE Transactions on Mobile Computing paper by Polese, Bonati, D''Oro, Basagni and Melodia, and CITATION.cff gives a release date of 2021-12-10. The base stations run the SCOPE framework, which extends srsRAN and reports key performance measurements (KPMs) periodically over the E2 interface. Each base station has three slices, and 14 UEs are assigned to each of the eMBB, MTC and URLLC traffic classes. The UEs are static and uniformly distributed within 50 m of their base station in the Colosseum Rome medium scenario. The traces are grouped by scheduling policy (round robin, waterfilling and proportional fair), by RBG allocation configuration (tr0 to tr27) and by experiment. The released files are CSV time series of the number of connected UEs and the DL/UL bit rates per base station, and of UE radio, MCS,
-    SNR, buffer and throughput values. The README documents one scenario, rome_static_medium.', zh: ColO-RAN 是一组来自 Colosseum 实验的基站级和 UE 级 KPI 日志，实验包含 7 个基站、42 个 UE 和 10 MHz 信道（50 个 PRB）。该数据集对应 Polese、Bonati、D'Oro、Basagni 与 Melodia 于 2022 年发表于 IEEE Transactions on Mobile Computing 的论文，CITATION.cff 给出的发布日期为 2021-12-10。基站运行 SCOPE 框架，该框架扩展了 srsRAN，并通过 E2 接口周期性上报关键性能测量（KPM）。每个基站配置三个切片，eMBB、MTC 和 URLLC 三类流量各分配 14 个 UE。UE 静止，并在 Colosseum Rome medium 场景中均匀分布于各自基站 50 m 范围内。数据按调度策略（round robin、waterfilling 和 proportional fair）、RBG 分配配置（tr0 至 tr27）以及实验进行组织。发布文件为 CSV 时间序列，包含每个基站的连接 UE 数与上下行比特率，以及 UE 的无线电、MCS、SNR、缓冲区和吞吐量数值。README 仅记录了一个场景 rome_static_medium。}
+overview: {en: 'ColO-RAN is a set of per-base-station and per-UE KPI logs from a Colosseum experiment with 7 base stations, 42 UEs and a 10 MHz channel (50 PRBs). It accompanies the 2022 IEEE Transactions on Mobile Computing paper by Polese, Bonati, D''Oro, Basagni and Melodia, and CITATION.cff gives a release date of 2021-12-10. The base stations run the SCOPE framework, which extends srsRAN and reports key performance measurements (KPMs) periodically over the E2 interface. Each base station has three slices, one per traffic class (eMBB, MTC and URLLC), and each class has 14 UEs across the network, two per base station and slice. The UEs are static and uniformly distributed within 50 m of their base station in the Colosseum Rome medium scenario. The traces are grouped by scheduling policy (round robin, waterfilling and proportional fair), by RBG allocation configuration (tr0 to tr27) and by experiment. The released files are CSV time series of the number of connected UEs and the DL/UL bit
+    rates per base station, and of UE radio, MCS, SNR, buffer and throughput values. The README documents one scenario, rome_static_medium.', zh: ColO-RAN 是一组来自 Colosseum 实验的基站级和 UE 级 KPI 日志，实验包含 7 个基站、42 个 UE 和 10 MHz 信道（50 个 PRB）。该数据集对应 Polese、Bonati、D'Oro、Basagni 与 Melodia 于 2022 年发表于 IEEE Transactions on Mobile Computing 的论文，CITATION.cff 给出的发布日期为 2021-12-10。基站运行 SCOPE 框架，该框架扩展了 srsRAN，并通过 E2 接口周期性上报关键性能测量（KPM）。每个基站配置三个切片，每个切片对应一类流量（eMBB、MTC 和 URLLC），每类流量在全网共有 14 个 UE，即每个基站每个切片 2 个。UE 静止，并在 Colosseum Rome medium 场景中均匀分布于各自基站 50 m 范围内。数据按调度策略（round robin、waterfilling 和 proportional fair）、RBG 分配配置（tr0 至 tr27）以及实验进行组织。发布文件为 CSV 时间序列，包含每个基站的连接 UE 数与上下行比特率，以及 UE 的无线电、MCS、SNR、缓冲区和吞吐量数值。README 仅记录了一个场景 rome_static_medium。}
 signal_details:
 - signal: kpi
   text: {en: 'Per-base-station files bsN.csv with columns time, nof_ue, dl_brate and ul_brate. Per-UE files ueN.csv with 21 columns: time, cc, pci, earfcn, rsrp, pl, cfo, dl_mcs, dl_snr, dl_turbo, dl_brate, dl_bler, ul_ta, ul_mcs, ul_buff, ul_brate, ul_bler, rf_o, rf_u, rf_l and is_attached. Each base station folder also contains a slices_bsN folder.', zh: 基站级文件为 bsN.csv，列为 time、nof_ue、dl_brate 和 ul_brate。UE 级文件为 ueN.csv，共 21 列：time、cc、pci、earfcn、rsrp、pl、cfo、dl_mcs、dl_snr、dl_turbo、dl_brate、dl_bler、ul_ta、ul_mcs、ul_buff、ul_brate、ul_bler、rf_o、rf_u、rf_l 和 is_attached。每个基站文件夹还包含一个 slices_bsN 文件夹。}
 pipeline:
-  summary: {en: 'The Colosseum Rome medium scenario hosts srsRAN-based base stations under the SCOPE framework. Traffic classes, slicing and scheduler settings are set per trace directory, and KPMs are logged to CSV.', zh: Colosseum Rome medium 场景中运行基于 srsRAN 的基站，并由 SCOPE 框架管理。流量类别、切片和调度器设置按跟踪目录配置，KPM 记录为 CSV 文件。}
+  summary: {en: 'The Colosseum Rome medium scenario hosts srsRAN-based base stations under the SCOPE framework. RBG allocation and scheduling policy are set per trace directory, and KPMs are logged to CSV.', zh: Colosseum Rome medium 场景中运行基于 srsRAN 的基站，并由 SCOPE 框架管理。RBG 分配与调度策略按跟踪目录设置，KPM 记录为 CSV 文件。}
   stages:
   - title: {en: RF and topology scenario, zh: 射频与拓扑场景}
     detail: {en: 'The Colosseum Rome scenario, medium setting, places 7 base stations (nodes 1, 8, 15, 22, 29, 36 and 43) and 42 static UEs, uniformly distributed within 50 m of their base station. The channel bandwidth is 10 MHz (50 PRBs).', zh: Colosseum Rome 场景（medium 设置）放置 7 个基站（节点 1、8、15、22、29、36 和 43）以及 42 个静止 UE，UE 在各自基站 50 m 范围内均匀分布。信道带宽为 10 MHz（50 个 PRB）。}
@@ -55,3 +57,130 @@ pipeline:
     - {en: Base-station and UE KPM reports, zh: 基站与 UE 的 KPM 上报}
     outputs:
     - {en: bsN.csv and ueN.csv files, zh: bsN.csv 与 ueN.csv 文件}
+facts:
+- label: {en: Carriers, zh: 载频}
+  text: {en: The paper's RF setup uses a DL carrier of 0.98 GHz and a UL carrier of 1.02 GHz on a 10 MHz channel., zh: 论文的射频设置使用 0.98 GHz 的 DL 载频和 1.02 GHz 的 UL 载频，信道带宽为 10 MHz。}
+- label: {en: UE classes, zh: UE 类别}
+  text: {en: 'Slice 0 carries the eMBB UEs, slice 1 the MTC UEs and slice 2 the URLLC UEs; the README lists the UE indices of each class.', zh: 切片 0 承载 eMBB UE，切片 1 承载 MTC UE，切片 2 承载 URLLC UE；README 列出了每类 UE 的编号。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'The released ueN.csv and bsN.csv files hold KPM columns only, with no channel matrices.', zh: 发布的 ueN.csv 与 bsN.csv 仅包含 KPM 列，不含信道矩阵。}
+- key: cir
+  status: none
+  note: {en: The CSV columns contain no impulse response or power delay profile., zh: CSV 列中不含冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle, power or phase columns are released.', zh: 未发布逐径时延、角度、功率或相位列。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are released., zh: 未发布逐径交互数据。}
+- key: power
+  status: provided
+  note: {en: Each ueN.csv has rsrp and pl (path loss) columns; the README gives no units., zh: 每个 ueN.csv 含 rsrp 与 pl（路径损耗）列；README 未给出单位。}
+- key: iq
+  status: none
+  note: {en: The release holds KPI logs and no I/Q samples., zh: 发布内容为 KPI 日志，不含 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are released., zh: 未发布波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: The CSV files have no UE or BS coordinates; the README states that UEs lie within 50 m of their BS., zh: CSV 文件不含 UE 或基站坐标；README 说明 UE 位于各自基站 50 m 范围内。}
+- key: geometry
+  status: none
+  note: {en: 'The release contains CSV KPI files and documentation, with no scene or map files.', zh: 发布内容为 CSV 形式的 KPI 文件和文档，不含场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: The release contains KPI CSV files only., zh: 发布内容仅为 KPI CSV 文件。}
+- key: depth
+  status: none
+  note: {en: The release contains KPI CSV files only., zh: 发布内容仅为 KPI CSV 文件。}
+- key: lidar
+  status: none
+  note: {en: The release contains KPI CSV files only., zh: 发布内容仅为 KPI CSV 文件。}
+- key: radar
+  status: none
+  note: {en: The release contains KPI CSV files only., zh: 发布内容仅为 KPI CSV 文件。}
+- key: imu
+  status: none
+  note: {en: The release contains KPI CSV files only., zh: 发布内容仅为 KPI CSV 文件。}
+- key: time_series
+  status: provided
+  note: {en: Every bsN.csv and ueN.csv has a time column; the README does not state the sampling interval., zh: 每个 bsN.csv 与 ueN.csv 均含 time 列；README 未说明采样间隔。}
+- key: multiuser
+  status: provided
+  note: {en: KPI logs of 42 UEs are recorded in the same experiment; these UEs have no channel data., zh: 同一实验中记录了 42 个 UE 的 KPI 日志；这些 UE 不含信道数据。}
+- key: multibs
+  status: provided
+  note: {en: 'Seven base stations are logged in the same experiment, one bsN.csv each.', zh: 同一实验中记录了 7 个基站的日志，每个基站一个 bsN.csv。}
+- key: crossfreq
+  status: none
+  note: {en: 'The data cover one band pair, DL 0.98 GHz and UL 1.02 GHz, per the paper''s RF setup.', zh: 按论文的射频设置，数据仅覆盖一组频段，即 DL 0.98 GHz 与 UL 1.02 GHz。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: UE mobility is static., zh: UE 为静止状态。}
+- {key: dynamic_blockage, status: unknown}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: none
+  note: {en: No polarimetric fields are released., zh: 未发布极化相关字段。}
+- key: em_field
+  status: none
+  note: {en: No field-level or antenna-pattern outputs are released., zh: 未发布场级或天线方向图输出。}
+versions:
+- version: bd86629
+  date: '2024-09-20'
+  summary: {en: 'Added CITATION.cff, which lists the IEEE Transactions on Mobile Computing article (2022, vol. 22, issue 10) as the preferred citation and 2021-12-10 as the release date.', zh: 新增 CITATION.cff，将 IEEE Transactions on Mobile Computing 论文（2022 年，第 22 卷，第 10 期）列为推荐引用，并将发布日期记为 2021-12-10。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/bd86629d07d5fbfb778ebe3afd9d0b05e5191c6b
+- version: 3ae354d
+  date: '2024-06-19'
+  summary: {en: Updated README.md. The README text at this commit is identical to the text at 816c998., zh: 更新 README.md。该提交的 README 文本与 816c998 的文本相同。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/3ae354d152e0129ee566d1bbfed16eec01acf7bf
+- version: 816c998
+  date: '2023-09-05'
+  summary: {en: Updated README.md. The training-configuration sentence changes 'slicing policy' to 'scheduling policy'., zh: 更新 README.md。训练配置段落中的 'slicing policy' 改为 'scheduling policy'。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/816c99846a628f25f4a0cc71a5aa89206597314e
+- version: 3cd324d
+  date: '2023-08-16'
+  summary: {en: 'Updated README.md. Added the base-station node list (1, 8, 15, 22, 29, 36, 43) to the experiment setup and changed the eMBB, MTC and URLLC UE index lists.', zh: 更新 README.md。实验设置中新增基站节点列表（1、8、15、22、29、36、43），并修改了 eMBB、MTC 和 URLLC 的 UE 编号列表。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/3cd324d1836194b65bae6693bcf01187c547fa6e
+- version: 72a1a57
+  date: '2022-08-15'
+  summary: {en: 'Updated README.md. The paper citation title changes to ''ColO-RAN: Developing Machine Learning-based xApps for Open RAN Closed-loop Control on Programmable Experimental Platforms''.', zh: '更新 README.md。论文引用标题改为 ''ColO-RAN: Developing Machine Learning-based xApps for Open RAN Closed-loop Control on Programmable Experimental Platforms''。'}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/72a1a57e255903775d17b7d46d335d27a6d67dbe
+- version: 0f929ab
+  date: '2021-12-22'
+  summary: {en: 'Updated README.md. The paper citation changes from the arXiv preprint to IEEE Transactions on Mobile Computing, July 2022, under the title ''ColoRAN: Design and Testing of Open RAN Intelligence on Large-scale Experimental Platforms''.', zh: '更新 README.md。论文引用由 arXiv 预印本改为 IEEE Transactions on Mobile Computing（2022 年 7 月），标题为 ''ColoRAN: Design and Testing of Open RAN Intelligence on Large-scale Experimental Platforms''。'}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/0f929abeceaeae74b7ff6cb8e2751535c31c8982
+- version: 46dab68
+  date: '2021-12-11'
+  summary: {en: 'Updated README.md. The citation placeholder ''arXiv XXX'' is replaced by ''arXiv 2112.09559 [cs.NI], December 2021''.', zh: '更新 README.md。引用中的占位符 ''arXiv XXX'' 替换为 ''arXiv 2112.09559 [cs.NI]，2021 年 12 月''。'}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/46dab685f729852be7445e5c7932a5dfb22a9b10
+- version: d4a901e
+  date: '2021-12-11'
+  summary: {en: Updated README.md. The title changes from 'Colosseum ColoRAN O-RAN Dataset' to 'Colosseum O-RAN ColORAN Dataset'., zh: 更新 README.md。标题由 'Colosseum ColoRAN O-RAN Dataset' 改为 'Colosseum O-RAN ColORAN Dataset'。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/d4a901e48cf038fe6644ccd388f7bea4143d1dd3
+- version: '2702098'
+  date: '2021-12-11'
+  summary: {en: Updated README.md. The eMBB traffic rate changes from 1 Mbps to 4 Mbps per UE., zh: 更新 README.md。eMBB 流量由每 UE 1 Mbps 改为每 UE 4 Mbps。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/27020987afd673ea0cefd991c234f2aafc4ed8bb
+- version: ed5dd22
+  date: '2021-12-11'
+  summary: {en: Added files via upload. README.md gains a funding acknowledgement for NSF grants CNS-1923789 and CNS-1925601 and ONR grant N00014-20-1-2132., zh: 通过上传添加文件。README.md 新增基金致谢，列出 NSF 资助 CNS-1923789 和 CNS-1925601，以及 ONR 资助 N00014-20-1-2132。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/ed5dd22105d5b244c40d7e69236a45b78f575f78
+- version: 61322f6
+  date: '2021-12-10'
+  summary: {en: Initial commit. The README's training section lists the RBG count per slice for each scheduling-policy directory., zh: 初始提交。README 的训练配置部分按调度策略目录列出各切片的 RBG 数量。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/61322f6f9740434d97999d27487a42512efbd259
+- version: d7ac150
+  date: '2021-12-10'
+  summary: {en: Added .gitignore. The README at this commit has a per-slice table of scheduling policy and RBG allocation., zh: 添加 .gitignore。该提交的 README 含按切片列出调度策略与 RBG 分配的表格。}
+  url: https://github.com/wineslab/colosseum-oran-coloran-dataset/commit/d7ac150c3c02fb30332116d687232c7c784a8776

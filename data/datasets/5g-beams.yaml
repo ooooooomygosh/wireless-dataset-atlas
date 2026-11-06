@@ -12,7 +12,7 @@ paper: doi:10.1109/INFOCOM48880.2022.9796693
 used_in: []
 citing: ['doi:10.1109/ojcoms.2024.3373368', 'doi:10.1109/jsac.2023.3334610', 'doi:10.1145/3544216.3544217']
 summary: {en: 'Measurements from two US commercial 5G mmWave deployments, a baseball park and a downtown urban canyon, stored as CSV files with per-beam signal strength, beam switch times and throughput. The frequency band is not stated.', zh: 来自美国两个商用 5G mmWave 部署的测量数据，场景分别为棒球场和市区峡谷，以 CSV 文件存储，包含每波束信号强度、波束切换时间和吞吐量。文中未说明频段。}
-sources: ['https://ieee-dataport.org/documents/5g-beams', 'https://api.crossref.org/works?query.title=A+Comparative+Measurement+Study+of+Commercial+5G+mmWave+Deployments&rows=3&select=DOI,title,issued']
+sources: ['https://ieee-dataport.org/documents/5g-beams', 'https://api.crossref.org/works?query.title=A+Comparative+Measurement+Study+of+Commercial+5G+mmWave+Deployments&rows=3&select=DOI,title,issued', 'https://api.crossref.org/works/10.1109/INFOCOM48880.2022.9796693']
 checked: '2026-11-06'
 overview: {en: '5G Beams contains smartphone-based measurements of two commercial 5G mmWave deployments in the United States. The data were collected by researchers at the University of Minnesota, the University of Chicago, Institut Teknologi Bandung and Celona, Inc., and accompany the INFOCOM 2022 paper ''A Comparative Measurement Study of Commercial 5G mmWave Deployments''. The two environments are an open field at a baseball park and a downtown urban canyon. The measurements cover the PHY, MAC and higher layers and record signal strength, beam switch times and throughput per beam. The deployments aggregate up to eight frequency channels on up to eight beams. The files are CSV, released as 5GBeams-v0.91.zip and 5GBeams-v0.92.zip on IEEE DataPort, which requires a login and a subscription. The target topics are beam management, deployment configuration, path loss and mmWave throughput.', zh: '5G Beams 包含对美国两个商用 5G mmWave 部署的基于智能手机的测量数据。数据由 University of Minnesota、University of Chicago、Institut
     Teknologi Bandung 和 Celona, Inc. 的研究人员采集，并与 INFOCOM 2022 论文《A Comparative Measurement Study of Commercial 5G mmWave Deployments》配套发布。两个场景分别为棒球场的开阔场地和市区峡谷。测量涵盖 PHY、MAC 及更高层，记录每个波束的信号强度、波束切换时间和吞吐量。部署中最多可聚合 8 个频率信道，使用最多 8 个波束。文件为 CSV 格式，以 5GBeams-v0.91.zip 和 5GBeams-v0.92.zip 的形式发布在 IEEE DataPort 上，下载需要登录并具备订阅。目标研究主题为波束管理、部署配置、路径损耗和 mmWave 吞吐量。'}
@@ -21,3 +21,81 @@ signal_details:
   text: {en: Per-beam signal strength from smartphone-based measurements., zh: 基于智能手机测量得到的每波束信号强度。}
 - signal: kpi
   text: {en: 'Per-beam beam switch times and throughput from smartphone-based measurements, stored in CSV files.', zh: 基于智能手机测量得到的每波束波束切换时间和吞吐量，以 CSV 文件存储。}
+standard: 5G NR
+format: CSV
+size_gb: 0.07
+pipeline:
+  summary: {en: 'Smartphone-based tools log beam-level metrics from two commercial US 5G mmWave deployments, and the measurements are released as CSV files on IEEE DataPort.', zh: 基于智能手机的工具记录两个美国商用 5G mmWave 部署的波束级指标，测量结果以 CSV 文件形式发布在 IEEE DataPort 上。}
+  stages:
+  - title: {en: Deployment selection, zh: 部署场景选择}
+    detail: {en: 'Two major US commercial 5G operators are measured in two environments: an open field at a baseball park (BP) and a downtown urban canyon (DT).', zh: 测量两家美国主要商用 5G 运营商的部署，场景为棒球场开阔场地（BP）和市区峡谷（DT）。}
+    inputs:
+    - {en: Two commercial 5G mmWave deployments, zh: 两个商用 5G mmWave 部署}
+  - title: {en: Smartphone measurement, zh: 智能手机测量}
+    detail: {en: 'Smartphone-based tools collect measurements across the PHY, MAC and higher layers in both deployments.', zh: 在两处部署中，基于智能手机的工具采集 PHY、MAC 及更高层的测量数据。}
+    inputs:
+    - {en: Commercial 5G mmWave signal, zh: 商用 5G mmWave 信号}
+  - title: {en: Per-beam metrics, zh: 每波束指标}
+    detail: {en: 'Signal strength, beam switch times and throughput are recorded for each beam. The deployments aggregate up to eight frequency channels on up to eight beams.', zh: 记录每个波束的信号强度、波束切换时间和吞吐量。部署中最多聚合 8 个频率信道，使用最多 8 个波束。}
+    outputs:
+    - {en: 'Per-beam signal strength, switch times and throughput', zh: 每波束信号强度、切换时间和吞吐量}
+  - title: {en: CSV release, zh: CSV 发布}
+    detail: {en: 'The measurements are stored as CSV files and packaged as 5GBeams-v0.91.zip (62.71 MB) and 5GBeams-v0.92.zip (70.12 MB) on IEEE DataPort, which requires a login and a subscription.', zh: 测量数据以 CSV 文件存储，并打包为 IEEE DataPort 上的 5GBeams-v0.91.zip（62.71 MB）和 5GBeams-v0.92.zip（70.12 MB），下载需要登录并具备订阅。}
+    outputs:
+    - {en: 5GBeams zip archives, zh: 5GBeams zip 压缩包}
+limitations:
+- {en: 'The data page marks v0.91 as not the final release, and v0.92 is also listed.', zh: 数据页面标明 v0.91 不是最终版本，同时列出了 v0.92。}
+history:
+- {en: The IEEE DataPort record was created on 9 July 2022 and last updated on 13 May 2025., zh: IEEE DataPort 记录创建于 2022 年 7 月 9 日，最后更新于 2025 年 5 月 13 日。}
+usage:
+- {en: The authors invite contact for low-layer information that the release does not include., zh: 作者欢迎就发布版本中未包含的底层信息进行联系。}
+capabilities:
+- {key: csi, status: unknown}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: provided
+  note: {en: Per-beam signal strength from smartphone-based measurements; the quantity and unit are not stated in the sources., zh: 基于智能手机测量的每波束信号强度；来源未说明量纲与单位。}
+- {key: iq, status: unknown}
+- key: beam_labels
+  status: provided
+  note: {en: 'Per-beam records of signal strength, beam switch time and throughput across up to eight beams.', zh: 按波束记录的信号强度、波束切换时间和吞吐量，最多涉及 8 个波束。}
+- {key: position, status: unknown}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- {key: rgb, status: unknown}
+- {key: depth, status: unknown}
+- {key: lidar, status: unknown}
+- {key: radar, status: unknown}
+- {key: imu, status: unknown}
+- key: time_series
+  status: provided
+  note: {en: Beam switch times and per-beam throughput recorded during measurement runs; the sources do not state a sampling interval., zh: 测量过程中记录的波束切换时间和每波束吞吐量；来源未说明采样间隔。}
+- {key: multiuser, status: unknown}
+- {key: multibs, status: unknown}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 空口测量中固有存在，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 空口测量中固有存在，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 空口测量中固有存在，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 空口测量中固有存在，未按径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: v0.92
+  summary: {en: 'Second file set listed on the IEEE DataPort record (5GBeams-v0.92.zip, 70.12 MB); the sources do not state its date or what changed from v0.91.', zh: IEEE DataPort 记录中列出的第二个文件集（5GBeams-v0.92.zip，70.12 MB）；来源未说明其发布日期或相对 v0.91 的变化。}
+  url: https://ieee-dataport.org/documents/5g-beams
+- version: v0.91
+  summary: {en: 'Earliest file set listed on the record (5GBeams-v0.91.zip, 62.71 MB); the record states that v0.91 is not the final release.', zh: 记录中列出的最早文件集（5GBeams-v0.91.zip，62.71 MB）；记录注明 v0.91 不是最终版本。}
+  url: https://ieee-dataport.org/documents/5g-beams

@@ -16,15 +16,15 @@ paper: doi:10.1109/access.2021.3121606
 used_in: []
 citing: ['doi:10.1109/tmc.2023.3340039', 'doi:10.1109/tmc.2023.3240971', 'doi:10.1109/tccn.2023.3329012']
 summary: {en: 'Time-domain I/Q samples and FFT representations of LoRa transmissions from 25 IoT devices, received by USRP B210 receivers at 915 MHz and sampled at 1 MS/s. The setups cover indoor and outdoor scenarios with different days, distances, LoRa configurations, locations and receivers.', zh: 25 台 IoT 设备 LoRa 传输的时域 I/Q 采样与 FFT 表示，由 USRP B210 接收机在 915 MHz 下以 1 MS/s 采样。数据覆盖室内与室外场景，并包含不同日期、距离、LoRa 配置、地点和接收机等设置。}
-sources: ['https://research.engr.oregonstate.edu/hamdaoui/datasets/', 'https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_lora_datasets_final_oct2023_v2.pdf', 'https://arxiv.org/abs/2201.02213', 'https://api.crossref.org/works/10.1109/access.2021.3121606']
+sources: ['https://research.engr.oregonstate.edu/hamdaoui/datasets/', 'https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_lora_datasets_final_oct2023_v2.pdf', 'https://arxiv.org/abs/2201.02213', 'https://api.crossref.org/works/10.1109/access.2021.3121606', 'https://arxiv.org/html/2201.02213', 'https://arxiv.org/pdf/2201.02213']
 checked: '2026-11-06'
 overview: {en: 'The LoRa RF fingerprinting datasets from Oregon State University contain time-domain I/Q samples and FFT representations of LoRa transmissions from 25 Pycom IoT devices. Abdurrahman Elmaghbub and Bechir Hamdaoui describe the release in arXiv:2201.02213 (submitted January 2022), and the datasets are hosted on the NetSTAR Lab site. An Ettus USRP B210 recorded the transmissions at a center frequency of 915 MHz and a sampling rate of 1 MS/s, and the testbed transmitters used a 125 kHz LoRa bandwidth, spreading factor 7, preamble 8, coding rate 4/5 and 20 dBm transmit power. The seven experimental setups cover five consecutive days indoors, outdoors and on a wired connection, four transmitter-receiver distances (5, 10, 15 and 20 m), four LoRa configurations, three locations (room, outdoor and office) and two USRP B210 receivers. In the day-based setups, each device sends 10 transmissions of 20 s per day, spaced 1 minute apart, and each recording holds about 20 million complex
     samples on average. Each binary file is SigMF-compliant and has a JSON metadata file, and the FFT representation is stored in parallel binary files.', zh: 'Oregon State University 发布的 LoRa RF 指纹数据集包含 25 台 Pycom IoT 设备 LoRa 传输的时域 I/Q 采样与 FFT 表示。Abdurrahman Elmaghbub 与 Bechir Hamdaoui 在 arXiv:2201.02213（提交于 2022 年 1 月）中描述了本次发布，数据托管于 NetSTAR Lab 网站。Ettus USRP B210 以 915 MHz 中心频率与 1 MS/s 采样率记录传输；测试平台发射端的配置为 125 kHz LoRa 带宽、扩频因子 7、前导码 8、编码率 4/5 与 20 dBm 发射功率。七组实验设置包括：连续五天的室内、室外与有线连接场景，四种收发距离（5、10、15 与 20 m），四种 LoRa 配置，三个地点（房间、室外与办公室），以及两台 USRP B210 接收机。按天划分的场景中，每台设备每天发送 10 次、每次 20 s 的传输，间隔 1 分钟，每段录制平均包含约 2000 万个复数采样。每个二进制文件符合 SigMF 规范，并配有 JSON 元数据文件；FFT 表示以并行的二进制文件存储。'}
 signal_details:
 - signal: iq
-  text: {en: 'Time-domain complex samples recorded by the USRP B210 at a 915 MHz center frequency and 1 MS/s, stored as float32 with I and Q interleaved (I values at odd indices and Q values at even indices, as the paper states). The stored bandwidth is 1 MHz, which covers the 125 kHz LoRa channel and adjacent out-of-band spectrum. Each transmission lasts 20 s and each recording holds about 20 million complex samples on average. Each binary file has a SigMF-style JSON metadata file that records the sampling rate, the time and day of recording, and the carrier frequency.', zh: 由 USRP B210 以 915 MHz 中心频率与 1 MS/s 采样率记录的时域复数采样，以 float32 存储，I 与 Q 交错排列（论文所述：I 值位于奇数索引，Q 值位于偶数索引）。存储带宽为 1 MHz，覆盖 125 kHz 的 LoRa 信道及相邻带外频谱。每次传输时长 20 s，每段录制平均约含 2000 万个复数采样。每个二进制文件配有 SigMF 风格的 JSON 元数据文件，记录采样率、录制时间与日期以及载频。}
+  text: {en: 'Time-domain complex samples recorded by a USRP B210 at a 915 MHz center frequency and 1 MS/s, stored as float32 with I and Q interleaved (I values at odd indices, Q values at even indices). The observed bandwidth is 1 MHz, wider than the 125 kHz LoRa channel. Each transmission lasts 20 s, and each recording holds about 20 million complex samples on average. Each binary file has a SigMF-style JSON metadata file that records the sampling rate, the time and day of recording, and the carrier frequency.', zh: 由USRP B210以915 MHz中心频率与1 MS/s采样率记录的时域复数采样，以float32存储，I与Q交错排列（I值位于奇数索引，Q值位于偶数索引）。观测带宽为1 MHz，宽于125 kHz的LoRa信道。每次传输时长20 s，每段录制平均包含约2000万个复数采样。每个二进制文件配有SigMF风格的JSON元数据文件，记录采样率、录制时间与日期以及载频。}
 - signal: spectrum
-  text: {en: 'FFT-based representation generated in the GNU Radio flowgraph with an FFT size of 1.024k, forward transform, shift enabled and a Blackman-family window. The FFT data are stored as separate binary files (fft_n.dat) with a SigMF-style metadata file each.', zh: 在 GNU Radio 流图中生成的 FFT 表示，FFT 点数为 1.024k，采用正向变换，启用 shift，窗函数为 Blackman 系列。FFT 数据以独立的二进制文件（fft_n.dat）存储，每个文件配有一个 SigMF 风格的元数据文件。}
+  text: {en: 'FFT-based representation generated in the GNU Radio flowgraph with an FFT size of 1.024k, forward transform, shift enabled and a Blackman-family window. The FFT data are stored as separate binary files (fft_n.dat) with a SigMF-style metadata file each.', zh: 在GNU Radio流图中生成的FFT表示，FFT点数为1.024k，采用正向变换，启用shift，窗函数为Blackman系列。FFT数据以独立的二进制文件（fft_n.dat）存储，每个文件配有一个SigMF风格的元数据文件。}
 pipeline:
   summary: {en: LoRa transmissions from 25 Pycom devices are received by a USRP B210 through a GNU Radio flowgraph and saved as SigMF-style I/Q and FFT files., zh: 25 台 Pycom 设备的 LoRa 传输由 USRP B210 经 GNU Radio 流图接收，并保存为符合 SigMF 风格的 I/Q 与 FFT 文件。}
   stages:
@@ -53,3 +53,107 @@ pipeline:
     - {en: IQ_file.dat and fft_file.dat, zh: IQ_file.dat 与 fft_file.dat}
     outputs:
     - {en: SigMF-style I/Q and FFT datasets, zh: SigMF 风格的 I/Q 与 FFT 数据集}
+bandwidth_mhz: 1
+antennas: {tx: 1, rx: 1, array: single}
+standard: LoRa (Raw-LoRa mode)
+facts:
+- label: {en: Setup design, zh: 实验设置}
+  text: {en: 'Setups 1 to 3 (indoor, outdoor and wired) cover 5 days, with 10 transmissions per device per day spaced 1 minute apart. Setups 4 to 7 record one transmission per device for each condition.', zh: 场景1至3（室内、室外与有线）覆盖5天，每台设备每天发送10次传输，间隔1分钟。场景4至7每台设备在每种条件下记录一次传输。}
+- label: {en: Device label, zh: 设备标签}
+  text: {en: 'Each of the 25 devices has its own subdirectory, so the directory path identifies the transmitter.', zh: 25台设备各有独立的子目录，目录路径即可标识发射设备。}
+limitations:
+- {en: The October 2023 release note marks the wired-scenario (Setup 3) download as 'Will become available soon'., zh: 2023年10月的发布说明将有线场景（场景3）的下载标注为“即将提供”。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'The release holds received I/Q waveforms and FFT spectra, not channel estimates.', zh: 发布内容为接收信号的 I/Q 波形与 FFT 频谱，不含信道估计。}
+- key: cir
+  status: none
+  note: {en: No channel impulse response or power delay profile is stored., zh: 未存储信道冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: 'The release has no per-path delay, angle or power data.', zh: 发布数据不含逐径时延、角度或功率。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records., zh: 无逐径交互记录。}
+- key: power
+  status: derivable
+  note: {en: Computable from the I/Q samples as the mean of |I+jQ|² per file; the Setup 1 flowgraph uses 0 dB USRP gain and no calibration is stated., zh: 可由 I/Q 采样计算每个文件的 |I+jQ|² 均值得到；Setup 1 流图中 USRP 增益为 0 dB，且未给出校准信息。}
+- key: iq
+  status: provided
+  note: {en: 'Float32 interleaved complex I/Q at 1 MS/s, with 1 MHz observed bandwidth around 915 MHz.', zh: 以 float32 交错存储的复数 I/Q，采样率 1 MS/s，观测带宽 1 MHz，中心频率 915 MHz。}
+- key: beam_labels
+  status: none
+  note: {en: 'Each receiver uses one antenna, with no beam or antenna-pattern labels.', zh: 每台接收机使用单天线，无波束或天线方向图标签。}
+- key: position
+  status: unknown
+  note: {en: 'Locations appear only as setup labels (Location1 to Location3, distances of 5 to 20 m); no coordinates are described.', zh: 位置仅以设置标签出现（Location1 至 Location3，距离 5 至 20 m），文档中未描述坐标。}
+- key: geometry
+  status: none
+  note: {en: 'The release contains only IQ, FFT and SigMF metadata files.', zh: 发布内容仅包括 IQ、FFT 与 SigMF 元数据文件。}
+- key: materials
+  status: none
+  note: {en: 'The release contains only IQ, FFT and SigMF metadata files.', zh: 发布内容仅包括 IQ、FFT 与 SigMF 元数据文件。}
+- key: rgb
+  status: none
+  note: {en: 'The release contains only IQ, FFT and SigMF metadata files.', zh: 发布内容仅包括 IQ、FFT 与 SigMF 元数据文件。}
+- key: depth
+  status: none
+  note: {en: 'The release contains only IQ, FFT and SigMF metadata files.', zh: 发布内容仅包括 IQ、FFT 与 SigMF 元数据文件。}
+- key: lidar
+  status: none
+  note: {en: 'The release contains only IQ, FFT and SigMF metadata files.', zh: 发布内容仅包括 IQ、FFT 与 SigMF 元数据文件。}
+- key: radar
+  status: none
+  note: {en: 'The release contains only IQ, FFT and SigMF metadata files.', zh: 发布内容仅包括 IQ、FFT 与 SigMF 元数据文件。}
+- key: imu
+  status: none
+  note: {en: 'The release contains only IQ, FFT and SigMF metadata files.', zh: 发布内容仅包括 IQ、FFT 与 SigMF 元数据文件。}
+- key: time_series
+  status: provided
+  note: {en: Setups 1 to 3 hold ordered transmissions per device over five days; the metadata stores recording time and day., zh: Setup 1 至 3 中每台设备有五天内按顺序排列的多次发射；元数据保存录制时间与日期。}
+- key: multiuser
+  status: none
+  note: {en: 'Each file holds one device''s transmission, and the paper lists concurrent multi-device transmission as not realized.', zh: 每个文件只含一台设备的发射，论文将多设备并发发射列为尚未实现。}
+- key: multibs
+  status: none
+  note: {en: 'Setup 7 records one transmission per device on each of two receivers, not a coherent multi-receiver set.', zh: Setup 7 在两台接收机上分别记录每台设备的单次发射，并非相干的多接收机数据集。}
+- key: crossfreq
+  status: none
+  note: {en: All setups use a single 915 MHz band., zh: 所有设置均使用单一 915 MHz 频段。}
+- key: near_field
+  status: none
+  note: {en: Single-antenna receivers with no array or near-field model., zh: 接收端为单天线，无阵列或近场建模。}
+- key: high_mobility
+  status: unknown
+  note: {en: Device mobility is not described., zh: 文档未描述设备移动性。}
+- key: dynamic_blockage
+  status: unknown
+  note: {en: Blockage by moving people or objects is not described., zh: 文档未描述移动的人或物体造成的遮挡。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air captures, not labelled per path.', zh: 包含于空口采集的测量中，未逐径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air captures, not labelled per path.', zh: 包含于空口采集的测量中，未逐径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the over-the-air captures, not labelled per path.', zh: 包含于空口采集的测量中，未逐径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air captures, not labelled per path.', zh: 包含于空口采集的测量中，未逐径标注。}
+- key: polarization
+  status: none
+  note: {en: One antenna per receiver and no polarimetric data., zh: 每台接收机单天线，无极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: Waveform and spectrum files only; no field-level outputs., zh: 仅有波形与频谱文件，无场级输出。}
+versions:
+- version: '2'
+  date: 2023-10
+  summary: {en: 'Release note version 2 describes the seven setups, the directory layout, SigMF-style metadata and a MATLAB example for reading the float32 I/Q files. It marks the Different Days Wired setup as to be available soon.', zh: 发布说明第 2 版，描述七组实验设置、目录结构、SigMF 风格元数据，以及读取 float32 I/Q 文件的 MATLAB 示例。该版将 Different Days Wired 设置标注为即将提供。}
+  url: https://research.engr.oregonstate.edu/hamdaoui/sites/research.engr.oregonstate.edu.hamdaoui/files/release_note_lora_datasets_final_oct2023_v2.pdf
+- version: '2021'
+  date: 2021-10
+  summary: {en: IEEE Access paper that the release note says describes and uses these LoRa datasets. The release note does not give a date for the first public release of the data., zh: 发布说明称，这些 LoRa 数据集在该 IEEE Access 论文中有所描述和使用。发布说明未给出数据首次公开发布的日期。}
+  url: https://doi.org/10.1109/access.2021.3121606

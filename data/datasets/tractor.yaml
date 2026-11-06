@@ -17,7 +17,7 @@ paper: arxiv:2312.07896
 used_in: []
 citing: []
 summary: {en: 'Real 5G user traffic captured in residential, campus and driving scenarios and replayed on the Colosseum RF emulator in an srsRAN O-RAN system, totalling 447 minutes. gNB KPIs are polled over E2 every 250 ms, with 31 KPIs available and 17 used by the classifier.', zh: 在住宅、校园和驾车场景中采集的真实 5G 用户流量，在 Colosseum RF 仿真器中的 srsRAN O-RAN 系统内回放，总时长 447 分钟。gNB KPI 通过 E2 接口每 250 ms 轮询一次，共 31 项可用 KPI，其中 17 项用于分类器。}
-sources: ['https://github.com/genesys-neu/TRACTOR', 'https://genesys-lab.org/tractor', 'https://arxiv.org/abs/2312.07896', 'https://arxiv.org/html/2312.07896v2', 'https://api.github.com/repos/genesys-neu/TRACTOR/license']
+sources: ['https://github.com/genesys-neu/TRACTOR', 'https://genesys-lab.org/tractor', 'https://arxiv.org/abs/2312.07896', 'https://arxiv.org/html/2312.07896v2', 'https://api.github.com/repos/genesys-neu/TRACTOR/license', 'https://raw.githubusercontent.com/genesys-neu/TRACTOR/main/README.md', 'https://raw.githubusercontent.com/genesys-neu/TRACTOR/main/LICENSE', 'https://arxiv.org/abs/2312.07896v1', 'http://export.arxiv.org/api/query?id_list=2312.07896', 'https://github.com/genesys-neu/TRACTOR/releases', 'https://github.com/genesys-neu/TRACTOR/commits/main']
 checked: '2026-11-06'
 overview: {en: 'TRACTOR is a dataset of real 5G user traffic and O-RAN KPIs, produced by the Genesys Lab at Northeastern University and described in a 2023 arXiv paper. The traffic was captured with a Google Pixel 6 Pro at residential and campus sites, with the phone stationary, walking or driving, and totals 447 minutes. Each capture is labeled with its phone application and grouped into eMBB, URLLC or mMTC slices. The captured traffic was replayed in the Colosseum RF emulator on an srsRAN-based O-RAN system, and gNB KPIs were recorded over the E2 interface. The KPI files total over 2.83 GB across 4,000 trials of 2 minutes each, stored as CSV. The authors target traffic slice classification and PRB allocation optimization. The KPIs contain no user-identifiable information, because identifiers, administrative fields and RSSI were removed.', zh: 'TRACTOR 是一个真实 5G 用户流量与 O-RAN KPI 数据集，由 Northeastern University 的 Genesys Lab 制作，并在 2023 年的 arXiv 论文中加以描述。流量使用 Google Pixel 6 Pro 在住宅区和校园采集，手机分别处于静止、步行和驾车状态，总时长
     447 分钟。每次采集均按手机应用标注，并归入 eMBB、URLLC 或 mMTC 切片。采集的流量在 Colosseum RF 仿真器中回放，运行于基于 srsRAN 的 O-RAN 系统，gNB KPI 通过 E2 接口记录。KPI 文件总计超过 2.83 GB，包含 4,000 次试验，每次 2 分钟，以 CSV 格式存储。作者的目标任务为流量切片分类和 PRB 分配优化。KPI 中不含用户可识别信息，标识符、管理字段和 RSSI 已被移除。'}
@@ -53,3 +53,110 @@ pipeline:
     - {en: Full KPI traces, zh: 完整 KPI 记录}
     outputs:
     - {en: 2-minute KPI trials (.csv), zh: 2 分钟 KPI 试验（.csv）}
+format: PCAP, CSV
+samples: 4,000 trials of 2 minutes each
+facts:
+- label: {en: Slice labels, zh: 切片标签}
+  text: {en: 'Each capture is labeled with the slice of its application: eMBB for video streaming, web browsing and large file transfers, URLLC for voice and video calls and AR, and mMTC for text messages and background traffic from all apps while the phone is not in active use.', zh: 每次采集按其应用标注切片：eMBB 对应视频流、网页浏览和大文件传输，URLLC 对应语音和视频通话以及 AR，mMTC 对应短信以及手机未被主动使用时所有应用的后台流量。}
+- label: {en: Trial length, zh: 试验时长}
+  text: {en: 'Each trial covers 2 minutes, which holds about 480 KPI samples at the 250 ms reporting interval. Longer captures are cut into 2-minute sub-traces, so one capture can yield several trials.', zh: 每次试验时长 2 分钟，在 250 ms 的上报间隔下约含 480 个 KPI 样本。较长的采集会被切分为 2 分钟的子记录，因此一次采集可产生多次试验。}
+- label: {en: Payload, zh: 负载内容}
+  text: {en: 'Replayed packets carry random bytes with the length and timing of the original capture, so the payload content of the user traffic is not reproduced.', zh: 回放的数据包以随机字节作为负载，长度和时序与原始采集一致，因此不会复现用户流量的负载内容。}
+- label: {en: Repository layout, zh: 仓库结构}
+  text: {en: 'raw/ holds the captured user traffic, logs/ holds the KPI output after playback in Colosseum (subfolders whose names end in _clean are preprocessed), python/ holds the ML models and utils/ holds additional utilities. traffic_gen.py replays a capture file.', zh: raw/ 存放采集的用户流量，logs/ 存放在 Colosseum 中回放后的 KPI 输出（名称以 _clean 结尾的子文件夹为预处理后的数据），python/ 存放机器学习模型，utils/ 存放辅助工具。traffic_gen.py 用于回放采集文件。}
+- label: {en: Classifier split in the paper, zh: 论文中的分类器划分}
+  text: {en: 'The paper normalizes each KPI to the [0, 1] range, randomizes the order of slices and assigns 80% of the samples to training and 20% to testing. This split belongs to the paper''s classifier experiments, not to a split shipped with the dataset.', zh: '论文将每项 KPI 归一化到 [0, 1] 区间，随机打乱切片顺序，并将 80% 的样本用于训练，20% 用于测试。该划分属于论文的分类器实验，而非数据集随附的划分。'}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'Only gNB KPIs and traffic traces are released, with no channel matrices.', zh: 仅发布 gNB KPI 和流量记录，没有信道矩阵。}
+- key: cir
+  status: none
+  note: {en: Only gNB KPIs and traffic traces are released; no impulse response., zh: 仅发布 gNB KPI 和流量记录，没有冲激响应。}
+- key: paths
+  status: none
+  note: {en: Only gNB KPIs and traffic traces are released; no per-path parameters., zh: 仅发布 gNB KPI 和流量记录，没有逐径参数。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are released., zh: 未发布逐径交互数据。}
+- key: power
+  status: none
+  note: {en: 'RSSI is removed; SINR, CQI and power headroom are released, but no received power or path-loss values.', zh: RSSI 已被移除；发布了 SINR、CQI 和功率余量，但没有接收功率或路径损耗值。}
+- key: iq
+  status: none
+  note: {en: Only gNB KPIs and traffic traces are released; no I/Q samples., zh: 仅发布 gNB KPI 和流量记录，没有 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: The released KPIs contain no beam indices or per-beam gains., zh: 发布的 KPI 中没有波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: 'Mobility is a label (stationary, walking, driving); no position or GPS field is described.', zh: 移动性仅为标签（静止、步行、驾车）；未描述位置或 GPS 字段。}
+- key: geometry
+  status: none
+  note: {en: 'The repository holds traces, KPI logs, ML code and utilities; no map or scene files.', zh: 仓库包含流量记录、KPI 日志、机器学习代码和工具；没有地图或场景文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera data are released; the captures are packet traces., zh: 未发布相机数据，采集内容为数据包记录。}
+- key: depth
+  status: none
+  note: {en: No depth data are released., zh: 未发布深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data are released., zh: 未发布激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data are released., zh: 未发布雷达数据。}
+- key: imu
+  status: none
+  note: {en: No phone sensor data are described in the released contents., zh: 发布内容中未描述手机传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: gNB KPIs are sampled every 250 ms; each 2-minute trial holds about 480 samples., zh: gNB KPI 以 250 ms 间隔采样；每个 2 分钟试验约含 480 个样本。}
+- key: multiuser
+  status: simulate
+  note: {en: 'The repository has utilities for multiple UEs, so multi-user KPI trials need a new Colosseum run.', zh: 仓库中有多 UE 工具，因此多用户 KPI 试验需要重新在 Colosseum 上运行。}
+- key: multibs
+  status: none
+  note: {en: The documented setup uses one gNB and one UE., zh: 文档中的设置为一个 gNB 和一个 UE。}
+- key: crossfreq
+  status: none
+  note: {en: Single 5G link; no paired multi-band data are described., zh: 单一 5G 链路，未描述配对的多频段数据。}
+- key: near_field
+  status: unknown
+  note: {en: The Colosseum emulation settings are not described in the sources., zh: 来源未描述 Colosseum 仿真设置。}
+- key: high_mobility
+  status: unknown
+  note: {en: 'Driving captures are labelled, but no speed is stated.', zh: 驾车采集有标注，但未给出速度。}
+- key: dynamic_blockage
+  status: unknown
+  note: {en: The sources do not describe moving blockers., zh: 来源未描述移动遮挡物。}
+- key: reflection
+  status: unknown
+  note: &id001 {en: 'The Colosseum channel model is not described, and no per-path outputs are released.', zh: 未描述 Colosseum 信道模型，也未发布逐径输出。}
+- key: diffraction
+  status: unknown
+  note: *id001
+- key: scattering
+  status: unknown
+  note: *id001
+- key: transmission
+  status: unknown
+  note: *id001
+- key: polarization
+  status: none
+  note: {en: Only KPIs and traffic traces are released; no polarimetric data., zh: 仅发布 KPI 和流量记录，没有极化数据。}
+- key: em_field
+  status: none
+  note: {en: Only KPIs and traffic traces are released; no field-level outputs., zh: 仅发布 KPI 和流量记录，没有场量输出。}
+versions:
+- version: v2
+  date: '2025-03-11'
+  summary: {en: 'arXiv v2, retitled ''From Classification to Optimization: Slicing and Resource Management with TRACTOR''; adds a reinforcement-learning PRB assignment study (learned policy score 0.631 against 0.609 for an expert policy and 0.588 for a random baseline) and reports up to 99% offline and 92% online accuracy for slice classification.', zh: 'arXiv v2，标题改为 ''From Classification to Optimization: Slicing and Resource Management with TRACTOR''；新增基于强化学习的 PRB 分配研究（学习策略得分 0.631，专家策略为 0.609，随机基线为 0.588），并报告切片分类离线准确率最高 99%、在线准确率 92%。'}
+  url: https://arxiv.org/abs/2312.07896v2
+- version: v1
+  date: '2023-12-13'
+  summary: {en: 'arXiv v1, ''TRACTOR: Traffic Analysis and Classification Tool for Open RAN'': the real 5G traffic capture, its Colosseum replay with KPI logging, a CNN traffic-slice classifier (over 95% offline and 92% online accuracy) and the open-source toolchain.', zh: 'arXiv v1，''TRACTOR: Traffic Analysis and Classification Tool for Open RAN''：真实 5G 流量采集、在 Colosseum 上的回放与 KPI 记录、基于 CNN 的流量切片分类器（离线准确率超过 95%，在线准确率 92%），以及开源工具链。'}
+  url: https://arxiv.org/abs/2312.07896v1

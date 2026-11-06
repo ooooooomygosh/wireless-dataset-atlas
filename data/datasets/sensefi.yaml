@@ -6,119 +6,72 @@ tasks: [wireless-sensing]
 signals: [csi]
 environment: []
 samples: UT-HAR 3,977 train / 996 test; NTU-HAR 936 / 264; NTU-HumanID 546 / 294; Widar 34,926 / 8,726 (train / test)
-license: Not stated
+license: MIT License
 access: {url: 'https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark', type: open}
 code: ['https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark']
 paper: doi:10.1016/j.patter.2023.100703
 used_in: ['doi:10.1109/icc51166.2024.10622623']
 citing: ['doi:10.1109/jiot.2023.3262940', 'doi:10.1109/tmc.2025.3552538', 'doi:10.1109/tmc.2025.3544573']
 summary: {en: 'A PyTorch library and benchmark for WiFi CSI human sensing that packages four preprocessed datasets: UT-HAR (7 activities), NTU-HAR (6 activities), NTU-HumanID (14 subject classes) and Widar gesture data (22 gesture classes).', zh: 用于 WiFi CSI 人体感知的 PyTorch 库与基准，整理了四个预处理数据集：UT-HAR（7 类活动）、NTU-HAR（6 类活动）、NTU-HumanID（14 个受试者类别）以及 Widar 手势数据（22 类手势）。}
-sources: ['https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark', 'https://arxiv.org/abs/2207.07859']
+sources: ['https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark', 'https://arxiv.org/abs/2207.07859', 'https://api.github.com/repos/xyanchen/WiFi-CSI-Sensing-Benchmark/git/trees/HEAD?recursive=1', 'https://raw.githubusercontent.com/xyanchen/WiFi-CSI-Sensing-Benchmark/main/README.md', 'https://raw.githubusercontent.com/xyanchen/WiFi-CSI-Sensing-Benchmark/main/LICENSE', 'https://raw.githubusercontent.com/xyanchen/WiFi-CSI-Sensing-Benchmark/HEAD/dataset.py', 'https://raw.githubusercontent.com/xyanchen/WiFi-CSI-Sensing-Benchmark/HEAD/util.py', 'https://raw.githubusercontent.com/xyanchen/WiFi-CSI-Sensing-Benchmark/HEAD/run.py', 'https://raw.githubusercontent.com/xyanchen/WiFi-CSI-Sensing-Benchmark/HEAD/self_supervised.py', 'https://api.crossref.org/works/10.1016/j.patter.2023.100703', 'https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark/releases', 'https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark/tags']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Each source''s WiFi measurements first produce amplitudes or BVP, then use source-specific loading rules for normalization and activity/identity labels. SenseFi provides unified training entry points, not a unified raw complex-CSI generator.', zh: 各源 WiFi 测量先得到幅度或 BVP，再用各自加载规则归一化并映射到活动/身份标签；SenseFi 统一训练入口，没有统一原始复 CSI 生成器。}
+  summary: {en: 'Each source is distributed as processed arrays: NTU-Fi amplitude tensors read from CSIamp, UT-HAR arrays, and Widar BVP tensors. dataset.py applies a fixed normalization per source, and labels come from class folders or label files. SenseFi provides a shared model library and training scripts, not a raw complex-CSI generator.', zh: 各数据源以处理后的数组形式发布：NTU-Fi 为从 CSIamp 读取的幅度张量，UT-HAR 为数组文件，Widar 为 BVP 张量。dataset.py 按数据源使用固定归一化，标签来自类别文件夹或标签文件。SenseFi 提供统一的模型库与训练脚本，但不是原始复 CSI 生成器。}
   stages:
-  - title: {en: Collect four upstream sensing datasets, zh: 汇集四个上游感知数据源}
-    detail: {en: 'The authors connect four processed WiFi-sensing datasets to one model-evaluation framework. They come from different devices, acquisition tasks, and upstream CSI-processing pipelines.', zh: 作者将四个已处理 WiFi 感知数据集接入同一模型评测框架；它们来自不同设备、采集任务与上游 CSI 处理链。}
+  - title: {en: Collect four processed WiFi sensing sources, zh: 汇集四个已处理的 WiFi 感知数据源}
+    detail: {en: 'The authors connect UT-HAR, NTU-Fi HAR, NTU-Fi HumanID and Widar to one PyTorch framework. The four datasets come from different WiFi CSI platforms.', zh: 作者将 UT-HAR、NTU-Fi HAR、NTU-Fi HumanID 与 Widar 接入同一个 PyTorch 框架。这四个数据集来自不同的 WiFi CSI 平台。}
     inputs:
-    - {en: UT-HAR, zh: UT-HAR}
-    - {en: NTU-Fi HAR and HumanID, zh: NTU-Fi HAR 与 HumanID}
-    - {en: Widar, zh: Widar}
+    - {en: Processed data folders linked from Google Drive in the README, zh: README 中 Google Drive 链接提供的处理后数据文件夹}
     outputs:
-    - {en: Processed data packages distinguished by source, zh: 按来源区分的处理后数据包}
+    - {en: 'Folder trees UT_HAR, NTU-Fi_HAR, NTU-Fi-HumanID and Widardata', zh: 文件夹结构 UT_HAR、NTU-Fi_HAR、NTU-Fi-HumanID 与 Widardata}
     controls:
-    - {en: 'Author scope: activity or identity classification, not communication-side multiuser scheduling.', zh: 作者范围：活动或身份分类任务，不能解释为通信侧多用户调度。}
-    checks:
-    - {en: 'Reproduction recommendation: inspect the acquisition devices and scenes of each original dataset before deciding whether cross-device or cross-scene testing is possible.', zh: 复现建议：先查看各原始数据集的采集设备与场景，再确定是否能做跨设备或跨场景测试。}
-  - title: {en: Preserve the distinct meanings of amplitudes and BVP, zh: 保留幅度与 BVP 的不同含义}
-    detail: {en: NTU-Fi/UT-HAR views provide CSI-amplitude-related tensors; Widar uses body-coordinate velocity profiles (BVP). These processed data no longer equal original complex CSI retaining full phase information., zh: NTU-Fi/UT-HAR 视图提供 CSI 幅度相关张量，Widar 视图使用 body-coordinate velocity profile（BVP）。处理后的数据已不等同于保留完整相位的原始复 CSI。}
+    - {en: 'Each dataset keeps its own label set: 7 UT-HAR activities, 6 NTU-Fi HAR activities, 14 HumanID subjects and 22 Widar gestures.', zh: 各数据集保留各自的标签集：UT-HAR 7 类活动，NTU-Fi HAR 6 类活动，HumanID 14 名受试者，Widar 22 类手势。}
+  - title: {en: Keep amplitude and BVP representations separate, zh: 分开保留幅度与 BVP 表示}
+    detail: {en: 'The NTU-Fi loader reads CSIamp from .mat files by default and also accepts CSIphase. Widar files are numeric CSV matrices reshaped to 22 x 20 x 20 BVP tensors. The shapes differ: 1 x 250 x 90 for UT-HAR, 3 x 114 x 500 for NTU-Fi and 22 x 20 x 20 for Widar.', zh: NTU-Fi 加载器默认从 .mat 文件读取 CSIamp，也可读取 CSIphase。Widar 文件为数值 CSV 矩阵，被 reshape 为 22 x 20 x 20 的 BVP 张量。三者形状不同：UT-HAR 为 1 x 250 x 90，NTU-Fi 为 3 x 114 x 500，Widar 为 22 x 20 x 20。}
     inputs:
-    - {en: Upstream WiFi measurements and preprocessing outputs, zh: 上游 WiFi 测量与预处理结果}
+    - {en: CSIamp or CSIphase entries of NTU-Fi .mat files; numeric CSV files for Widar, zh: NTU-Fi .mat 文件中的 CSIamp 或 CSIphase 项；Widar 的数值 CSV 文件}
     outputs:
-    - {en: Amplitude views, zh: 幅度视图}
-    - {en: Dynamic BVP representations, zh: BVP 动态表示}
-    controls:
-    - {en: 'To verify: upstream scripts are needed to complete filtering, calibration, and segmentation parameters between original acquisitions and processed packages.', zh: 待核实：各原始采集到 processed 包之间的完整滤波、校准与分段参数需上游脚本补全。}
-    checks:
-    - {en: 'Reproduction recommendation: do not reshape BVP back into antenna × subcarrier CSI or derive coherent beam responses from amplitudes alone.', zh: 复现建议：不要把 BVP reshape 回天线×子载波 CSI，也不要从幅度单独推算相干波束响应。}
-  - title: {en: Load and scale UT-HAR files, zh: UT-HAR 文件级加载与缩放}
-    detail: {en: 'UT_HAR_dataset actually reads data with np.load and reshapes them to [N,1,250,90]. Each loaded file is scaled using its own min/max; labels are loaded separately.', zh: 'UT_HAR_dataset 实际用 np.load 读入数据，重排为 [N,1,250,90]；每个已加载文件按自己的 min/max 缩放，标签独立读取。'}
+    - {en: Amplitude tensors for UT-HAR and NTU-Fi; BVP tensors for Widar, zh: UT-HAR 与 NTU-Fi 的幅度张量；Widar 的 BVP 张量}
+  - title: {en: Load UT-HAR arrays and normalize per file, zh: 加载 UT-HAR 数组并按文件归一化}
+    detail: {en: 'UT_HAR_dataset reads each file with np.load, although the files carry a .csv suffix. It reshapes the data to N x 1 x 250 x 90 and scales each loaded file by that file''s own minimum and maximum. Labels are read from separate label files.', zh: UT_HAR_dataset 用 np.load 读取每个文件（尽管文件后缀为 .csv），重排为 N x 1 x 250 x 90，并按该文件自身的最小值与最大值缩放。标签从独立的标签文件读取。}
     inputs:
-    - {en: Binary array files with a .csv suffix, zh: 后缀 .csv 的二进制数组文件}
-    - {en: Separate label files, zh: 独立 label 文件}
+    - {en: Binary arrays with .csv suffix in UT_HAR/data, zh: UT_HAR/data 中后缀为 .csv 的二进制数组}
+    - {en: Label files in UT_HAR/label, zh: UT_HAR/label 中的标签文件}
     outputs:
-    - {en: UT-HAR input tensors and activity classes, zh: UT-HAR 输入张量与活动类别}
+    - {en: UT-HAR input tensors and activity labels, zh: UT-HAR 输入张量与活动标签}
     controls:
-    - {en: 'Author code: normalization is calculated separately per loaded file, not from a common training-set min/max fit.', zh: 作者代码：归一化按加载文件分别计算，并非统一训练集拟合的 min/max。}
-    checks:
-    - {en: 'Reproduction recommendation: for a new evaluation, apply fixed training-set statistics to validation/test data and explicitly report the protocol change. File extensions alone should not determine the parser.', zh: 复现建议：若建立新评测，训练集统计量固定到验证/测试并单独标注协议变更；扩展名不能作为解析器依据。}
-  - title: {en: Process NTU-Fi and Widar separately, zh: NTU-Fi 与 Widar 分源处理}
-    detail: {en: 'NTU-Fi uses (x-42.3199)/4.9802, then samples every 4 points on the time axis to form 3×114×500. Widar uses (x-0.0025)/0.0119 and reshapes to 22×20×20.', zh: NTU-Fi 使用 (x-42.3199)/4.9802，时间轴每隔 4 点取样后形成 3×114×500。Widar 使用 (x-0.0025)/0.0119，并 reshape 为 22×20×20。}
+    - {en: 'Normalization uses each loaded file''s own minimum and maximum, not a fit on the training set.', zh: 归一化使用每个已加载文件自身的最小值与最大值，而非训练集拟合。}
+  - title: {en: Apply fixed constants to NTU-Fi and Widar, zh: 对 NTU-Fi 与 Widar 应用固定常数}
+    detail: {en: 'CSI_Dataset normalizes NTU-Fi amplitudes with (x - 42.3199) / 4.9802, keeps every fourth point on the time axis (2000 to 500 samples) and reshapes to 3 x 114 x 500. Widar_Dataset normalizes with (x - 0.0025) / 0.0119 and reshapes to 22 x 20 x 20.', zh: CSI_Dataset 使用 (x - 42.3199) / 4.9802 对 NTU-Fi 幅度归一化，时间轴每 4 点取 1 点（2000 到 500 个采样），并 reshape 为 3 x 114 x 500。Widar_Dataset 使用 (x - 0.0025) / 0.0119 归一化，并 reshape 为 22 x 20 x 20。}
     inputs:
-    - {en: CSIamp in NTU-Fi .mat files, zh: NTU-Fi .mat 的 CSIamp}
-    - {en: Widar numeric CSV files, zh: Widar 数值 CSV}
+    - {en: CSIamp arrays in NTU-Fi .mat files, zh: NTU-Fi .mat 文件中的 CSIamp 数组}
+    - {en: Widar numeric CSV files, zh: Widar 数值 CSV 文件}
     outputs:
-    - {en: NTU-Fi amplitude tensors, zh: NTU-Fi 幅度张量}
-    - {en: Widar BVP tensors, zh: Widar BVP 张量}
+    - {en: NTU-Fi amplitude tensors and Widar BVP tensors, zh: NTU-Fi 幅度张量与 Widar BVP 张量}
     controls:
-    - {en: 'Author code: these constants are fixed in the loader; the code does not explain how they were estimated.', zh: 作者代码：上述常数固定在 loader 中；其估计来源未在代码中说明。}
-    checks:
-    - {en: 'Reproduction recommendation: verify MAT keys, the time-downsampling axis, and BVP layout. Do not describe all processing as per-sample z-scoring or training-set standardization.', zh: 复现建议：核对 MAT 键、时间下采样轴和 BVP 布局；不可统称为每样本 z-score 或训练集标准化。}
-  - title: {en: Obtain labels and retain processed splits, zh: 获取标签并沿用处理后划分}
-    detail: {en: 'Loaders construct labels from class directories; UT-HAR reads separate labels. Training entry points use each dataset''s processed train/test sets. Directory enumeration affects class indices, so explicitly save the mapping.', zh: 加载器按类别目录建立标签，UT-HAR 读取独立标签；训练入口使用各数据集的 processed train/test。目录枚举影响类别编号，需显式保存映射。}
+    - {en: The normalization constants are literals in dataset.py; the code does not say how they were estimated., zh: 归一化常数以字面量写在 dataset.py 中；代码未说明其估计方式。}
+  - title: {en: Assign labels and splits from folders and files, zh: 按文件夹与文件分配标签和划分}
+    detail: {en: 'NTU-Fi and Widar class indices come from class folders enumerated with glob, which returns paths in no guaranteed order. The HumanID loaders use test_amp as the training set and train_amp as the test set, the reverse of the folder names. The UT-HAR test set is the validation and test arrays concatenated.', zh: NTU-Fi 与 Widar 的类别编号来自用 glob 枚举的类别文件夹，glob 不保证返回顺序。HumanID 加载器以 test_amp 作为训练集、以 train_amp 作为测试集，与文件夹名称相反。UT-HAR 的测试集为验证集与测试集拼接。}
     inputs:
-    - {en: Processed train/test directories, zh: 处理后 train/test 目录}
-    - {en: Class subdirectories or label files, zh: 类别子目录或标签文件}
+    - {en: 'Class subdirectories (NTU-Fi, Widar) and label files (UT-HAR)', zh: 类别子目录（NTU-Fi、Widar）与标签文件（UT-HAR）}
     outputs:
-    - {en: Classification inputs/labels, zh: 分类输入/标签}
-    - {en: Processed training and test views, zh: 处理后训练与测试视图}
+    - {en: Training and test datasets for each loader, zh: 各加载器的训练与测试数据集}
     controls:
-    - {en: 'Author code: directory glob order has no common sorting guarantee.', zh: 作者代码：目录 glob 顺序没有统一排序保证。}
-    - {en: 'To verify: complete upstream isolation rules by person, scene, or recording batch must be checked against original dataset protocols.', zh: 待核实：上游按人员、场景或记录批次的完整隔离规则需与原数据集协议核对。}
-    checks:
-    - {en: 'Reproduction recommendation: use the same explicit class table across splits; check for repeated original activity segments and derived windows.', zh: 复现建议：跨划分使用同一显式类别表；检验同一原始动作片段及切窗是否重复出现。}
-  - title: {en: Supervised/self-supervised entry points and model assets, zh: 监督或自监督入口与模型资产}
-    detail: {en: run.py provides supervised training; self_supervised.py provides self-supervised examples. The repository demonstrates transfer from NTU-Fi HAR to HumanID. Input transforms are optional; there is no universally enforced MAE mask at the data layer., zh: run.py 提供监督训练，self_supervised.py 提供自监督示例，仓库演示 NTU-Fi HAR 到 HumanID 的迁移。输入 transform 为可选项，没有数据层统一强制的 MAE mask。}
+    - {en: 'Class indices depend on folder enumeration, so the label mapping is not fixed by the files.', zh: 类别编号取决于文件夹枚举顺序，因此文件本身并不固定标签映射。}
+  - title: {en: Run supervised or self-supervised training, zh: 运行监督或自监督训练}
+    detail: {en: 'run.py trains supervised models on the four loaders and reports accuracy. self_supervised.py trains on NTU-Fi HAR and tests on NTU-Fi HumanID. The self-supervised script contains no masking step, and the transform argument of CSI_Dataset is optional.', zh: run.py 在四个加载器上进行监督训练并报告准确率。self_supervised.py 在 NTU-Fi HAR 上训练，在 NTU-Fi HumanID 上测试。自监督脚本中没有掩码步骤，CSI_Dataset 的 transform 参数为可选。}
     inputs:
-    - {en: Amplitude/BVP tensors, zh: 幅度/BVP 张量}
-    - {en: Activity or identity labels, zh: 活动或身份标签}
-    - {en: Model selection, zh: 模型选择}
+    - {en: Amplitude and BVP tensors with activity or identity labels, zh: 带活动或身份标签的幅度与 BVP 张量}
+    - {en: Model name selected on the command line, zh: 命令行选择的模型名称}
     outputs:
-    - {en: Training and evaluation code, zh: 训练与评测代码}
-    - {en: Model-weight entry points, zh: 模型权重入口}
-    - {en: Activity/identity recognition results, zh: 活动/身份识别结果}
-    controls:
-    - {en: 'Author framework: changing the model does not change data provenance. Record masks or augmentations separately for each model.', zh: 作者框架：模型更换不改写数据来源；mask 或增广须按具体模型另记录。}
-    checks:
-    - {en: 'Reproduction recommendation: reproduce loading and simple classification baselines before discussing pretraining. Communication rates and beam labels require another data source.', zh: 复现建议：先复现数据加载和简单分类基线，再讨论预训练；通信速率与波束标签需另有数据来源。}
-  scope: {en: The four processed WiFi-sensing views distributed by SenseFi and dataset.py. Original acquisition pipelines are documented only from the paper and upstream descriptions., zh: SenseFi 分发的四个处理后 WiFi 感知视图及 dataset.py；原始采集链仅按论文和上游说明记录。}
+    - {en: 'Training logs, test accuracy and model weights', zh: 训练日志、测试准确率与模型权重}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Processed amplitude/BVP files
-
-      • Activity/identity labels and train/test views
-
-      • Model library, training entry points, and weight links', zh: '• 处理后的幅度/BVP 文件
-
-      • 活动/身份标签和 train/test 视图
-
-      • 模型库、训练入口与权重链接'}
+  text: {en: 'Processed amplitude and BVP arrays; activity and identity labels with train and test folders; model library, training scripts and pre-trained weight links.', zh: 处理后的幅度与 BVP 数组；带 train 与 test 文件夹的活动和身份标签；模型库、训练脚本与预训练权重链接。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Loaded tensors with source-specific normalization
-
-      • Optional augmentations, representations, or self-supervised tasks
-
-      • Activity/identity classification metrics', zh: '• 加载后的分源归一化张量
-
-      • 可选增广、表示或自监督任务
-
-      • 活动/身份分类指标'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Normalization differs among subsets; “uniform normalization” does not accurately describe all of them.
-
-      • This review checked loaders and documentation. Processed data were not downloaded, and the complete steps of all four original acquisition pipelines were not traced.', zh: '• 不同子集的归一化方法不同，不能用一句“统一归一化”概括。
-
-      • 本次核查 loader 与文档；未下载处理后数据，未追溯四个原始采集链的全部步骤。'}
+  text: {en: Loaded tensors with source-specific normalization; optional input transforms; classification accuracy from run.py., zh: 按数据源归一化后的加载张量；可选的输入变换；run.py 输出的分类准确率。}
+- label: {en: Normalization, zh: 归一化}
+  text: {en: UT-HAR is scaled by each file's own min and max; NTU-Fi and Widar use fixed constants in dataset.py. The subsets are not normalized the same way., zh: UT-HAR 按每个文件自身的最小值与最大值缩放；NTU-Fi 与 Widar 使用 dataset.py 中的固定常数。各子集的归一化方式不同。}
 provenance:
 - {en: Four upstream real-world WiFi human-sensing data sources, zh: 四个上游真实 WiFi 人体感知数据源}
 - {en: Source-specific devices and CSI extraction/cleaning, zh: 各自设备和 CSI 提取/清洗}
@@ -126,34 +79,126 @@ provenance:
 - {en: Official processed train/test views, zh: 官方处理后的 train/test 视图}
 - {en: SenseFi's unified model library and supervised/self-supervised protocols, zh: SenseFi 统一模型库与监督/自监督协议}
 technical_notes:
-- {en: 'Literature-supported: different WiFi platforms produce different CSI representations. Actual hardware observations also require handling phase offsets and device differences.', zh: 文献支持：不同 WiFi 平台产生不同 CSI 表示；真实硬件观测还需处理相位偏移与设备差异。}
-- {en: 'Official design: NTU-Fi HAR/HumanID use amplitude views; Widar uses BVP. They cannot all be treated as complex CSI with the same shape.', zh: 官方设计：NTU-Fi HAR/HumanID 使用幅度视图；Widar 使用 BVP，不能统一视为同形复 CSI。}
-- {en: 'Inference: identity or room features may become shortcuts; evaluate independently by person, room, and session.', zh: 推断：用户身份或房间特征可成为捷径，需要按人、房间、会话独立评估。}
+- {en: The four source datasets come from different WiFi CSI platforms., zh: 四个源数据集来自不同的 WiFi CSI 平台。}
+- {en: 'NTU-Fi HAR and HumanID are amplitude tensors of shape 3 x 114 x 500, while Widar is a 22 x 20 x 20 BVP tensor; the three views should not be treated as the same complex CSI.', zh: NTU-Fi HAR 与 HumanID 为形状 3 x 114 x 500 的幅度张量，Widar 为 22 x 20 x 20 的 BVP 张量；三种视图不应视为相同形式的复 CSI。}
 limitations:
-- {en: 'Although all may be called CSI, amplitudes, complex CFR, and Doppler/BVP preserve different amounts of information.', zh: 同样叫 CSI，幅度、复 CFR、Doppler/BVP 的信息保真程度不同。}
-- {en: Cross-task HAR→HumanID transfer does not automatically establish cross-hardware or cross-environment transfer., zh: 跨任务 HAR→HumanID 迁移不自动代表跨硬件或跨环境迁移。}
-- {en: 'This review did not confirm papers independently using the SenseFi protocol in 2024–2026, so no precise recent usage count is given.', zh: 本轮未确认 2024–2026 独立使用 SenseFi 协议的论文，因此不给近期精确使用量。}
+- {en: The README says the code runs on Ubuntu; on Windows the path separators in the dataset directory code must be changed., zh: README 说明代码在 Ubuntu 上运行；在 Windows 上需要修改数据目录代码中的路径分隔符。}
+- {en: 'The README asks for the datasets to be unzipped on Linux to avoid decoding errors, and states that UT-HAR files cannot be read correctly in Excel.', zh: README 要求在 Linux 下解压数据集以避免解码错误，并说明 UT-HAR 文件在 Excel 中无法正确读取。}
 history:
-- {en: '2022-07-16: SenseFi preprint v1', zh: 2022-07-16：SenseFi 预印本 v1}
-- {en: '2023-02-17: Paper v3', zh: 2023-02-17：论文 v3}
-- {en: '2023: Published in Patterns 4(3)', zh: 2023：Patterns 4(3) 发表}
+- {en: '2022-07-16: arXiv preprint v1 (2207.07859).', zh: 2022-07-16：arXiv 预印本 v1（2207.07859）。}
+- {en: '2022-12-16: arXiv v2.', zh: 2022-12-16：arXiv v2。}
+- {en: '2023-02-17: arXiv v3.', zh: 2023-02-17：arXiv v3。}
+- {en: '2023-03: published in Patterns, volume 4, issue 3.', zh: 2023 年 3 月：发表于 Patterns，第 4 卷第 3 期。}
 usage:
-- {en: 'Use the four official loaders to check input meanings, shapes, and class counts. Do not forcibly reshape different representations into identical physical axes.', zh: 按官方四个 loader 检查输入含义、shape 与标签数；不要把不同表征强制 reshape 为相同物理轴。}
-- {en: Start with the official simple MLP/ResNet and fixed splits. Label any changed split as a new protocol., zh: 先运行官方简单 MLP/ResNet 与固定 split；若改变划分，另标新协议。}
-- {en: Group cross-domain evaluation by subject/session/room and record cleaning and normalization., zh: 跨域评估按 subject/session/room 分组，记录数据清洗和归一化。}
-- {en: The workflow in this card was not run locally. The original repository specifies PyTorch 1.12.0 and torchvision 0.13.0., zh: 此卡流程未本机运行；原仓库注明 PyTorch 1.12.0、torchvision 0.13.0。}
+- {en: 'Download the processed folders listed in the README and place them under a Data directory with NTU-Fi_HAR, NTU-Fi-HumanID, UT_HAR and Widardata.', zh: 按 README 下载处理后的数据文件夹，放入 Data 目录下的 NTU-Fi_HAR、NTU-Fi-HumanID、UT_HAR 与 Widardata。}
+- {en: 'Run supervised training with python run.py --model [model] --dataset [UT_HAR_data, NTU-Fi-HumanID, NTU-Fi_HAR or Widar].', zh: '使用 python run.py --model [模型] --dataset [UT_HAR_data、NTU-Fi-HumanID、NTU-Fi_HAR 或 Widar] 运行监督训练。'}
+- {en: 'Run self-supervised training with python self_supervised.py --model [model]; it trains on NTU-Fi HAR and tests on NTU-Fi HumanID.', zh: '使用 python self_supervised.py --model [模型] 运行自监督训练；它在 NTU-Fi HAR 上训练，在 NTU-Fi HumanID 上测试。'}
+- {en: The repository specifies PyTorch 1.12.0 and torchvision 0.13.0., zh: 仓库指定 PyTorch 1.12.0 与 torchvision 0.13.0。}
+- {en: Pre-trained weights for all models are linked from the README., zh: README 中提供所有模型的预训练权重链接。}
 field_notes:
 - label: {en: CSI, zh: CSI}
-  text: {en: This field refers to complete complex CSI. The amplitude/BVP views distributed by SenseFi should not be marked as complete complex CSI., zh: 此字段指完整复 CSI；SenseFi 分发的幅度/BVP 视图不应被标成完整复 CSI。}
+  text: {en: 'The NTU-Fi loader reads CSIamp by default, and the Widar loader reads BVP CSV files. Neither loader returns a complex CSI array.', zh: NTU-Fi 加载器默认读取 CSIamp，Widar 加载器读取 BVP CSV 文件。两者都不返回复 CSI 数组。}
 - label: {en: Time, zh: 时间}
-  text: {en: Activity segments have a time dimension; they are not cellular mobility trajectories., zh: 动作片段有时间维度；不是蜂窝移动轨迹。}
-- label: {en: Multi-user, zh: 多用户}
-  text: {en: HumanID multiclass identity recognition does not mean synchronized multiuser communication or simultaneous activities by multiple people., zh: HumanID 多身份分类不等于同步多用户通信或多人同时动作。}
+  text: {en: 'After the loader keeps every fourth point of the 2000 time samples, NTU-Fi tensors have 500 time samples.', zh: 加载器每 4 点取 1 点后，NTU-Fi 张量在时间轴上保留 500 个采样（原为 2000）。}
 - label: {en: Position, zh: 位置}
-  text: {en: 'The official processed-view loaders return signal tensors and activity/identity classes, not position coordinates. Spatial configurations in original Widar acquisitions are recorded separately from SenseFi''s BVP classification view.', zh: 官方 processed 视图加载器返回信号张量和活动/身份类别，不返回位置坐标。Widar 原始采集的空间配置与 SenseFi 的 BVP 分类视图分开记录。}
+  text: {en: 'The processed-view loaders return signal tensors and activity or identity classes, not position coordinates.', zh: 处理后视图的加载器返回信号张量与活动或身份类别，不返回位置坐标。}
 tools: [project-sensefi]
 overview: {en: 'SenseFi is a PyTorch library and benchmark for deep-learning WiFi CSI human sensing. It was posted to arXiv as 2207.07859 and published in Patterns, volume 4, number 3, in 2023, by Jianfei Yang, Xinyan Chen, Dazhuo Wang, Han Zou, Chris Xiaoxuan Lu, Sumei Sun and Lihua Xie. It packages four public WiFi CSI datasets from their original papers, distributed as processed files: UT-HAR (7 activity classes), NTU-HAR (6 activity classes), NTU-HumanID (14 subject classes) and Widar (22 gesture classes). The train and test counts are 3977 and 996 for UT-HAR, 936 and 264 for NTU-HAR, 546 and 294 for NTU-HumanID, and 34926 and 8726 for Widar. The library implements MLP, LeNet, ResNet18, ResNet50, ResNet101, RNN, GRU, LSTM, BiLSTM, CNN+GRU and ViT models for supervised training, and provides a self-supervised example that trains on NTU-Fi HAR and tests on NTU-Fi HumanID. The processed data are linked from Google Drive in the README, and the repository also offers pre-trained weights.',
   zh: 'SenseFi 是基于 PyTorch 的深度学习 WiFi CSI 人体感知库与基准。论文以 arXiv:2207.07859 发布，并于 2023 年以第 4 卷第 3 期发表于 Patterns，作者为 Jianfei Yang、Xinyan Chen、Dazhuo Wang、Han Zou、Chris Xiaoxuan Lu、Sumei Sun 与 Lihua Xie。它整理了四个公开的 WiFi CSI 数据集，数据来自各自的原始论文，并以处理后的文件形式发布：UT-HAR（7 类活动）、NTU-HAR（6 类活动）、NTU-HumanID（14 类受试者）和 Widar（22 类手势）。训练与测试样本数分别为：UT-HAR 3977 / 996，NTU-HAR 936 / 264，NTU-HumanID 546 / 294，Widar 34926 / 8726。库中实现了 MLP、LeNet、ResNet18、ResNet50、ResNet101、RNN、GRU、LSTM、BiLSTM、CNN+GRU 与 ViT 模型用于监督训练，并提供自监督示例：在 NTU-Fi HAR 上训练、在 NTU-Fi HumanID 上测试。处理后的数据通过 README 中的 Google Drive 链接获取，仓库同时提供预训练权重。'}
 signal_details:
 - signal: csi
   text: {en: 'Processed WiFi CSI tensors, source-specific. UT-HAR: 1 x 250 x 90. NTU-HAR and NTU-HumanID: 3 x 114 x 500, read from CSIamp in .mat files; the loader also accepts CSIphase. Widar: BVP of 22 x 20 x 20 from numeric CSV files. Normalisation differs by source: UT-HAR scales each loaded array by its own minimum and maximum; NTU-Fi uses (x - 42.3199) / 4.9802; Widar uses (x - 0.0025) / 0.0119.', zh: 各数据源处理后的 WiFi CSI 张量。UT-HAR：1 x 250 x 90。NTU-HAR 与 NTU-HumanID：3 x 114 x 500，从 .mat 文件中的 CSIamp 读取；加载器也可选 CSIphase。Widar：由数值 CSV 文件得到的 22 x 20 x 20 BVP。归一化因数据源而异：UT-HAR 对每个加载的数组按其自身最小值与最大值缩放；NTU-Fi 使用 (x - 42.3199) / 4.9802；Widar 使用 (x - 0.0025) / 0.0119。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The NTU-Fi and UT-HAR arrays are CSI amplitude and Widar files are BVP; the loaders return no complex CSI array., zh: NTU-Fi 与 UT-HAR 数组为 CSI 幅度，Widar 文件为 BVP；加载器不返回复数 CSI 数组。}
+- key: cir
+  status: none
+  note: {en: 'The released tensors are CSI amplitude or BVP, with no impulse response or power delay profile.', zh: 发布的张量为 CSI 幅度或 BVP，不含冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: 'The released tensors contain no per-path delay, angle, power or phase fields.', zh: 发布的张量不包含逐径时延、角度、功率或相位字段。}
+- key: interaction
+  status: none
+  note: {en: The released tensors contain no per-path interaction type or interaction points., zh: 发布的张量不包含逐径的交互类型或交互点。}
+- {key: power, status: unknown}
+- key: iq
+  status: none
+  note: {en: 'No raw I/Q samples are described; the loaders read CSI amplitude (NTU-Fi), arrays (UT-HAR) and BVP (Widar).', zh: 文中未描述原始 I/Q 采样；加载器读取 CSI 幅度（NTU-Fi）、数组（UT-HAR）与 BVP（Widar）。}
+- key: beam_labels
+  status: none
+  note: {en: 'Labels are activity, subject or gesture classes; no beam indices or per-beam gains are released.', zh: 标签为活动、受试者或手势类别；未发布波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: 'The processed-view loaders return signal tensors and class labels, not coordinates.', zh: 处理后视图的加载器返回信号张量与类别标签，不返回坐标。}
+- key: geometry
+  status: none
+  note: {en: The release folders contain only data and label files., zh: 发布目录仅包含数据与标签文件。}
+- key: materials
+  status: none
+  note: {en: The release folders contain only data and label files., zh: 发布目录仅包含数据与标签文件。}
+- key: rgb
+  status: none
+  note: {en: The release contains CSI-derived tensors and labels only., zh: 发布内容仅包含 CSI 衍生张量与标签。}
+- key: depth
+  status: none
+  note: {en: The release contains CSI-derived tensors and labels only., zh: 发布内容仅包含 CSI 衍生张量与标签。}
+- key: lidar
+  status: none
+  note: {en: The release contains CSI-derived tensors and labels only., zh: 发布内容仅包含 CSI 衍生张量与标签。}
+- key: radar
+  status: none
+  note: {en: The release contains CSI-derived tensors and labels only., zh: 发布内容仅包含 CSI 衍生张量与标签。}
+- key: imu
+  status: none
+  note: {en: The release contains CSI-derived tensors and labels only., zh: 发布内容仅包含 CSI 衍生张量与标签。}
+- key: time_series
+  status: provided
+  note: {en: Activity segments have a time axis of 250 samples for UT-HAR and 500 after decimation for NTU-Fi; no timestamps are released., zh: 活动片段具有时间轴：UT-HAR 为 250 个采样，NTU-Fi 抽取后为 500 个采样；未发布时间戳。}
+- key: multiuser
+  status: none
+  note: {en: 'Each sample carries one activity, one subject or one gesture class; no simultaneous multi-user channels are described.', zh: 每个样本对应一个活动、一名受试者或一个手势类别；未描述同时存在的多用户信道。}
+- {key: multibs, status: unknown}
+- key: crossfreq
+  status: none
+  note: {en: The four datasets come from different WiFi CSI platforms and are not paired measurements of the same positions., zh: 四个数据集来自不同的 WiFi CSI 平台，并非同一位置的成对测量。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: diffraction
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: scattering
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: transmission
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The release contains CSI amplitude or BVP tensors, with no field-level or antenna-pattern outputs.', zh: 发布内容为 CSI 幅度或 BVP 张量，不含场量或天线方向图输出。}
+versions:
+- version: Patterns 4(3)
+  date: 2023-03
+  summary: {en: 'Peer-reviewed version published in Patterns, volume 4, issue 3, article 100703, under the title SenseFi: A Library and Benchmark on Deep-Learning-Empowered WiFi Human Sensing.', zh: '正式版本发表于 Patterns，第 4 卷第 3 期，文章编号 100703，标题为 SenseFi: A Library and Benchmark on Deep-Learning-Empowered WiFi Human Sensing。'}
+  url: https://doi.org/10.1016/j.patter.2023.100703
+- version: arXiv v3
+  date: '2023-02-17'
+  summary: {en: 'Third arXiv revision of 2207.07859 (16,633 KB). The arXiv listing does not describe the changes.', zh: 'arXiv 2207.07859 的第三版（16,633 KB）。arXiv 页面未说明修改内容。'}
+  url: https://arxiv.org/abs/2207.07859v3
+- version: SenseFi
+  date: '2023-01-03'
+  summary: {en: 'GitHub release named SenseFi with no release notes. The tag SenseFi points to commit fabdff9, dated 2022-10-18.', zh: 名为 SenseFi 的 GitHub 发布，无发布说明。标签 SenseFi 指向提交 fabdff9，日期为 2022-10-18。}
+  url: https://github.com/xyanchen/WiFi-CSI-Sensing-Benchmark/releases/tag/SenseFi
+- version: arXiv v2
+  date: '2022-12-16'
+  summary: {en: 'Second arXiv revision of 2207.07859 (16,612 KB). The arXiv listing does not describe the changes.', zh: 'arXiv 2207.07859 的第二版（16,612 KB）。arXiv 页面未说明修改内容。'}
+  url: https://arxiv.org/abs/2207.07859v2
+- version: arXiv v1
+  date: '2022-07-16'
+  summary: {en: 'First arXiv preprint of the SenseFi paper and benchmark (3,974 KB), submitted by Jianfei Yang and coauthors.', zh: 'SenseFi 论文与基准的首个 arXiv 预印本（3,974 KB），由 Jianfei Yang 等作者提交。'}
+  url: https://arxiv.org/abs/2207.07859v1

@@ -5,7 +5,7 @@ origin: ray-tracing
 tasks: [radio-map]
 signals: [paths]
 environment: [outdoor-urban]
-samples: more than 12,000 simulation scenes
+samples: 1,777 ray-traced scenes in the Hugging Face release (Boston 971, Miami 806)
 format: XML (scenes), PLY (meshes), CSV, Pickle, NPY (ray-tracing results)
 license: ODbL
 access: {url: 'https://huggingface.co/datasets/liu-lz/OpenPathNet', type: open}
@@ -14,10 +14,11 @@ paper: arxiv:2512.17286
 used_in: []
 citing: []
 summary: {en: 'Ray-traced per-path complex gain, time of arrival, angle of departure, angle of arrival and path type for 128 m x 128 m scenes derived from OpenStreetMap city layouts, with procedurally generated blocks also supported by the generator. The generator uses NVIDIA Sionna ray tracing.', zh: 基于OpenStreetMap城市布局的128 m x 128 m场景，经光线追踪得到每径的复增益、到达时间、离开角、到达角和路径类型。生成器同时支持程序化生成的区块，并使用NVIDIA Sionna进行光线追踪。}
-sources: ['https://arxiv.org/abs/2512.17286', 'https://arxiv.org/html/2512.17286', 'https://github.com/liu-lz/OpenPathNet', 'https://raw.githubusercontent.com/liu-lz/OpenPathNet/main/README.md', 'https://huggingface.co/api/datasets/liu-lz/OpenPathNet']
+sources: ['https://arxiv.org/abs/2512.17286', 'https://arxiv.org/html/2512.17286', 'https://github.com/liu-lz/OpenPathNet', 'https://raw.githubusercontent.com/liu-lz/OpenPathNet/main/README.md', 'https://huggingface.co/api/datasets/liu-lz/OpenPathNet', 'https://arxiv.org/html/2512.17286v2', 'https://github.com/liu-lz/OpenPathNet/releases', 'https://github.com/liu-lz/OpenPathNet/commits/main', 'https://huggingface.co/datasets/liu-lz/OpenPathNet/commits/main', 'https://huggingface.co/datasets/liu-lz/OpenPathNet/resolve/main/Miami/scenes/scene_25.661320_-80.168744/scene.xml', 'https://raw.githubusercontent.com/liu-lz/OpenPathNet/main/configs/regions_config.yaml', 'https://huggingface.co/datasets/liu-lz/OpenPathNet/raw/main/README.md', 'https://huggingface.co/datasets/liu-lz/OpenPathNet/resolve/main/Boston/raytracing_results/scene_42.253444_-71.050124/raytracing_results.csv', 'https://huggingface.co/datasets/liu-lz/OpenPathNet/resolve/main/Boston/generated_scenes.txt', 'https://huggingface.co/datasets/liu-lz/OpenPathNet/resolve/main/Boston/raytracing.log',
+  'https://huggingface.co/datasets/liu-lz/OpenPathNet/resolve/main/Miami/generated_scenes.txt', 'https://huggingface.co/datasets/liu-lz/OpenPathNet/resolve/main/Miami/raytracing.log']
 checked: '2026-11-06'
-overview: {en: 'OpenPathNet is an open-source toolchain and a ray-traced dataset of per-path multipath parameters for urban radio scenes, described by Lizhou Liu, Xiaohui Chen and Wenyi Zhang (arXiv:2512.17286, 2025; the README states acceptance at IEEE VTC2026-Spring). Scenes are 128 m x 128 m blocks built from OpenStreetMap footprints and simulated with NVIDIA Sionna 0.19.2 ray tracing. The Hugging Face release contains 1,777 ray-traced scenes, 971 from Boston and 806 from Miami, with geometry under scenes/ and results under raytracing_results/ using the same scene_<lat>_<lon> names. The transmitter is at (0, 0, 30) m with an omnidirectional antenna, and receivers lie on a 128 x 128 grid with 1 m spacing at 1 m height. For each receiver the release keeps the five paths with the highest channel gain, each with channel gain, time of arrival (ToA), angles of departure and arrival, and path type (LoS, Reflected or Scattered). The paper names channel prediction and semantic labeling as downstream
-    tasks and describes a wider dataset of more than 12,000 scenes across more than ten cities, while the README describes the Hugging Face release as about 1,700 scenes from three cities. Paths beyond the top five at each receiver are not stored.', zh: 'OpenPathNet 是一个开源工具链，同时提供城市无线电场景的逐径多径参数光线追踪数据集，作者为 Lizhou Liu、Xiaohui Chen 与 Wenyi Zhang（arXiv:2512.17286，2025 年；README 称该工作已被 IEEE VTC2026-Spring 接收）。场景为 128 m x 128 m 的街区，由 OpenStreetMap 建筑轮廓构建，并使用 NVIDIA Sionna 0.19.2 进行光线追踪仿真。Hugging Face 发布版包含 1,777 个光线追踪场景，其中 Boston 971 个、Miami 806 个；几何文件位于 scenes/，结果位于 raytracing_results/，两者使用相同的 scene_<lat>_<lon> 命名。发射机位于 (0, 0, 30) m，采用全向天线；接收机位于 128 x 128 网格上，间距 1 m，高度 1 m。每个接收点保留信道增益最高的五条路径，每条路径包含信道增益、到达时间（ToA）、离开角与到达角，以及路径类型（LoS、Reflected 或 Scattered）。论文列举的下游任务为信道预测与语义标注，并描述了一个更大的数据集，包含十余个城市、超过 12,000 个场景；README 则称 Hugging Face 发布版约 1,700 个场景，来自三个城市。每个接收点前五条以外的路径不予保存。'}
+overview: {en: 'OpenPathNet is an open-source toolchain and a ray-traced dataset of per-path multipath parameters for urban radio scenes, described by Lizhou Liu, Xiaohui Chen and Wenyi Zhang (arXiv:2512.17286, 2025; the README states acceptance at IEEE VTC2026-Spring). Scenes are 130 m x 130 m blocks built from OpenStreetMap building footprints and simulated with NVIDIA Sionna 0.19.2 ray tracing. The Hugging Face release contains 1,777 ray-traced scenes, 971 from Boston and 806 from Miami, with geometry under scenes/ and results under raytracing_results/ using the same scene_<lat>_<lon> names. The transmitter is at (0, 0, 30) m with an omnidirectional antenna, and receivers lie on a 128 x 128 grid with 1 m spacing at 1 m height. For each receiver the release keeps the five paths with the highest channel gain, each with channel gain, time of arrival (ToA), angles of departure and arrival, and path type (LoS, Reflected or Scattered). The paper names channel prediction and semantic labeling
+    as downstream tasks and describes a wider set of more than 12,000 scenes across more than ten cities, while the GitHub README describes the Hugging Face release as about 1,700 scenes from three cities, although the release contains two city subsets. Paths beyond the top five at each receiver are not stored.', zh: 'OpenPathNet 是一个开源工具链，同时提供城市无线电场景的逐径多径参数光线追踪数据集，作者为 Lizhou Liu、Xiaohui Chen 与 Wenyi Zhang（arXiv:2512.17286，2025 年；README 称该工作已被 IEEE VTC2026-Spring 接收）。场景为 130 m x 130 m 的街区，由 OpenStreetMap 建筑轮廓构建，并使用 NVIDIA Sionna 0.19.2 进行光线追踪仿真。Hugging Face 发布版包含 1,777 个光线追踪场景，其中 Boston 971 个、Miami 806 个；几何文件位于 scenes/，结果位于 raytracing_results/，两者使用相同的 scene_<lat>_<lon> 命名。发射机位于 (0, 0, 30) m，采用全向天线；接收机位于 128 x 128 网格上，间距 1 m，高度 1 m。每个接收点保留信道增益最高的五条路径，每条路径包含信道增益、到达时间（ToA）、离开角与到达角，以及路径类型（LoS、Reflected 或 Scattered）。论文列举的下游任务为信道预测与语义标注，并描述了一个更大的数据集，包含十余个城市、超过 12,000 个场景；GitHub README 则称 Hugging Face 发布版约 1,700 个场景、来自三个城市，但该发布版实际包含两个城市的子集。每个接收点前五条以外的路径不予保存。'}
 signal_details:
 - signal: paths
   text: {en: 'Per-path records for the five strongest paths at each receiver. Fields: channel_gain, tau (ToA, seconds), freq (carrier frequency, Hz), rx_coord, phi_r and theta_r (AoA azimuth and elevation), phi_t and theta_t (AoD azimuth and elevation), and type (LoS, Reflected or Scattered). Stored as CSV and pickle with one row per receiver and path, and as a DeepMIMO-style NPY file with arrays of length 5 per receiver.', zh: 每个接收点前五条最强路径的逐径记录。字段包括 channel_gain、tau（到达时间 ToA，单位秒）、freq（载波频率，单位 Hz）、rx_coord、phi_r 与 theta_r（AoA 方位角与仰角）、phi_t 与 theta_t（AoD 方位角与仰角），以及 type（LoS、Reflected 或 Scattered）。以 CSV 与 pickle 存储，每行对应一个接收点与一条路径；DeepMIMO 风格的 NPY 文件中，每个接收点包含长度为 5 的数组。}
@@ -50,3 +51,113 @@ pipeline:
     - {en: Per-path results, zh: 逐径结果}
     outputs:
     - {en: 'CSV, pickle, NPY and PNG files', zh: CSV、pickle、NPY 与 PNG 文件}
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: 'Computed from the five stored complex path gains and ToA; paths beyond the top five are not stored, so the result is truncated.', zh: 由保存的前五条复增益与 ToA 计算得到；超过前五条的路径未保存，结果因此不完整。}
+- key: cir
+  status: derivable
+  note: {en: The five stored paths placed at their ToA form a truncated impulse response., zh: 将保存的五条路径按其 ToA 放置，即得到截断的冲激响应。}
+- key: paths
+  status: provided
+  note: {en: 'Five strongest paths per receiver, each with channel gain, ToA, AoD, AoA and path type.', zh: 每个接收点保留最强的五条路径，每条包含信道增益、ToA、AoD、AoA 与路径类型。}
+- key: interaction
+  status: provided
+  note: {en: 'Path type only (LoS, Reflected or Scattered); no surface points or reflection order.', zh: 仅有路径类型（LoS、Reflected 或 Scattered），没有反射面位置或反射阶数。}
+- key: power
+  status: provided
+  note: {en: 'Per-path channel gain for the five strongest paths; no RSSI, transmit power or total receiver power field.', zh: 前五条最强路径的逐径信道增益；不含 RSSI、发射功率或接收总功率字段。}
+- key: iq
+  status: none
+  note: {en: Ray-tracing output with no I/Q samples., zh: 光线追踪输出，不含 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: 'The transmitter uses an omnidirectional antenna, so there are no beam indices or beam gains.', zh: 发射机采用全向天线，因此没有波束索引或波束增益。}
+- key: position
+  status: provided
+  note: {en: 'Receiver coordinates on a 1 m grid at 1 m height; the transmitter is at (0, 0, 30) m.', zh: '接收机位于 1 m 间距网格上，高度 1 m；发射机位于 (0, 0, 30) m。'}
+- key: geometry
+  status: provided
+  note: {en: Each scene has a Mitsuba scene.xml and PLY meshes for the ground and buildings., zh: 每个场景包含 Mitsuba 的 scene.xml，以及地面与建筑的 PLY 网格。}
+- key: materials
+  status: provided
+  note: {en: 'scene.xml assigns named ITU materials (concrete, marble, metal, wood, wet ground) with diffuse reflectance values.', zh: scene.xml 为各表面赋予命名的 ITU 材料（混凝土、大理石、金属、木材、湿地面）及漫反射率。}
+- key: rgb
+  status: none
+  note: {en: 'Ray-tracing outputs only, with no sensor or image data.', zh: 仅为光线追踪输出，不含传感器或图像数据。}
+- key: depth
+  status: none
+  note: {en: 'Ray-tracing outputs only, with no sensor or image data.', zh: 仅为光线追踪输出，不含传感器或图像数据。}
+- key: lidar
+  status: none
+  note: {en: 'Ray-tracing outputs only, with no sensor or image data.', zh: 仅为光线追踪输出，不含传感器或图像数据。}
+- key: radar
+  status: none
+  note: {en: 'Ray-tracing outputs only, with no sensor or image data.', zh: 仅为光线追踪输出，不含传感器或图像数据。}
+- key: imu
+  status: none
+  note: {en: 'Ray-tracing outputs only, with no sensor or image data.', zh: 仅为光线追踪输出，不含传感器或图像数据。}
+- key: time_series
+  status: none
+  note: {en: Each scene is a single snapshot with no timestamps., zh: 每个场景为单一快照，没有时间戳。}
+- key: multiuser
+  status: none
+  note: {en: One transmitter per scene., zh: 每个场景仅一个发射机。}
+- key: multibs
+  status: none
+  note: {en: 'One transmitter per scene, so no multi-base-station set is released.', zh: 每个场景仅一个发射机，因此没有多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: The paper lists broader frequency bands as future work., zh: 论文将更宽的频段列为未来工作。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Receivers sit on a fixed grid and the scenes are static., zh: 接收机位于固定网格上，场景为静态。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Scenes are static; dynamic environmental factors are listed as future work., zh: 场景为静态，动态环境因素被列为未来工作。}
+- key: reflection
+  status: provided
+  note: {en: Enabled in the Sionna ray tracing and stored as the Reflected path type., zh: 在 Sionna 光线追踪中启用，并以 Reflected 路径类型保存。}
+- key: diffraction
+  status: unknown
+  note: {en: 'Enabled in the generator, but the stored path types are LoS, Reflected and Scattered only, so diffracted paths cannot be identified.', zh: 生成器中已启用，但保存的路径类型只有 LoS、Reflected 和 Scattered，无法识别绕射路径。}
+- key: scattering
+  status: provided
+  note: {en: Stored as the Scattered path type., zh: 以 Scattered 路径类型保存。}
+- key: transmission
+  status: unknown
+  note: {en: The paper does not name transmission among the enabled mechanisms., zh: 论文未将穿透列为启用的机制。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Outputs are per-path gains and angles; no field components are stored., zh: 输出为逐径增益与角度，不保存场分量。}
+versions:
+- version: arXiv v2
+  date: '2026-03-29'
+  summary: {en: 'Second arXiv version of the paper; the arXiv listing does not itemize the changes, and the GitHub README cites acceptance at IEEE VTC2026-Spring.', zh: 论文第二个 arXiv 版本；arXiv 页面未逐项列出改动，GitHub README 注明已被 IEEE VTC2026-Spring 接收。}
+  url: https://arxiv.org/abs/2512.17286v2
+- version: arXiv v1
+  date: '2025-12-19'
+  summary: {en: 'First arXiv version of the paper OpenPathNet: An Open-Source RF Multipath Data Generator for AI-Driven Wireless Systems.', zh: '论文 OpenPathNet: An Open-Source RF Multipath Data Generator for AI-Driven Wireless Systems 的首个 arXiv 版本。'}
+  url: https://arxiv.org/abs/2512.17286v1
+- version: Hugging Face release
+  date: '2025-12-09'
+  summary: {en: Hugging Face dataset repository liu-lz/OpenPathNet created; the repository now holds 971 Boston and 806 Miami scenes., zh: Hugging Face 数据集仓库 liu-lz/OpenPathNet 创建；该仓库目前包含 971 个 Boston 场景和 806 个 Miami 场景。}
+  url: https://huggingface.co/datasets/liu-lz/OpenPathNet
+bands_ghz: [3.66]
+antennas: {tx: 1, rx: 1}
+size_gb: 71.6
+facts:
+- label: {en: Scene source, zh: 场景来源}
+  text: {en: 'All 1,777 scenes were generated from OpenStreetMap building data. The generation manifests list no randomized fallback scenes.', zh: '全部 1,777 个场景由 OpenStreetMap 建筑数据生成，生成清单中没有随机回退场景。'}
+- label: {en: Scene placement, zh: 场景位置}
+  text: {en: 'The manifests give the requested and the actual latitude and longitude, the number of OSM attempts (up to 10) and the offset distance (up to about 3 km), because a retry can move the scene.', zh: 清单记录了请求位置与实际位置的纬度和经度、OSM 尝试次数（最多 10 次）以及偏移距离（最多约 3 km），因为重试可能会移动场景。}
+- label: {en: Receivers per scene, zh: 每个场景的接收点数}
+  text: {en: 'After outdoor-point filtering, a scene holds between 3,758 and 16,384 receivers. The raytracing.log file lists the receiver count for each scene.', zh: '经过室外点过滤后，每个场景的接收点数在 3,758 至 16,384 之间。raytracing.log 逐场景列出接收点数。'}
+- label: {en: Carrier and antennas, zh: 载频与天线}
+  text: {en: 'The default configuration uses a 3.66 GHz carrier, an isotropic transmitter and dipole receivers. The sample CSV stores the frequency as 3.66e9 Hz.', zh: 默认配置使用 3.66 GHz 载频，发射机为全向天线，接收机为偶极子天线。示例 CSV 中频率字段为 3.66e9 Hz。}
+technical_notes:
+- {en: 'The default ray-tracing configuration allows up to 3 reflections, uses 90,000 ray samples, and enables diffraction and scattering.', zh: '默认光线追踪配置最多允许 3 次反射，使用 90,000 个射线样本，并启用绕射与散射。'}
+limitations:
+- {en: 'The Hugging Face release covers Boston and Miami only. The ten-city distribution, listed as Link 2 in the GitHub README, is a separate download.', zh: Hugging Face 发布版仅包含波士顿与迈阿密两个城市。GitHub README 中列为 Link 2 的十城市数据为单独下载。}

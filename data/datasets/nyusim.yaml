@@ -14,84 +14,32 @@ paper: doi:10.1109/comst.2023.3344671
 used_in: ['doi:10.1109/tap.2024.3366581', 'doi:10.1109/wcnc57260.2024.10570665', 'doi:10.1109/ojcoms.2025.3625731', 'doi:10.1109/icc59461.2026.11587993']
 citing: ['doi:10.1109/jproc.2024.3412828', 'doi:10.1109/ojcoms.2025.3592365']
 summary: {en: 'A channel generator for 0.5 to 150 GHz (MATLAB version 4.0) that produces drop-based and spatially consistent simulations for UMi, UMa, RMa, InH and InF scenarios.', zh: 面向 0.5 至 150 GHz 的信道生成器（MATLAB 4.0 版），可为 UMi、UMa、RMa、InH 和 InF 场景生成 drop-based 与空间一致性仿真结果。}
-sources: ['https://wireless.engineering.nyu.edu/nyusim/', 'https://wireless.engineering.nyu.edu/nyusim-thz-mmwave-channel-simulator-research/', 'https://api.crossref.org/works?query.title=NYUSIM+hybrid+channel+simulator+millimeter-wave&rows=3&select=DOI,title,issued']
+sources: ['https://wireless.engineering.nyu.edu/nyusim/', 'https://wireless.engineering.nyu.edu/nyusim-thz-mmwave-channel-simulator-research/', 'https://api.crossref.org/works?query.title=NYUSIM+hybrid+channel+simulator+millimeter-wave&rows=3&select=DOI,title,issued', 'https://api.crossref.org/works/10.1109/comst.2023.3344671', 'https://arxiv.org/abs/2305.01828', 'https://arxiv.org/html/2305.01828v1', 'https://wireless.engineering.nyu.edu/nyusim-thz-mmwave-channel-simulator-research2/', 'https://wireless.engineering.nyu.edu/wp-json/wp/v2/pages?slug=nyusim', 'https://wireless.engineering.nyu.edu/nyusim-5g-channel-sim-available/', 'https://wireless.engineering.nyu.edu/nyusim-version-1-3-now-available/', 'https://wireless.engineering.nyu.edu/nyusim-version-1-4-now-available/', 'https://wireless.engineering.nyu.edu/download-nyusim-version-3-0/', 'https://apps.nsnam.org/app/nyusim/', 'https://github.com/hiteshPoddar/NYUSIM_in_ns3/releases/tag/v1.0', 'https://github.com/hiteshPoddar/NYUSIM_in_ns3/tags']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Generate synthetic spatiotemporal channels from measurement-derived scenario statistics, then add antennas/trajectories and task postprocessing. Measurement-driven parameters do not make every output a measurement record.', zh: 从测量归纳出的场景统计生成合成时空信道，再加入天线/轨迹与任务后处理。测量驱动参数不等于每个输出都是实测记录。}
+  summary: {en: 'Select the implementation and scenario, choose the drop-based or spatial-consistency mode, then generate multipath components from the statistical model. The outputs are simulated realizations, not measured records.', zh: 选定实现与场景，选择 drop-based 或空间一致性模式，然后由统计模型生成多径分量。输出为仿真实现，而非测量记录。}
   stages:
-  - title: {en: Select implementation and scenario parameters, zh: 选择实现与场景参数}
-    detail: {en: 'Select the implementation and scenario; 4.0 supports drop-based and spatial-consistency modes, configured through a GUI or text parameter files.', zh: 选定实现及场景；4.0支持drop-based和spatial-consistency模式，输入可通过GUI或文本参数文件配置。}
+  - title: {en: Select implementation and scenario, zh: 选择实现与场景}
+    detail: {en: 'NYUSIM 4.0 for MATLAB covers the UMi, UMa, RMa, InH and InF scenarios from 0.5 to 150 GHz, with RF bandwidth from CW to 1 GHz. Inputs can be entered in the GUI or loaded from a .txt parameter file, and the parameter file saved for a run (BasicParameters.txt) records all input values.', zh: MATLAB 版 NYUSIM 4.0 覆盖 UMi、UMa、RMa、InH 与 InF 场景，频率范围 0.5 至 150 GHz，射频带宽从 CW 至 1 GHz。输入可在 GUI 中填写，也可读取 .txt 参数文件；运行所保存的参数文件（BasicParameters.txt）记录全部输入值。}
     inputs:
-    - {en: MATLAB 4.0 or a specified version of another implementation, zh: MATLAB4.0或明确版本的其他实现}
-    - {en: UMi/UMa/RMa/InH/InF scenarios, zh: UMi/UMa/RMa/InH/InF场景}
+    - {en: 'MATLAB 4.0 package, or NYUSIM 1.0 for ns-3 from the ns-3 app store', zh: MATLAB 4.0 软件包，或 ns-3 app store 中的 NYUSIM 1.0}
     outputs:
-    - {en: Runtime version and parameter file, zh: 运行版本与参数文件}
-    controls:
-    - {en: 'Researcher specifies: frequency, RF bandwidth, scenario, LOS/NLOS, and input file', zh: 研究者固定：频率、RF带宽、场景、LOS/NLOS及输入文件}
+    - {en: Parameter file recording the inputs of the run, zh: 记录本次运行输入的参数文件}
     checks:
-    - {en: Check the meaning of same-named parameters across implementations, zh: 核对不同实现的同名参数含义}
-    - {en: Do not treat MATLAB 4.0 and ns-3 1.0 as the same software version, zh: 不要把MATLAB4.0与ns-3 1.0当作同一软件版本}
-  - title: {en: Configure links or mobility sampling, zh: 设定链路或移动采样}
-    detail: {en: Configure individual samples or spatially continuous receiver movement according to the selected mode; the mobility mode determines correlation between snapshots., zh: 按所选模式设定单次抽样或空间连续的接收机运动；运动模式影响快照之间的相关性。}
-    inputs:
-    - {en: Tx/Rx geometry and antenna settings, zh: 收发几何与天线设置}
-    - {en: Static drops or mobility trajectories, zh: 静态drop或移动轨迹}
+    - {en: 'Record the implementation and version, because MATLAB 4.0 and ns-3 1.0 are separate releases', zh: 记录实现与版本，因 MATLAB 4.0 与 ns-3 1.0 为两个独立版本}
+  - title: {en: Choose the simulation mode, zh: 选择仿真模式}
+    detail: {en: Drop-based mode gives statistically independent realizations for user-set TX-RX separations. Spatial-consistency mode gives responses that change smoothly with receiver motion., zh: drop-based 模式给出 TX-RX 间距由用户设定的统计独立实现。空间一致性模式给出随接收机运动平滑变化的响应。}
+    checks:
+    - {en: Check whether independent drops are mistaken for a time series, zh: 检查是否把相互独立的 drop 误当作时间序列}
+  - title: {en: Generate multipath components from statistics, zh: 由统计量生成多径分量}
+    detail: {en: 'Channel statistics are stored in fetchChanParams.m in the MATLAB 4.0 code. The ns-3 implementation of the drop-based model draws time clusters, subpath delays, powers and departure and arrival angles, then removes subpaths below the receiver power threshold.', zh: 信道统计量存放在 MATLAB 4.0 代码的 fetchChanParams.m 中。drop-based 模型的 ns-3 实现会生成时间簇、子径时延、功率以及出发与到达角，并去除低于接收机功率门限的子径。}
     outputs:
-    - {en: Link set with positions/sampling rules, zh: 带位置/采样规则的链路集合}
-    controls:
-    - {en: 'Researcher specifies: distance, Tx/Rx heights, antennas, trajectories, and sampling interval', zh: 研究者固定：距离、Tx/Rx高度、天线、轨迹和采样间隔}
-    checks:
-    - {en: Check whether independent drops are being mistaken for time series, zh: 检查独立drop是否被误当时间序列}
-    - {en: Verify joint multiuser/multi-BS correlation in the specific implementation, zh: 多用户/多BS联合相关性需另核验具体实现}
-  - title: {en: Generate statistical propagation and multipath, zh: 生成统计传播与多径}
-    detail: {en: 'Generate propagation parameters such as delays, powers, and angles from scenario statistics, updating them with receiver position in continuous mode.', zh: 由场景统计生成时延、功率、角度等传播参数，并在连续模式中随接收机位置更新。}
-    inputs:
-    - {en: Scenario statistics and link settings, zh: 场景统计与链路设置}
-    outputs:
-    - {en: Synthetic PDP/CIR and path parameters, zh: 合成PDP/CIR及路径参数}
-    controls:
-    - {en: 'Researcher specifies: random seed, sample count, mode, and available statistical parameters', zh: 研究者固定：随机种子、样本数、模式和可用统计参数}
-    checks:
-    - {en: Compare PDP/delay-spread statistics with the selected scenario parameters, zh: 比较PDP/延迟扩展等统计与所选场景参数}
-    - {en: Do not interpret random paths as reconstructed street reflection surfaces, zh: 不要把随机路径解释为已重建的街道反射面}
-  - title: {en: Save outputs for verification, zh: 保存可复核输出}
-    detail: {en: Save model outputs and input parameters; verify serialization formats and exportable quantities separately for each language implementation., zh: 保存模型输出及输入参数；各语言实现的序列化格式和可导出量单独确认。}
-    inputs:
-    - {en: Generated PDP/CIR and run configuration, zh: 生成的PDP/CIR和运行配置}
-    outputs:
-    - {en: Numerical propagation results and configuration records, zh: 数值传播结果与配置记录}
-    controls:
-    - {en: 'Researcher specifies: power/delay units, antenna conventions, data precision, and output path', zh: 研究者固定：功率/时延单位、天线口径、数据精度和输出路径}
-    checks:
-    - {en: Check whether phase and complex coefficients are retained; PDP alone does not establish availability of full CSI, zh: 检查是否保留相位和复系数，避免仅凭PDP声称已有完整CSI}
-    - {en: Save the handling policy for failed/empty results, zh: 保存失败/空结果策略}
-  - title: {en: Convert outputs into communication task data, zh: 转为通信任务数据}
-    detail: {en: 'Derive frequency-domain channels, beam labels, or link evaluations from information actually present in the outputs; do not invent unrecoverable phase from power statistics.', zh: 按输出实际包含的信息派生频域信道、波束标签或链路评估，不从功率统计虚构不可恢复的相位。}
-    inputs:
-    - {en: Path or CIR outputs, zh: 路径或CIR输出}
-    - {en: 'Researcher-defined OFDM, codebook, and noise configuration', zh: 研究者定义的OFDM、码本与噪声配置}
-    outputs:
-    - {en: CSI/beam samples when conditions permit, zh: 条件成立时的CSI/beam样本}
-    - {en: Link metrics, zh: 链路指标}
-    controls:
-    - {en: 'Researcher specifies: frequency-domain transform, codebook, noise, and train/test scenarios', zh: 研究者固定：频域变换、码本、噪声和训练/测试场景}
-    checks:
-    - {en: Perform single-link analytical checks before evaluating learning methods, zh: 先做单链路解析检查，再评估学习方法}
-    - {en: Distinguish extrapolation across scenarios from generalization to real measurements, zh: 明确场景外推与真实测量外推的区别}
-  scope: {en: This card primarily uses NYUSIM 4.0 MATLAB; pin Python/ns-3 versions independently., zh: NYUSIM 4.0 MATLAB为本卡主要依据；Python/ns-3实现独立固定版本。}
+    - {en: 'Multipath components with delay, power and angles for each realization', zh: 每个实现的多径分量，含时延、功率与角度}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: • PDP/CIR and statistical path parameters generated during a run, zh: • 运行后生成的PDP/CIR及统计路径参数}
-- label: {en: Derived outputs, zh: 派生输出}
-  text: {en: • CFR/beam/link metrics under the task configuration, zh: • 任务配置下的CFR/beam/链路指标}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• NYUSIM was not run; detailed export fields must be checked against actual outputs from the selected implementation.
-
-      • This workflow does not claim verified joint multiuser correlation, physical cross-frequency correlation, or real street geometry.', zh: '• 未运行NYUSIM；详细导出字段应以选定实现的实际输出为准。
-
-      • 本流程不声称已核验联合多用户、跨频物理相关或真实街道几何。'}
+  text: {en: 'Multipath components (time clusters and subpaths) with delays, powers and departure and arrival angles, as described for the ns-3 implementation (arXiv:2305.01828).', zh: '多径分量（时间簇与子径），含时延、功率及出发与到达角，依据 ns-3 实现的说明（arXiv:2305.01828）。'}
+- label: {en: Frequency interpolation, zh: 频率插值}
+  text: {en: 'In the ns-3 implementation, path loss exponents and shadowing values at other frequencies are interpolated from the 28 GHz and 140 GHz values, because most scenarios were measured only at those frequencies.', zh: 在 ns-3 实现中，其他频率的路径损耗指数与阴影衰落值由 28 GHz 与 140 GHz 的取值插值得到，因为多数场景仅在这两个频率上测量。}
 provenance:
 - {en: NYU measurement-derived statistical parameters, zh: NYU 实测统计参数}
 - {en: Scenario/frequency/LOS and array configuration, zh: 场景/频率/LOS 与阵列配置}
@@ -99,20 +47,108 @@ provenance:
 - {en: CIR/channel parameters, zh: CIR/信道参数}
 - {en: User-defined CSI and experiments, zh: 用户定义 CSI 与实验}
 technical_notes:
-- {en: 'Confirmed: 4.0 covers five scenarios and provides drop-based and spatial-consistency modes.', zh: 已确认：4.0 覆盖五种场景并提供 drop-based 与 spatial-consistency 模式。}
-- {en: 'Inference: fitting measured distributions differs from reconstructing deterministic paths on a specific street.', zh: 推断：与实测分布拟合不同于重建特定街道的确定性路径。}
+- {en: 'NYUSIM 4.0 covers five scenarios (UMi, UMa, RMa, InH and InF) and provides drop-based and spatial-consistency modes.', zh: NYUSIM 4.0 覆盖五种场景（UMi、UMa、RMa、InH 与 InF），并提供 drop-based 与空间一致性两种模式。}
+- {en: 'The ns-3 implementation paper states that the model is based on NYU WIRELESS measurement campaigns from 2011 to 2022, at 28, 38, 73 and 140 GHz.', zh: ns-3 实现论文称，该模型基于 NYU WIRELESS 2011 至 2022 年的测量活动，频率包括 28、38、73 与 140 GHz。}
 limitations:
-- {en: Version numbers from different language implementations are not interchangeable., zh: 不同语言实现的版本号不可互换。}
-- {en: 'Without synchronized RGB/point clouds, visual-wireless associations cannot be directly validated.', zh: 没有同步 RGB/点云时，不支持直接验证视觉-无线关联。}
+- {en: Version numbers differ across implementations. NYUSIM 4.0 (MATLAB) and NYUSIM 1.0 (ns-3) are separate releases and are not interchangeable., zh: 不同实现的版本号不同。NYUSIM 4.0（MATLAB）与 NYUSIM 1.0（ns-3）为两个独立版本，不可互换。}
+- {en: 'The simulator produces no RGB or point-cloud data, so visual-wireless associations cannot be validated directly with its output.', zh: 仿真器不输出 RGB 或点云数据，因此无法直接用其输出验证视觉与无线的关联。}
 history:
-- {en: '2023-03-06: MATLAB 4.0 update announcement.', zh: 2023-03-06：MATLAB 4.0 更新说明。}
-- {en: 'As of verification: the official website also announced migration of v4.0 to Python; a separate formal release number was not confirmed.', zh: 截至核验日：官网另公告 v4.0 向 Python 迁移；未确认独立正式 release 号。}
+- {en: '2023-03-06: NYUSIM 4.0 for MATLAB and NYUSIM 1.0 for ns-3 announced. The MATLAB release enables drop-based and spatial-consistency modes for all five scenarios.', zh: 2023 年 3 月 6 日：发布 MATLAB 版 NYUSIM 4.0 与 ns-3 版 NYUSIM 1.0。MATLAB 版对全部五种场景启用 drop-based 与空间一致性模式。}
+- {en: 'The research page states that v4.0 has been migrated to Python (NYUSIM Python), with FR3 (7 to 24 GHz) modeling planned. No separate release number is given.', zh: 研究页面称 v4.0 已迁移至 Python（NYUSIM Python），并计划加入 FR3（7 至 24 GHz）建模。页面未给出单独的版本号。}
 usage:
-- {en: Obtain the target implementation and manual from the official website; fix the scenario/frequency/bandwidth., zh: 从官网获取目标实现与手册，固定场景/频率/带宽。}
-- {en: 'First check statistics in drop mode, then enable spatial consistency to generate continuous trajectories.', zh: 先在 drop 模式复核统计量，再启用 spatial consistency 生成连续轨迹。}
-- {en: Record the seed and parameter file; use independent changes to statistical parameters as stress tests., zh: 记录 seed 与参数文件，独立统计参数变化作为 stress test。}
-overview: {en: 'NYUSIM is a channel simulator from NYU WIRELESS at New York University for sub-terahertz and millimeter-wave channels. The official page describes its statistical foundation as built on propagation measurements, validated through over a decade of measurements in urban, indoor, factory and rural environments. NYUSIM 4.0 for MATLAB covers 0.5 GHz to 150 GHz, with an RF bandwidth from CW to 1 GHz for each scenario, and models UMi, UMa, RMa, InH and InF under LOS and NLOS. Drop-based and spatial-consistency simulation modes are enabled for all five scenarios. An ns-3 version, NYUSIM 1.0, is available from the ns-3 app store. The output is channel realizations generated from a statistical model, not recorded data, and the MATLAB package is obtained through a download form for Windows or Mac.', zh: NYUSIM 是 New York University 的 NYU WIRELESS 发布的信道仿真器，用于亚太赫兹（sub-terahertz）与毫米波信道。官方页面将其统计基础描述为基于传播测量，并称该模型经过十余年测量的验证，测量环境包括城市、室内、工厂和乡村。MATLAB 版 NYUSIM 4.0 覆盖 0.5 GHz 至 150 GHz，各场景 RF
-    带宽为 CW（0 Hz）至 1 GHz，涵盖 UMi、UMa、RMa、InH 和 InF 场景及 LOS 与 NLOS 两种情况。五个场景均支持 drop-based 与空间一致性两种仿真模式。ns-3 版本 NYUSIM 1.0 可从 ns-3 app store 获取。输出为统计模型生成的信道实现，而非记录数据；MATLAB 版需通过 Windows 或 Mac 的下载表单获取。}
+- {en: 'Obtain the implementation and its user manual from the official website through the download form, then fix the scenario, frequency and bandwidth in the parameter file.', zh: 通过官网下载表单获取实现版本及其用户手册，然后在参数文件中固定场景、频率与带宽。}
+- {en: 'Save the parameter file of each run (BasicParameters.txt), so that the configuration can be shared and rerun.', zh: 保存每次运行的参数文件（BasicParameters.txt），以便共享配置并重复运行。}
+overview: {en: 'NYUSIM is a channel simulator from NYU WIRELESS at New York University for millimeter-wave and sub-terahertz channels. The NYU WIRELESS research page describes its statistical models as built on propagation measurements and validated through more than a decade of measurements in urban, indoor, factory and rural environments. NYUSIM 4.0 for MATLAB covers 0.5 GHz to 150 GHz with an RF bandwidth from CW to 1 GHz, and models UMi, UMa, RMa, InH and InF scenarios under LOS and NLOS. Drop-based and spatial-consistency simulation modes are enabled for all five scenarios. An ns-3 version, NYUSIM 1.0, is available from the ns-3 app store. The MATLAB package is obtained through a download form for Windows or Mac, and its license asks users to cite NYU WIRELESS publications. The output is a set of channel realizations generated from a statistical model rather than recorded measurement data. The research page also states that v4.0 has been migrated to Python, with FR3 modeling planned,
+    but gives no separate release number for that version.', zh: NYUSIM 是 New York University 的 NYU WIRELESS 发布的毫米波与亚太赫兹信道仿真器。NYU WIRELESS 研究页面称其统计模型基于传播测量，并经十余年城市、室内、工厂与乡村环境的测量验证。MATLAB 版 NYUSIM 4.0 覆盖 0.5 GHz 至 150 GHz，射频带宽为 CW（0 Hz）至 1 GHz，涵盖 UMi、UMa、RMa、InH 和 InF 场景及 LOS 与 NLOS 两种情况。五个场景均支持 drop-based 与空间一致性两种仿真模式。ns-3 版本 NYUSIM 1.0 可从 ns-3 app store 获取。MATLAB 版需通过 Windows 或 Mac 的下载表单获取，许可条款要求使用者引用 NYU WIRELESS 发表的文献。输出为统计模型生成的信道实现，而非记录的测量数据。研究页面还称 v4.0 已迁移至 Python，并计划加入 FR3（7–24 GHz）建模，但未给出该版本的单独版本号。}
 signal_details:
 - signal: paths
-  text: {en: 'Multipath components (MPCs) in drop-based or spatially consistent channel realizations. Antenna patterns are stored in the 3Dant format, with gain, phase and polarization over azimuth and elevation. Gain is interpolated for each MPC in its departure and arrival directions, and the received power is adjusted accordingly. Drop-based mode gives statistically independent realizations for user-set TX-RX separations, and spatial-consistency mode gives responses that change smoothly with receiver motion.', zh: drop-based 或空间一致性信道实现中的多径分量（MPC）。天线方向图以 3Dant 格式存储，包含方位角与俯仰角上的增益、相位和极化。每个 MPC 在出发与到达方向上插值得到增益，并据此调整接收功率。drop-based 模式给出 TX-RX 间距由用户设定的统计独立实现，空间一致性模式给出随接收机运动平滑变化的响应。}
+  text: {en: 'Multipath components in drop-based or spatially consistent channel realizations. Drop-based mode gives statistically independent realizations for user-set TX-RX separations, and spatial-consistency mode gives responses that change smoothly with receiver motion. The NYUSIM Python version described on the research page stores antenna patterns in 3Dant format and interpolates the gain for each MPC in its departure and arrival directions.', zh: drop-based 或空间一致性信道实现中的多径分量（MPC）。drop-based 模式给出 TX-RX 间距由用户设定的统计独立实现，空间一致性模式给出随接收机运动平滑变化的响应。研究页面所述 NYUSIM Python 版本以 3Dant 格式存储天线方向图，并在每个 MPC 的出发与到达方向上插值增益。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: The complex MIMO channel matrix is computed for each realization from the configured arrays (ns-3 1.0 implementation)., zh: 每次实现均根据所设阵列计算复数 MIMO 信道矩阵（ns-3 1.0 实现）。}
+- key: cir
+  status: simulate
+  note: {en: 'Wideband channel impulse responses are generated statistically for each realization, as the release notes describe.', zh: 宽带信道冲激响应按每次实现由统计模型生成，与发布说明的描述一致。}
+- key: paths
+  status: simulate
+  note: {en: 'Delay, power, and departure and arrival angles of each multipath component are generated per realization (ns-3 1.0 implementation).', zh: 每次实现生成各多径分量的时延、功率及出发与到达角（ns-3 1.0 实现）。}
+- {key: interaction, status: unknown}
+- key: power
+  status: simulate
+  note: {en: Path loss and received power spectral density are computed in each run (ns-3 1.0 implementation)., zh: 路径损耗与接收功率谱密度在每次运行中计算（ns-3 1.0 实现）。}
+- {key: iq, status: unknown}
+- key: beam_labels
+  status: simulate
+  note: {en: Beamforming gain is computed in each run from user-set Tx and Rx beamforming vectors., zh: 每次运行中，波束成形增益由用户设定的发射与接收波束成形矢量计算得出。}
+- key: position
+  status: simulate
+  note: {en: 'TX-RX separations are set by the user, and no position dataset is released.', zh: TX-RX 间距由用户设定，不发布位置数据集。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'The outputs are channel realizations only, with no image data.', zh: 输出仅为信道实现，不含图像数据。}
+- key: depth
+  status: none
+  note: {en: 'The outputs are channel realizations only, with no sensor data.', zh: 输出仅为信道实现，不含传感器数据。}
+- key: lidar
+  status: none
+  note: {en: 'The outputs are channel realizations only, with no point-cloud data.', zh: 输出仅为信道实现，不含点云数据。}
+- key: radar
+  status: none
+  note: {en: 'The outputs are channel realizations only, with no sensor data.', zh: 输出仅为信道实现，不含传感器数据。}
+- key: imu
+  status: none
+  note: {en: 'The outputs are channel realizations only, with no sensor data.', zh: 输出仅为信道实现，不含传感器数据。}
+- key: time_series
+  status: simulate
+  note: {en: 'Spatial-consistency mode gives responses that change smoothly with receiver motion, whereas drop-based realizations are statistically independent.', zh: 空间一致性模式给出随接收机运动平滑变化的响应，而 drop-based 实现在统计上相互独立。}
+- {key: multiuser, status: unknown}
+- {key: multibs, status: unknown}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- key: dynamic_blockage
+  status: simulate
+  note: {en: 'Human blockage is implemented in the MATLAB version, and the ns-3 1.0 implementation omits it.', zh: MATLAB 版实现了人体遮挡，ns-3 1.0 实现未包含该功能。}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: simulate
+  note: {en: 'Four polarization combinations (V-V, V-H, H-V, H-H) and cross-polarization coefficients are generated per multipath component (ns-3 1.0 implementation).', zh: 每个多径分量生成四种极化组合（V-V、V-H、H-V、H-H）及交叉极化系数（ns-3 1.0 实现）。}
+- {key: em_field, status: unknown}
+versions:
+- version: 4.0 (Python)
+  summary: {en: 'NYUSIM v4.0 has been migrated to Python, and FR3 (7 to 24 GHz) modeling is planned for it; the research page gives no separate release number.', zh: NYUSIM v4.0 已迁移至 Python，计划为其加入 FR3（7 至 24 GHz）建模；研究页面未给出单独的版本号。}
+  url: https://wireless.engineering.nyu.edu/nyusim-thz-mmwave-channel-simulator-research/
+- version: 1.0 (ns-3 GitHub release)
+  date: '2023-09-21'
+  summary: {en: 'The NYUSIM_in_ns3 repository publishes its v1.0 release, with the drop-based ns-3 implementation tested on ns-3.39.', zh: NYUSIM_in_ns3 仓库发布 v1.0 版本，其中的 drop-based ns-3 实现在 ns-3.39 上测试。}
+  url: https://github.com/hiteshPoddar/NYUSIM_in_ns3/releases/tag/v1.0
+- version: 4.0 (MATLAB)
+  date: '2023-03-06'
+  summary: {en: 'NYUSIM 4.0 for MATLAB covers 0.5 to 150 GHz with RF bandwidth from 0 Hz (CW) to 1 GHz, enables drop-based and spatial-consistency modes for UMi, UMa, RMa, InH and InF, and adds upload of a .txt file of input parameters.', zh: MATLAB 版 NYUSIM 4.0 覆盖 0.5 至 150 GHz，射频带宽为 0 Hz（CW）至 1 GHz，对 UMi、UMa、RMa、InH 与 InF 五种场景启用 drop-based 与空间一致性两种模式，并支持上传 .txt 格式的输入参数文件。}
+  url: https://wireless.engineering.nyu.edu/nyusim/
+- version: 1.0 (ns-3 app store)
+  date: '2023-03-06'
+  summary: {en: 'NYU WIRELESS announces NYUSIM 1.0 for ns-3, available in the ns-3 app store, alongside the MATLAB 4.0 release.', zh: NYU WIRELESS 宣布 ns-3 版 NYUSIM 1.0 可从 ns-3 app store 获取，与 MATLAB 版 4.0 同时公布。}
+  url: https://apps.nsnam.org/app/nyusim/
+- version: '3.0'
+  date: '2021-04-01'
+  summary: {en: 'Adds indoor office channel modeling that follows the outdoor framework of NYUSIM 2.01, covering 500 MHz to 150 GHz with RF bandwidth of 0 to 800 MHz.', zh: 新增室内办公场景信道建模，沿用 NYUSIM 2.01 的室外建模框架，覆盖 500 MHz 至 150 GHz，射频带宽为 0 至 800 MHz。}
+  url: https://wireless.engineering.nyu.edu/download-nyusim-version-3-0/
+- version: '1.4'
+  date: '2016-11-01'
+  summary: {en: 'Adds GUI guidance, antenna HPBW and gain examples, .mat output files, a selectable output file type, and a BasicParameters file that records the run inputs.', zh: 新增图形界面操作指引、天线阵列 HPBW 与增益示例、.mat 输出文件、可选输出文件类型，以及记录运行输入的 BasicParameters 文件。}
+  url: https://wireless.engineering.nyu.edu/nyusim-version-1-4-now-available/
+- version: '1.3'
+  date: '2016-08-19'
+  summary: {en: 'Corrects the matrix dimension descriptions of the output .txt files, slightly changes the close-in path-loss parameters, and states the usable range as 500 MHz to 100 GHz.', zh: 更正输出 .txt 文件中矩阵行列数的说明，略微修改近地参考距离（CI）路径损耗参数，可用频率范围为 500 MHz 至 100 GHz。}
+  url: https://wireless.engineering.nyu.edu/nyusim-version-1-3-now-available/
+- version: '1.0'
+  date: '2016-07-13'
+  summary: {en: 'First public release of the NYUSIM 5G channel simulator, a statistical model that generates spatial and temporal wideband channel impulse responses.', zh: NYUSIM 5G 信道仿真器首次公开发布，这是一个可生成空间与时间相关宽带信道冲激响应的统计模型。}
+  url: https://wireless.engineering.nyu.edu/nyusim-5g-channel-sim-available/

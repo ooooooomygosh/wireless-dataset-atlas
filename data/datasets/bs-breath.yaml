@@ -13,31 +13,127 @@ paper: doi:10.1109/icassp49660.2025.10888046
 used_in: []
 citing: ['doi:10.1109/infocom59046.2026.11571225', 'doi:10.1109/jsac.2025.3617012']
 summary: {en: 'Uplink CSI from a 64-antenna cell-free massive MIMO testbed at 3.51 GHz, recorded while 10 subjects performed controlled breathing, with motion-capture breathing ground truth. The listed archive is 11.64 GB.', zh: 来自64天线 cell-free massive MIMO 测试平台、载频3.51 GHz 的上行 CSI，记录了10名受试者的受控呼吸过程，并提供动作捕捉呼吸真值。列出的数据压缩包为11.64 GB。}
-sources: ['https://ieee-dataport.org/documents/respiration-sensing-cell-free-massive-mimo-0', 'https://api.crossref.org/works/10.1109/icassp49660.2025.10888046']
+sources: ['https://ieee-dataport.org/documents/respiration-sensing-cell-free-massive-mimo-0', 'https://api.crossref.org/works/10.1109/icassp49660.2025.10888046', 'https://arxiv.org/abs/2502.12114', 'https://arxiv.org/pdf/2502.12114', 'https://arxiv.org/html/2502.12114v1']
 checked: '2026-11-06'
-overview: {en: 'BS-Breath is a dataset of uplink channel state information (CSI) from a 64-antenna cell-free massive MIMO testbed at 3.51 GHz, recorded for respiration sensing. KU Leuven researchers (Xiong, Beerten and Pollin) published it in 2025 alongside an ICASSP 2025 paper and an arXiv preprint (2502.12114). Ten subjects performed controlled breathing during the recordings, and a motion-capture (MoCap) system provides breathing ground truth synchronized with the CSI. The release is a single archive, data_single_person_wo_interf.zip, of 11.64 GB, and the source pages state that it contains raw CSI measurements, processed breathing signals and MoCap recordings. The testbed uses an 18 MHz bandwidth. Access requires an IEEE DataPort subscription.', zh: BS-Breath 是一个上行信道状态信息（CSI）数据集，采集自载频 3.51 GHz 的 64 天线 cell-free massive MIMO 测试平台，用于呼吸感知。KU Leuven 的研究人员（Xiong、Beerten 与 Pollin）于 2025 年发布该数据集，并附有 ICASSP 2025 论文与 arXiv 预印本（2502.12114）。采集过程中 10 名受试者进行受控呼吸，动作捕捉（MoCap）系统提供与 CSI 同步的呼吸真值。发布内容为单个压缩包
-    data_single_person_wo_interf.zip，大小 11.64 GB，来源页面称其包含原始 CSI 测量、处理后的呼吸信号与 MoCap 记录。测试平台带宽为 18 MHz。访问需要 IEEE DataPort 订阅。}
+overview: {en: 'BS-Breath is a dataset of uplink channel state information (CSI) from a 64-antenna cell-free massive MIMO testbed at 3.51 GHz, recorded for respiration sensing. KU Leuven researchers Haoqiu Xiong, Robbert Beerten and Sofie Pollin published it on IEEE DataPort in 2025, alongside an ICASSP 2025 paper and an arXiv preprint (2502.12114). Ten subjects performed controlled breathing while a single-antenna user equipment (UE) transmitted uplink pilots, and the UE was moved around each seated subject at distances of 0.5 to 1.5 m. A marker-based motion-capture (MoCap) system records the breathing ground truth, and it is triggered together with the testbed capture so that the two are time-aligned. The testbed uses an OFDM waveform with 100 subcarriers spanning an 18 MHz bandwidth, and the uplink channel is estimated at 200 Hz. The release is a single archive, data_single_person_wo_interf.zip, of 11.64 GB, and the source pages state that it contains raw CSI measurements, processed breathing
+    signals and MoCap recordings. Access requires an IEEE DataPort subscription.', zh: BS-Breath是一个上行信道状态信息（CSI）数据集，采集自载频3.51 GHz的64天线cell-free massive MIMO测试平台，用于呼吸感知。KU Leuven的研究人员Haoqiu Xiong、Robbert Beerten与Sofie Pollin于2025年将其发布在IEEE DataPort上，并附有ICASSP 2025论文与arXiv预印本（2502.12114）。十名受试者在采集中进行受控呼吸，单天线用户设备（UE）发送上行导频，UE在每位就座受试者周围移动，距离为0.5至1.5 m。基于标记点的动作捕捉（MoCap）系统记录呼吸真值，并与测试平台采集同步触发，以实现时间对齐。测试平台采用OFDM波形，100个子载波，覆盖18 MHz带宽，上行信道以200 Hz估计。发布内容为单个压缩包data_single_person_wo_interf.zip，大小11.64 GB，来源页面称其包含原始CSI测量、处理后的呼吸信号与MoCap记录。访问需要IEEE DataPort订阅。}
 signal_details:
 - signal: csi
   text: {en: 'Uplink CSI from a 64-antenna cell-free massive MIMO OFDM base station at 3.51 GHz, with an 18 MHz bandwidth in the testbed. The user equipment sends uplink pilots, and the sensing target is near the user equipment.', zh: 来自载频 3.51 GHz、64 天线 cell-free massive MIMO OFDM 基站的上行 CSI，测试平台带宽 18 MHz。用户设备发送上行导频，感知目标位于用户设备附近。}
 pipeline:
-  summary: {en: 'Uplink pilots from a user device are measured on a cell-free massive MIMO base station, synchronized with MoCap ground truth, and processed into breathing signals.', zh: 用户设备发送的上行导频在 cell-free massive MIMO 基站上测量，与 MoCap 真值同步，并处理为呼吸信号。}
+  summary: {en: 'Uplink pilots from a user device are measured on a cell-free massive MIMO base station, synchronized with MoCap ground truth, and processed into breathing signals.', zh: 用户设备发送的上行导频在cell-free massive MIMO基站上测量，与MoCap真值同步，并处理为呼吸信号。}
   stages:
-  - title: {en: Cell-free testbed measurement, zh: cell-free 测试平台测量}
-    detail: {en: A 64-antenna cell-free massive MIMO OFDM testbed records uplink CSI at 3.51 GHz with an 18 MHz bandwidth while the user equipment sends uplink pilots. Ten subjects breathe in a controlled manner., zh: 64 天线 cell-free massive MIMO OFDM 测试平台在 3.51 GHz、18 MHz 带宽下记录上行 CSI，此时用户设备发送上行导频。10 名受试者进行受控呼吸。}
+  - title: {en: Cell-free testbed measurement, zh: cell-free测试平台测量}
+    detail: {en: 'A 64-antenna cell-free massive MIMO OFDM testbed records uplink CSI at 3.51 GHz with an 18 MHz bandwidth while the user equipment sends uplink pilots. The 64 antennas form eight distributed uniform linear arrays of eight antennas each, and the 100 subcarriers are spaced 180 kHz apart. Ten subjects breathe in a controlled manner while seated, and the UE is moved around each subject at 0.5 to 1.5 m.', zh: 64天线cell-free massive MIMO OFDM测试平台在3.51 GHz、18 MHz带宽下记录上行CSI，此时用户设备发送上行导频。64根天线构成八个分布式均匀线阵，每个线阵八根天线；100个子载波间隔180 kHz。十名受试者就座并进行受控呼吸，UE在每位受试者周围移动，距离为0.5至1.5 m。}
     inputs:
     - {en: uplink pilots from the user equipment, zh: 用户设备发出的上行导频}
     outputs:
-    - {en: uplink CSI at 3.51 GHz, zh: 3.51 GHz 上行 CSI}
+    - {en: uplink CSI at 3.51 GHz, zh: 3.51 GHz上行CSI}
   - title: {en: Motion-capture ground truth, zh: 动作捕捉真值}
-    detail: {en: 'A MoCap system records the breathing motion synchronized with the CSI data, providing the reference for breathing evaluation.', zh: MoCap 系统记录与 CSI 数据同步的呼吸运动，为呼吸评估提供参考。}
+    detail: {en: 'Four marker-based Qualisys Miqus M3 cameras record the breathing motion at 150 Hz. The MoCap system and the testbed capture are triggered simultaneously, which aligns the 3D position data with the RF recordings in time.', zh: 四台基于标记点的Qualisys Miqus M3摄像机以150 Hz记录呼吸运动。MoCap系统与测试平台采集同时触发，使三维位置数据与射频记录在时间上对齐。}
     inputs:
     - {en: subject motion, zh: 受试者运动}
     outputs:
-    - {en: synchronized MoCap recordings, zh: 同步的 MoCap 记录}
+    - {en: synchronized MoCap recordings, zh: 同步的MoCap记录}
   - title: {en: Breathing signal extraction, zh: 呼吸信号提取}
-    detail: {en: A single-antenna method combines multiple subcarriers and applies a breathing projection that maps the 2D complex breathing pattern to one displacement dimension. Weighted antenna combining then aggregates the 1D breathing signals from multiple antennas., zh: 单天线方法合并多个子载波，并施加呼吸投影，将二维复数呼吸模式映射为一维位移。加权天线合并（WAC）随后汇总多根天线的一维呼吸信号。}
+    detail: {en: 'For each antenna, IDFT or DiverSense combines the subcarriers into one range signal. A Farsense-style projection then selects the real-valued axis that best captures the breathing motion. Weighted antenna combining (WAC) aggregates the one-dimensional breathing estimates of the antennas, with weights based on the breathing-to-noise ratio.', zh: 对每根天线，IDFT或DiverSense将子载波合并为一个距离域信号。随后，Farsense式投影选取最能体现呼吸运动的实数轴。加权天线合并（WAC）依据呼吸噪声比对各天线的一维呼吸估计加权汇总。}
     inputs:
-    - {en: uplink CSI, zh: 上行 CSI}
+    - {en: uplink CSI, zh: 上行CSI}
     outputs:
     - {en: processed breathing signal, zh: 处理后的呼吸信号}
+bandwidth_mhz: 18
+subcarriers: 100
+antennas: {tx: 1, rx: 64, array: distributed}
+samples: 10 subjects, four one-minute recordings each (40 minutes in total)
+mobility: seated subjects; the user equipment is moved around each subject at 0.5 to 1.5 m
+facts:
+- label: {en: Sampling rates, zh: 采样速率}
+  text: {en: 'Uplink CSI is estimated at 200 Hz, and the MoCap ground truth is recorded at 150 Hz.', zh: 上行CSI以200 Hz估计，MoCap真值以150 Hz记录。}
+- label: {en: Range resolution, zh: 距离分辨率}
+  text: {en: 'The 100 subcarriers spaced 180 kHz apart cover 18 MHz, which gives a range resolution of 16.66 m (c/B), so paths closer than that in range fall into the same cell.', zh: 100个子载波间隔180 kHz，覆盖18 MHz，对应距离分辨率16.66 m（c/B），因此距离相差小于该值的路径落入同一距离单元。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Uplink CSI from 64 BS antennas in eight distributed 8-antenna arrays, 100 subcarriers at 180 kHz spacing, sampled at 200 Hz.', zh: 来自 BS 64 根天线（8 组分布式 8 天线阵列）的上行 CSI，100 个子载波，间隔 180 kHz，采样率 200 Hz。}
+- key: cir
+  status: derivable
+  note: {en: 'The delay profile follows from an inverse DFT over the 100 subcarriers, the method the paper uses for multi-subcarrier processing; no CIR field is stored.', zh: 时延域信道可由 100 个子载波的逆 DFT 得到，这是论文用于多子载波处理的方法；数据中不存储 CIR 字段。}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Power follows from the complex CSI samples; no power or RSSI field is listed., zh: 功率可由复数 CSI 采样计算；发布列表中无功率或 RSSI 字段。}
+- key: iq
+  status: none
+  note: {en: 'The release lists raw CSI, processed breathing signals and MoCap recordings; IQ samples are not listed.', zh: 发布内容列出原始 CSI、处理后的呼吸信号与 MoCap 记录；未列出 IQ 采样。}
+- key: beam_labels
+  status: none
+  note: {en: 'The release lists CSI, breathing signals and MoCap recordings; no beam indices or per-beam gains.', zh: 发布内容列出 CSI、呼吸信号与 MoCap 记录；无波束索引或逐波束增益。}
+- key: position
+  status: unknown
+  note: {en: The released MoCap data give 3D marker positions of the seated subject at 150 Hz; the UE position is not stated., zh: 发布的 MoCap 数据提供就座受试者的三维标记点位置（150 Hz）；来源未说明 UE 位置。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files are listed; the antenna layout appears only as a figure in the paper., zh: 未列出场景或地图文件；天线布局仅以论文中的图示给出。}
+- key: materials
+  status: none
+  note: {en: No material parameters are listed., zh: 未列出材料参数。}
+- key: rgb
+  status: none
+  note: {en: The four MoCap cameras record markers; no RGB images are listed., zh: 四台 MoCap 相机记录标记点；未列出 RGB 图像。}
+- key: depth
+  status: none
+  note: {en: No depth sensor data are listed., zh: 未列出深度传感器数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are listed., zh: 未列出激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: Sensing is done from communication uplink pilots; no radar data are listed., zh: 感知基于通信上行导频完成；未列出雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are listed., zh: 未列出惯性传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: 'CSI at 200 Hz and MoCap at 150 Hz, time-aligned; 40 one-minute samples from 10 subjects.', zh: CSI 采样率 200 Hz，MoCap 150 Hz，二者时间对齐；10 名受试者共 40 个一分钟样本。}
+- key: multiuser
+  status: none
+  note: {en: One single-antenna UE is used per measurement., zh: 每次测量使用一个单天线 UE。}
+- key: multibs
+  status: none
+  note: {en: One base station with eight distributed arrays; no second base station., zh: 一个基站，内含 8 组分布式阵列；无第二个基站。}
+- key: crossfreq
+  status: none
+  note: {en: Single band at 3.51 GHz., zh: 仅 3.51 GHz 单频段。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Subjects are seated and the UE is moved by hand at 0.5 to 1.5 m; no speed is reported., zh: 受试者就座，UE 手持在距离 0.5 至 1.5 m 处移动；未报告速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量之中，未按径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量之中，未按径单独标注。}
+- key: scattering
+  status: provided
+  note: {en: Inherent in the over-the-air measurement; the chest and surroundings scatter the signal., zh: 包含在空口测量之中；胸部与周围环境对信号产生散射。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量之中，未按径单独标注。}
+- key: polarization
+  status: unknown
+  note: {en: The UE uses an omnidirectional antenna and the BS uses patch antennas; no polarimetric data are stated., zh: UE 使用全向天线，BS 使用贴片天线；来源未说明有极化数据。}
+- key: em_field
+  status: none
+  note: {en: Only channel estimates and processed signals are released; no field or antenna-pattern data., zh: 仅发布信道估计与处理后的信号；无场量或天线方向图数据。}
+versions:
+- version: DataPort update
+  date: '2026-02-26'
+  summary: {en: 'The IEEE DataPort record shows a last-updated date of 26 February 2026. The page does not state what changed; the listed archive is still data_single_person_wo_interf.zip, 11.64 GB.', zh: IEEE DataPort 记录的最后更新日期为 2026 年 2 月 26 日。页面未说明更改内容；所列压缩包仍为 data_single_person_wo_interf.zip，11.64 GB。}
+  url: https://ieee-dataport.org/documents/respiration-sensing-cell-free-massive-mimo-0
+- version: initial release
+  date: '2025-03-11'
+  summary: {en: 'Initial IEEE DataPort release (DOI 10.21227/0dey-xx67): uplink CSI at 3.51 GHz from a 64-antenna cell-free testbed for 10 subjects, with MoCap ground truth, in one archive.', zh: 首次 IEEE DataPort 发布（DOI 10.21227/0dey-xx67）：来自 64 天线 cell-free 测试平台、载频 3.51 GHz 的上行 CSI，覆盖 10 名受试者，附 MoCap 真值，打包为单个压缩包。}
+  url: https://ieee-dataport.org/documents/respiration-sensing-cell-free-massive-mimo-0
