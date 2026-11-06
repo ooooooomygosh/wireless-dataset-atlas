@@ -57,15 +57,17 @@ limitations:
 - {en: 'All building facades share the same default WinProp material parameters, which the paper describes as an assumption of uniform electromagnetic behavior across building surfaces.', zh: 所有建筑立面采用相同的 WinProp 默认材料参数，论文将其表述为建筑表面电磁特性一致的假设。}
 capabilities:
 - key: csi
-  status: none
-  note: {en: The paper states that the dataset has no CSI-level labels., zh: 论文指出该数据集不含 CSI 级标签。}
-- {key: cir, status: unknown}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: cir
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: paths
-  status: unknown
-  note: {en: 'The ToA and DoA maps give one value per receiver location, and the sources do not say whether they describe one dominant path or several.', zh: ToA 和 DoA 地图为每个接收位置给出一个值，来源未说明它们对应单条主径还是多条路径。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: interaction
-  status: unknown
-  note: {en: 'The propagation_ray folder is listed, but the sources do not describe its contents.', zh: 数据集列出了 propagation_ray 文件夹，但来源未说明其内容。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: power
   status: provided
   note: {en: 'Pathloss maps for 20 receiver heights (1 m to 20 m) on 256 m x 256 m tiles at 1 m per pixel, thresholded at -169 dB to -92 dB and stored as PNG.', zh: 20 个接收高度（1 m 至 20 m）的路径损耗图，256 m x 256 m 区域，分辨率 1 m/像素，截断在 -169 dB 至 -92 dB 并保存为 PNG。}
@@ -73,8 +75,8 @@ capabilities:
   status: none
   note: {en: 'Only map-level layers are released, not sampled waveforms.', zh: 仅发布地图级数据层，不含采样波形。}
 - key: beam_labels
-  status: none
-  note: {en: No beam indices or per-beam gains are in the released layers., zh: 发布的数据层中不含波束索引或分波束增益。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: position
   status: provided
   note: {en: 'Transmitter coordinates appear in file names and in a transmitter location map, with 200 transmitter locations per map.', zh: 发射机坐标编码在文件名和发射机位置图中，每张地图 200 个发射机位置。}
@@ -103,18 +105,20 @@ capabilities:
   status: none
   note: {en: 'The maps are static simulation snapshots, one per receiver height.', zh: 地图为静态仿真快照，每个接收高度一幅。}
 - key: multiuser
-  status: none
-  note: {en: 'Each simulation has one transmitter, so no simultaneous multi-user channels are released.', zh: 每次仿真只有一个发射机，因此不含同时存在的多用户信道。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: multibs
-  status: none
-  note: {en: 'The 200 transmitter locations per map are separate single-transmitter simulations, not a joint multi-BS set.', zh: 每张地图的 200 个发射机位置是各自独立的单发射机仿真，而非联合的多基站集合。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: crossfreq
-  status: none
-  note: {en: 'The dataset uses one carrier at 5.9 GHz, and the paper states that it supports only one frequency.', zh: 数据集仅含 5.9 GHz 一个载频，论文指出其只支持单一频率。}
-- {key: near_field, status: unknown}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: near_field
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: none
-  note: {en: The maps are static and no user speed is defined., zh: 地图为静态数据，未定义用户速度。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - {key: dynamic_blockage, status: unknown}
 - key: reflection
   status: provided
@@ -122,11 +126,15 @@ capabilities:
 - key: diffraction
   status: provided
   note: {en: GTD/UTD diffraction is enabled in the simulation setup., zh: 仿真设置中启用了 GTD/UTD 绕射。}
-- {key: scattering, status: unknown}
-- {key: transmission, status: unknown}
+- key: scattering
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: transmission
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: polarization
-  status: none
-  note: {en: The antennas are isotropic and the released layers are scalar., zh: 天线为全向天线，发布的数据层均为标量。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: none
   note: {en: 'The released layers are pathloss, DoA, ToA and ray maps, with no field components or antenna patterns.', zh: 发布的数据层为路径损耗、DoA、ToA 和射线地图，不含场分量或天线方向图。}

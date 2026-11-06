@@ -20,6 +20,8 @@ const repo = "https://github.com/ooooooomygosh/wireless-dataset-atlas";
       </ul>
       <h2>Fields</h2>
       <p>Each entry records the release year, data origin (measured, ray tracing, statistical model, simulation, benchmark suite), tasks, signal types, carrier frequencies in GHz, bandwidth, environment, antenna configuration, sample count and size where the source states them, license, and access type. A field that the source does not state is shown as not stated. Entries carry the date they were last checked against the source.</p>
+      <h2>Capability matrix</h2>
+      <p>Every entry rates 28 data types and conditions as provided, derivable, needing extra simulation, absent or not stated. Provided means the release contains it. Derivable means a standard transform of the released data yields it, for example CIR from CSI by inverse FFT, received power from channel magnitude, or beam power by codebook projection. Extra simulation means running the generator, or a ray tracer on the released 3D scene, outputs it. The task and data-type matrix on the home page counts all three as obtainable and offers a view that counts only directly provided data.</p>
       <h2>Papers</h2>
       <p>Titles, authors, venues, years and citation counts come from OpenAlex and are refreshed monthly. Both lists below cover works that cite the dataset paper and appear in a fixed list of IEEE, ACM, USENIX and machine-learning venues, ordered by citation count. "Studies using this dataset" holds works that name the dataset in the title or abstract, up to five. "Most cited works citing the dataset paper" holds the most cited non-survey works from the same venues, up to three, whose use of the data is not verified.</p>
       <h2>Contributing</h2>
@@ -38,6 +40,8 @@ const repo = "https://github.com/ooooooomygosh/wireless-dataset-atlas";
       </ul>
       <h2>字段</h2>
       <p>每个条目记录发布年份、数据来源（实测、射线追踪、统计模型、仿真、基准集合）、任务、信号类型、载波频率（GHz）、带宽、场景、天线配置，以及来源给出的样本规模与数据量、许可和获取方式。来源没有给出的字段显示为“未说明”。条目标注最近一次与来源核对的日期。</p>
+      <h2>能力矩阵</h2>
+      <p>每个条目对 28 类数据与条件标注：直接提供、可计算、需额外仿真、不支持或未说明。直接提供指发布内容已包含；可计算指由发布数据经标准变换得到，例如 CSI 逆傅里叶变换得 CIR、信道幅度得接收功率、码本投影得波束功率；需额外仿真指运行生成器，或在发布的三维场景上运行射线追踪后输出。首页的任务与数据类型矩阵把三者都计为可获得，并提供只统计直接提供数据的视图。</p>
       <h2>论文</h2>
       <p>标题、作者、期刊会议、年份和引用数来自 OpenAlex，每月更新。下面两个列表都限于引用了数据集论文、并发表在固定的 IEEE、ACM、USENIX 及机器学习会议期刊清单内的工作，按引用数排序。“使用该数据集的研究”收录标题或摘要中提到该数据集的工作，最多五篇；“引用数据集论文的高被引工作”收录同一清单内引用数最高的非综述工作，最多三篇，其是否使用该数据未经核实。</p>
       <h2>参与贡献</h2>

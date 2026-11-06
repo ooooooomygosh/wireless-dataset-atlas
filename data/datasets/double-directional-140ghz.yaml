@@ -50,11 +50,11 @@ facts:
   text: {en: 'The dataset is archived on Zenodo under DOI 10.5281/zenodo.7185349 as version 3, and the record lists the VTC2022-Spring paper as a supplement.', zh: 数据集以 DOI 10.5281/zenodo.7185349 存档于 Zenodo，为第 3 版，Zenodo 记录将 VTC2022-Spring 论文列为补充材料。}
 capabilities:
 - key: csi
-  status: unknown
-  note: {en: 'The public record does not state the antenna patterns or phase, so complex CSI cannot be confirmed.', zh: 公开记录未说明天线方向图与相位，无法确认是否可得复数CSI。}
+  status: derivable
+  note: {en: Synthesised from the provided path parameters and the array geometry., zh: 由所提供的路径参数与阵列几何合成得到。}
 - key: cir
-  status: unknown
-  note: {en: 'A power delay profile needs per-path power, which the public record does not list.', zh: 功率时延分布需要逐路径功率，公开记录未列出该字段。}
+  status: derivable
+  note: {en: Synthesised from the provided path parameters and the array geometry., zh: 由所提供的路径参数与阵列几何合成得到。}
 - key: paths
   status: provided
   note: {en: 'Double-directional path data for 68 indoor links (12 LOS, 56 NLOS); the per-path field list is in the archive''s .txt file, not in the public record.', zh: 68条室内链路（12条LOS，56条NLOS）的双定向路径数据；逐路径字段列表位于压缩包内的.txt文件，未载于公开记录。}

@@ -74,8 +74,8 @@ capabilities:
   status: simulate
   note: {en: 'Running the GUI produces channel matrices H (N x Nt x Nsym), G (Nr x N x Nsym) and D (Nr x Nt x Nsym); the repository ships no channel data.', zh: 运行 GUI 后生成信道矩阵 H（N x Nt x Nsym）、G（Nr x N x Nsym）和 D（Nr x Nt x Nsym）；仓库不包含信道数据。}
 - key: cir
-  status: none
-  note: {en: The outputs are channel matrices only; the paper lists delay spread as future work., zh: 输出仅为信道矩阵；论文将时延扩展列为未来工作。}
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - key: paths
   status: none
   note: {en: 'Per-path parameters are used inside the model, but the outputs are channel matrices only.', zh: 逐径参数在模型内部使用，但输出仅为信道矩阵。}

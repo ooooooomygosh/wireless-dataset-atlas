@@ -101,3 +101,88 @@ versions:
   date: '2009-09-30'
   summary: {en: '''WINNER II Channel Models'' published as a chapter in Radio Technologies and Concepts for IMT-Advanced (Wiley). This is a publication of the model description, not a dated software release; the D1.1.2 deliverable date could not be confirmed from a readable source.', zh: '''WINNER II Channel Models'' 作为章节发表于 Radio Technologies and Concepts for IMT-Advanced（Wiley）。这是模型描述的出版记录，并非带日期的软件发布；D1.1.2 交付日期无法从可读来源确认。'}
   url: https://api.crossref.org/works/10.1002/9780470748077.ch3
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: Obtained by transforming the generated time-variant impulse responses to frequency., zh: 由生成的时变冲激响应变换到频域得到。}
+- key: cir
+  status: simulate
+  note: {en: Produced by running the WINNER II model (winner2.wim or comm.WINNER2Channel) for a chosen layout., zh: 由所选布局运行 WINNER II 模型（winner2.wim 或 comm.WINNER2Channel）产生。}
+- key: paths
+  status: simulate
+  note: {en: 'The model returns per-cluster delays, powers and angles for every link.', zh: 模型为每条链路返回各簇的时延、功率与角度。}
+- key: interaction
+  status: none
+  note: {en: The model is geometry-based stochastic; clusters carry no interaction type., zh: 模型为基于几何的统计模型；簇不带交互类型。}
+- key: power
+  status: simulate
+  note: {en: Path-loss models are part of the scenario definitions., zh: 场景定义中包含路径损耗模型。}
+- key: iq
+  status: simulate
+  note: {en: comm.WINNER2Channel filters an input waveform through the generated links., zh: comm.WINNER2Channel 可让输入波形经过所生成的链路。}
+- key: beam_labels
+  status: none
+  note: {en: The model has no beam codebook or labels., zh: 模型不含波束码本或标签。}
+- key: position
+  status: simulate
+  note: {en: Terminal and base-station positions are layout inputs to the generator., zh: 终端与基站位置是生成器的布局输入。}
+- key: geometry
+  status: none
+  note: {en: The layout holds antenna positions only; there is no 3D scene., zh: 布局仅含天线位置，不含三维场景。}
+- key: materials
+  status: none
+  note: {en: No material parameters., zh: 无材料参数。}
+- key: rgb
+  status: none
+  note: {en: No images., zh: 无图像。}
+- key: depth
+  status: none
+  note: {en: No depth data., zh: 无深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data., zh: 无 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar data., zh: 无雷达数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data., zh: 无 IMU 数据。}
+- key: time_series
+  status: simulate
+  note: {en: The impulse responses are time-variant for a given terminal velocity., zh: 给定终端速度时，冲激响应随时间变化。}
+- key: multiuser
+  status: simulate
+  note: {en: A layout can hold several mobile stations., zh: 一个布局可包含多个移动台。}
+- key: multibs
+  status: simulate
+  note: {en: A layout can hold several base stations., zh: 一个布局可包含多个基站。}
+- key: crossfreq
+  status: simulate
+  note: {en: The FDD procedure recomputes a link at a different carrier frequency., zh: FDD 流程可在不同载频下重算同一链路。}
+- key: near_field
+  status: none
+  note: {en: The model assumes plane-wave arrivals., zh: 模型假设平面波到达。}
+- key: high_mobility
+  status: simulate
+  note: {en: Terminal speed and direction are model parameters., zh: 终端速度与方向是模型参数。}
+- key: dynamic_blockage
+  status: none
+  note: {en: No blocker dynamics are modelled., zh: 未建模遮挡物动态。}
+- key: reflection
+  status: none
+  note: {en: Stochastic clusters do not resolve individual interactions., zh: 统计簇不解析单次交互。}
+- key: diffraction
+  status: none
+  note: {en: Stochastic clusters do not resolve individual interactions., zh: 统计簇不解析单次交互。}
+- key: scattering
+  status: none
+  note: {en: Stochastic clusters do not resolve individual interactions., zh: 统计簇不解析单次交互。}
+- key: transmission
+  status: none
+  note: {en: Stochastic clusters do not resolve individual interactions., zh: 统计簇不解析单次交互。}
+- key: polarization
+  status: simulate
+  note: {en: The model includes cross-polarization ratios., zh: 模型包含交叉极化比。}
+- key: em_field
+  status: none
+  note: {en: No field-level output., zh: 无场级输出。}

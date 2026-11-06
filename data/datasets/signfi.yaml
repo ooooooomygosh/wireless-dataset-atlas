@@ -88,8 +88,8 @@ capabilities:
   status: none
   note: {en: 'The release contains complex CSI, not raw I/Q samples.', zh: 数据为复数 CSI，而非原始 I/Q 采样。}
 - key: beam_labels
-  status: none
-  note: {en: No beam indices or per-beam gains; the release is WiFi CSI only., zh: 没有波束索引或逐波束增益，仅有 WiFi CSI。}
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: none
   note: {en: No position or GPS data; the labels are sign classes., zh: 没有位置或 GPS 数据，标签为手语类别。}

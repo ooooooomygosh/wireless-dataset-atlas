@@ -183,7 +183,9 @@ capabilities:
 - key: csi
   status: provided
   note: {en: Native complex CSI in all six domains; the R2 frequency-domain CSI is computed from upstream MOCSID path coefficients and delays on a benchmark-defined grid., zh: 六个数据域均提供原生复数 CSI；R2 的频域 CSI 由上游 MOCSID 路径系数与时延在基准定义的网格上计算得到。}
-- {key: cir, status: unknown}
+- key: cir
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - {key: paths, status: unknown}
 - {key: interaction, status: unknown}
 - key: power

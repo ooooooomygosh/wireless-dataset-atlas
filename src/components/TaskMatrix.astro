@@ -1,35 +1,94 @@
 ---
 import type { Dataset } from "../schema.ts";
-import { SIGNAL } from "../i18n/enums.ts";
 import { t, tasks, type Lang } from "../lib/data.ts";
+import { obtainable, provided, hasSignal } from "../lib/caps.ts";
 interface Props { lang: Lang; datasets: Dataset[] }
 const { lang, datasets } = Astro.props;
-const sigs = Object.keys(SIGNAL).filter((s) => datasets.some((d) => d.signals.includes(s as never)));
+
+type L = { en: string; zh: string };
+// `cap` columns read the capability matrix; `sig` columns exist only as coarse signal types.
+type Col = { id: string; kind: "cap" | "sig"; label: L };
+const col = (id: string, en: string, zh: string, kind: "cap" | "sig" = "cap"): Col => ({ id, kind, label: { en, zh } });
+const DATA: Col[] = [
+  col("csi", "CSI", "CSI"), col("cir", "CIR / PDP", "CIR / PDP"), col("paths", "Multipath parameters", "多径参数"),
+  col("power", "Power / path loss", "功率 / 路径损耗"), col("iq", "Raw I/Q", "原始 I/Q"), col("spectrum", "Spectrum / PSD", "频谱 / PSD", "sig"),
+  col("beam_labels", "Beam labels", "波束标签"), col("position", "Position / GPS", "位置 / GPS"), col("geometry", "3D geometry", "三维几何"),
+  col("rgb", "RGB", "RGB"), col("depth", "Depth", "深度"), col("lidar", "LiDAR", "LiDAR"), col("radar", "Radar", "雷达"),
+  col("imu", "IMU", "IMU"), col("ranging", "Ranging (ToA/TDoA)", "测距（ToA/TDoA）", "sig"), col("traffic", "Traffic", "流量", "sig"),
+  col("kpi", "Network KPI", "网络 KPI", "sig"), col("thermal", "Thermal", "热成像", "sig"),
+];
+const SCENE: Col[] = [
+  col("multiuser", "Multi-user", "多用户"), col("multibs", "Multi-BS", "多基站"), col("crossfreq", "Paired multi-band", "跨频配对"),
+  col("near_field", "Near field", "近场"), col("high_mobility", "High mobility", "高速移动"), col("dynamic_blockage", "Dynamic blockage", "动态遮挡"),
+  col("reflection", "Reflection", "反射"), col("diffraction", "Diffraction", "绕射"), col("scattering", "Diffuse scattering", "漫散射"),
+  col("transmission", "Transmission / refraction", "透射 / 折射"), col("polarization", "Polarization", "极化"), col("em_field", "EM field", "电磁场"),
+];
+const has = (d: Dataset, c: Col, mode: "o" | "p") =>
+  c.kind === "sig" ? hasSignal(d, c.id) : mode === "o" ? obtainable(d, c.id) : provided(d, c.id);
+
 const rows = tasks.filter((x) => datasets.some((d) => d.tasks.includes(x.id)));
-const cell = 30, L = 210, T = 128;
-const W = L + sigs.length * cell + 96, H = T + rows.length * cell + 6;
-const n = (tid: string, s: string) => datasets.filter((d) => d.tasks.includes(tid) && d.signals.includes(s as never)).length;
-const max = Math.max(1, ...rows.flatMap((r) => sigs.map((s) => n(r.id, s))));
+const cell = 30, Lw = 210, T = 150;
+const count = (tid: string, c: Col, mode: "o" | "p") => datasets.filter((d) => d.tasks.includes(tid) && has(d, c, mode)).length;
+const href = (tid: string, c: Col, mode: "o" | "p") =>
+  `/${lang}/datasets/?task=${tid}&${c.kind === "sig" ? "signal" : mode === "o" ? "cap" : "capd"}=${c.id}`;
+const sets = [
+  { id: "data", title: t(lang, "chart.matrix.data"), cols: DATA },
+  { id: "scene", title: t(lang, "chart.matrix.scene"), cols: SCENE },
+].map((s) => {
+  const cols = s.cols.filter((c) => datasets.some((d) => has(d, c, "o")));
+  const o = rows.map((r) => cols.map((c) => count(r.id, c, "o"))), p = rows.map((r) => cols.map((c) => count(r.id, c, "p")));
+  return { ...s, cols, o, p, W: Lw + cols.length * cell + 110, H: T + rows.length * cell + 6, max: Math.max(1, ...o.flat()), maxp: Math.max(1, ...p.flat()) };
+});
 ---
-<div class="chart">
+<div class="chart matrix" data-matrix>
   <h3>{t(lang, "chart.matrix.title")}</h3>
   <p class="note">{t(lang, "chart.matrix.note")}</p>
-  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t(lang, "chart.matrix.title")} style={`min-width:${Math.min(W, 640)}px`}>
-    {sigs.map((s, j) => <text transform={`translate(${L + j * cell + cell / 2 + 4},${T - 8}) rotate(-50)`} text-anchor="start">{SIGNAL[s][lang]}</text>)}
-    {rows.map((r, i) => (
-      <g>
-        <a href={`/${lang}/tasks/${r.id}/`}><text x={L - 10} y={T + i * cell + cell / 2 + 4} text-anchor="end">{r.name[lang]}</text></a>
-        {sigs.map((s, j) => {
-          const c = n(r.id, s);
-          return (
-            <a href={c ? `/${lang}/datasets/?task=${r.id}&signal=${s}` : undefined}>
-              <title>{r.name[lang]} × {SIGNAL[s][lang]}: {c}</title>
-              <rect x={L + j * cell + 1} y={T + i * cell + 1} width={cell - 2} height={cell - 2} rx="3" fill={c ? "var(--accent)" : "var(--bg-subtle)"} fill-opacity={c ? 0.14 + 0.7 * (c / max) : 1} />
-              {c > 0 && <text x={L + j * cell + cell / 2} y={T + i * cell + cell / 2 + 4} text-anchor="middle" style={`fill:${c / max > 0.55 ? "#fff" : "var(--ink)"}`}>{c}</text>}
-            </a>
-          );
-        })}
-      </g>
-    ))}
-  </svg>
+  <div class="seg" role="group" aria-label={t(lang, "chart.matrix.mode")}>
+    <button type="button" class="on" data-mode="o" aria-pressed="true">{t(lang, "chart.matrix.obtainable")}</button>
+    <button type="button" data-mode="p" aria-pressed="false">{t(lang, "chart.matrix.provided")}</button>
+  </div>
+  {sets.map((s) => (
+    <>
+      <h4>{s.title}</h4>
+      <svg viewBox={`0 0 ${s.W} ${s.H}`} role="img" aria-label={s.title} style={`min-width:${Math.min(s.W, 640)}px`} data-max-o={s.max} data-max-p={s.maxp}>
+        {s.cols.map((c, j) => <text transform={`translate(${Lw + j * cell + cell / 2 + 4},${T - 8}) rotate(-50)`} text-anchor="start">{c.label[lang]}</text>)}
+        {rows.map((r, i) => (
+          <g>
+            <a href={`/${lang}/tasks/${r.id}/`}><text x={Lw - 10} y={T + i * cell + cell / 2 + 4} text-anchor="end">{r.name[lang]}</text></a>
+            {s.cols.map((c, j) => {
+              const o = s.o[i][j], p = s.p[i][j];
+              return (
+                <a data-o={o} data-p={p} data-ho={href(r.id, c, "o")} data-hp={href(r.id, c, "p")} href={o ? href(r.id, c, "o") : undefined}>
+                  <title>{r.name[lang]} × {c.label[lang]}: {o} / {p}</title>
+                  <rect x={Lw + j * cell + 1} y={T + i * cell + 1} width={cell - 2} height={cell - 2} rx="3" fill={o ? "var(--accent)" : "var(--bg-subtle)"} fill-opacity={o ? 0.14 + 0.7 * (o / s.max) : 1} />
+                  <text x={Lw + j * cell + cell / 2} y={T + i * cell + cell / 2 + 4} text-anchor="middle" style={`fill:${o / s.max > 0.55 ? "#fff" : "var(--ink)"}`}>{o || ""}</text>
+                </a>
+              );
+            })}
+          </g>
+        ))}
+      </svg>
+    </>
+  ))}
+  <p class="note" style="margin-top:12px">{t(lang, "chart.matrix.legend")}</p>
 </div>
+<script>
+  const root = document.querySelector<HTMLElement>("[data-matrix]")!;
+  const btns = root.querySelectorAll<HTMLButtonElement>("[data-mode]");
+  function setMode(m: "o" | "p") {
+    btns.forEach((b) => { const on = b.dataset.mode === m; b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
+    root.querySelectorAll<SVGSVGElement>("svg").forEach((svg) => {
+      const max = Number(svg.dataset[m === "o" ? "maxO" : "maxP"]) || 1;
+      svg.querySelectorAll<SVGAElement>("a[data-o]").forEach((a) => {
+        const n = Number(a.dataset[m]), rect = a.querySelector("rect")!, txt = a.querySelector("text")!;
+        rect.setAttribute("fill", n ? "var(--accent)" : "var(--bg-subtle)");
+        rect.setAttribute("fill-opacity", n ? String(0.14 + 0.7 * (n / max)) : "1");
+        txt.textContent = n ? String(n) : "";
+        txt.style.fill = n / max > 0.55 ? "#fff" : "var(--ink)";
+        const h = a.dataset[m === "o" ? "ho" : "hp"]!;
+        if (n) a.setAttribute("href", h); else a.removeAttribute("href");
+      });
+    });
+  }
+  btns.forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode as "o" | "p")));
+</script>

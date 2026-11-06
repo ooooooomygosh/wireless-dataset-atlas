@@ -59,7 +59,9 @@ capabilities:
 - key: csi
   status: provided
   note: {en: Simulated cascaded RIS channels with hardware imperfections; the quasi-static .mat files are stored after LS pre-estimation and normalization., zh: 仿真生成的 RIS 级联信道，包含硬件非理想性；准静态 .mat 文件以 LS 预估计并归一化后的形式存储。}
-- {key: cir, status: unknown}
+- key: cir
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - {key: paths, status: unknown}
 - {key: interaction, status: unknown}
 - key: power

@@ -121,8 +121,8 @@ capabilities:
   status: none
   note: {en: 'No scene geometry is modelled, so no per-path interaction exists.', zh: 未建模场景几何，因此不存在逐路径交互信息。}
 - key: power
-  status: none
-  note: {en: 'Frames are energy-normalized, so absolute received power is not kept; SNR labels are generator settings.', zh: 样本经过能量归一化，绝对接收功率未保留；SNR 标签为生成器设置。}
+  status: derivable
+  note: {en: Computed as the squared channel magnitude of the provided channel data., zh: 由所提供信道数据的幅度平方计算得到。}
 - key: iq
   status: provided
   note: {en: 'Complex baseband I/Q: 128-sample vectors in RML2016.10A (per the generator script) and 1024-sample frames in RML2018.01A.', zh: 复数基带 I/Q：RML2016.10A 为 128 点向量（依据生成脚本），RML2018.01A 为 1024 点帧。}

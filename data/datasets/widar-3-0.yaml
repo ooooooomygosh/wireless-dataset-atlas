@@ -94,8 +94,8 @@ capabilities:
   status: none
   note: {en: 'Intel 5300 NICs log CSI through the Linux CSI Tool, and the release contains no raw I/Q samples.', zh: Intel 5300 网卡通过 Linux CSI Tool 记录 CSI，发布内容中不含原始 I/Q 采样。}
 - key: beam_labels
-  status: none
-  note: {en: Gesture labels only; the single transmitter defines no beam set., zh: 仅有手势标签；单个发射机不定义波束集合。}
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: provided
   note: {en: 'Each file name carries discrete room, position and orientation indices, with 5 positions and 5 orientations per room; these are indices, not coordinates.', zh: 每个文件名包含房间、位置与朝向的离散索引，每个房间 5 个位置、5 个朝向；这些是索引而非坐标。}

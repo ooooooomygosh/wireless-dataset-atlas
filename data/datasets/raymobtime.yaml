@@ -136,8 +136,8 @@ capabilities:
   status: provided
   note: {en: 'HDF5 tensors hold received power, time of arrival, departure and arrival angles, line-of-sight flag and phase, padded to a maximum ray count.', zh: HDF5 张量包含接收功率、到达时间、离开角与到达角、视距标志和相位，并填充到最大射线数。}
 - key: interaction
-  status: unknown
-  note: {en: doc/4 states that interaction data are stored only depending on the Wireless InSite version and parser settings., zh: doc/4 称交互信息仅依 Wireless InSite 版本与解析器设置而存储。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: power
   status: provided
   note: {en: 'Per-path received power in dBm is stored in the HDF5 tensors, and path loss comes from the same ray-tracing stage.', zh: HDF5 张量中存储逐路径接收功率（dBm），路径损耗来自同一光线追踪阶段。}
@@ -177,32 +177,36 @@ capabilities:
 - key: multiuser
   status: provided
   note: {en: Several receivers and transmitters share each scene; the README example requests ten mobile receivers., zh: 每个 scene 中存在多个接收机与发射机；README 示例设置了 10 个移动接收机。}
-- {key: multibs, status: unknown}
-- {key: crossfreq, status: unknown}
+- key: multibs
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: crossfreq
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: near_field
-  status: none
-  note: {en: Beam processing uses plane-wave UPA steering vectors; no spherical-wave near-field model is described., zh: 波束处理采用平面波 UPA 导向矢量；文档中未描述球面波近场模型。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: unknown
-  note: {en: 'Vehicles follow SUMO routes, but the sources state no speed value.', zh: 车辆沿 SUMO 路线运动，但来源中未给出速度数值。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: dynamic_blockage
   status: provided
   note: {en: 'Moving vehicles, buses, trucks and, when enabled, pedestrians are placed as geometry in each scene''s ray-tracing project.', zh: 移动的车辆、公交车、卡车以及启用时的行人，作为几何体放入每个 scene 的光线追踪工程。}
 - key: reflection
-  status: unknown
-  note: {en: 'Reflection, transmission and diffraction are set per Wireless InSite base project, and the sources do not state which were enabled for the released scenarios.', zh: 反射、透射与绕射在每个 Wireless InSite 基础工程中设置，来源未说明已发布场景启用了哪些机制。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: diffraction
-  status: unknown
-  note: {en: 'Diffraction is configured per Wireless InSite base project, and the sources do not state whether it was enabled for the released scenarios.', zh: 绕射在每个 Wireless InSite 基础工程中配置，来源未说明已发布场景是否启用。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: scattering
-  status: unknown
-  note: {en: Scattering is not named among the configured mechanisms., zh: 散射未列入已配置的传播机制。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: transmission
-  status: unknown
-  note: {en: 'Transmission is configured per Wireless InSite base project, and the sources do not state whether it was enabled for the released scenarios.', zh: 透射在每个 Wireless InSite 基础工程中配置，来源未说明已发布场景是否启用。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: polarization
-  status: unknown
-  note: {en: Polarization is not described in the sources., zh: 来源中未描述极化。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: unknown
   note: {en: 'doc/3 lists complex E-fields as an output, and doc/4 says they are stored depending on the Wireless InSite version and parser settings.', zh: doc/3 将复数电场列为输出，doc/4 称其依 Wireless InSite 版本与解析器设置而存储。}

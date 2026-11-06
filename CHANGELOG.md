@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.1
+
+- The task and data-type matrix now counts what can be obtained: provided, derivable by a standard transform, or produced by the generator or by a ray tracer on the released 3D scene. A toggle switches to directly provided data only.
+- A second matrix covers scenario and propagation conditions (multi-user, multi-BS, paired bands, near field, high mobility, blockage, reflection, diffraction, scattering, transmission, polarization, EM field).
+- The datasets list has a separate "directly provided" filter next to the "obtainable" one; matrix cells link to the matching filter.
+- Added capability data for WINNER II and inference rules for CIR, CSI, power and beam labels; fixed three records whose signal list contradicted the capability matrix.
+
 ## 2.1.0
 
 - Every dataset now carries a 28-item capability matrix (CSI, CIR, paths, power, I/Q, beam labels, position, geometry, materials, RGB, depth, LiDAR, radar, IMU, time series, multi-user, multi-BS, cross-frequency, near field, high mobility, dynamic blockage, reflection, diffraction, scattering, transmission, polarization, EM field), each marked provided, derivable, simulated, absent or unknown with a source-backed note.

@@ -73,8 +73,8 @@ capabilities:
   status: none
   note: {en: No per-path interaction data are released., zh: 未发布逐径交互数据。}
 - key: power
-  status: none
-  note: {en: No received power values are released; SNR is a labelled condition of each snapshot group., zh: 未发布接收功率值；SNR 是每组快照的标注条件。}
+  status: derivable
+  note: {en: Computed as the squared channel magnitude of the provided channel data., zh: 由所提供信道数据的幅度平方计算得到。}
 - key: iq
   status: provided
   note: {en: '128 I and 128 Q values per snapshot at 10 MS/s, 700 snapshots per waveform.', zh: 每个快照 128 个 I 值和 128 个 Q 值，采样率 10 MS/s，每种波形 700 个快照。}

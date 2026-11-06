@@ -49,7 +49,9 @@ facts:
 - label: {en: Licence identifier, zh: 许可证标识}
   text: {en: 'DataCite lists Creative Commons Attribution 4.0 International for DOI 10.21227/cfvn-hp41, while the IEEE DataPort page reads Creative Commons Attribution.', zh: DataCite 为 DOI 10.21227/cfvn-hp41 列出的许可是 Creative Commons Attribution 4.0 International，而 IEEE DataPort 页面写的是 Creative Commons Attribution。}
 capabilities:
-- {key: csi, status: unknown}
+- key: csi
+  status: derivable
+  note: {en: Computed from the provided impulse response by a Fourier transform., zh: 由所提供的冲激响应做傅里叶变换得到。}
 - key: cir
   status: provided
   note: {en: '468 CIR realizations per run in two runs, almost 1000 in total, stored in run1.mat and run2.mat.', zh: 两次测量各 468 条 CIR 实现，共近 1000 条，存于 run1.mat 与 run2.mat。}

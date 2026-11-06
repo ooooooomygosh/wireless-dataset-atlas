@@ -117,7 +117,9 @@ capabilities:
 - key: interaction
   status: none
   note: {en: No cache description includes per-path or per-surface interaction fields., zh: 各缓存说明中均不包含逐路径或逐表面的交互字段。}
-- {key: power, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Computed as the squared channel magnitude of the provided channel data., zh: 由所提供信道数据的幅度平方计算得到。}
 - key: iq
   status: derivable
   note: {en: 'IQ caches for RML2022, RADCOM, POWDER and ICARUS are built from upstream raw files; ICARUS samples are center-cropped to 4096 by default.', zh: RML2022、RADCOM、POWDER 与 ICARUS 的 IQ 缓存由上游原始文件构建；ICARUS 默认中心截取 4096 个采样点。}

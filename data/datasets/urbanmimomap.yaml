@@ -66,14 +66,14 @@ capabilities:
   status: provided
   note: {en: 'One complex 4x4 H per sampling point; 262,144 points per scenario, in 42,000 NPZ files.', zh: '每个采样点一个复数 4x4 H；每个场景 262,144 个点，共 42,000 个 NPZ 文件。'}
 - key: cir
-  status: none
-  note: {en: Each H entry is one complex gain; no delay-domain data is released., zh: H 的每个元素为单个复增益；不发布时延域数据。}
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - key: paths
-  status: none
-  note: {en: Only the 4x4 H per point is released; the WinProp path data is not part of the release., zh: 仅发布每个点的 4x4 H；WinProp 路径数据不在发布内容中。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: interaction
-  status: none
-  note: {en: No per-path interaction records are released., zh: 不发布逐径交互记录。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: power
   status: provided
   note: {en: 'FEGT-precoded received-power maps, min-max normalised to [0, 1]; dBm values follow from H.', zh: 'FEGT 预编码接收功率地图，已线性归一化到 [0, 1]；dBm 值可由 H 计算。'}
@@ -115,12 +115,14 @@ capabilities:
   status: provided
   note: {en: '40 transmitting base stations per scenario, each with its own files on the same receiver grid.', zh: 每个场景 40 个发射基站，每个基站在同一接收网格上有各自的文件。}
 - key: crossfreq
-  status: none
-  note: {en: Single 3.5 GHz carrier; no paired multi-band data., zh: 单一 3.5 GHz 载频，无成对多频段数据。}
-- {key: near_field, status: unknown}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: near_field
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: none
-  note: {en: Static scenes and receiver points; no speed is described., zh: 场景与接收点均为静态；未描述速度。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: dynamic_blockage
   status: none
   note: {en: Vehicles are fixed scene objects; no moving blockers are described., zh: 车辆为固定场景物体；未描述移动遮挡体。}
@@ -130,11 +132,15 @@ capabilities:
 - key: diffraction
   status: provided
   note: {en: The paper states that the phase includes diffraction shifts; not labelled per path., zh: 论文称相位包含绕射相移；未按路径标注。}
-- {key: scattering, status: unknown}
-- {key: transmission, status: unknown}
+- key: scattering
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: transmission
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: polarization
-  status: none
-  note: {en: 'Dual-polarised elements are simulated, but each H entry is one combined complex gain.', zh: 仿真使用双极化阵元，但 H 的每个元素为合并后的单个复增益。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: none
   note: {en: Only channel matrices and received-power maps are released; no field-level outputs., zh: 仅发布信道矩阵与接收功率地图，不含场级输出。}

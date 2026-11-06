@@ -67,8 +67,8 @@ capabilities:
   status: none
   note: {en: 'The release lists raw CSI, processed breathing signals and MoCap recordings; IQ samples are not listed.', zh: 发布内容列出原始 CSI、处理后的呼吸信号与 MoCap 记录；未列出 IQ 采样。}
 - key: beam_labels
-  status: none
-  note: {en: 'The release lists CSI, breathing signals and MoCap recordings; no beam indices or per-beam gains.', zh: 发布内容列出 CSI、呼吸信号与 MoCap 记录；无波束索引或逐波束增益。}
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: unknown
   note: {en: The released MoCap data give 3D marker positions of the seated subject at 150 Hz; the UE position is not stated., zh: 发布的 MoCap 数据提供就座受试者的三维标记点位置（150 Hz）；来源未说明 UE 位置。}

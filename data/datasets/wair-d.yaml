@@ -109,8 +109,8 @@ capabilities:
   status: provided
   note: {en: 'Path.npy holds delay, AoA and AoD of every path; H_cf_G.npy holds path responses at 2.6, 6, 28, 60 and 100 GHz.', zh: Path.npy 保存每条路径的时延、AoA 与 AoD；H_cf_G.npy 保存 2.6、6、28、60 和 100 GHz 的路径响应。}
 - key: interaction
-  status: none
-  note: {en: 'Path.npy stores only delay, AoA and AoD, so interaction types, points and reflection or diffraction order are absent.', zh: Path.npy 仅保存时延、AoA 与 AoD，因此不含交互类型、交互点及反射或绕射阶数。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: power
   status: derivable
   note: {en: Received power and path loss follow from the stored complex path responses., zh: 接收功率与路径损耗可由已存储的复数路径响应计算得到。}
@@ -154,10 +154,12 @@ capabilities:
 - key: crossfreq
   status: provided
   note: {en: 'Path responses at 2.6, 6, 28, 60 and 100 GHz are stored for the same set of propagation paths.', zh: 2.6、6、28、60 和 100 GHz 的路径响应基于同一组传播路径存储。}
-- {key: near_field, status: unknown}
+- key: near_field
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: none
-  note: {en: Static snapshots; no UE speed or trajectory is stored., zh: 静态快照，不存储 UE 速度或轨迹。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: dynamic_blockage
   status: none
   note: {en: Static snapshots; the release represents no moving blockers., zh: 静态快照，发布内容不包含移动遮挡物。}
@@ -167,9 +169,15 @@ capabilities:
 - key: diffraction
   status: provided
   note: {en: Diffracted paths are computed by the PyLayers ray tracer and stored per path., zh: 绕射路径由 PyLayers 射线追踪计算，并逐路径存储。}
-- {key: scattering, status: unknown}
-- {key: transmission, status: unknown}
-- {key: polarization, status: unknown}
+- key: scattering
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: transmission
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: polarization
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - {key: em_field, status: unknown}
 versions:
 - version: arXiv v1

@@ -2,6 +2,8 @@
 import type { Dataset } from "../schema.ts";
 import { t, label, labels, formatBands, bandClasses, paperOf, type Lang } from "../lib/data.ts";
 import { tasksText } from "../lib/view.ts";
+import { obtainable, provided } from "../lib/caps.ts";
+import { CAPABILITIES } from "../schema.ts";
 interface Props { lang: Lang; datasets: Dataset[]; filterable?: boolean }
 const { lang, datasets, filterable = false } = Astro.props;
 const attrs = (d: Dataset) => ({
@@ -17,7 +19,8 @@ const attrs = (d: Dataset) => ({
   "data-environment": d.environment.join(" "),
   "data-access": d.access.type,
   "data-code": d.code.length ? "1" : "0",
-  "data-cap": d.capabilities.filter((c) => c.status === "provided" || c.status === "derivable").map((c) => c.key).join(" "),
+  "data-cap": CAPABILITIES.filter((k) => obtainable(d, k)).join(" "),
+  "data-capd": CAPABILITIES.filter((k) => provided(d, k)).join(" "),
   "data-versions": d.versions.length,
 });
 ---

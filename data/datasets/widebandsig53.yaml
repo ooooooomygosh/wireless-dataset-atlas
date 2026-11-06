@@ -80,7 +80,9 @@ capabilities:
 - key: interaction
   status: none
   note: {en: 'No propagation paths, so no interaction points or surfaces.', zh: 无传播路径，因此没有交互点或表面信息。}
-- {key: power, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Computed as the squared channel magnitude of the provided channel data., zh: 由所提供信道数据的幅度平方计算得到。}
 - key: iq
   status: provided
   note: {en: Complex IQ arrays per sample; the sample rate is not stated in the sources., zh: 每个样本为复数 IQ 数组；来源未给出采样率。}

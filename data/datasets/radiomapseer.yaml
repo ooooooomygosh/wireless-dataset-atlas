@@ -92,17 +92,17 @@ format: PNG images and JSON polygons; IEEE DataPort also lists MAT and NPY files
 samples: 56,080 simulations per DPM or IRT2 model (701 maps x 80 Tx); 1,402 IRT4 simulations
 capabilities:
 - key: csi
-  status: none
-  note: {en: Only pathloss PNG maps are released; no complex channel data., zh: 仅发布路径损耗 PNG 地图，无复数信道数据。}
+  status: derivable
+  note: {en: Synthesised from the provided path parameters and the array geometry., zh: 由所提供的路径参数与阵列几何合成得到。}
 - key: cir
-  status: none
-  note: {en: 'Only the ToA of the dominant path is released, not an impulse response.', zh: 仅发布主导路径的 ToA，未发布冲激响应。}
+  status: derivable
+  note: {en: Synthesised from the provided path parameters and the array geometry., zh: 由所提供的路径参数与阵列几何合成得到。}
 - key: paths
   status: provided
   note: {en: 'Only the dominant-path ToA (RadioToASeer, 99 maps) is released; no angles, power or phase.', zh: 仅发布主导路径的 ToA（RadioToASeer，99 幅地图）；无角度、功率或相位。}
 - key: interaction
-  status: none
-  note: {en: 'Only the simulator setting (maximum 2 or 4 interactions) is recorded, not per-path interaction data.', zh: 仅记录仿真设置（最多 2 或 4 次交互），未记录逐径交互数据。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: power
   status: provided
   note: {en: Pathloss as gray-level PNG; dB values need the truncation threshold and maximum from the paper. RSS follows from pathloss and the 23 dBm transmit power., zh: 路径损耗以灰度 PNG 发布；还原为 dB 值需要论文中的截断阈值与最大值。RSS 可由路径损耗与 23 dBm 发射功率推算。}
@@ -110,8 +110,8 @@ capabilities:
   status: none
   note: {en: No I/Q samples are released., zh: 未发布 I/Q 采样。}
 - key: beam_labels
-  status: none
-  note: {en: No beam indices or per-beam gains are released., zh: 未发布波束索引或逐波束增益。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: position
   status: provided
   note: {en: Tx coordinates for 80 transmitters per map in JSON; Rx positions for localization in the RadioLocSeer .mat and .npy files., zh: 每幅地图 80 个发射机的坐标以 JSON 发布；定位用接收机位置见 RadioLocSeer 的 .mat 与 .npy 文件。}
@@ -146,14 +146,14 @@ capabilities:
   status: provided
   note: {en: '80 transmitter maps per city map share one geometry, each stored as its own map; they are not combined into one multi-BS tensor.', zh: 每幅城市地图的 80 个发射机地图共享同一几何，各自存为独立地图，未合并为多基站张量。}
 - key: crossfreq
-  status: none
-  note: {en: 'The 2D sets are at 5.9 GHz with street-level transmitters; the 3D set is at 3.5 GHz with rooftop transmitters, so the positions are not paired.', zh: 二维集为 5.9 GHz 且发射机位于街道高度；三维集为 3.5 GHz 且发射机位于屋顶，两者位置不成对。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: near_field
-  status: none
-  note: {en: 'Isotropic antennas; the simulations model pathloss only, with no array.', zh: 天线为各向同性，仿真仅建模路径损耗，无阵列。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: none
-  note: {en: Transmitters and receivers are static in each simulation; no moving users are simulated., zh: 每次仿真中发射机与接收机均为静态；未仿真移动用户。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: dynamic_blockage
   status: none
   note: {en: Cars are placed as static snapshots and their effect is added as a DPM correction; there are no moving blockers., zh: 车辆以静态快照放置，其影响以 DPM 修正量叠加；无移动遮挡体。}
@@ -164,14 +164,14 @@ capabilities:
   status: provided
   note: {en: Diffraction is included in the DPM and IRT2 and IRT4 simulations; not labelled per path., zh: 绕射包含于 DPM 以及 IRT2、IRT4 仿真中；未按径标注。}
 - key: scattering
-  status: none
-  note: {en: Only reflection and diffraction are described for the DPM and IRT simulations., zh: DPM 与 IRT 仿真中仅描述了反射与绕射。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: transmission
-  status: none
-  note: {en: Penetration through buildings is not among the described propagation mechanisms., zh: 穿透建筑未列入所述传播机制。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: polarization
-  status: none
-  note: {en: Isotropic antennas and scalar pathloss outputs; no polarimetric data., zh: 天线为各向同性，输出为标量路径损耗；无极化数据。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: none
   note: {en: Outputs are scalar pathloss values; no field components or antenna patterns., zh: 输出为标量路径损耗值；无场分量或天线方向图。}

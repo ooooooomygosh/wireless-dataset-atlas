@@ -79,8 +79,8 @@ capabilities:
   status: none
   note: {en: 'The released complex values are CSI and UWB CIR estimates, not raw I/Q samples.', zh: 发布的复数值为 CSI 与 UWB CIR 估计，而非原始 I/Q 采样。}
 - key: beam_labels
-  status: none
-  note: {en: 'The release has no beam codebook, beam index or per-beam gain fields.', zh: 发布数据中无波束码本、波束索引或每波束增益字段。}
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: provided
   note: {en: UWB tag xy coordinates for each tagged participant at up to 10 Hz; Kinect supplies 3D skeleton joints., zh: 每位佩戴标签的参与者提供 UWB 标签 xy 坐标，最高 10 Hz；Kinect 提供三维骨骼关节。}

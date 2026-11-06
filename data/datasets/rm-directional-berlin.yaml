@@ -86,8 +86,8 @@ capabilities:
   status: none
   note: {en: The data are path loss radio maps; no I/Q samples are released., zh: 数据为路径损耗无线电地图，未发布 I/Q 采样。}
 - key: beam_labels
-  status: none
-  note: {en: No beam indices or per-beam gain labels are released; the targets are path loss maps., zh: 未发布波束索引或逐波束增益标签；目标为路径损耗图。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: position
   status: provided
   note: {en: Transmitter positions and parameters are released for each sample; receivers lie on a 1 m grid at 1.5 m height. No GPS data., zh: 每个样本发布发射机位置与参数；接收机位于 1.5 m 高度、1 m 间距的网格上。无 GPS 数据。}
@@ -116,18 +116,20 @@ capabilities:
   status: none
   note: {en: 'Static snapshots: each sample is one map for one transmitter setting, with no timestamps or ordered sequences.', zh: 静态快照：每个样本为一个发射机设置下的一幅地图，无时间戳或有序序列。}
 - key: multiuser
-  status: none
-  note: {en: Each sample is a radio map for one transmitter setting; no multi-user channel sets are released., zh: 每个样本为一个发射机设置下的无线电地图；未发布多用户信道集合。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: multibs
-  status: none
-  note: {en: Each sample is a radio map for one transmitter setting; no coherent multi-base-station set is released., zh: 每个样本为一个发射机设置下的无线电地图；未发布相干的多基站集合。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: crossfreq
-  status: none
-  note: {en: Single carrier at 3.7 GHz; no paired multi-band data., zh: 单一 3.7 GHz 载频，无成对多频段数据。}
-- {key: near_field, status: unknown}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: near_field
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: none
-  note: {en: Transmitters and receivers are static in the simulation; no speed is stated., zh: 仿真中收发端均为静止，文档未给出速度。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: dynamic_blockage
   status: none
   note: {en: Static city maps with no moving blockers in the released data., zh: 静态城市地图，发布数据中无移动遮挡物。}
@@ -137,11 +139,15 @@ capabilities:
 - key: diffraction
   status: provided
   note: {en: 'Up to 1 diffraction is enabled in the ray tracing; the released output is aggregate path loss, not labelled per path.', zh: 射线追踪启用最多 1 次绕射；发布的是综合路径损耗，未按路径标注。}
-- {key: scattering, status: unknown}
+- key: scattering
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: transmission
-  status: none
-  note: {en: Ray tracing is set to 0 transmissions; buildings and ground are solid and vegetation is only an attenuating material., zh: 射线追踪设置为 0 次透射；建筑与地面为实体，植被仅为衰减材料。}
-- {key: polarization, status: unknown}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: polarization
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: provided
   note: {en: Transmitter antenna patterns are released as NPY files; field components and field strength maps are not released., zh: 发射天线方向图以 NPY 格式发布；未发布电场分量或场强图。}

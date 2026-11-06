@@ -76,7 +76,9 @@ capabilities:
 - key: csi
   status: simulate
   note: {en: 'The tensors x, h and y (14 OFDM symbols by 72 subcarriers) are produced by running the Sionna generator; the repository contains no stored tensor files.', zh: 张量 x、h、y（14 个 OFDM 符号 × 72 个子载波）需运行 Sionna 生成器产生；仓库不包含已存储的张量文件。}
-- {key: cir, status: unknown}
+- key: cir
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - {key: paths, status: unknown}
 - {key: interaction, status: unknown}
 - key: power

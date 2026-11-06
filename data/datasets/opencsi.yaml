@@ -76,7 +76,9 @@ capabilities:
 - key: iq
   status: none
   note: {en: 'The modified srsLTE writes channel estimates and metrics, with no I/Q samples in the released files.', zh: 修改版 srsLTE 写出的是信道估计与指标，发布文件中没有 I/Q 采样。}
-- {key: beam_labels, status: unknown}
+- key: beam_labels
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: provided
   note: {en: 'Positions are dead-reckoned along eight 5 m lines, with up to 25 cm distance error.', zh: 位置由航迹推算得到，位于八条 5 m 直线上，距离误差最高 25 cm。}
