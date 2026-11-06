@@ -7,7 +7,7 @@ tasks: [localization]
 signals: [rssi, gps]
 bands_ghz: []
 environment: [outdoor-urban, rural]
-samples: 14,378 Sigfox messages (urban Antwerp), 25,638 Sigfox messages (rural, Antwerp-Ghent), 130,430 LoRaWAN messages (urban Antwerp)
+samples: 14,378 Sigfox messages (urban Antwerp), 25,638 Sigfox messages (rural, Antwerp-Ghent), LoRaWAN messages (urban Antwerp, version 1.2)
 format: CSV, JSON
 standard: Sigfox, LoRaWAN
 license: CC BY 4.0
@@ -17,15 +17,15 @@ paper: doi:10.3390/data3020013
 used_in: []
 citing: ['doi:10.1109/jiot.2020.3019199', 'doi:10.1109/tvt.2019.2940272', 'doi:10.1109/infocom42981.2021.9488784']
 summary: {en: 'GPS-tagged Sigfox and LoRaWAN messages with per-base-station RSSI and network metadata, collected over three months from devices that periodically reported their GPS location. Sigfox data cover urban Antwerp and a rural area between Antwerp and Ghent; LoRaWAN data cover urban Antwerp.', zh: 带有 GPS 位置标签的 Sigfox 与 LoRaWAN 报文，包含各基站的 RSSI 及网络元数据，采集周期为三个月，设备周期性上报其 GPS 位置。Sigfox 数据覆盖安特卫普市区以及安特卫普与根特之间的农村地区；LoRaWAN 数据覆盖安特卫普市区。}
-sources: ['https://zenodo.org/record/3342253', 'https://zenodo.org/api/records/3342253', 'https://api.crossref.org/works/10.3390/data3020013']
+sources: ['https://zenodo.org/record/3342253', 'https://zenodo.org/api/records/3342253', 'https://api.crossref.org/works/10.3390/data3020013', 'https://zenodo.org/api/records/3342253/files/sigfox_dataset_antwerp.csv/content', 'https://api.openalex.org/works/doi:10.3390/data3020013', 'https://zenodo.org/api/records/3342253/versions', 'https://zenodo.org/api/records/3904158', 'https://zenodo.org/api/records/1193563', 'https://zenodo.org/api/records/1212478', 'https://zenodo.org/api/records/3342253/files/sigfox_dataset_rural.csv/content', 'https://zenodo.org/api/records/3904158/files/lorawan_antwerp_2019_dataset.csv/content', 'https://zenodo.org/api/records/3904158/files/lorawan_antwerp_2019_dataset.json.txt/content', 'https://zenodo.org/api/records/3904158/files/sigfox_bs_mapping.csv/content', 'https://zenodo.org/api/records/3904158/files/lorawan_antwerp_gateway_locations.json.txt/content']
 checked: '2026-11-06'
-overview: {en: 'Sigfox and LoRaWAN Fingerprint Localization Datasets are measured LPWAN datasets published by the University of Antwerp in 2018 (doi:10.3390/data3020013) and hosted on Zenodo under CC BY 4.0. GPS-equipped mobile devices periodically reported their position in Sigfox or LoRaWAN messages over about three months. Each record holds the message receive time, the IDs of all receiving base stations, the RSSI at each base station, and the device''s GPS position. The Sigfox data cover urban Antwerp (14,378 messages) and a rural area between Antwerp and Ghent (25,638 messages). The LoRaWAN data cover urban Antwerp (130,430 messages in the current version 1.2). The files are CSV, the LoRaWAN data also come as a JSON file, and a base-station mapping file links the two Sigfox areas. The data target fingerprint localization; the 2018 paper reports a mean error of 214.58 m for rural Sigfox, 688.97 m for urban Sigfox and 398.40 m for urban LoRaWAN. The page does not state the number of devices
-    or base stations, the collection dates, or the area coordinates.', zh: 'Sigfox 与 LoRaWAN 指纹定位数据集是安特卫普大学于 2018 年发布的 LPWAN 实测数据集（doi:10.3390/data3020013），托管于 Zenodo，采用 CC BY 4.0 许可。配备 GPS 的移动设备在约三个月内周期性地通过 Sigfox 或 LoRaWAN 报文上报自身位置。每条记录包含报文接收时间、所有接收基站的 ID、各基站的 RSSI，以及设备的 GPS 位置。Sigfox 数据覆盖安特卫普市区（14,378 条报文）和安特卫普与根特之间的农村地区（25,638 条报文）。LoRaWAN 数据覆盖安特卫普市区（当前 1.2 版中为 130,430 条报文）。文件为 CSV 格式，LoRaWAN 数据另有 JSON 文件，并提供一个基站映射文件用于关联两个 Sigfox 区域。数据面向指纹定位任务；2018 年论文报告的平均定位误差为：农村 Sigfox 214.58 m，市区 Sigfox 688.97 m，市区 LoRaWAN 398.40 m。'}
+overview: {en: 'Sigfox and LoRaWAN Fingerprint Localization Datasets are measured LPWAN datasets from the University of Antwerp, described in doi:10.3390/data3020013 (2018) and hosted on Zenodo under CC BY 4.0 (version 1.2, 2019). GPS-equipped mobile devices periodically reported their position in Sigfox or LoRaWAN messages over about three months. Each record holds the message receive time, the IDs of all receiving base stations, the RSSI at each base station, and the device''s GPS position. The Sigfox data cover urban Antwerp (14,378 messages) and a rural area between Antwerp and Ghent (25,638 messages). The LoRaWAN data cover urban Antwerp; the version 1.2 set was collected one year after the earlier LoRaWAN set. The files are CSV, the LoRaWAN data also come as a JSON file, and a base-station mapping file links the two Sigfox areas. The data target fingerprint localization; the 2018 paper reports mean location errors of 214.58 m for rural Sigfox, 688.97 m for urban Sigfox and 398.40 m
+    for urban LoRaWAN.', zh: 'Sigfox 与 LoRaWAN 指纹定位数据集是安特卫普大学发布的 LPWAN 实测数据集，相关论文为 doi:10.3390/data3020013（2018 年），数据托管于 Zenodo，采用 CC BY 4.0 许可，当前为 1.2 版（2019 年）。配备 GPS 的移动设备在约三个月内周期性地通过 Sigfox 或 LoRaWAN 报文上报自身位置。每条记录包含报文接收时间、所有接收基站的 ID、各基站的 RSSI 以及设备的 GPS 位置。Sigfox 数据覆盖安特卫普市区（14,378 条报文）和安特卫普与根特之间的农村地区（25,638 条报文）。LoRaWAN 数据覆盖安特卫普市区，1.2 版数据采集于早期 LoRaWAN 数据集之后一年。文件为 CSV 格式，LoRaWAN 数据另有 JSON 文件，并提供基站映射文件用于关联两个 Sigfox 区域。数据面向指纹定位任务；2018 年论文报告的平均定位误差为：农村 Sigfox 214.58 m，市区 Sigfox 688.97 m，市区 LoRaWAN 398.40 m。'}
 signal_details:
 - signal: rssi
   text: {en: 'RSSI at each receiving base station, recorded per message. The Sigfox CSV files use base-station columns, and the urban and rural Sigfox sets use separate IDs that sigfox_bs_mapping.csv links. In LoRaWAN version 1.2 each message lists all receiving gateways; the earlier version listed up to three. Four gateways were added in version 1.2, with RSSI in columns BS 69 to BS 72. The LoRaWAN JSON stores per gateway: rssi, esp (estimated signal power), snr, timestamp type, time of arrival and gateway id. Some gateways report nanosecond-precision timestamps (timestamp type GPS_RADIO).', zh: 每条报文记录各接收基站的 RSSI。Sigfox CSV 文件以基站列保存数据，市区与农村两个 Sigfox 数据集使用不同的基站 ID，由 sigfox_bs_mapping.csv 进行对应。LoRaWAN 1.2 版中每条报文列出所有接收网关的数据，早期版本最多列出三个。1.2 版新增四个网关，其 RSSI 位于 BS 69 至 BS 72 列。LoRaWAN JSON 文件为每个网关保存 rssi、esp（估计信号功率）、snr、timestamp 类型、到达时间和 gateway id。部分网关提供纳秒精度时间戳（timestamp 类型为 GPS_RADIO）。}
 - signal: gps
-  text: {en: 'Device location reported by GPS in the Sigfox and LoRaWAN messages. The LoRaWAN JSON file stores it as top-level latitude and longitude fields, which the page labels as ground truth. Ground-truth accuracy is not discussed on the page.', zh: 设备通过 GPS 在 Sigfox 与 LoRaWAN 报文中上报的位置。LoRaWAN JSON 文件将其保存为顶层 latitude 与 longitude 字段，页面将其标注为真值（ground truth）。页面未讨论真值的精度。}
+  text: {en: 'Device location reported by GPS in the Sigfox and LoRaWAN messages. The LoRaWAN JSON file stores it as top-level latitude and longitude fields, which the dataset description labels as the ground-truth transmit location.', zh: Sigfox 与 LoRaWAN 报文中由 GPS 上报的设备位置。LoRaWAN JSON 文件将其保存为顶层 latitude 与 longitude 字段，数据说明将其标注为发射位置真值（ground truth）。}
 pipeline:
   summary: {en: 'GPS-equipped devices send their position in LPWAN messages, base stations record each reception, and a local data server stores the records as CSV and JSON files.', zh: 配备 GPS 的设备通过 LPWAN 报文发送位置，基站记录每次接收，本地数据服务器将记录保存为 CSV 与 JSON 文件。}
   stages:
@@ -48,8 +48,113 @@ pipeline:
     outputs:
     - {en: Per-message records, zh: 逐条报文记录}
   - title: {en: Export as files, zh: 导出为文件}
-    detail: {en: 'The records are published as sigfox_dataset_antwerp.csv (14,378 messages), sigfox_dataset_rural.csv (25,638 messages), lorawan_antwerp_2019_dataset.csv (130,430 messages) and lorawan_antwerp_2019_dataset.json.txt, with sigfox_bs_mapping.csv for base station IDs. The .txt suffix on the JSON file was added because Zenodo would not accept the original extension.', zh: '记录以 sigfox_dataset_antwerp.csv（14,378 条报文）、sigfox_dataset_rural.csv（25,638 条报文）、lorawan_antwerp_2019_dataset.csv（130,430 条报文）和 lorawan_antwerp_2019_dataset.json.txt 发布，基站 ID 对应关系见 sigfox_bs_mapping.csv。JSON 文件的 .txt 后缀是因为 Zenodo 不接受原扩展名而添加的。'}
+    detail: {en: 'The records are published as sigfox_dataset_antwerp.csv (14,378 messages), sigfox_dataset_rural.csv (25,638 messages), lorawan_antwerp_2019_dataset.csv and lorawan_antwerp_2019_dataset.json.txt, with sigfox_bs_mapping.csv for base station IDs. The .txt suffix on the JSON file was added because Zenodo would not accept the original extension.', zh: '记录以 sigfox_dataset_antwerp.csv（14,378 条报文）、sigfox_dataset_rural.csv（25,638 条报文）、lorawan_antwerp_2019_dataset.csv 和 lorawan_antwerp_2019_dataset.json.txt 发布，基站 ID 对应关系见 sigfox_bs_mapping.csv。JSON 文件的 .txt 后缀是因为 Zenodo 不接受原扩展名而添加的。'}
     inputs:
     - {en: Stored per-message records, zh: 已存储的逐条记录}
     outputs:
     - {en: CSV and JSON files on Zenodo, zh: Zenodo 上的 CSV 与 JSON 文件}
+facts:
+- label: {en: Versions, zh: 版本}
+  text: {en: 'Version 1.2 updates only the LoRaWAN set, which was collected one year after the earlier LoRaWAN set. The Sigfox files are identical in versions 1.0, 1.1 and 1.2.', zh: 1.2 版仅更新 LoRaWAN 数据集，其数据采集于早期 LoRaWAN 数据集之后一年。Sigfox 文件在 1.0、1.1 与 1.2 版中相同。}
+- label: {en: Base-station IDs, zh: 基站 ID}
+  text: {en: 'Stations near the border of the urban and rural Sigfox areas appear in both sets under different IDs. For example, BS 1 in the urban set can be the same station as BS 36 in the rural set.', zh: 位于市区与农村 Sigfox 区域边界附近的基站同时出现在两个数据集中，但 ID 不同。例如，市区数据集中的 BS 1 可能与农村数据集中的 BS 36 为同一基站。}
+- label: {en: LoRaWAN JSON fields, zh: LoRaWAN JSON 字段}
+  text: {en: 'Each message record has hdop, dev_addr, dev_eui, sf, channel, payload, adr, counter, airtime, latitude and longitude, plus a gateways list. Each gateway entry holds rssi, esp, snr, rx_time (ts_type and time) and id.', zh: 每条报文记录包含 hdop、dev_addr、dev_eui、sf、channel、payload、adr、counter、airtime、latitude 与 longitude 字段，以及 gateways 列表。每个网关条目包含 rssi、esp、snr、rx_time（ts_type 与 time）与 id。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'Released fields are RSSI per base station, plus ESP and SNR in the LoRaWAN JSON; there is no complex channel data.', zh: 发布的字段为各基站的 RSSI，LoRaWAN JSON 另含 ESP 与 SNR；没有复数信道数据。}
+- key: cir
+  status: none
+  note: {en: Only one RSSI value per base station is released; no impulse response or delay profile., zh: 每个基站仅发布一个 RSSI 值，没有冲激响应或时延分布。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle or power; the data hold one RSSI value per base station.', zh: 没有逐径的时延、角度或功率；数据为每个基站一个 RSSI 值。}
+- key: interaction
+  status: none
+  note: {en: 'No per-path interaction data (surfaces, reflection or diffraction order) are released.', zh: 未发布逐径的交互信息（反射面、反射或绕射阶数）。}
+- key: power
+  status: provided
+  note: {en: RSSI per receiving base station or gateway; the LoRaWAN JSON also has ESP per gateway., zh: 每个接收基站或网关的 RSSI；LoRaWAN JSON 另含每个网关的 ESP。}
+- key: iq
+  status: none
+  note: {en: No raw I/Q samples are released., zh: 未发布原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are released., zh: 未发布波束索引或逐波束增益。}
+- key: position
+  status: provided
+  note: {en: Ground-truth GPS latitude and longitude of the transmitting device for each message., zh: 每条报文对应发射设备的 GPS 经纬度真值。}
+- key: geometry
+  status: none
+  note: {en: 'The release has message files, a base-station ID map and gateway coordinates, but no 3D scene or map files.', zh: 数据包括报文文件、基站 ID 映射和网关坐标，但没有三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera images are released., zh: 未发布相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth data are released., zh: 未发布深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data are released., zh: 未发布激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data are released., zh: 未发布雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are released; the devices report GPS position only., zh: 未发布惯性传感器数据；设备仅上报 GPS 位置。}
+- key: time_series
+  status: provided
+  note: {en: Each message has a receive time and the messages span about three months; the LoRaWAN JSON also has device IDs for per-device sequences., zh: 每条报文都有接收时间，数据覆盖约三个月；LoRaWAN JSON 另含设备 ID，可构成逐设备序列。}
+- key: multiuser
+  status: unknown
+  note: {en: 'Numerous mobile devices reported location, but the sources do not say that their messages were simultaneous.', zh: 大量移动设备上报了位置，但来源未说明这些报文是否同时发送。}
+- key: multibs
+  status: provided
+  note: {en: Each message lists RSSI for all receiving base stations (Sigfox) or gateways (LoRaWAN 1.2); the urban and rural Sigfox sets use separate ID spaces linked by sigfox_bs_mapping.csv., zh: 每条报文列出所有接收基站（Sigfox）或网关（LoRaWAN 1.2）的 RSSI；市区与农村 Sigfox 数据集使用不同的 ID 空间，由 sigfox_bs_mapping.csv 对应。}
+- key: crossfreq
+  status: none
+  note: {en: Sigfox and LoRaWAN are separate sets; no paired multi-band data at the same positions is described., zh: Sigfox 与 LoRaWAN 为独立数据集；未描述同一位置的成对多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: unknown
+  note: {en: 'The devices are described as mobile, but no speed is stated.', zh: 文献称设备为移动设备，但未给出速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量之中，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量之中，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量之中，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the over-the-air measurement, not labelled per path.', zh: 包含在空口测量之中，未按径标注。}
+- key: polarization
+  status: none
+  note: {en: The data hold one RSSI value per base station; no polarimetric measurement is stated., zh: 数据为每个基站一个 RSSI 值，未说明有极化测量。}
+- key: em_field
+  status: none
+  note: {en: 'Received signal strength only; no field components, field strength or antenna patterns.', zh: 仅有接收信号强度，没有场分量、场强或天线方向图。}
+versions:
+- version: '1.3'
+  date: '2020-06-23'
+  summary: {en: 'Adds lorawan_antwerp_gateway_locations.json.txt, which gives the coordinates of the LoRaWAN gateways in Antwerp.', zh: 新增 lorawan_antwerp_gateway_locations.json.txt，给出安特卫普 LoRaWAN 网关的坐标。}
+  url: https://zenodo.org/record/3904158
+- version: '1.2'
+  date: '2019-07-19'
+  summary: {en: 'Updates the LoRaWAN set only, collected one year after the previous set. Adds four gateways (BS 69 to BS 72), metadata from all receiving gateways per message, nanosecond timestamps from some gateways, and a JSON file. The Sigfox files are unchanged.', zh: 仅更新 LoRaWAN 数据集，采集时间为上一版数据之后一年。新增四个网关（BS 69 至 BS 72），每条报文包含所有接收网关的元数据，部分网关提供纳秒级时间戳，并新增 JSON 文件。Sigfox 文件未变。}
+  url: https://zenodo.org/record/3342253
+- version: '1.1'
+  date: '2018-04-04'
+  summary: {en: 'Adds sigfox_bs_mapping.csv, which links the base-station IDs of the urban and rural Sigfox sets. The record description gives 25,638 rural Sigfox messages, where version 1.0 gave 14,378.', zh: '新增 sigfox_bs_mapping.csv，用于对应市区与农村 Sigfox 数据集的基站 ID。记录描述中农村 Sigfox 报文数为 25,638 条，1.0 版给出的是 14,378 条。'}
+  url: https://zenodo.org/record/1212478
+- version: '1.0'
+  date: '2018-03-12'
+  summary: {en: 'First release: lorawan_dataset_antwerp.csv (123,529 LoRaWAN messages, urban Antwerp), sigfox_dataset_antwerp.csv and sigfox_dataset_rural.csv.', zh: '首个版本：lorawan_dataset_antwerp.csv（安特卫普市区 123,529 条 LoRaWAN 报文）、sigfox_dataset_antwerp.csv 与 sigfox_dataset_rural.csv。'}
+  url: https://zenodo.org/record/1193563

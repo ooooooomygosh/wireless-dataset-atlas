@@ -44,7 +44,7 @@ Release year, data origin (measured, ray tracing, statistical model, simulation,
 
 Paper titles, authors, venues and citation counts come from [OpenAlex](https://openalex.org) and are refreshed monthly by a scheduled workflow. Each dataset lists studies that name it in the title or abstract and the most cited non-survey works that cite its dataset paper, both limited to a fixed list of venues; the rule is documented on the [About page](https://wireless-dataset-atlas.vercel.app/en/about/).
 
-Each dataset page also carries a detailed overview, how every signal is captured, and the generation pipeline from source to labels, where the sources describe them. The previous single-page version is preserved at the `v1.4.0` tag.
+Each dataset page also carries a capability matrix (what the data provides, what can be derived, what only a simulator produces), a version history, a detailed overview, how every signal is captured, and the generation pipeline from source to labels, where the sources describe them. The previous single-page version is preserved at the `v1.4.0` tag.
 
 ## Repository layout
 

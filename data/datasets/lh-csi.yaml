@@ -7,122 +7,89 @@ tasks: [foundation-model, channel-prediction, csi-feedback]
 signals: [csi]
 bands_ghz: []
 environment: []
-license: Per asset; competition splits restricted, redistribution prohibited
-access: {url: 'https://huggingface.co/datasets/pku-pcni-lab/WiFo-2', type: request}
+license: MIT
+access: {url: 'https://huggingface.co/datasets/pku-pcni-lab/WiFo-2', type: open}
 code: ['https://github.com/PKU-PCNI/WiFo-2']
 paper: doi:10.1093/nsr/nwag500
 samples: 78 subsets from 8 source types, 11.6 billion CSI points
-sources: ['https://doi.org/10.1093/nsr/nwag500', 'https://github.com/PKU-PCNI/WiFo-2']
+sources: ['https://doi.org/10.1093/nsr/nwag500', 'https://github.com/PKU-PCNI/WiFo-2', 'https://huggingface.co/datasets/pku-pcni-lab/WiFo-2', 'https://huggingface.co/api/datasets/pku-pcni-lab/WiFo-2', 'https://huggingface.co/api/datasets/pku-pcni-lab/WiFo-2/tree/main?recursive=true', 'https://api.github.com/repos/PKU-PCNI/WiFo-2/git/trees/main?recursive=1', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo-2/main/README.md', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo-2/main/inference.py', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo-2/main/DataLoader.py', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo-2/main/main.py', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo-2/main/model.py', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo-2/main/dataset/README.md', 'https://raw.githubusercontent.com/PKU-PCNI/WiFo-2/main/experiments/README.md', 'https://api.crossref.org/works/10.1093/nsr/nwag500', 'https://arxiv.org/abs/2511.22222', 'https://arxiv.org/html/2511.22222', 'https://github.com/PKU-PCNI/WiFo-2/releases',
+  'https://huggingface.co/api/datasets/pku-pcni-lab/WiFo-2/commits/main', 'https://huggingface.co/api/models/pku-pcni-lab/WiFo-2/commits/main']
 aliases: []
 used_in: []
 citing: []
 summary: {en: 'LH–CSI is the heterogeneous spatial–temporal–frequency corpus used by WiFo-2, combining statistical, ray-traced, and measured sources. The complete corpus described in the paper must be recorded separately from currently public evaluation assets.', zh: LH–CSI 是 WiFo-2 所使用的异构时空频语料，包含统计、射线追踪与实测来源。论文描述的完整语料与当前公开评估资产必须分开记录。}
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Eight upstream sources form 78 subsets. The public release contains only some test tensors, Dense weights, and inference programs; temporal, spatial, and frequency input structures define multiple reconstruction tasks.', zh: 八种上游构成 78 个子集；公开版本仅释放部分测试张量、Dense 权重与推理程序，输入按时间、空间和频率结构生成多种重建任务。}
+  summary: {en: 'Eight upstream sources form 78 subsets containing 11.6 billion CSI points. The public release contains 15 zero-shot test tensors, four Dense checkpoints and inference code. The inference code covers random masking, temporal masking, frequency masking and channel estimation (CE).', zh: 八个上游来源构成 78 个子集，共含 116 亿个 CSI 点。公开发布包含 15 个零样本测试张量、四个 Dense 检查点与推理代码。推理代码覆盖随机遮挡、时间遮挡、频域遮挡与信道估计（CE）任务。}
   stages:
-  - title: {en: Collect eight channel sources, zh: 汇集八种信道来源}
-    detail: {en: 'The paper combines statistical-model, measured, and ray-traced sources into LH–CSI, covering 78 subsets and 11.6 billion CSI points.', zh: 论文将统计模型、实测和射线追踪来源组合成 LH–CSI，覆盖 78 个子集和 116 亿 CSI 点。}
+  - title: {en: Collect the eight upstream sources, zh: 汇集八个上游来源}
+    detail: {en: 'The paper''s Methods list QuaDRiGa, PKU-GBSM, LuViRA, DICHASUS, Argos, PKU-RM, DeepMIMO and PKU-RT as the sources of LH-CSI. The paper says these cover statistical channel modelling, real-world measurement and ray tracing.', zh: 论文方法部分列出 QuaDRiGa、PKU-GBSM、LuViRA、DICHASUS、Argos、PKU-RM、DeepMIMO 与 PKU-RT 作为 LH-CSI 的来源，并称其涵盖统计信道建模、实测与射线追踪。}
     inputs:
-    - {en: QuaDRiGa、PKU-GBSM, zh: QuaDRiGa、PKU-GBSM}
-    - {en: LuViRA、DICHASUS、Argos、PKU-RM, zh: LuViRA、DICHASUS、Argos、PKU-RM}
-    - {en: DeepMIMO、PKU-RT, zh: DeepMIMO、PKU-RT}
+    - {en: Eight upstream channel sources, zh: 八个上游信道来源}
     outputs:
-    - {en: Subsets with source identities, zh: 有来源身份的子集集合}
+    - {en: 78 subsets with source identities, zh: 带有来源标识的 78 个子集}
     controls:
-    - {en: 'Author paper: a count of CSI points is not directly equivalent to a count of independent training samples.', zh: 作者论文：CSI 点的计数不能直接等同于独立训练样本数。}
+    - {en: 'The paper states split sizes in CSI samples: 9,000 training, 1,000 validation and 2,000 test samples for each source dataset. The total is given in CSI points (11.6 billion).', zh: '论文以 CSI 样本数给出划分规模：每个来源数据集 9,000 个训练样本、1,000 个验证样本与 2,000 个测试样本；总量以 CSI 点计，为 116 亿。'}
     checks:
-    - {en: 'Reproduction recommendation: record source, measurement/simulation method, carrier frequency, and array; check repeated exposure by source.', zh: 复现建议：记录来源、测量/仿真方式、载频与阵列，以来源为单位检查重复暴露。}
-  - title: {en: Organize heterogeneous spatial–temporal–frequency samples, zh: 组织异构时空频样本}
-    detail: {en: 'The paper organizes spatial–temporal–frequency channels by source. The model handles variable sizes using two real/imaginary channels and 3D patches. Public model.py patchify accepts [B,2,T,H,W] and partitions using temporal length u and spatial/frequency block length p.', zh: '论文按各来源组织时空频信道，模型以实虚双通道及三维 patch 处理可变尺寸；公开 model.py 的 patchify 接收 [B,2,T,H,W]，以时间长度 u 和空间/频率块长 p 划分。'}
+    - {en: 'Record the source, measurement or simulation method, carrier frequency and array of each subset before pooling them.', zh: 合并子集前，逐个记录其来源、测量或仿真方式、载频与阵列。}
+  - title: {en: Organize CSI as real and imaginary 3D tensors, zh: 将 CSI 组织为实虚三维张量}
+    detail: {en: 'The paper organizes space-time-frequency channels by source. In model.py, patchify accepts tensors of shape [B, 2, T, H, W] with real and imaginary channels, splits T by t_patch_size and splits H and W by patch_size.', zh: '论文按来源组织时空频信道。model.py 中的 patchify 接收形状为 [B, 2, T, H, W] 的张量（实部与虚部两个通道），按 t_patch_size 划分 T 维，按 patch_size 划分 H、W 维。'}
     inputs:
-    - {en: Complex CSI from each upstream source, zh: 各上游复 CSI}
-    - {en: 'Time, antenna, and subcarrier dimensions', zh: 时间、天线、子载波维度}
+    - {en: 'Complex CSI from each source, with time, antenna and subcarrier dimensions', zh: 各来源的复 CSI，含时间、天线与子载波维度}
     outputs:
-    - {en: Real/imaginary CSI tensors retaining source dimensions, zh: 具有来源尺寸的实虚 CSI 张量}
-    - {en: Spatial–temporal–frequency tokens, zh: 时空频 token}
-    controls:
-    - {en: 'To verify: calibration, cropping, normalization, and windowing rules for each upstream source require Supplementary Notes or original processing scripts.', zh: 待核实：每个上游的校准、裁剪、归一化和窗口规则需查 Supplementary Notes 或原始处理脚本。}
+    - {en: Real and imaginary tensors and space-time-frequency tokens, zh: 实虚张量与时空频 token}
     checks:
-    - {en: 'Reproduction recommendation: establish the physical meaning of H/W from files and configurations; do not apply one arbitrary resize to every source.', zh: 复现建议：H/W 必须根据文件与配置确认其物理语义；不能对全部来源套用一个任意 resize。}
-  - title: {en: Load current public test views, zh: 读取当前公开测试视图}
-    detail: {en: 'The public loader accepts a tensor, a specific tuple element, or a dictionary containing test/X_test/test_data. It checks dimensionality and the sequence length on axis 2. The test DataLoader does not shuffle.', zh: 公开加载器接受 tensor、特定 tuple 元素或含 test/X_test/test_data 的 dict，检查维数与第 2 轴的序列长度；测试 DataLoader 不打乱顺序。}
+    - {en: 'patchify asserts that H and W are divisible by patch_size and T by t_patch_size, so each source''s shape must satisfy this.', zh: patchify 断言 H、W 可被 patch_size 整除、T 可被 t_patch_size 整除，因此每个来源的形状都须满足该条件。}
+  - title: {en: Load the released zero-shot test tensors, zh: 读取已发布的零样本测试张量}
+    detail: {en: 'The public loader takes a tensor directly, the third element of a (train, validation, test) tuple, or the value under the key test, X_test or test_data in a dictionary. It requires at least three dimensions and the same length on the third axis (index 2) for all datasets in one run. The test DataLoader does not shuffle.', zh: '公开加载器可直接读取张量、(train, validation, test) 元组中的第三个元素，或字典中键为 test、X_test 或 test_data 的值。它要求张量至少三维，且同一次运行中各数据集的第三维（索引 2）长度一致。测试 DataLoader 不打乱顺序。'}
     inputs:
-    - {en: 15 X_test.pt files, zh: 15 个 X_test.pt 文件}
-    - {en: Corresponding dataset configurations, zh: 对应数据集配置}
+    - {en: 15 X_test.pt files and the matching dataset names, zh: 15 个 X_test.pt 文件及对应数据集名}
     outputs:
-    - {en: Test batches ready for inference, zh: 可供推理的测试 batch}
+    - {en: Test batches for inference, zh: 用于推理的测试批次}
     controls:
-    - {en: 'Author release: the public file tree and the complete 78-subset training corpus have different scopes.', zh: 作者发布：公开文件树与完整 78 子集训练语料范围不同。}
-    - {en: 'To verify: the public loader does not describe all normalization applied before saving.', zh: 待核实：公开加载器没有说明保存前的全部归一化。}
+    - {en: 'Author release: the public file tree and the complete 78-subset corpus have different scopes.', zh: 作者发布：公开文件树与完整 78 子集语料的范围不同。}
+    - {en: The loader applies no normalization step., zh: 加载器不做任何归一化处理。}
     checks:
-    - {en: 'Reproduction recommendation: after loading, record dtype, shape, and units. Do not infer a uniform dictionary schema from the .pt extension.', zh: 复现建议：实际读取后记录 dtype、shape 和单位；不要根据 .pt 扩展名推断统一字典 schema。}
-  - title: {en: Task masks and input noise, zh: 任务 mask 与输入噪声}
-    detail: {en: 'The current inference program uses random=0.85, temporal=0.25, fre=0.25, or CE=[4,1,12]. Datasets with CE run only CE; Argos/Dich default to random and fre. model.forward adds 20 dB Gaussian noise based on batch mean-square values, then encodes only visible inputs.', zh: '当前推理器采用 random=0.85、temporal=0.25、fre=0.25 或 CE=[4,1,12]；带 CE 的数据集只运行 CE，Argos/Dich 默认运行 random 与 fre。model.forward 按 batch 均方值加入 20 dB 高斯噪声，再仅编码可见输入。'}
+    - {en: 'After loading, record dtype, shape and units, since the loader accepts several payload layouts.', zh: 加载后记录 dtype、形状与单位，因为加载器接受多种数据结构。}
+  - title: {en: Apply task masks and input noise, zh: 施加任务遮挡与输入噪声}
+    detail: {en: 'With the default mask_strategy_random batch, inference.py uses random=0.85, temporal=0.25, fre=0.25 or CE=[4, 1, 12]. Dataset names containing CE run only CE; names containing Argos or Dich run random and fre; other datasets run random, temporal and fre. model.forward adds Gaussian noise at 20 dB SNR, with noise power set from the mean square of the whole input batch, and the encoder receives only the visible tokens.', zh: '在默认的 mask_strategy_random batch 设置下，inference.py 使用 random=0.85、temporal=0.25、fre=0.25 或 CE=[4, 1, 12]。名称含 CE 的数据集只运行 CE；名称含 Argos 或 Dich 的数据集运行 random 与 fre；其他数据集运行 random、temporal 与 fre。model.forward 以 20 dB 信噪比加入高斯噪声，噪声功率由整个输入批次的均方值确定；编码器只接收可见 token。'}
     inputs:
-    - {en: Public test batches, zh: 公开测试 batch}
-    - {en: Task name and seed, zh: 任务名与 seed}
+    - {en: Public test batches, zh: 公开测试批次}
+    - {en: Dataset name and random seed, zh: 数据集名与随机种子}
     outputs:
-    - {en: Task-specific observations, zh: 任务化观测}
-    - {en: Masks and clean targets, zh: mask 与干净目标}
+    - {en: 'Masked observations, masks and clean targets', zh: 遮挡观测、mask 与干净目标}
     controls:
-    - {en: 'Author code: dataset names and parameters control task routing.', zh: 作者代码：task 分流由数据集名称和参数控制。}
-    - {en: 'Author code: noise power is determined by mean(imgs²) over the entire batch.', zh: 作者代码：噪声功率由整个 batch 的 mean(imgs²) 确定。}
+    - {en: Task routing is set by the dataset name and the mask_strategy_random argument., zh: 任务分流由数据集名称与 mask_strategy_random 参数决定。}
     checks:
-    - {en: 'Reproduction recommendation: check task-name matching, masked axes, and batch sensitivity. Interpret mask values by strategy; they cannot all be described as visible fractions.', zh: 复现建议：检查任务名匹配、遮挡轴和 batch 敏感性；mask 数字需随策略解释，不能统一称为可见比例。}
-  - title: {en: Compute reconstruction error at masked positions, zh: 计算被遮挡位置的重建误差}
-    detail: {en: 'inference.py selects predictions and targets where mask==1, divides summed real/imaginary squared errors by target power to obtain per-sample NMSE, averages across samples, then converts to dB.', zh: inference.py 取 mask==1 的预测与目标，以实部和虚部平方误差之和除以目标功率，先得每个样本的 NMSE，再按样本数平均并转换为 dB。}
+    - {en: 'CE uses the list [4, 1, 12] rather than a masking ratio, so mask values mean different things across strategies.', zh: 'CE 使用列表 [4, 1, 12] 而非遮挡比例，因此各策略下的 mask 数值含义不同。'}
+  - title: {en: Compute NMSE at masked positions, zh: 计算遮挡位置的 NMSE}
+    detail: {en: 'inference.py keeps predictions and clean targets where mask equals 1. For each sample it divides the mean squared real and imaginary error over the masked tokens by the mean target power, clamps the denominator at 1e-12, averages over samples and converts the result to dB.', zh: inference.py 取 mask 等于 1 的位置上的预测值与干净目标。对每个样本，先计算被遮挡 token 上实部与虚部平方误差之和的均值，再除以目标功率均值（分母下限为 1e-12）；随后对样本取平均，并换算为 dB。}
+    outputs:
+    - {en: 'NMSE for each dataset, task and mask setting', zh: 每个数据集、任务与遮挡设置的 NMSE}
+    controls:
+    - {en: 'The result is a sample average of per-sample ratios, not a pooled NMSE over all data.', zh: 结果是逐样本比值的样本平均，而非对全部数据汇总后的 NMSE。}
+    checks:
+    - {en: 'An empty test split raises an error; samples with near-zero target power are clamped, not removed.', zh: 空测试集会触发报错；目标功率接近零的样本被截断而非剔除。}
+  - title: {en: Separate public inference assets from training assets, zh: 区分公开推理资产与训练资产}
+    detail: {en: 'The public repository contains inference code, four Dense checkpoints and zero-shot test tensors. The README lists the remaining code, checkpoints and supporting resources as planned, with no release date. Competition train, validation and test splits are provided separately to registered participants after an approval step.', zh: 公开仓库包含推理代码、四个 Dense 检查点与零样本测试张量。README 将其余代码、检查点与配套资源列为计划内容，未给出发布日期。竞赛用的 train、validation 与 test 划分单独提供给注册参赛者，需经审批。}
     inputs:
-    - {en: Model predictions, zh: 模型预测}
-    - {en: Clean targets, zh: 干净目标}
-    - {en: mask, zh: mask}
+    - {en: 'Test tensors, Dense checkpoints and inference scripts', zh: 测试张量、Dense 检查点与推理脚本}
     outputs:
-    - {en: 'NMSE for each dataset, task, and mask', zh: 每数据集、每任务、每 mask 的 NMSE}
+    - {en: Runnable public inference workflow, zh: 可运行的公开推理流程}
     controls:
-    - {en: 'Author code: the denominator is clamped at 1e-12. This differs from aggregate NMSE obtained by first summing errors and powers over all data.', zh: 作者代码：分母以 1e-12 截断；不是先将全数据误差和功率相加的汇总 NMSE。}
+    - {en: The public test assets are not the complete LH-CSI training set., zh: 公开测试资产并非完整的 LH-CSI 训练集。}
     checks:
-    - {en: 'Reproduction recommendation: check empty masks, low-power samples, and sample weighting; downstream communication decisions still require separately defined tasks.', zh: 复现建议：核对空 mask、低功率样本与样本加权方式；下游通信决策仍需另定义任务。}
-  - title: {en: Separate public reproduction assets from the paper's training pipeline, zh: 区分公开复现资产与论文训练链}
-    detail: {en: The current public repository provides an inference workflow. Full training code and broader data are being released gradually according to the roadmap. Competition train/val/test permissions are managed separately from the public Hugging Face test sets., zh: 当前公开仓库提供推理工作流；完整训练代码和更广数据按发布路线图逐步开放。竞赛渠道的 train/val/test 权限与公开 Hugging Face 测试集另行管理。}
-    inputs:
-    - {en: Test tensors, zh: 测试张量}
-    - {en: Four Dense checkpoints, zh: 四个 Dense checkpoints}
-    - {en: Inference scripts, zh: 推理脚本}
-    outputs:
-    - {en: Executable public inference assets, zh: 可运行的公开推理资产}
-    - {en: Paper training scale and public-release scope, zh: 论文训练规模与公开范围说明}
-    controls:
-    - {en: 'Author release: as of the verification date, public test assets should not be labeled the complete LH–CSI training set.', zh: 作者发布：截至核查日不应把公开测试资产标成完整 LH–CSI 训练集。}
-    checks:
-    - {en: 'Reproduction recommendation: first reproduce public tasks with the specified checkpoint, then apply for additional training assets; preserve license and redistribution boundaries.', zh: 复现建议：先复现指定 checkpoint 的公开任务，再申请额外训练资产；保留许可与再分发边界。}
-  scope: {en: Record the paper-level LH–CSI construction pipeline separately from WiFo-2's current public inference pipeline. The current repository is not a complete training-reproduction package., zh: LH–CSI 的论文级构建链与 WiFo-2 当前公开推理链分开记录；当前仓库不是完整训练复现包。}
+    - {en: Redistribution of the SoM Challenge splits is prohibited., zh: SoM Challenge 划分禁止再分发。}
+  scope: {en: The public repository is an inference package for the released checkpoints. It contains no training code and does not reproduce the LH-CSI construction or the pretraining., zh: 公开仓库是已发布检查点的推理包，不含训练代码，无法复现 LH-CSI 的构建过程或预训练。}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Multisource LH–CSI corpus described in the paper
-
-      • 15 currently public test .pt files
-
-      • Four Dense checkpoints and inference code', zh: '• 论文描述的 LH–CSI 多源语料
-
-      • 当前公开的 15 个测试 .pt 文件
-
-      • 四个 Dense checkpoints 与推理代码'}
+  text: {en: 'The public release contains 15 X_test.pt zero-shot test tensors, four Dense checkpoints and inference code.', zh: 公开发布包含 15 个零样本测试张量 X_test.pt、四个 Dense 检查点与推理代码。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Spatial–temporal–frequency tokens, masks, and noisy inputs
-
-      • Reconstructions and masked NMSE
-
-      • Communication utility after defining a separate task', zh: '• 时空频 token、mask 和带噪输入
-
-      • 重建结果与 masked NMSE
-
-      • 另定义任务后的通信效用'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• The paper''s main text has been checked; Supplementary Notes S1–S14 remain unread, leaving gaps in source-specific processing pipelines.
-
-      • The public test-file list has been verified; tensor contents were not downloaded or executed.', zh: '• 论文主文已核查；Supplementary Notes S1–S14 尚未读，逐上游处理链仍有缺项。
-
-      • 公开测试文件清单已经核实，张量内容未下载或执行。'}
+  text: {en: 'Masked-position NMSE in dB for each dataset, task and mask setting. The public code computes no communication metrics.', zh: 每个数据集、任务与遮挡设置下遮挡位置的 NMSE（dB）。公开代码不计算通信指标。}
+- label: {en: Splits, zh: 划分}
+  text: {en: 'The paper assigns 81% of LH-CSI to pretraining and 19% to zero-shot reconstruction. Each source dataset has 9,000, 1,000 and 2,000 CSI samples for training, validation and testing (Methods 4.1).', zh: '论文将 81% 的 LH-CSI 用于预训练，19% 用于零样本重建。每个来源数据集的训练、验证与测试样本数分别为 9,000、1,000 与 2,000（方法 4.1）。'}
+- label: {en: Released directories, zh: 已发布目录}
+  text: {en: 'The release has 15 directories: D17, D18, D19, Argos_43, Argos_56, O1drone, RM_070703, RM_070704 and SionnaRT15, plus the CE variants D17CE, D18CE, D19CE, O1droneCE1, RM_070703_CE and RM_070704_CE. No directory with a DICHASUS name is released.', zh: 发布包含 15 个目录：D17、D18、D19、Argos_43、Argos_56、O1drone、RM_070703、RM_070704 与 SionnaRT15，以及 CE 变体 D17CE、D18CE、D19CE、O1droneCE1、RM_070703_CE 与 RM_070704_CE。未发布任何 DICHASUS 命名的目录。}
 provenance:
 - {en: 'Eight upstream sources: QuaDRiGa, PKU-GBSM, LuViRA, DICHASUS, Argos, PKU-RM, DeepMIMO, and PKU-RT (explicitly listed in the main-text Methods)', zh: 八种上游：QuaDRiGa、PKU-GBSM、LuViRA、DICHASUS、Argos、PKU-RM、DeepMIMO、PKU-RT（主文 Methods 明列）}
 - {en: Preserve spatial–temporal–frequency dimensions and sampling resolution by source, zh: 按来源保留时空频维度和采样粒度}
@@ -130,51 +97,151 @@ provenance:
 - {en: Pretraining and multitask evaluation in the paper, zh: 论文预训练与多任务评测}
 - {en: Selective release of test subsets and model-inference assets, zh: 选择性公开测试子集与模型推理资产}
 technical_notes:
-- {en: 'Literature-supported: the paper uses statistical, RT, and measured sources; no single propagation model describes the entire collection.', zh: 文献支持：论文同时使用统计、RT、实测来源，不能为全集指定单一传播模型。}
-- {en: 'Official design: public directory names such as D17, Argos_43, and O1drone map to QC17, AC6, and DEC3 in the paper. Interpret model inputs using this mapping.', zh: 官方设计：公开目录名如 D17、Argos_43、O1drone 对应论文中的 QC17、AC6、DEC3；模型输入解释必须跟随映射。}
-- {en: 'Inference: when frequency, source, hardware, and task are correlated, models may exploit domain-specific cues; use single-factor and cross-domain tests.', zh: 推断：频率、数据源、硬件和任务相互相关时，模型可能利用域特征，需单因素及交叉域测试。}
-- {en: 'Literature-supported: the paper''s Discussion states that simulation and Sub-6 data still dominate the corpus. THz coverage does not imply balanced coverage across bands.', zh: 文献支持：论文 Discussion 明确语料仍由仿真和 Sub-6 数据主导；覆盖 THz 不表示各频段均衡。}
+- {en: 'The paper''s sources cover statistical channel modelling, real-world measurement and ray tracing.', zh: 论文来源涵盖统计信道建模、实测与射线追踪。}
+- {en: 'The README maps released directory names to paper names, for example D17 to QC17, Argos_43 to AC6 and O1drone to DEC3. The mapping covers all 15 directories.', zh: README 给出发布目录名与论文名称的对应关系，例如 D17 对应 QC17、Argos_43 对应 AC6、O1drone 对应 DEC3，覆盖全部 15 个目录。}
+- {en: 'Reconstruction targets are the clean CSI before noise is added, and NMSE is scored only at masked positions.', zh: 重建目标为加噪前的干净 CSI，NMSE 只在被遮挡位置计算。}
 limitations:
-- {en: The broad Data Availability statement does not establish that complete training code and all splits are public; check the specific asset pages., zh: 论文 Data Availability 的概括声明不等于完整训练代码和全部 splits 已公开；以具体资产页为准。}
-- {en: 11.6 billion CSI points cannot be directly compared with “2.5 million channel samples” in a dataset-size bar chart., zh: 116 亿 CSI points 不能与“250 万信道样本”直接作规模柱状比较。}
-- {en: A hardware demonstration does not establish that all 12 tasks were independently validated in OTA systems., zh: 有硬件演示不等于所有 12 个任务均在 OTA 系统独立验证。}
-- {en: The main-text cross-band tasks use QuaDRiGa- and DICHASUS-derived data. The exact two bands and pairing method require Supplementary Note S7; these results do not establish complete measured 3.5→28 GHz pairing., zh: 主文 cross-band 任务使用 QuaDRiGa 与 DICHASUS 派生数据；具体两频段及配对方式需读 Supplementary Note S7，不能据此标为真实 3.5→28 GHz 完整配对。}
+- {en: 'The paper''s Data Availability statement says datasets, weights and source code are public. The repository holds inference code, four Dense checkpoints and 15 zero-shot test tensors, and no training code.', zh: 论文数据可用性声明称数据集、权重与源代码均已公开。仓库实际提供推理代码、四个 Dense 检查点与 15 个零样本测试张量，不含训练代码。}
+- {en: 'The 11.6 billion figure counts CSI points, while the paper gives split sizes in CSI samples (9,000, 1,000 and 2,000 per source dataset). The two counts are not interchangeable.', zh: '116 亿这一数字统计的是 CSI 点数，而论文以 CSI 样本数给出划分规模（每个来源数据集 9,000、1,000 与 2,000）。两者不可互换。'}
+- {en: 'The over-the-air prototype covers three tasks (frequency-domain channel prediction, channel estimation and scenario classification). The paper reports twelve tasks in total.', zh: 空口原型实验覆盖三项任务（频域信道预测、信道估计与场景分类），论文共报告 12 项任务。}
+- {en: The main text evaluates cross-band channel prediction on one QuaDRiGa-simulated dataset and one DICHASUS-derived dataset., zh: 主文的跨频段信道预测在一个 QuaDRiGa 仿真数据集与一个 DICHASUS 派生数据集上评估。}
 history:
-- {en: '2025-11: Initial WiFo-2 preprint identifier: arXiv:2511.22222', zh: '2025-11：WiFo-2 初始预印本标识 arXiv:2511.22222'}
-- {en: '2026-08-02: Inference code, Tiny-Dense, and some test splits released', zh: 2026-08-02：推理代码、Tiny-Dense、部分测试 splits 发布}
-- {en: '2026-08-17: Paper published in National Science Review', zh: 2026-08-17：National Science Review 论文发表}
-- {en: '2026-09-20: Small/Little/Base Dense checkpoints released', zh: 2026-09-20：Small/Little/Base Dense checkpoints 发布}
+- {en: '2025-11-27: arXiv:2511.22222 (v1) submitted.', zh: '2025-11-27：arXiv:2511.22222（v1）提交。'}
+- {en: '2026-08-02: Inference code, Tiny-Dense and some zero-shot test splits released.', zh: 2026-08-02：发布推理代码、Tiny-Dense 与部分零样本测试划分。}
+- {en: '2026-08-17: Paper published in National Science Review.', zh: 2026-08-17：论文发表于 National Science Review。}
+- {en: '2026-09-20: Small-, Little- and Base-Dense checkpoints released.', zh: 2026-09-20：发布 Small-、Little- 与 Base-Dense 检查点。}
 usage:
-- {en: First confirm the public scope and directory mapping in the official README; set size and MoE parameters for the selected checkpoint., zh: 在官方 README 先确认公开范围及目录映射；按 checkpoint 指定 size 和 MoE 参数。}
-- {en: Download only the required subsets; an example X_test.pt is not the complete LH–CSI corpus., zh: 只下载所需子集；示例 X_test.pt 不是全量 LH–CSI。}
-- {en: 'Save masks, sampling scales, and original metrics separately for fre / temporal / CE tasks.', zh: 按 fre / temporal / CE 任务分别保存 mask、采样尺度和原始指标。}
-- {en: 'For pretraining research, verify training-corpus availability first; do not reuse public test sets as pretraining data. No inference was run for this card.', zh: 若研究预训练，先核实训练语料可得性；不将开放测试集反向用作预训练。此卡未运行推理。}
+- {en: 'Match --size and --MoE to the checkpoint: tinypro for Tiny-Dense, littlepro for Little-Dense, smallpro for Small-Dense and basepro1 for Base-Dense, always with --MoE False.', zh: --size 与 --MoE 须与检查点对应：Tiny-Dense 用 tinypro，Little-Dense 用 littlepro，Small-Dense 用 smallpro，Base-Dense 用 basepro1，且均设 --MoE False。}
+- {en: 'Download only the subsets you need. Each X_test.pt is one zero-shot test subset, not the complete LH-CSI corpus.', zh: 只下载所需子集。每个 X_test.pt 是一个零样本测试子集，而非完整 LH-CSI 语料。}
+- {en: 'inference.py prints one NMSE value per dataset, task and mask setting. It does not write masks or reconstructions to disk.', zh: inference.py 按数据集、任务与遮挡设置打印一个 NMSE 值，不会把遮挡或重建结果写入磁盘。}
+- {en: The public release has no training or validation split., zh: 公开发布不含训练集或验证集。}
 field_notes:
 - label: {en: CSI, zh: CSI}
-  text: {en: Verified only for released CSI subsets; this does not establish that all downstream-task data described in the paper are public., zh: 仅对已公开的 CSI 子集确认；不代表所有论文下游任务数据已公开。}
+  text: {en: Released CSI covers only the 15 zero-shot test subsets. The full 78-subset corpus is not part of the release., zh: 已发布的 CSI 仅包含 15 个零样本测试子集，完整的 78 子集语料不在发布范围内。}
 - label: {en: Time, zh: 时间}
-  text: {en: Subsets have different sampling resolutions; inspect the time scale of each subset., zh: 子集采样粒度不同；必须读每个子集的时间尺度。}
+  text: {en: 'Subsets differ in the number of subcarriers, antennas and temporal sampling points (paper Fig. 1c).', zh: 各子集的子载波数、天线数与时间采样点数不同（论文图 1c）。}
 - label: {en: Cross-frequency pairing, zh: 跨频配对}
-  text: {en: 'Current public fre evaluation reconstructs frequency-domain content within a tensor and provides no paired interface for two carrier frequencies. The paper separately constructs QuaDRiGa dual-band beam tasks and QuaDRiGa/DICHASUS cross-band CSI tasks. Exact carriers, pairing, and downstream release scope require checking the respective task.', zh: 当前公开 fre 评估为张量内频域重建，不提供两载频的配对接口。论文另建 QuaDRiGa 双频波束任务和 QuaDRiGa/DICHASUS cross-band CSI 任务；精确载频、配对与下游开放范围需查对应任务。}
+  text: {en: 'The public fre task reconstructs frequency content within one tensor. The inference code takes one tensor per dataset and has no second-carrier input. The paper''s dual-band beam task uses a QuaDRiGa-based dataset, and its cross-band CSI task uses QuaDRiGa and DICHASUS-derived data.', zh: 公开的 fre 任务在单个张量内重建频域内容。推理代码每个数据集只接收一个张量，没有第二载频输入。论文的双频波束任务使用基于 QuaDRiGa 的数据集，跨频段 CSI 任务使用 QuaDRiGa 与 DICHASUS 派生数据。}
 - label: {en: Paths, zh: 路径}
-  text: {en: 'The current public reconstruction interface does not provide per-path coefficients, delays, or interaction tables. Physical path ground truth requires returning to upstream DeepMIMO/PKU-RT assets. A delay-domain transform of CSI is not complete physical path annotation.', zh: 当前公开重建接口不提供逐径系数、时延或交互表；若需要物理路径真值，应回溯 DeepMIMO/PKU-RT 上游资产。CSI 的延迟域变换不等于完整物理路径标注。}
+  text: {en: 'The public interface takes CSI tensors only and provides no per-path coefficients, delays or interaction tables.', zh: 公开接口只接收 CSI 张量，不提供逐径系数、时延或交互表。}
 - label: {en: Position, zh: 位置}
-  text: {en: The current public reconstruction interface has no coordinate-label inputs/outputs. The paper's separately constructed DICHASUS positioning task has 2D coordinate supervision; its data release is recorded separately from the X_test.pt reconstruction interface., zh: 当前公开重建接口不提供坐标标签输入/输出。论文另建的 DICHASUS 定位任务具有二维坐标监督；该任务数据的发布情况与 X_test.pt 重建接口分开记录。}
+  text: {en: The paper's wireless localization task estimates 2D user position from DICHASUS-based CSI. The public reconstruction interface has no coordinate inputs or outputs., zh: 论文的无线定位任务基于 DICHASUS 派生的 CSI 估计二维用户位置。公开重建接口没有坐标输入或输出。}
 - label: {en: RGB, zh: RGB}
-  text: {en: The current public zero-shot reconstruction interface consumes only CSI. The paper separately uses a SynthSoM image–CSI downstream dataset to validate vision-aided frequency prediction. This image task is separate from the eight-source LH–CSI pretraining corpus., zh: 当前公开零样本重建接口只消费 CSI。论文另用 SynthSoM 图像–CSI 下游集验证视觉辅助频域预测；此图像任务与八来源 LH–CSI 预训练语料分开。}
+  text: {en: 'The public zero-shot interface consumes only CSI. The paper''s vision-aided frequency prediction uses a dataset built from SynthSoM, which is not among the eight LH-CSI sources.', zh: 公开零样本接口只接收 CSI。论文的视觉辅助频域预测使用基于 SynthSoM 构建的数据集，该数据集不在八个 LH-CSI 来源之列。}
 - label: {en: LiDAR, zh: LiDAR}
-  text: {en: The current public zero-shot reconstruction interface provides no LiDAR. Multimodal downstream validation in the main text uses images or received signals; upstream platform capabilities do not establish that this released interface contains point clouds., zh: 当前公开零样本重建接口不提供 LiDAR；主文的多模态下游验证使用图像或接收信号，不能从上游平台能力推定本发布接口含点云。}
+  text: {en: The public zero-shot interface provides no LiDAR. The paper's multimodal downstream task uses camera images., zh: 公开零样本接口不提供 LiDAR。论文的多模态下游任务使用相机图像。}
 - label: {en: Radar, zh: 雷达}
-  text: {en: The current public zero-shot reconstruction interface provides no raw radar observations. The paper's CSI sensing tasks are not independent radar data., zh: 当前公开零样本重建接口不提供雷达原始观测；论文中的 CSI 感知任务不等同于独立雷达数据。}
+  text: {en: The public zero-shot interface provides no radar observations. The paper's sensing tasks use CSI., zh: 公开零样本接口不提供雷达观测。论文中的感知任务使用 CSI。}
 - label: {en: Multi-user, zh: 多用户}
-  text: {en: 'Derivable refers only to constructing user sets at the channel level: first trace each subset to verify a common BS, array/amplitude scale, and noise convention, then combine CSI and define power and scheduling. The Argos source does not establish that public test tensors retain a synchronized user axis. This is a methodological condition, not a claim of synchronized multi-UE measurements.', zh: 可计算仅指信道层用户集合构造：先回溯子集确认共同 BS、阵列/幅度标度与噪声约定，再组合 CSI 并定义功率和调度。Argos 的上游来源不能证明公开测试张量保留同步用户轴；此项是方法条件，不是同步多 UE 实测声明。}
+  text: {en: 'The loader treats each stored sample as one channel tensor and defines no user index. Multi-user sets can be formed only at the channel level, after confirming a common BS, array and amplitude scale and noise convention for each subset.', zh: 加载器把每个存储样本视为一个信道张量，未定义用户索引。多用户集合只能在信道层构造，且需先确认各子集的共同基站、阵列与幅度标度及噪声约定。}
 - label: {en: Multi-BS, zh: 多基站}
-  text: {en: 'The current public reconstruction interface provides no BS IDs, cross-BS link sets, or coordination protocol. Multiple sources, scenarios, and distributed antenna elements do not automatically form synchronized multi-BS data.', zh: 当前公开重建接口不提供 BS ID、跨 BS 链路集合或协调协议。多种来源、场景和分布式阵元不自动组成同步多 BS 数据。}
+  text: {en: 'The public reconstruction interface provides no BS IDs, cross-BS link sets or coordination protocol.', zh: 公开重建接口不提供基站 ID、跨基站链路集合或协调协议。}
 - label: {en: Beam labels, zh: 波束标签}
-  text: {en: 'Beam gains/labels can be calculated from complex CSI when subset array geometry, amplitude scaling, and codebooks are all explicit. The paper''s dual-band beam task uses a separately constructed QuaDRiGa downstream dataset.', zh: 在子集阵列几何、幅度标度与码本均明确时，可从复 CSI 计算 beam gain/labels；论文的双频 beam 任务使用另建 QuaDRiGa 下游集。}
+  text: {en: 'Beam gains and labels can be computed from complex CSI only when subset array geometry, amplitude scaling and codebook are all specified. The paper''s dual-band beam task uses a separately constructed QuaDRiGa dataset.', zh: 只有在子集阵列几何、幅度标度与码本均已明确时，才能从复 CSI 计算波束增益与标签。论文的双频波束任务使用单独构建的 QuaDRiGa 数据集。}
 tools: [awesome-channel-foundation-models]
 overview: {en: 'LH-CSI is the heterogeneous channel corpus used to pretrain WiFo-2, a space–time–frequency foundation model reported in National Science Review (DOI 10.1093/nsr/nwag500; arXiv:2511.22222). The corpus contains 11.6 billion CSI points in 78 coarse- and fine-grained subsets, drawn from eight sources: QuaDRiGa, PKU-GBSM, LuViRA, DICHASUS, Argos, PKU-RM, DeepMIMO and PKU-RT. The paper describes the sources as statistical channel modelling, real-world measurement and ray tracing, with carrier frequencies from sub-6 GHz to the terahertz band, and scenarios that include factories, schools, UAV communications, and indoor and outdoor environments. 81% of the CSI points are used for pretraining and 19% form a zero-shot reconstruction subset. The public Hugging Face repository pku-pcni-lab/WiFo-2 holds 15 X_test.pt zero-shot test tensors in 15 subdirectories, 2.74 GB in total, and its listed license is MIT. The GitHub repository PKU-PCNI/WiFo-2 provides inference code for released checkpoints
     and no training code. The SoM Challenge train, validation and test splits are given to registered participants, and their redistribution is prohibited.', zh: 'LH-CSI 是用于预训练 WiFo-2 的异构信道语料。WiFo-2 是发表于 National Science Review 的时空频基础模型（DOI 10.1093/nsr/nwag500；arXiv:2511.22222）。语料包含 116 亿个 CSI 点，分为 78 个粗粒度与细粒度子集，来源为八个数据源：QuaDRiGa、PKU-GBSM、LuViRA、DICHASUS、Argos、PKU-RM、DeepMIMO 与 PKU-RT。论文将这些来源描述为统计信道建模、实测与射线追踪，载频从 sub-6 GHz 覆盖到太赫兹频段，场景包括工厂、学校、UAV 通信以及室内与室外环境。81% 的 CSI 点用于预训练，19% 构成零样本重建子集。公开 Hugging Face 仓库 pku-pcni-lab/WiFo-2 含 15 个 X_test.pt 零样本测试张量，分布于 15 个子目录，合计 2.74 GB，页面列出的许可证为 MIT。GitHub 仓库 PKU-PCNI/WiFo-2 提供已发布 checkpoint 的推理代码，不含训练代码。SoM Challenge 的 train、val 与 test 划分提供给注册参赛者，禁止再分发。'}
 signal_details:
 - signal: csi
-  text: {en: 'Public files are named X_test.pt, one per subdirectory (for example D17/X_test.pt and D17CE/X_test.pt). The Hugging Face file listing gives file sizes from 65,537,591 bytes (RM_070703) to 266,294,839 bytes (Argos_43 and Argos_56). The paper describes the data as 3D space–time–frequency.', zh: '公开文件名为 X_test.pt，每个子目录一个（例如 D17/X_test.pt 与 D17CE/X_test.pt）。Hugging Face 文件列表显示单个文件大小从 65,537,591 字节（RM_070703）到 266,294,839 字节（Argos_43 与 Argos_56）。15 个文件与两个小型仓库文件合计 2.74 GB。论文将数据描述为三维时空频（3D space–time–frequency）。'}
+  text: {en: 'The public release contains 15 X_test.pt test tensors, one per subdirectory (for example D17/X_test.pt and D17CE/X_test.pt). The Hugging Face file listing gives sizes from 65,537,591 bytes (RM_070703 and RM_070704) to 266,294,839 bytes (Argos_43 and Argos_56). The 15 tensors and two small repository files total 2.74 GB. The paper describes the data as three-dimensional space-time-frequency CSI.', zh: '公开发布包含 15 个 X_test.pt 测试张量，每个子目录一个（例如 D17/X_test.pt 与 D17CE/X_test.pt）。Hugging Face 文件列表显示单个文件大小从 65,537,591 字节（RM_070703 与 RM_070704）到 266,294,839 字节（Argos_43 与 Argos_56）。15 个张量与两个小型仓库文件合计 2.74 GB。论文将数据描述为三维时空频 CSI。'}
+format: PyTorch .pt tensors
+capabilities:
+- key: csi
+  status: provided
+  note: {en: The 15 released zero-shot test tensors (2.74 GB in total) contain complex CSI; the full 78-subset corpus is not public., zh: 已发布的15个零样本测试张量（共2.74 GB）包含复CSI；78个子集的完整语料未公开。}
+- {key: cir, status: unknown}
+- key: paths
+  status: none
+  note: {en: 'The released tensors hold CSI only; per-path data would come from the upstream DeepMIMO or PKU-RT assets, which are not in this release.', zh: 已发布张量仅包含CSI；逐径数据需从上游DeepMIMO或PKU-RT资产获取，这些资产不在本次发布中。}
+- key: interaction
+  status: none
+  note: {en: The released tensors contain no per-path interaction tables; those would come from the upstream DeepMIMO or PKU-RT assets., zh: 已发布张量不含逐径交互表；此类信息需从上游DeepMIMO或PKU-RT资产获取。}
+- key: power
+  status: derivable
+  note: {en: Received power follows from |H|^2 of the CSI tensors., zh: 接收功率可由CSI张量的|H|^2得到。}
+- key: beam_labels
+  status: derivable
+  note: {en: Beam gains can be computed from CSI when the subset array geometry and a codebook are specified; no beam labels are released., zh: 在指定子集阵列几何与码本的情况下，可由CSI计算波束增益；发布数据不含波束标签。}
+- key: position
+  status: none
+  note: {en: The released tensors contain no coordinates; the DICHASUS positioning task uses separately constructed coordinate labels., zh: 已发布张量不含坐标；DICHASUS定位任务使用另行构建的坐标标签。}
+- key: geometry
+  status: none
+  note: {en: 'The release contains CSI tensors and inference code only, with no map or scene files.', zh: 发布内容仅包含CSI张量与推理代码，不含地图或场景文件。}
+- key: materials
+  status: none
+  note: {en: The release contains no material parameters., zh: 发布内容不包含材料参数。}
+- key: iq
+  status: none
+  note: {en: 'The released files are CSI tensors, not I/Q sample streams.', zh: 发布文件为CSI张量，而非I/Q采样流。}
+- key: rgb
+  status: none
+  note: {en: The release contains no images; the SynthSoM image-CSI task uses separately constructed data., zh: 发布内容不含图像；SynthSoM图像-CSI任务使用另行构建的数据。}
+- key: depth
+  status: none
+  note: {en: The release contains no depth data., zh: 发布内容不含深度数据。}
+- key: lidar
+  status: none
+  note: {en: The public zero-shot interface provides no LiDAR data., zh: 公开零样本接口不提供LiDAR数据。}
+- key: radar
+  status: none
+  note: {en: The public zero-shot interface provides no raw radar observations., zh: 公开零样本接口不提供原始雷达观测。}
+- key: imu
+  status: none
+  note: {en: The release contains no IMU data., zh: 发布内容不含IMU数据。}
+- key: time_series
+  status: provided
+  note: {en: Each zero-shot tensor has a time axis used for temporal prediction; sampling resolution differs between subsets., zh: 每个零样本张量均含时间维，用于时域预测；各子集的采样粒度不同。}
+- key: multiuser
+  status: derivable
+  note: {en: 'User sets can be built at the channel level after each subset is checked for a common BS, array scale and noise convention; the sources do not establish a synchronized user axis.', zh: 在检查各子集的公共基站、阵列幅度尺度与噪声约定后，可在信道层面构建用户集合；资料未确认存在同步的用户维度。}
+- key: multibs
+  status: none
+  note: {en: 'The public interface has no BS identifiers or cross-BS link sets, and combining sources does not give synchronized multi-BS data.', zh: 公开接口不含基站ID或跨基站链路集合，合并多个来源也不会得到同步的多基站数据。}
+- key: crossfreq
+  status: none
+  note: {en: The public interface has no paired two-carrier input; the cross-band tasks in the paper use separately constructed data., zh: 公开接口没有成对的双载波输入；论文中的跨频段任务使用另行构建的数据。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: Measured subsets such as Argos and PKU-RM contain these mechanisms without per-path labels; statistical and ray-traced subsets are not labelled by mechanism., zh: Argos与PKU-RM等实测子集包含这些机制，但不带逐径标签；统计与射线追踪子集未按机制标注。}
+- key: diffraction
+  status: provided
+  note: {en: Measured subsets such as Argos and PKU-RM contain these mechanisms without per-path labels; statistical and ray-traced subsets are not labelled by mechanism., zh: Argos与PKU-RM等实测子集包含这些机制，但不带逐径标签；统计与射线追踪子集未按机制标注。}
+- key: scattering
+  status: provided
+  note: {en: Measured subsets such as Argos and PKU-RM contain these mechanisms without per-path labels; statistical and ray-traced subsets are not labelled by mechanism., zh: Argos与PKU-RM等实测子集包含这些机制，但不带逐径标签；统计与射线追踪子集未按机制标注。}
+- key: transmission
+  status: provided
+  note: {en: Measured subsets such as Argos and PKU-RM contain these mechanisms without per-path labels; statistical and ray-traced subsets are not labelled by mechanism., zh: Argos与PKU-RM等实测子集包含这些机制，但不带逐径标签；统计与射线追踪子集未按机制标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The released tensors hold channel coefficients only, with no field-level outputs.', zh: 已发布张量仅包含信道系数，不含场级输出。}
+versions:
+- version: Small-Dense, Little-Dense and Base-Dense checkpoints
+  date: '2026-09-20'
+  summary: {en: 'Small-Dense, Little-Dense and Base-Dense checkpoints uploaded to the model repository, as set out in the README release roadmap.', zh: 按README发布路线图，Small-Dense、Little-Dense与Base-Dense检查点上传至模型仓库。}
+  url: https://huggingface.co/pku-pcni-lab/WiFo-2
+- version: NSR online publication
+  date: '2026-08-17'
+  summary: {en: WiFo-2 paper published online in National Science Review (DOI 10.1093/nsr/nwag500)., zh: WiFo-2论文在National Science Review在线发表（DOI 10.1093/nsr/nwag500）。}
+  url: https://doi.org/10.1093/nsr/nwag500
+- version: Initial public release
+  date: '2026-08-02'
+  summary: {en: 'Inference code, the Tiny-Dense checkpoint and the 15 zero-shot test tensors (X_test.pt) published on Hugging Face. The dataset repository history shows all 15 uploads on this date.', zh: 推理代码、Tiny-Dense检查点以及15个零样本测试张量（X_test.pt）发布于Hugging Face。数据集仓库历史显示这15个文件均在此日期上传。}
+  url: https://huggingface.co/datasets/pku-pcni-lab/WiFo-2
+- version: arXiv v3
+  date: '2026-07-24'
+  summary: {en: Third arXiv version of the WiFo-2 paper. The arXiv listing does not state the changes., zh: WiFo-2论文的第三个arXiv版本。arXiv页面未说明修改内容。}
+  url: https://arxiv.org/abs/2511.22222
+- version: arXiv v2
+  date: '2026-05-02'
+  summary: {en: Second arXiv version of the WiFo-2 paper. The arXiv listing does not state the changes., zh: WiFo-2论文的第二个arXiv版本。arXiv页面未说明修改内容。}
+  url: https://arxiv.org/abs/2511.22222
+- version: arXiv v1
+  date: '2025-11-27'
+  summary: {en: 'First arXiv posting of the WiFo-2 paper (arXiv:2511.22222).', zh: 'WiFo-2论文首次发布于arXiv（arXiv:2511.22222）。'}
+  url: https://arxiv.org/abs/2511.22222

@@ -15,18 +15,18 @@ paper: arxiv:2608.15728
 used_in: []
 citing: []
 summary: {en: 'Wi-Fi spectral-scan records from a Raspberry Pi CM4 with a QCA9880 802.11ac interface at 2.4 and 5 GHz, captured in real-world indoor environments and in an RF-shielded chamber with HackRF One jamming. The release contains 96,090 CSV files with about 522 million spectral observations in active and passive scan modes.', zh: '使用 Raspberry Pi CM4 与 QCA9880 802.11ac 接口在 2.4 和 5 GHz 频段采集的 Wi-Fi 频谱扫描记录，采集环境包括真实室内环境以及带有 HackRF One 干扰的 RF 屏蔽暗室。数据包含 96,090 个 CSV 文件，约 5.22 亿条频谱观测，分为主动和被动两种扫描模式。'}
-sources: ['https://arxiv.org/abs/2608.15728', 'https://www.kaggle.com/datasets/daniaherzalla/radio-frequency-jamming/data', 'https://www.kaggle.com/api/v1/datasets/view/daniaherzalla/radio-frequency-jamming']
+sources: ['https://arxiv.org/abs/2608.15728', 'https://www.kaggle.com/datasets/daniaherzalla/radio-frequency-jamming/data', 'https://www.kaggle.com/api/v1/datasets/view/daniaherzalla/radio-frequency-jamming', 'https://arxiv.org/html/2608.15728v1', 'https://raw.githubusercontent.com/daniaherzalla/ath-spectral-scan/main/README.md', 'https://github.com/daniaherzalla/ath-spectral-scan/releases', 'https://github.com/daniaherzalla/ath-spectral-scan/tags']
 checked: '2026-11-06'
 overview: {en: 'WiFiSpectralJam is a Wi-Fi spectral-scan dataset by Herzalla, Singh, Lunardi and Andreoni. It is described in arXiv:2608.15728 (submitted 16 August 2026) and hosted on Kaggle. A Raspberry Pi Compute Module 4 with a Qualcomm Atheros QCA9880 802.11ac interface records the 2.4 GHz and 5 GHz bands through the Linux ath10k spectral-scan interface. Captures come from real-world indoor backgrounds and from an RF-shielded chamber, where a HackRF One produces controlled jamming. The release contains 96,090 CSV files (14.52 GB) with 522,771,130 observations: 4,358 active-scan files and 91,732 passive-scan files. Files sit under rf_jamming/active_scan and rf_jamming/passive_scan, split into benign and malicious folders; a file-level manifest is at release_artifacts/metadata/manifest.csv, and derived features are at release_artifacts/derived/file_level_features.csv and .parquet. The authors target jamming detection, interference characterisation, spectrum monitoring and distribution-shift
     evaluation. The text states that the data are unsuited to raw I/Q or phase-sensitive tasks, and that the labels are not end-to-end link degradation measurements.', zh: 'WiFiSpectralJam 是一个 Wi-Fi 频谱扫描数据集，作者为 Herzalla、Singh、Lunardi 与 Andreoni。相关论文为 arXiv:2608.15728（2026 年 8 月 16 日提交），数据托管于 Kaggle。Raspberry Pi Compute Module 4 配合 Qualcomm Atheros QCA9880 802.11ac 接口，通过 Linux ath10k 频谱扫描接口记录 2.4 GHz 和 5 GHz 频段。采集环境包括真实室内背景，以及 RF 屏蔽暗室中由 HackRF One 产生的受控干扰。发布版本包含 96,090 个 CSV 文件（14.52 GB），共 522,771,130 条观测，其中主动扫描文件 4,358 个，被动扫描文件 91,732 个。文件位于 rf_jamming/active_scan 与 rf_jamming/passive_scan 下，并分为 benign 与 malicious 两类文件夹；文件级清单为 release_artifacts/metadata/manifest.csv，派生特征为 release_artifacts/derived/file_level_features.csv 与 .parquet。作者的目标包括干扰检测、干扰特征刻画、频谱监测和分布偏移评估。文中说明，这些数据不适用于原始 I/Q 或对相位敏感的任务，标签也不是端到端链路性能下降的测量结果。'}
 signal_details:
 - signal: rssi
-  text: {en: 'Spectral-scan observations from the ath10k driver, one observation per row. Eight raw fields: freq1 (MHz), noise (dBm, reported by the driver), max_magnitude (linear), total_gain_db, base_pwr_db, rssi (driver scale), relpwr_db and avgpwr_db (dB). Active scans stay on 5805 MHz with brief off-channel visits at 5180, 5200, 5240, 5745, 5765 and 5785 MHz. Passive scans sweep 11 channels from 2412 to 2462 MHz and 13 channels from 5180 to 5825 MHz. The derived feature table converts RSSI to dBm.', zh: 来自 ath10k 驱动的频谱扫描观测，每行一条观测。原始字段共 8 个：freq1（MHz）、noise（dBm，由驱动上报）、max_magnitude（线性值）、total_gain_db、base_pwr_db、rssi（驱动刻度）、relpwr_db 与 avgpwr_db（dB）。主动扫描停留在 5805 MHz，并短暂离开信道访问 5180、5200、5240、5745、5765 和 5785 MHz；被动扫描依次扫过 2.4 GHz 的 11 个信道（2412 至 2462 MHz）和 5 GHz 的 13 个信道（5180 至 5825 MHz）。派生特征表中的 RSSI 已换算为 dBm。}
+  text: {en: 'Spectral-scan observations from the ath10k driver, one observation per row, with eight raw fields: freq1 (MHz), noise (dBm, driver-estimated), max_magnitude (linear, driver-reported), total_gain_db, base_pwr_db, rssi (driver scale), relpwr_db and avgpwr_db (dB). Active scans return repeatedly to the 5805 MHz operating channel between brief off-channel visits at 5180, 5200, 5240, 5745, 5765 and 5785 MHz. Passive scans sweep 11 channels from 2412 to 2462 MHz and 13 channels from 5180 to 5825 MHz. The derived feature table adds rssi_dbm, computed as rssi minus 95, as an approximate dB-referenced value.', zh: 来自 ath10k 驱动的频谱扫描观测，每行一条观测，共 8 个原始字段：freq1（MHz）、noise（dBm，由驱动估计）、max_magnitude（线性值，由驱动上报）、total_gain_db、base_pwr_db、rssi（驱动刻度）、relpwr_db 与 avgpwr_db（dB）。主动扫描在 5805 MHz 工作信道与短暂离信道访问 5180、5200、5240、5745、5765 和 5785 MHz 之间反复返回工作信道。被动扫描依次扫过 2.4 GHz 的 11 个信道（2412 至 2462 MHz）和 5 GHz 的 13 个信道（5180 至 5825 MHz）。派生特征表另含 rssi_dbm，由 rssi 减去 95 换算得到，是近似的 dB 参考值。}
 pipeline:
   summary: {en: 'Spectral-scan dumps are read from a Raspberry Pi CM4 Wi-Fi receiver, converted to CSV, labelled by controlled HackRF One jamming, and summarised into a manifest, file-level features and benchmark results.', zh: 从 Raspberry Pi CM4 Wi-Fi 接收机读取频谱扫描转储，转换为 CSV，依据受控 HackRF One 干扰进行标注，再汇总为清单、文件级特征和基准测试结果。}
   stages:
   - title: {en: Read spectral scans from the receiver, zh: 从接收机读取频谱扫描}
-    detail: {en: 'A Raspberry Pi CM4 with a QCA9880 802.11ac interface runs Linux ath10k. The ath-spectral-scan utility triggers scans and reads the driver''s debugfs spectral-scan output; active mode anchors the receiver to 5805 MHz, and passive mode sweeps the configured channels in monitor mode.', zh: 配备 QCA9880 802.11ac 接口的 Raspberry Pi CM4 运行 Linux ath10k 驱动。ath-spectral-scan 工具触发扫描，并读取驱动 debugfs 中的频谱扫描输出；主动模式将接收机固定在 5805 MHz，被动模式则在 monitor 模式下按配置信道依次扫描。}
+    detail: {en: 'A Raspberry Pi CM4 with a QCA9880 802.11ac interface runs Linux ath10k. The ath-spectral-scan utility triggers scans and reads the driver debugfs spectral-scan output; active mode anchors the receiver to 5805 MHz, and passive mode sweeps the configured channels in monitor mode.', zh: 配备 QCA9880 802.11ac 接口的 Raspberry Pi CM4 运行 Linux ath10k 驱动。ath-spectral-scan 工具触发扫描，并读取驱动 debugfs 中的频谱扫描输出；主动模式将接收机固定在 5805 MHz，被动模式则在 monitor 模式下按配置信道依次扫描。}
     inputs:
     - {en: Raspberry Pi CM4 with QCA9880 interface, zh: 配备 QCA9880 接口的 Raspberry Pi CM4}
     - {en: Linux ath10k driver, zh: Linux ath10k 驱动}
@@ -46,21 +46,127 @@ pipeline:
     outputs:
     - {en: Jammer-present and jammer-absent captures, zh: 有干扰与无干扰的采集文件}
   - title: {en: Label files and write the manifest, zh: 标注文件并生成清单}
-    detail: {en: 'Each file is labelled benign or malicious. Benign files are background captures (location1 to location3) or RF-chamber floor captures without a jammer. The manifest holds one record per file with scan_mode, label, benign_subtype, location, waveform, power_dbm, channel_mhz, band, collection_environment, num_rows, num_features and metadata_status, and marks inapplicable fields as N/A.', zh: 每个文件标注为 benign 或 malicious。benign 文件为真实环境背景采集（location1 至 location3），或 RF 暗室中无干扰的 floor 采集。清单每个文件一条记录，包含 scan_mode、label、benign_subtype、location、waveform、power_dbm、channel_mhz、band、collection_environment、num_rows、num_features 与 metadata_status 等字段，不适用的字段记为 N/A。}
+    detail: {en: 'Each file is labelled benign or malicious from the folder hierarchy and filenames, with no post-hoc inference. Benign files are real-world background captures (location1 and location2 in the active subset, location1 to location3 in the passive subset) or RF-chamber floor captures without a jammer. The manifest holds one record per file with scan_mode, label, benign_subtype, location, waveform, power_dbm, channel_mhz, band, collection_environment, num_rows, num_features and metadata_status, and marks inapplicable fields as N/A.', zh: 每个文件依据文件夹层级与文件名标注为 benign 或 malicious，不做事后推断。benign 文件为真实环境背景采集（主动子集为 location1 与 location2，被动子集为 location1 至 location3），或 RF 暗室中无干扰的 floor 采集。清单每个文件一条记录，包含 scan_mode、label、benign_subtype、location、waveform、power_dbm、channel_mhz、band、collection_environment、num_rows、num_features 与 metadata_status 等字段，不适用的字段记为 N/A。}
     inputs:
     - {en: CSV capture files, zh: CSV 采集文件}
     - {en: Collection conditions, zh: 采集条件}
     outputs:
     - {en: release_artifacts/metadata/manifest.csv, zh: release_artifacts/metadata/manifest.csv}
   - title: {en: Compute file-level features, zh: 计算文件级特征}
-    detail: {en: 'Each raw CSV is reduced to one mean per spectral field. Frequency-bin views average observations within each rounded freq1 bin per file, then average across files per class. The derived table has 96,090 rows and 108 columns, and the benchmark uses 63 features.', zh: '每个原始 CSV 按频谱字段各取一个均值。频点视图先在每个文件内对取整后的 freq1 频点求平均，再按类别对文件求平均。派生表共 96,090 行、108 列，基准测试使用其中的 63 个特征。'}
+    detail: {en: 'Each raw CSV is reduced to 63 spectral-summary features: nine statistics (mean, standard deviation, minimum, first quartile, median, third quartile, maximum, skewness and kurtosis) for each of seven quantities. Frequency-bin views average observations within each rounded freq1 bin per file, then average the files within each class. The derived table has 96,090 rows and 108 columns.', zh: '每个原始 CSV 被压缩为 63 个频谱统计特征：七个测量量（avgpwr_db、base_pwr_db、max_magnitude、noise、relpwr_db、rssi_dbm、total_gain_db）各取九项统计量（均值、标准差、最小值、四分位数、中位数、最大值、偏度与峰度）。频点视图先在每个文件内对取整后的 freq1 频点求平均，再在每个类别内对文件求平均。派生表共 96,090 行、108 列。'}
     inputs:
     - {en: CSV capture files, zh: CSV 采集文件}
     outputs:
     - {en: file_level_features.csv and .parquet, zh: file_level_features.csv 与 .parquet}
   - title: {en: Run the benchmark protocols, zh: 运行基准测试协议}
-    detail: {en: 'Six classifiers (LogReg, RandomForest, HistGB, XGBoost, LightGBM and MLP) run with seeds 1, 7 and 42 and a 0.5 decision threshold. Median imputation applies to all models, and standardisation to LogReg and MLP. Held-out splits cover transmit power, waveform, band and background location, and the test sets are balanced with a positive rate of 0.50.', zh: 六种分类器（LogReg、RandomForest、HistGB、XGBoost、LightGBM 与 MLP）使用随机种子 1、7 和 42 运行，判定阈值为 0.5。所有模型使用中位数填补，仅 LogReg 与 MLP 进行标准化。留出划分覆盖发射功率、波形、频段和背景位置，测试集按设计平衡，正样本比例为 0.50。}
+    detail: {en: 'Six classifiers (LogReg, RandomForest, HistGB, XGBoost, LightGBM and MLP) run with seeds 1, 7 and 42 and a 0.5 decision threshold. Median imputation applies to all models, and standardisation to LogReg and MLP. Held-out splits withhold jammer power, the active waveform or a scan-mode-specific background location, and the passive +3 dBm condition is also tested separately per band. Test sets are balanced, with a malicious fraction of 0.50.', zh: 六种分类器（LogReg、RandomForest、HistGB、XGBoost、LightGBM 与 MLP）使用随机种子 1、7 和 42 运行，判定阈值为 0.5。所有模型使用中位数填补，仅 LogReg 与 MLP 进行标准化。留出划分分别保留发射功率、主动波形或按扫描模式划分的背景位置；被动 +3 dBm 条件另按频段单独测试。测试集经平衡设计，恶意样本比例为 0.50。}
     inputs:
     - {en: file_level_features.csv and manifest.csv, zh: file_level_features.csv 与 manifest.csv}
     outputs:
-    - {en: F1 and ROC-AUC per split and classifier, zh: 各划分与分类器的 F1 和 ROC-AUC}
+    - {en: 'F1, ROC-AUC and AP per split and classifier', zh: 各划分与分类器的 F1、ROC-AUC 和 AP}
+organization: Technology Innovation Institute, Abu Dhabi
+standard: IEEE 802.11ac
+facts:
+- label: {en: Label definition, zh: 标签定义}
+  text: {en: 'Benign captures contain no jammer and are either real-world backgrounds or the chamber floor. Malicious captures have the HackRF One transmitting inside the chamber. The labels mark jammer absence or presence, not end-to-end link degradation.', zh: 良性（benign）采集不含干扰，包括真实环境背景与暗室本底（floor）。恶意（malicious）采集为暗室中 HackRF One 发射干扰时的记录。标签表示干扰的有无，而非端到端链路性能下降。}
+- label: {en: Split unit, zh: 划分单位}
+  text: {en: 'All rows in one CSV file belong to one capture, so train and test splits must be made at the file level.', zh: 同一 CSV 文件中的所有行属于同一次采集，因此训练集与测试集须按文件划分。}
+- label: {en: Timing, zh: 时序}
+  text: {en: 'Rows keep the driver scan order but carry no timestamps, so observations are not uniformly sampled in time.', zh: 行保留驱动的扫描顺序，但不含时间戳，观测在时间上并非均匀采样。}
+- label: {en: Scan modes, zh: 扫描模式}
+  text: {en: 'Active and passive scans use different transmit-power grids, so power settings are modality-specific, and the two modes are treated as separate acquisition domains.', zh: 主动与被动扫描使用不同的发射功率设置，因此功率设置按模式区分，两种模式被视为不同的采集域。}
+- label: {en: Benchmark features, zh: 基准特征}
+  text: {en: 'The canonical benchmark uses 63 features. An ablation removes the nine noise summaries, giving 54 features.', zh: 标准基准使用 63 个特征；消融实验去除 9 个噪声统计量，得到 54 个特征。}
+limitations:
+- {en: 'The collection uses one CM4 and QCA9880 receiver, one HackRF One jammer, one antenna setup and one chamber geometry, so models may need adaptation for other hardware.', zh: 采集仅使用一套 CM4 与 QCA9880 接收机、一台 HackRF One 干扰机、一种天线配置和一种暗室几何布置，模型迁移到其他硬件时可能需要调整。}
+- {en: 'Malicious captures contain no mobile, multiple, reactive or uncontrolled real-world jammers, and no separate legitimate Wi-Fi traffic stream.', zh: 恶意采集不包含移动干扰机、多台同时干扰、反应式攻击或非受控的真实环境干扰，也不包含独立的合法 Wi-Fi 业务流。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Driver-reported spectral-scan fields only; phase and complex samples are not preserved., zh: 仅含驱动上报的频谱扫描字段；不保留相位与复数样本。}
+- key: cir
+  status: none
+  note: {en: No channel impulse response; the data are per-bin power values., zh: 无信道冲激响应；数据为逐频点功率值。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters; the data are spectral-scan power summaries., zh: 无逐径参数；数据为频谱扫描功率汇总。}
+- key: interaction
+  status: none
+  note: {en: No propagation paths or interaction points are recorded., zh: 未记录传播路径或交互点。}
+- key: power
+  status: provided
+  note: {en: 'Each observation carries driver-reported noise, rssi, relpwr_db, avgpwr_db and total_gain_db; rssi_dbm in the derived table is approximate.', zh: 每条观测包含驱动上报的 noise、rssi、relpwr_db、avgpwr_db 与 total_gain_db；派生表中的 rssi_dbm 为近似值。}
+- key: iq
+  status: none
+  note: {en: Raw I/Q is not released; the paper states the data are unsuited to raw I/Q tasks., zh: 未发布原始 I/Q；论文说明数据不适用于原始 I/Q 任务。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains; the antenna is a fixed dual-band SMA antenna., zh: 无波束索引或逐波束增益；天线为固定双频 SMA 天线。}
+- key: position
+  status: none
+  note: {en: Only a fixed jammer placement 20 cm from the receiver is described; there are no position labels., zh: 仅描述干扰机固定放置于距接收机 20 cm 处；无位置标签。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files; the chamber geometry is described in text only., zh: 无三维场景或地图文件；暗室几何仅以文字描述。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: No image modality., zh: 无图像模态。}
+- key: depth
+  status: none
+  note: {en: No depth data., zh: 无深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data., zh: 无激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: Wi-Fi spectral scans only; no radar sensing returns., zh: 仅含 Wi-Fi 频谱扫描；无雷达感知回波。}
+- key: imu
+  status: none
+  note: {en: No inertial data., zh: 无惯性数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Observations keep the driver scan order within each file, but rows carry no timestamps.', zh: 每个文件内保留驱动的扫描顺序，但各行不含时间戳。}
+- key: multiuser
+  status: none
+  note: {en: One jammer and one receiver; multiple simultaneous jammers are excluded., zh: 单台干扰机与单台接收机；排除多台同时干扰。}
+- key: multibs
+  status: none
+  note: {en: One receiver; no multi-AP data., zh: 单台接收机；无多 AP 数据。}
+- key: crossfreq
+  status: none
+  note: {en: '2.4 GHz and 5 GHz are captured as separate band runs, not as paired captures of the same scene.', zh: 2.4 GHz 与 5 GHz 作为不同频段运行分别采集，并非同一场景的成对采集。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Mobile jammers are excluded and no moving user is described., zh: 排除移动干扰机，且未描述移动用户。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the indoor background captures, not labelled per path; the chamber captures are RF-shielded.', zh: 室内背景采集中固有存在，未按路径标注；暗室采集处于 RF 屏蔽环境。}
+- key: polarization
+  status: none
+  note: {en: Single dual-band SMA antenna; no polarimetric measurements are described., zh: 单根双频 SMA 天线；未描述极化测量。}
+- key: em_field
+  status: none
+  note: {en: Only driver-reported spectral fields; no field components or antenna patterns., zh: 仅有驱动上报的频谱字段；无场分量或天线方向图。}
+versions:
+- version: Kaggle v7
+  date: '2026-10-30'
+  summary: {en: Kaggle version 7 was created on 2026-10-30; its version note reads only 'Update 2026-10-30' and does not describe the change., zh: Kaggle 第 7 版创建于 2026-10-30；版本说明仅写为 'Update 2026-10-30'，未描述具体变更。}
+  url: https://www.kaggle.com/datasets/daniaherzalla/radio-frequency-jamming/data
+- version: arXiv v1
+  date: '2026-08-16'
+  summary: {en: 'The arXiv v1 paper describes the release: 96,090 CSV files with 522,771,130 spectral observations from a CM4 with QCA9880 receiver at 2.4 and 5 GHz, with HackRF One jamming in an RF-shielded chamber.', zh: 'arXiv v1 论文描述该发布：来自 CM4 与 QCA9880 接收机、覆盖 2.4 和 5 GHz 的 96,090 个 CSV 文件，共 522,771,130 条频谱观测，并包含 RF 屏蔽暗室中的 HackRF One 干扰采集。'}
+  url: https://arxiv.org/abs/2608.15728

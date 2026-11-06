@@ -10,17 +10,17 @@ environment: [outdoor-urban]
 antennas: {tx: 4, rx: 4, array: ula}
 samples: 42,000 .npz files in 350 scenarios
 format: NPZ
-license: MIT (repository LICENSE; no separate dataset license stated)
+license: MIT License
 access: {url: 'https://github.com/UNIC-Lab/UrbanMIMOMap', type: request}
 code: ['https://github.com/UNIC-Lab/UrbanMIMOMap']
 paper: doi:10.1109/globecom59602.2025.11432757
 used_in: []
 citing: []
 summary: {en: 'Ray-traced 4x4 complex MIMO channel matrices at 3.5 GHz and 50 MHz bandwidth over 350 urban map scenarios built from OpenStreetMap data. Each of the 42,000 NPZ files holds one channel matrix H, and precoding-aware radio maps are included.', zh: '在3.5 GHz、50 MHz带宽下，基于350个由OpenStreetMap数据构建的城市地图场景，经光线追踪得到4x4复数MIMO信道矩阵。42,000个NPZ文件各包含一个信道矩阵H，并包含预编码感知的无线电地图。'}
-sources: ['https://arxiv.org/abs/2509.06270', 'https://arxiv.org/html/2509.06270', 'https://github.com/UNIC-Lab/UrbanMIMOMap', 'https://raw.githubusercontent.com/UNIC-Lab/UrbanMIMOMap/main/README.md', 'https://api.github.com/repos/UNIC-Lab/UrbanMIMOMap/license', 'https://doi.org/10.1109/globecom59602.2025.11432757']
+sources: ['https://arxiv.org/abs/2509.06270', 'https://arxiv.org/html/2509.06270', 'https://github.com/UNIC-Lab/UrbanMIMOMap', 'https://raw.githubusercontent.com/UNIC-Lab/UrbanMIMOMap/main/README.md', 'https://api.github.com/repos/UNIC-Lab/UrbanMIMOMap/license', 'https://doi.org/10.1109/globecom59602.2025.11432757', 'https://raw.githubusercontent.com/UNIC-Lab/UrbanMIMOMap/main/LICENSE', 'https://github.com/UNIC-Lab/UrbanMIMOMap/commits/main']
 checked: '2026-11-06'
-overview: {en: 'UrbanMIMOMap is a ray-traced MIMO channel dataset with precoding-aware radio maps, released by the UNIC Lab at Xidian University with a GlobeCom 2025 paper. It covers 350 outdoor urban scenarios built from OpenStreetMap data, each 256 m x 256 m at 0.5 m resolution. Channels were simulated with Altair WinProp''s Dominant Path Model at 3.5 GHz and 50 MHz bandwidth, using an isotropic base-station antenna at 23 dBm. The README lists 120 transmitter-receiver configurations per scenario, and the release has 42,000 NPZ files. Each file stores one complex 4x4 channel matrix H between a 1x4 dual-polarized ULA at the transmitter and a 1x4 ULA at the receiver, with the receiver at 1.5 m height. The dataset also contains precoding-aware received-power maps computed from H with a fixed precoder. The full data are distributed through Baidu Netdisk and OneDrive, and the OneDrive copy holds 50 maps.', zh: 'UrbanMIMOMap 是一个光线追踪生成的 MIMO 信道数据集，同时提供预编码感知的无线电地图，由 Xidian University 的 UNIC Lab
-    发布，对应 GlobeCom 2025 论文。数据集包含 350 个基于 OpenStreetMap 数据构建的室外城市场景，每个场景为 256 m x 256 m，分辨率 0.5 m。信道由 Altair WinProp 的 Dominant Path Model 仿真，载频 3.5 GHz，带宽 50 MHz，基站为全向天线，发射功率 23 dBm。README 给出每个场景 120 组收发配置，数据集共 42,000 个 NPZ 文件。每个文件保存一个复数 4x4 信道矩阵 H，发射端为 1x4 双极化 ULA，接收端为 1x4 ULA，接收高度 1.5 m。数据集还包含由 H 与固定预编码器计算得到的预编码感知接收功率地图。完整数据通过百度网盘和 OneDrive 分发，其中 OneDrive 版本包含 50 个地图。'}
+overview: {en: 'UrbanMIMOMap is a ray-traced MIMO channel dataset with precoding-aware radio maps, released by the UNIC Lab at Xidian University with a GlobeCom 2025 paper. It covers 350 outdoor urban scenarios built from OpenStreetMap data, each 256 m x 256 m at 0.5 m resolution. Channels were simulated with Altair WinProp''s Dominant Path Model at 3.5 GHz and 50 MHz bandwidth, using an isotropic base-station antenna at 23 dBm. Each scenario has 120 transmitter configurations (40 base stations at three azimuths), and the release has 42,000 NPZ files. Each file stores one complex 4x4 channel matrix H between 1x4 dual-polarized ULAs at the transmitter and the receiver, with the receiver at 1.5 m height. The dataset also contains precoding-aware received-power maps computed from H with a fixed precoder. The full data are distributed through Baidu Netdisk and OneDrive, and the OneDrive copy holds 50 maps.', zh: 'UrbanMIMOMap 是一个光线追踪生成的 MIMO 信道数据集，同时提供预编码感知的无线电地图，由 Xidian University 的 UNIC Lab
+    发布，对应 GlobeCom 2025 论文。数据集包含 350 个基于 OpenStreetMap 数据构建的室外城市场景，每个场景为 256 m x 256 m，分辨率 0.5 m。信道由 Altair WinProp 的 Dominant Path Model 仿真，载频 3.5 GHz，带宽 50 MHz，基站采用全向天线，发射功率 23 dBm。每个场景有 120 组发射配置（40 个基站，每个基站三个方位角），数据集共 42,000 个 NPZ 文件。每个文件保存一个复数 4x4 信道矩阵 H，收发两端均为 1x4 双极化 ULA，接收高度 1.5 m。数据集还包含由 H 与固定预编码器计算得到的预编码感知接收功率地图。完整数据通过百度网盘和 OneDrive 分发，其中 OneDrive 版本包含 50 个地图。'}
 signal_details:
 - signal: csi
   text: {en: 'One complex 4x4 MIMO channel matrix H per NPZ file, one file per transmitter configuration, for example 0_5_60.npz (azimuth 60 degrees), in folders resu_npz_map_0 to resu_npz_map_349. Carrier 3.5 GHz and bandwidth 50 MHz. Transmit and receive arrays are 1x4 ULAs with 0.5 lambda spacing and dual polarization. Transmit azimuths are 0, 60 and 120 degrees with tilt -10 degrees, and the receiver height is 1.5 m. Files for isotropic antennas use the suffix iso.', zh: 每个 NPZ 文件保存一个复数 4x4 MIMO 信道矩阵 H，每个发射配置对应一个文件，例如 0_5_60.npz（方位角 60 度），场景目录为 resu_npz_map_0 至 resu_npz_map_349。载频 3.5 GHz，带宽 50 MHz。收发阵列均为 1x4 ULA，阵元间距 0.5 lambda，双极化。发射方位角为 0 度、60 度和 120 度，倾角 -10 度；接收高度 1.5 m。全向天线文件使用后缀 iso。}
@@ -54,3 +54,96 @@ pipeline:
     - {en: Channel matrices H, zh: 信道矩阵 H}
     outputs:
     - {en: Precoding-aware radio maps, zh: 预编码感知无线电地图}
+facts:
+- label: {en: Channel matrix convention, zh: 信道矩阵约定}
+  text: {en: 'H_ij is the complex gain from transmit element j to receive element i. Its magnitude combines path loss, shadow fading and multipath, and its phase combines path length, reflection and diffraction shifts, and array factors.', zh: H_ij 表示从发射阵元 j 到接收阵元 i 的复增益。其幅度综合路径损耗、阴影衰落和多径效应，相位综合路径长度、反射与绕射相移以及阵列因子。}
+- label: {en: Transmitter configurations, zh: 发射配置}
+  text: {en: 'Each scenario has 40 transmitting base stations, and each base station is simulated at three azimuths (0, 60 and 120 degrees), giving 120 configurations per scenario.', zh: 每个场景有 40 个发射基站，每个基站在三个方位角（0 度、60 度和 120 度）下仿真，每个场景共 120 组配置。}
+- label: {en: File naming, zh: 文件命名}
+  text: {en: 'File names give the environment, transmitter and azimuth in that order, so 0_5_60 is scenario 0, transmitter 5 at azimuth 60 degrees, and 0_5_iso uses an isotropic antenna.', zh: 文件名依次给出场景、发射端和方位角，例如 0_5_60 表示场景 0、发射端 5、方位角 60 度，0_5_iso 使用全向天线。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'One complex 4x4 H per sampling point; 262,144 points per scenario, in 42,000 NPZ files.', zh: '每个采样点一个复数 4x4 H；每个场景 262,144 个点，共 42,000 个 NPZ 文件。'}
+- key: cir
+  status: none
+  note: {en: Each H entry is one complex gain; no delay-domain data is released., zh: H 的每个元素为单个复增益；不发布时延域数据。}
+- key: paths
+  status: none
+  note: {en: Only the 4x4 H per point is released; the WinProp path data is not part of the release., zh: 仅发布每个点的 4x4 H；WinProp 路径数据不在发布内容中。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records are released., zh: 不发布逐径交互记录。}
+- key: power
+  status: provided
+  note: {en: 'FEGT-precoded received-power maps, min-max normalised to [0, 1]; dBm values follow from H.', zh: 'FEGT 预编码接收功率地图，已线性归一化到 [0, 1]；dBm 值可由 H 计算。'}
+- key: iq
+  status: none
+  note: {en: No raw I/Q samples; the release holds channel matrices., zh: 不含原始 I/Q 采样，发布内容为信道矩阵。}
+- key: beam_labels
+  status: derivable
+  note: {en: Not stored; beam indices can be computed from the released H with a chosen codebook., zh: 未存储；可使用所选码本由发布的 H 计算波束索引。}
+- key: position
+  status: derivable
+  note: {en: Receivers lie on a 0.5 m grid over each 256 m x 256 m scenario; no coordinate file is described., zh: 接收点位于每个 256 m x 256 m 场景的 0.5 m 网格上；来源未描述坐标文件。}
+- key: geometry
+  status: provided
+  note: {en: Scene (.odb) and environment files are in the complete code package; the GitHub repository holds samples only., zh: 场景（.odb）与环境文件包含在完整代码包中；GitHub 仓库仅含样例。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: No camera images; the dataset is ray-traced RF data., zh: 不含相机图像，数据为光线追踪生成的射频数据。}
+- key: depth
+  status: none
+  note: {en: No depth data; the dataset is ray-traced RF data., zh: 不含深度数据，数据为光线追踪生成的射频数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data; the dataset is ray-traced RF data., zh: 不含激光雷达数据，数据为光线追踪生成的射频数据。}
+- key: radar
+  status: none
+  note: {en: No radar data; the dataset is ray-traced RF data., zh: 不含雷达数据，数据为光线追踪生成的射频数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data; the dataset is ray-traced RF data., zh: 不含惯性测量单元数据，数据为光线追踪生成的射频数据。}
+- key: time_series
+  status: none
+  note: {en: Each scenario is a static snapshot per transmitter configuration; no time axis is described., zh: 每个场景对每组发射配置为静态快照；来源未描述时间轴。}
+- key: multiuser
+  status: derivable
+  note: {en: Receiver points under one transmitter configuration can be combined into a multi-user channel set; the paper does not do this., zh: 同一发射配置下的多个接收点可组合为多用户信道集合；论文未进行此操作。}
+- key: multibs
+  status: provided
+  note: {en: '40 transmitting base stations per scenario, each with its own files on the same receiver grid.', zh: 每个场景 40 个发射基站，每个基站在同一接收网格上有各自的文件。}
+- key: crossfreq
+  status: none
+  note: {en: Single 3.5 GHz carrier; no paired multi-band data., zh: 单一 3.5 GHz 载频，无成对多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Static scenes and receiver points; no speed is described., zh: 场景与接收点均为静态；未描述速度。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Vehicles are fixed scene objects; no moving blockers are described., zh: 车辆为固定场景物体；未描述移动遮挡体。}
+- key: reflection
+  status: provided
+  note: {en: The paper states that the phase includes reflection shifts; not labelled per path., zh: 论文称相位包含反射相移；未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: The paper states that the phase includes diffraction shifts; not labelled per path., zh: 论文称相位包含绕射相移；未按路径标注。}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: none
+  note: {en: 'Dual-polarised elements are simulated, but each H entry is one combined complex gain.', zh: 仿真使用双极化阵元，但 H 的每个元素为合并后的单个复增益。}
+- key: em_field
+  status: none
+  note: {en: Only channel matrices and received-power maps are released; no field-level outputs., zh: 仅发布信道矩阵与接收功率地图，不含场级输出。}
+versions:
+- version: arXiv v1
+  date: '2025-09-08'
+  summary: {en: 'arXiv v1 introduces UrbanMIMOMap: 350 OpenStreetMap-based scenarios, 4x4 complex channel matrices at 3.5 GHz and 50 MHz, and a RadioUNet baseline for FEGT-precoded received-power maps.', zh: arXiv v1 介绍 UrbanMIMOMap：350 个基于 OpenStreetMap 的场景，3.5 GHz、50 MHz 下的 4x4 复数信道矩阵，以及用于 FEGT 预编码接收功率地图的 RadioUNet 基线。}
+  url: https://arxiv.org/abs/2509.06270
+- version: initial commit
+  date: '2025-08-06'
+  summary: {en: First commit of the public GitHub repository. The repository has no GitHub releases; its history shows file uploads and README edits up to 2025-08-13., zh: 公开 GitHub 仓库的首次提交。该仓库没有 GitHub 发布版本；其提交历史显示截至 2025-08-13 的文件上传与 README 修改。}
+  url: https://github.com/UNIC-Lab/UrbanMIMOMap

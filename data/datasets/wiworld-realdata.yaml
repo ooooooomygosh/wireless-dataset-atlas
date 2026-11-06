@@ -7,125 +7,93 @@ tasks: [multimodal-sensing, channel-modeling]
 signals: [cir, rgb, lidar, radar, gps]
 bands_ghz: [3.7, 6.775]
 environment: [outdoor-urban]
-license: Not stated
-access: {url: 'https://scc.bupt.edu.cn/dataset-manage/datasets/44', type: request}
+license: CC BY-NC-ND 4.0
+access: {url: 'https://scc.bupt.edu.cn/dataset-manage/datasets/44', type: registration}
 code: []
 paper: arxiv:2606.24476
-sources: ['https://arxiv.org/abs/2606.24476', 'https://scc.bupt.edu.cn/dataset-manage/datasets/44']
+sources: ['https://arxiv.org/abs/2606.24476', 'https://scc.bupt.edu.cn/dataset-manage/datasets/44', 'https://arxiv.org/html/2606.24476v3', 'https://doi.org/10.57760/sciencedb.40663', 'https://www.scidb.cn/detail?dataSetId=763c6a6b1aee401dbc73efbbb1d7d722', 'https://export.arxiv.org/api/query?id_list=2606.24476', 'https://arxiv.org/html/2606.24476v1', 'https://arxiv.org/html/2606.24476v2', 'https://api.datacite.org/dois/10.57760/sciencedb.40663']
 aliases: []
 used_in: []
 citing: []
 summary: {en: A 2026 resource combining multifrequency RF and environmental observations along mobile campus routes. It supports exploration of wireless world-model data interfaces; the current public release must be distinguished from the full acquisition plan., zh: 2026年提出的校园移动路线多频RF与环境观测资源；适合探索无线world model的数据接口，但现阶段公开范围需与整个采集计划区分。}
 checked: '2026-11-06'
 pipeline:
-  summary: {en: Dual-band CIR and environmental sensor streams are collected along campus routes and associated through timestamps and a metadata manifest. Nearest-neighbor matching retains time offsets and quality flags., zh: 沿校园路线采集双频CIR及环境传感器，各流通过时间戳和metadata manifest关联；最近邻匹配保留时间偏移与quality flag。}
+  summary: {en: 'Dual-band CIRs and environmental sensor streams are recorded along campus routes. Each CIR file is anchored to the nearest sensor record within 50 ms, and a unified manifest links the samples.', zh: 沿校园路线记录双频 CIR 与环境传感器数据。每个 CIR 文件与 50 ms 内最近的传感器记录对齐，统一 manifest 将各样本关联起来。}
   stages:
-  - title: {en: 'Define the route, wireless deployment, and release scope', zh: 固定路线、无线部署与发布范围}
-    detail: {en: 'The current release describes a representative route with a fixed Tx and one mobile Rx, recording wireless observations at 3.7 and 6.775 GHz. The scale of the paper''s overall campaign and this public route are tracked separately.', zh: 当前发布描述以固定Tx、单移动Rx的代表性路线为对象，在3.7和6.775 GHz记录无线观测。论文整体campaign规模与这条公开路线分别维护。}
+  - title: {en: 'Set the route, Tx/Rx and bands', zh: 设定路线、收发端与频段}
+    detail: {en: 'The released route uses a fixed Tx on an elevated campus building and a mobile Rx on a measurement platform, with channel sounding at 3.7 GHz and 6.775 GHz.', zh: 发布路线采用固定在校园建筑高处的 Tx，以及安装于移动测量平台上的 Rx，在 3.7 GHz 与 6.775 GHz 进行信道探测。}
     inputs:
-    - {en: Campus route and fixed Tx, zh: 校园路线和固定Tx}
-    - {en: Mobile horn/omni Rx, zh: 移动horn/omni Rx}
-    - {en: 3.7/6.775 GHz channel-sounding system, zh: 3.7/6.775 GHz声探系统}
-    outputs:
-    - {en: Route/band/Tx-Rx link identity, zh: 路线/频段/Tx-Rx link身份}
-    - {en: Deployment and hardware metadata, zh: 部署与硬件元数据}
+    - {en: Haidian Campus routes and the fixed Tx site, zh: 海淀校区路线与固定 Tx 站点}
+    - {en: BUPTSounder Pro channel-sounding system, zh: BUPTSounder Pro 信道探测系统}
     controls:
-    - {en: 6.775 GHz is the second sub-7 GHz band; distinguish the current route from future extensions., zh: 6.775 GHz属于第二sub-7 GHz频段，当前路线与后续扩展分开}
-    checks:
-    - {en: 'Reproduction check: confirm the routes, links, and bands actually listed in the manifest; do not fill in samples from the overall plan.', zh: 复现检查：确认manifest实际列出的路线、链路和频段，避免按整体计划补齐样本}
-  - title: {en: Collect CIR and multimodal environmental streams, zh: 采集CIR与多模态环境流}
-    detail: {en: 'The wireless system records CIR while the mobile measurement platform also acquires environmental images, LiDAR, radar, and GNSS. Each modality retains its own sample times and device information.', zh: 无线系统记录CIR，移动测量平台同时采集环境图像、LiDAR、雷达和GNSS。各模态保留自身采样时间和设备信息。}
-    inputs:
-    - {en: Dual-band channel sounding, zh: 双频声探}
-    - {en: 'Imaging, LiDAR, radar, and GNSS devices', zh: 图像、LiDAR、radar、GNSS设备}
+    - {en: Tx antenna is a horn or omnidirectional antenna; Rx antenna is omnidirectional, zh: Tx 天线为喇叭或全向天线；Rx 天线为全向天线}
     outputs:
-    - {en: CIR and environmental sensor files, zh: CIR与环境传感文件}
-    - {en: Timestamps for each stream, zh: 各流的时间戳}
+    - {en: 'Route, band and Tx-Rx link definitions', zh: 路线、频段和 Tx-Rx 链路定义}
+  - title: {en: Record CIR and environmental streams, zh: 记录 CIR 与环境数据流}
+    detail: {en: 'The Tx radiates a wideband PN11 sounding signal, and the Rx correlates the recorded complex I/Q with a calibrated reference sequence to obtain CIRs. Cameras, LiDAR, radar and GNSS are triggered by one control script and keep their own timestamps.', zh: 发射端发送宽带 PN11 探测信号，接收端记录复数 I/Q，并与校准后的参考序列相关得到 CIR。相机、LiDAR、雷达和 GNSS 由统一控制脚本触发，并各自保留时间戳。}
     controls:
-    - {en: Public documentation describes the modality pipeline; specific file extensions and native axes require manifest verification., zh: 公开说明已描述模态链；具体文件扩展名和原始轴需manifest确认}
-    checks:
-    - {en: 'Reproduction check: inspect actual availability, sampling period, coordinate system, and sensor extrinsics for each modality.', zh: 复现检查：检查每种模态实际存在率、采样周期、坐标系与传感器外参}
-  - title: {en: Align times and preserve matching errors, zh: 对齐时间并保留匹配误差}
-    detail: {en: The paper describes associating modalities by nearest-neighbor time matching and storing offsets and quality flags in the manifest. This establishes sample associations; cross-frequency hardware clock/phase residuals still require verification from raw files., zh: 论文描述按最近邻时间关联模态，并在manifest保存匹配偏移和质量标记。此过程构建样本关系，硬件跨频时钟/相位残差仍需原始文件核验。}
-    inputs:
-    - {en: Per-stream timestamps, zh: 各流时间戳}
-    - {en: Route and sample identity, zh: 路线与sample身份}
+    - {en: Cameras and panoramic camera at 10 fps; LiDAR at 10 Hz; radar and GNSS at 20 Hz, zh: 相机与全景相机 10 fps；LiDAR 10 Hz；雷达与 GNSS 20 Hz}
     outputs:
-    - {en: Sample-level modality associations, zh: sample级模态关联}
-    - {en: Time offsets and quality flags, zh: time offset和quality flag}
-    controls:
-    - {en: 'Check phase coherence, temporal proximity, and geographic correspondence separately.', zh: 相位相干、时间接近和地理位置对应分别检查}
-    checks:
-    - {en: 'Reproduction check: report offset distributions for each modality; reject matches outside the task''s acceptable time window.', zh: 复现检查：报告各模态偏移分布；剔除超过任务容许时间窗的匹配}
-  - title: {en: Organize the release with a manifest, zh: 用manifest组织发布物}
-    detail: {en: 'Organize data by scenario, route, band, Tx-Rx link, modality, and sample. The manifest connects wireless and environmental observations. Users read the manifest first, then load the required modalities.', zh: 按scenario、route、band、Tx-Rx link、modality、sample组织数据，manifest连接无线与环境观测。用户先读取manifest，再按需要加载模态。}
-    inputs:
-    - {en: 'CIR, sensor files, and quality metadata', zh: CIR、传感文件及质量元数据}
+    - {en: 'CIR files grouped by 100 ms window, and timestamped sensor files', zh: 按 100 ms 窗口分组的 CIR 文件，以及带时间戳的传感器文件}
+  - title: {en: Match samples in time, zh: 按时间匹配样本}
+    detail: {en: 'Each 100 ms CIR file is the anchor. Each sensing modality contributes its temporally nearest record when the absolute time difference does not exceed 50 ms. The actual time differences are recorded, and unmatched fields are marked NAN.', zh: 每个 100 ms 的 CIR 文件作为锚点。各感知模态取时间上最近的记录，且绝对时间差不超过 50 ms。实际时间差被记录，未匹配的字段标记为 NAN。}
     outputs:
-    - {en: Traceable sample catalog, zh: 可追溯的样本目录}
-    - {en: Associated files and deployment metadata, zh: 关联文件与部署元数据}
-    controls:
-    - {en: Use the actual manifest to establish the current public contents and download accessibility., zh: 公开入口当前内容和下载可达性需以真实manifest为准}
-    checks:
-    - {en: 'Reproduction check: verify file existence, unique sample keys, and band/link consistency.', zh: 复现检查：检查文件存在、唯一sample键、频段与链路的一致性}
-  - title: {en: Build route-level cross-frequency or multimodal tasks, zh: 建立路线级跨频或多模态任务}
-    detail: {en: 'Create cross-frequency targets only for explicitly associated dual-band samples. Group learning experiments by route segment or independent run. Evaluate CIR statistics, position-neighbor methods, and unimodal baselines first, then analyze the incremental value of environmental information.', zh: 仅对明确关联的双频样本建立跨频目标。学习实验按路线段或独立运行分组，先评估CIR统计、位置近邻和单模态基线，再分析环境信息的增量价值。}
-    inputs:
-    - {en: Valid manifest entries, zh: 有效manifest条目}
-    - {en: 'CIR, GNSS, and environmental observations', zh: CIR、GNSS和环境观测}
+    - {en: Sample-level associations with time offsets and quality flags, zh: 带时间偏移和 quality flag 的样本级关联}
+  - title: {en: Organize the release with a manifest, zh: 用 manifest 组织发布内容}
+    detail: {en: 'Data are organized by scenario, route, frequency and sample, with modality-specific directories. Each manifest row gives the sample identifier, Tx and Rx identifiers, center frequency, reference timestamp, file paths, time offsets and quality flags.', zh: 数据按场景、路线、频率和样本分层组织，各模态存放于独立目录。manifest 的每一行给出样本标识、Tx 与 Rx 标识、中心频率、参考时间戳、文件路径、时间偏移和 quality flag。}
     outputs:
-    - {en: Paired-sample table, zh: 配对样本表}
-    - {en: Route-level splits and simple baselines, zh: 路线级split与简单基线}
-    controls:
-    - {en: Fix offset thresholds and normalization during training/validation; limit time-window inputs according to acquisition completion times., zh: 偏移门限和归一化在训练/验证阶段固定；时间窗输入按采集完成时刻限定}
-    checks:
-    - {en: 'Reproduction check: inspect leakage from overlapping route segments, repeated images, time offsets, and revisits to the same route.', zh: 复现检查：检查路段重叠、重复画面、时间偏移和同一路线回访的泄漏}
-  scope: {en: One representative dual-band mobile route described in the current public release. The full campaign on the order of 10 TB and the current release scope are recorded separately., zh: 当前公开描述的一条代表性双频移动路线；整体10 TB级campaign与当前发布范围分别记录。}
+    - {en: Unified metadata manifest, zh: 统一的元数据 manifest}
+  - title: {en: Build the path-loss case study, zh: 构建路径损耗案例}
+    detail: {en: 'The label is -10 log10 of the snapshot-averaged power summed over valid delay bins, computed from 3.7 GHz CIRs. A multimodal regressor (ResNet-34 for images, PointNet++ for LiDAR, an MLP for positions and GPT-2 fusion) is trained on the source samples, adapted with 20 target samples, and evaluated on the rest of the target segment.', zh: 标签由 3.7 GHz CIR 计算：对快照求平均、对有效时延 bin 求和后取 -10 log10。多模态回归模型（图像使用 ResNet-34，LiDAR 使用 PointNet++，位置使用 MLP，并以 GPT-2 融合）先在源域样本上训练，再用 20 个目标域样本适应，并在目标路段其余样本上评估。}
+    outputs:
+    - {en: Path-loss MAE 2.02 dB and RMSE 2.69 dB on the target segment, zh: 目标路段路径损耗 MAE 2.02 dB、RMSE 2.69 dB}
 facts:
-- label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Dual-band CIR and images/LiDAR/radar/GNSS described for the current route
-
-      • Metadata manifest associating time offsets, quality, and deployment', zh: '• 当前路线描述中的双频CIR及图像/LiDAR/radar/GNSS
-
-      • 关联时间偏移、质量和部署的metadata manifest'}
-- label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Cross-frequency samples and CIR statistics after match filtering
-
-      • User-defined route splits and multimodal prediction windows', zh: '• 匹配过滤后的跨频样本、CIR统计
-
-      • 用户定义的路线split与多模态预测窗口'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• This review read paper Sec. II A–D and Table II; the original manifest was not obtained from the portal.
-
-      • Add serialization details, synchronization residuals, and actual downloaded volume after obtaining the data. The overall acquisition plan is not the current release manifest.', zh: '• 本轮已读论文Sec.II A–D和Table II，未从入口取得原始manifest。
-
-      • 具体序列化、同步残差和已下载体量应在获取数据后补充，整体采集计划不作为当前发布清单。'}
+- label: {en: Release scope, zh: 发布范围}
+  text: {en: The Science Data Bank page states that the current release contains four routes forming a single loop. The arXiv paper describes one route at each band., zh: Science Data Bank 页面称当前发布包含构成单一环路的四条路线；arXiv 论文描述的是每个频段一条路线。}
+- label: {en: Campaign scale, zh: 采集规模}
+  text: {en: 'The full campaign covers 15 continuous routes and 36 outdoor route segments, about 10 TB in total, with more than 200,000 multi-view images, about 50,000 panoramic images, 50,000 LiDAR point clouds, 50,000 radar records and 100,000 GNSS records.', zh: 完整采集包含 15 条连续路线和 36 个户外路段，总量约 10 TB，含 20 万张以上多视角图像、约 5 万张全景图像、5 万帧 LiDAR 点云、5 万条雷达记录和 10 万条 GNSS 记录。}
+- label: {en: License and access, zh: 许可与访问}
+  text: {en: The Science Data Bank metadata gives CC BY-NC-ND 4.0. Users complete an access application form before downloading., zh: Science Data Bank 元数据标注为 CC BY-NC-ND 4.0；下载前需填写访问申请表。}
+- label: {en: File naming, zh: 文件命名}
+  text: {en: 'Data files follow SCN_BUPT_TX<ant><pos>_RX<route>_F<freq>_<datatype>_<YYYYMMDDHHMMSSmmm>. CIRs are stored as .mat files, one per 100 ms window.', zh: 数据文件遵循 SCN_BUPT_TX<ant><pos>_RX<route>_F<freq>_<datatype>_<YYYYMMDDHHMMSSmmm> 命名规则。CIR 以 .mat 文件存储，每个 100 ms 窗口一个文件。}
+- label: {en: Sample identifier, zh: 样本标识}
+  text: {en: 'Aligned sample IDs follow RX<route>_F<freq>_<sample_index>, and the index increases independently within each Rx-frequency combination.', zh: 对齐样本的 ID 格式为 RX<route>_F<freq>_<sample_index>，索引在每个 Rx-频率组合内独立递增。}
+- label: {en: Path-loss label, zh: 路径损耗标签}
+  text: {en: The label is computed from the calibrated 3.7 GHz CIR as -10 log10 of the snapshot-averaged power summed over the valid delay bins., zh: 标签由校准后的 3.7 GHz CIR 计算，为对快照求平均、对有效时延 bin 求和后的功率取 -10 log10。}
+- label: {en: Case-study split, zh: 案例划分}
+  text: {en: 'The case study uses 2,889 aligned 3.7 GHz samples. Samples 150 to 750 form the target segment, the remaining samples form the source domain split 9:1 into training and validation, and 20 labeled target samples (about 3.3% of the target) are used for adaptation.', zh: '案例使用 2,889 个对齐的 3.7 GHz 样本。第 150 至 750 个样本构成目标路段，其余样本为源域并按 9:1 划分为训练集与验证集，另用 20 个带标签的目标样本（约占目标样本的 3.3%）进行适应。'}
+- label: {en: Privacy, zh: 隐私处理}
+  text: {en: Faces and license plates in the released images are anonymized., zh: 已发布图像中的人脸与车牌已做匿名化处理。}
 provenance:
 - {en: 'Mobile campus measurements → dual-band CIR, images/LiDAR/radar/GNSS acquisition', zh: 校园移动测量 → 双频CIR、图像/LiDAR/radar/GNSS采集}
 - {en: 'Metadata manifest associates route, time, array, and quality flags → sample-level multimodal records', zh: metadata manifest关联路线、时间、阵列与quality flag → 样本级多模态记录}
 technical_notes:
-- {en: 'Literature-supported: the resource includes measured CIR and multiview/panoramic images, rather than rendered geometry alone.', zh: 文献支持：资源包含实测CIR和多视角/全景图像，而非只渲染几何。}
-- {en: 'Unknown: cross-frequency hardware clock, phase, and sensor-synchronization residuals have not yet been verified from files.', zh: 未知：跨频硬件时钟、相位和传感同步残差尚未由文件核实。}
+- {en: 'The CIRs are measured complex channel responses, and the images and point clouds are captured by sensors rather than rendered from geometry.', zh: CIR 为实测复数信道响应，图像和点云由传感器采集，而非由几何渲染生成。}
+- {en: 'The 3.7 GHz and 6.775 GHz CIRs have delay resolutions of 5.00 ns and 1.67 ns, respectively.', zh: 3.7 GHz 与 6.775 GHz 的 CIR 时延分辨率分别为 5.00 ns 与 1.67 ns。}
 limitations:
-- {en: Do not confuse the mmWave radar carrier with a mmWave communication-CSI band., zh: 不能把毫米波雷达载频误当通信CSI的毫米波频段。}
-- {en: One public route does not support conclusions about unseen cities or BSs without additional data., zh: 一条公开路线不支持未经补充的unseen-city或unseen-BS结论。}
+- {en: The mmWave radar is a sensing modality. Channel data exist only at 3.7 GHz and 6.775 GHz., zh: 毫米波雷达是感知模态，信道数据仅在 3.7 GHz 与 6.775 GHz 提供。}
+- {en: 'The described setup has one fixed Tx and one mobile Rx, and the paper reports no multi-BS or multi-UE sample groups.', zh: 所述设置为一个固定 Tx 与一个移动 Rx，论文未报告多基站或多 UE 样本组。}
 history:
-- {en: '2026-06-23: original preprint.', zh: 2026-06-23：原始预印本。}
-- {en: '2026-11-05: reading the portal did not establish a download manifest.', zh: 2026-11-05：门户读取未能确认下载清单。}
+- {en: '2026-06-23: arXiv v1 submitted (arXiv:2606.24476).', zh: '2026-06-23：arXiv v1 提交（arXiv:2606.24476）。'}
+- {en: '2026-06-25: dataset published on Science Data Bank under DOI 10.57760/sciencedb.40663.', zh: 2026-06-25：数据集发布于 Science Data Bank，DOI 为 10.57760/sciencedb.40663。}
+- {en: '2026-08-16: arXiv v3 revision.', zh: 2026-08-16：arXiv v3 修订版。}
 usage:
-- {en: 'After obtaining an official release, first inspect pair_id, timestamp, route_id, and quality_flag in the manifest.', zh: 取得正式release后先检查manifest中的pair_id、timestamp、route_id、quality_flag。}
-- {en: Start with path-loss prediction; full CSI reconstruction requires checking phase and array definitions., zh: 把路径损耗预测作为初始任务；完整CSI重建需核对相位和阵列定义。}
+- {en: Complete the access application listed on the Science Data Bank page before downloading., zh: 下载前需完成 Science Data Bank 页面所列的访问申请。}
+- {en: 'Under CC BY-NC-ND 4.0, the data may be shared non-commercially with attribution, but adapted versions may not be redistributed.', zh: 依据 CC BY-NC-ND 4.0，数据可在署名前提下非商业共享，但改编版本不可再发布。}
+- {en: 'Start from the manifest, which provides the sample identifier, Tx and Rx identifiers, center frequency, reference timestamp, time offsets and quality flags.', zh: 从 manifest 入手，其中包含样本标识、Tx 与 Rx 标识、中心频率、参考时间戳、时间偏移和 quality flag。}
+- {en: The demonstrated task in the paper is environment-assisted path-loss prediction using labels derived from 3.7 GHz CIRs., zh: 论文演示的任务是利用 3.7 GHz CIR 导出的标签进行环境辅助路径损耗预测。}
 field_notes:
 - label: {en: Beam labels, zh: 波束标签}
-  text: {en: 'The current public route contains CIR records from a fixed Tx and mobile horn/omni Rx. It has no codebook sweep, beam-response vector, or optimal-beam labels.', zh: 当前公开路线是固定Tx和移动horn/omni Rx的CIR记录；没有码本遍历、beam-response向量或最优beam标签。}
+  text: {en: 'The paper lists CIRs, images, LiDAR, radar and GNSS as the released contents. It describes no codebook sweep, beam-response vector or optimal-beam labels.', zh: 论文列出的发布内容为 CIR、图像、LiDAR、雷达和 GNSS，未描述码本遍历、beam 响应向量或最优 beam 标签。}
 - label: {en: Multi-user, zh: 多用户}
-  text: {en: The current public route has only one mobile Rx and no simultaneous multi-UE complex channel matrix. Planned extensions are not current capabilities., zh: 当前公开路线只有一个移动Rx，不包含同一时刻多UE复数信道矩阵；未来扩展不是当前能力。}
+  text: {en: 'The described setup uses one mobile Rx, and the paper reports no simultaneous multi-UE complex channel matrix.', zh: 所述设置仅使用一个移动 Rx，论文未报告同一时刻的多 UE 复数信道矩阵。}
 - label: {en: Multi-BS, zh: 多基站}
-  text: {en: Multiple Tx markers in the paper's figures describe the overall campaign. The current release covers one representative route and contains no synchronized multi-Tx/BS sample groups., zh: 论文图中多个Tx标记描述整体campaign，当前发布一条代表性路线；没有同步多Tx/BS样本组。}
+  text: {en: 'Fig. 2 shows Tx locations for the full campaign. The released route is described with one fixed Tx, and the paper reports no synchronized multi-Tx sample groups.', zh: 图 2 给出整体采集中的 Tx 位置。发布路线描述为单个固定 Tx，论文未报告同步的多 Tx 样本组。}
 - label: {en: Paths, zh: 路径}
-  text: {en: 'This field refers to per-path angles at both link ends and interaction records, which the public interface does not provide. Delay-domain representations or path parameters can be estimated from CSI, but separate-path interaction records are not provided.', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。可从CSI得到时延域或估计路径参数，但未提供分离路径的交互记录。}
-overview: {en: 'WiWorld-RealData is a real-world channel and environment dataset from Beijing University of Posts and Telecommunications (BUPT), described in arXiv:2606.24476 (submitted June 2026) for 6G wireless world model research. It combines wideband channel impulse responses (CIRs) measured at 3.7 GHz and 6.775 GHz with multi-view and panoramic images, LiDAR point clouds, mmWave radar observations and GNSS trajectories. The measurements were made on the BUPT Haidian Campus with an upgraded BUPTSounder Pro system, where the Tx stood on an elevated campus building at 20.5 m, the mobile Rx at 2.5 m, and the Rx moved at 1 to 1.4 m/s. The campaign comprises 15 continuous routes and 36 outdoor route segments and produced about 10 TB of data, while the public release contains one route at 3.7 GHz and one at 6.775 GHz within a highlighted region. Each 100 ms CIR file is matched with the nearest record of each sensing modality within 50 ms, and a unified manifest lists sample identifiers, Tx
-    and Rx identifiers, center frequency, time offsets and quality flags. The authors evaluate environment-assisted path-loss prediction, which reaches an MAE of 2.02 dB and an RMSE of 2.69 dB after few-shot adaptation on a continuous test segment, and they list cross-band propagation analysis, environment-aware channel modeling and wireless digital twins as target uses.', zh: 'WiWorld-RealData是北京邮电大学（BUPT）发布的真实环境信道与环境感知数据集，相关论文为arXiv:2606.24476（2026年6月提交），面向6G无线世界模型研究。数据包含3.7 GHz和6.775 GHz的宽带信道冲激响应（CIR），以及多视角与全景图像、LiDAR点云、毫米波雷达观测和GNSS轨迹。测量在BUPT海淀校区进行，使用升级的BUPTSounder Pro系统：Tx固定于校园建筑的高处（20.5 m），移动Rx高2.5 m，Rx以1至1.4 m/s的速度移动。整个测量活动包含15条连续路线和36个户外路段，约产生10 TB数据；公开发布包含高亮区域内3.7 GHz和6.775 GHz各一条路线。每个100 ms的CIR文件与各感知模态中最近的记录在50 ms内匹配，统一manifest记录样本标识、Tx与Rx标识、中心频率、时间偏移和quality flag。作者以环境辅助路径损耗预测为验证任务，在连续测试路段上经少样本适应后得到MAE 2.02 dB、RMSE 2.69 dB，并列出跨频段传播分析、环境感知信道建模和无线数字孪生等用途。'}
+  text: {en: The released data are complex CIRs over delay bins. Per-path angles and interaction records are not described., zh: 发布数据为各时延 bin 上的复数 CIR，未描述逐径角度与交互记录。}
+overview: {en: 'WiWorld-RealData is a real-world channel and environment dataset from Beijing University of Posts and Telecommunications (BUPT), described in arXiv:2606.24476 and published on Science Data Bank under DOI 10.57760/sciencedb.40663. It combines wideband channel impulse responses (CIRs) measured at 3.7 GHz and 6.775 GHz with multi-view and panoramic images, LiDAR point clouds, millimeter-wave radar observations and GNSS trajectories. The measurements were made on the BUPT Haidian Campus with an upgraded BUPTSounder Pro system, with the Tx fixed on an elevated campus building at 20.5 m, the mobile Rx at 2.5 m, and the Rx moving at 1 to 1.4 m/s. The full campaign comprises 15 continuous routes and 36 outdoor route segments and produced about 10 TB of data. The arXiv paper describes the public release as one route at each band within a highlighted region, whereas the Science Data Bank page states that the current release contains four routes forming a single loop, with the remaining
+    data to be released after de-identification. Each 100 ms CIR file is matched with the nearest record of each sensing modality within 50 ms, and a unified manifest lists sample identifiers, Tx and Rx identifiers, center frequency, time offsets and quality flags. The authors'' environment-assisted path-loss prediction reaches an MAE of 2.02 dB and an RMSE of 2.69 dB after few-shot adaptation on a continuous test segment. The paper lists cross-band propagation analysis, environment-aware channel modeling and wireless digital twins as target uses.', zh: 'WiWorld-RealData 是北京邮电大学（BUPT）发布的真实环境信道与环境感知数据集，相关论文为 arXiv:2606.24476，数据发布于 Science Data Bank，DOI 为 10.57760/sciencedb.40663。数据包含 3.7 GHz 与 6.775 GHz 的宽带信道冲激响应（CIR），以及多视角与全景图像、LiDAR 点云、毫米波雷达观测和 GNSS 轨迹。测量在 BUPT 海淀校区进行，使用升级的 BUPTSounder Pro 系统：Tx 固定于校园建筑高处（20.5 m），移动 Rx 高 2.5 m，并以 1 至 1.4 m/s 的速度移动。整个测量活动包含 15 条连续路线和 36 个户外路段，约产生 10 TB 数据。arXiv 论文将公开发布描述为高亮区域内每个频段各一条路线，而 Science Data Bank 页面称当前发布包含构成单一环路的四条路线，其余数据将在去标识化后陆续发布。每个 100 ms 的
+    CIR 文件与各感知模态中时间最近的记录匹配，匹配门限为 50 ms；统一 manifest 记录样本标识、Tx 与 Rx 标识、中心频率、时间偏移和 quality flag。作者的环境辅助路径损耗预测在连续测试路段上经少样本适应后达到 MAE 2.02 dB、RMSE 2.69 dB。论文列出的目标用途包括跨频段传播分析、环境感知信道建模和无线数字孪生。'}
 signal_details:
 - signal: cir
   text: {en: 'Measured with the BUPTSounder Pro channel sounder. The Tx radiates a wideband PN11 sounding signal, and the mobile Rx records complex I/Q that is correlated with a calibrated reference sequence to obtain CIRs. At 3.7 GHz the bandwidth is 200 MHz, the sampling rate 200 MSamples/s and the delay resolution 5.00 ns; at 6.775 GHz the values are 600 MHz, 600 MSamples/s and 1.67 ns. The Tx uses a horn or an omnidirectional antenna (horn gain 10.21 dBi at 3.7 GHz and 10.20 dBi at 6.775 GHz; omnidirectional gain 0.95 dBi and 0.99 dBi), and the Rx uses an omnidirectional antenna. CIRs whose start times fall within the same 100 ms window are grouped into one .mat file.', zh: 由BUPTSounder Pro信道探测系统测量。Tx发射宽带PN11探测信号，移动Rx记录复数I/Q，并与校准后的参考序列相关以得到CIR。3.7 GHz时带宽为200 MHz，采样率200 MSamples/s，时延分辨率5.00 ns；6.775 GHz时分别为600 MHz、600 MSamples/s和1.67 ns。Tx使用喇叭天线或全向天线（3.7 GHz喇叭增益10.21 dBi，6.775 GHz为10.20 dBi；全向增益分别为0.95 dBi和0.99 dBi），Rx使用全向天线。起始时间位于同一100 ms窗口内的CIR被存入同一个.mat文件。}
@@ -137,3 +105,98 @@ signal_details:
   text: {en: 'A millimeter-wave radar on the mobile Rx platform produces observations at 20 Hz, which capture dynamic-object information.', zh: 移动Rx平台上的毫米波雷达以20 Hz输出观测，用于获取动态物体信息。}
 - signal: gps
   text: {en: 'A GNSS receiver on the mobile Rx platform records at 20 Hz, and GNSS records are also collected at the fixed Tx. GNSS receivers and rubidium clocks at the Tx and Rx provide a common timing reference.', zh: 移动Rx平台上的GNSS接收机以20 Hz记录，固定Tx处同样采集GNSS记录。Tx和Rx处的GNSS接收机与铷钟共同提供统一时间参考。}
+size_gb: 3790
+format: MAT (CIR files)
+mobility: Fixed Tx; mobile Rx at 1 to 1.4 m/s
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: Frequency response is not stored; it follows from the released complex CIRs by a Fourier transform over delay bins., zh: 频率响应未直接存储；可由发布的复数CIR沿时延bin做傅里叶变换得到。}
+- key: cir
+  status: provided
+  note: {en: 'Complex CIRs over delay bins: 3.7 GHz with 200 MHz bandwidth and 5.00 ns resolution, 6.775 GHz with 600 MHz and 1.67 ns.', zh: 按时延bin组织的复数CIR：3.7 GHz，带宽200 MHz，时延分辨率5.00 ns；6.775 GHz，带宽600 MHz，时延分辨率1.67 ns。}
+- key: paths
+  status: derivable
+  note: {en: Per-path delay and power are not stored and can be estimated from the complex CIRs; per-path angles are not released., zh: 逐径时延和功率未直接存储，可由复数CIR估计；逐径角度未发布。}
+- key: interaction
+  status: none
+  note: {en: 'Per-path interaction records (surfaces, reflection or diffraction order) are not described.', zh: 未描述逐径交互记录（表面、反射或绕射阶数）。}
+- key: power
+  status: derivable
+  note: {en: Received power is computed from the CIRs; the case study uses -10 log10 of snapshot-averaged power summed over valid delay bins at 3.7 GHz., zh: 接收功率由CIR计算；案例研究使用3.7 GHz下对快照求平均、对有效时延bin求和后取 -10 log10 的功率。}
+- key: iq
+  status: none
+  note: {en: 'Raw I/Q is correlated into CIRs; the paper lists CIRs, images, LiDAR, radar and GNSS as the released contents.', zh: 原始I/Q经相关处理得到CIR；论文列出的发布内容为CIR、图像、LiDAR、雷达和GNSS。}
+- key: beam_labels
+  status: none
+  note: {en: 'No codebook sweep, beam-response vector or optimal-beam labels are described.', zh: 未描述码本扫描、波束响应向量或最优波束标签。}
+- key: position
+  status: provided
+  note: {en: GNSS records at 20 Hz on the Rx platform; GNSS records are also collected at the fixed Tx., zh: Rx平台上20 Hz的GNSS记录；固定Tx处同样采集GNSS记录。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: provided
+  note: {en: Four network cameras and a panoramic camera at 10 fps; faces and license plates are anonymized., zh: 四台网络摄像头和一台全景相机，10 fps；人脸和车牌已匿名化。}
+- key: depth
+  status: none
+  note: {en: 'The released contents are listed as CIRs, images, LiDAR, radar and GNSS; no depth maps are described.', zh: 发布内容列为CIR、图像、LiDAR、雷达和GNSS；未描述深度图。}
+- key: lidar
+  status: provided
+  note: {en: LiDAR point clouds at 10 Hz on the Rx platform; point clouds are also collected at the fixed Tx., zh: Rx平台上10 Hz的LiDAR点云；固定Tx处同样采集点云。}
+- key: radar
+  status: provided
+  note: {en: Millimeter-wave radar observations at 20 Hz on the Rx platform., zh: Rx平台上20 Hz的毫米波雷达观测。}
+- {key: imu, status: unknown}
+- key: time_series
+  status: provided
+  note: {en: CIR files are grouped by 100 ms windows; sensor files carry timestamps and each CIR is matched to sensor records within 50 ms., zh: CIR文件按100 ms窗口分组；传感器文件带有时间戳，每个CIR在50 ms内与传感器记录匹配。}
+- key: multiuser
+  status: none
+  note: {en: One mobile Rx; no simultaneous multi-UE complex channel matrix is reported., zh: 仅一个移动Rx；未报告同一时刻的多UE复数信道矩阵。}
+- key: multibs
+  status: none
+  note: {en: 'The released route has one fixed Tx, and no synchronized multi-Tx sample groups are reported.', zh: 发布路线为一个固定Tx，未报告同步的多Tx样本组。}
+- key: crossfreq
+  status: provided
+  note: {en: 3.7 GHz and 6.775 GHz CIRs are measured on the same route geometry., zh: 3.7 GHz与6.775 GHz的CIR在相同路线几何条件下测量。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'Rx speed is 1 to 1.4 m/s, far below 30 km/h.', zh: Rx速度为1至1.4 m/s，远低于30 km/h。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: Science Data Bank V3
+  date: '2026-08-28'
+  summary: {en: 'Science Data Bank record at version V3, listed as updated on this date. The public release contains four routes forming a single loop; the remaining data follow after de-identification.', zh: Science Data Bank记录为V3版本，登记的更新日期为该日。公开版本包含构成单一环路的四条路线，其余数据将在脱敏后陆续发布。}
+  url: https://www.scidb.cn/detail?dataSetId=763c6a6b1aee401dbc73efbbb1d7d722
+- version: arXiv v3
+  date: '2026-08-16'
+  summary: {en: 'Revised paper, restructured into system configuration, route and sample-alignment sections; it states that the public release contains one route at 3.7 GHz and one at 6.775 GHz.', zh: 论文修订版，重组为系统配置、路线和样本对齐等章节；称公开版本包含3.7 GHz和6.775 GHz各一条路线。}
+  url: https://arxiv.org/abs/2606.24476v3
+- version: Science Data Bank issue
+  date: '2026-06-25'
+  summary: {en: 'First issue of the dataset on Science Data Bank under DOI 10.57760/sciencedb.40663, per the DataCite issued date.', zh: 数据集首次在Science Data Bank发布，DOI为10.57760/sciencedb.40663，依据DataCite发布日期。}
+  url: https://doi.org/10.57760/sciencedb.40663
+- version: arXiv v2
+  date: '2026-06-24'
+  summary: {en: 'Second arXiv posting of the preprint, one day after v1; the arXiv listing does not state the changes.', zh: 预印本在v1之后一天发布的第二版；arXiv页面未说明具体修改。}
+  url: https://arxiv.org/abs/2606.24476v2
+- version: arXiv v1
+  date: '2026-06-23'
+  summary: {en: First arXiv posting; it describes one representative dual-band route as the current release., zh: 首次发布于arXiv；将一条代表性的双频路线描述为当前版本。}
+  url: https://arxiv.org/abs/2606.24476v1

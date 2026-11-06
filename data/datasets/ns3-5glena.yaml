@@ -15,104 +15,50 @@ paper: doi:10.1016/j.simpat.2019.101933
 used_in: ['doi:10.1145/3789240.3827591', 'doi:10.1109/iccworkshops63917.2026.11586752']
 citing: ['doi:10.1109/tcomm.2020.3035582', 'doi:10.1109/icc40277.2020.9149444', 'doi:10.1109/mcom.001.2000453']
 summary: {en: 'Generator: an open-source ns-3 module for simulating 3GPP NR (5G New Radio) cellular networks, with simulation outputs such as RSRP/RSRQ measurements and uplink transport-block results.', zh: 生成器：一个开源 ns-3 模块，用于仿真 3GPP NR（5G 新空口）蜂窝网络，输出包括 RSRP/RSRQ 测量值和上行传输块结果等仿真数据。}
-sources: ['https://5g-lena.cttc.es/blog/36/', 'https://5g-lena.cttc.es/blog/35/', 'https://5g-lena.cttc.es/features/roadmap/', 'https://5g-lena.cttc.es/papers/', 'https://5g-lena.cttc.es/download/', 'https://gitlab.com/cttc-lena/nr', 'https://arxiv.org/abs/1911.05534']
+sources: ['https://5g-lena.cttc.es/blog/36/', 'https://5g-lena.cttc.es/blog/35/', 'https://5g-lena.cttc.es/features/roadmap/', 'https://5g-lena.cttc.es/papers/', 'https://5g-lena.cttc.es/download/', 'https://gitlab.com/cttc-lena/nr', 'https://arxiv.org/abs/1911.05534', 'https://gitlab.com/cttc-lena/nr/-/raw/master/README.md', 'https://gitlab.com/cttc-lena/nr/-/raw/master/examples/cttc-nr-demo.cc', 'https://api.crossref.org/works/10.1016/j.simpat.2019.101933', 'http://export.arxiv.org/api/query?id_list=1911.05534', 'https://gitlab.com/cttc-lena/nr/-/releases', 'https://gitlab.com/api/v4/projects/cttc-lena%2Fnr/releases?per_page=50']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Configure topology, radio, and protocols, then install traffic applications, run the discrete-event simulation, and export packet/scheduling traces. Network metrics depend on the complete link and protocol configuration.', zh: 先配置拓扑、无线与协议，再安装应用业务，执行离散事件仿真并输出包/调度trace。网络指标取决于整条链路和协议设置。}
+  summary: {en: 'Pin the ns-3 and NR module versions and build an example, then set up topology, spectrum and devices, protocols and traffic, and run the simulation. FlowMonitor reports flow statistics, and PHY and MAC traces must be enabled explicitly. Results depend on the complete link and protocol configuration.', zh: 固定 ns-3 与 NR 模块版本并构建示例，然后依次设置拓扑、频谱与设备、协议与业务，运行仿真。FlowMonitor 输出流统计，PHY 与 MAC trace 需显式开启。结果取决于整条链路与协议配置。}
   stages:
-  - title: {en: Fix compatible versions and build, zh: 固定配套版本和构建}
-    detail: {en: Pair ns-3 and 5G-LENA according to the official compatibility table and build the selected example. The official v5.1 notes specify ns-3.48 and recommend a spectrum channel fix., zh: 按官方兼容表组合ns-3与5G-LENA，构建选定example；官方v5.1说明匹配ns-3.48并建议频谱信道修复。}
+  - title: {en: Pin compatible ns-3 and NR module versions, zh: 固定兼容的 ns-3 与 NR 模块版本}
+    detail: {en: 'The README version table pairs 5g-lena-v5.0.y and v5.1.y with ns-3.48. Release v5.1 recommends the ns-3 MR2929 spectrum channel fix, and FDD simulations run before the v5.0 fix may need revalidation.', zh: README 版本表将 5g-lena-v5.0.y 与 v5.1.y 配套 ns-3.48。v5.1 建议合入 ns-3 MR2929 频谱信道修复，v5.0 修复之前运行的 FDD 仿真结果可能需要重新验证。}
     inputs:
-    - {en: ns-3 and NR module source code, zh: ns-3和NR模块源码}
-    - {en: Required dependencies and patches, zh: 所需依赖与补丁}
+    - {en: ns-3 and NR module source code, zh: ns-3 与 NR 模块源码}
     outputs:
-    - {en: Executable simulation program, zh: 可执行仿真程序}
-    - {en: Version and patch records, zh: 版本与patch记录}
-    controls:
-    - {en: 'Researcher specifies: both versions, build configuration, patches, and example', zh: 研究者固定：两个版本、编译配置、patch和example}
+    - {en: Built example executable and version record, zh: 构建好的示例程序与版本记录}
     checks:
-    - {en: Check the old FDD NLoS power issue by version, zh: 旧FDD NLoS功率问题按版本排查}
-    - {en: Verify the online development documentation and v5.1 release API separately, zh: 在线开发文档与v5.1 release API分别核验}
-  - title: {en: Set up topology and mobility, zh: 建立拓扑与移动}
-    detail: {en: 'Create nodes and the scenario, specifying heights, layout, mobility model, and random streams. The official demo organizes nodes using GridScenarioHelper.', zh: 创建节点及场景，设置高度、布局、移动模型和随机流。官方demo使用GridScenarioHelper组织节点。}
-    inputs:
-    - {en: Number and positions of gNBs/UEs, zh: gNB/UE数量和位置}
-    - {en: Mobility model and random streams, zh: mobility model与随机流}
+    - {en: Record the ns-3 and NR module versions together with any added patches, zh: 记录 ns-3 与 NR 模块版本及额外补丁}
+  - title: {en: Set up topology and random streams, zh: 设置拓扑与随机流}
+    detail: {en: 'The demo places nodes with GridScenarioHelper, with a default BS height of 10 m and UT height of 1.5 m, and assigns random streams with NrHelper::AssignStreams().', zh: 'demo 使用 GridScenarioHelper 放置节点，默认基站高度 10 m、终端高度 1.5 m，并通过 NrHelper::AssignStreams() 分配随机流。'}
     outputs:
-    - {en: Nodes with spatial and mobility states, zh: 带空间/移动状态的节点集合}
-    controls:
-    - {en: 'Researcher specifies: layout, speed, mobility boundaries, random seed, and stream', zh: 研究者固定：布局、速度、移动边界、随机种子与stream}
+    - {en: Nodes with positions and assigned random streams, zh: 带位置与已分配随机流的节点}
+  - title: {en: 'Configure bands, BWPs, channel and antennas', zh: 配置频带、BWP、信道与天线}
+    detail: {en: 'The demo splits the bandwidth into two BWPs with numerologies 4 and 2 by default, and divides a total transmit power of 35 dBm among them in proportion to bandwidth. It uses IdealBeamformingHelper with DirectPathBeamforming, a 4×8 gNB array, a 2×4 UE array and isotropic elements.', zh: demo 将带宽划分为两个 BWP，默认 numerology 为 4 和 2，并按带宽比例把总发射功率 35 dBm 分配到各 BWP。使用 IdealBeamformingHelper 与 DirectPathBeamforming，gNB 天线阵列为 4×8，UE 天线阵列为 2×4，阵元为全向模型。}
     checks:
-    - {en: Check UE/base-station coordinates and heights, zh: 检查UE/基站坐标和高度}
-    - {en: Fix the topology before comparing scheduling or AI methods, zh: 固定拓扑后再比较调度或AI方法}
-  - title: {en: 'Configure spectrum, channel, and devices', zh: 配置频谱、信道和设备}
-    detail: {en: 'Define bands/bandwidth parts, associate propagation and spectrum channels, configure antennas, beamforming, and power, then install gNB/UE devices.', zh: 定义频带/带宽部分，关联传播与频谱信道，配置天线、beamforming和功率，再安装gNB/UE设备。}
-    inputs:
-    - {en: Nodes, zh: 节点}
-    - {en: 'Bands/BWPs, propagation model, and antenna configuration', zh: 频带/BWP、传播模型与天线配置}
+    - {en: 'Check the power split across BWPs, which the demo computes from bandwidth ratios', zh: 检查各 BWP 的功率分配，demo 按带宽比例计算各 BWP 发射功率}
+  - title: {en: 'Configure protocols, routing and traffic', zh: 配置协议、路由与业务}
+    detail: {en: 'The demo installs the internet stack on the UEs, creates dedicated bearers for low-latency and voice traffic, maps them to BWPs through the BWP manager algorithm, and stops the server and client applications at simTime.', zh: demo 为 UE 安装互联网协议栈，为低时延与语音业务建立专用承载，通过 BWP 管理算法将其映射到不同 BWP，并在 simTime 停止服务端与客户端应用。}
     outputs:
-    - {en: NR NetDevices and radio channels, zh: NR NetDevices及无线信道}
-    controls:
-    - {en: 'Researcher specifies: frequency, bandwidth, numerology, power, loss/shadowing, antennas, and CSI updates', zh: 研究者固定：频率、带宽、numerology、功率、损耗/阴影、天线与CSI更新}
+    - {en: End-to-end traffic scenario with two bearer classes, zh: 包含两类承载的端到端业务场景}
     checks:
-    - {en: Check power allocation across multiple BWPs, zh: 检查多BWP功率分配}
-    - {en: Record the models and additional mechanisms used; do not substitute roadmap features for implemented functionality, zh: 记录使用模型和附加机制，避免以roadmap代替已实现功能}
-  - title: {en: Configure protocols and traffic, zh: 配置协议与业务}
-    detail: {en: 'Complete UE association, IP routing, and QoS flow configuration, then install transmitting/receiving applications and specify their start and stop times.', zh: 完成UE关联、IP路由和QoS流设置，安装发送/接收应用并设定启动停止时刻。}
-    inputs:
-    - {en: NR devices and core-network/Internet settings, zh: NR设备、核心网/互联网设置}
-    - {en: 'Scheduling, QoS, and application traffic', zh: 调度、QoS和应用流量}
+    - {en: 'Keep scheduler, traffic and protocol settings identical across comparisons', zh: 比较时保持调度、业务与协议设置一致}
+  - title: {en: Run the simulation and collect traces, zh: 运行仿真并收集 trace}
+    detail: {en: 'The demo runs Simulator::Run() until simTime and installs FlowMonitor on the endpoint nodes. The EnableTraces call is commented out, so PHY and MAC traces are produced only after it is enabled.', zh: 'demo 运行 Simulator::Run() 直至 simTime，并在端节点安装 FlowMonitor。EnableTraces 调用处于注释状态，需显式开启后才输出 PHY 与 MAC trace。'}
     outputs:
-    - {en: Executable end-to-end traffic scenario, zh: 可执行的端到端业务场景}
-    controls:
-    - {en: 'Researcher specifies: scheduler, HARQ/RLC, traffic type, packet size, load, and duration', zh: 研究者固定：scheduler、HARQ/RLC、流量类型、packet size、负载与时长}
+    - {en: 'FlowMonitor flow statistics, and PHY and MAC traces when enabled', zh: FlowMonitor 流统计，以及开启后的 PHY 与 MAC trace}
     checks:
-    - {en: Distinguish insufficient link capacity from application-limited load, zh: 区分链路容量不足与应用端负载限制}
-    - {en: Keep protocol and traffic configurations identical across comparisons, zh: 所有对比保持协议和业务配置一致}
-  - title: {en: Run the simulation and collect traces, zh: 执行并采集trace}
-    detail: {en: Run the Simulator event loop. FlowMonitor collects packet statistics; explicitly enable PHY/MAC traces as needed., zh: 运行Simulator事件循环；FlowMonitor收集包统计，PHY/MAC trace按需显式启用。}
-    inputs:
-    - {en: Simulation scenario, zh: 仿真场景}
-    - {en: Trace sink and FlowMonitor settings, zh: trace sink与FlowMonitor设置}
+    - {en: Check flows with zero received packets and unfinished queues, zh: 检查接收包数为零的流与未完成的队列}
+  - title: {en: Compute KPIs and policy samples, zh: 计算 KPI 与策略样本}
+    detail: {en: 'The demo writes per-flow offered load and throughput from FlowMonitor to an output file. Latency, packet loss and fairness must be computed from the statistics, and learning tasks need observations available at each decision time.', zh: demo 将 FlowMonitor 中各流的发送负载与吞吐写入输出文件。时延、丢包与公平性需由统计量另行计算；学习任务需按各决策时刻可用的观测构造样本。}
     outputs:
-    - {en: 'Packet, scheduling, and PHY/MAC logs', zh: 包、调度与PHY/MAC日志}
-    - {en: 'Flow-level transmission, reception, and latency statistics', zh: 流级收发与时延统计}
-    controls:
-    - {en: 'Researcher specifies: monitored objects, statistics window, warm-up, and queue-drain time', zh: 研究者固定：采样对象、统计窗口、warm-up和排空时间}
+    - {en: Per-flow throughput file and researcher-defined policy samples, zh: 各流吞吐文件与研究者定义的策略样本}
     checks:
-    - {en: 'Check packet loss, flows with no received packets, and unfinished queues', zh: 检查丢包、零接收流和未完成队列}
-    - {en: The demo's EnableTraces call is commented out; explicitly enable it when needed, zh: demo中的EnableTraces调用为注释，使用时需主动开启}
-  - title: {en: Compute KPIs and policy samples, zh: 计算KPI与策略样本}
-    detail: {en: 'Compute throughput, latency, packet loss, and fairness. For learning tasks, extract observations available at each decision time.', zh: 计算吞吐、时延、丢包和公平性；构造学习任务时按决策时刻提取可用观测。}
-    inputs:
-    - {en: Traces and actual transmission statistics, zh: trace和实际传输统计}
-    - {en: Researcher-defined policy observations, zh: 研究者定义的策略观测}
-    outputs:
-    - {en: Network KPIs, zh: 网络KPI}
-    - {en: Custom policy trajectories/labels, zh: 自定义策略轨迹/标签}
-    controls:
-    - {en: 'Researcher specifies: KPI denominators, active time, unserved users, and statistics across seeds', zh: 研究者固定：KPI分母、活跃时间、未服务用户和seed统计}
-    checks:
-    - {en: Compare baselines using the same trace definitions, zh: 用同trace口径比较基线}
-    - {en: Relate prediction error to changes in final network utility, zh: 预测误差要对应最终网络效用变化}
-  scope: {en: 5G-LENA v5.1/ns-3.48 compatibility statement and the online cttc-nr-demo; the current online API is a development snapshot after v5.1., zh: 5G-LENA v5.1/ns-3.48兼容声明与在线cttc-nr-demo；在线API当前为v5.1后的开发快照。}
+    - {en: Compare baselines with identical trace definitions, zh: 用相同的 trace 定义比较基线}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: • Packet/PHY/MAC traces and FlowMonitor results generated by a run, zh: • 运行产生的包/PHY/MAC trace与FlowMonitor结果}
+  text: {en: FlowMonitor flow statistics and a per-flow throughput output file from the demo. PHY and MAC traces are produced when enabled explicitly., zh: demo 生成的 FlowMonitor 流统计与各流吞吐输出文件。PHY 与 MAC trace 需显式开启后生成。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Throughput, latency, packet loss, and fairness
-
-      • Observation–action–reward policy data', zh: '• 吞吐、时延、丢包与公平性
-
-      • 观测—动作—回报策略数据'}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Official release notes and relevant example code were read in this audit; ns-3 was not built.
-
-      • The online example is labeled nr-v5.1-61-g50a97944; check interface differences when using a release.', zh: '• 本轮阅读官方版本说明与example相关代码，未构建ns-3。
-
-      • 在线示例标为nr-v5.1-61-g50a97944；使用release时检查接口差异。'}
+  text: {en: 'Throughput, latency, packet loss and fairness are computed by the user from the statistics. AI-mode examples use ns3-gym to exchange observations and actions.', zh: 吞吐、时延、丢包与公平性由用户根据统计量计算。AI 模式示例通过 ns3-gym 交换观测与动作。}
 provenance:
 - {en: 'Topology, mobility, traffic, and protocol configuration', zh: 拓扑、移动、业务与协议配置}
 - {en: Propagation and spectrum channel models, zh: 传播与频谱信道模型}
@@ -120,21 +66,160 @@ provenance:
 - {en: Packet and scheduling events, zh: 包与调度事件}
 - {en: 'Throughput, latency, and handover/failure traces', zh: 吞吐、时延、handover/失效 trace}
 technical_notes:
-- {en: 'Verified: v5.1 is paired with ns-3.48; the official guidance recommends including the MR2929 spectrum channel fix.', zh: 已确认：v5.1 与 ns-3.48 匹配，官方建议加入 MR2929 频谱信道修复。}
-- {en: 'Verified: the v5.0 announcement reports that the old FDD NLoS model could produce incorrect received power; affected experiments require revalidation.', zh: 已确认：v5.0 公告报告旧 FDD NLoS 模型可造成接收功率错误；受影响实验需重新核验。}
-- {en: 'Inference: network metrics depend on both the channel and protocol implementation; not every difference can be attributed to AI.', zh: 推断：网络指标同时依赖信道和协议实现，不能将所有差异归于 AI。}
+- {en: 'v5.1 is paired with ns-3.48, and its release notes recommend the ns-3 MR2929 spectrum channel fix.', zh: v5.1 与 ns-3.48 配套，其发行说明建议加入 ns-3 MR2929 频谱信道修复。}
+- {en: The v5.0 announcement says the earlier 3GPP spectrum model could give FDD UEs up to 30 dB less received power under NLoS conditions. TDD is not affected., zh: v5.0 公告称，早期 3GPP 频谱模型在 NLoS 条件下可使 FDD 用户的接收功率降低最多 30 dB，TDD 不受影响。}
+- {en: 'Source conflict: the README table gives July 3, 2026 for v5.0, while the blog post is dated July 5, 2026.', zh: 来源冲突：README 版本表给出 v5.0 日期为 2026 年 7 月 3 日，博客文章日期为 2026 年 7 月 5 日。}
 limitations:
-- {en: ISAC/RIS/near-field items on the roadmap are not current data capabilities., zh: roadmap 中 ISAC/RIS/near-field 不等于当前数据能力。}
-- {en: 'Record both the ns-3 and NR module versions, together with any additional patches.', zh: 必须记录 ns-3 与 NR module 两个版本及额外 patch。}
+- {en: 'ISAC, RIS and near-field items on the roadmap are planned work, not current data capabilities.', zh: 路线图中的 ISAC、RIS 与近场项目属于规划工作，并非当前的数据能力。}
+- {en: 'The repository is a simulator module rather than a published dataset, so every output is a simulation result.', zh: 代码库是仿真器模块而非已发布的数据集，因此所有输出均为仿真结果。}
 history:
-- {en: '2026-07-05: v5.0, compatible with ns-3.48.', zh: 2026-07-05：v5.0，兼容 ns-3.48。}
-- {en: '2026-08-06: v5.1, with improved FDD handover and mobility calibration.', zh: 2026-08-06：v5.1，强化 FDD handover 与 mobility 校准。}
+- {en: '2019-11-13: arXiv:1911.05534 posted. The journal paper was published in Simulation Modelling Practice and Theory, vol. 96, in November 2019.', zh: '2019 年 11 月 13 日：arXiv:1911.05534 发布。期刊论文于 2019 年 11 月发表于 Simulation Modelling Practice and Theory，第 96 卷。'}
+- {en: '2026-07-05: v5.0 released, compatible with ns-3.48. The README table gives July 3, 2026.', zh: 2026 年 7 月 5 日：v5.0 发布，兼容 ns-3.48。README 版本表给出的日期为 2026 年 7 月 3 日。}
+- {en: '2026-08-06: v5.1 released, with FDD handover support and mobility calibration against 3GPP TR 36.839.', zh: 2026 年 8 月 6 日：v5.1 发布，支持 FDD 切换，并依据 3GPP TR 36.839 校准移动性。}
 usage:
-- {en: Fix ns-3 and NR module versions according to the official compatibility combinations., zh: 按官方 compatibility 组合固定 ns-3 与 NR module。}
-- {en: 'Run the official validation examples first, with explicit random seeds, traffic, and warmup.', zh: 先跑官方验证示例，设置随机种子、业务与 warmup。}
-- {en: Export flow/PHY/MAC traces and check the definitions of handover and failure., zh: 导出 flow/PHY/MAC traces 并检查 handover/失败定义。}
-overview: {en: '5G-LENA is an open-source NR module for the ns-3 network simulator, developed by the CTTC OpenSim research group and distributed under GPLv2. The module simulates 3GPP NR radio access networks, including PHY, MAC, RLC, PDCP, RRC, scheduling, beamforming, mobility and traffic models. The 2019 paper (DOI 10.1016/j.simpat.2019.101933; arXiv:1911.05534) describes an end-to-end NR network with multiple bandwidth part handling, and its calibration results are checked against 3GPP procedures. The module produces simulation results, not measured data, so the outputs depend on the channel and protocol models used in each example. The current releases are v5.0 (July 2026) and v5.1 (August 2026), both paired with ns-3.48. Release v5.0 fixes a 3GPP spectrum-model bug that could reduce received power by up to 30 dB for NLoS UEs in FDD. The download page does not describe output file formats, and the repository is a C++ module with examples and documentation rather than a published dataset.',
-  zh: '5G-LENA 是 ns-3 网络仿真器的开源 NR 模块，由 CTTC OpenSim 研究组开发，采用 GPLv2 许可。该模块仿真 3GPP NR 无线接入网，涵盖 PHY、MAC、RLC、PDCP、RRC、调度、波束成形、移动性与业务模型。2019 年论文（DOI 10.1016/j.simpat.2019.101933；arXiv:1911.05534）描述了支持多带宽部分（BWP）处理的端到端 NR 网络，其校准结果已与 3GPP 流程对照检验。该模块输出仿真结果而非实测数据，输出内容取决于各示例所用的信道与协议模型。当前版本为 v5.0（2026 年 7 月）和 v5.1（2026 年 8 月），均与 ns-3.48 配套。v5.0 修复了一个 3GPP 频谱模型缺陷，该缺陷可使 FDD 系统中 NLoS 用户的接收功率降低最多 30 dB。'}
+- {en: 'Fix the ns-3 and NR module versions from the README compatibility table, then build the example.', zh: 依据 README 兼容表固定 ns-3 与 NR 模块版本，然后构建示例。}
+- {en: 'Run the demo or calibration examples with explicit random streams set through NrHelper::AssignStreams().', zh: '运行 demo 或校准示例时，通过 NrHelper::AssignStreams() 设置显式随机流。'}
+- {en: Enable EnableTraces explicitly to export PHY and MAC traces. Check the definitions of the RadioLinkFailureCause and HandoverTotalTime traces before comparing handover results., zh: 需显式开启 EnableTraces 以导出 PHY 与 MAC trace。比较切换结果前，先核对 RadioLinkFailureCause 与 HandoverTotalTime trace 的定义。}
+overview: {en: '5G-LENA is an open-source NR module for the ns-3 network simulator, developed by the CTTC OpenSim research group and distributed under GPLv2. The module simulates 3GPP NR radio access networks, including PHY, MAC, RLC, PDCP, RRC, scheduling, beamforming, mobility and traffic models. The 2019 paper (DOI 10.1016/j.simpat.2019.101933; arXiv:1911.05534) describes an end-to-end NR network with bandwidth-part handling, and its calibration results are checked against 3GPP procedures. The module produces simulation results, not measured data, so the outputs depend on the channel and protocol models used in each example. The current releases are v5.0 (July 2026) and v5.1 (August 2026), both paired with ns-3.48. Release v5.0 fixes a 3GPP spectrum-model bug that could reduce received power by up to 30 dB for NLoS UEs in FDD, and the fix is an upstream ns-3 patch. The download page does not describe output file formats, and the repository is a C++ module with examples and documentation
+    rather than a published dataset.', zh: '5G-LENA 是 ns-3 网络仿真器的开源 NR 模块，由 CTTC OpenSim 研究组开发，采用 GPLv2 许可。该模块仿真 3GPP NR 无线接入网，涵盖 PHY、MAC、RLC、PDCP、RRC、调度、波束成形、移动性与业务模型。2019 年论文（DOI 10.1016/j.simpat.2019.101933；arXiv:1911.05534）描述了支持 bandwidth part 处理的端到端 NR 网络，其校准结果已对照 3GPP 流程检验。该模块输出仿真结果而非实测数据，结果取决于各示例所用的信道与协议模型。当前版本为 v5.0（2026 年 7 月）和 v5.1（2026 年 8 月），均与 ns-3.48 配套。v5.0 修复了一个 3GPP 频谱模型缺陷，该缺陷可使 FDD 中 NLoS 用户的接收功率降低最多 30 dB，修复为 ns-3 上游补丁。下载页未说明输出文件格式，代码库是带示例与文档的 C++ 模块，并非已发布的数据集。'}
 signal_details:
 - signal: kpi
-  text: {en: 'The features page lists simulation traces of radio-link-failure causes and total handover time (v5.1), and DL/UL REM maps and REM SIR/SINR maps (v1.0 and v2.1). KPI reproducibility and calibration regression CI jobs are listed (v2.4 and v4.1). The arXiv abstract names end-to-end performance indicators, with particular emphasis on end-to-end latency.', zh: 功能页列出仿真层的无线链路失败原因与总切换时间追踪（v5.1），以及 DL/UL REM 地图与 REM SIR/SINR 地图（v1.0 与 v2.1）。CI 中包含 KPI 可复现性回归与校准回归检查（v2.4 与 v4.1）。arXiv 摘要提到端到端性能指标，并特别强调端到端时延。}
+  text: {en: 'Simulation outputs include FlowMonitor flow statistics, which the demo converts to per-flow throughput, and the radio-link-failure cause and total handover time traces added in v5.1. The roadmap also lists DL/UL REM maps (v1.0), REM SIR/SINR maps (v2.1), KPI reproducibility regression (v2.4) and calibration regression CI jobs (v4.1). The 2019 paper reports end-to-end performance indicators, with particular emphasis on end-to-end latency.', zh: 仿真输出包括 FlowMonitor 流统计（demo 将其转换为各流吞吐），以及 v5.1 新增的无线链路失败原因与总切换时间 trace。路线图还列出 DL/UL REM 地图（v1.0）、REM SIR/SINR 地图（v2.1）、KPI 可复现性回归（v2.4）和校准回归 CI 任务（v4.1）。2019 年论文报告端到端性能指标，并特别强调端到端时延。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: CSI-RS and sub-band CSI feedback are simulated inside a run (NR-v4.0); the sources do not describe a channel-matrix export., zh: CSI-RS 与子带 CSI 反馈在仿真运行中生成（NR-v4.0）；来源未描述信道矩阵的导出。}
+- key: cir
+  status: unknown
+  note: {en: The sources do not describe exporting impulse responses; they are computed inside a run with the 3GPP or Sionna RT model., zh: 来源未描述冲激响应的导出；其在运行中由 3GPP 或 Sionna RT 模型计算。}
+- key: paths
+  status: unknown
+  note: {en: The sources do not describe exporting per-path parameters from the 3GPP or Sionna RT channel model., zh: 来源未描述从 3GPP 或 Sionna RT 信道模型导出逐路径参数。}
+- key: interaction
+  status: unknown
+  note: {en: The sources do not describe per-path interaction outputs., zh: 来源未描述逐路径交互输出。}
+- key: power
+  status: simulate
+  note: {en: RSRP and RSRQ measurement reports are produced by a simulation run., zh: RSRP 与 RSRQ 测量报告由仿真运行产生。}
+- key: iq
+  status: none
+  note: {en: The PHY is modelled by link abstraction for system-level simulation; no waveform-level I/Q output is described., zh: PHY 采用链路抽象进行系统级仿真；未描述波形级 I/Q 输出。}
+- key: beam_labels
+  status: unknown
+  note: {en: 'Beams are selected inside a run, but the sources describe no beam-index or per-beam gain output.', zh: 波束在运行中选取，但来源未描述波束索引或逐波束增益输出。}
+- key: position
+  status: simulate
+  note: {en: Node positions are inputs set by the scenario helpers and mobility models., zh: 节点位置由场景辅助类与移动模型设定，属于仿真输入。}
+- key: geometry
+  status: unknown
+  note: {en: The sources do not say whether any 3D scene is shipped with the module or the Sionna RT demo., zh: 来源未说明模块或 Sionna RT 示例是否附带三维场景。}
+- key: materials
+  status: unknown
+  note: {en: The sources do not describe material parameters., zh: 来源未描述材料参数。}
+- key: rgb
+  status: none
+  note: {en: The module has no camera or sensor model., zh: 模块不包含相机或传感器模型。}
+- key: depth
+  status: none
+  note: {en: The module has no depth sensor model., zh: 模块不包含深度传感器模型。}
+- key: lidar
+  status: none
+  note: {en: The module has no LiDAR model., zh: 模块不包含 LiDAR 模型。}
+- key: radar
+  status: none
+  note: {en: ISAC is listed as planned on the roadmap; the current release has no radar sensing output., zh: 路线图将 ISAC 列为计划项；当前版本无雷达感知输出。}
+- key: imu
+  status: none
+  note: {en: The module has no inertial sensor model., zh: 模块不包含惯性传感器模型。}
+- key: time_series
+  status: simulate
+  note: {en: Time-stamped traces and FlowMonitor statistics come from a run; PHY and MAC traces must be enabled explicitly., zh: 带时间戳的 trace 与 FlowMonitor 统计来自仿真运行；PHY 与 MAC trace 需显式开启。}
+- key: multiuser
+  status: simulate
+  note: {en: The number of UEs per gNB is a command-line setting of the demo (default 2)., zh: 每个 gNB 的 UE 数量为示例程序的命令行参数（默认 2）。}
+- key: multibs
+  status: simulate
+  note: {en: The number of gNBs is a command-line setting of the demo (default 1)., zh: gNB 数量为示例程序的命令行参数（默认 1）。}
+- key: crossfreq
+  status: simulate
+  note: {en: The demo configures two carriers (28 GHz and 28.2 GHz) with separate numerologies in one run., zh: 示例在同一次运行中配置两个载频（28 GHz 与 28.2 GHz）及各自的 numerology。}
+- key: near_field
+  status: none
+  note: {en: 'Near-field models are listed as planned, not in the current release.', zh: 近场模型列为计划项，不在当前版本中。}
+- key: high_mobility
+  status: simulate
+  note: {en: UE speed is set through the mobility model; the release notes state no speed., zh: UE 速度通过移动模型设定；版本说明未给出速度。}
+- key: dynamic_blockage
+  status: unknown
+  note: {en: The sources describe no blockage model., zh: 来源未描述遮挡模型。}
+- key: reflection
+  status: simulate
+  note: {en: Available only through a run with the 3GPP TR 38.901 or Sionna RT channel model; the sources do not list the enabled interaction types., zh: 仅能通过 3GPP TR 38.901 或 Sionna RT 信道模型的仿真运行获得；来源未列出启用的交互类型。}
+- key: diffraction
+  status: unknown
+  note: {en: The sources do not list the enabled interaction types for the channel models., zh: 来源未列出信道模型启用的交互类型。}
+- key: scattering
+  status: unknown
+  note: {en: The sources do not list the enabled interaction types for the channel models., zh: 来源未列出信道模型启用的交互类型。}
+- key: transmission
+  status: unknown
+  note: {en: The sources do not list the enabled interaction types for the channel models., zh: 来源未列出信道模型启用的交互类型。}
+- key: polarization
+  status: simulate
+  note: {en: 'Dual-polarised MIMO (two polarisations) is a run configuration, added in NR-v2.0.', zh: 双极化 MIMO（两个极化）为仿真配置项，于 NR-v2.0 加入。}
+- key: em_field
+  status: unknown
+  note: {en: The sources do not describe field-level outputs., zh: 来源未描述场级输出。}
+versions:
+- version: v5.1
+  date: '2026-08-06'
+  summary: {en: 'Compatible with ns-3.48. FDD cells advertise the UL carrier in SIB1 and handover works between FDD cells; adds mobility state estimation (TR 36.839) and an optional TR 36.839 handover failure model, plus RLF-cause and handover-time traces.', zh: 兼容 ns-3.48。FDD 小区在 SIB1 中公布上行载波，并支持 FDD 小区间切换；新增 TR 36.839 移动性状态估计及可选的 TR 36.839 切换失败模型，并输出无线链路失败原因与切换时间 trace。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v5.1
+- version: v5.0
+  date: '2026-07-05'
+  summary: {en: 'Compatible with ns-3.48. Fixes an FDD spectrum-model bug that could give NLoS UEs up to 30 dB less power (ns-3 MR2929); overhauls handover, RRC and radio link failure; corrects the UE measurement chain (linear RSRP averaging, interference-aware RSRQ); adds a Sionna RT demo and a LEO NTN example.', zh: 兼容 ns-3.48。修复 FDD 频谱模型中 NLoS 用户接收功率可低 30 dB 的问题（ns-3 MR2929）；重构切换、RRC 与无线链路失败流程；修正 UE 测量链（线性域 RSRP 平均、考虑干扰的 RSRQ）；新增 Sionna RT 示例与 LEO NTN 示例。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v5.0
+- version: v4.2
+  date: '2026-03-05'
+  summary: {en: Compatible with ns-3.47. Fixes a long-standing RLC UM reassembly bug; a single CellId per gNB and BWPIds local to each gNB; ARFCN-based carrier configuration., zh: 兼容 ns-3.47。修复长期存在的 RLC UM 重组缺陷；每个 gNB 使用单一 CellId，BWPId 限定在各 gNB 内；采用基于 ARFCN 的载波配置。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v4.2
+- version: v4.1.1
+  date: '2025-10-16'
+  summary: {en: 'Compatible with ns-3.46. Uses the upstreamed hexagonal wraparound model; removes NrHelper::EnableMimoFeedback, so MIMO feedback follows NrHelper::CsiFeedbackFlags; clang-format and clang-tidy upgrades.', zh: '兼容 ns-3.46。采用已合入上游的六边形环绕模型；移除 NrHelper::EnableMimoFeedback，MIMO 反馈改由 NrHelper::CsiFeedbackFlags 决定；升级 clang-format 与 clang-tidy。'}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v4.1.1
+- version: v4.1
+  date: '2025-07-07'
+  summary: {en: 'Compatible with ns-3.45. Adds the resource assignment matrix, wraparound and hexagonal deployments, FastFadingConstantPositionMobilityModel, random TDMA and OFDMA schedulers, and updated calibration examples.', zh: 兼容 ns-3.45。新增资源分配矩阵、环绕与六边形部署、FastFadingConstantPositionMobilityModel、随机 TDMA 与 OFDMA 调度器，并更新标定示例。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v4.1
+- version: v4.0
+  date: '2025-05-15'
+  summary: {en: 'Compatible with ns-3.44. Adds CSI-RS and CSI-IM, multiple single-panel antenna arrays per UE, sub-band CSI feedback with a sub-band-aware scheduler, Kronecker beamforming, and max-RSRP initial association; adds NYUSIM, FTR and legacy channel models.', zh: 兼容 ns-3.44。新增 CSI-RS 与 CSI-IM、每个 UE 多个单面板天线阵列、子带 CSI 反馈及子带感知调度器、Kronecker 波束成形，以及基于最大 RSRP 的初始接入；新增 NYUSIM、FTR 与传统信道模型。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v4.0
+- version: v3.3.1
+  date: '2024-11-22'
+  summary: {en: 'Bug fixes for RRC with FDD, backported from v3.4; based on v3.3.', zh: 修复 FDD 下的 RRC 缺陷，由 v3.4 回移；基于 v3.3。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v3.3.1
+- version: v3.2.1
+  date: '2024-11-22'
+  summary: {en: 'Bug fixes for RRC with FDD, backported from v3.4; based on v3.2.', zh: 修复 FDD 下的 RRC 缺陷，由 v3.4 回移；基于 v3.2。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v3.2.1
+- version: v3.3
+  date: '2024-10-15'
+  summary: {en: 'Adds fronthaul control with a limited-capacity fronthaul link under the O-RAN 7.2x split, with dropping, postponing and MCS or RB optimisation methods.', zh: 新增前传控制，在 O-RAN 7.2x 拆分下模拟容量受限的前传链路，支持丢弃、延后及 MCS 或 RB 优化方法。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v3.3
+- version: v3.2
+  date: '2024-09-25'
+  summary: {en: 'NR is independent of the upstream LTE module: RLC, RRC, PDCP and EPC sources are migrated into the NR module, and new CI jobs are added.', zh: NR 模块不再依赖 ns-3 上游 LTE 模块：RLC、RRC、PDCP 与 EPC 源码迁入 NR 模块，并新增 CI 任务。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v3.2
+- version: v3.1
+  date: '2024-07-19'
+  summary: {en: 'Adds a new PMI Type-I single-panel MIMO codebook, performance optimisations, C++ conformance updates, and a fix for interference event counting in NR-U.', zh: 新增 PMI Type-I 单面板 MIMO 码本，性能优化，C++ 标准一致性更新，并修复 NR-U 中干扰事件计数错误。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v3.1
+- version: v0.3
+  date: '2019-08-28'
+  summary: {en: Adds an NR error model (NrEesmErrorModel) for PHY abstraction with LDPC coding and MCS tables 1 and 2; the 3GPP channel model becomes usable by any NetDevice., zh: 新增用于 PHY 抽象的 NR 误码模型（NrEesmErrorModel），支持 LDPC 编码与 MCS 表 1、2；3GPP 信道模型可用于任意 NetDevice。}
+  url: https://gitlab.com/cttc-lena/nr/-/releases/v0.3
+- version: v0.2
+  date: 2019-02
+  summary: {en: 'First public release of the NR module, split out from the mmWave code: a 3GPP-compliant antenna class, uplink scheduling requests and Rel-15 bearer definitions.', zh: NR 模块首个公开版本，从 mmWave 代码中分离：提供符合 3GPP 的天线类、上行调度请求及 Rel-15 承载定义。}
+  url: https://5g-lena.cttc.es/features/roadmap/

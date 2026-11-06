@@ -10,15 +10,15 @@ bands_ghz: [60]
 environment: [indoor, outdoor-urban, vehicular, uav]
 antennas: {rx: 16, array: ula}
 samples: more than 1 million data points
-mobility: pedestrians on bikes, skateboards and scooters; vehicles at varying speeds
+mobility: vehicles at varying speeds (V2I, V2V); pedestrians (Scenarios 10-12); RC drone (Scenario 23)
 license: CC BY-NC-ND 4.0
-access: {url: 'https://www.deepsense6g.net/', type: registration}
+access: {url: 'https://www.deepsense6g.net/', type: open}
 code: ['https://github.com/wireless-intelligence-lab/DeepSense6G']
 paper: arxiv:2211.09769
 used_in: ['doi:10.1109/mcom.006.2200480', 'doi:10.1109/lwc.2022.3219409', 'doi:10.1109/wcnc51071.2022.9771651', 'doi:10.1109/tvt.2024.3506948', 'doi:10.1109/icc45855.2022.9838438']
 citing: ['doi:10.1109/tcomm.2024.3490740']
 summary: {en: 'Real-world measurements of co-existing multi-modal sensing and communication data across more than 40 scenarios at more than 15 indoor and outdoor sites, with 60 GHz mmWave beam power, RGB camera, 3D LiDAR, FMCW radar and RTK GPS recordings.', zh: 在 15 个以上室内外场地采集的 40 多个场景真实多模态感知与通信数据，包括 60 GHz 毫米波波束功率、RGB 摄像头、3D LiDAR、FMCW 雷达和 RTK GPS 记录。}
-sources: ['https://www.deepsense6g.net/', 'https://ar5iv.labs.arxiv.org/html/2211.09769', 'https://export.arxiv.org/api/query?id_list=2211.09769', 'https://github.com/wireless-intelligence-lab/DeepSense6G']
+sources: ['https://www.deepsense6g.net/', 'https://ar5iv.labs.arxiv.org/html/2211.09769', 'https://export.arxiv.org/api/query?id_list=2211.09769', 'https://github.com/wireless-intelligence-lab/DeepSense6G', 'https://www.deepsense6g.net/api/scenarios/all', 'https://arxiv.org/pdf/2211.09769v2', 'https://arxiv.org/abs/2211.09769', 'https://raw.githubusercontent.com/wireless-intelligence-lab/DeepSense6G/main/README.md', 'https://export.arxiv.org/api/query?id_list=2211.09769,2406.17908,2206.15302', 'https://arxiv.org/html/2211.09769v2', 'https://github.com/wireless-intelligence-lab/DeepSense6G/releases', 'https://www.deepsense6g.net/assets/index-D9i131kE.js']
 checked: '2026-11-06'
 pipeline:
   summary: {en: 'Define the scenario and hardware, then align fields of view and sampling clocks. Beam-sweep power and raw sensor records are matched by UTC, filtered, and manually checked to form Scenario sample indices.', zh: 先确定场景与硬件，再对齐视场和采样时钟；扫束功率与各传感器原始记录经UTC匹配、筛选和人工复核，形成Scenario样本索引。}
@@ -80,29 +80,29 @@ pipeline:
     - {en: Transmitted waveforms and received IQ, zh: 发射波形和接收IQ}
     - {en: Records from 21 directions and their associated modalities, zh: 21方向采集记录及对应模态}
     controls:
-    - {en: This step applies only to 42–44; verify the page's scan-period descriptions against IQ timing, zh: 该步骤仅适用于42–44；页面对扫描周期的表述须结合IQ时间核验}
+    - {en: This step applies only to 42–44; verify the sweep timing against the IQ timestamps., zh: 该步骤仅适用于42–44；扫描时序应以IQ时间戳核验。}
     checks:
     - {en: 'Reproduction check: when estimating effective link channels from known waveforms, specify synchronization, noise, and estimation windows; retain communication/sensing resource shares as sample conditions', zh: 复现检查：由已知波形估计有效链路信道时，明确同步、噪声和估计窗口；将通信与感知资源比例保存在样本条件中}
   - title: {en: 'Align, filter, and inspect samples by time', zh: 按时间对齐、筛选并检查样本}
-    detail: {en: 'Official scripts associate modalities by timestamp and then filter samples for the task, for example removing records where the served vehicle has left the base station''s field of view. A synchronized visualization tool displays modalities side by side to identify misalignment, missing data, and corruption.', zh: 官方脚本按时间戳关联模态，再按任务筛选样本，例如剔除服务车辆已离开基站视场的记录。同步可视化工具并排展示各模态，用于查找错位、缺失和损坏。}
+    detail: {en: Post-processing associates modalities by UTC timestamp and filters samples for the task. A data visualizer plots all modalities in one GUI to filter out synchronization issues., zh: 后处理按UTC时间戳关联各模态，并按任务筛选样本。数据可视化工具将各模态绘制在同一界面中，用于筛除同步问题。}
     inputs:
     - {en: Raw files with UTC timestamps, zh: 带UTC的原始文件}
     - {en: Shared field of view and scenario targets, zh: 共同视场与场景目标}
     outputs:
-    - {en: Aligned and filtered development samples, zh: 对齐且筛选的development samples}
+    - {en: Aligned and filtered samples, zh: 已对齐且筛选的样本}
     - {en: Traceable sample-to-modality associations, zh: 可追溯的样本与模态关联}
     controls:
     - {en: Filtering rules depend on the application; preserve scenario and continuous-session identities, zh: 筛选规则由具体应用定义；保留场景和连续采集身份}
     checks:
     - {en: 'Reproduction check: spot-check the vehicle/target associated with each row; measure missing-data rates and alignment residuals for each modality', zh: 复现检查：抽查同一行对应的车辆/目标；统计各模态缺失率与对齐残差}
   - title: {en: Publish Scenario files and task indices, zh: 发布Scenario文件与任务索引}
-    detail: {en: 'Package files by Scenario, with CSV rows referencing power, position, and other modality paths. Specific tasks organize beam, sequence, direction, or blockage labels; record development sets, hidden test sets, and licenses separately for each task.', zh: 按Scenario打包文件，由CSV行引用功率、位置及其他模态路径。特定任务再组织beam、sequence、direction或blockage标签；各任务的开发集、隐藏测试集及许可分别记录。}
+    detail: {en: 'Package files by Scenario, with CSV rows referencing power, position and other modality files. Task labels such as beam indices, sequence indices, travel direction and blockage events are provided per scenario.', zh: 按Scenario打包文件，由CSV行引用功率、位置及其他模态文件。beam索引、sequence索引、行进方向和遮挡事件等任务标签按Scenario提供。}
     inputs:
     - {en: Aligned samples, zh: 已对齐的样本}
     - {en: Task definitions and scenario descriptions, zh: 任务定义与场景说明}
     outputs:
     - {en: Scenario ZIP and CSV index, zh: Scenario ZIP与CSV索引}
-    - {en: Scenario-specific labels and licenses, zh: 场景专属标签与许可}
+    - {en: Scenario-specific labels, zh: 场景专属标签}
     controls:
     - {en: Use Scenario 9's sequence/beam fields only as defined in its public documentation, zh: Scenario 9的sequence/beam字段只按其公开说明使用}
     checks:
@@ -148,9 +148,9 @@ facts:
 - label: {en: Cost drivers, zh: 成本来源}
   text: {en: '• Download and decode the selected Scenario, recover time/path indices, and perform calibration and event cleanup.
 
-      • New collection also involves hardware, sites, sweep latency, and cross-sensor synchronization; the website does not estimate undisclosed collection labor.', zh: '• 下载与解码所选Scenario、恢复时间/路径索引、校准和事件清理。
+      • New collection also involves hardware, sites, sweep latency, and cross-sensor synchronization.', zh: '• 下载与解码所选Scenario、恢复时间/路径索引、校准和事件清理。
 
-      • 新采集还涉及硬件、场地、扫束时延与跨传感器同步；网站不估算未公布的采集工时。'}
+      • 新采集还涉及硬件、场地、扫束时延与跨传感器同步。'}
 - label: {en: Stored artifacts, zh: 产物}
   text: {en: '• CSV sample index and scenario documentation
 
@@ -192,15 +192,7 @@ facts:
 
       • 用户自行定义的轨迹划分、扫描成本与净效用'}
 - label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• This workflow is based on the papers and scenario pages read; no hardware collection was performed and no original scenario data were downloaded.
-
-      • Reproduction checks are usage recommendations, not claims that the publisher has performed these tests.
-
-      • Fix the Scenario, file version, codebook, and license together; there is no single universal field set for the full series.', zh: '• 本流程根据已读论文与场景页面整理；未执行硬件采集或下载原始场景。
-
-      • 复现检查是使用建议，不表示发布者已完成这些检验。
-
-      • 应同时固定Scenario、文件版本、码本和许可；全系列不存在一套通用字段。'}
+  text: {en: 'Fix the Scenario, file version, codebook, and license together; there is no single universal field set for the full series.', zh: 应同时固定Scenario、文件版本、码本和许可；全系列不存在一套通用字段。}
 variants:
 - name: {en: Scenarios 17–22, zh: Scenarios 17–22}
   observations: {en: 'RGB, 60 GHz beam power, GPS, and blockage labels', zh: RGB、60 GHz beam power、GPS、遮挡标签}
@@ -209,29 +201,26 @@ variants:
   observations: {en: '60 GHz received IQ, transmitted waveforms, RGB, 3D LiDAR, and radar range-angle data', zh: 60 GHz 接收 IQ、发送波形、RGB、3D LiDAR、雷达 range-angle 数据}
   csi: {en: Derivable channel estimates must follow the waveform and acquisition protocol; they are not original full MIMO CSI, zh: 可计算的信道估计需按波形和采集协议实现，不等于原始完整 MIMO CSI}
 - name: {en: Scenario 23, zh: Scenario 23}
-  observations: {en: 'Real UAV: 60 GHz 64-dimensional beam power, RGB, GPS, and IMU information such as attitude/altitude', zh: 真实UAV：60 GHz 64维beam-power、RGB、GPS与姿态/高度等IMU信息}
+  observations: {en: 'Real UAV: 60 GHz 64-dimensional beam power, RGB, GPS, and IMU data from the drone unit', zh: 真实UAV：60 GHz 64维beam-power、RGB、GPS与无人机端IMU数据}
   csi: {en: No evidence that full complex CSI is publicly released; these are power and multimodal observations, zh: 未公开完整复数CSI的证据；属于功率与多模态观测}
 provenance:
 - {en: 'Real sites, vehicles, or indoor targets → synchronized camera/positioning/radio acquisition', zh: 真实站点、车辆或室内目标 → 相机/定位/无线硬件同步采集}
 - {en: 'Testbed 1: a 60 GHz 16-element ULA scans 64 receive beams → power vector', zh: Testbed 1：60 GHz 16 元 ULA 扫描 64 个接收波束 → 功率向量}
 - {en: Scenario CSV indexes sensor files → scenario-specific beam/blockage/IQ labels, zh: 按场景 CSV 索引传感文件 → 场景专属 beam/blockage/IQ 标签}
 technical_notes:
-- {en: 'Verified: Testbed 1 releases beam power, which cannot recover the complete complex array channel needed for arbitrary digital precoding.', zh: 已确认：Testbed 1 发布波束功率，不能还原任意数字预编码所需完整复数阵列信道。}
-- {en: 'Verified: 42–44 use directions 22–42 of a 64-direction codebook, for 21 directions in total. The source-page overview and index use somewhat different wording for the scan period; verify the actual cycle duration using IQ timestamps.', zh: 已确认：42–44使用64方向码本中的22–42号，共21个方向。源页面概述与索引对扫描周期的措辞不完全一致；真实循环时长须按IQ时间戳核验。}
-- {en: 'Inference: target motion during sequential beam sweeping means the full vector may not be an observation at one instant; inspect the original timestamps.', zh: 推断：顺序扫束期间目标运动会使全向量并非严格同一时刻观测，应检查原始时间戳。}
-- {en: 'Verified: the Tx and Rx units in 17–22 are stationary, and passing vehicles cause blockage. This task does not represent the served UE itself moving rapidly along the road.', zh: 已确认：17–22的发射与接收单元静止，车辆穿越造成遮挡；该任务不能解释为被服务UE本身沿路高速移动。}
-- {en: 'Verified: Testbed 5 in the original paper uses 60 GHz, a 16-element ULA, and 64 beams over 90°. The camera is triggered after the sweep; each modality records UTC and is aligned in postprocessing. No series-wide upper bound on synchronization error is reported.', zh: 已确认：原论文Testbed 5使用60 GHz、16阵元ULA、64波束/90°；相机在扫束结束后触发，各模态记录UTC并在后处理对齐，没有报告全系列统一的同步误差上界。}
+- {en: Beam-power vectors cannot recover the complete complex array channel needed for arbitrary digital precoding., zh: 波束功率向量不能还原任意数字预编码所需的完整复数阵列信道。}
+- {en: 'Scenarios 42 to 44 use directions 22 to 42 of a 64-direction codebook, 21 directions in total.', zh: 场景42至44使用64方向码本中的22至42号方向，共21个方向。}
+- {en: 'In Scenarios 17 to 22 the two units stand on opposite sides of a city street, and passing vehicles block the line-of-sight link.', zh: 场景17至22中两个单元分置于城市街道两侧，经过的车辆会阻挡视距链路。}
+- {en: 'Testbed 5 in the original paper uses 60 GHz, a 16-element ULA and 64 beams over 90 degrees. The camera is triggered after the sweep, each modality records UTC and is aligned in post-processing, and the paper reports no series-wide bound on synchronization error.', zh: 原论文的Testbed 5使用60 GHz、16阵元ULA及覆盖90度的64波束。相机在扫束结束后触发，各模态记录UTC并在后处理中对齐；论文未给出全系列统一的同步误差上界。}
 limitations:
 - {en: 'Random frame splits can place adjacent locations, the same trajectory, and repeated backgrounds in both training and test sets.', zh: 随机帧划分会让相邻位置、同轨迹和重复背景进入训练与测试。}
 - {en: Modalities have different sampling rates; the paper uses UTC-based postprocessing alignment. Timestamp alignment does not imply simultaneous exposure or coherent RF measurements., zh: 不同模态采样率不同，原文用UTC后处理对齐；时间戳对齐不等于同时曝光或相干RF测量。}
 - {en: 'Codebooks, hardware, and labels may differ across independent scenarios; Top-1 class indices cannot be concatenated directly across scenarios.', zh: 独立场景之间码本、硬件和标签可变；Top-1 类别编号不能直接跨场景拼接。}
-- {en: 'The official 42–44 component''s aggregate dataModalities still contains power/GPS, which differs from the specific ISAC sensor description. Verify sensor fields and actual files rather than inheriting fields from the aggregate list.', zh: 官网42–44组件的汇总dataModalities仍含power/GPS字样，与具体ISAC sensor说明不一致；按传感器字段和实际文件核验，不据汇总继承字段。}
-- {en: The original paper covers only the then-current 1–40 series. Its 2023 Table I cannot replace the ISAC fields for 42–44 added in 2024 or the current download manifest., zh: 原始论文只覆盖当时1–40系列；不能用2023表I替代2024新增42–44的ISAC字段或当前下载manifest。}
+- {en: The original paper covers only the then-current 1–40 series. Its 2023 Table I cannot replace the ISAC fields for 42–44 added in 2024 or the current download manifest., zh: 原始论文只覆盖当时的1–40系列；其2023年表I不能替代2024年新增的42–44 ISAC字段或当前下载清单。}
 history:
-- {en: '2022-03: the official website records the initial public release.', zh: 2022-03：官网记载初始公开发布。}
-- {en: '2024-03-21: Scenario 41 announcement.', zh: 2024-03-21：Scenario 41 公告。}
-- {en: '2024-04-15: Scenarios 42–44 announcement.', zh: 2024-04-15：Scenarios 42–44 公告。}
-- {en: '2026-11-05: scenario pages rechecked; website news or paper revisions are not labeled as versions of the entire data series.', zh: 2026-11-05：复核场景页面；没有把官网新闻或论文版本称为数据全系列版本。}
+- {en: 'March 2022: initial public release. The site counts downloads since release in March 2022.', zh: 2022年3月：首次公开发布；官网自2022年3月起统计下载量。}
+- {en: '2024-03-21: Scenario 41 made available.', zh: 2024-03-21：场景41上线。}
+- {en: '2024-04-15: Scenarios 42–44 made available.', zh: 2024-04-15：场景42–44上线。}
 usage:
 - {en: 'Select a specific Scenario, read the CSV column definitions, and obtain its codebook.', zh: 选定一个明确 Scenario，阅读 CSV 列定义并获取对应码本。}
 - {en: Load input modalities and power targets from the same row; preserve trajectory/event/time identifiers., zh: 从同一行加载输入模态和功率目标；保留 trajectory/event/time 标识。}
@@ -241,7 +230,7 @@ field_notes:
 - label: {en: CSI, zh: CSI}
   text: {en: 'Scenarios 9, 17–22, and 23 provide only beam power, which cannot recover complex CSI. Scenarios 42–44 provide known transmitted waveforms and received IQ for estimating effective link channels; this does not establish full MIMO array CSI.', zh: Scenario 9、17–22、23只提供beam power，不能恢复复数CSI；42–44有已知发送波形与接收IQ，可估计其有效链路信道，不能据此声称完整MIMO阵列CSI。}
 - label: {en: Multi-user, zh: 多用户}
-  text: {en: The verified scenarios above contain a single communication link. Multiple vehicles or sensing targets in the image do not form a synchronized multi-UE channel matrix., zh: 核实的上述场景为单通信链路；画面中多辆车或多个感知目标不构成同步多UE信道矩阵。}
+  text: {en: The scenarios described above contain a single communication link. Multiple vehicles or sensing targets in the image do not form a synchronized multi-UE channel matrix., zh: 上述场景为单通信链路；画面中多辆车或多个感知目标不构成同步多UE信道矩阵。}
 - label: {en: Multi-BS, zh: 多基站}
   text: {en: Communication records in these scenarios are single-BS links. Multiple collection scenarios do not constitute a synchronized multi-BS network., zh: 上述场景的通信记录是单BS链路；多个采集场景不是同步多BS网络。}
 - label: {en: Cross-frequency pairing, zh: 跨频配对}
@@ -264,16 +253,105 @@ materials:
 - {title: Original DeepSense 6G paper (arXiv v2), path: /materials/official/deepsense-6g/paper/deepsense-2211.09769v2.pdf, license: CC-BY-NC-SA-4.0, source_url: 'https://arxiv.org/pdf/2211.09769v2'}
 tutorials: [deepsense]
 tools: [wireless-ml-data-hub]
-overview: {en: 'DeepSense 6G is a set of real-world communication and sensing datasets from the Wireless Intelligence Lab at Arizona State University (arXiv:2211.09769). The series covers more than 40 scenarios at more than 15 indoor and outdoor sites, with deployments including fixed wireless, V2I, V2V, drone communication, pedestrian and RIS. Each scenario records 60 GHz mmWave beam power and GPS, together with RGB images, LiDAR, FMCW radar, depending on the scenario group. In the representative testbed, a base station receiver with a 16-element ULA sweeps a 64-beam codebook over 90 degrees, and the camera exposure is triggered right after each sweep. Every modality carries a UTC timestamp, and the modalities are aligned in post-processing. Table I of the paper reports 460,838 samples for scenarios 17 to 22, 11,387 for scenario 23 and 18,667 for scenarios 31 to 34. The radar operates in the 76 to 81 GHz band, and the communication link operates at 60 GHz.', zh: 'DeepSense 6G 是亚利桑那州立大学
-    Wireless Intelligence Lab 发布的一组真实场景通信与感知数据集（arXiv:2211.09769）。数据覆盖 40 个以上场景、15 个以上室内外场地，部署形式包括固定无线、V2I、V2V、无人机通信、行人和 RIS。每个场景记录 60 GHz 毫米波波束功率和 GPS，并根据场景组不同记录 RGB 图像、LiDAR 和 FMCW 雷达。在代表性测试平台中，基站端 16 阵元 ULA 接收机在 90 度范围内扫描 64 波束码本，相机曝光在每次扫描结束后立即触发。每种模态均带有 UTC 时间戳，并在后处理中对齐。论文 Table I 给出场景 17 至 22 共 460,838 个样本，场景 23 共 11,387 个，场景 31 至 34 共 18,667 个。雷达工作在 76 至 81 GHz 频段，通信链路工作在 60 GHz。'}
+overview: {en: 'DeepSense 6G is a set of real-world communication and sensing datasets from the Wireless Intelligence Lab at Arizona State University (arXiv:2211.09769). The series covers more than 40 scenarios at more than 15 indoor and outdoor locations, including fixed wireless, V2I, V2V, drone communication, pedestrian and RIS deployments. Scenarios 1 to 40 each record 60 GHz mmWave receive power, GPS and RGB images, and some groups add 2D or 3D LiDAR or FMCW radar. In the representative testbed, a 16-element ULA receiver scans a 64-beam codebook over 90 degrees, and the camera is triggered right after each sweep. Every modality carries a UTC timestamp, and the modalities are aligned in post-processing. Table I of the paper reports 460,838 samples for Scenarios 17 to 22, 11,387 for Scenario 23 and 18,667 for Scenarios 31 to 34. Scenarios 42 to 44 are an indoor ISAC series that records 60 GHz waveforms and received IQ, with RGB, 3D LiDAR and radar data.', zh: 'DeepSense 6G 是亚利桑那州立大学 Wireless
+    Intelligence Lab 发布的一组真实通信与感知数据集（arXiv:2211.09769）。该系列包含 40 多个场景，分布在 15 个以上室内外地点，覆盖固定无线、V2I、V2V、无人机通信、行人和 RIS 等部署。场景 1 至 40 均记录 60 GHz 毫米波接收功率、GPS 和 RGB 图像，部分场景组另加 2D 或 3D LiDAR 与 FMCW 雷达。在代表性测试平台中，16 阵元 ULA 接收机在 90 度范围内扫描 64 波束码本，相机在每次扫描结束后立即触发。每种模态均带有 UTC 时间戳，并在后处理中对齐。论文 Table I 给出场景 17 至 22 共 460,838 个样本，场景 23 共 11,387 个，场景 31 至 34 共 18,667 个。场景 42 至 44 为室内 ISAC 系列，记录 60 GHz 波形与接收 IQ，并附带 RGB、3D LiDAR 和雷达数据。'}
 signal_details:
 - signal: beam-power
   text: {en: '60 GHz mmWave beam power from the representative testbed. The base station receiver is a 16-element ULA (SIVERS) with a combining codebook of 64 beams that scans 90 degrees. Each instant yields a 64-element power vector from beam training at the base station, sampled at 10 Hz. The mobile unit transmits from a 60 GHz quasi-omni antenna.', zh: 代表性测试平台中的 60 GHz 毫米波波束功率。基站接收机为 16 阵元 ULA（SIVERS），使用覆盖 90 度的 64 波束合并码本。每个时刻由基站端波束训练得到一个 64 元素功率向量，采样率 10 Hz。移动单元使用 60 GHz 准全向天线发射。}
 - signal: rgb
   text: {en: RGB images from a ZED2 (StereoLabs) camera with a 110 degree field of view at 30 fps in the representative testbed. The exposure is triggered right after each beam sweep completes. Table I lists RGB for every scenario group., zh: 代表性测试平台中的 ZED2（StereoLabs）RGB 相机，视场角 110 度，帧率 30 fps。每次波束扫描结束后立即触发曝光。Table I 中每个场景组均列有 RGB。}
 - signal: lidar
-  text: {en: '3D LiDAR from an Ouster unit with 32 vertical by 1024 horizontal channels, 120 m range and a 20 Hz frame rate in the representative testbed. Table I lists 2D LiDAR for scenarios 8, 9 and 24 to 30, and 3D LiDAR for scenarios 31 to 34 and 36 to 40.', zh: 代表性测试平台中的 Ouster 3D LiDAR，32 个垂直通道乘 1024 个水平通道，测距 120 m，帧率 20 Hz。Table I 中场景 8、9 和 24 至 30 为 2D LiDAR，场景 31 至 34 和 36 至 40 为 3D LiDAR。}
+  text: {en: '3D LiDAR from an Ouster unit with 32 vertical by 1024 horizontal channels, 120 m range and a 20 Hz frame rate in the representative testbed. Table I lists 2D LiDAR for scenarios 8, 9 and 24 to 30, and 3D LiDAR for scenarios 31 to 34 and 36 to 39.', zh: 代表性测试平台中的 Ouster 3D LiDAR，32 个垂直通道乘 1024 个水平通道，测距 120 m，帧率 20 Hz。Table I 中场景 8、9 和 24 至 30 为 2D LiDAR，场景 31 至 34 和 36 至 39 为 3D LiDAR。}
 - signal: radar
   text: {en: 'FMCW radar from Texas Instruments operating in the 76 to 81 GHz band, with a 100 m maximum range in the representative testbed. Table I lists radar for scenario 9 and for scenarios 30 to 40.', zh: 代表性测试平台中的德州仪器（Texas Instruments）FMCW 雷达，工作在 76 至 81 GHz 频段，最大探测距离 100 m。Table I 中场景 9 以及场景 30 至 40 列有雷达数据。}
 - signal: gps
   text: {en: RTK GPS from a SparkFun RTK kit at 10 Hz in the representative testbed. Table I lists GPS in every scenario group., zh: 代表性测试平台中的 SparkFun RTK 套件，采样率 10 Hz。Table I 中每个场景组均列有 GPS。}
+format: CSV index with per-modality files in scenario ZIP folders
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: 'Complex CSI is not stored; Scenarios 42-44 allow effective-link channel estimation from known waveforms and received IQ, not full array CSI.', zh: 未存储复数CSI；场景42–44可由已知波形与接收IQ估计等效链路信道，不能得到完整阵列CSI。}
+- key: cir
+  status: derivable
+  note: {en: 'Only Scenarios 42-44, estimated from the known ISAC waveform and received baseband IQ; no CIR is stored.', zh: 仅场景42–44，可由已知ISAC波形与接收基带IQ估计；未存储CIR。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle or power is released; the mmWave data are beam powers.', zh: 未发布逐径时延、角度或功率；毫米波数据为波束功率。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction labels are released., zh: 未发布逐径交互标签。}
+- key: power
+  status: provided
+  note: {en: A 64-value mmWave receive power vector per sample in most scenarios; Scenario 41 has three such vectors., zh: 多数场景每个样本提供64维毫米波接收功率向量；场景41提供三组此类向量。}
+- key: iq
+  status: provided
+  note: {en: Radar I/Q samples in the radar scenarios; Scenarios 42-44 add received baseband IQ and transmitted waveforms., zh: 雷达场景提供雷达I/Q采样；场景42–44另提供接收基带IQ与发射波形。}
+- key: beam_labels
+  status: provided
+  note: {en: Per-beam gains of a 64-beam codebook spanning 90 degrees; the best beam is the maximum of each power vector., zh: 覆盖90度的64波束码本的逐波束增益；最佳波束为各功率向量的最大值。}
+- key: position
+  status: provided
+  note: {en: RTK GPS at 10 Hz on the mobile unit; the base station unit also carries a GPS receiver., zh: 移动单元配备10 Hz的RTK GPS；基站单元同样配备GPS接收机。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files are listed; only sensor point clouds are released., zh: 未列出三维场景或地图文件，仅发布传感器点云。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: provided
+  note: {en: RGB images from the unit camera in most scenarios; the testbed described in the paper uses a ZED 2 camera at 30 fps., zh: 多数场景提供单元相机的RGB图像；论文所述测试平台使用30 fps的ZED 2相机。}
+- key: depth
+  status: none
+  note: {en: 'Table I lists RGB, GPS, mmWave power, LiDAR and radar only; no depth maps are listed.', zh: 表I仅列出RGB、GPS、毫米波功率、LiDAR和雷达；未列出深度图。}
+- key: lidar
+  status: provided
+  note: {en: '2D LiDAR in Scenarios 8, 9 and 24-30; 3D LiDAR with 32 channels in Scenarios 31-34, 36-40 and 42-44.', zh: 2D LiDAR见于场景8、9及24–30；32线三维LiDAR见于场景31–34、36–40及42–44。}
+- key: radar
+  status: provided
+  note: {en: 'FMCW radar in Scenarios 9, 30-40 and 42-44.', zh: FMCW雷达见于场景9、30–40及42–44。}
+- key: imu
+  status: provided
+  note: {en: 'Only Scenario 23 has IMU data, from the drone unit.', zh: 仅场景23含IMU数据，来自无人机单元。}
+- key: time_series
+  status: provided
+  note: {en: 'UTC-stamped sample sequences at 10 Hz from the mmWave receiver, aligned with the other modalities by UTC.', zh: 毫米波接收机约10 Hz的带UTC时间戳样本序列，其他模态按UTC对齐。}
+- key: multiuser
+  status: none
+  note: {en: One mobile user unit per scenario; vehicles visible in the images are not synchronized channels., zh: 每个场景一个移动用户单元；图像中可见的其他车辆不构成同步信道。}
+- key: multibs
+  status: provided
+  note: {en: 'Scenario 41 only: three synchronized 64-beam power vectors from three phased-array units; the sources do not say whether they serve one common link.', zh: 仅场景41：三个相控阵单元同步提供三组64波束功率向量；来源未说明三者是否服务同一链路。}
+- key: crossfreq
+  status: none
+  note: {en: Communication is at 60 GHz; the 76-81 GHz radar is not paired communication CSI., zh: 通信载频为60 GHz；76–81 GHz雷达不是配对的通信CSI。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: provided
+  note: {en: Scenarios 36-39 include vehicles up to 100 km/h; the V2I street scenarios have posted limits of 25-45 mph., zh: 场景36–39的车辆速度最高达100 km/h；V2I街道场景的限速为25–45 mph。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: 'Scenario 16 moves a metal cylinder across the link, and passing vehicles block the link in the outdoor street scenarios.', zh: 场景16中金属圆柱体在链路中移动；户外街道场景中经过的车辆会遮挡链路。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: arXiv v2
+  date: '2023-03-20'
+  summary: {en: Second arXiv version of the DeepSense 6G dataset paper; arXiv gives no change list for this version., zh: DeepSense 6G 数据集论文的第二个 arXiv 版本；arXiv 未列出本版本的修改内容。}
+  url: https://arxiv.org/abs/2211.09769v2
+- version: arXiv v1
+  date: '2022-11-17'
+  summary: {en: 'First arXiv posting of the DeepSense 6G dataset paper (arXiv:2211.09769).', zh: 'DeepSense 6G 数据集论文（arXiv:2211.09769）的首次 arXiv 发布。'}
+  url: https://arxiv.org/abs/2211.09769v1

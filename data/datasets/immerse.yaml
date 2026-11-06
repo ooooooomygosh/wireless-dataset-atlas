@@ -5,7 +5,7 @@ organization: TU Dortmund
 origin: measured
 tasks: [wireless-sensing]
 signals: [rssi, kpi]
-bands_ghz: []
+bands_ghz: [2.6, 27.1]
 environment: [indoor]
 license: CC BY 4.0
 access: {url: 'https://github.com/tudo-cni/immerse_dataset', type: open}
@@ -15,116 +15,159 @@ paper: doi:10.1109/gcwkshp64532.2024.11100825
 used_in: []
 citing: []
 summary: {en: Received-power metrics (RSRP) of 4G sub-6 GHz and 5G mmWave links recorded by three devices in an indoor private network. Scenarios include line-of-sight recordings and passages of pedestrians and AGVs on two tracks., zh: 三台终端在室内专网中记录的 4G（sub-6 GHz）和 5G（mmWave）链路接收功率指标（RSRP）。场景包括视距测量，以及行人和 AGV 在两条轨道上的通过过程。}
-sources: ['https://github.com/tudo-cni/immerse_dataset', 'https://comnets.etit.tu-dortmund.de/newsdetail/machine-learning-aided-sensing-in-private-mmwave-networks-for-industrial-application-45414/']
+sources: ['https://github.com/tudo-cni/immerse_dataset', 'https://comnets.etit.tu-dortmund.de/newsdetail/machine-learning-aided-sensing-in-private-mmwave-networks-for-industrial-application-45414/', 'https://raw.githubusercontent.com/tudo-cni/immerse_dataset/HEAD/README.md', 'https://api.github.com/repos/tudo-cni/immerse_dataset/git/trees/HEAD?recursive=1', 'https://api.github.com/repos/tudo-cni/immerse_dataset', 'https://raw.githubusercontent.com/tudo-cni/immerse_dataset/HEAD/LICENSE', 'https://api.crossref.org/works/10.1109/gcwkshp64532.2024.11100825', 'https://cni.etit.tu-dortmund.de/storages/cni-etit/r/Research/Publications/2024/Haferkamp_2024_Globecom/Haferkamp_GlobecomWkshps2024_AuthorsVersion.pdf', 'https://github.com/tudo-cni/immerse_dataset/releases', 'https://github.com/tudo-cni/immerse_dataset/commits/main', 'https://github.com/tudo-cni/immerse_dataset/tree/main/csv', 'https://github.com/tudo-cni/immerse_dataset/tree/main/csv/los/0/UE_A', 'https://raw.githubusercontent.com/tudo-cni/immerse_dataset/main/csv/los/0/UE_A/4G_prx_rsrp.csv',
+  'https://raw.githubusercontent.com/tudo-cni/immerse_dataset/main/README.md', 'https://cni.etit.tu-dortmund.de/newsdetail/machine-learning-aided-sensing-in-private-mmwave-networks-for-industrial-application-45414/']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Pedestrians or AGVs cross links in a fixed industrial deployment. Commercial modems read dual-band RSRP via AT commands; power sequences are saved by UE, condition, and repeated experiment.', zh: 在固定工业部署中让行人或AGV穿越链路，商用modem经AT指令读取双频RSRP；按UE、条件与重复实验保存功率时间序列。}
+  summary: {en: 'A 27.1 GHz mmWave cell and a 2.6 GHz LTE anchor serve three fixed commercial UEs in a factory hall while pedestrians and AGVs pass along two lanes. Modems read RSRP through AT commands, and the traces are saved per UE, condition and run.', zh: 27.1 GHz毫米波小区与2.6 GHz LTE锚点为工厂大厅内3台固定商用UE提供服务，行人与AGV沿两条车道通过。调制解调器通过AT指令读取RSRP，轨迹按UE、条件和运行次数保存。}
   stages:
-  - title: {en: Configure the industrial private network and fixed UEs, zh: 配置工业私网和固定UE}
-    detail: {en: Use 2.6 GHz LTE-anchor and 27.1 GHz 5G-mmWave dual connectivity with 3 fixed UE positions. The paper specifies 20 MHz and 800 MHz bandwidths and records link positions and distances., zh: 采用2.6 GHz LTE anchor和27.1 GHz 5G mmWave双连接，固定3个UE位置。论文给出20 MHz与800 MHz带宽，并记录链路位置与距离。}
+  - title: {en: Configure the mmWave cell and the fixed UEs, zh: 配置毫米波小区与固定UE}
+    detail: {en: 'A 27.1 GHz NR mmWave cell with 800 MHz bandwidth and a 2.6 GHz LTE anchor (band 7, 20 MHz) serve three UEs mounted at 1.15 m height, 6.35 to 6.75 m from the base station. The mmWave cell uses SSB IDs 1, 2 and 3 for UEs A, B and C, and the lanes form a 7.0 m track with two 0.6 m wide lanes.', zh: 27.1 GHz NR毫米波小区（带宽800 MHz）与2.6 GHz LTE锚点（band 7，20 MHz）为3台安装在1.15 m高度、距基站6.35至6.75 m的UE提供服务。毫米波小区对UE A、B、C分别使用SSB ID 1、2、3；两条车道组成7.0 m长的轨道，每条宽0.6 m。}
     inputs:
-    - {en: LTE anchor and 5G mmWave base station, zh: LTE anchor与5G mmWave基站}
-    - {en: 3 fixed UEs and an industrial indoor layout, zh: 3个固定UE与工业室内布局}
+    - {en: mmWave cell and LTE anchor, zh: 毫米波小区与LTE锚点}
+    - {en: Three fixed UEs in a factory hall, zh: 工厂大厅内3台固定UE}
     outputs:
-    - {en: Deployment geometry, zh: 部署几何}
-    - {en: UE and band configuration, zh: UE与频段配置}
-    controls:
-    - {en: Fixed UE coordinates come from the paper's deployment description; moving obstacles follow separately defined experiment routes, zh: 固定UE坐标来自论文部署信息；动态障碍物另设实验路线}
-    checks:
-    - {en: 'Reproduction check: verify UE names, bands, and link-specific distances/orientations', zh: 复现检查：核对UE名称、波段和不同链路的距离/朝向}
-  - title: {en: Repeat LoS and obstructed-crossing conditions, zh: 重复LoS与遮挡穿越条件}
-    detail: {en: 'Collect unobstructed LoS and crossings by two moving-object classes at different positions. The paper includes 420 traces per UE: 60 LoS runs plus 4 groups of 45 runs for each of the two object classes.', zh: 分别采集空场LoS以及两类移动对象在不同位置的穿越。论文每UE含420条轨迹：60次LoS，加两类对象各4组、每组45次。}
+    - {en: Deployment geometry and link distances, zh: 部署几何与链路距离}
+  - title: {en: Measure LoS and passages of pedestrians and AGVs, zh: 测量LoS及行人、AGV通过过程}
+    detail: {en: 'Each radio link is first measured 60 times without blockage. AGVs and pedestrians then pass the UEs at walking speed, with 45 runs for each lane and movement direction and each of the two object classes, giving 420 traces per UE.', zh: 首先在无遮挡条件下对每条链路测量60次。随后AGV与行人以步行速度经过UE，每个对象类别按车道和运动方向各采集45次，每个UE共420条轨迹。}
     inputs:
-    - {en: Pedestrian or AGV, zh: 行人或AGV}
-    - {en: Predefined crossing positions and experimental conditions, zh: 预设穿越位置与实验条件}
+    - {en: Pedestrians or AGVs on two lanes, zh: 两条车道上的行人或AGV}
     outputs:
-    - {en: Runs labeled by object and crossing condition, zh: 按对象和穿越条件标注的运行}
-    - {en: Event-level repeated experiments, zh: 事件级重复实验}
-    controls:
-    - {en: Each trace is a run unit; records from multiple UEs observing the same event are related, zh: 每条轨迹是一个运行单位；同一事件的多个UE记录有关联}
-    checks:
-    - {en: 'Reproduction check: verify whether class, repetition ID, and UE records form the same event group', zh: 复现检查：检查类别、重复编号与UE是否形成同一事件组}
-  - title: {en: Record dual-band RSRP through AT commands, zh: 经AT命令记录双频RSRP}
-    detail: {en: 'The acquisition program reads 4G/5G RSRP through AT commands at approximately 1.5 ms temporal resolution, with 8000 samples per sequence. BS-side SSB IDs are also recorded at approximately 1 Hz, but verified public CSV metrics focus on RSRP.', zh: 采集程序通过AT指令读取4G/5G RSRP，时间分辨率约1.5 ms，每条序列8000个样本。BS侧另有约1 Hz SSB ID记录，但公开CSV已核实指标集中于RSRP。}
+    - {en: 'Runs labeled by object class, lane and direction', zh: 按对象类别、车道和方向标注的运行数据}
+  - title: {en: Record RSRP through modem AT commands, zh: 通过modem AT指令记录RSRP}
+    detail: {en: The commercial modems read 4G and 5G RSRP through AT commands at a time resolution of up to 1.5 ms., zh: 商用modem通过AT指令读取4G与5G RSRP，时间分辨率最高约1.5 ms。}
     inputs:
-    - {en: Commercial modem diagnostic interface, zh: 商用modem诊断接口}
-    - {en: 4G and 5G connection states, zh: 4G与5G连接状态}
+    - {en: Modem diagnostic interface, zh: modem诊断接口}
     outputs:
-    - {en: 4G/5G power time series, zh: 4G/5G功率时间序列}
-    - {en: Connection states and run identities, zh: 连接状态与运行身份}
-    controls:
-    - {en: The cross-modem synchronization protocol and error bounds are unreported; preserve this measurement boundary, zh: 跨modem同步协议和误差上界未报告，需保留这一测量边界}
-    checks:
-    - {en: 'Reproduction check: inspect actual sampling intervals, repeated values, and disconnections; retain time-offset sensitivity analysis for dual-band correlations', zh: 复现检查：检查实际采样间隔、重复值和断连；双频相关分析保留时间偏移敏感性}
-  - title: {en: Publish CSV files by UE and experiment condition, zh: 按UE与实验条件发布CSV}
-    detail: {en: 'The official repository organizes CSV files by UE and condition and provides reading and experiment entry points. Power logs and event classes form the main public samples, from which users construct RF-aided classification windows.', zh: 官方仓库按UE和条件组织CSV，并提供读取与实验入口。功率日志和事件类别构成主要公开样本，用户据此构建RF辅助分类窗口。}
+    - {en: 4G and 5G RSRP time series, zh: 4G与5G RSRP时间序列}
+  - title: {en: Save CSV files per UE and condition, zh: 按UE与条件保存CSV文件}
+    detail: {en: 'The repository stores one RSRP CSV file per metric in folders organized by mode (los, agv, pedestrian), track, measurement ID and UE, and labels each trace by object class and lane. main.py filters and plots the files.', zh: 仓库按模式（los、agv、pedestrian）、轨道、测量编号和UE组织文件夹，每个指标保存一个RSRP CSV文件，并按对象类别和车道标注每条轨迹。main.py用于筛选与绘图。}
     inputs:
-    - {en: RSRP from each run, zh: 每次运行的RSRP}
-    - {en: 'Object classes, conditions, and UE identifiers', zh: 对象类别、条件和UE标识}
+    - {en: RSRP series of each run, zh: 每次运行的RSRP序列}
+    - {en: 'Object class, lane and UE identifiers', zh: 对象类别、车道与UE标识}
     outputs:
-    - {en: RSRP CSV, zh: RSRP CSV}
-    - {en: File-level condition/class labels, zh: 文件层面的条件/类别标签}
-    controls:
-    - {en: RSRP is a power metric; it lacks the phase information in full complex CSI, zh: RSRP是功率指标；不含完整复数CSI的相位信息}
-    checks:
-    - {en: 'Reproduction check: verify CSV lengths, units, missing-value markers, and mappings from file names to labels', zh: 复现检查：验证CSV长度、量纲、缺失标记及文件命名到标签的映射}
-  - title: {en: Split and evaluate by complete events, zh: 以完整事件划分和评估}
-    detail: {en: 'Bind multi-UE and multiband windows from the same physical event before splitting training and test sets. Compare single-band and dual-band inputs, simple thresholds, and time-series baselines. Report random window splits within one UE separately as an easier protocol.', zh: 先把同一物理事件的多UE、多频窗口绑定，再划分训练/测试。比较单频与双频输入、简单阈值和时间序列基线；同UE随机切窗仅作为较容易的协议单列。}
-    inputs:
-    - {en: 'CSV files, run groups, and labels', zh: CSV、运行组和标签}
-    outputs:
-    - {en: Event-level splits, zh: 事件级split}
-    - {en: Dual-band information gains and detection latency, zh: 双频信息增益与检测延迟}
-    controls:
-    - {en: 'Fix normalization, thresholds, and window lengths using the training/validation sets', zh: 归一化、阈值和窗口长度在训练/验证集固定}
-    checks:
-    - {en: 'Reproduction check: prevent adjacent windows or the same event from crossing splits; report false-alarm rate, miss rate, and latency', zh: 复现检查：排除相邻窗口和同一事件跨split；报告误报率、漏报率及延迟}
-  scope: {en: Dual-connectivity RSRP measurements in an industrial private network; the public interface is organized as per-UE 4G/5G power traces., zh: 工业私网双连接RSRP测量；公开接口按每UE的4G/5G功率轨迹组织。}
+    - {en: CSV files per metric and UE, zh: 按指标与UE划分的CSV文件}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Per-UE 4G/5G RSRP CSV files
-
-      • Experiment classes, conditions, and fixed deployment parameters', zh: '• 各UE的4G/5G RSRP CSV
-
-      • 实验类别、条件和固定部署参数'}
+  text: {en: 'Per-UE CSV files of 4G RSRP and of 5G RSRP (prx and drx), arranged by mode, track, measurement ID and UE.', zh: 按UE划分的CSV文件，包含4G RSRP以及5G RSRP（prx与drx），按模式、轨道、测量编号和UE组织。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Event-recognition windows, classification features, and cross-UE splits
-
-      • Power-change/blockage metrics', zh: '• 事件识别窗口、分类特征和跨UE划分
-
-      • 功率变化/遮挡指标'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Clock uncertainty affects sample-level cross-UE fusion; complete-event pairing is currently the more reliable unit of use.
-
-      • The paper''s measurement section and repository have been read in this audit; CSV loading has not been executed.', zh: '• 时钟不确定性影响逐样本跨UE融合；完整事件配对是当前更稳妥的使用单元。
-
-      • 本轮已读论文测量段及仓库，尚未执行CSV读取。'}
+  text: {en: 'Passage detection, passage direction and user-class predictions produced by the IMMERSE processing in the paper.', zh: 论文中IMMERSE处理流程产生的通过检测、通过方向与用户类别预测结果。}
 provenance:
 - {en: Industrial indoor LoS and moving obstacles → 4G/5G modem measurements, zh: 工业室内 LoS 与移动障碍 → 4G/5G modem 测量}
 - {en: Received-power logs from different UEs → labeled trajectory/event CSV files, zh: 不同 UE 接收功率日志 → 标注轨迹/事件 CSV}
 technical_notes:
-- {en: 'Verified: Sec. III/Tables I–II specify 2.6/27.1 GHz dual connectivity, 3 fixed UEs, and 420 traces per UE. RSRP is sampled through AT commands at approximately 1.5 ms temporal resolution.', zh: 已确认：Sec.III/Table I–II给出2.6/27.1 GHz双连接、3个固定UE、每UE420条轨迹；RSRP通过AT指令采样，时间分辨率约1.5 ms。}
-- {en: 'Verified: the main text also records BS-side SSB beam IDs updated approximately every 1 second, but the repository README lists only 4G/5G RSRP in public CSV files. BS logs cannot be assumed to provide public optimal-beam labels.', zh: 已确认：正文另记录BS侧SSB beam ID约1秒更新，但仓库README列出的公开CSV指标只有4G/5G RSRP；不能把BS日志推定为公开最优beam标签。}
-- {en: 'Not reported: cross-modem clock synchronization protocol and error bounds. Multi-link traces of the same event are not coherent dual-band CSI acquired simultaneously at each sample.', zh: 未报告：跨modem的时钟同步协议与误差上界；同一事件多链路轨迹不等于相干、逐采样同时的双频CSI。}
+- {en: 'The paper gives UE distances of 6.35 to 6.75 m to the base station, and an LoS propagation path of 6.65 to 7.05 m.', zh: 论文给出UE到基站的距离为6.35至6.75 m，LoS传播路径为6.65至7.05 m。}
+- {en: 'The paper states that the mmWave cell logs SSB beam IDs at 1 s updates, but the public CSV files contain RSRP only.', zh: 论文称毫米波小区以1 s间隔记录SSB beam ID，但公开CSV文件仅包含RSRP。}
+- {en: 'RSRP is a passive power metric and carries no phase, so it cannot describe the gain of beams that were not probed.', zh: RSRP是被动功率指标，不含相位信息，因此无法描述未被探测波束的增益。}
 limitations:
-- {en: RSRP cannot determine phase or the gain of arbitrary unprobed beams., zh: RSRP 不能确定相位或任意未探测波束收益。}
-- {en: Leakage occurs if records of the same event from different modems appear in both training and test sets., zh: 相同事件跨 modem 出现在训练测试两侧会泄漏。}
+- {en: 'The public files contain RSRP power values only, without phase or per-beam gains.', zh: 公开文件仅包含RSRP功率值，不含相位或逐波束增益。}
+- {en: 'The data cover one indoor factory hall, two lanes and two object classes (AGVs and pedestrians).', zh: 数据仅覆盖一个室内工厂大厅、两条车道以及两类对象（AGV与行人）。}
 history:
 - {en: '2024: corresponding GLOBECOM Workshops paper.', zh: 2024：GLOBECOM Workshops 对应论文。}
 usage:
-- {en: First use the official main.py to inspect CSV parameters and filter by modem/track/mode., zh: 先用官方 main.py 查看 CSV 参数并按 modem/track/mode 筛选。}
-- {en: 'Group splits by complete passages; compare persistence, threshold detection, and lightweight classification.', zh: 以完整 passage 为分组划分；比较 persistence、阈值检测与轻量分类。}
+- {en: 'Run main.py with the modem, metric, mode and track filters to inspect the CSV parameters before analysis.', zh: 分析前，使用modem、指标、模式和轨道筛选参数运行main.py，查看CSV参数。}
+- {en: The paper groups train and test data by complete passage and compares threshold-based passage detection with lightweight classifiers., zh: 论文以完整通过过程为单位划分训练与测试数据，并比较基于阈值的通过检测与轻量分类器。}
 field_notes:
 - label: {en: CSI, zh: CSI}
-  text: {en: 'The paper calls RSRP ''CSI metrics''; the Atlas CSI field specifically denotes complex array channels, so it remains unsupported.', zh: 论文把RSRP称为CSI metrics；Atlas的CSI字段专指复数阵列信道，因此仍为不支持。}
+  text: {en: 'The released files contain RSRP power values, not complex channel coefficients.', zh: 发布文件包含RSRP功率值，而非复数信道系数。}
 - label: {en: Position, zh: 位置}
-  text: {en: Table I/Fig. 2 of the original paper provide fixed UE positions/distances. Per-time-step positions of moving pedestrians/AGVs are not among the verified CSV fields., zh: 原论文Table I/Fig.2给出固定UE位置/距离；动态行人/AGV的逐时刻位置不属于已核实CSV字段。}
+  text: {en: The released CSV files contain no per-time-step pedestrian or AGV positions; the paper gives fixed UE positions and distances., zh: 发布的CSV文件不含行人或AGV逐时刻的位置；论文仅给出固定UE的位置与距离。}
 - label: {en: Beam labels, zh: 波束标签}
-  text: {en: 'The paper contains 1 Hz SSB ID logs, but their presence in public CSV files is unverified; exhaustive-codebook labels are absent.', zh: 论文有1 Hz SSB ID日志，但未核实公开CSV提供；没有穷举码本标签。}
+  text: {en: The released CSV files contain no SSB ID or beam labels., zh: 发布的CSV文件不含SSB ID或波束标签。}
 - label: {en: Multi-BS, zh: 多基站}
-  text: {en: The paper uses dual connectivity with one 5G mmWave base station and an LTE anchor. It provides no multiple-candidate-BS handover/coherent joint-service data; dual-band dual connectivity does not directly establish multi-BS scheduling data., zh: 论文采用一个5G mmWave基站及LTE anchor的双连接实验；未提供多候选BS切换/相干联合服务数据，不能据双频双连接直接声称多BS调度数据。}
+  text: {en: The dual connectivity setup uses one mmWave cell and an LTE anchor; the records contain no multi-BS handover or joint-service data., zh: 双连接配置仅使用一个毫米波小区与一个LTE锚点；记录中不含多基站切换或联合服务数据。}
 overview: {en: 'IMMERSE is a dataset of raw sub-6 GHz and mmWave measurements from an indoor private industrial network. The data were produced by Haferkamp, Häger, Böcker and Wietfeld at TU Dortmund for the paper ''Machine Learning-aided Sensing in Private mmWave Networks for Industrial Applications'', presented at the IEEE Globecom Workshops in December 2024. Three modems, UE_A, UE_B and UE_C, record received-power metrics (RSRP) on a 4G sub-6 GHz link and a 5G mmWave link. The recordings cover line-of-sight runs and passages of pedestrians and automated guided vehicles (AGVs) on two tracks, track1 and track2. The files are CSV, arranged by mode, measurement ID, modem and channel metric.', zh: IMMERSE 是一套来自室内工业私有网络的原始 sub-6 GHz 与 mmWave 测量数据。数据由 TU Dortmund 的 Haferkamp、Häger、Böcker 和 Wietfeld 为论文《Machine Learning-aided Sensing in Private mmWave Networks for Industrial Applications》采集，该论文于 2024 年 12 月在 IEEE Globecom Workshops 上发表。三台终端（UE_A、UE_B 和 UE_C）记录 4G sub-6 GHz 链路与 5G mmWave 链路的接收功率指标（RSRP）。数据覆盖视距（LoS）测量，以及行人与自动导引车（AGV）在两条轨道（track1、track2）上的通过过程。文件为
     CSV 格式，按模式、测量编号、终端和信道指标分层存放。}
 signal_details:
 - signal: rssi
   text: {en: 'RSRP recorded by three modems and stored as CSV. The metric names are 4G_prx_rsrp, 5G_prx_rsrp and 5G_drx_rsrp, where 4G denotes the sub-6 GHz link and 5G denotes the mmWave link. The plotting scripts filter by modem, metric, mode (los, agv, pedestrian) and track (track1, track2).', zh: 三台终端记录的 RSRP，以 CSV 格式存储。指标名为 4G_prx_rsrp、5G_prx_rsrp 和 5G_drx_rsrp，其中 4G 指 sub-6 GHz 链路，5G 指 mmWave 链路。绘图脚本可按终端、指标、模式（los、agv、pedestrian）和轨道（track1、track2）筛选数据。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'The released metrics are RSRP only (4G_prx_rsrp, 5G_prx_rsrp, 5G_drx_rsrp); no complex channel matrices.', zh: 发布的指标仅为 RSRP（4G_prx_rsrp、5G_prx_rsrp、5G_drx_rsrp），不含复数信道矩阵。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile; RSRP only., zh: 不含冲激响应或功率时延谱；仅有 RSRP。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters; RSRP only., zh: 不含逐径参数；仅有 RSRP。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data; RSRP only., zh: 不含逐径交互数据；仅有 RSRP。}
+- key: power
+  status: provided
+  note: {en: 'RSRP traces per modem (UE_A, UE_B, UE_C) in three metric files: 4G_prx_rsrp, 5G_prx_rsrp and 5G_drx_rsrp.', zh: 每台终端（UE_A、UE_B、UE_C）的 RSRP 轨迹，分为三个指标文件：4G_prx_rsrp、5G_prx_rsrp 和 5G_drx_rsrp。}
+- key: iq
+  status: none
+  note: {en: Only RSRP power values are released; no raw I/Q samples., zh: 仅发布 RSRP 功率值，不含原始 I/Q 样本。}
+- key: beam_labels
+  status: none
+  note: {en: The release lists RSRP metrics only; the SSB beam IDs logged in the paper are not in the CSV files., zh: 发布内容仅列出 RSRP 指标；论文中记录的 SSB 波束 ID 不在 CSV 文件中。}
+- key: position
+  status: none
+  note: {en: 'The CSV files contain RSRP only; the fixed UE positions are described in the paper, not in the data.', zh: CSV 文件仅含 RSRP；固定 UE 位置写在论文中，不在数据内。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files; the industrial layout appears only in the paper., zh: 无场景或地图文件；工业布局仅见于论文。}
+- key: materials
+  status: none
+  note: {en: No material parameters in the release., zh: 发布内容不含材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera images in the release., zh: 发布内容不含相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth data; the release holds RSRP CSV files only., zh: 无深度数据；发布内容仅为 RSRP CSV 文件。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data in the release., zh: 发布内容不含激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data in the release., zh: 发布内容不含雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial measurement data in the release., zh: 发布内容不含惯性测量数据。}
+- key: time_series
+  status: provided
+  note: {en: Each file is one comma-separated RSRP sequence with no timestamp column; the paper gives the sampling interval as about 1.5 ms., zh: 每个文件是一条以逗号分隔的 RSRP 序列，无时间戳列；论文给出的采样间隔约为 1.5 ms。}
+- key: multiuser
+  status: provided
+  note: {en: 'Three modems (UE_A, UE_B, UE_C) log the same measurement ID for each event; clock synchronization between modems is not reported.', zh: 三台终端（UE_A、UE_B、UE_C）对每个事件使用相同的测量编号；终端间时钟同步未报告。}
+- key: multibs
+  status: none
+  note: {en: One 5G mmWave base station and an LTE anchor; no multi-base-station sets., zh: 仅一个 5G mmWave 基站和一个 LTE anchor；无多基站集合。}
+- key: crossfreq
+  status: provided
+  note: {en: 4G sub-6 GHz and 5G mmWave RSRP are recorded by the same modems for the same events; per-sample time alignment across bands is not reported., zh: 同一终端对同一事件记录 4G sub-6 GHz 与 5G mmWave 的 RSRP；跨频段的逐采样时间对齐未报告。}
+- key: near_field
+  status: unknown
+  note: {en: The sources do not state any near-field modelling; the data are measurements., zh: 来源未说明任何近场特性；数据为实测。}
+- key: high_mobility
+  status: none
+  note: {en: 'The UEs are fixed; pedestrians and AGVs act as moving obstacles, not as users.', zh: UE 固定；行人和 AGV 作为移动障碍物，而非用户。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: 'Pedestrian and AGV passages across the links on track1 and track2, labelled by mode in the folder structure.', zh: 行人和 AGV 在 track1、track2 上穿越链路，文件夹结构中按模式标注。}
+- key: reflection
+  status: provided
+  note: {en: Inherent in the indoor industrial measurement; not labelled per path., zh: 属于室内工业实测中固有的现象，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: Inherent in the indoor industrial measurement; not labelled per path., zh: 属于室内工业实测中固有的现象，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: Inherent in the indoor industrial measurement; not labelled per path., zh: 属于室内工业实测中固有的现象，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: Inherent in the indoor industrial measurement; not labelled per path., zh: 属于室内工业实测中固有的现象，未按路径标注。}
+- key: polarization
+  status: unknown
+  note: {en: The sources do not mention polarization., zh: 来源未提及极化。}
+- key: em_field
+  status: none
+  note: {en: Only received-power values; no E-field or antenna-pattern data., zh: 仅有接收功率值；不含电场或天线方向图数据。}
+versions:
+- version: Initial commit
+  date: '2024-10-07'
+  summary: {en: 'Only commit in the repository: the csv folder with RSRP traces for LoS runs and pedestrian and AGV passages on track1 and track2, plus main.py, main.m, README and the CC BY 4.0 license. The repository has no tagged releases.', zh: 仓库中唯一的提交：包含 csv 文件夹（LoS 运行以及行人和 AGV 在 track1、track2 上通过时的 RSRP 轨迹）、main.py、main.m、README 和 CC BY 4.0 许可证。仓库没有带标签的发布版本。}
+  url: https://github.com/tudo-cni/immerse_dataset/commits/main

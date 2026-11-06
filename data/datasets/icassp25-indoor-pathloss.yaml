@@ -15,10 +15,10 @@ paper: arxiv:2501.13698
 used_in: []
 citing: ['doi:10.1109/icc59461.2026.11587950', 'doi:10.1109/icc59461.2026.11587244', 'doi:10.1109/twc.2026.3731526']
 summary: {en: 'Ray-traced indoor pathloss radio maps of 25 indoor environments at 868 MHz, 1.8 GHz and 3.5 GHz, sampled every 0.25 m. The test set of the ICASSP 2025 challenge is not part of the published data.', zh: 基于射线追踪生成的室内路径损耗无线电地图，覆盖25个室内环境，频率为868 MHz、1.8 GHz和3.5 GHz，采样间距为0.25 m。ICASSP 2025挑战赛的测试集未包含在已发布数据中。}
-sources: ['https://ieee-dataport.org/documents/indoor-radio-map-dataset', 'https://dx.doi.org/10.21227/c0ec-cw74', 'https://arxiv.org/abs/2501.13698', 'https://arxiv.org/html/2501.13698']
+sources: ['https://ieee-dataport.org/documents/indoor-radio-map-dataset', 'https://dx.doi.org/10.21227/c0ec-cw74', 'https://arxiv.org/abs/2501.13698', 'https://arxiv.org/html/2501.13698', 'https://indoorradiomapchallenge.github.io/', 'https://indoorradiomapchallenge.github.io/timeline.html', 'https://indoorradiomapchallenge.github.io/dataset.html']
 checked: '2026-11-06'
-overview: {en: 'The ICASSP 2025 Indoor Pathloss Radio Map Dataset provides ray-traced indoor pathloss radio maps, prepared for the ICASSP 2025 Indoor Path Loss Prediction Challenge. Bakirtzis et al. created the dataset in August 2024, and the IEEE DataPort page was last updated in February 2026. The maps cover 25 indoor environments of different sizes and complexity, built from materials such as concrete, plasterboard, wood, glass and metal. Each environment is simulated at 868 MHz, 1.8 GHz and 3.5 GHz, with five antenna radiation patterns, one of which is isotropic. The transmitter sits 1.5 m above the floor, and pathloss is sampled every 0.25 m on a receiving plane at the same height. The data are stored as PNG and CSV files, with pathloss values from 13 dB to 160 dB. The paper states that the challenge test set is not published, and the separate test archive on the page contains inputs only. Downloading requires an IEEE DataPort subscription.', zh: ICASSP 2025 室内路径损耗无线电地图数据集提供基于射线追踪生成的室内路径损耗地图，为
-    ICASSP 2025 室内路径损耗预测挑战赛准备。数据集由 Bakirtzis 等人于 2024 年 8 月创建，IEEE DataPort 页面最后更新于 2026 年 2 月。地图覆盖 25 个室内环境，环境尺寸与复杂程度各不相同，墙体材料包括混凝土、石膏板、木材、玻璃和金属。每个环境在 868 MHz、1.8 GHz 和 3.5 GHz 下仿真，使用五种天线辐射方向图，其中一种为全向（isotropic）。发射机位于地面以上 1.5 m，路径损耗在同一高度的接收平面上以 0.25 m 为间隔采样。数据以 PNG 和 CSV 格式存储，路径损耗值范围为 13 dB 至 160 dB。论文称挑战赛测试集未公开，页面上的单独测试压缩包仅包含输入数据。下载需要 IEEE DataPort 订阅。}
+overview: {en: 'The ICASSP 2025 Indoor Pathloss Radio Map Dataset provides ray-traced indoor pathloss radio maps, prepared for the ICASSP 2025 Indoor Path Loss Prediction Challenge. Bakirtzis et al. created the dataset in August 2024, and the IEEE DataPort page was last updated in February 2026. The maps cover 25 indoor environments of different sizes and complexity, built from materials such as concrete, plasterboard, wood, glass and metal. The dataset includes three frequency bands (868 MHz, 1.8 GHz and 3.5 GHz) and five antenna radiation patterns, one of which is isotropic. The transmitter sits 1.5 m above the floor, and pathloss is sampled every 0.25 m on a receiving plane at the same height. The data are stored as PNG and CSV files, with pathloss values from 13 dB to 160 dB. The paper states that the challenge test set is not published, and the separate test archive on the page contains inputs only. Downloading requires an IEEE DataPort subscription.', zh: ICASSP 2025 室内路径损耗无线电地图数据集提供基于射线追踪生成的室内路径损耗地图，服务于
+    ICASSP 2025 室内路径损耗预测挑战赛。Bakirtzis 等人于 2024 年 8 月创建该数据集，IEEE DataPort 页面最后更新于 2026 年 2 月。地图覆盖 25 个室内环境，环境尺寸与复杂程度各不相同，墙体材料包括混凝土、石膏板、木材、玻璃和金属。数据集包含 868 MHz、1.8 GHz 和 3.5 GHz 三个频段以及五种天线辐射方向图，其中一种为全向（isotropic）。发射机位于地面以上 1.5 m，路径损耗在同一高度的接收平面上以 0.25 m 为间隔采样。数据以 PNG 和 CSV 格式存储，路径损耗值范围为 13 dB 至 160 dB。论文称挑战赛测试集未公开，页面上的单独测试压缩包仅包含输入数据。下载需要 IEEE DataPort 订阅。}
 signal_details:
 - signal: pathloss
   text: {en: 'Pathloss radio maps in dB, one map per simulation, stored as PNG and CSV. Each input is an RGB image: the first channel is normal-incidence reflectance, the second is incidence transmittance (both 0 for air), and the third is the Tx-to-point distance. Each target is a grayscale image in which each pixel holds the pathloss value, with values from 13 dB to 160 dB on a 0.25 m grid. Each sample is named B(ID)_Ant(ID)_f(ID)_S(ID), and the Position folder gives transmitter positions for every building, frequency and antenna.', zh: 以 dB 表示的路径损耗无线电地图，每次仿真一幅，以 PNG 和 CSV 格式存储。每个输入为 RGB 图像：第一通道为法向入射反射率，第二通道为入射透射率（空气中均为 0），第三通道为发射机到各点的距离。每个标签为灰度图像，每个像素存储路径损耗值，取值范围为 13 dB 至 160 dB，网格间距 0.25 m。样本以 B(ID)_Ant(ID)_f(ID)_S(ID) 命名，Position 文件夹给出每个建筑、频率与天线组合下的发射机位置。}
@@ -33,13 +33,13 @@ pipeline:
     outputs:
     - {en: 25 training environments, zh: 25 个训练环境}
   - title: {en: Ray tracing, zh: 射线追踪}
-    detail: {en: 'Ranplan Wireless ray-tracing software computes the pathloss radio maps. Ray paths are traced up to 8 reflections, 10 transmissions and 2 diffractions. The transmitter is 1.5 m above the floor. The software version is not stated.', zh: Ranplan Wireless 射线追踪软件计算路径损耗无线电地图。射线路径最多追踪 8 次反射、10 次透射和 2 次绕射。发射机位于地面以上 1.5 m。论文未给出软件版本。}
+    detail: {en: 'Ranplan Wireless ray-tracing software computes the pathloss radio maps. Ray paths are traced up to 8 reflections, 10 transmissions and 2 diffractions. The transmitter is 1.5 m above the floor.', zh: Ranplan Wireless 射线追踪软件计算路径损耗无线电地图。射线路径最多追踪 8 次反射、10 次透射和 2 次绕射。发射机位于地面以上 1.5 m。}
     inputs:
     - {en: Environment geometry and transmitter at 1.5 m, zh: 环境几何与 1.5 m 高的发射机}
     outputs:
     - {en: Pathloss values at receiving points, zh: 接收点的路径损耗值}
   - title: {en: Grid sampling, zh: 网格采样}
-    detail: {en: Pathloss is sampled on a receiving plane at 1.5 m height on a 0.25 m grid. The paper does not state transmit power or bandwidth., zh: 路径损耗在 1.5 m 高的接收平面上以 0.25 m 网格采样。论文未给出发射功率与带宽。}
+    detail: {en: Pathloss is sampled on a receiving plane at 1.5 m height on a 0.25 m grid., zh: 路径损耗在 1.5 m 高的接收平面上以 0.25 m 网格采样。}
     inputs:
     - {en: Ray-traced pathloss values, zh: 射线追踪得到的路径损耗值}
     outputs:
@@ -51,3 +51,111 @@ pipeline:
     outputs:
     - {en: PNG and CSV files, zh: PNG 与 CSV 文件}
     - {en: 'Position, Radiation_Patterns and Building_Details folders', zh: Position、Radiation_Patterns 与 Building_Details 文件夹}
+size_gb: 0.81
+facts:
+- label: {en: Test set, zh: 测试集}
+  text: {en: 'The challenge test set covers 5 geometries, a known and an unknown frequency band (868 MHz and 2.4 GHz), and two antenna radiation patterns absent from the training data. It is not published.', zh: 挑战赛测试集包含 5 种几何结构、一个已知频段与一个未知频段（868 MHz 与 2.4 GHz），以及两种训练数据中没有的天线辐射方向图，该测试集未公开。}
+- label: {en: Sample index, zh: 样本编号}
+  text: {en: Sample indices run from 0 to 49 for Ant1 and from 0 to 79 for Ant2 to Ant5., zh: Ant1 的样本编号为 0 至 49，Ant2 至 Ant5 的样本编号为 0 至 79。}
+- label: {en: Challenge tasks, zh: 挑战赛任务}
+  text: {en: 'Task 1 tests unseen indoor environments, Task 2 tests new building layouts and frequency bands, and Task 3 also varies the antenna radiation patterns. The score is the weighted average of the three task RMSEs, with weights 0.3, 0.3 and 0.4.', zh: 任务 1 测试未见过的室内环境，任务 2 测试新的建筑布局与频段，任务 3 另外变化天线辐射方向图。评分为三项任务 RMSE 的加权平均，权重依次为 0.3、0.3 和 0.4。}
+- label: {en: Archive contents, zh: 压缩包内容}
+  text: {en: 'ICASSP2025_Dataset.zip (794.12 MB) holds the training data, and ICASSP2025_Test_Data.zip (19.03 MB) holds the challenge test inputs.', zh: ICASSP2025_Dataset.zip（794.12 MB）包含训练数据，ICASSP2025_Test_Data.zip（19.03 MB）包含挑战赛测试输入。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only pathloss maps are released; no complex channel data., zh: 仅发布路径损耗地图，不含复数信道数据。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile; each grid point holds one pathloss value., zh: 不含冲激响应或功率时延谱；每个网格点只有一个路径损耗数值。}
+- key: paths
+  status: none
+  note: {en: 'Per-path delay, angle, power and phase are not released.', zh: 不发布逐径时延、角度、功率和相位。}
+- key: interaction
+  status: simulate
+  note: {en: 'The ray tracer used up to 8 reflections, 10 transmissions and 2 diffractions, but only the resulting pathloss is released; per-path interactions need a rerun of the generator.', zh: 射线追踪最多使用 8 次反射、10 次透射和 2 次绕射，但仅发布最终路径损耗；逐径交互需重新运行生成器。}
+- key: power
+  status: provided
+  note: {en: 'Pathloss in dB on a 0.25 m grid, with values from 13 dB to 160 dB.', zh: 以 dB 表示的路径损耗，网格间距 0.25 m，取值范围 13 dB 至 160 dB。}
+- key: iq
+  status: none
+  note: {en: No raw I/Q samples; the release contains ray-traced pathloss maps only., zh: 不含原始 I/Q 样本；发布内容仅为射线追踪路径损耗地图。}
+- key: beam_labels
+  status: none
+  note: {en: Each map corresponds to one transmitter position and antenna pattern; no beam indices or per-beam gains are given., zh: 每幅地图对应一个发射机位置和一种天线方向图；不含波束索引或逐波束增益。}
+- key: position
+  status: provided
+  note: {en: 'The Position folder lists Tx positions for every building, frequency and antenna.', zh: Position 文件夹列出每个建筑、频率和天线的发射机位置。}
+- key: geometry
+  status: provided
+  note: {en: '2D layouts are stored as input images, and Building_Details gives boundary data (W, H); no 3D scene files are listed.', zh: 二维布局以输入图像形式存储，Building_Details 给出边界数据（W、H）；未列出任何三维场景文件。}
+- key: materials
+  status: unknown
+  note: {en: Only normal-incidence reflectance and transmittance per pixel are released; material types and electrical parameters are not listed., zh: 仅发布每像素的法向入射反射率和透射率；材料类型与电参数未列出。}
+- key: rgb
+  status: none
+  note: {en: 'The ''RGB'' files are three-channel geometry tensors (reflectance, transmittance, distance), not camera images.', zh: 所谓 'RGB' 文件是三通道几何张量（反射率、透射率、距离），而非相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth measurements; the release holds simulated maps and geometry tensors., zh: 无深度测量数据；发布内容为仿真地图和几何张量。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data in the release., zh: 发布内容不含激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data in the release., zh: 发布内容不含雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial measurement data in the release., zh: 发布内容不含惯性测量数据。}
+- key: time_series
+  status: none
+  note: {en: Each sample is one static simulation; there is no temporal sequence., zh: 每个样本是一次静态仿真，不存在时间序列。}
+- key: multiuser
+  status: none
+  note: {en: One transmitter per simulation; no set of simultaneous users., zh: 每次仿真仅一个发射机；不存在同时存在的多用户集合。}
+- key: multibs
+  status: none
+  note: {en: One transmitter per simulation; no multi-base-station sets., zh: 每次仿真仅一个发射机；不存在多基站集合。}
+- key: crossfreq
+  status: provided
+  note: {en: 'Building IDs are shared across the three frequencies (868 MHz, 1.8 GHz, 3.5 GHz), indexed by f(ID) in the sample names.', zh: 三个频点（868 MHz、1.8 GHz、3.5 GHz）共享建筑编号，样本名中以 f(ID) 标识频点。}
+- key: near_field
+  status: unknown
+  note: {en: The sources do not state whether near-field or spherical-wave antenna effects are modelled., zh: 来源未说明是否建模近场或球面波天线效应。}
+- key: high_mobility
+  status: none
+  note: {en: Static transmitters and receivers; no user speed is modelled., zh: 收发端静止；未建模用户速度。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Static scenes; no moving blockers., zh: 场景静态，不存在移动遮挡物。}
+- key: reflection
+  status: provided
+  note: {en: 'The ray tracer traced up to 8 reflections; only the resulting pathloss is released, not per path.', zh: 射线追踪最多追踪 8 次反射；仅发布最终路径损耗，不逐径发布。}
+- key: diffraction
+  status: provided
+  note: {en: 'The ray tracer traced up to 2 diffractions; only the resulting pathloss is released, not per path.', zh: 射线追踪最多追踪 2 次绕射；仅发布最终路径损耗，不逐径发布。}
+- key: scattering
+  status: unknown
+  note: {en: The sources do not state whether diffuse scattering was enabled., zh: 来源未说明是否启用漫散射。}
+- key: transmission
+  status: provided
+  note: {en: 'The ray tracer traced up to 10 transmissions; only the resulting pathloss is released, not per path.', zh: 射线追踪最多追踪 10 次透射；仅发布最终路径损耗，不逐径发布。}
+- key: polarization
+  status: unknown
+  note: {en: The sources do not mention polarization., zh: 来源未提及极化。}
+- key: em_field
+  status: provided
+  note: {en: Azimuth radiation patterns for five antennas are released (Ant1 isotropic); no E-field components or field maps., zh: 发布五种天线的方位角辐射方向图（Ant1 为全向）；不含电场分量或场图。}
+versions:
+- version: Page update
+  date: '2026-02-17'
+  summary: {en: IEEE DataPort page last updated; the page does not state which files or fields changed., zh: IEEE DataPort 页面最后更新；页面未说明更改了哪些文件或字段。}
+  url: https://ieee-dataport.org/documents/indoor-radio-map-dataset
+- version: Test-input archive
+  date: '2024-11-15'
+  summary: {en: 'Evaluation test-input archive ICASSP2025_Test_Data.zip (19.03 MB) for the challenge tasks, inputs only; the challenge timeline lists 15 Nov 2024 as its release date.', zh: 挑战赛评测测试输入压缩包 ICASSP2025_Test_Data.zip（19.03 MB），仅含任务输入，不含输出地图；挑战赛时间表将发布日期列为 2024 年 11 月 15 日。}
+  url: https://indoorradiomapchallenge.github.io/timeline.html
+- version: Initial posting
+  date: '2024-08-01'
+  summary: {en: 'Dataset created on IEEE DataPort (DOI 10.21227/c0ec-cw74) with the training archive ICASSP2025_Dataset.zip (794.12 MB): input tensors, pathloss maps in PNG and CSV, Tx positions, radiation patterns and building details.', zh: 在 IEEE DataPort 创建数据集（DOI 10.21227/c0ec-cw74），训练压缩包 ICASSP2025_Dataset.zip（794.12 MB）包含输入张量、PNG 与 CSV 格式的路径损耗地图、发射机位置、辐射方向图和建筑细节。}
+  url: https://ieee-dataport.org/documents/indoor-radio-map-dataset

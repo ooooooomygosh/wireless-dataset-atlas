@@ -15,7 +15,7 @@ paper: doi:10.1109/mcom.002.2200028
 used_in: ['doi:10.1109/tmc.2024.3401046']
 citing: ['doi:10.1109/comst.2023.3336917', 'doi:10.1109/jstsp.2024.3405859', 'doi:10.1109/mnet.2023.3321520']
 summary: {en: 'Measured 60 GHz V2X data recorded on open streets in downtown Boston, with time-synchronized Ouster LiDAR, camera and GPS data paired with per-sector data rate and RSSI ground truth. The data covers LOS and NLOS cases with a pedestrian or a static or moving car as obstacle.', zh: 在波士顿市中心开放街道上采集的60 GHz V2X测量数据，包含时间同步的Ouster LiDAR、相机和GPS数据，并配有各扇区的数据速率与RSSI真值。数据涵盖LOS和NLOS情况，遮挡物为行人、静止车辆或移动车辆。}
-sources: ['https://ieee-dataport.org/documents/e-flash', 'https://genesys-lab.org/multimodal-fusion-nextg-v2x-communications', 'https://api.crossref.org/works?query.title=Multimodality+in+mmWave+MIMO+Beam+Selection+Using+Deep+Learning+Datasets+and+Challenges&rows=3&select=DOI,title,issued']
+sources: ['https://ieee-dataport.org/documents/e-flash', 'https://genesys-lab.org/multimodal-fusion-nextg-v2x-communications', 'https://api.crossref.org/works?query.title=Multimodality+in+mmWave+MIMO+Beam+Selection+Using+Deep+Learning+Datasets+and+Challenges&rows=3&select=DOI,title,issued', 'https://api.crossref.org/works/10.1109/mcom.002.2200028', 'https://api.openalex.org/works/doi:10.1109/mcom.002.2200028', 'https://api.datacite.org/dois/10.21227/qz96-yh44']
 checked: '2026-11-06'
 overview: {en: 'e-FLASH is a measured 60 GHz V2X dataset produced by Northeastern University and published on IEEE DataPort in 2023. The data were recorded on open streets in downtown Boston, with TP-Link Talon AD7200 routers (Qualcomm QCA9500 802.11ad chips) acting as base station and receiver. The sensor streams are time-synchronized and include two LiDARs (Velodyne VLP-16 and Ouster OS1-64), two GoPro cameras and a GPS unit. The scenarios cover line-of-sight passing and non-line-of-sight cases in which a pedestrian, a static car or a moving car blocks the link. The RF ground truth is the data transmission rate and RSSI for each of 34 sectors, recorded together with the sensor data. The files are rosbag (.bag) files and image files, organized by category, scenario and episode, and the processed archive is 22.3 GB. The primary target is mmWave beamforming, where the non-RF sensor data narrow the exhaustive beam search.', zh: e-FLASH 是一个 60 GHz V2X 实测数据集，由 Northeastern University 制作，2023
     年发布在 IEEE DataPort 上。数据采集于波士顿市中心的开放街道，由 TP-Link Talon AD7200 路由器（搭载 Qualcomm QCA9500 802.11ad 芯片）分别作为基站和接收端。传感器数据流经过时间同步，包括两台 LiDAR（Velodyne VLP-16 和 Ouster OS1-64）、两台 GoPro 相机和一个 GPS 单元。场景覆盖视距通过以及行人、静止车辆或移动车辆遮挡链路的非视距情况。射频真值为每个扇区的数据传输速率和 RSSI，共 34 个扇区，与传感器数据一同记录。文件为 rosbag（.bag）和图像文件，按类别、场景和 episode 组织，处理后的压缩包大小为 22.3 GB。主要目标是毫米波波束成形，利用非射频传感器数据缩小穷举波束搜索的范围。}
@@ -63,3 +63,99 @@ pipeline:
     - {en: 'ROS bag files, image files and per-sector RF logs', zh: ROS bag 文件、图像文件和各扇区射频日志}
     outputs:
     - {en: labeled synchronized samples, zh: 带标签的同步样本}
+samples: 10853 samples in 90 episodes
+standard: IEEE 802.11ad
+mobility: vehicle-mounted sensors at 10 to 20 mph
+facts:
+- label: {en: Sector codebook, zh: 扇区码本}
+  text: {en: 'The default codebook has 34 sectors, with IDs 1 to 31 and 61 to 63. IDs 32 to 60 are undefined. Each sample carries a sector label, and the RF ground truth is the data rate and RSSI for each sector.', zh: 默认码本包含 34 个扇区，编号为 1 至 31 和 61 至 63，编号 32 至 60 未定义。每个样本带有扇区标签，射频真值为各扇区的数据速率和 RSSI。}
+- label: {en: Scenario counts, zh: 场景数量}
+  text: {en: LOS passing at 10 mph has 10 episodes and 1568 samples. Pedestrian blockage at 15 mph has 30 episodes and 4791 samples. Static-car blockage at 10 mph has 10 episodes and 1506 samples. Moving-car blockage at 15 or 20 mph has 40 episodes and 2988 samples., zh: 10 mph 视距通过共 10 个 episode、1568 个样本。15 mph 行人遮挡共 30 个 episode、4791 个样本。10 mph 静止车辆遮挡共 10 个 episode、1506 个样本。15 或 20 mph 移动车辆遮挡共 40 个 episode、2988 个样本。}
+- label: {en: Relation to FLASH, zh: 与 FLASH 的关系}
+  text: {en: 'e-FLASH extends the FLASH dataset with two extra sensors: a second GoPro camera (Hero9, front-facing) and an Ouster OS1-64 LiDAR.', zh: e-FLASH 在 FLASH 数据集基础上增加了两种传感器：第二台 GoPro 相机（Hero9，前向）和 Ouster OS1-64 LiDAR。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Per-sector RSSI and data rate only; no channel estimates., zh: 仅有各扇区的 RSSI 和数据速率，不含信道估计。}
+- key: cir
+  status: none
+  note: {en: No impulse response or power delay profile; link-level sector measurements only., zh: 不含冲激响应或功率时延分布；仅有链路级扇区测量。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters; link-level sector measurements only., zh: 不含逐径参数；仅有链路级扇区测量。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data; only per-sector RSSI and data rate., zh: 不含逐径交互信息，仅有各扇区的 RSSI 和数据速率。}
+- key: power
+  status: provided
+  note: {en: 'RSSI for each of 34 sectors (IDs 1 to 31 and 61 to 63), time-synchronized with the sensor data.', zh: 34 个扇区（编号 1 至 31 及 61 至 63）的 RSSI，与传感器数据同步。}
+- key: iq
+  status: none
+  note: {en: Only RSSI and data rate are recorded; no I/Q samples., zh: 仅记录 RSSI 和数据速率，无 I/Q 采样。}
+- key: beam_labels
+  status: provided
+  note: {en: Each sample carries a sector label; per-sector RSSI and data rate are the ground truth., zh: 每个样本带有扇区标签；各扇区的 RSSI 和数据速率为真值。}
+- key: position
+  status: provided
+  note: {en: 'GPS coordinates at 1 Hz from an on-board MyLincoln Touch GPS, recorded in the ROS bag files.', zh: 车载 MyLincoln Touch GPS 的坐标，频率 1 Hz，记录于 ROS bag 文件中。}
+- key: geometry
+  status: none
+  note: {en: Release contains rosbag and image files only; no map or 3D scene files., zh: 发布内容仅包括 rosbag 和图像文件，不含地图或三维场景文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters in the release., zh: 数据中没有材料参数。}
+- key: rgb
+  status: provided
+  note: {en: 'Two GoPro cameras with 130° field of view at 30 fps; camera 1 faces the base station side, camera 2 faces forward.', zh: 两台 GoPro 相机，视场角 130°，30 fps；相机 1 朝向基站一侧，相机 2 朝前。}
+- key: depth
+  status: none
+  note: {en: No depth camera; LiDAR point clouds are the only range data., zh: 没有深度相机，LiDAR 点云是唯一的距离数据。}
+- key: lidar
+  status: provided
+  note: {en: 'Velodyne VLP-16 (16 channels) and Ouster OS1-64 (64 channels), 10 Hz each.', zh: Velodyne VLP-16（16 线）和 Ouster OS1-64（64 线），各 10 Hz。}
+- key: radar
+  status: none
+  note: {en: No radar sensor in the sensor list., zh: 传感器列表中没有雷达。}
+- key: imu
+  status: none
+  note: {en: No IMU in the sensor list., zh: 传感器列表中没有 IMU。}
+- key: time_series
+  status: provided
+  note: {en: Sensor streams and RF ground truth are time-synchronized on one onboard computer clock., zh: 传感器数据流与射频真值在同一台车载计算机时钟下同步。}
+- key: multiuser
+  status: none
+  note: {en: One vehicle and one link; no simultaneous users are described., zh: 单车单链路，未描述同时存在的多个用户。}
+- key: multibs
+  status: none
+  note: {en: One base station (Talon router) and one receiver., zh: 单个基站（Talon 路由器）和单个接收端。}
+- key: crossfreq
+  status: none
+  note: {en: 60 GHz only., zh: 仅 60 GHz 频段。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: provided
+  note: {en: Vehicle runs at 10 to 20 mph (about 16 to 32 km/h); moving-car episodes include 20 mph., zh: 车辆行驶速度为 10 至 20 mph（约 16 至 32 km/h），移动车辆场景包含 20 mph。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: Pedestrians and moving cars block the link in NLOS episodes., zh: NLOS 场景中，行人和移动车辆遮挡链路。}
+- key: reflection
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: diffraction
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: scattering
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- key: transmission
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含在测量之中，未按径标注}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Only RSSI and data rate; no field components or antenna patterns., zh: 仅有 RSSI 和数据速率，不含场分量或天线方向图。}
+versions:
+- version: '2023'
+  date: '2023-08-02'
+  summary: {en: 'Processed archive e-FLASH-processed.zip (22.3 GB) published on IEEE DataPort (DOI 10.21227/qz96-yh44) with rosbag files, image files and synchronized sector labels. The DataPort record was created and last updated on the same day.', zh: 处理后的压缩包 e-FLASH-processed.zip（22.3 GB）发布于 IEEE DataPort（DOI 10.21227/qz96-yh44），包含 rosbag 文件、图像文件及同步的扇区标签。DataPort 记录的创建与最后更新为同一天。}
+  url: https://ieee-dataport.org/documents/e-flash

@@ -5,13 +5,13 @@ origin: ray-tracing
 tasks: [radio-map]
 signals: [pathloss]
 environment: [outdoor-urban]
-license: MIT
+license: MIT License
 access: {url: 'https://github.com/UNIC-Lab/UrbanRadio3D', type: registration}
 paper: doi:10.1109/TNSE.2025.3590545
 used_in: []
 citing: ['doi:10.1109/tccn.2025.3641513', 'doi:10.1109/tmc.2026.3692307', 'doi:10.1109/tccn.2026.3685413']
 summary: {en: 'Ray-traced 3D radio maps of urban environments with pathloss, direction-of-arrival and time-of-arrival layers, together with building height information. The repository provides the maps as PNG files and a building height archive, and the download code is obtained through a questionnaire.', zh: 基于光线追踪生成的城市环境三维无线电地图，包含路径损耗、到达方向（DoA）和到达时间（ToA）等层，并附带建筑高度信息。仓库以 PNG 文件提供地图，并附有建筑高度压缩包，下载需通过问卷获取解压码。}
-sources: ['https://arxiv.org/abs/2507.12166', 'https://github.com/UNIC-Lab/UrbanRadio3D', 'https://api.github.com/repos/UNIC-Lab/UrbanRadio3D/license', 'https://api.crossref.org/works/10.1109/TNSE.2025.3590545']
+sources: ['https://arxiv.org/abs/2507.12166', 'https://github.com/UNIC-Lab/UrbanRadio3D', 'https://api.github.com/repos/UNIC-Lab/UrbanRadio3D/license', 'https://api.crossref.org/works/10.1109/TNSE.2025.3590545', 'https://arxiv.org/html/2507.12166', 'https://raw.githubusercontent.com/UNIC-Lab/UrbanRadio3D/main/README.md', 'https://raw.githubusercontent.com/UNIC-Lab/UrbanRadio3D/main/LICENSE', 'https://arxiv.org/abs/2507.12166v1', 'https://github.com/UNIC-Lab/UrbanRadio3D/releases', 'https://github.com/UNIC-Lab/UrbanRadio3D/commits/main']
 checked: '2026-11-06'
 overview: {en: 'UrbanRadio3D is a simulated dataset of 3D radio maps for urban environments, released with the RadioDiff-3D paper in IEEE TNSE 2025 by the UNIC Lab at Xidian University. It contains 701 urban regions from six cities, each 256 m x 256 m at 1 m per pixel, with building heights from 6.6 m to 19.8 m. The maps were simulated with Altair WinProp''s Dominant Path Model, with isotropic transmitters at 23 dBm/Hz and a 5.9 GHz center carrier. Each region has 200 transmitter locations, and observation heights run from 1.0 m to 20.0 m in 1 m steps. The layers are pathloss, direction of arrival (azimuth and elevation), time of arrival, and propagation ray data, together with building masks and height maps. The maps are distributed as PNG files through Baidu and OneDrive links, and the extraction code is obtained by a questionnaire.', zh: UrbanRadio3D 是城市环境三维无线电地图的仿真数据集，随 RadioDiff-3D 论文于 2025 年发表在 IEEE TNSE，由 Xidian University 的 UNIC Lab 发布。数据集包含来自六个城市的 701 个城区，每个区域为 256 m x 256 m，分辨率
     1 m/像素，建筑高度为 6.6 m 至 19.8 m。地图由 Altair WinProp 的 Dominant Path Model 仿真，发射机为全向天线，发射功率 23 dBm/Hz，中心载频 5.9 GHz。每个区域有 200 个发射机位置，观测高度从 1.0 m 到 20.0 m，步长 1 m。数据层包括路径损耗、到达方向（方位角与俯仰角）、到达时间和传播射线数据，并附带建筑掩膜与高度图。地图以 PNG 文件形式通过百度网盘和 OneDrive 链接分发，解压码需通过问卷获取。}
@@ -22,13 +22,13 @@ pipeline:
   summary: {en: 'Ray-traced simulation in Altair WinProp produces per-height propagation results for building maps, which are thresholded, scaled and stored as PNG files for pathloss, DoA, ToA and ray layers.', zh: Altair WinProp 光线追踪仿真为建筑地图生成各高度的传播结果，经截断、缩放后以 PNG 文件保存为路径损耗、DoA、ToA 和射线层。}
   stages:
   - title: {en: Assemble building maps from six cities, zh: 整理六个城市的建筑地图}
-    detail: {en: 'The dataset uses 701 urban regions from six cities, each 256 m x 256 m at 1 m per pixel. Building masks and building heights (6.6 m to 19.8 m, varying across cities) form the geometry. The paper does not name the source of the map data or of the building heights.', zh: 数据集使用来自六个城市的 701 个城区，每个为 256 m x 256 m，分辨率 1 m/像素。建筑掩膜与建筑高度（6.6 m 至 19.8 m，随城市变化）构成几何信息。论文未说明地图数据与建筑高度的来源。}
+    detail: {en: 'Regions are taken from six representative cities: Kara, Berlin, Glasgow, Ljubljana, London and Tel Aviv. Each region is 256 m x 256 m at 1 m per pixel. Building masks and building heights (6.6 m to 19.8 m, varying across cities) form the geometry.', zh: 区域取自六个代表性城市：Kara、Berlin、Glasgow、Ljubljana、London 和 Tel Aviv。每个区域为 256 m x 256 m，分辨率 1 m/像素。建筑掩膜与建筑高度（6.6 m 至 19.8 m，随城市变化）构成几何信息。}
     inputs:
     - {en: Urban building geometry, zh: 城市建筑几何}
     outputs:
     - {en: Building masks and height maps, zh: 建筑掩膜与高度图}
   - title: {en: Simulate propagation with the Dominant Path Model, zh: 用 Dominant Path Model 仿真传播}
-    detail: {en: Altair WinProp's Dominant Path Model simulates isotropic transmitters at 23 dBm/Hz with a 5.9 GHz center carrier. Each map has 200 random transmitter locations. Observation heights run from 1.0 m to 20.0 m., zh: Altair WinProp 的 Dominant Path Model 仿真全向发射机，发射功率 23 dBm/Hz，中心载频 5.9 GHz。每张地图有 200 个随机发射机位置，观测高度从 1.0 m 到 20.0 m。}
+    detail: {en: 'Altair WinProp''s Dominant Path Model simulates isotropic transmitters at 23 dBm/Hz with a 5.9 GHz center carrier. Each map has 200 randomly selected transmitter locations. Receivers are simulated at 20 heights from 1.0 m to 20.0 m in 1 m steps, one simulation per height, and the results are stacked into a 3D map. The nominal receiver height is 1.5 m.', zh: Altair WinProp 的 Dominant Path Model 仿真全向发射机，发射功率 23 dBm/Hz，中心载频 5.9 GHz。每张地图随机选取 200 个发射机位置。接收高度从 1.0 m 到 20.0 m，步长 1 m，共 20 个高度，每个高度单独仿真后堆叠为三维地图。标称接收高度为 1.5 m。}
     inputs:
     - {en: Building maps, zh: 建筑地图}
     - {en: Transmitter locations, zh: 发射机位置}
@@ -47,3 +47,91 @@ pipeline:
     outputs:
     - {en: PNG maps for each layer and height, zh: 各层各高度的 PNG 地图}
     - {en: Train and test file splits, zh: 训练与测试文件划分}
+bands_ghz: [5.9]
+format: PNG
+samples: 2.80 million simulation instances (701 x 200 x 20)
+technical_notes:
+- {en: 'Buildings may disappear from a map when the observation height exceeds the surrounding buildings, since the receiver then has a line-of-sight path to the transmitter.', zh: 当观测高度超过周围建筑时，建筑可能在地图中消失，因为接收端此时与发射机之间具有视距路径。}
+- {en: 'The X and Y fields in file names are transmitter coordinates on the global map, and BID is the building map index.', zh: 文件名中的 X 与 Y 为全局地图上的发射机坐标，BID 为建筑地图编号。}
+limitations:
+- {en: 'All building facades share the same default WinProp material parameters, which the paper describes as an assumption of uniform electromagnetic behavior across building surfaces.', zh: 所有建筑立面采用相同的 WinProp 默认材料参数，论文将其表述为建筑表面电磁特性一致的假设。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The paper states that the dataset has no CSI-level labels., zh: 论文指出该数据集不含 CSI 级标签。}
+- {key: cir, status: unknown}
+- key: paths
+  status: unknown
+  note: {en: 'The ToA and DoA maps give one value per receiver location, and the sources do not say whether they describe one dominant path or several.', zh: ToA 和 DoA 地图为每个接收位置给出一个值，来源未说明它们对应单条主径还是多条路径。}
+- key: interaction
+  status: unknown
+  note: {en: 'The propagation_ray folder is listed, but the sources do not describe its contents.', zh: 数据集列出了 propagation_ray 文件夹，但来源未说明其内容。}
+- key: power
+  status: provided
+  note: {en: 'Pathloss maps for 20 receiver heights (1 m to 20 m) on 256 m x 256 m tiles at 1 m per pixel, thresholded at -169 dB to -92 dB and stored as PNG.', zh: 20 个接收高度（1 m 至 20 m）的路径损耗图，256 m x 256 m 区域，分辨率 1 m/像素，截断在 -169 dB 至 -92 dB 并保存为 PNG。}
+- key: iq
+  status: none
+  note: {en: 'Only map-level layers are released, not sampled waveforms.', zh: 仅发布地图级数据层，不含采样波形。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are in the released layers., zh: 发布的数据层中不含波束索引或分波束增益。}
+- key: position
+  status: provided
+  note: {en: 'Transmitter coordinates appear in file names and in a transmitter location map, with 200 transmitter locations per map.', zh: 发射机坐标编码在文件名和发射机位置图中，每张地图 200 个发射机位置。}
+- key: geometry
+  status: provided
+  note: {en: Building masks and height maps (6.6 m to 19.8 m) for 701 regions from six cities., zh: 六个城市 701 个区域的建筑掩膜和建筑高度图（6.6 m 至 19.8 m）。}
+- key: materials
+  status: none
+  note: {en: One default WinProp material set is applied to all building facades and is not released as a per-building layer., zh: 所有建筑立面采用同一套默认 WinProp 材料参数，未以逐建筑数据层的形式发布。}
+- key: rgb
+  status: none
+  note: {en: 'The released layers are radio maps, building masks and height maps only.', zh: 发布的数据层仅有无线电地图、建筑掩膜和高度图。}
+- key: depth
+  status: none
+  note: {en: 'The released layers are radio maps, building masks and height maps only.', zh: 发布的数据层仅有无线电地图、建筑掩膜和高度图。}
+- key: lidar
+  status: none
+  note: {en: 'The released layers are radio maps, building masks and height maps only.', zh: 发布的数据层仅有无线电地图、建筑掩膜和高度图。}
+- key: radar
+  status: none
+  note: {en: 'The released layers are radio maps, building masks and height maps only.', zh: 发布的数据层仅有无线电地图、建筑掩膜和高度图。}
+- key: imu
+  status: none
+  note: {en: 'The released layers are radio maps, building masks and height maps only.', zh: 发布的数据层仅有无线电地图、建筑掩膜和高度图。}
+- key: time_series
+  status: none
+  note: {en: 'The maps are static simulation snapshots, one per receiver height.', zh: 地图为静态仿真快照，每个接收高度一幅。}
+- key: multiuser
+  status: none
+  note: {en: 'Each simulation has one transmitter, so no simultaneous multi-user channels are released.', zh: 每次仿真只有一个发射机，因此不含同时存在的多用户信道。}
+- key: multibs
+  status: none
+  note: {en: 'The 200 transmitter locations per map are separate single-transmitter simulations, not a joint multi-BS set.', zh: 每张地图的 200 个发射机位置是各自独立的单发射机仿真，而非联合的多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: 'The dataset uses one carrier at 5.9 GHz, and the paper states that it supports only one frequency.', zh: 数据集仅含 5.9 GHz 一个载频，论文指出其只支持单一频率。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: The maps are static and no user speed is defined., zh: 地图为静态数据，未定义用户速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: Fresnel coefficients are enabled in the simulation setup; reflected contributions are in the pathloss maps and not labelled per path., zh: 仿真设置中启用了 Fresnel 系数；反射贡献包含在路径损耗图中，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: GTD/UTD diffraction is enabled in the simulation setup., zh: 仿真设置中启用了 GTD/UTD 绕射。}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: none
+  note: {en: The antennas are isotropic and the released layers are scalar., zh: 天线为全向天线，发布的数据层均为标量。}
+- key: em_field
+  status: none
+  note: {en: 'The released layers are pathloss, DoA, ToA and ray maps, with no field components or antenna patterns.', zh: 发布的数据层为路径损耗、DoA、ToA 和射线地图，不含场分量或天线方向图。}
+versions:
+- version: arXiv v1
+  date: '2025-07-16'
+  summary: {en: 'First arXiv version of the RadioDiff-3D paper, which introduces the UrbanRadio3D maps with pathloss, DoA and ToA layers.', zh: RadioDiff-3D 论文的首个 arXiv 版本，引入了包含路径损耗、DoA 和 ToA 层的 UrbanRadio3D 地图。}
+  url: https://arxiv.org/abs/2507.12166v1

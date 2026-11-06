@@ -6,7 +6,6 @@ organization: Simula Research Laboratory
 origin: measured
 tasks: [network-traffic]
 signals: [traffic, gps]
-bands_ghz: []
 environment: [vehicular, outdoor-urban]
 format: space-separated text
 mobility: bus, metro, tram, car, train, ferry
@@ -18,13 +17,13 @@ paper: doi:10.1145/2483977.2483991
 used_in: []
 citing: ['doi:10.1145/3098822.3098843', 'doi:10.1109/infocom.2016.7524428', 'doi:10.1109/tnet.2020.2996964']
 summary: {en: 'Logs of TCP streaming sessions on Telenor''s 3G/HSDPA network in Norway, with GPS positions and bytes received per measurement interval, recorded on bus, metro, tram, car, train and ferry routes. The test period is 2010-09-13 to 2011-04-21.', zh: 挪威 Telenor 3G/HSDPA 网络上 TCP 流媒体会话的日志，包含 GPS 位置和每个测量间隔接收的字节数，记录路线涵盖公交、地铁、有轨电车、汽车、火车和渡轮。测试时间为 2010-09-13 至 2011-04-21。}
-sources: ['https://datasets.simula.no/hsdpa/', 'https://api.crossref.org/works/10.1145/2483977.2483991']
+sources: ['https://datasets.simula.no/hsdpa/', 'https://api.crossref.org/works/10.1145/2483977.2483991', 'https://datasets.simula.no/downloads/hsdpa-tcp-logs/', 'https://datasets.simula.no/downloads/hsdpa-tcp-logs/bus.ljansbakken-oslo/', 'https://datasets.simula.no/downloads/hsdpa-tcp-logs/bus.ljansbakken-oslo/report.2010-09-28_1407CEST.log', 'https://datasets.simula.no/downloads/hsdpa-tcp-logs/httpthrottle.tar.gz', 'https://raw.githubusercontent.com/simula/datasets.simula.no/master/README.md']
 checked: '2026-11-06'
-overview: {en: 'The HSDPA commute-path bandwidth traces are logs of TCP streaming sessions on Telenor''s 3G/HSDPA mobile network in Norway, published by Simula Research Laboratory with the MMSys 2013 paper ''Commute path bandwidth traces from 3G networks'' by Riiser, Vigmostad, Griwodz and Halvorsen. In each test, adaptive video streams were downloaded at maximum speed, with no throttling or buffer limit, and the video segment duration was fixed at 2 seconds. The tests were run from 2010-09-13 to 2011-04-21. The logs are grouped into 11 routes across six transport types: bus, metro, tram, ferry, car and train. Each log line gives a Unix timestamp, a millisecond counter, the GPS latitude and longitude in decimal degrees, the bytes received since the previous line, and the milliseconds elapsed since the previous line. The archive also contains an Apache throttling module, httpthrottle, that replays a bandwidth log as a per-second kbit/s limit on the web server. The page names time-series forecasting
-    as the task. The log format has six columns and contains no radio measurement fields such as signal strength.', zh: HSDPA 通勤路径带宽轨迹是 Telenor 挪威 3G/HSDPA 移动网络上 TCP 流媒体会话的日志，由 Simula Research Laboratory 发布，对应 MMSys 2013 论文《Commute path bandwidth traces from 3G networks》（作者 Riiser、Vigmostad、Griwodz 和 Halvorsen）。每次测试中，自适应视频流以最高速度下载，不做限速或缓冲限制，视频分段时长固定为 2 秒。测试时间为 2010 年 9 月 13 日至 2011 年 4 月 21 日。日志按路线分组，共 11 条路线，覆盖公交、地铁、有轨电车、渡轮、汽车和火车六种交通方式。每行日志包含 Unix 时间戳、毫秒计数器、以十进制度表示的 GPS 纬度和经度、距上一行接收的字节数，以及距上一行经过的毫秒数。压缩包还包含 Apache 限速模块 httpthrottle，可将带宽日志以每秒 kbit/s 的限速回放。页面给出的任务为时间序列预测。日志格式共六列，不含信号强度等无线测量字段。}
+overview: {en: 'The HSDPA commute-path bandwidth traces are logs of TCP streaming sessions on Telenor''s 3G/HSDPA mobile network in Norway, published by Simula Research Laboratory with the MMSys 2013 paper ''Commute path bandwidth traces from 3G networks'' by Riiser, Vigmostad, Griwodz and Halvorsen. In each test, adaptive video streams were downloaded at maximum speed, with no throttling or buffer limit, and the video segment duration was fixed at 2 seconds. The tests were performed between 2010-09-13 and 2011-04-21. The logs are grouped into 11 routes across six transport types: bus, metro, tram, ferry, car and train. Each log line gives a Unix timestamp, a millisecond counter, the GPS latitude and longitude in decimal degrees, the bytes received since the previous line, and the milliseconds elapsed since the previous line. The download directory also includes httpthrottle.tar.gz, an Apache module that limits server throughput to a per-second kbit/s value taken from a bandwidth log. The
+    dataset page lists time-series forecasting as the task, and the six-column format contains no radio measurements such as signal strength.', zh: HSDPA 通勤路径带宽轨迹是挪威 Telenor 3G/HSDPA 移动网络上 TCP 流媒体会话的日志，由 Simula Research Laboratory 发布，对应 MMSys 2013 论文《Commute path bandwidth traces from 3G networks》（作者 Riiser、Vigmostad、Griwodz 和 Halvorsen）。每次测试中，自适应视频流以最高速度下载，不做限速或缓冲限制，视频分段时长固定为 2 秒。测试时间为 2010 年 9 月 13 日至 2011 年 4 月 21 日。日志按路线分组，共 11 条路线，覆盖公交、地铁、有轨电车、渡轮、汽车和火车六种交通方式。每行日志包含 Unix 时间戳、毫秒计数器、以十进制度表示的 GPS 纬度和经度、距上一行接收的字节数，以及距上一行经过的毫秒数。下载目录还包含 Apache 限速模块 httpthrottle.tar.gz，可按带宽日志中每秒的 kbit/s 数值限制服务器吞吐量。数据集页面将时间序列预测列为任务，六列的日志格式不含信号强度等无线测量字段。}
 signal_details:
 - signal: traffic
-  text: {en: 'Bytes received since the previous measurement in column 5 of each log line. Column 6 gives the milliseconds elapsed since the previous line, so dividing column 5 by column 6 gives the bandwidth in kilobytes per second, as the page states.', zh: 每行日志第 5 列为距上一次测量接收的字节数，第 6 列为距上一行经过的毫秒数。第 5 列除以第 6 列即得到以 kB/s 计的带宽，页面如此说明。}
+  text: {en: 'Bytes received since the previous measurement in column 5 of each log line. Column 6 gives the milliseconds elapsed since the previous line, so dividing column 5 by column 6 gives the bandwidth in kilobytes per second.', zh: 每行日志第 5 列为距上一次测量接收的字节数，第 6 列为距上一行经过的毫秒数。第 5 列除以第 6 列即得到以 kB/s 计的带宽。}
 - signal: gps
   text: {en: 'Latitude in decimal degrees in column 3 and longitude in decimal degrees in column 4 of each log line, giving the position for each measurement along the route.', zh: 每行日志第 3 列为十进制度表示的纬度，第 4 列为十进制度表示的经度，给出路线上每次测量对应的位置。}
 pipeline:
@@ -58,3 +57,100 @@ pipeline:
     - {en: httpthrottle.conf, zh: httpthrottle.conf}
     outputs:
     - {en: bandwidth-limited HTTP transfers, zh: 受带宽限制的 HTTP 传输}
+facts:
+- label: {en: Log location, zh: 日志位置}
+  text: {en: 'Each route folder holds report files named by date and time, for example report.2010-09-28_1407CEST.log in the bus route folder.', zh: 每个路线目录中的报告文件以日期和时间命名，例如公交路线目录中的 report.2010-09-28_1407CEST.log。}
+- label: {en: Throttling package, zh: 限速模块安装包}
+  text: {en: 'httpthrottle.tar.gz contains httpthrottle.py, httpthrottle.conf, make_pure_bwlog.pl, and INSTALL and USAGE files.', zh: httpthrottle.tar.gz 包含 httpthrottle.py、httpthrottle.conf、make_pure_bwlog.pl 以及 INSTALL 和 USAGE 文件。}
+limitations:
+- {en: 'Some routes have only one measurement, so their bandwidth plots have no standard deviation.', zh: 部分路线只有一次测量，因此其带宽图没有标准差。}
+- {en: 'The section of the metro route that runs in a tunnel had very low signal strength, which also lowered the measured bandwidth.', zh: 地铁路线中位于隧道内的路段信号强度很低，测得的带宽也随之降低。}
+- {en: The logs contain no radio measurements such as signal strength., zh: 日志不包含信号强度等无线测量值。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The logs carry no radio channel measurements such as CSI., zh: 日志不包含 CSI 等无线信道测量值。}
+- key: cir
+  status: none
+  note: {en: The logs carry no radio channel measurements such as impulse responses., zh: 日志不包含冲激响应等无线信道测量值。}
+- key: paths
+  status: none
+  note: {en: 'The logs hold throughput and GPS only, with no per-path data.', zh: 日志仅包含吞吐量与 GPS，不含逐径数据。}
+- key: interaction
+  status: none
+  note: {en: 'The logs hold throughput and GPS only, with no per-path interaction data.', zh: 日志仅包含吞吐量与 GPS，不含逐径交互数据。}
+- key: power
+  status: none
+  note: {en: 'The logs contain no signal strength or received power values, only bytes received per interval.', zh: 日志不包含信号强度或接收功率，仅记录每个间隔接收的字节数。}
+- key: iq
+  status: none
+  note: {en: The logs contain no I/Q samples., zh: 日志不包含 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: The six-column logs contain no beam information., zh: 六列格式的日志不含波束信息。}
+- key: position
+  status: provided
+  note: {en: 'GPS latitude and longitude in decimal degrees for each measurement, in columns 3 and 4.', zh: 每次测量的 GPS 纬度与经度（十进制度），位于第 3 列与第 4 列。}
+- key: geometry
+  status: none
+  note: {en: 'The release consists of text logs and the throttling module, with no 3D scene or map data files.', zh: 数据发布内容为文本日志与限速模块，不含三维场景或地图数据文件。}
+- key: materials
+  status: none
+  note: {en: 'The release consists of text logs and the throttling module, with no material parameters.', zh: 数据发布内容为文本日志与限速模块，不含材料参数。}
+- key: rgb
+  status: none
+  note: {en: 'The logs are text records of throughput and GPS, with no images.', zh: 日志为吞吐量与 GPS 的文本记录，不含图像。}
+- key: depth
+  status: none
+  note: {en: No depth sensor data are included., zh: 不包含深度传感器数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data are included., zh: 不包含激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: 'The measurements are HSDPA throughput, with no radar sensing data.', zh: 测量内容为 HSDPA 吞吐量，不含雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data are included in the six-column log format., zh: 六列日志格式中不包含 IMU 数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Each line has a Unix timestamp, a millisecond counter, the bytes received and the milliseconds elapsed since the previous line.', zh: 每行包含 Unix 时间戳、毫秒计数器、距上一行接收的字节数以及距上一行经过的毫秒数。}
+- key: multiuser
+  status: none
+  note: {en: Each log records one TCP streaming session., zh: 每个日志记录一次 TCP 流媒体会话。}
+- key: multibs
+  status: none
+  note: {en: The six-column logs contain no base station identifiers., zh: 六列日志不包含基站标识。}
+- key: crossfreq
+  status: none
+  note: {en: The logs come from a single HSDPA network with no paired multi-band data., zh: 日志来自单一 HSDPA 网络，不含配对的多频段数据。}
+- key: near_field
+  status: none
+  note: {en: The logs are throughput records with no array or spherical-wave modelling., zh: 日志为吞吐量记录，不含阵列或球面波建模。}
+- key: high_mobility
+  status: derivable
+  note: {en: Speed is not stated; it can be computed from consecutive GPS positions and Unix timestamps., zh: 来源未给出速度；可由相邻 GPS 位置与 Unix 时间戳计算得到。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: diffraction
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: scattering
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: transmission
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: polarization
+  status: none
+  note: {en: The logs contain no polarization information., zh: 日志不包含极化信息。}
+- key: em_field
+  status: none
+  note: {en: 'The logs contain throughput and GPS only, with no field-level outputs.', zh: 日志仅包含吞吐量与 GPS，不含场级输出。}
+versions:
+- version: MMSys 2013 dataset paper
+  date: 2013-02
+  summary: {en: 'Dataset introduced with the MMSys 2013 paper ''Commute path bandwidth traces from 3G networks'': TCP streaming logs from Telenor''s 3G/HSDPA network in Norway with GPS positions and bytes received per measurement, covering 11 routes across six transport types, tested 2010-09-13 to 2011-04-21.', zh: 随 MMSys 2013 论文《Commute path bandwidth traces from 3G networks》一同发布：挪威 Telenor 3G/HSDPA 网络上的 TCP 流媒体日志，包含 GPS 位置与每次测量接收的字节数，覆盖 11 条路线、六种交通方式，测试时间为 2010-09-13 至 2011-04-21。}
+  url: https://datasets.simula.no/hsdpa/

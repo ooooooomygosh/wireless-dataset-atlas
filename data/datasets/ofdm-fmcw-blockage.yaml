@@ -13,38 +13,130 @@ paper: doi:10.1109/jcs57290.2023.10107463
 used_in: []
 citing: []
 summary: {en: 'Paired 26 GHz OFDM communication testbed and 77 GHz FMCW MIMO radar recordings of human activity causing blockage, with bistatic CSI and multi-monostatic backscattered channels. The files include radar data and ground-truth videos.', zh: 同一测量中同时记录 26 GHz OFDM 通信测试平台与 77 GHz FMCW MIMO 雷达的数据，场景为人体活动造成的遮挡，包含双基地 CSI 与多单基地反向散射信道。文件包括雷达数据和真值视频。}
-sources: ['https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/2', 'https://data.4tu.nl/ndownloader/items/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/versions/2', 'https://api.openalex.org/works/doi:10.1109/jcs57290.2023.10107463']
+sources: ['https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/2', 'https://data.4tu.nl/ndownloader/items/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/versions/2', 'https://api.openalex.org/works/doi:10.1109/jcs57290.2023.10107463', 'https://data.4tu.nl/file/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/f07039f4-f861-4bea-9627-edfa251348b7', 'https://ris.utwente.nl/ws/files/458705533/26_GHz_OFDM_and_77_GHz_FMCW_Radar_Dataset_for_Domain_Shift_Invariant_Blockage_Prediction.pdf', 'https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi:10.48804/UBHZKF', 'https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1', 'https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/1', 'https://rdr.kuleuven.be/api/datasets/:persistentId/versions/1.0?persistentId=doi:10.48804/UBHZKF', 'https://rdr.kuleuven.be/api/access/datafile/27326', 'https://api.crossref.org/works/10.1109/jcs57290.2023.10107463']
 checked: '2026-11-06'
-overview: {en: 'This dataset pairs a 26 GHz OFDM communication testbed with a 77 GHz FMCW MIMO radar in one measurement campaign on blockage caused by human activities. Researchers from the University of Twente, TU Eindhoven and KU Leuven recorded it, and 4TU.ResearchData publishes version 2 (2023-07-07) under DOI 10.4121/22117145.v2. The stated motivation is domain shift: blockage model performance degrades when inference conditions differ from training conditions, so the recordings are intended to cover varying measurement circumstances. The archive holds pre-processed bistatic CSI, multi-monostatic backscattered channels, radar data and ground-truth videos, in BIN and MOV formats. The files are three zip archives and a Read_Me.txt, and the download-all size is 84,237,475,214 bytes unzipped. The OFDM communication part is described in a separate, openly accessible paper.', zh: '该数据集在同一次测量中，将 26 GHz OFDM 通信测试平台与 77 GHz FMCW MIMO 雷达配对，用于记录人体活动造成的遮挡。数据由 University of Twente、TU Eindhoven 和
-    KU Leuven 的研究人员采集，并由 4TU.ResearchData 发布第 2 版（2023-07-07），DOI 为 10.4121/22117145.v2。页面给出的动机是 domain shift：当推理条件与训练条件不同时，遮挡模型的性能会下降，因此记录旨在覆盖不同的测量条件。数据包含预处理后的双基地 CSI、多单基地反向散射信道、雷达数据与真值视频，格式为 BIN 与 MOV。文件由三个 zip 压缩包和一个 Read_Me.txt 组成，全部下载的解压总大小为 84,237,475,214 字节。OFDM 通信部分由另一篇公开可获取的论文描述。'}
+overview: {en: 'This dataset pairs a 26 GHz OFDM communication testbed with a 77 GHz FMCW MIMO radar in one measurement campaign on blockage caused by human activities. Researchers from the University of Twente, TU Eindhoven and KU Leuven recorded it, and 4TU.ResearchData publishes version 2 (2023-07-07) under DOI 10.4121/22117145.v2. The stated motivation is domain shift: blockage model performance degrades when inference conditions differ from training conditions, so the recordings are intended to cover varying measurement circumstances. The 4TU archive holds the radar data from the multi-monostatic set-up and ground-truth videos, in BIN and MOV formats, as three zip archives and a Read_Me.txt, with a download-all size of 84,237,475,214 bytes unzipped. The bistatic CSI from the 26 GHz OFDM testbed is not in that archive; it is published separately as the KU Leuven RDR dataset under DOI 10.48804/UBHZKF. The paper that describes both measurements is the IEEE JC&S 2023 paper with DOI 10.1109/JCS57290.2023.10107463.',
+  zh: '该数据集在同一次测量中，将 26 GHz OFDM 通信测试平台与 77 GHz FMCW MIMO 雷达配对，用于记录人体活动造成的遮挡。数据由 University of Twente、TU Eindhoven 和 KU Leuven 的研究人员采集，并由 4TU.ResearchData 发布第 2 版（2023-07-07），DOI 为 10.4121/22117145.v2。页面给出的动机是 domain shift：当推理条件与训练条件不同时，遮挡模型的性能会下降，因此记录旨在覆盖不同的测量条件。4TU 归档包含多单基地设置下的雷达数据与真值视频，格式为 BIN 与 MOV，由三个 zip 压缩包和一个 Read_Me.txt 组成，全部解压后总大小为 84,237,475,214 字节。26 GHz OFDM 测试平台的双基地 CSI 不在该归档中，而是以 KU Leuven RDR 数据集的形式单独发布，DOI 为 10.48804/UBHZKF。描述两部分测量的论文为 IEEE JC&S 2023 论文，DOI 为 10.1109/JCS57290.2023.10107463。'}
 signal_details:
 - signal: csi
-  text: {en: Pre-processed bistatic channel state information from the 26 GHz OFDM multi-beam communication testbed., zh: 来自 26 GHz OFDM 多波束通信测试平台的预处理双基地信道状态信息（CSI）。}
+  text: {en: 'Pre-processed bistatic channel state information from the 26 GHz OFDM multi-beam communication testbed, consisting of normalized amplitude and phase for 100 subcarriers, 2 transmit layers and 8 receive antennas. The CSI is published in the separate KU Leuven RDR dataset (DOI 10.48804/UBHZKF), not in the 4TU archive.', zh: 来自 26 GHz OFDM 多波束通信测试平台的预处理双基地信道状态信息（CSI），包含 100 个子载波、2 个发射层和 8 个接收天线的归一化幅度与相位。CSI 发布于单独的 KU Leuven RDR 数据集（DOI 10.48804/UBHZKF），不在 4TU 归档中。}
 - signal: radar
-  text: {en: 'Radar data from the 77 GHz FMCW MIMO radar in a multi-monostatic set-up, together with multi-monostatic backscattered channels. The radar data are split into Radar data.zip (38,629,265,434 bytes) and Radar2.zip (35,949,246,465 bytes). The landing page lists BIN and MOV as formats and does not map them to individual files.', zh: '来自 77 GHz FMCW MIMO 雷达（多单基地设置）的雷达数据，并包含多单基地反向散射信道。雷达数据分为 Radar data.zip（38,629,265,434 字节）和 Radar2.zip（35,949,246,465 字节）。'}
+  text: {en: 'Radar data from the 77 GHz FMCW MIMO radar in a multi-monostatic set-up of two monostatic boards, together with pre-processed multi-monostatic backscattered channels. The radar data are split into Radar data.zip (38,629,265,434 bytes) and Radar2.zip (35,949,246,465 bytes).', zh: '来自 77 GHz FMCW MIMO 雷达（由两块单基地雷达板组成的多单基地设置）的雷达数据，并包含预处理后的多单基地反向散射信道。雷达数据分为 Radar data.zip（38,629,265,434 字节）和 Radar2.zip（35,949,246,465 字节）。'}
 pipeline:
-  summary: {en: 'Channels and radar returns are recorded in one measurement campaign on human activities, pre-processed, and archived together with ground-truth videos.', zh: 在一次人体活动测量中同时记录信道与雷达回波，随后进行预处理，并与真值视频一同归档。}
+  summary: {en: 'Channels and radar returns are recorded in one measurement campaign on human activities and pre-processed. The radar data and ground-truth videos are archived on 4TU.ResearchData, and the OFDM CSI is published in a separate KU Leuven dataset.', zh: 在一次人体活动测量中同时记录信道与雷达回波并进行预处理。雷达数据与真值视频归档于 4TU.ResearchData，OFDM CSI 则发布于 KU Leuven 的另一数据集。}
   stages:
   - title: {en: Paired measurement campaign, zh: 配对测量}
-    detail: {en: A 26 GHz OFDM multi-beam communication testbed and a 77 GHz FMCW MIMO radar in a multi-monostatic set-up measure blockage caused by diverse human activities. The campaign is designed to include varying measurement circumstances., zh: 26 GHz OFDM 多波束通信测试平台与 77 GHz FMCW MIMO 雷达（多单基地设置）测量多种人体活动造成的遮挡。测量设计包含不同的测量条件。}
+    detail: {en: 'A 26 GHz OFDM multi-beam testbed (Butler matrix with USRPs) and two 77 GHz FMCW radars in a multi-monostatic set-up measure blockage by walking, leg kicking, arm slashing, squatting, and standing or sitting vital-sign activities. The activities are performed at marked positions a to o in the layout, and each is repeated five times within 10 s.', zh: 26 GHz OFDM 多波束测试平台（Butler matrix 配合 USRP）与两台 77 GHz FMCW 雷达（多单基地设置）测量行走、抬腿、挥臂、深蹲以及站立或坐姿生命体征等人体活动造成的遮挡。活动在布局图中标注的位置 a 至 o 进行，每项活动在 10 s 内重复 5 次。}
     inputs:
     - {en: human activities causing blockage, zh: 造成遮挡的人体活动}
     outputs:
     - {en: OFDM link recordings, zh: OFDM 链路记录}
     - {en: radar recordings, zh: 雷达记录}
-  - title: {en: Channel pre-processing, zh: 信道预处理}
-    detail: {en: 'The OFDM link is converted to bistatic channel state information, and the radar recordings are converted to multi-monostatic backscattered channels. The landing page describes both products as pre-processed.', zh: OFDM 链路被转换为双基地信道状态信息，雷达记录被转换为多单基地反向散射信道。页面将这两类数据均描述为预处理结果。}
+  - title: {en: Channel and radar pre-processing, zh: 信道与雷达预处理}
+    detail: {en: 'The OFDM link is estimated from uplink pilots, giving bistatic CSI with 100 subcarriers, 2 transmit layers and 8 receive antennas. The radar recordings are processed with a Hann-windowed 2D FFT into range-Doppler images, and the multi-monostatic backscattered channels are described as pre-processed.', zh: OFDM 链路通过上行导频完成信道估计，得到包含 100 个子载波、2 个发射层和 8 个接收天线的双基地 CSI。雷达回波经加汉宁窗的二维 FFT 处理为距离-多普勒图像，多单基地反向散射信道同样被描述为预处理结果。}
     inputs:
     - {en: OFDM link recordings, zh: OFDM 链路记录}
     - {en: radar recordings, zh: 雷达记录}
     outputs:
     - {en: bistatic CSI, zh: 双基地 CSI}
     - {en: multi-monostatic backscattered channels, zh: 多单基地反向散射信道}
-  - title: {en: Ground-truth video, zh: 真值视频}
-    detail: {en: Ground-truth videos of the activities are provided as MOV files in a separate archive from the radar data., zh: 活动的真值视频以 MOV 文件提供，与雷达数据分别存放在不同的压缩包中。}
+  - title: {en: Ground-truth video and vital signs, zh: 真值视频与生命体征}
+    detail: {en: 'Ground-truth videos of the activities are provided as MOV files in a separate archive from the radar data. Heartbeat was recorded with a smart watch (the Read_Me names an Apple Watch), and a metronome application served as one of the control tools.', zh: 活动的真值视频以 MOV 文件提供，与雷达数据分别存放在不同的压缩包中。心率由智能手表记录（Read_Me 中注明为 Apple Watch），节拍器应用作为控制工具之一使用。}
     outputs:
     - {en: MOV ground-truth videos, zh: MOV 格式真值视频}
   - title: {en: Archive and publication, zh: 打包与发布}
     detail: {en: 'Radar data and ground-truth videos are packed into zip archives with MD5 checksums, and a Read_Me.txt is included. Version 2 was published on 4TU.ResearchData on 2023-07-07 under CC BY 4.0.', zh: 雷达数据与真值视频打包为 zip 压缩包，每个文件附 MD5 校验值，并附 Read_Me.txt。第 2 版于 2023-07-07 在 4TU.ResearchData 发布，许可为 CC BY 4.0。}
     outputs:
     - {en: 'Radar data.zip, Radar2.zip, Ground-truth-videos.zip, Read_Me.txt', zh: Radar data.zip、Radar2.zip、Ground-truth-videos.zip 与 Read_Me.txt}
+subcarriers: 100
+bandwidth_mhz: 20
+antennas: {rx: 8}
+size_gb: 84.24
+facts:
+- label: {en: Radar sweep and resolution, zh: 雷达扫频与距离分辨率}
+  text: {en: 'Each Texas Instruments AWR1443 radar sweeps about 1.2 GHz, giving a theoretical range resolution of about 12.5 cm. Radar 1 operates at 77 to 78.2 GHz.', zh: 每台 Texas Instruments AWR1443 雷达的扫频带宽约 1.2 GHz，理论距离分辨率约 12.5 cm。Radar 1 工作于 77 至 78.2 GHz。}
+- label: {en: Radar frame and ADC settings, zh: 雷达帧与 ADC 设置}
+  text: {en: 'Walking and body-motion recordings contain 70 frames of 255 chirp loops over 10.5 s, with 256 ADC samples per chirp at 10,000 ksps. Vital-sign recordings contain 35 frames of 255 chirp loops over 10.5 s, with 64 ADC samples at 5,000 ksps.', zh: '行走与身体运动记录包含 70 帧，每帧 255 个 chirp，时长 10.5 s，每个 chirp 采集 256 个 ADC 样本，采样率 10,000 ksps。生命体征记录包含 35 帧，每帧 255 个 chirp，时长 10.5 s，每个 chirp 采集 64 个 ADC 样本，采样率 5,000 ksps。'}
+- label: {en: Activity labels, zh: 活动标签}
+  text: {en: 'Activity type 1 is walking, straight at 90 or 170 beats per minute or with a U-turn. Activity type 2 is leg kicking, arm slashing and squatting at a fixed location. Activity type 3 is standing or sitting, with heartbeat and breathing recorded.', zh: 活动类型 1 为行走：直线行走（节奏为每分钟 90 或 170 拍），或带掉头的行走。活动类型 2 为原地的抬腿、挥臂和深蹲。活动类型 3 为站立或坐姿，并记录心跳与呼吸。}
+- label: {en: Companion CSI dataset, zh: 配套 CSI 数据集}
+  text: {en: 'The 26 GHz OFDM channel dataset is a separate KU Leuven RDR record (DOI 10.48804/UBHZKF, version 2.0, ZIP of 12.7 GB) with channel state information for the same kind of human blockage activities.', zh: 26 GHz OFDM 信道数据集是 KU Leuven RDR 中的独立记录（DOI 10.48804/UBHZKF，版本 2.0，ZIP 大小 12.7 GB），包含同类人体遮挡活动的信道状态信息。}
+technical_notes:
+- {en: 'The OFDM testbed uses a 26 GHz Butler matrix that transmits or receives up to 16 orthogonal beams. The recordings use Tx beams 4 and 5 and Rx beams 1 to 8, with a 20 MHz signal at a 2.4 GHz intermediate frequency.', zh: OFDM 测试平台使用 26 GHz Butler matrix，最多可收发 16 个正交波束。记录中使用发射波束 4 和 5，接收波束 1 至 8，信号带宽 20 MHz，中频为 2.4 GHz。}
+limitations:
+- {en: 'The 4TU archive contains no CSI, so the bistatic CSI must be downloaded from the separate KU Leuven record.', zh: 4TU 归档中不包含 CSI，双基地 CSI 需从单独的 KU Leuven 记录下载。}
+- {en: 'The Read_Me gives the Radar 2 band as 78.4 to 79.6 GHz, while the paper gives 79.7 to 80.9 GHz, so the Radar 2 settings should be checked against the Read_Me.', zh: Read_Me 给出的 Radar 2 频段为 78.4 至 79.6 GHz，论文给出的为 79.7 至 80.9 GHz，使用 Radar 2 的设置时应以 Read_Me 为准进行核对。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: Not in the 4TU archive; the bistatic CSI is in the KU Leuven RDR companion record (DOI 10.48804/UBHZKF) as complex samples with amplitude and phase., zh: 不在 4TU 归档中；双基地 CSI 位于 KU Leuven RDR 配套记录（DOI 10.48804/UBHZKF），以包含幅度与相位的复数样本形式提供。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: 'Received power per Rx beam, Tx beam and subcarrier follows from the released CSI amplitudes, and the description gives no absolute power calibration.', zh: 每个接收波束、发射波束与子载波的接收功率可由已发布的 CSI 幅度计算得出，描述文件未给出绝对功率校准。}
+- {key: iq, status: unknown}
+- key: beam_labels
+  status: provided
+  note: {en: 'Each CSI file is indexed by 8 Rx beams and 2 Tx beams, per the companion description.', zh: 根据配套描述文件，每个 CSI 文件按 8 个接收波束与 2 个发射波束编索引。}
+- key: position
+  status: provided
+  note: {en: 'Activities are tied to marked layout points a to o, and the sources give labels rather than coordinates.', zh: 活动与布局图中标注的点 a 至 o 对应，来源仅给出标签而非坐标。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: provided
+  note: {en: Ground-truth MOV videos of each activity are in Ground-truth-videos.zip on 4TU; the sources do not state the colour format., zh: 各活动的真值 MOV 视频位于 4TU 的 Ground-truth-videos.zip 中；来源未说明色彩格式。}
+- {key: depth, status: unknown}
+- {key: lidar, status: unknown}
+- key: radar
+  status: provided
+  note: {en: Raw radar recordings in BIN format from the 77 GHz FMCW MIMO multi-monostatic set-up are in Radar data.zip and Radar2.zip., zh: 77 GHz FMCW MIMO 多单基地设置的原始雷达记录（BIN 格式）位于 Radar data.zip 与 Radar2.zip 中。}
+- {key: imu, status: unknown}
+- key: time_series
+  status: provided
+  note: {en: 'Each CSI file holds 2000 ordered symbols over a 10 s capture, and radar recordings are frame sequences.', zh: 每个 CSI 文件包含一次 10 s 采集中按序排列的 2000 个符号，雷达记录为帧序列。}
+- {key: multiuser, status: unknown}
+- {key: multibs, status: unknown}
+- key: crossfreq
+  status: provided
+  note: {en: The 26 GHz CSI and 77 GHz radar were recorded in one campaign for the same activities at marked layout points., zh: 26 GHz CSI 与 77 GHz 雷达在同一次测量中，针对同一批位于标注布局点的活动记录。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'The blockers are pedestrians walking at slow and fast speeds, and no numeric speed is given.', zh: 遮挡体为以慢速与快速行走的行人，来源未给出具体速度数值。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: 'A person walks across the link and makes U-turns in the measured scenarios, so the blockers move.', zh: 测量场景中有人在链路上或绕过链路行走，遮挡体因此是移动的。}
+- key: reflection
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 测量中固有存在，未按路径标注}
+- key: diffraction
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 测量中固有存在，未按路径标注}
+- key: scattering
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 测量中固有存在，未按路径标注}
+- key: transmission
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 测量中固有存在，未按路径标注}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: Version 2.0 (KU Leuven RDR companion CSI record)
+  date: '2024-07-01'
+  summary: {en: 'The companion 26 GHz CSI record is released as version 2.0; no change list is published, and its ReadMe.txt carries this date.', zh: 配套的 26 GHz CSI 记录发布为 2.0 版；未公布变更清单，其 ReadMe.txt 标注的日期即为此日期。}
+  url: https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi:10.48804/UBHZKF
+- version: Version 2 (4TU radar and ground-truth archive)
+  date: '2023-07-07'
+  summary: {en: Version 2 of the radar and ground-truth archive is published on 4TU.ResearchData; the page lists no changes from version 1., zh: 雷达与真值归档的第 2 版发布于 4TU.ResearchData；页面未列出相对第 1 版的变更。}
+  url: https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/2
+- version: Version 1 (4TU radar and ground-truth archive)
+  date: '2023-03-01'
+  summary: {en: 'The radar and ground-truth dataset is first published online on 4TU.ResearchData, in *.bin and *.mov formats.', zh: 雷达与真值数据集首次在 4TU.ResearchData 上线发布，格式为 *.bin 与 *.mov。}
+  url: https://data.4tu.nl/datasets/838cf4b1-c9c5-4488-bbd7-bd794c4894c1/1
+- version: Version 1.0 (KU Leuven RDR companion CSI record)
+  date: '2023-02-07'
+  summary: {en: 'The 26 GHz communication channel dataset is first published on KU Leuven RDR, with complex channel estimates for human blockage activities.', zh: 26 GHz 通信信道数据集首次发布于 KU Leuven RDR，包含人体遮挡活动的复数信道估计。}
+  url: https://rdr.kuleuven.be/api/datasets/:persistentId/versions/1.0?persistentId=doi:10.48804/UBHZKF

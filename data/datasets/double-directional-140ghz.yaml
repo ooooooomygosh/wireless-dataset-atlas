@@ -14,13 +14,13 @@ paper: doi:10.1109/VTC2022-Spring54318.2022.9860818
 used_in: []
 citing: ['doi:10.1109/twc.2023.3315732', 'doi:10.1109/tap.2023.3318861', 'doi:10.1109/tcomm.2024.3469543']
 summary: {en: 'Double-directional multipath path data at 140 GHz for an indoor hall, derived from single-directional channel sounding and a measurement-based ray-launcher, covering 12 line-of-sight and 56 non-line-of-sight links.', zh: 140 GHz 室内大厅的双定向多径路径数据，由单定向信道探测结合基于测量的 ray-launcher 推导得到，覆盖 12 条视距（LOS）和 56 条非视距（NLOS）链路。}
-sources: ['https://zenodo.org/records/7185349', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1109/VTC2022-Spring54318.2022.9860818?fields=title,abstract,year,venue', 'https://api.crossref.org/works?query.title=Double-directional+multipath+data+at+140+GHz+derived+from+measurement-based+ray-tracer&rows=3&select=DOI,title,issued']
+sources: ['https://zenodo.org/records/7185349', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1109/VTC2022-Spring54318.2022.9860818?fields=title,abstract,year,venue', 'https://api.crossref.org/works?query.title=Double-directional+multipath+data+at+140+GHz+derived+from+measurement-based+ray-tracer&rows=3&select=DOI,title,issued', 'https://zenodo.org/api/records/7185349', 'https://api.crossref.org/works/10.1109/VTC2022-Spring54318.2022.9860818', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1109/VTC2022-Spring54318.2022.9860818?fields=title,abstract,year,venue,authors', 'https://api.openalex.org/works/doi:10.1109/VTC2022-Spring54318.2022.9860818', 'https://zenodo.org/api/records/7185349/versions', 'https://zenodo.org/api/records/6653868', 'https://zenodo.org/api/records/6840859', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.1109/VTC2022-Spring54318.2022.9860818?fields=title,abstract,year,venue,authors,publicationDate']
 checked: '2026-11-06'
-overview: {en: 'This dataset contains double-directional multipath path data at 140 GHz for an indoor hall. The data were derived from single-directional channel sounding combined with a measurement-based ray-launcher. Mar Francis de Guzman and Katsuyuki Haneda of Aalto University produced it together with Pasi Koivumäki, and the data accompany a 2022 IEEE VTC-Spring paper. The sounding performs beam scanning at only one of the transmit or receive ends, which allows many more Tx-Rx links to be measured than double-directional sounding would. The ray-launcher maps the measured multipaths onto the geometry of the site to identify reflection points and angular information. The data cover 12 line-of-sight and 56 non-line-of-sight indoor links, 68 links in total, and are intended for the design and evaluation of communication links, localization and sensing at 140 GHz. The archive is an 11.7 MB zip file on Zenodo under CC BY 4.0, and the environment details and data format are described in .txt
-    and .ppt files inside it.', zh: 该数据集包含 140 GHz 频段室内大厅的双定向多径路径数据，由单定向信道探测结合基于测量的 ray-launcher 推导得到。数据由 Aalto 大学的 Mar Francis de Guzman 和 Katsuyuki Haneda 与 Pasi Koivumäki 共同制作，相关论文为 2022 年 IEEE VTC-Spring 会议论文。探测时仅在收发两端之一进行波束扫描，因此可测量的收发链路数量远多于双定向探测。ray-launcher 将测得的多径映射到测量场地的几何结构上，以识别反射点和角度信息。数据覆盖 12 条视距（LOS）和 56 条非视距（NLOS）室内链路，共 68 条，用于 140 GHz 通信链路、定位和感知的设计与评估。数据以 11.7 MB 的 zip 压缩包形式发布于 Zenodo，许可为 CC BY 4.0；环境细节和数据格式见压缩包内的 .txt 和 .ppt 文件。}
+overview: {en: 'This dataset contains double-directional multipath path data at 140 GHz for an indoor hall, derived from single-directional channel sounding combined with a measurement-based ray-launcher. Mar Francis de Guzman and Katsuyuki Haneda of Aalto University are the Zenodo creators, and Pasi Koivumäki is a co-author of the 2022 IEEE VTC-Spring paper that the data accompany. The sounding performs beam scanning at only one of the transmit or receive ends, which allows many more Tx-Rx links to be measured than double-directional sounding would. The ray-launcher maps the measured multipaths onto the geometry of the site to identify reflection points and angular information for multipaths that were not measured directly. The data cover 12 line-of-sight and 56 non-line-of-sight indoor links, 68 links in total, and are intended for the design and evaluation of communication links, localization and sensing at 140 GHz. The archive is an 11.7 MB zip file on Zenodo under CC BY 4.0, and the
+    environment details and data format are described in .txt and .ppt files inside it.', zh: 该数据集包含 140 GHz 频段室内大厅的双定向多径路径数据，由单定向信道探测结合基于测量的 ray-launcher 推导得到。Aalto 大学的 Mar Francis de Guzman 与 Katsuyuki Haneda 为 Zenodo 上的数据创建者，Pasi Koivumäki 为所附 2022 年 IEEE VTC-Spring 会议论文的合著者。探测时仅在收发两端之一进行波束扫描，因此可测量的收发链路数量远多于双定向探测。ray-launcher 将测得的多径映射到场地的几何结构上，从而识别未被直接测量的多径的反射点和角度信息。数据覆盖 12 条视距（LOS）和 56 条非视距（NLOS）室内链路，共 68 条，用于 140 GHz 通信链路、定位和感知的设计与评估。数据以 11.7 MB 的 zip 压缩包形式发布于 Zenodo，许可为 CC BY 4.0；环境细节和数据格式见压缩包内的 .txt 和 .ppt 文件。}
 signal_details:
 - signal: paths
-  text: {en: 'Double-directional path data for 68 indoor links at 140 GHz (12 LOS, 56 NLOS), derived from single-directional channel sounding and the measurement-based ray-launcher. Delivered as data_290922_double_directional_paths.zip (11.7 MB). Field definitions, columns and units are described in .txt and .ppt files inside the archive.', zh: 140 GHz 频段下 68 条室内链路（12 条 LOS，56 条 NLOS）的双定向路径数据，由单定向信道探测和基于测量的 ray-launcher 推导得到。数据以 data_290922_double_directional_paths.zip（11.7 MB）形式发布。字段定义、列及单位见压缩包内的 .txt 和 .ppt 文件。}
+  text: {en: 'Double-directional path data for 68 indoor links at 140 GHz (12 LOS, 56 NLOS), derived from single-directional channel sounding and the measurement-based ray-launcher. Delivered as data_290922_double_directional_paths.zip (11.7 MB). The environment details and data format are described in .txt and .ppt files inside the archive.', zh: 140 GHz 频段下 68 条室内链路（12 条 LOS，56 条 NLOS）的双定向路径数据，由单定向信道探测和基于测量的 ray-launcher 推导得到。数据以 data_290922_double_directional_paths.zip（11.7 MB）形式发布。场地环境细节与数据格式见压缩包内的 .txt 和 .ppt 文件。}
 pipeline:
   summary: {en: Single-directional sounding at 140 GHz is combined with a measurement-based ray-launcher to produce double-directional path data for indoor links., zh: 将 140 GHz 单定向信道探测与基于测量的 ray-launcher 结合，得到室内链路的双定向路径数据。}
   stages:
@@ -44,3 +44,93 @@ pipeline:
     detail: {en: 'The path data are packaged as data_290922_double_directional_paths.zip (11.7 MB) and published on Zenodo under CC BY 4.0, with format descriptions in .txt and .ppt files.', zh: 路径数据打包为 data_290922_double_directional_paths.zip（11.7 MB），以 CC BY 4.0 许可发布于 Zenodo，格式说明位于 .txt 和 .ppt 文件中。}
     outputs:
     - {en: zip archive on Zenodo, zh: Zenodo 上的 zip 压缩包}
+size_gb: 0.0117
+facts:
+- label: {en: Zenodo record, zh: Zenodo 记录}
+  text: {en: 'The dataset is archived on Zenodo under DOI 10.5281/zenodo.7185349 as version 3, and the record lists the VTC2022-Spring paper as a supplement.', zh: 数据集以 DOI 10.5281/zenodo.7185349 存档于 Zenodo，为第 3 版，Zenodo 记录将 VTC2022-Spring 论文列为补充材料。}
+capabilities:
+- key: csi
+  status: unknown
+  note: {en: 'The public record does not state the antenna patterns or phase, so complex CSI cannot be confirmed.', zh: 公开记录未说明天线方向图与相位，无法确认是否可得复数CSI。}
+- key: cir
+  status: unknown
+  note: {en: 'A power delay profile needs per-path power, which the public record does not list.', zh: 功率时延分布需要逐路径功率，公开记录未列出该字段。}
+- key: paths
+  status: provided
+  note: {en: 'Double-directional path data for 68 indoor links (12 LOS, 56 NLOS); the per-path field list is in the archive''s .txt file, not in the public record.', zh: 68条室内链路（12条LOS，56条NLOS）的双定向路径数据；逐路径字段列表位于压缩包内的.txt文件，未载于公开记录。}
+- key: interaction
+  status: provided
+  note: {en: The ray-launcher identifies reflection points for multipaths not measured directly; surface types and diffraction order are not stated., zh: ray-launcher为未直接测量的多径识别反射点；未说明表面类型与绕射阶数。}
+- key: power
+  status: unknown
+  note: {en: The public record does not list per-path power or received power fields., zh: 公开记录未列出逐路径功率或接收功率字段。}
+- key: iq
+  status: none
+  note: {en: The release is path data for 68 links; no raw I/Q samples are described., zh: 发布内容为68条链路的路径数据；未描述原始I/Q采样。}
+- key: beam_labels
+  status: unknown
+  note: {en: Beam scanning is done at one end during sounding; whether beam indices or gains are released is not stated., zh: 探测时在收发一端进行波束扫描；未说明是否发布波束索引或增益。}
+- key: position
+  status: unknown
+  note: {en: Link endpoints are mapped onto the site geometry; the public record does not state whether Tx and Rx positions are released., zh: 链路端点映射到场地几何结构上；公开记录未说明是否发布收发机位置。}
+- key: geometry
+  status: unknown
+  note: {en: The ray-launcher maps multipaths onto the site geometry; the public record does not state whether that geometry is released., zh: ray-launcher将多径映射到场地几何结构上；公开记录未说明是否发布该几何结构。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: The release is path data; no camera images are described., zh: 发布内容为路径数据；未描述相机图像。}
+- key: depth
+  status: none
+  note: {en: The release is path data; no depth data are described., zh: 发布内容为路径数据；未描述深度数据。}
+- key: lidar
+  status: none
+  note: {en: The release is path data; no LiDAR data are described., zh: 发布内容为路径数据；未描述LiDAR数据。}
+- key: radar
+  status: none
+  note: {en: Channel-sounding data only; no radar measurements are described., zh: 仅为信道探测数据；未描述雷达测量。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are described., zh: 未描述惯性传感器数据。}
+- key: time_series
+  status: none
+  note: {en: Each link is one set of paths; no time stamps or temporal sequences are described., zh: 每条链路为一组路径；未描述时间戳或时间序列。}
+- key: multiuser
+  status: none
+  note: {en: Each record is a single Tx-Rx link; no simultaneous users are described., zh: 每条记录为单一收发链路；未描述同时存在的用户。}
+- key: multibs
+  status: none
+  note: {en: Each record is one Tx-Rx link in one indoor hall; no multi-base-station set is described., zh: 每条记录为一个室内大厅中的单一收发链路；未描述多基站集合。}
+- key: crossfreq
+  status: none
+  note: {en: Data cover the 140 GHz band only., zh: 数据仅覆盖140 GHz频段。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Reflection points are identified for multipaths, according to the paper abstract.', zh: 依据论文摘要，已为多径识别反射点。}
+- key: diffraction
+  status: unknown
+  note: {en: The public record does not state whether diffraction was enabled in the ray-launcher., zh: 公开记录未说明ray-launcher是否启用了绕射。}
+- key: scattering
+  status: unknown
+  note: {en: The public record does not state whether scattering was enabled in the ray-launcher., zh: 公开记录未说明ray-launcher是否启用了散射。}
+- key: transmission
+  status: unknown
+  note: {en: The public record does not state whether transmission was enabled in the ray-launcher., zh: 公开记录未说明ray-launcher是否启用了穿透。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: Zenodo v3
+  date: '2022-10-11'
+  summary: {en: 'Archive data_290922_double_directional_paths.zip (11.7 MB), with format and environment details in .txt and .ppt files inside the archive.', zh: 压缩包data_290922_double_directional_paths.zip（11.7 MB），格式与环境说明位于压缩包内的.txt与.ppt文件中。}
+  url: https://zenodo.org/records/7185349
+- version: Zenodo v2
+  date: '2022-07-15'
+  summary: {en: 'Second version, archive data_140722_double_directional_paths.zip (11.6 MB); the source gives no change note.', zh: 第二个版本，压缩包data_140722_double_directional_paths.zip（11.6 MB）；来源未给出变更说明。}
+  url: https://zenodo.org/records/6840859
+- version: Zenodo v1
+  date: '2022-06-19'
+  summary: {en: 'First Zenodo upload, archive data_200422_double_directional_paths.zip (13.9 MB).', zh: 首次上传至Zenodo，压缩包data_200422_double_directional_paths.zip（13.9 MB）。}
+  url: https://zenodo.org/records/6653868

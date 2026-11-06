@@ -14,7 +14,7 @@ paper: doi:10.1109/WACV56688.2023.00567
 used_in: ['doi:10.1109/jiot.2025.3650083']
 citing: ['doi:10.1109/jiot.2024.3476350', 'doi:10.1145/3715014.3722045', 'doi:10.1109/tmc.2025.3557504']
 summary: {en: 'Two cross-calibrated IWR1843BOOST mmWave radars and a monocular RGB camera record six subjects in an indoor setting, with 235 sequences and 141,000 radar-camera triplets. Labels are 2D keypoints from a pretrained pose network run on the camera frames.', zh: '两台经过交叉标定的 IWR1843BOOST 毫米波雷达与一台单目 RGB 相机在室内记录六名受试者的数据，共 235 段序列、141,000 组雷达-相机三元组。标签为在相机图像上由预训练二维姿态估计网络生成的关键点。'}
-sources: ['https://mapl.cs.nycu.edu.tw/HuPR/', 'https://github.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar', 'https://arxiv.org/html/2210.12564v1', 'https://arxiv.org/abs/2210.12564', 'https://api.crossref.org/works/10.1109/WACV56688.2023.00567']
+sources: ['https://mapl.cs.nycu.edu.tw/HuPR/', 'https://github.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar', 'https://arxiv.org/html/2210.12564v1', 'https://arxiv.org/abs/2210.12564', 'https://api.crossref.org/works/10.1109/WACV56688.2023.00567', 'https://raw.githubusercontent.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar/main/README.md', 'https://huggingface.co/datasets/nirajpkini/HuPR', 'https://huggingface.co/datasets/nirajpkini/HuPR/raw/main/README.md', 'https://huggingface.co/api/datasets/nirajpkini/HuPR', 'https://huggingface.co/api/datasets/nirajpkini/HuPR/tree/main?recursive=true', 'https://github.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar/commits/main', 'https://github.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar/releases', 'https://huggingface.co/datasets/nirajpkini/HuPR/commits/main']
 checked: '2026-11-06'
 overview: {en: 'HuPR is a benchmark for human pose estimation with millimeter-wave radar, published at WACV 2023 by Lee, Kini, Peng, Ma and Hwang. Two cross-calibrated IWR1843BOOST radars and one monocular RGB camera on the same plane recorded six subjects in indoor scenes. The data consist of 235 sequences of one minute each, split into 193 training, 21 validation and 21 test sequences, with 600 radar-camera triplets per sequence and 141,000 triplets in total. Radar and camera capture 10 frames per second. Keypoint labels are 2D poses that a pretrained HRNet produces from the RGB frames, so the labels involve no manual annotation. Three actions are recorded: static poses, standing with hand waving, and walking with hand waving. An extra test set adds obstacles, low light and no light. Processed radar data are stored as per-frame .npy files in hori and vert folders for each sequence, and the annotations are JSON files for the train, validation and test splits.', zh: 'HuPR 是一个基于毫米波雷达的人体姿态估计基准数据集，由
     Lee、Kini、Peng、Ma 和 Hwang 于 WACV 2023 发表。两台经过交叉标定的 IWR1843BOOST 雷达与一台单目 RGB 相机位于同一平面，在室内记录了六名受试者。数据包含 235 段序列，每段一分钟，划分为 193 段训练序列、21 段验证序列和 21 段测试序列；每段序列含 600 组雷达-相机三元组，共 141,000 组。雷达与相机以每秒 10 帧同步采集。标签为预训练 HRNet 网络在 RGB 图像上生成的二维关键点，不依赖人工标注。数据包含三类动作：静止姿态、站立挥手和行走挥手。另有一个额外测试集，包含遮挡、低光照和无光照条件。处理后的雷达数据以每帧一个 .npy 文件的形式存放在每段序列的 hori 与 vert 文件夹中，标注以 JSON 文件分别给出训练、验证和测试划分。'}
@@ -40,15 +40,118 @@ pipeline:
     outputs:
     - {en: VRDAEMaps, zh: VRDAEMap}
   - title: {en: Keypoint label generation, zh: 关键点标签生成}
-    detail: {en: 'HRNet, pretrained on MPII, runs on each RGB frame and outputs 2D human keypoints. The HRNet version is not stated. The keypoints serve as supervision for radar-based pose estimation.', zh: 在 MPII 上预训练的 HRNet 对每帧 RGB 图像输出二维人体关键点。论文未给出 HRNet 版本。这些关键点作为雷达姿态估计的监督标签。}
+    detail: {en: 'HRNet, pretrained on MPII, runs on each RGB frame and outputs 2D human keypoints. The keypoints serve as supervision for radar-based pose estimation.', zh: 在 MPII 上预训练的 HRNet 对每帧 RGB 图像输出二维人体关键点。这些关键点作为雷达姿态估计的监督标签。}
     inputs:
     - {en: RGB frames, zh: RGB 图像}
     outputs:
     - {en: 2D keypoints per frame, zh: 每帧二维关键点}
   - title: {en: Preprocessing and packaging, zh: 预处理与打包}
-    detail: {en: 'Running python process_iwr1843 in the preprocessing folder converts raw data from preprocessing/raw_data/iwr1843 into the processed layout. The README lists no parameters for this step. The processed layout has single_N folders with hori and vert .npy frames, plus JSON annotation files for the train, validation and test splits.', zh: 在 preprocessing 目录运行 python process_iwr1843，将 preprocessing/raw_data/iwr1843 中的原始数据转换为处理后的目录结构。README 未列出该步骤的参数。处理后的目录包含 single_N 文件夹（内含 hori 与 vert 的 .npy 帧），以及训练、验证、测试划分的 JSON 标注文件。}
+    detail: {en: 'Running python process_iwr1843 in the preprocessing folder converts raw data from preprocessing/raw_data/iwr1843 into the processed layout. The processed layout has single_N folders with hori and vert .npy frames, plus JSON annotation files for the train, validation and test splits.', zh: 在 preprocessing 目录运行 python process_iwr1843，将 preprocessing/raw_data/iwr1843 中的原始数据转换为处理后的目录结构。处理后的目录包含 single_N 文件夹（内含 hori 与 vert 的 .npy 帧），以及训练、验证、测试划分的 JSON 标注文件。}
     inputs:
     - {en: Raw radar data, zh: 原始雷达数据}
     outputs:
     - {en: hori and vert .npy frames, zh: hori 与 vert 的 .npy 帧}
     - {en: Annotation JSON files, zh: 标注 JSON 文件}
+organization: National Yang Ming Chiao Tung University
+size_gb: 210.64
+facts:
+- label: {en: Label definition, zh: 标签定义}
+  text: {en: 'Labels are 14 body keypoints: head, neck, shoulders, elbows, wrists, hips, knees and ankles. Each keypoint is a Gaussian heatmap centred on its ground-truth coordinates, used as the training target.', zh: 标签为 14 个人体关键点，即头部、颈部、肩部、肘部、腕部、髋部、膝部和踝部。每个关键点对应以其真值坐标为中心的高斯热图，作为训练目标。}
+- label: {en: Label quality, zh: 标签质量}
+  text: {en: A side experiment in the paper reports HRNet average precision of 99%. The HRNet keypoints also serve as pseudo ground truth for the test set., zh: 论文的一项辅助实验报告 HRNet 的平均精度为 99%。测试集同样采用 HRNet 关键点作为伪真值。}
+- label: {en: 3D labels, zh: 三维标签}
+  text: {en: 3D ground truth for the training and test sets is produced from the 2D keypoints with VideoPose3D., zh: 训练集与测试集的三维真值由二维关键点经 VideoPose3D 转换得到。}
+- label: {en: Subject split, zh: 受试者划分}
+  text: {en: 'Six subjects appear in the data, and one of them appears only in the test set.', zh: 数据包含六名受试者，其中一人只出现在测试集中。}
+- label: {en: Hugging Face release, zh: Hugging Face 发布版}
+  text: {en: 'The Hugging Face release contains frames.zip, radar archives from radar_seq_1-10.zip to radar_seq_271-276.zip, and three annotation JSON files.', zh: Hugging Face 发布版包含 frames.zip、从 radar_seq_1-10.zip 到 radar_seq_271-276.zip 的雷达压缩包，以及三个标注 JSON 文件。}
+technical_notes:
+- {en: 'The horizontal radar is read as range-azimuth-elevation and the vertical radar as range-elevation-azimuth, because one sensor is rotated 90 degrees. The W dimension means azimuth for the horizontal radar and elevation for the vertical radar.', zh: 因一台雷达旋转了 90 度，水平雷达按距离-方位-俯仰解读，垂直雷达按距离-俯仰-方位解读。W 维度在水平雷达中表示方位，在垂直雷达中表示俯仰。}
+- {en: 'Table 1 of the paper sets a frequency slope of 60.012 MHz, a sample rate of 4400 ksps, 64 chirps per frame and 256 ADC samples.', zh: 论文表 1 给出的雷达参数为频率斜率 60.012 MHz、采样率 4400 ksps、每帧 64 个 chirp 与 256 个 ADC 采样点。}
+limitations:
+- {en: 'Each scene contains only one person, and the actions are mostly simple movements in a single scene.', zh: 每个场景只有一人，且场景单一，动作以简单动作为主。}
+- {en: 'The low azimuth and elevation resolution of the radar module makes some actions ambiguous, such as waving hands and raising hands.', zh: 雷达模块的方位角与俯仰角分辨率较低，部分动作难以区分，例如挥手与举手。}
+capabilities:
+- {key: csi, status: unknown}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Radar power per range-azimuth-elevation bin can be computed from the released raw ADC data with the 4D FFT pre-processing described in the paper., zh: 逐距离-方位-俯仰单元的雷达功率可由发布的原始 ADC 数据经论文所述四维 FFT 预处理计算得到。}
+- key: iq
+  status: provided
+  note: {en: 'Raw ADC samples from the two IWR1843BOOST sensors, 256 per chirp; the sources do not state whether they are stored as complex I/Q.', zh: 来自两台 IWR1843BOOST 传感器的原始 ADC 采样，每个 chirp 256 点；来源未说明是否以复数 I/Q 形式存储。}
+- key: beam_labels
+  status: none
+  note: {en: 'The annotations are body keypoint labels, with no beam indices or per-beam gains.', zh: 标注为人体关键点，不含波束索引或逐波束增益。}
+- {key: position, status: unknown}
+- key: geometry
+  status: none
+  note: {en: 'The release holds frames, radar archives and annotation JSON files only, with no 3D scene or map files.', zh: 数据发布内容仅包含图像帧、雷达压缩包和标注 JSON 文件，不含三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: 'The release holds frames, radar archives and annotation JSON files only, with no material parameters.', zh: 数据发布内容仅包含图像帧、雷达压缩包和标注 JSON 文件，不含材料参数。}
+- key: rgb
+  status: provided
+  note: {en: 'Monocular 256×256 RGB frames at 10 fps, synchronized with the radar frames in frames.zip.', zh: 单目 256×256 RGB 图像，10 fps，与雷达帧同步，位于 frames.zip 中。}
+- key: depth
+  status: none
+  note: {en: 'Only a monocular RGB camera is used, with no depth sensor.', zh: 仅使用单目 RGB 相机，不含深度传感器。}
+- key: lidar
+  status: none
+  note: {en: 'The sensor setup is two mmWave radars and one RGB camera, with no lidar.', zh: 传感器配置为两台毫米波雷达与一台 RGB 相机，不含激光雷达。}
+- key: radar
+  status: provided
+  note: {en: 'Two IWR1843BOOST sensors with 256 ADC samples and 64 chirps per frame at 10 fps, released as raw archives and processed hori and vert frames.', zh: 两台 IWR1843BOOST 传感器，每帧 256 个 ADC 采样与 64 个 chirp，帧率 10 fps，以原始压缩包及处理后的 hori、vert 帧形式发布。}
+- key: imu
+  status: none
+  note: {en: The sensor setup contains no IMU., zh: 传感器配置不含 IMU。}
+- key: time_series
+  status: provided
+  note: {en: '235 sequences of one minute each, with 600 synchronized frames per sequence at 10 fps.', zh: 235 段序列，每段一分钟，每段 600 个同步帧，帧率 10 fps。}
+- key: multiuser
+  status: none
+  note: {en: Each scene contains only one person., zh: 每个场景仅包含一人。}
+- key: multibs
+  status: none
+  note: {en: 'Two co-located radars on one plane, not multiple base stations.', zh: 两台共置于同一平面的雷达，并非多个基站。}
+- key: crossfreq
+  status: none
+  note: {en: Two identical IWR1843BOOST radars with no paired multi-band data., zh: 两台相同型号的 IWR1843BOOST 雷达，不含配对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'The recorded actions are static poses, standing with hand waving and walking with hand waving.', zh: 记录的动作为静止姿态、站立挥手和行走挥手。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径单独标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径单独标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径单独标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: Hugging Face dataset card
+  date: '2025-02-15'
+  summary: {en: 'README.md uploaded to the Hugging Face repository as its latest commit on the main branch, with the paper link arXiv:2210.12564.', zh: '在 Hugging Face 仓库 main 分支上传 README.md，作为最新提交，附论文链接 arXiv:2210.12564。'}
+  url: https://huggingface.co/datasets/nirajpkini/HuPR
+- version: Download link update (02/11/2025)
+  date: '2025-02-11'
+  summary: {en: GitHub README changed the download link to the Hugging Face repository; frames.zip and the radar archives radar_seq_1-10 to radar_seq_271-276 were uploaded to that repository on the same date., zh: GitHub README 将下载链接改为 Hugging Face 仓库；frames.zip 与雷达压缩包 radar_seq_1-10 至 radar_seq_271-276 于同日上传至该仓库。}
+  url: https://github.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar
+- version: WACV 2023
+  date: 2023-01
+  summary: {en: 'Benchmark published at WACV 2023 (pp. 5715-5724) by Lee, Kini, Peng, Ma and Hwang; the GitHub README cites it with the January 2023 date.', zh: 基准数据集发表于 WACV 2023（第 5715-5724 页），作者为 Lee、Kini、Peng、Ma 和 Hwang；GitHub README 以 2023 年 1 月引用该论文。}
+  url: https://github.com/robert80203/HuPR-A-Benchmark-for-Human-Pose-Estimation-Using-Millimeter-Wave-Radar
+- version: arXiv v1
+  date: '2022-10-22'
+  summary: {en: 'First description of HuPR, with two cross-calibrated IWR1843BOOST radars, one RGB camera and 235 sequences; the authors state that the dataset and code will be released upon acceptance.', zh: HuPR 的首次介绍，包含两台交叉标定的 IWR1843BOOST 雷达、一台 RGB 相机和 235 段序列；作者表示数据集与代码将在论文录用后发布。}
+  url: https://arxiv.org/abs/2210.12564

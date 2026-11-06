@@ -13,7 +13,7 @@ paper: doi:10.1109/TMLCN.2025.3564239
 used_in: []
 citing: ['doi:10.1109/infocom59046.2026.11571614', 'doi:10.1109/ojcoms.2026.3657799']
 summary: {en: 'Active and passive measurements of 2G, 4G, 5G NSA and 5G SA mobile networks in Dortmund, Germany, collected in vehicles and at static locations. The CSV data contains signal metrics (RSRP, RSRQ, RSSI, SINR), cell and location fields, latency, and data rate with TCP congestion window and RTT.', zh: 在德国多特蒙德采集的移动网络主动与被动测量数据，包括车载测量和静态测量，覆盖 2G、4G、5G NSA 和 5G SA 网络。数据为 CSV 格式，包含 RSRP、RSRQ、RSSI、SINR 等信号指标、小区与位置字段、时延，以及带 TCP 拥塞窗口和 RTT 的数据速率。}
-sources: ['https://api.crossref.org/works/10.1109/TMLCN.2025.3564239', 'https://comnets.etit.tu-dortmund.de/research/open-source-open-data/', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/raw/main/README.md']
+sources: ['https://api.crossref.org/works/10.1109/TMLCN.2025.3564239', 'https://comnets.etit.tu-dortmund.de/research/open-source-open-data/', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/raw/main/README.md', 'https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/tags', 'https://gitlab.kn.e-technik.tu-dortmund.de/api/v4/projects/donext-the-dortmund-dataset%2Fdortmund-dataset-public/repository/tags', 'https://gitlab.kn.e-technik.tu-dortmund.de/api/v4/projects/donext-the-dortmund-dataset%2Fdortmund-dataset-public/repository/commits?per_page=50']
 checked: '2026-11-06'
 overview: {en: 'DoNext is an open measurement dataset of mobile networks in Dortmund, Germany, produced by the Communication Networks Institute (CNI) at TU Dortmund University and described in an IEEE TMLCN article in 2025 (vol. 3, pp. 585–604). It combines active and passive measurements made with Android phones in vehicles, a dedicated modem on a suspension railway track at TU Dortmund, and static measurements at fixed locations taken over an extended period covering all times of day. Passive measurements record cell radio values for 2G, 4G, 5G NSA and 5G SA networks, including RSRP, RSRQ, RSSI and SINR. Active measurements run iperf3 data-rate tests over TCP or UDP and ICMP latency pings. Usernames and exact timestamps are removed from the mobile data for privacy reasons. The files are compressed CSV files separated by semicolons, grouped into the folders mobile, mobile hbahn and static.', zh: DoNext 是在德国多特蒙德采集的移动网络测量开放数据集，由多特蒙德工业大学通信网络研究所（CNI）制作，并在 2025 年的 IEEE TMLCN 文章中发表（第 3 卷，第 585–604
     页）。数据结合了车载 Android 手机的主动与被动测量、多特蒙德工业大学悬挂式铁路轨道上的专用调制解调器测量，以及在固定地点进行的静态测量，静态测量持续较长时间，覆盖全天各时段。被动测量记录 2G、4G、5G NSA 和 5G SA 网络的无线指标，包括 RSRP、RSRQ、RSSI 和 SINR。主动测量包括基于 TCP 或 UDP 的 iperf3 数据速率测试，以及 ICMP 时延 ping。出于隐私原因，移动数据中的用户名和精确时间戳已被删除。文件为压缩的 CSV 格式，以分号分隔，分别放在 mobile、mobile hbahn 和 static 三个文件夹中。}
@@ -53,3 +53,124 @@ pipeline:
     - {en: measurement records, zh: 测量记录}
     outputs:
     - {en: compressed semicolon-separated CSV files, zh: 压缩的分号分隔 CSV 文件}
+facts:
+- label: {en: Folders, zh: 文件夹}
+  text: {en: 'mobile holds the vehicle measurements, mobile hbahn holds the modem measurements on the railway track, and static holds the fixed-location measurements, which have a separate location table.', zh: mobile 存放车载测量数据，mobile hbahn 存放铁路轨道上调制解调器的测量数据，static 存放固定地点的测量数据，并附有单独的位置表。}
+- label: {en: Loading, zh: 读取方式}
+  text: {en: Files are semicolon-separated CSV. pandas.read_csv with sep=';' loads them directly., zh: 文件为分号分隔的 CSV，可直接用 pandas.read_csv 并设置 sep=';' 读取。}
+- label: {en: Neighbouring cells, zh: 相邻小区}
+  text: {en: 'Neighbouring-cell columns carry the suffix _neighboring. The mcc field is 262 for Germany, and MNO takes the values A, B or C.', zh: 相邻小区字段带有 _neighboring 后缀。mcc 字段值 262 表示德国，MNO 取值为 A、B 或 C。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'Released fields are cellular KPIs, signal levels, latency and throughput; no complex channel data.', zh: 发布字段为蜂窝KPI、信号强度、时延与吞吐量，不含复数信道数据。}
+- key: cir
+  status: none
+  note: {en: 'Cell radio values are scalar (RSRP, RSRQ, RSSI, SINR); no impulse response is released.', zh: 小区无线值为标量（RSRP、RSRQ、RSSI、SINR），未发布冲激响应。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters are released; measurements are recorded per cell and per test., zh: 未发布逐路径参数；测量按小区与测试记录。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data; the README describes cell and location fields only., zh: 无逐路径交互数据；README仅描述小区与位置字段。}
+- key: power
+  status: provided
+  note: {en: RSRP and RSSI in dBm for the connected cell and neighbouring cells; no beam-level power., zh: 连接小区与邻区的RSRP、RSSI（dBm）；无波束级功率。}
+- key: iq
+  status: none
+  note: {en: No raw I/Q samples; the released fields are cell radio values and iperf3 and ICMP results., zh: 无原始I/Q采样；发布字段为小区无线值及iperf3、ICMP结果。}
+- key: beam_labels
+  status: none
+  note: {en: Radio values are recorded per cell; no beam indices or beam gains are released., zh: 无线值按小区记录；未发布波束索引或波束增益。}
+- key: position
+  status: provided
+  note: {en: 'WGS84 latitude, longitude and altitude for mobile records; static sites have a separate location table.', zh: 移动记录含WGS84经纬度与海拔；静态测量点另有位置表。}
+- key: geometry
+  status: none
+  note: {en: No map or 3D scene files are listed., zh: 未列出地图或三维场景文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are listed., zh: 未列出材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera images are listed., zh: 未列出相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth data are listed., zh: 未列出深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are listed., zh: 未列出LiDAR数据。}
+- key: radar
+  status: none
+  note: {en: No radar sensor data are listed; cellular radio metrics are not radar returns., zh: 未列出雷达数据；蜂窝无线指标不是雷达回波。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor fields are listed., zh: 未列出惯性传感器字段。}
+- key: time_series
+  status: provided
+  note: {en: 'Records carry Unix timestamps in seconds and session start times, which give their time order.', zh: 记录包含以秒为单位的Unix时间戳与会话起始时间，可确定时间顺序。}
+- key: multiuser
+  status: none
+  note: {en: Each record comes from one device or modem; no simultaneous multi-user channels are described., zh: 每条记录来自单个设备或调制解调器；未描述同时存在的多用户信道。}
+- key: multibs
+  status: provided
+  note: {en: Neighbouring-cell values (suffix _neighboring) sit in the same record as the connected cell; the number of neighbours per record is not stated., zh: 邻区值（后缀_neighboring）与所连小区位于同一条记录中；未说明每条记录的邻区数量。}
+- key: crossfreq
+  status: unknown
+  note: {en: The README does not state whether the same positions are measured on several bands., zh: README未说明同一位置是否在多个频段上测量。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: provided
+  note: {en: Vehicle records carry a velocity in m/s; the speed range is not summarised in the README., zh: 车载记录含以m/s为单位的速度字段；README未汇总速度范围。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身体现，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身体现，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身体现，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身体现，未按路径标注。}
+- key: polarization
+  status: none
+  note: {en: No polarimetric measurements are listed., zh: 未列出极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: No field-level outputs are listed; RSRP and RSSI are scalar received power values., zh: 未列出场量输出；RSRP与RSSI为标量接收功率值。}
+versions:
+- version: git 697a7ea1
+  date: '2026-07-04'
+  summary: {en: 'Added the missing MNO field (operator A, B or C) to the mobile data-rate measurements.', zh: 为移动数据速率测量补充缺失的MNO字段（运营商A、B或C）。}
+  url: https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/commit/697a7ea1fc6572a56fad02a2d63554015caaf9bf
+- version: git 92418b79
+  date: '2026-01-31'
+  summary: {en: Fixed the export of the mobile latency data., zh: 修复移动时延数据的导出问题。}
+  url: https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/commit/92418b792d0d4bf77b8843e86b15ff1631c16b12
+- version: git 1773afb8
+  date: '2025-10-28'
+  summary: {en: 'Bug fixes: iperf3 interval parsing added, and a related-work plot added to the repository.', zh: 错误修复：新增iperf3间隔解析，并在仓库中加入相关工作对比图。}
+  url: https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/commit/1773afb8f55e6c76ffc248ba8bb980ced6c0bf15
+- version: git db2e393e
+  date: '2025-07-17'
+  summary: {en: Updated the citation of the article., zh: 更新论文引用信息。}
+  url: https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/commit/db2e393e856476faed86f6cc9f6694f47c9a9767
+- version: git 92ab281c
+  date: '2025-04-22'
+  summary: {en: Updated and corrected the mobile data., zh: 更新并修正移动数据。}
+  url: https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/commit/92ab281c17874d8c2fe8851f9d7bb0e2338edd44
+- version: git 784fa2eb
+  date: '2024-11-28'
+  summary: {en: Added a missing column to the mobile and hbahn data and updated the README accordingly., zh: 为mobile与mobile hbahn数据补充缺失列，并相应更新README。}
+  url: https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/commit/784fa2ebe23b0cac460923c88b39d608e17b63e4
+- version: git 0845af68
+  date: '2024-10-01'
+  summary: {en: Added an acknowledgement of the VIZIT project to the README., zh: 在README中加入VIZIT项目致谢。}
+  url: https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/commit/0845af68bb42a72c6715b91de275b6dedc5a35cf
+- version: git 67fbd1bc
+  date: '2024-08-22'
+  summary: {en: 'First data release: the measurement files were added to the repository, with a note on why this GitLab instance is used.', zh: 首次数据发布：测量文件加入仓库，并附说明为何使用该GitLab实例。}
+  url: https://gitlab.kn.e-technik.tu-dortmund.de/donext-the-dortmund-dataset/dortmund-dataset-public/-/commit/67fbd1bc71dbc09b975e93758ec2a2ecb5fa6178

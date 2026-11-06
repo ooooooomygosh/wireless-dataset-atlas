@@ -4,7 +4,7 @@ year: 2023
 origin: measured
 tasks: [wireless-sensing]
 signals: [radar]
-bands_ghz: []
+bands_ghz: [77]
 format: PKL
 license: MIT
 access: {url: 'https://drive.google.com/file/d/1rq8yyokrNhAGQryx7trpUqKenDnTI6Ky/view?usp=drive_link', type: open}
@@ -13,10 +13,10 @@ paper: doi:10.52202/075280-2739
 used_in: ['doi:10.1109/jiot.2026.3668767']
 citing: ['doi:10.1145/3795866.3796684', 'doi:10.1109/tmc.2026.3720944']
 summary: {en: 'mmWave radar point clouds from 18 subjects, labelled for subject identification, action classification and keypoint estimation. The repository does not state the number of frames or actions.', zh: 来自18名受试者的 mmWave 雷达点云，标注用于受试者身份识别、动作分类和关键点估计。仓库未给出帧数或动作数量。}
-sources: ['https://github.com/yizzfz/MiliPoint', 'https://raw.githubusercontent.com/yizzfz/MiliPoint/main/LICENSE', 'https://doi.org/10.52202/075280-2739', 'http://www.proceedings.com/075280-2739.html']
+sources: ['https://github.com/yizzfz/MiliPoint', 'https://raw.githubusercontent.com/yizzfz/MiliPoint/main/LICENSE', 'https://doi.org/10.52202/075280-2739', 'http://www.proceedings.com/075280-2739.html', 'https://raw.githubusercontent.com/yizzfz/MiliPoint/main/readme.md', 'https://www.proceedings.com/content/075/075280-2739open.pdf', 'https://github.com/yizzfz/MiliPoint/releases', 'https://github.com/yizzfz/MiliPoint/tags', 'https://github.com/yizzfz/MiliPoint/commits/main']
 checked: '2026-11-06'
-overview: {en: 'MiliPoint is a point cloud dataset of mmWave radar recordings of human activity. It was published in Advances in Neural Information Processing Systems 36 (NeurIPS 2023) by researchers from the University of Bristol, University College London and Imperial College London. The raw archive unpacks to PKL files such as 1.pkl, and each sample is a point cloud of shape (n, 3); the repository example uses an input of shape 66 x 3. The dataset supports three tasks: identification of 18 subjects, action classification, and keypoint estimation. Keypoint labels come in two forms: low, with 9 points (shoulders, elbows, waists, knees and head), and high, with 18 points in COCO18 format. The authors state that the dataset is larger than existing mmWave datasets and contains more diverse human actions.', zh: 'MiliPoint 是一个记录人体活动的毫米波雷达点云数据集，发表于 Advances in Neural Information Processing Systems 36（NeurIPS 2023），作者来自 University of Bristol、University College London 和 Imperial College London。原始压缩包解压后为
-    1.pkl 等 PKL 文件，每个样本是形状为 (n, 3) 的点云，仓库示例中的输入形状为 66 x 3。数据集支持三项任务：18 名受试者的身份识别、动作分类和关键点估计。关键点标注有两种形式：low 为 9 个点（肩、肘、腰、膝和头），high 为 18 个点（COCO18 格式）。作者称该数据集比现有 mmWave 数据集规模更大，包含的人体动作更多样。'}
+overview: {en: 'MiliPoint is a point cloud dataset of mmWave radar recordings of human activity. It was published at NeurIPS 2023 (Advances in Neural Information Processing Systems 36) by researchers from the University of Bristol, University College London and Imperial College London. The radar is a TI IWR1843 operating at 77 to 81 GHz, and the paper reports 49 actions and 545K frames from 11 participants. The raw archive unpacks to PKL files such as 1.pkl, and each sample is a point cloud of shape (n, 3); the repository example uses an input of shape 66 x 3. The dataset supports three tasks: identification, action classification and keypoint estimation. The repository''s identification task uses subject ids 1 to 18, while the paper reports 11 participants. Keypoint labels come in two forms: low, with 9 points (shoulders, elbows, waists, knees and head), and high, with 18 points in COCO18 format. The authors state that the dataset is larger than existing mmWave datasets and contains more
+    diverse human actions.', zh: 'MiliPoint 是一个记录人体活动的毫米波雷达点云数据集，发表于 NeurIPS 2023（Advances in Neural Information Processing Systems 36），作者来自 University of Bristol、University College London 和 Imperial College London。雷达为 TI IWR1843，工作在 77 至 81 GHz，论文报告数据包含 11 名参与者的 49 个动作，共 545K 帧。原始压缩包解压后为 1.pkl 等 PKL 文件，每个样本是形状为 (n, 3) 的点云，仓库示例中的输入形状为 66 x 3。数据集支持三项任务：身份识别、动作分类和关键点估计。仓库中的身份识别任务使用受试者编号 1 至 18，论文报告的参与者数量则为 11。关键点标注有两种形式：low 为 9 个点（肩、肘、腰、膝和头），high 为 18 个点（COCO18 格式）。作者称该数据集比现有 mmWave 数据集规模更大，包含的人体动作也更多样。'}
 signal_details:
 - signal: radar
   text: {en: 'mmWave radar point clouds. Each sample is a point cloud of shape (n, 3). Frames can be stacked with the stacks option. The zero_padding option pads per frame (data_point) or per stack (stack).', zh: '毫米波雷达点云。每个样本是形状为 (n, 3) 的点云。可通过 stacks 选项堆叠多帧。zero_padding 选项按帧（data_point）或按堆叠（stack）进行零填充。'}
@@ -43,3 +43,107 @@ pipeline:
     detail: {en: 'The example settings use a 0.8 / 0.1 / 0.1 split with seed 20. A processed file is reused when it exists, and -d_forced_rewrite forces reprocessing.', zh: 示例设置使用 0.8 / 0.1 / 0.1 的划分比例和随机种子 20。若处理后的文件已存在则直接复用，-d_forced_rewrite 强制重新处理。}
     outputs:
     - {en: processed PKL cache in data/processed/, zh: data/processed/ 中的处理后 PKL 缓存}
+bandwidth_mhz: 4000
+antennas: {tx: 3, rx: 4}
+samples: 545K frames (213K filtered frames in the action set)
+facts:
+- label: {en: Capture protocol, zh: 采集流程}
+  text: {en: 'Participants followed a fitness video of 49 actions lasting about 30 minutes; each action lasts 30 seconds, with a 10-second break between actions.', zh: 参与者跟随一段约 30 分钟的健身视频完成 49 个动作，每个动作持续 30 秒，动作之间休息 10 秒。}
+- label: {en: Radar configuration, zh: 雷达配置}
+  text: {en: 'TI IWR1843 radar with 3 transmitters and 4 receivers in time-division multiplexing. The full 4 GHz sweep bandwidth gives a 4 cm range resolution, and frames are produced at 24 frames per second.', zh: TI IWR1843 雷达，3 个发射天线、4 个接收天线，采用时分复用模式。利用全部 4 GHz 扫频带宽，距离分辨率为 4 cm，帧率为每秒 24 帧。}
+- label: {en: Point format, zh: 点的格式}
+  text: {en: 'Each radar point is (x, y, z) in metric coordinates. Point clouds with more points than a fixed size are randomly sampled, and smaller ones are zero-padded.', zh: '每个雷达点为米制坐标系下的 (x, y, z)。点数超过固定大小的点云随机采样，点数不足的点云零填充。'}
+- label: {en: Keypoint labels, zh: 关键点标签}
+  text: {en: Keypoint ground truth comes from the skeleton output of a Zed 2 stereo camera. The camera video is discarded once the keypoints are computed., zh: 关键点真值来自 Zed 2 双目相机的骨架输出，关键点计算完成后即丢弃原始视频。}
+- label: {en: Identification labels, zh: 身份标签}
+  text: {en: 'Identification labels are assigned per participant: the collected data are processed separately for each participant.', zh: 身份标签按参与者分配：采集数据按每位参与者分别处理。}
+- label: {en: Split, zh: 数据划分}
+  text: {en: 'The example configuration uses 80%, 10% and 10% for training, validation and testing, with random seed 20.', zh: 示例配置按 80%、10%、10% 划分训练集、验证集和测试集，随机种子为 20。}
+- label: {en: File layout, zh: 文件结构}
+  text: {en: 'The archive extracts to data/raw/ as 1.pkl, 2.pkl and so on, and processed caches are written to data/processed/.', zh: 压缩包解压到 data/raw/，文件名为 1.pkl、2.pkl 等；处理后的缓存写入 data/processed/。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'Only CFAR point clouds (x, y, z) and keypoints are released, not raw ADC or complex channel data.', zh: '仅发布 CFAR 点云 (x, y, z) 和关键点，不包含原始 ADC 或复数信道数据。'}
+- key: cir
+  status: none
+  note: {en: 'The released data are point clouds, so no impulse response or power delay profile is stored.', zh: 发布的数据为点云，不包含冲激响应或功率时延分布。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle, power or phase is released; only detected point coordinates are stored.', zh: 不包含逐路径的时延、角度、功率或相位，仅存储检测到的点坐标。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are released; the data are point clouds and keypoints., zh: 不包含逐路径交互信息，发布的数据为点云和关键点。}
+- key: power
+  status: none
+  note: {en: 'Point clouds are released without received power, RSSI or intensity values.', zh: 点云中不包含接收功率、RSSI 或强度值。}
+- key: iq
+  status: none
+  note: {en: 'Raw ADC or I/Q samples are not released, since the radar''s on-chip processing outputs point clouds.', zh: 未发布原始 ADC 或 I/Q 采样，雷达片上处理直接输出点云。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or beam gains are included; the data are radar point clouds., zh: 不包含波束索引或波束增益，数据为雷达点云。}
+- {key: position, status: unknown}
+- key: geometry
+  status: none
+  note: {en: 'Only subject-level point clouds and keypoints are released, with no 3D scene or map files.', zh: 仅发布人体点云和关键点，不包含 3D 场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released; the sensing setup is one mmWave radar and one stereo camera., zh: 不包含材料参数；采集系统为一台毫米波雷达和一台双目相机。}
+- key: rgb
+  status: none
+  note: {en: The camera imagery is discarded after keypoint extraction and is not released., zh: 相机图像在提取关键点后即被丢弃，不予发布。}
+- key: depth
+  status: none
+  note: {en: Stereo camera depth is not released; the camera is used only to produce keypoint ground truth., zh: 双目相机的深度信息不予发布，相机仅用于生成关键点真值。}
+- key: lidar
+  status: none
+  note: {en: The setup has no lidar; the sensors are one mmWave radar and one stereo camera., zh: 采集系统不含激光雷达，传感器为一台毫米波雷达和一台双目相机。}
+- key: radar
+  status: provided
+  note: {en: 'TI IWR1843 at 77 to 81 GHz with 3 TX and 4 RX antennas; released as (x, y, z) point clouds at 24 frames per second.', zh: 'TI IWR1843，77 至 81 GHz，3 个发射和 4 个接收天线；以 (x, y, z) 点云形式发布，同步帧率为 24 帧/秒。'}
+- key: imu
+  status: none
+  note: {en: No IMU is part of the sensing setup., zh: 采集系统中不含 IMU。}
+- key: time_series
+  status: provided
+  note: {en: 'Consecutive frames are stacked into samples, and frames are synchronized with the camera at 24 frames per second.', zh: 连续帧堆叠为样本，帧以 24 帧/秒与相机同步。}
+- key: multiuser
+  status: none
+  note: {en: 'Data are processed per participant, and the paper describes no recordings with several participants at once.', zh: 数据按参与者逐个处理，论文未描述多人同时出现的录制数据。}
+- key: multibs
+  status: none
+  note: {en: 'A single radar is used, and no multi-base-station set is described.', zh: 仅使用单个雷达，未描述多基站数据集。}
+- key: crossfreq
+  status: none
+  note: {en: 'Only one 77 to 81 GHz radar is used, so no paired multi-band data are released.', zh: 仅使用一台 77 至 81 GHz 雷达，因此没有成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Participants perform low-intensity fitness movements; no user speed of about 30 km/h or more is stated., zh: 参与者进行低强度健身动作；文中未给出约 30 km/h 或更高的用户速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: diffraction
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: scattering
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- key: transmission
+  status: none
+  note: {en: 'The dataset records no channel or field quantities, so no propagation mechanism is resolved.', zh: 数据集不记录信道或场量，因此不解析传播机制。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The released data are point clouds, not field-level quantities such as E-field components or antenna patterns.', zh: 发布的数据为点云，不包含 E 场分量或天线方向图等场级量。}
+versions:
+- version: NeurIPS 2023
+  date: 2023-12
+  summary: {en: 'Dataset paper published in the NeurIPS 2023 Datasets and Benchmarks track (NeurIPS 36, held 10-16 December 2023). The paper reports 11 participants, 49 actions and 545k frames, of which 213k frames form the action dataset after filtering.', zh: 数据集论文发表于 NeurIPS 2023 Datasets and Benchmarks 赛道（NeurIPS 36，2023 年 12 月 10 至 16 日举办）。论文报告 11 名参与者、49 类动作和 545k 帧，其中动作数据集经过滤后为 213k 帧。}
+  url: https://doi.org/10.52202/075280-2739
+- version: Initial commit
+  date: '2023-06-04'
+  summary: {en: First commit on the GitHub repository yizzfz/MiliPoint. The repository has no GitHub releases or tags., zh: GitHub 仓库 yizzfz/MiliPoint 的首个提交。该仓库没有 GitHub release 或 tag。}
+  url: https://github.com/yizzfz/MiliPoint

@@ -10,17 +10,17 @@ bandwidth_mhz: 20
 environment: [indoor, outdoor-urban]
 samples: more than 12 million UE locations, more than 3,000 access points, 180 indoor trajectories in 16 buildings, more than 30 outdoor streets
 standard: IEEE 802.11 (Wi-Fi)
-license: Not stated
+license: WiLoc dataset terms and conditions (non-commercial research and educational purposes only)
 access: {url: 'https://wides.usc.edu/programs-and-data.html', type: registration}
 code: []
 paper: arxiv:2602.09115
 used_in: []
 citing: []
 summary: {en: 'Wi-Fi CSI measured over three months from campus access points at the University of Southern California, covering more than 12 million UE locations, more than 3,000 access points, 16 buildings and more than 30 outdoor streets. Measurements use 20 MHz channels in the 2.4 GHz ISM band, captured with a USRP at the UE side.', zh: '在南加州大学（USC）校园 Wi-Fi 接入点上三个月内采集的 Wi-Fi CSI，覆盖超过 1,200 万个 UE 位置、3,000 多个接入点、16 栋建筑及 30 余条户外街道。测量使用 2.4 GHz ISM 频段的 20 MHz 信道，UE 端采用 USRP 采集。'}
-sources: ['https://arxiv.org/abs/2602.09115', 'https://arxiv.org/pdf/2602.09115', 'https://wides.usc.edu/programs-and-data.html']
+sources: ['https://arxiv.org/abs/2602.09115', 'https://arxiv.org/pdf/2602.09115', 'https://wides.usc.edu/programs-and-data.html', 'https://forms.gle/8Z1zUVeF9ssfKR4r9', 'https://arxiv.org/abs/2602.09115v1', 'https://arxiv.org/abs/2602.09115v2']
 checked: '2026-11-06'
-overview: {en: 'WiLoc is a Wi-Fi CSI dataset with location labels, measured on the University of Southern California (USC) campus and described in arXiv:2602.09115 by Zhang, Chu, Serbetci, Gomez-Ponce and Molisch (2026). The campaigns took about 400 hours over three months, with a USRP-based receiver on a cart that followed straight, marked tracks. Table I of the paper lists 6,029,581 UE locations indoors in 16 buildings along 180 corridor trajectories (4,560 m in total), and 6,555,588 UE locations outdoors on more than 30 streets (5,263 m in total). Table I counts 3,293 available indoor APs and 24 outdoor APs; the measurements use campus Wi-Fi APs on channels 1, 6 and 11 of the 2.4 GHz band, with 20 MHz channels. Each building and the outdoor set has one metadata file and one CSI file, and each CSI record carries 14 metadata fields: channel index, timestamp, distance, speed, heading, AP label, X, Y, floor, RSSI, noise and interference, SINR, repetition index and measurement index. The CSI
-    is raw, so AP RF distortions are not compensated, and BSSIDs are withheld from the public data. The stated task is ML-based localization, including supervised learning and transfer learning, and all locations lie on straight lines rather than on a grid.', zh: 'WiLoc 是一个带位置标签的 Wi-Fi CSI 数据集，测量地点为南加州大学（USC）校园，相关论文为 arXiv:2602.09115（Zhang、Chu、Serbetci、Gomez-Ponce 与 Molisch，2026 年）。测量耗时约 400 小时，历时三个月，接收端为装在推车上的 USRP 系统，推车沿画有标记的直线轨迹移动。论文 Table I 列出室内 UE 位置 6,029,581 个，分布于 16 栋建筑的 180 条走廊轨迹（总长 4,560 m）；室外 UE 位置 6,555,588 个，分布于 30 余条街道（总长 5,263 m）。Table I 统计的可用 AP 数，室内为 3,293 个，室外为 24 个。测量使用校园 Wi-Fi AP，在 2.4 GHz 频段的信道 1、6 和 11 上进行，信道带宽为 20 MHz。每栋建筑与室外数据各含一个元数据文件和一个 CSI 文件；每条 CSI 记录带有 14 个元数据字段，包括信道索引、时间戳、距离、速度、朝向、AP 标签、X、Y、楼层、RSSI、噪声与干扰、SINR、重复索引和测量索引。CSI 为原始数据，未补偿 AP 的射频失真，公开数据中不提供 BSSID。任务为基于机器学习的定位，包括监督学习与迁移学习；所有位置均位于直线轨迹上，而非网格。'}
+overview: {en: 'WiLoc is a Wi-Fi CSI dataset with location labels, measured on the University of Southern California (USC) campus and described in arXiv:2602.09115 by Zhang, Chu, Serbetci, Gomez-Ponce and Molisch (2026). The campaigns took about 400 hours over three months, with a USRP-based receiver on a cart that moved along piecewise-linear, marked tracks. Table I of the paper lists 6,029,581 UE locations indoors in 16 buildings along 180 corridor trajectories (4,560 m in total), and 6,555,588 UE locations outdoors on more than 30 streets (5,263 m in total). Table I counts 3,293 available indoor APs and 24 outdoor APs; the measurements use campus Wi-Fi APs on channels 1, 6 and 11 of the 2.4 GHz band, with 20 MHz channels. Each building and the outdoor set has one metadata file and one CSI file, and each CSI record carries 14 metadata fields: channel index, timestamp, distance, speed, heading, AP label, X, Y, floor, RSSI, noise and interference, SINR, repetition index and measurement index.
+    The CSI is raw, so AP RF distortions are not compensated, and BSSIDs are withheld from the public data. The stated task is ML-based localization, including supervised learning and transfer learning.', zh: 'WiLoc 是一个带位置标签的 Wi-Fi CSI 数据集，测量地点为南加州大学（USC）校园，相关论文为 arXiv:2602.09115（Zhang、Chu、Serbetci、Gomez-Ponce 与 Molisch，2026 年）。测量活动约耗时 400 小时，历时三个月，接收端为装在推车上的 USRP 系统，推车沿带标记的分段线性轨迹移动。论文 Table I 列出室内 UE 位置 6,029,581 个，分布于 16 栋建筑的 180 条走廊轨迹（总长 4,560 m）；室外 UE 位置 6,555,588 个，分布于 30 余条街道（总长 5,263 m）。Table I 统计的可用 AP 数，室内为 3,293 个，室外为 24 个；测量使用校园 Wi-Fi AP 在 2.4 GHz 频段的信道 1、6 和 11，信道带宽为 20 MHz。每栋建筑与室外数据各含一个元数据文件和一个 CSI 文件，每条 CSI 记录带有 14 个元数据字段，包括信道索引、时间戳、距离、速度、朝向、AP 标签、X、Y、楼层、RSSI、噪声与干扰、SINR、重复索引和测量索引。CSI 为原始数据，未补偿 AP 的射频失真，公开数据中不提供 BSSID。任务为基于机器学习的定位，包括监督学习与迁移学习。'}
 signal_details:
 - signal: csi
   text: {en: 'Complex CSI extracted from the beacon frames of campus APs on channels 1, 6 and 11 (2.4 GHz, 20 MHz). The USRP digitises the band at 100 MSamp/s at baseband, and the selected channel is downsampled to 20 MSamp/s. Table I gives a location sampling rate of 10 Hz per AP. The nominal beacon interval is 102.4 ms; on several LOS trajectories, about 85% of beacon spacings were nominal and fewer than 5% contained more than one lost beacon. The authors state that phase is considerably less reliable than amplitude because of AP phase noise and beacon timing jitter, although the complex values are provided.', zh: 从校园 AP 的 beacon 帧中提取的复数 CSI，使用信道 1、6 和 11（2.4 GHz，20 MHz）。USRP 以 100 MSamp/s 的基带速率数字化该频段，所选信道再降采样至 20 MSamp/s。Table I 给出每个 AP 的位置采样率为 10 Hz。beacon 的标称间隔为 102.4 ms；在若干 LOS 轨迹上，约 85% 的间隔为标称值，少于 5% 的间隔丢失了一个以上的 beacon。论文指出，由于 AP 相位噪声与 beacon 发送的时间抖动，相位的可靠性远低于幅度，但数据中仍提供复数值。}
@@ -60,3 +60,93 @@ pipeline:
     - {en: Timestamped encoder distance, zh: 带时间戳的编码器距离}
     outputs:
     - {en: 'CSI, location and AP triplets with metadata files', zh: 带元数据文件的 CSI、位置与 AP 三元组}
+mobility: receiver on a measurement cart at 0.45 m/s average (0.15 m/s in Building 2)
+facts:
+- label: {en: Coordinates and indices, zh: 坐标与索引}
+  text: {en: 'X and Y are local coordinates in metres: a campus-wide system for the outdoor set and a building-specific system for each indoor building. The floor index F is 1 for the outdoor set. The building index B is part of the dataset name, with B = 0 for outdoor.', zh: X 与 Y 为局部坐标（单位 m）：室外数据采用校园统一坐标系，每栋室内建筑采用各自的坐标系。室外数据的楼层索引 F 为 1。建筑索引 B 包含在数据集名称中，B = 0 表示室外。}
+- label: {en: Heading convention, zh: 朝向定义}
+  text: {en: 'A heading value of 1 denotes the +X direction, and the value increases by 0.5 for each 45-degree counterclockwise bearing.', zh: 朝向值 1 表示 +X 方向，每逆时针转过 45 度，数值增加 0.5。}
+- label: {en: Measured lines, zh: 测量线路}
+  text: {en: Each measured line has a global measurement index. A line that is measured again carries a repetition index., zh: 每条测量线路有一个全局测量索引，重复测量的线路另带重复索引。}
+- label: {en: AP label, zh: AP 标签}
+  text: {en: 'The AP label combines a physical AP index with one of the three campus networks (0, 1 or 2) configured on that AP. The BSSID or MAC address behind each label is not released.', zh: AP 标签由物理 AP 编号与该 AP 上配置的三个校园网络之一（0、1 或 2）组合而成。各标签对应的 BSSID 或 MAC 地址不公开。}
+limitations:
+- {en: 'Indoor footprints were captured in corridors only, so most in-room APs have no line of sight to the receiver.', zh: 室内测量仅覆盖走廊，因此多数房间内 AP 与接收端之间没有视距路径。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex CSI from campus Wi-Fi beacon frames on 2.4 GHz channels 1, 6 and 11 at 20 MHz; the authors state that phase is less reliable than amplitude.', zh: 来自校园 Wi-Fi beacon 帧的复数 CSI，位于 2.4 GHz 的信道 1、6、11，带宽 20 MHz；作者指出相位的可靠性低于幅度。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: provided
+  note: {en: 'RSSI, noise and interference, and SINR fields in each CSI record.', zh: 每条 CSI 记录包含 RSSI、噪声与干扰以及 SINR 字段。}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: provided
+  note: {en: 'Local X and Y in metres for each record, plus a floor index; positions come from the encoder on the cart.', zh: 每条记录提供以米为单位的局部 X、Y 坐标及楼层索引；位置来自推车上的编码器。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: Each building and the outdoor set has one metadata file and one CSI file; no image data are released., zh: 每栋建筑及室外数据各有一个元数据文件和一个 CSI 文件；不发布图像数据。}
+- key: depth
+  status: none
+  note: {en: 'Not in the released file set, which holds metadata and CSI only.', zh: 不在发布的文件集中，发布内容仅包括元数据和 CSI。}
+- key: lidar
+  status: none
+  note: {en: 'Not in the released file set, which holds metadata and CSI only.', zh: 不在发布的文件集中，发布内容仅包括元数据和 CSI。}
+- key: radar
+  status: none
+  note: {en: 'Not in the released file set, which holds metadata and CSI only.', zh: 不在发布的文件集中，发布内容仅包括元数据和 CSI。}
+- key: imu
+  status: none
+  note: {en: 'Not in the released file set, which holds metadata and CSI only.', zh: 不在发布的文件集中，发布内容仅包括元数据和 CSI。}
+- key: time_series
+  status: provided
+  note: {en: 'Timestamped records along measured lines, with a location sampling rate of 10 Hz per AP.', zh: 沿测量线路的带时间戳记录，每个 AP 的位置采样率为 10 Hz。}
+- key: multiuser
+  status: none
+  note: {en: A single receiver on the measurement cart is the only UE; no simultaneous users are described., zh: 测量推车上的单个接收端是唯一的 UE；未描述同时存在的多个用户。}
+- key: multibs
+  status: provided
+  note: {en: 'Records carry an AP label for each campus AP; Table I lists 3,293 indoor and 24 outdoor APs.', zh: '每条记录带有校园 AP 的 AP 标签；Table I 列出室内 3,293 个、室外 24 个 AP。'}
+- key: crossfreq
+  status: none
+  note: {en: Only the 2.4 GHz band is measured., zh: 仅测量 2.4 GHz 频段。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'Average cart speed is 0.45 m/s (0.15 m/s in Building 2), far below 30 km/h.', zh: 推车平均速度为 0.45 m/s（2 号楼为 0.15 m/s），远低于 30 km/h。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Only CSI and metadata are released., zh: 仅发布 CSI 和元数据。}
+versions:
+- version: arXiv v3
+  date: '2026-05-07'
+  summary: {en: Third arXiv version of the WiLoc paper. The arXiv listing gives no change note., zh: WiLoc 论文的第三个 arXiv 版本。arXiv 页面未给出变更说明。}
+  url: https://arxiv.org/abs/2602.09115v3
+- version: arXiv v2
+  date: '2026-02-27'
+  summary: {en: Second arXiv version of the WiLoc paper. The arXiv listing gives no change note., zh: WiLoc 论文的第二个 arXiv 版本。arXiv 页面未给出变更说明。}
+  url: https://arxiv.org/abs/2602.09115v2
+- version: arXiv v1
+  date: '2026-02-09'
+  summary: {en: 'First arXiv version of the WiLoc paper, which introduces the dataset and makes it publicly available with the paper.', zh: WiLoc 论文的首个 arXiv 版本，介绍该数据集，并随论文公开数据。}
+  url: https://arxiv.org/abs/2602.09115v1

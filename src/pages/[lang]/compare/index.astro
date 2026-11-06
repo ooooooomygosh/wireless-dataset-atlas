@@ -1,12 +1,24 @@
 ---
 import type { GetStaticPaths } from "astro";
 import Base from "../../../layouts/Base.astro";
-import { allDatasets, t, LANGS, type Lang } from "../../../lib/data.ts";
+import { allDatasets, t, label, labels, LANGS, type Lang } from "../../../lib/data.ts";
 import { specRows } from "../../../lib/view.ts";
 export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
 const lang = Astro.params.lang as Lang;
 const ds = await allDatasets();
-const payload = ds.map((d) => ({ id: d.id, name: d.name, rows: specRows(d, lang).map(([, k, v]) => [k, v]) }));
+const capRow = (d: (typeof ds)[number], key: string) => {
+  const c = d.capabilities.find((x) => x.key === key);
+  return c ? `${label(labels.support, c.status, lang)}${c.note ? ` — ${c.note[lang]}` : ""}` : label(labels.support, "unknown", lang);
+};
+const payload = ds.map((d) => ({
+  id: d.id,
+  name: d.name,
+  rows: [
+    ...specRows(d, lang).map(([, k, v]) => [k, v]),
+    [t(lang, "detail.versions"), d.versions[0] ? `${d.versions[0].version}${d.versions[0].date ? ` (${d.versions[0].date})` : ""}, ${d.versions.length}` : t(lang, "spec.none")],
+    ...Object.keys(labels.capability).map((k) => [label(labels.capability, k, lang), capRow(d, k)]),
+  ],
+}));
 ---
 <Base lang={lang} nav="compare" title={t(lang, "compare.title")}>
   <div class="page-head"><h1>{t(lang, "compare.title")}</h1></div>

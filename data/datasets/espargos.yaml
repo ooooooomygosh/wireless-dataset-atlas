@@ -8,13 +8,14 @@ bands_ghz: [2.462, 2.472]
 environment: [lab]
 format: TFRecord
 license: CC BY 4.0
-access: {url: 'https://espargos.net/research/', type: registration}
+access: {url: 'https://espargos.net/research/', type: open}
 code: ['https://github.com/ESPARGOS/pyespargos']
 paper: arxiv:2408.16377
 used_in: []
 citing: ['doi:10.1109/jiot.2026.3710751', 'doi:10.1109/icc59461.2026.11588034']
 summary: {en: 'Phase- and time-synchronized WiFi CSI at 2.462 GHz from four ESPARGOS arrays (8 antennas each) in lab rooms, with position tags and timestamps as ground truth. Four datasets (espargos-0001, -0002, -0005, -0007) are hosted on DaRUS.', zh: 来自四个 ESPARGOS 阵列（每个 8 根天线）的相位与时间同步 WiFi CSI，中心频率 2.462 GHz，采集于实验室房间，以位置标签和时间戳作为真值。四个数据集（espargos-0001、-0002、-0005、-0007）托管于 DaRUS。}
-sources: ['https://espargos.net/research/', 'https://espargos.net/datasets/data/espargos-0007/', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/DARUS-4973', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/DARUS-4754', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/darus-4456', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/darus-4352', 'https://arxiv.org/abs/2408.16377', 'https://arxiv.org/html/2408.16377', 'https://github.com/ESPARGOS/pyespargos']
+sources: ['https://espargos.net/research/', 'https://espargos.net/datasets/data/espargos-0007/', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/DARUS-4973', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/DARUS-4754', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/darus-4456', 'https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/darus-4352', 'https://arxiv.org/abs/2408.16377', 'https://arxiv.org/html/2408.16377', 'https://github.com/ESPARGOS/pyespargos', 'https://espargos.net/datasets/data/espargos-0001/', 'https://espargos.net/datasets/data/espargos-0002/', 'https://espargos.net/datasets/data/espargos-0005/', 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions?persistentId=doi:10.18419/DARUS-4352', 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions?persistentId=doi:10.18419/darus-4456', 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions?persistentId=doi:10.18419/DARUS-4754',
+  'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions?persistentId=doi:10.18419/DARUS-4973', 'https://darus.uni-stuttgart.de/api/access/datafile/378510', 'https://darus.uni-stuttgart.de/api/access/datafile/301213', 'https://github.com/ESPARGOS/pyespargos/releases', 'https://raw.githubusercontent.com/ESPARGOS/pyespargos/main/README.md']
 checked: '2026-11-06'
 overview: {en: 'The ESPARGOS phase-coherent CSI datasets are four WiFi channel state information (CSI) recordings made with ESPARGOS arrays and hosted on DaRUS as espargos-0001, espargos-0002, espargos-0005 and espargos-0007. They accompany arXiv:2408.16377 and the project site espargos.net. Each ESPARGOS array has 8 antennas in 2 rows of 4 patch antennas, and each antenna is connected to an ESP32-S2 WiFi microcontroller; the boards share one clock and a phase reference, so the CSI is phase-synchronous across antennas. The measurements were made in indoor lab rooms: espargos-0001 points four arrays at a small area, espargos-0002 combines four arrays into one 8 by 4 array in a room with a metal wall, espargos-0005 places four arrays in the room corners, and espargos-0007 uses four synchronized arrays with four ceiling transmitters. Each datapoint holds the CSI tensor H of shape B x 2 x 4 x Nsub, RSSI values, the transmitter position and a timestamp in seconds. In the paper''s campaign the
     transmitter is mounted on a robot that follows custom trajectories, and a Leica MS60 total station tracks it with millimeter-level accuracy. The espargos-0007 release has 16 TFRecord files, and its empty-room file contains no position data.', zh: 'ESPARGOS 相位相干 CSI 数据集包含四组使用 ESPARGOS 阵列采集的 WiFi 信道状态信息（CSI）记录，托管于 DaRUS，编号为 espargos-0001、espargos-0002、espargos-0005 和 espargos-0007。数据集与 arXiv:2408.16377 及项目网站 espargos.net 相关。每个 ESPARGOS 阵列有 8 根天线，排列为 2 行 4 列的贴片天线，每根天线连接一个 ESP32-S2 WiFi 微控制器；各板卡共享同一时钟和相位参考，因此各天线的 CSI 相位同步。测量在室内实验室中进行：espargos-0001 将四个阵列指向一个小区域，espargos-0002 将四个阵列组合为一个 8×4 阵列，置于带金属墙的房间中，espargos-0005 将四个阵列放置在房间四角，espargos-0007 使用四个同步阵列和天花板上的四个发射机。每个数据点包含形状为 B×2×4×Nsub 的 CSI 张量 H、RSSI 值、发射机位置以及以秒计的时间戳。论文的测量中，发射机安装在按自定义轨迹运动的机器人上，Leica MS60 全站仪以毫米级精度对其跟踪。espargos-0007 发布包含 16 个 TFRecord 文件，其中空房间文件不含位置数据。'}
@@ -53,3 +54,132 @@ pipeline:
     outputs:
     - {en: 'CSI, RSSI, position and timestamp records', zh: CSI、RSSI、位置与时间戳记录}
     - {en: DaRUS datasets with DOIs, zh: 带 DOI 的 DaRUS 数据集}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex HT-LTF CSI per datapoint, with 117 subcarriers in espargos-0001, -0002 and -0005, and 53 in espargos-0007.', zh: 每个数据点含复数 HT-LTF CSI；espargos-0001、-0002、-0005 为 117 个子载波，espargos-0007 为 53 个。}
+- key: cir
+  status: derivable
+  note: {en: Time-domain CSI is computed from the released subcarriers; pyespargos includes an Instantaneous Time-Domain CSI demo. It is not stored., zh: 时域 CSI 可由发布的子载波计算，pyespargos 含 Instantaneous Time-Domain CSI 示例。数据集中不单独存储。}
+- key: paths
+  status: derivable
+  note: {en: 'Angles and delays can be estimated from CSI with pyespargos tools (MUSIC spectrum, azimuth-delay and time-of-arrival demos); per-path power and phase are not stored.', zh: 可用 pyespargos 工具（MUSIC 谱、azimuth-delay 与到达时间示例）从 CSI 估计角度和时延；逐路径功率和相位未存储。}
+- key: interaction
+  status: none
+  note: {en: 'Datapoints store CSI, RSSI, transmitter position, MAC address and time only, with no per-path interaction labels.', zh: 数据点仅存储 CSI、RSSI、发射机位置、MAC 地址与时间，不含逐路径交互标签。}
+- key: power
+  status: provided
+  note: {en: 'Per-antenna RSSI in dB, one value per receive element per datapoint.', zh: 每根接收天线的 RSSI（dB），每个数据点每个接收单元一个值。}
+- key: iq
+  status: simulate
+  note: {en: 'Raw I/Q is not in the released datasets; it needs a new capture with ESP-SDR, which pyespargos supports.', zh: 已发布数据集不含原始 I/Q；需用 pyespargos 支持的 ESP-SDR 重新采集。}
+- key: beam_labels
+  status: derivable
+  note: {en: Per-beam gains can be computed from the CSI and the released array geometry; no beam indices or codebook are stored., zh: 逐波束增益可由 CSI 与发布的阵列几何计算；不存储波束索引或码本。}
+- key: position
+  status: provided
+  note: {en: Transmitter 3D position in meters from a Leica MS60 tachymeter; the espargos-0007 empty-room file has no position data., zh: 发射机三维位置（米），由 Leica MS60 全站仪测得；espargos-0007 空房间文件不含位置数据。}
+- key: geometry
+  status: provided
+  note: {en: Room point clouds and array positions and orientations are provided for many datasets in the set., zh: 多数数据集提供房间点云以及阵列位置和朝向。}
+- key: materials
+  status: none
+  note: {en: 'The espargos-0007 TFRecord fields are CSI, MAC, position, RSSI and time; no material parameters are released.', zh: espargos-0007 的 TFRecord 字段为 CSI、MAC 地址、位置、RSSI 与时间，不含材料参数。}
+- key: rgb
+  status: none
+  note: {en: Only photos of the setup are released; there are no per-datapoint camera frames., zh: 仅发布实验布置照片，不含逐数据点的摄像头画面。}
+- key: depth
+  status: none
+  note: {en: No depth sensor data are released., zh: 不含深度传感器数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data are released; the point cloud is a tachymeter scan., zh: 不含激光雷达数据；点云为全站仪扫描结果。}
+- key: radar
+  status: none
+  note: {en: No radar products are released; the datasets contain CSI and position records., zh: 不含雷达产品，数据集仅含 CSI 与位置记录。}
+- key: imu
+  status: none
+  note: {en: No IMU data are released., zh: 不含 IMU 数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Each datapoint carries a UNIX timestamp in seconds; recordings run from about 6,610 s to 25,176 s.', zh: '每个数据点带 UNIX 时间戳（秒），录制时长约为 6,610 s 至 25,176 s。'}
+- key: multiuser
+  status: none
+  note: {en: 'Each datapoint has one transmitter MAC address and one position, so no per-user channel sets are stored.', zh: 每个数据点只有一个发射机 MAC 地址和一个位置，因此不存储逐用户信道集合。}
+- key: multibs
+  status: provided
+  note: {en: 'Four arrays form one coherent set in espargos-0002, -0005 and -0007 through global phase sync; espargos-0001 has array-wise sync only.', zh: espargos-0002、-0005 与 -0007 通过全局相位同步，使四个阵列构成一个相干集合；espargos-0001 仅为阵列内同步。}
+- key: crossfreq
+  status: none
+  note: {en: 'Each dataset uses one WiFi carrier, 2.462 GHz or 2.472 GHz; no paired multi-band data are described.', zh: 每个数据集使用单一 WiFi 载频（2.462 GHz 或 2.472 GHz），未描述成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Robot and person trajectories are at slow speeds; no speed of about 30 km/h or more is stated., zh: 机器人与人员轨迹为低速；来源未给出约 30 km/h 或以上的速度。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: Walking people appear in espargos-0001 and espargos-0007 recordings; blockage events are not labelled., zh: espargos-0001 与 espargos-0007 的录制中有行走人员；未标注遮挡事件。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; the dataset paper states that multipath dominates indoors.', zh: 包含在测量之中，未按路径标注；数据集论文称室内多径占主导。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; espargos-0001 is described as line-of-sight only.', zh: 包含在测量之中，未按路径标注；espargos-0001 描述为仅视距。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path; espargos-0001 is described as line-of-sight only.', zh: 包含在测量之中，未按路径标注；espargos-0001 描述为仅视距。}
+- key: polarization
+  status: unknown
+  note: {en: 'The hardware uses dual-polarized patch antennas, but the released files do not describe polarization.', zh: 硬件采用双极化贴片天线，但发布的文件未描述极化信息。}
+- key: em_field
+  status: none
+  note: {en: Only CSI and RSSI values are released; no field components or antenna patterns are included., zh: 仅发布 CSI 与 RSSI 数值，不含场分量或天线方向图。}
+versions:
+- version: '2026-10-20'
+  date: '2026-10-20'
+  summary: {en: pyespargos release that supports firmware with API_MAJOR = 4 and adds IQ sampling. The release notes state that IQ transmission and better calibration handling come next., zh: pyespargos 发布版，支持 API_MAJOR = 4 的固件并新增 IQ 采样。发布说明称，IQ 发射和更完善的校准处理将在后续加入。}
+  url: https://github.com/ESPARGOS/pyespargos/releases
+- version: '2026-07-28'
+  date: '2026-07-28'
+  summary: {en: 'Initial stable pyespargos release, supporting firmware with API_MAJOR = 3. The release notes warn that the library is undergoing significant architectural changes.', zh: pyespargos 首个稳定版，支持 API_MAJOR = 3 的固件。发布说明提示该库正在进行重大架构调整。}
+  url: https://github.com/ESPARGOS/pyespargos/releases
+- version: espargos-0007 v1.0
+  date: '2025-04-07'
+  summary: {en: 'espargos-0007 (passive target with four synchronized arrays) released on DaRUS as version 1.0, with 16 TFRecord files and spec.json.', zh: espargos-0007（四个同步阵列与被动目标）以 1.0 版发布于 DaRUS，含 16 个 TFRecord 文件与 spec.json。}
+  url: https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/DARUS-4973
+- version: espargos-0005 v1.0
+  date: '2025-02-10'
+  summary: {en: 'espargos-0005 (four phase- and time-synchronous arrays in room corners) released on DaRUS as version 1.0, with robot trajectory TFRecord files and spec.json.', zh: espargos-0005（房间四角的四个相位与时间同步阵列）以 1.0 版发布于 DaRUS，含机器人轨迹 TFRecord 文件与 spec.json。}
+  url: https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/DARUS-4754
+- version: arXiv v1
+  date: '2024-08-29'
+  summary: {en: 'arXiv v1 of the paper describing the ESPARGOS CSI datasets (arXiv:2408.16377). The abstract page lists no later version.', zh: '描述 ESPARGOS CSI 数据集的论文 arXiv v1 版（arXiv:2408.16377）。摘要页未列出后续版本。'}
+  url: https://arxiv.org/abs/2408.16377
+- version: espargos-0002 v1.0
+  date: '2024-08-27'
+  summary: {en: 'espargos-0002 (four arrays combined into one 8 by 4 array, with a metal wall) released on DaRUS as version 1.0.', zh: espargos-0002（四个阵列组合为 8×4 阵列，房间内有金属墙）以 1.0 版发布于 DaRUS。}
+  url: https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/darus-4456
+- version: espargos-0001 v1.0
+  date: '2024-07-12'
+  summary: {en: 'espargos-0001 (four arrays aimed at a small area, line-of-sight only) released on DaRUS as version 1.0. This is the earliest dated release in the set.', zh: espargos-0001（四个阵列对准小区域，仅视距）以 1.0 版发布于 DaRUS。这是该组数据集中日期最早的发布。}
+  url: https://darus.uni-stuttgart.de/citation?persistentId=doi:10.18419/darus-4352
+organization: University of Stuttgart
+standard: 802.11n
+antennas: {rx: 32}
+samples: 791,383 to 2,859,804 data points per dataset
+size_gb: 189.1
+mobility: transmitter or passive target moved by a robot along custom trajectories
+facts:
+- label: {en: Line-of-sight coverage, zh: 视距覆盖}
+  text: {en: 'espargos-0001 contains only line-of-sight channels. In espargos-0002, a metal wall blocks the line-of-sight path in parts of the measurement area, and the wall is later removed.', zh: espargos-0001 仅包含视距信道。在 espargos-0002 中，金属墙在测量区域的部分区域阻挡视距路径，之后墙体被移除。}
+- label: {en: Subcarrier layout, zh: 子载波配置}
+  text: {en: 'espargos-0001, -0002 and -0005 use 117 OFDM subcarriers over a 36.562 MHz signal bandwidth. espargos-0007 uses 53 OFDM subcarriers over 16.562 MHz.', zh: espargos-0001、-0002 和 -0005 使用 117 个 OFDM 子载波，信号带宽为 36.562 MHz。espargos-0007 使用 53 个 OFDM 子载波，信号带宽为 16.562 MHz。}
+- label: {en: Coordinate convention, zh: 坐标约定}
+  text: {en: Antenna locations and point-cloud coordinates use a right-handed Cartesian frame in meters. The origin and orientation of the frame are arbitrary., zh: 天线位置与点云坐标采用右手笛卡尔坐标系，单位为米。坐标系的原点与朝向是任意选取的。}
+- label: {en: Publication dates, zh: 发布日期}
+  text: {en: 'The DaRUS records were published on 12 July 2024 (espargos-0001), 27 August 2024 (espargos-0002), 10 February 2025 (espargos-0005) and 7 April 2025 (espargos-0007).', zh: DaRUS 记录的发布日期分别为：espargos-0001 于 2024 年 7 月 12 日，espargos-0002 于 2024 年 8 月 27 日，espargos-0005 于 2025 年 2 月 10 日，espargos-0007 于 2025 年 4 月 7 日。}
+usage:
+- {en: 'The TFRecord examples are read with tf.data.TFRecordDataset and parsed with tf.io.parse_tensor. In espargos-0007, csi is complex64 with shape (4, 2, 4, 53), rssi is float32 with shape (4, 2, 4), pos is a float64 vector of length 3 in meters, and time is a float64 in seconds since the UNIX epoch.', zh: 'TFRecord 样本使用 tf.data.TFRecordDataset 读取，并通过 tf.io.parse_tensor 解析。在 espargos-0007 中，csi 为 complex64，形状为 (4, 2, 4, 53)；rssi 为 float32，形状为 (4, 2, 4)；pos 为长度为 3 的 float64 向量，单位为米；time 为 float64，以自 UNIX 纪元起的秒数表示。'}

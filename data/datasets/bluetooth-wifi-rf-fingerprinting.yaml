@@ -19,10 +19,10 @@ paper: doi:10.1109/mcom.001.2200725
 used_in: []
 citing: ['doi:10.1109/wcnc57260.2024.10571027', 'doi:10.1109/tmc.2025.3633287', 'doi:10.1109/jiot.2026.3681700']
 summary: {en: 'Complex IQ captures of WiFi (IEEE 802.11g) and Bluetooth 5.0 emissions from 10 commercial combo-chip devices, recorded with a USRP X300 at 66.67 MS/s in two time frames. Each capture contains 40 MSamples and has a JSON metadata file.', zh: 来自10台商用组合芯片设备的WiFi（IEEE 802.11g）与蓝牙5.0发射信号的复数IQ采样，由USRP X300以66.67 MS/s在两个时间段采集。每个采集文件包含40 MSample，并附带JSON元数据文件。}
-sources: ['https://ieee-dataport.org/documents/real-world-commercial-wifi-and-bluetooth-dataset-rf-fingerprinting', 'https://arxiv.org/pdf/2303.13538', 'https://doi.org/10.1109/mcom.001.2200725']
+sources: ['https://ieee-dataport.org/documents/real-world-commercial-wifi-and-bluetooth-dataset-rf-fingerprinting', 'https://arxiv.org/pdf/2303.13538', 'https://doi.org/10.1109/mcom.001.2200725', 'https://arxiv.org/abs/2303.13538', 'https://arxiv.org/html/2303.13538v3', 'https://api.crossref.org/works/10.1109/mcom.001.2200725', 'https://arxiv.org/abs/2303.13538v1', 'https://export.arxiv.org/api/query?id_list=2303.13538']
 checked: '2026-11-06'
-overview: {en: 'The Bluetooth and Wi-Fi RF Fingerprinting Dataset contains raw IQ captures of WiFi (IEEE 802.11g) and Bluetooth 5.0 emissions from commercial devices. ANDRO Computational Solutions, LLC produced it and described it in an article. Ten commercial devices were recorded: eight Raspberry Pi 4B boards with Cypress CYW43455 WiFi-Bluetooth combo chips and two Lenovo laptops with Intel Dual Band Wireless-AC 7260 chips. A USRP X300 with a UBX160 daughterboard recorded the emissions at 66.67 MS/s in an indoor laboratory, on two days separated by several months. Each technology has 120 captures of 40 MSamples. Each capture is a binary complex64 file with a JSON metadata file of the same name. The Bluetooth captures vary the transmitter-receiver distance from 0.5 m to 3.0 m in 0.5 m steps, and the WiFi captures vary the transmit power. Access is through IEEE DataPort, which requires a subscription and login.', zh: '蓝牙与Wi-Fi射频指纹数据集包含商用设备发出的WiFi（IEEE 802.11g）和Bluetooth 5.0信号的原始IQ采集数据。该数据由ANDRO
-    Computational Solutions, LLC制作，并在一篇文章中进行了描述。共记录十台商用设备：八块搭载Cypress CYW43455 WiFi-Bluetooth组合芯片的Raspberry Pi 4B开发板，以及两台搭载Intel Dual Band Wireless-AC 7260芯片的Lenovo笔记本。采集使用配备UBX160子板的USRP X300，在室内实验室以66.67 MS/s采样，分两天进行，两天相隔数月。每种技术各有120次采集，每次采集40 MSamples。每个采集为二进制complex64文件，并附有同名的JSON元数据文件。蓝牙采集改变收发距离，从0.5 m至3.0 m，步长0.5 m；WiFi采集改变发射功率。数据通过IEEE DataPort获取，需要订阅并登录。'}
+overview: {en: 'The Bluetooth and Wi-Fi RF Fingerprinting Dataset contains raw IQ captures of WiFi (IEEE 802.11g) and Bluetooth 5.0 emissions from ten commercial devices. Eight Raspberry Pi 4B boards with Cypress CYW43455 WiFi-Bluetooth combo chips and two Lenovo laptops with Intel Dual Band Wireless-AC 7260 chips were recorded. A USRP X300 with a UBX160 daughterboard and VERT2450 antenna captured the emissions at 66.67 MS/s, with the receiver tuned to 2.44 GHz, in an indoor laboratory. The captures were made on two days separated by several months, and each technology has 120 captures of 40 MSamples. Each capture is a binary complex64 file with a JSON metadata file of the same name. Bluetooth captures vary the transmitter-receiver distance from 0.5 m to 3.0 m in 0.5 m steps, and WiFi captures vary the transmit power. ANDRO Computational Solutions, LLC produced the dataset and described it in an IEEE Communications Magazine article. IEEE DataPort hosts the files and requires a subscription
+    and login.', zh: '蓝牙与Wi-Fi射频指纹数据集包含十台商用设备发射的WiFi（IEEE 802.11g）与Bluetooth 5.0信号的原始IQ采集数据。被记录的设备包括八块搭载Cypress CYW43455 WiFi-Bluetooth组合芯片的Raspberry Pi 4B开发板，以及两台搭载Intel Dual Band Wireless-AC 7260芯片的Lenovo笔记本。采集使用配备UBX160子板并通过VERT2450天线接收的USRP X300，接收机调谐至2.44 GHz，以66.67 MS/s采样，地点为室内实验室。数据分两天采集，两天相隔数月，每种技术各有120次采集，每次采集40 MSamples。每次采集为二进制complex64文件，并附有同名的JSON元数据文件。蓝牙采集将收发距离从0.5 m变化到3.0 m，步长0.5 m；WiFi采集改变发射功率。ANDRO Computational Solutions, LLC制作了该数据集，并在IEEE Communications Magazine的一篇文章中对其进行了描述。IEEE DataPort托管文件，访问需要订阅并登录。'}
 signal_details:
 - signal: iq
   text: {en: 'Raw binary IQ captures in complex64 format, one .dat file per capture, recorded with a USRP X300 with UBX160 daughterboard and VERT2450 antenna on the RX2 port. Sampling rate 66.67 MS/s and 40 MSamples per capture. Each .dat file is paired with a .meta.json file of the same name, in a modified SigMF format. The metadata holds global settings (sample rate, record date, datatype), capture fields (center frequency, sample start, transmission number) and annotations such as environment, distance, protocol, transmitter and receiver details, modulation and gain.', zh: 原始二进制IQ采集数据，格式为complex64，每次采集一个.dat文件。采集设备为USRP X300，配备UBX160子板，RX2端口连接VERT2450天线。采样率66.67 MS/s，每次采集40 MSamples。每个.dat文件配有同名的.meta.json文件，格式为修改后的SigMF。元数据包含全局设置（采样率、记录日期、数据类型）、采集字段（中心频率、采样起点、发送编号）以及标注（环境、距离、协议、收发端信息、调制方式和增益）。}
@@ -30,20 +30,112 @@ pipeline:
   summary: {en: 'Ten commercial devices transmit WiFi or Bluetooth one at a time, a USRP X300 records the emissions at 66.67 MS/s, and each capture is stored as an IQ file with a JSON metadata file.', zh: 十台商用设备每次只发射WiFi或Bluetooth之一，USRP X300以66.67 MS/s记录发射信号，每次采集保存为一个IQ文件和一个JSON元数据文件。}
   stages:
   - title: {en: Emitter setup, zh: 发射端配置}
-    detail: {en: 'Only one emitter is active at a time, and WiFi and Bluetooth are never transmitted together; the other radio is blocked with rfkill. WiFi emitters run as access points that broadcast beacons on channel 8 (centered at 2447 MHz, 20 MHz bandwidth) every 15 ms, at 5 to 30 dBm in 5 dBm steps on the Raspberry Pi boards and 2 to 22 dBm in 4 dBm steps on the Lenovo laptops. Bluetooth emitters send a 103 MB text file over OBEX to an LG Nexus 5 phone, and each transfer lasts at least 5 minutes.', zh: 同一时间只有一个发射端工作，WiFi与Bluetooth从不同时发射，另一种无线电通过rfkill屏蔽。WiFi发射端作为接入点，在信道8（中心频率2447 MHz，带宽20 MHz）上每15 ms广播一次信标：Raspberry Pi开发板的发射功率为5至30 dBm，步长5 dBm；Lenovo笔记本为2至22 dBm，步长4 dBm。Bluetooth发射端通过OBEX向LG Nexus 5手机发送一个103 MB的文本文件，每次传输至少持续5分钟。}
+    detail: {en: 'Only one emitter transmits at a time. The WiFi radio is unblocked with rfkill only during WiFi captures, which prevents simultaneous transmissions. WiFi emitters run as IEEE 802.11g access points on channel 8 (centered at 2447 MHz, 20 MHz bandwidth) and broadcast beacons every 15 ms. Bluetooth emitters send a 103 MB text file over OBEX to an LG Nexus 5 phone, and each transfer lasts at least 5 minutes.', zh: 同一时间只有一个发射端工作。WiFi射频仅在WiFi采集期间通过rfkill解除屏蔽，以避免同时发射。WiFi发射端作为IEEE 802.11g接入点，在信道8（中心频率2447 MHz，带宽20 MHz）上以15 ms间隔广播信标。Bluetooth发射端通过OBEX向LG Nexus 5手机发送一个103 MB的文本文件，每次传输至少持续5分钟。}
     inputs:
     - {en: 10 commercial devices, zh: 10台商用设备}
     outputs:
     - {en: WiFi beacons and Bluetooth OBEX transfers, zh: WiFi信标与Bluetooth OBEX传输}
   - title: {en: Capture, zh: 采集}
-    detail: {en: 'A USRP X300 with a UBX160 daughterboard and VERT2450 antenna on the RX2 port records the passive reception at 66.67 MS/s, the highest rate the receiver supports without sample drops. Bluetooth captures cover six transmitter-receiver separations, from 0.5 m to 3.0 m in 0.5 m steps, for each device, and WiFi captures vary the transmit power. Day-1 and Day-2 captures use the same receiver settings, separated by several months.', zh: 配备UBX160子板并通过RX2端口连接VERT2450天线的USRP X300以66.67 MS/s记录被动接收信号，这是接收机在无采样丢失情况下支持的最高速率。蓝牙采集对每台设备覆盖六个收发距离，从0.5 m至3.0 m，步长0.5 m；WiFi采集改变发射功率。Day-1与Day-2采集使用相同的接收机设置，两天相隔数月。}
+    detail: {en: 'A USRP X300 with a UBX160 daughterboard and VERT2450 antenna on the RX2 port records the passive reception at 66.67 MS/s, the highest rate the receiver supports without sample drops. The receiver is tuned to 2.44 GHz. Bluetooth captures cover six transmitter-receiver separations, from 0.5 m to 3.0 m in 0.5 m steps, for each device, and WiFi captures vary the transmit power. Day-1 and Day-2 captures use the same receiver settings, separated by several months.', zh: 配备UBX160子板并通过RX2端口连接VERT2450天线的USRP X300，以66.67 MS/s被动记录接收信号，这是接收机在无采样丢失时支持的最高速率。接收机调谐至2.44 GHz。蓝牙采集对每台设备覆盖六个收发距离，从0.5 m至3.0 m，步长0.5 m；WiFi采集改变发射功率。Day-1与Day-2采集使用相同的接收机设置，两者相隔数月。}
     inputs:
     - {en: RF emissions from the devices, zh: 设备的射频发射信号}
     outputs:
     - {en: Raw IQ samples, zh: 原始IQ采样}
   - title: {en: Storage and metadata, zh: 存储与元数据}
-    detail: {en: 'Each capture is written as a binary .dat file of complex64 IQ samples and a .meta.json file of the same name. The files are packed in four .tar.gz archives: Day1BT, Day2BT, Day1WIFI and Day2WIFI. A parse.py script reads the JSON metadata.', zh: 每次采集写入一个complex64格式的二进制.dat文件和一个同名的.meta.json文件。文件打包为四个.tar.gz压缩包：Day1BT、Day2BT、Day1WIFI和Day2WIFI。parse.py脚本用于读取JSON元数据。}
+    detail: {en: 'Each capture is written as a binary .dat file of complex64 IQ samples and a .meta.json file of the same name, in a modified SigMF format. The files are packed in four .tar.gz archives (Day1BT, Day2BT, Day1WIFI and Day2WIFI) that total about 29.8 GB compressed. A script that parses the JSON metadata is provided with the dataset.', zh: 每次采集写入一个complex64格式的二进制.dat文件和一个同名的.meta.json文件，格式为修改后的SigMF。文件打包为四个.tar.gz压缩包（Day1BT、Day2BT、Day1WIFI和Day2WIFI），压缩后合计约29.8 GB。数据集附带一个用于解析JSON元数据的脚本。}
     inputs:
     - {en: Raw IQ samples, zh: 原始IQ采样}
     outputs:
     - {en: '.dat files, .meta.json files and four .tar.gz archives', zh: .dat文件、.meta.json文件及四个.tar.gz压缩包}
+bandwidth_mhz: 66.67
+facts:
+- label: {en: Train and test split, zh: 训练与测试划分}
+  text: {en: 'Day-1 and Day-2 captures were recorded months apart, and the source suggests training on Day-1 and testing on Day-2 to measure generalization across days.', zh: Day-1与Day-2两组数据相隔数月采集。数据来源建议用Day-1训练、用Day-2测试，以检验跨日泛化能力。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only raw IQ captures and JSON metadata are described; no channel matrices are described., zh: 仅描述原始 IQ 采集与 JSON 元数据；未描述信道矩阵。}
+- key: cir
+  status: none
+  note: {en: Only raw IQ captures and JSON metadata are described; no impulse responses are described., zh: 仅描述原始 IQ 采集与 JSON 元数据；未描述冲激响应。}
+- key: paths
+  status: none
+  note: {en: No per-path parameters are described., zh: 未描述逐径参数。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction data are described., zh: 未描述逐径交互信息。}
+- key: power
+  status: derivable
+  note: {en: 'Received power is computable from the IQ samples; the metadata records gain, and WiFi transmit power was varied from 5 to 30 dBm (Raspberry Pi) and 2 to 22 dBm (Lenovo).', zh: 可由 IQ 采样计算接收功率；元数据记录增益，WiFi 发射功率在 Raspberry Pi 上为 5 至 30 dBm，在 Lenovo 上为 2 至 22 dBm。}
+- key: iq
+  status: provided
+  note: {en: Complex64 .dat captures at 66.67 MS/s with 40 MSamples per capture; 120 captures per technology., zh: complex64 的 .dat 采集文件，采样率 66.67 MS/s，每次采集 40 MSample；每种技术 120 次采集。}
+- key: beam_labels
+  status: none
+  note: {en: Single receive antenna (VERT2450 on the RX2 port); no beam indices or per-beam gains are described., zh: 单接收天线（RX2 端口连接 VERT2450）；未描述波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: Distance is annotated per Bluetooth capture (0.5 m to 3.0 m); no device position or GPS is described., zh: 蓝牙采集标注了收发距离（0.5 m 至 3.0 m）；未描述设备位置或 GPS。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files are described; the laboratory layout appears only as a figure., zh: 未描述场景或地图文件；实验室布局仅以图示给出。}
+- key: materials
+  status: none
+  note: {en: No material parameters are described., zh: 未描述材料参数。}
+- key: rgb
+  status: none
+  note: {en: The captures are RF-only; no camera data are described., zh: 采集仅为射频；未描述相机数据。}
+- key: depth
+  status: none
+  note: {en: The captures are RF-only; no depth data are described., zh: 采集仅为射频；未描述深度数据。}
+- key: lidar
+  status: none
+  note: {en: The captures are RF-only; no lidar data are described., zh: 采集仅为射频；未描述激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: The captures are RF-only; no radar data are described., zh: 采集仅为射频；未描述雷达数据。}
+- key: imu
+  status: none
+  note: {en: The captures are RF-only; no IMU data are described., zh: 采集仅为射频；未描述惯性测量单元数据。}
+- key: time_series
+  status: provided
+  note: {en: Each capture has a record date and a transmission number in its JSON metadata; Day-1 and Day-2 are separated by several months., zh: 每次采集的 JSON 元数据包含记录日期与发送编号；Day-1 与 Day-2 相隔数月。}
+- key: multiuser
+  status: none
+  note: {en: Only one emitter is active at a time., zh: 同一时间只有一个发射端工作。}
+- key: multibs
+  status: none
+  note: {en: 'A single passive receiver (USRP X300, RX2 port) is described; no multiple base stations are described.', zh: 仅描述单个被动接收机（USRP X300，RX2 端口）；未描述多个基站。}
+- key: crossfreq
+  status: none
+  note: {en: 'One receiver tuned to 2.44 GHz; WiFi and Bluetooth are captured in separate sets, not as paired multi-band data.', zh: 接收机调谐至 2.44 GHz；WiFi 与蓝牙分别采集，并非成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Emitters are placed at fixed distances in the indoor captures; no speed is stated., zh: 室内采集中发射端放置于固定距离；未给出速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the indoor over-the-air measurements, not labelled per path.', zh: 存在于室内空口测量中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the indoor over-the-air measurements, not labelled per path.', zh: 存在于室内空口测量中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the indoor over-the-air measurements, not labelled per path.', zh: 存在于室内空口测量中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the indoor over-the-air measurements, not labelled per path.', zh: 存在于室内空口测量中，未按路径标注。}
+- key: polarization
+  status: none
+  note: {en: A single VERT2450 antenna is used; no polarimetric data are described., zh: 使用单根 VERT2450 天线；未描述极化测量数据。}
+- {key: em_field, status: unknown}
+versions:
+- version: arXiv v1
+  date: '2023-03-15'
+  summary: {en: 'arXiv paper that introduces the dataset: Day-1 and Day-2 WiFi (802.11g) and Bluetooth captures from 10 COTS devices at 66.67 MS/s, with a JSON metadata file per capture.', zh: 在 arXiv 首次发布、介绍该数据集的论文：来自 10 台商用设备的 Day-1 与 Day-2 WiFi（802.11g）及蓝牙采集，采样率 66.67 MS/s，每次采集附带一个 JSON 元数据文件。}
+  url: https://arxiv.org/abs/2303.13538v1
+- version: '2022'
+  date: '2022-10-30'
+  summary: {en: 'IEEE DataPort release with four archives (Day1BT, Day2BT, Day1WIFI, Day2WIFI); each capture is a complex64 .dat file with a .meta.json file. The DataPort record shows a last update on 2022-10-31 with no change note.', zh: IEEE DataPort 发布，包含四个压缩包（Day1BT、Day2BT、Day1WIFI、Day2WIFI）；每次采集为一个 complex64 的 .dat 文件及同名 .meta.json 文件。DataPort 记录显示于 2022-10-31 有一次更新，未附变更说明。}
+  url: https://ieee-dataport.org/documents/real-world-commercial-wifi-and-bluetooth-dataset-rf-fingerprinting

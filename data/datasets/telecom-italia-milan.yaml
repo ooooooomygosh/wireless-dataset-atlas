@@ -15,10 +15,155 @@ paper: doi:10.1038/sdata.2015.55
 used_in: []
 citing: ['doi:10.1109/jsac.2019.2904363', 'doi:10.1109/lcomm.2018.2841832', 'doi:10.1109/infocom42981.2021.9488883']
 summary: {en: 'Aggregated mobile phone activity (SMS, call and Internet CDR counts) per grid square for Milan and the Province of Trentino, released with geolocated tweets, weather, electricity, news and administrative datasets.', zh: 米兰市和特伦托省按网格区块汇总的手机活动数据（短信、通话和互联网 CDR 计数），并与地理定位推文、气象、电力、新闻及行政区划数据一同发布。}
-sources: ['https://www.nature.com/articles/sdata201555', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/EGZHFV', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/QLCABU', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/QJWLFU', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/FZRVSX']
+sources: ['https://www.nature.com/articles/sdata201555', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/EGZHFV', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/QLCABU', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/QJWLFU', 'https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/FZRVSX', 'https://api.crossref.org/works/10.1038/sdata.2015.55', 'https://dataverse.harvard.edu/api/datasets/:persistentId/versions?persistentId=doi:10.7910/DVN/EGZHFV', 'https://dataverse.harvard.edu/api/datasets/:persistentId/versions?persistentId=doi:10.7910/DVN/QLCABU', 'https://dataverse.harvard.edu/api/datasets/:persistentId/versions?persistentId=doi:10.7910/DVN/QJWLFU', 'https://dataverse.harvard.edu/api/datasets/:persistentId/versions?persistentId=doi:10.7910/DVN/FZRVSX']
 checked: '2026-11-06'
-overview: {en: 'This dataset is a multi-source open record of urban life in the city of Milan and the Province of Trentino, Italy. Telecom Italia is the source of the telecommunications part and released the data in 2015 with the Scientific Data descriptor DOI 10.1038/sdata.2015.55. The telecommunications files are derived from Call Detail Records (CDRs) of the Telecom Italia cellular network, which log user activity for billing and network management. The Dataverse entries contain SMS, call and Internet activity computed from these CDRs for Milan and for Trentino. The same release includes weather, news, social-network, electricity and administrative data for the two areas. The telecom files are daily text files, one per day from 1 November 2013 to 1 January 2014, with 62 files each for Milan and Trentino. Some datasets are spatially aggregated over grids, the Milano Grid and the Trentino Grid, which are provided as GeoJSON files. The authors name energy consumption, mobility planning,
-    tourist and migrant flows, urban structures, event detection and urban well-being as target problems.', zh: 该数据集是意大利米兰市和特伦托省城市生活的多源开放记录。电信部分的数据来源为 Telecom Italia，于 2015 年随 Scientific Data 数据说明文章发布（DOI 10.1038/sdata.2015.55）。电信文件由 Telecom Italia 蜂窝网络的呼叫详单记录（CDR）计算得出，CDR 记录用户活动，用于计费和网络管理。Dataverse 条目包含基于这些 CDR 计算的米兰和特伦托的 SMS、通话和互联网活动数据。同一发布还包括两个地区的气象、新闻、社交网络、电力和行政区划数据。电信文件为每日文本文件，从 2013 年 11 月 1 日至 2014 年 1 月 1 日，米兰和特伦托各 62 个文件。部分数据集按网格进行空间汇总，即 Milano Grid 和 Trentino Grid，以 GeoJSON 文件提供。作者列出的目标问题包括能源消耗、出行规划、游客和移民流动、城市结构、事件检测以及城市宜居性。}
+overview: {en: 'This dataset is a multi-source open record of urban life in Milan and the Province of Trentino, Italy, released for the Telecom Italia Big Data Challenge in 2014. The telecommunications files are derived from call detail records (CDRs) of the Telecom Italia cellular network: each SMS, call or Internet session creates a CDR with its time and the radio base station that handled it. The Harvard Dataverse entries contain SMS, call and Internet activity counts per grid square for Milan and Trentino, aggregated in 10-minute slots. The same release includes weather, news, social-network and electricity data, plus administrative region boundaries, and the electricity data cover Trentino only. The telecom files are daily text files, one per day from 1 November 2013 to 1 January 2014, with 62 files each for Milan and Trentino. Spatial aggregation uses the Milano Grid and the Trentino Grid, supplied as GeoJSON files in WGS84. The Scientific Data descriptor (DOI 10.1038/sdata.2015.55),
+    published on 27 October 2015, lists energy consumption, mobility planning, tourist and migrant flows, urban structures, event detection and urban well-being as problems the data can address.', zh: 该数据集是意大利米兰市和特伦托省城市生活的多源开放记录，数据于 2014 年随 Telecom Italia 大数据挑战赛发布。电信文件由 Telecom Italia 蜂窝网络的呼叫详单记录（CDR）计算得出：每次短信、通话或互联网会话都会生成一条 CDR，记录其时间和处理该事件的无线基站。Harvard Dataverse 条目包含米兰和特伦托按网格方格汇总、以 10 分钟为时段的短信、通话和互联网活动计数。同一发布还包括气象、新闻、社交网络和电力数据，以及行政区划数据，其中电力数据仅覆盖特伦托。电信文件为每日文本文件，时间范围为 2013 年 11 月 1 日至 2014 年 1 月 1 日，米兰和特伦托各 62 个文件。空间汇总使用 Milano Grid 和 Trentino Grid 两套网格，以 WGS84 坐标系下的 GeoJSON 文件提供。Scientific Data 数据说明文章（DOI 10.1038/sdata.2015.55）于 2015 年 10 月 27 日发表，列出能源消耗、出行规划、游客和移民流动、城市结构、事件检测和城市宜居性等可利用这些数据研究的问题。}
 signal_details:
 - signal: traffic
   text: {en: 'Telecom Italia cellular-network activity for SMS, calls and Internet, computed from CDRs, with one file per day. There are 62 daily text files for Milan (MI) and 62 for Trentino (TN), covering 1 November 2013 to 1 January 2014. File sizes range from 277,460,259 to 376,123,111 bytes for Milan and from 149,176,708 to 310,794,216 bytes for Trentino. The grid polygons are supplied as GeoJSON: milano-grid.geojson (3,168,596 bytes) and trentino-grid.geojson (2,117,045 bytes).', zh: 'Telecom Italia 蜂窝网络的 SMS、通话和互联网活动数据，由 CDR 计算得出，每天一个文件。米兰（MI）和特伦托（TN）各有 62 个每日文本文件，时间范围为 2013 年 11 月 1 日至 2014 年 1 月 1 日。米兰文件大小为 277,460,259 至 376,123,111 字节，特伦托文件大小为 149,176,708 至 310,794,216 字节。网格多边形以 GeoJSON 提供：milano-grid.geojson（3,168,596 字节）和 trentino-grid.geojson（2,117,045 字节）。'}
+pipeline:
+  summary: {en: 'Telecom Italia network events are logged as CDRs, mapped to radio coverage areas, counted per grid square in 10-minute slots, scaled by a constant, and released as daily text files with GeoJSON grids.', zh: Telecom Italia 网络事件以 CDR 形式记录，映射到无线覆盖区域，按网格方格和 10 分钟时段计数，经常数缩放后，以每日文本文件和 GeoJSON 网格的形式发布。}
+  stages:
+  - title: {en: CDR logging, zh: CDR 记录}
+    detail: {en: 'Each SMS sent or received, call placed or received, and Internet connection event creates a call detail record (CDR) with the time and the radio base station (RBS) that handled it. An Internet connection creates CDRs at its start and end, and also during the connection when it lasts more than 15 minutes or more than 5 MB is transferred.', zh: 每条发送或接收的短信、每次拨打或接听的电话，以及每个互联网连接事件，都会生成一条呼叫详单记录（CDR），记录事件时间和处理该事件的无线基站（RBS）。互联网连接在开始和结束时各生成 CDR；连接期间若持续超过 15 分钟或传输超过 5 MB，也会生成 CDR。}
+    inputs:
+    - {en: 'SMS, voice and Internet events of Telecom Italia customers and roaming users', zh: Telecom Italia 用户及漫游用户的短信、语音和互联网事件}
+    outputs:
+    - {en: CDRs with time and serving RBS, zh: 包含时间和服务基站的 CDR}
+  - title: {en: Spatial assignment, zh: 空间分配}
+    detail: {en: 'Each RBS is linked to its coverage area through Telecom Italia coverage maps (Cmap). Each event is assigned to the grid square that covers that area. The Milan grid has 1,000 squares of about 235 m by 235 m, and the Trentino grid has 6,575 squares. Both use WGS84 (EPSG:4326).', zh: '每个基站通过 Telecom Italia 覆盖图（Cmap）与其覆盖区域相关联。每个事件被分配到覆盖该区域的网格方格。米兰网格有 1,000 个约 235 m x 235 m 的方格，特伦托网格有 6,575 个方格。两者均采用 WGS84（EPSG:4326）坐标系。'}
+    inputs:
+    - {en: RBS coverage maps (Cmap), zh: 基站覆盖图（Cmap）}
+    - {en: Milan and Trentino grids, zh: 米兰与特伦托网格}
+    outputs:
+    - {en: event counts per grid square, zh: 每个网格方格的事件计数}
+  - title: {en: Temporal aggregation, zh: 时间汇总}
+    detail: {en: 'Counts are aggregated in 10-minute time slots for each square. The released value is the count divided by a constant k defined by Telecom Italia, which hides the true numbers of calls, SMS and connections.', zh: 计数按每个方格、以 10 分钟为时段进行汇总。发布的数值为计数除以 Telecom Italia 定义的常数 k，从而隐藏通话、短信和连接的真实数量。}
+    inputs:
+    - {en: CDR counts per square and 10-minute slot, zh: 每个方格与 10 分钟时段的 CDR 计数}
+    outputs:
+    - {en: scaled counts per slot, zh: 每个时段的缩放计数}
+  - title: {en: Daily packaging, zh: 按日打包}
+    detail: {en: 'Each area has one text file per day from 1 November 2013 to 1 January 2014, giving 62 files for Milan and 62 for Trentino. Grid polygons are supplied as GeoJSON. The files are published on Harvard Dataverse under ODbL 1.0.', zh: 每个地区每天一个文本文件，时间范围为 2013 年 11 月 1 日至 2014 年 1 月 1 日，米兰和特伦托各 62 个文件。网格多边形以 GeoJSON 提供。文件发布于 Harvard Dataverse，采用 ODbL 1.0 许可证。}
+    inputs:
+    - {en: aggregated counts per day, zh: 每日汇总计数}
+    outputs:
+    - {en: daily TXT files and GeoJSON grids, zh: 每日 TXT 文件与 GeoJSON 网格}
+facts:
+- label: {en: Count definition, zh: 计数定义}
+  text: {en: 'Each value counts CDRs in one grid square and one 10-minute slot. Received SMS, sent SMS, incoming calls, outgoing calls and Internet connections are recorded as separate activity types.', zh: 每个数值统计某一网格方格、某一 10 分钟时段内的 CDR 数量。接收短信、发送短信、呼入电话、呼出电话和互联网连接分别记录为不同的活动类型。}
+- label: {en: Internet CDR rule, zh: 互联网 CDR 规则}
+  text: {en: 'An Internet connection creates a CDR at its start and at its end. During the connection, a CDR is also created when the connection lasts more than 15 minutes or transfers more than 5 MB.', zh: 互联网连接在开始和结束时各生成一条 CDR。连接期间，若连接持续超过 15 分钟或传输超过 5 MB，也会生成 CDR。}
+- label: {en: Grid and coordinates, zh: 网格与坐标}
+  text: {en: 'The Milan grid has 1,000 squares of about 235 m by 235 m and the Trentino grid has 6,575 squares. Grid geometries use WGS84 (EPSG:4326).', zh: '米兰网格有 1,000 个约 235 m x 235 m 的方格，特伦托网格有 6,575 个方格。网格几何采用 WGS84（EPSG:4326）坐标系。'}
+limitations:
+- {en: 'Only Telecom Italia customers are observed, so the data cover at most 34% of the population, based on the operator''s market share cited in the paper.', zh: 仅观测 Telecom Italia 自身用户，因此数据最多覆盖约 34% 的人口，依据是论文引用的运营商市场份额。}
+- {en: The records contain no information about missed calls., zh: 记录中不包含未接来电的信息。}
+- {en: 'Counts are divided by a constant k set by Telecom Italia, so the values are not the true number of calls, SMS or connections.', zh: 计数值除以 Telecom Italia 设定的常数 k，因此数值并非实际的通话、短信或连接次数。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Activity counts only; no channel matrices., zh: 仅有活动计数，没有信道矩阵。}
+- key: cir
+  status: none
+  note: {en: Activity counts only; no impulse response., zh: 仅有活动计数，没有冲激响应。}
+- key: paths
+  status: none
+  note: {en: Activity counts only; no per-path parameters., zh: 仅有活动计数，没有逐径参数。}
+- key: interaction
+  status: none
+  note: {en: Activity counts only; no per-path interaction data., zh: 仅有活动计数，没有逐径交互数据。}
+- key: power
+  status: none
+  note: {en: 'Counts of SMS, calls and Internet sessions; no signal power values.', zh: 为短信、通话和互联网会话计数，没有信号功率值。}
+- key: iq
+  status: none
+  note: {en: No I/Q samples; activity counts only., zh: 没有 I/Q 采样，仅有活动计数。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or gains; activity counts only., zh: 没有波束索引或增益，仅有活动计数。}
+- key: position
+  status: none
+  note: {en: Activity is aggregated per grid square; no user or device positions are released., zh: 活动数据按网格方格汇总，未发布用户或设备位置。}
+- key: geometry
+  status: provided
+  note: {en: 'Milano and Trentino grids as GeoJSON polygons: two-dimensional squares in WGS84, about 235 m per side in Milan.', zh: 米兰和特伦托网格以 GeoJSON 多边形提供：WGS84 坐标系下的二维方格，米兰方格边长约 235 m。}
+- key: materials
+  status: none
+  note: {en: 'No material parameters; the release holds activity counts, grids and other open data.', zh: 没有材料参数；发布内容为活动计数、网格及其他开放数据。}
+- key: rgb
+  status: none
+  note: {en: No imagery in the release., zh: 发布内容中没有图像数据。}
+- key: depth
+  status: none
+  note: {en: No depth data in the release., zh: 发布内容中没有深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data in the release., zh: 发布内容中没有激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data in the release., zh: 发布内容中没有雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data in the release., zh: 发布内容中没有惯性传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: 'Activity counts per grid square in 10-minute slots, from 1 November 2013 to 1 January 2014.', zh: 每个网格方格按 10 分钟时段统计的活动计数，时间范围为 2013 年 11 月 1 日至 2014 年 1 月 1 日。}
+- key: multiuser
+  status: none
+  note: {en: Only aggregated counts per square and slot; no per-user channels., zh: 仅有按方格和时段汇总的计数，没有逐用户信道。}
+- key: multibs
+  status: none
+  note: {en: 'Released fields are square ID, time interval and activity counts; the serving base station is not a released field.', zh: 发布字段为方格 ID、时间区间和活动计数；服务基站不是发布字段。}
+- key: crossfreq
+  status: none
+  note: {en: Telecom activity only; no paired multi-band data., zh: 仅有电信活动数据，没有配对的多频段数据。}
+- key: near_field
+  status: none
+  note: {en: No radio channel measurements; the data are aggregated activity counts., zh: 没有无线信道测量，数据为汇总的活动计数。}
+- key: high_mobility
+  status: none
+  note: {en: No radio channel measurements; user speed is not a released field., zh: 没有无线信道测量，用户速度不是发布字段。}
+- key: dynamic_blockage
+  status: none
+  note: {en: No radio channel measurements., zh: 没有无线信道测量。}
+- key: reflection
+  status: none
+  note: &id001 {en: No radio propagation data; the release holds aggregated activity counts., zh: 没有无线传播数据，发布内容为汇总的活动计数。}
+- key: diffraction
+  status: none
+  note: *id001
+- key: scattering
+  status: none
+  note: *id001
+- key: transmission
+  status: none
+  note: *id001
+- key: polarization
+  status: none
+  note: *id001
+- key: em_field
+  status: none
+  note: *id001
+versions:
+- version: '1.3'
+  date: '2020-02-09'
+  summary: {en: 'Dataverse version 1.3 for the Milan and Trentino records: the Scientific Data article (DOI 10.1038/sdata.2015.55) is added to the publication metadata and linked in the description; the files are unchanged.', zh: Dataverse 1.3 版（米兰与特伦托两条记录）：在发表信息中加入 Scientific Data 文章（DOI 10.1038/sdata.2015.55），并在描述中加入链接；文件未变。}
+  url: https://doi.org/10.7910/DVN/EGZHFV
+- version: '1.2'
+  date: '2015-10-30'
+  summary: {en: 'Dataverse version 1.2: the file list and metadata are unchanged from version 1.0.', zh: Dataverse 1.2 版：文件列表与元数据与 1.0 版相同。}
+  url: https://doi.org/10.7910/DVN/EGZHFV
+- version: '1.1'
+  date: '2015-08-05'
+  summary: {en: 'Dataverse version 1.1: the file list and metadata are unchanged from version 1.0.', zh: Dataverse 1.1 版：文件列表与元数据与 1.0 版相同。}
+  url: https://doi.org/10.7910/DVN/EGZHFV
+- version: '1.0'
+  date: '2015-05-14'
+  summary: {en: 'First Harvard Dataverse release: 62 daily SMS, call and Internet activity text files each for Milan and Trentino, with the Milano and Trentino grid GeoJSON files.', zh: Harvard Dataverse 首次发布：米兰和特伦托各 62 个每日短信、通话和互联网活动文本文件，以及米兰和特伦托网格 GeoJSON 文件。}
+  url: https://doi.org/10.7910/DVN/EGZHFV
+- version: '2014'
+  date: '2014'
+  summary: {en: 'Telecom Italia Big Data Challenge, 2014 edition: Milan and Trentino data were provided to challenge teams and released to research teams under ODbL.', zh: Telecom Italia 大数据挑战赛 2014 届：向参赛团队提供米兰和特伦托数据，并以 ODbL 许可发布给研究团队。}
+  url: https://www.nature.com/articles/sdata201555

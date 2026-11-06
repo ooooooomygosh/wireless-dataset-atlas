@@ -11,19 +11,148 @@ subcarriers: 2301
 environment: [uav]
 samples: 31,619 drone positions
 size_gb: 76.16
-format: .mat
+format: MAT
 mobility: UAV transmitter at 25-45 m height
-license: CC BY 4.0
-access: {url: 'https://ieee-dataport.org/documents/usc-drone-based-channel-measurement-data', type: restricted}
+license: Creative Commons Attribution
+access: {url: 'https://ieee-dataport.org/documents/usc-drone-based-channel-measurement-data', type: registration}
 code: []
 paper: arxiv:2106.15276
 used_in: []
 citing: ['doi:10.1109/tvt.2021.3122413', 'doi:10.1109/twc.2025.3548890', 'doi:10.1109/twc.2026.3665431']
 summary: {en: 'Measured 3.5 GHz channel frequency responses over 2,301 subcarriers (46 MHz) from a drone-mounted transmitter at 31,619 positions, with 128 ground user positions in a 200 m x 200 m outdoor area, covering LOS and NLOS cases and stored as .mat files.', zh: '在 200 m × 200 m 室外区域内采集的 3.5 GHz 实测信道频率响应，包含 2,301 个子载波（46 MHz 带宽）、无人机发射机的 31,619 个位置和 128 个地面用户位置，涵盖 LOS 与 NLOS 场景，以 .mat 文件存储。'}
-sources: ['https://ieee-dataport.org/documents/usc-drone-based-channel-measurement-data', 'https://arxiv.org/abs/2106.15276']
+sources: ['https://ieee-dataport.org/documents/usc-drone-based-channel-measurement-data', 'https://arxiv.org/abs/2106.15276', 'https://arxiv.org/pdf/2106.15276v2', 'https://arxiv.org/abs/2106.15276v1']
 checked: '2026-11-06'
-overview: {en: 'USC Drone-Based Channel Measurements is a set of measured 3.5 GHz channel responses produced at the University of Southern California. A transmitter mounted on a drone flew over a 200 m x 200 m outdoor area, and 128 ground user positions served as receivers. The drone recorded 31,619 positions at heights of 25 m to 45 m, sampled every 5 cm along four trajectories. Both line-of-sight and non-line-of-sight cases are included. Channel responses are stored as complex channel frequency responses over 2,301 frequency points spanning 3.477 to 3.523 GHz, in MATLAB .mat files together with GPS arrays for the drone and user positions. The cited paper motivates such data with statistical channel modeling and ray-tracing validation for cell-free massive MIMO. The data page does not describe the sounder hardware, the sounding signal, antenna gain, calibration, or timestamps, and the 76.16 GB archive requires an IEEE DataPort subscription.', zh: 'USC Drone-Based Channel Measurements 是南加州大学产出的一组
-    3.5 GHz 实测信道响应数据。发射机搭载在无人机上，在 200 m × 200 m 的室外区域内飞行，128 个地面用户位置作为接收端。无人机在 25 m 至 45 m 高度的四条轨迹上采集了 31,619 个位置，每 5 cm 采样一次。数据同时包含视距（LOS）与非视距（NLOS）场景。信道响应以复数信道频率响应（CFR）的形式存储于 MATLAB .mat 文件中，覆盖 2,301 个频点，频率范围 3.477 至 3.523 GHz，并附带无人机与用户位置的 GPS 数组。所引论文以统计信道建模和射线追踪结果验证为动机，面向 cell-free massive MIMO 系统。'}
+overview: {en: 'USC Drone-Based Channel Measurements is a set of measured 3.5 GHz channel responses collected at the University of Southern California. A transmitter carried by a drone flew over a 200 m x 200 m outdoor area at heights of 25 m to 45 m, and 128 ground user positions, arranged as 16 clusters of 8 users, served as receivers. The drone positions were sampled every 5 cm along four trajectories, giving 31,619 positions, and both line-of-sight and non-line-of-sight cases are included. Channel responses are complex channel frequency responses over 2,301 frequency points spanning 3.477 to 3.523 GHz, stored in MATLAB .mat files together with GPS arrays for the drone and user positions. The sounder described in the cited paper uses a software-defined radio with a single dipole antenna on the drone and a cylindrical antenna array on the ground, and the paper motivates such data with statistical channel modeling and ray-tracing validation for cell-free massive MIMO. The archive is 76.16
+    GB and its download requires logging in to IEEE DataPort.', zh: 'USC Drone-Based Channel Measurements 是南加州大学采集的一组 3.5 GHz 实测信道响应数据。搭载发射机的无人机在 200 m x 200 m 的室外区域上空飞行，飞行高度为 25 m 至 45 m；128 个地面用户位置作为接收端，按 16 个簇组织，每簇 8 个用户。无人机沿四条轨迹每 5 cm 采样一个位置，共 31,619 个位置，数据同时包含 LOS 与 NLOS 场景。信道响应以复数信道频率响应（CFR）的形式保存在 MATLAB .mat 文件中，覆盖 2,301 个频点，频率范围 3.477 至 3.523 GHz，并附带无人机与用户位置的 GPS 数组。所引论文描述的探测设备在无人机端使用轻量软件无线电与单根偶极子天线，地面端使用圆柱形天线阵列；论文以统计信道建模和射线追踪验证为动机，面向 cell-free massive MIMO 系统。数据包大小为 76.16 GB，下载需要登录 IEEE DataPort。'}
 signal_details:
 - signal: csi
   text: {en: 'Complex channel frequency responses (CFR) in linear scale, 2,301 frequency points over 46 MHz (3.477 to 3.523 GHz). Stored as MATLAB .mat files, one file per trajectory-cluster pair named H(a-b), with a = trajectory 1 to 4 and b = cluster 1 to 16. Each file holds an array of size A x 8 x 2301, where A is the number of drone positions in that trajectory.', zh: '线性刻度的复数信道频率响应（CFR），在 46 MHz 带宽（3.477 至 3.523 GHz）内包含 2,301 个频点。以 MATLAB .mat 文件存储，每个轨迹与用户簇组合对应一个文件，命名为 H(a-b)，其中 a 为轨迹编号 1 至 4，b 为簇编号 1 至 16。每个文件的数组尺寸为 A × 8 × 2301，A 为该轨迹中的无人机位置数量。'}
+antennas: {tx: 1, array: single}
+pipeline:
+  summary: {en: 'A sounder on a drone records channels to fixed ground user positions. The responses are calibrated, and the drone flights are packaged per trajectory and user cluster as MATLAB files.', zh: 无人机上的探测设备记录飞行发射机到固定地面用户位置之间的信道。响应经过校准，并按轨迹与用户簇分别打包为 MATLAB 文件。}
+  stages:
+  - title: {en: Equip the drone transmitter and ground receiver, zh: 配置无人机发射机与地面接收机}
+    detail: {en: 'The transmitter is a lightweight software-defined radio on the drone with a single dipole antenna and 28 dBm output power. The receiver on the ground has a dual-polarized cylindrical antenna array with 128 ports, a digitizer and storage. Both operate at 3.5 GHz with a 46 MHz bandwidth and a 2301-point sounding sequence, according to the cited paper.', zh: 发射机为无人机上的轻量软件无线电，配单根偶极子天线，输出功率 28 dBm。地面接收机为双极化圆柱阵列，共 128 个端口，并配有数字化器和存储设备。据所引论文，两端工作在 3.5 GHz，带宽 46 MHz，探测序列长度为 2301。}
+    outputs:
+    - {en: Channel sounder hardware, zh: 信道探测硬件}
+  - title: {en: Fly the transmitter as a virtual array, zh: 以飞行发射机构成虚拟阵列}
+    detail: {en: 'The receiver stays at one user position while the drone flies a fixed trajectory, so the drone positions act as access points. The released data cover four trajectories at 25 m to 45 m height. The flights are repeated for each of the 16 user clusters, and each cluster has 8 users within 5 m of its center at 1.5 m height.', zh: 接收机固定在一个用户位置，无人机沿固定轨迹飞行，每个无人机位置等效为一个接入点。数据覆盖四条轨迹，飞行高度为 25 m 至 45 m。每个用户簇重复一次飞行，共 16 个用户簇；每簇 8 个用户位于簇中心 5 m 半径内，高度为 1.5 m。}
+    inputs:
+    - {en: Drone trajectories, zh: 无人机轨迹}
+    - {en: User cluster positions, zh: 用户簇位置}
+  - title: {en: Measure the channel transfer function, zh: 测量信道传递函数}
+    detail: {en: In the cited campaign the drone moves at 4 m/s and the receiver captures the channel transfer function every 50 ms. Each measurement is a complex frequency response with 2301 points over the 46 MHz band., zh: 在所引论文的测量中，无人机以 4 m/s 飞行，接收机每 50 ms 采集一次信道传递函数。每次测量为 46 MHz 带宽内 2301 个点的复数频率响应。}
+    outputs:
+    - {en: Complex channel frequency responses, zh: 复数信道频率响应}
+  - title: {en: Calibrate the sounder response, zh: 校准探测设备响应}
+    detail: {en: 'Back-to-back calibration removes the RF chain responses from the total channel, so the stored responses reflect the propagation channel. The released responses are stored in linear scale.', zh: back-to-back 校准从总信道响应中去除射频链路的响应，使存储的响应反映传播信道本身。发布的响应以线性刻度保存。}
+    checks:
+    - {en: RF chain responses removed by back-to-back calibration, zh: 通过 back-to-back 校准去除射频链路响应}
+  - title: {en: Attach GPS positions and write MATLAB files, zh: 记录 GPS 位置并写出 MATLAB 文件}
+    detail: {en: 'GPS latitude, longitude and height are stored for all 31,619 drone positions, and cluster-center latitude and longitude are stored for the 16 user clusters. Each trajectory-cluster pair is written as one .mat file H(a-b) holding an array of size A x 8 x 2301.', zh: '31,619 个无人机位置的 GPS 经度、纬度与高度被单独记录，16 个用户簇的中心经纬度也随数据提供。每个轨迹与用户簇组合写为一个 .mat 文件 H(a-b)，数组尺寸为 A x 8 x 2301。'}
+    outputs:
+    - {en: One .mat file per trajectory-cluster pair, zh: 每个轨迹与用户簇组合一个 .mat 文件}
+limitations:
+- {en: 'Each user cluster is measured on a separate flight of the same route, so phases are not coherent across clusters. The cited paper reports an RMS gain difference of about 2.63 dB between repeated trajectories and a larger variation in the complex channels, because the phase changes between flights.', zh: 每个用户簇在同一路线的不同飞行中单独测量，因此不同簇之间的相位不具备相干性。所引论文报告，同一轨迹重复测量的增益 RMS 差异约为 2.63 dB，复信道的差异明显更大，因为相位在不同飞行之间变化。}
+- {en: 'Channels for different user clusters can be measured on different days, so moving blockers such as vehicles are not captured consistently across clusters.', zh: 不同用户簇的测量可能在不同日期进行，因此车辆等移动遮挡物在各簇之间不能保持一致。}
+- {en: 'According to the cited paper, the drone body and hovering vibration may alter the antenna gain and pattern.', zh: 据所引论文，无人机机身与悬停振动可能改变天线增益和方向图。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex CFR in linear scale, 2,301 points over 46 MHz (3.477 to 3.523 GHz), 8 users per cluster, stored as .mat files.', zh: '线性刻度的复数 CFR，46 MHz 带宽（3.477 至 3.523 GHz）内 2,301 个频点，每个用户簇 8 个用户，以 .mat 文件存储。'}
+- key: cir
+  status: derivable
+  note: {en: 'An inverse FFT over the 2,301 stored frequency points gives the impulse response; it is not stored.', zh: '对存储的 2,301 个频点做逆 FFT 即可得到冲激响应；数据中未存储。'}
+- key: paths
+  status: none
+  note: {en: 'Only CFR and GPS arrays are released, with no per-path parameters.', zh: 仅发布 CFR 与 GPS 数组，不含逐路径参数。}
+- key: interaction
+  status: none
+  note: {en: 'Only CFR and GPS arrays are released, with no per-path interaction information.', zh: 仅发布 CFR 与 GPS 数组，不含逐路径交互信息。}
+- key: power
+  status: derivable
+  note: {en: Channel gain follows from |H|^2 over the band; no power field is stored., zh: 信道增益可由带宽内 |H|^2 计算；数据中未存储功率字段。}
+- key: iq
+  status: none
+  note: {en: 'The released values are calibrated CFR, not raw I/Q samples.', zh: 发布的是校准后的 CFR，而非原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are released., zh: 未发布波束索引或分波束增益。}
+- key: position
+  status: provided
+  note: {en: 'Drone GPS (latitude, longitude, height) for all 31,619 positions; users are given only as 16 cluster centres.', zh: '31,619 个无人机位置的 GPS（纬度、经度、高度）；用户仅以 16 个簇中心坐标给出。'}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files are released., zh: 未发布三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: The release contains CFR and GPS arrays only., zh: 发布内容仅有 CFR 与 GPS 数组。}
+- key: depth
+  status: none
+  note: {en: The release contains CFR and GPS arrays only., zh: 发布内容仅有 CFR 与 GPS 数组。}
+- key: lidar
+  status: none
+  note: {en: The release contains CFR and GPS arrays only., zh: 发布内容仅有 CFR 与 GPS 数组。}
+- key: radar
+  status: none
+  note: {en: The release contains CFR and GPS arrays only., zh: 发布内容仅有 CFR 与 GPS 数组。}
+- key: imu
+  status: none
+  note: {en: The release contains CFR and GPS arrays only., zh: 发布内容仅有 CFR 与 GPS 数组。}
+- key: time_series
+  status: provided
+  note: {en: Channels are ordered along four trajectories and were captured every 50 ms in the campaign; the release lists no timestamps., zh: 信道沿四条轨迹按顺序排列，测量中每 50 ms 采集一次；发布内容未列出时间戳。}
+- key: multiuser
+  status: unknown
+  note: {en: 'Each file holds 8 users per cluster, but the sources do not say whether they were captured simultaneously; clusters come from separate flights.', zh: 每个文件含每簇 8 个用户，但来源未说明它们是否同时采集；各簇来自不同飞行。}
+- key: multibs
+  status: none
+  note: {en: 'Drone positions are sampled one after another over minutes, and the paper says the channels lie in different coherence blocks.', zh: 无人机位置沿轨迹依次采样，历时数分钟，论文指出各信道位于不同的相干块。}
+- key: crossfreq
+  status: none
+  note: {en: A single 3.5 GHz band is released., zh: 仅发布 3.5 GHz 单一频段。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'The drone transmitter moves at 4 m/s, about 14 km/h.', zh: 无人机发射机以 4 m/s（约 14 km/h）飞行。}
+- key: dynamic_blockage
+  status: none
+  note: {en: The paper states that dynamic conditions such as trucks blocking the LOS path cannot be accounted for., zh: 论文指出，卡车遮挡视距路径等动态信道条件无法计入数据。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量中，未按路径单独标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量中，未按路径单独标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量中，未按路径单独标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量中，未按路径单独标注。}
+- key: polarization
+  status: none
+  note: {en: 'Both ends use vertically polarized omnidirectional antennas, with no polarimetric data.', zh: 收发两端均为垂直极化全向天线，无极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: 'Only channel frequency responses are released, with no field components or antenna patterns.', zh: 仅发布信道频率响应，不含场分量或天线方向图。}
+versions:
+- version: DataPort last updated
+  date: '2025-11-27'
+  summary: {en: IEEE DataPort record last updated; the page does not say what changed., zh: IEEE DataPort 记录最后更新；页面未说明更新内容。}
+  url: https://ieee-dataport.org/documents/usc-drone-based-channel-measurement-data
+- version: DataPort release
+  date: '2025-09-16'
+  summary: {en: 'Dataset published on IEEE DataPort (DOI 10.21227/cyx3-3713): CFR for 4 trajectories and 16 user clusters, 31,619 drone positions, 76.16 GB of .mat files under CC-BY.', zh: '数据集发布于 IEEE DataPort（DOI 10.21227/cyx3-3713）：4 条轨迹、16 个用户簇的 CFR，共 31,619 个无人机位置，76.16 GB 的 .mat 文件，采用 CC-BY 许可。'}
+  url: https://ieee-dataport.org/documents/usc-drone-based-channel-measurement-data
+- version: arXiv v2
+  date: '2022-05-06'
+  summary: {en: Revised arXiv version of the paper on the drone sounder for CF-mMIMO channel measurement; the sources do not list the changes., zh: 关于 CF-mMIMO 信道测量无人机探测设备的论文修订版（arXiv v2）；来源未列出具体改动。}
+  url: https://arxiv.org/abs/2106.15276v2
+- version: arXiv v1
+  date: '2021-05-23'
+  summary: {en: 'First arXiv version, titled Using a Drone Sounder to Measure Channels for Cell-Free Massive MIMO Systems.', zh: 首个 arXiv 版本，标题为 Using a Drone Sounder to Measure Channels for Cell-Free Massive MIMO Systems。}
+  url: https://arxiv.org/abs/2106.15276v1

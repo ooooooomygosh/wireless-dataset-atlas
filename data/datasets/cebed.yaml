@@ -12,10 +12,10 @@ paper: arxiv:2306.13761
 used_in: []
 citing: []
 summary: {en: 'OFDM channel-estimation datasets generated with the Sionna link-level simulator across different system models and propagation conditions, bundled with ten deep learning and traditional baselines. Each dataset contains complex tensors x, h and y, and the benchmark varies pilot count, pilot arrangement and number of receive antennas.', zh: 基于 Sionna 链路级仿真器生成的 OFDM 信道估计数据集，涵盖不同系统模型和传播条件，并附带十种深度学习与传统基线方法。每个数据集包含复数张量 x、h 和 y，基准测试中变化的参数包括导频数量、导频排布和接收天线数。}
-sources: ['https://github.com/SAIC-MONTREAL/CeBed', 'https://arxiv.org/abs/2306.13761', 'https://export.arxiv.org/api/query?search_query=ti:%22CeBed%22&max_results=3']
+sources: ['https://github.com/SAIC-MONTREAL/CeBed', 'https://arxiv.org/abs/2306.13761', 'https://export.arxiv.org/api/query?search_query=ti:%22CeBed%22&max_results=3', 'https://raw.githubusercontent.com/SAIC-MONTREAL/CeBed/master/README.md', 'https://raw.githubusercontent.com/SAIC-MONTREAL/CeBed/master/scripts/generate_datasets_from_sionna.py', 'https://api.github.com/repos/SAIC-MONTREAL/CeBed', 'https://arxiv.org/pdf/2306.13761', 'https://github.com/SAIC-MONTREAL/CeBed/releases', 'https://arxiv.org/html/2306.13761v1', 'https://arxiv.org/html/2306.13761v2', 'https://export.arxiv.org/api/query?id_list=2306.13761']
 checked: '2026-11-06'
-overview: {en: 'CeBed is a benchmark for deep data-driven OFDM channel estimation, described by Feriani, Wu, Liu and Dudek in a 2023 arXiv preprint (arXiv:2306.13761). The datasets are generated with the Sionna link-level simulator and use the 3GPP TR 38.901 UMi and UMa channel models. A scenario is defined by the channel model, the number of receive antennas (1, 4, 8 and 16 in the spatial-correlation study), the pilot pattern, the SNR and the UE speed. Each scenario contains 15000 samples of complex tensors x, h and y, split 80%, 10% and 10% into training, validation and evaluation parts. The benchmark compares ten estimators: seven deep models (ChannelNet, ReEsNet, InReEsNet, MReEsNet, DDAE, MTRE and HA02) and three classical ones (LS, LMMSE and ALMMSE). The authors target in-distribution accuracy, out-of-distribution SNR generalization, robustness to pilot design and robustness to spatial correlation. The data are simulated only, and the paper states that the selected scenarios do not
-    cover the space of all scenarios.', zh: 'CeBed 是一个面向深度数据驱动 OFDM 信道估计的基准，由 Feriani、Wu、Liu 和 Dudek 于 2023 年以 arXiv 预印本形式发表（arXiv:2306.13761）。数据集使用 Sionna 链路级仿真器生成，信道模型采用 3GPP TR 38.901 的 UMi 和 UMa。场景由信道模型、接收天线数（空间相关性实验中为 1、4、8 和 16）、导频图样、信噪比和 UE 速度共同定义。每个场景包含 15000 个复数张量样本 x、h 和 y，按 80%、10% 和 10% 划分为训练、验证和评估部分。基准比较了十种估计器：七种深度模型（ChannelNet、ReEsNet、InReEsNet、MReEsNet、DDAE、MTRE 和 HA02）与三种经典方法（LS、LMMSE 和 ALMMSE）。作者关注同分布精度、信噪比分布外泛化、导频设计鲁棒性和空间相关性鲁棒性。数据仅为仿真生成，论文指出所选场景并未覆盖全部场景空间。'}
+overview: {en: 'CeBed is a benchmark for deep data-driven OFDM channel estimation, described by Feriani, Wu, Liu and Dudek in a 2023 arXiv preprint (arXiv:2306.13761). The datasets are generated with the Sionna link-level simulator and use the 3GPP TR 38.901 UMi and UMa channel models. A scenario is defined by the channel model, the number of receive antennas (values from 1 to 16), the pilot pattern, the SNR and the UE speed. Each scenario contains 15000 samples of complex tensors x, h and y, split 80%, 10% and 10% into training, validation and evaluation parts. The benchmark compares ten estimators: seven deep models (ChannelNet, ReEsNet, InReEsNet, MReEsNet, DDAE, MTRE and HA02) and three classical ones (LS, LMMSE and ALMMSE). The authors target in-distribution accuracy, out-of-distribution SNR generalization, robustness to pilot design and robustness to spatial correlation. The data are simulated only, and the paper states that the selected scenarios do not cover the space of all scenarios.',
+  zh: 'CeBed 是一个面向深度数据驱动 OFDM 信道估计的基准，由 Feriani、Wu、Liu 与 Dudek 于 2023 年以 arXiv 预印本形式发表（arXiv:2306.13761）。数据集使用 Sionna 链路级仿真器生成，信道模型采用 3GPP TR 38.901 的 UMi 与 UMa。场景由信道模型、接收天线数（取值 1 至 16）、导频图样、信噪比和 UE 速度共同定义。每个场景包含 15000 组复数张量样本 x、h 和 y，按 80%、10% 和 10% 划分为训练、验证和评估部分。基准比较了十种估计器：七种深度模型（ChannelNet、ReEsNet、InReEsNet、MReEsNet、DDAE、MTRE 和 HA02）与三种经典方法（LS、LMMSE 和 ALMMSE）。作者关注同分布精度、信噪比分布外泛化、导频设计鲁棒性和空间相关性鲁棒性。数据仅为仿真生成，论文指出所选场景并未覆盖全部场景空间。'}
 signal_details:
 - signal: csi
   text: {en: 'Complex tensors x (transmitted symbols), h (channel) and y (received symbols), produced by the Sionna link-level simulator. The README gives the shapes as x [batch_size, num_tx, num_tx_ant, num_ofdm_symbols, num_subcarriers], h [batch size, num_rx, num_rx_ant, num_tx, num_tx_ant, num_ofdm_symbols, num_subcarriers] and y [batch size, num_rx, num_rx_ant, num_ofdm_symbols, num_subcarriers]; the README calls h the channel impulse response. The resource grid has 14 OFDM symbols and 72 subcarriers at 2.1 GHz with 30 kHz subcarrier spacing. Block pilots sit at symbol locations 3 and 10 with random QPSK values, and channel realizations are normalized to unit average energy per resource element.', zh: '由 Sionna 链路级仿真器生成的复数张量 x（发送符号）、h（信道）和 y（接收符号）。README 给出的形状为 x [batch_size, num_tx, num_tx_ant, num_ofdm_symbols, num_subcarriers]、h [batch size, num_rx, num_rx_ant, num_tx, num_tx_ant, num_ofdm_symbols, num_subcarriers] 和 y [batch size, num_rx, num_rx_ant, num_ofdm_symbols, num_subcarriers]；README
@@ -48,3 +48,83 @@ pipeline:
     - {en: multi-domain dataset, zh: 多域数据集}
     outputs:
     - {en: 'training, validation and evaluation parts', zh: 训练、验证与评估部分}
+bands_ghz: [2.1]
+subcarriers: 72
+samples: 15000 per scenario
+mobility: UE speed 0 to 15 m/s
+standard: 3GPP TR 38.901
+format: HDF5
+antennas: {tx: 1}
+facts:
+- label: {en: Normalized score, zh: 归一化得分}
+  text: {en: 'The normalized score is 100 times max(0, (MSE_NN - MSE_LS) / (MSE_LMMSE - MSE_LS)). A score of 100 means the model matches LMMSE, and a score of 0 means no gain over LS.', zh: '归一化得分为 100 乘以 max(0, (MSE_NN − MSE_LS) / (MSE_LMMSE − MSE_LS))。得分 100 表示模型达到 LMMSE 水平，得分 0 表示相对 LS 没有增益。'}
+- label: {en: Estimation input and target, zh: 估计输入与目标}
+  text: {en: 'The target is the full channel tensor h. The deep baselines take LS estimates at the pilot positions as input, either as low-resolution grids or as masked grids, and predict the channel at all positions.', zh: 目标为完整的信道张量 h。深度基线以导频位置上的 LS 估计作为输入，输入形式为低分辨率网格或带掩码的网格，并预测所有位置的信道。}
+- label: {en: Evaluation protocol, zh: 评估协议}
+  text: {en: 'Each dataset is split 80%, 10% and 10% into training, validation and evaluation parts. Results are the mean and 95% confidence interval over five random seeds, and the seeds change both model initialization and the split.', zh: 每个数据集按 80%、10% 和 10% 划分为训练、验证和评估部分。结果为五个随机种子的均值及 95% 置信区间，种子同时影响模型初始化与数据划分。}
+- label: {en: Pilot design, zh: 导频设计}
+  text: {en: The default is block pilots at symbol locations 3 and 10. The pilot-design study varies the pilot arrangement between one and two pilot symbols and between 36 and 72 pilot subcarriers., zh: 默认采用位于符号位置 3 和 10 的块状导频。导频设计实验改变导频符号数（1 或 2）与导频子载波数（36 或 72）的组合。}
+- label: {en: Output files, zh: 输出文件}
+  text: {en: 'The generator script writes a data.hdf5 file with the arrays x, h and y, and a metadata.yaml file, into a folder named by the number of pilot symbols, the number of pilot subcarriers and the UE speed.', zh: 生成脚本会将包含数组 x、h 和 y 的 data.hdf5 文件与 metadata.yaml 文件写入一个文件夹，文件夹名由导频符号数、导频子载波数与 UE 速度决定。}
+limitations:
+- {en: 'The baselines are trained in a supervised manner and assume perfect knowledge of the true channels, which the paper describes as unrealistic for practical systems.', zh: 基线模型以监督方式训练，并假设已知真实信道，论文认为这一假设在实际系统中并不现实。}
+history:
+- {en: 'The GitHub repository was created on June 9, 2023, and the arXiv record is dated June 23, 2023.', zh: GitHub 仓库创建于 2023 年 6 月 9 日，arXiv 记录日期为 2023 年 6 月 23 日。}
+usage:
+- {en: 'Training and evaluation run through scripts/train.py, scripts/benchmark.py and scripts/evaluate.py, and model hyperparameters are set in YAML files under hyperparams.', zh: 训练与评估通过 scripts/train.py、scripts/benchmark.py 与 scripts/evaluate.py 运行，模型超参数在 hyperparams 目录下的 YAML 文件中设置。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: 'The tensors x, h and y (14 OFDM symbols by 72 subcarriers) are produced by running the Sionna generator; the repository contains no stored tensor files.', zh: 张量 x、h、y（14 个 OFDM 符号 × 72 个子载波）需运行 Sionna 生成器产生；仓库不包含已存储的张量文件。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: simulate
+  note: {en: Received-symbol power follows from the generated y tensor; path loss is applied through the generator option --path_loss., zh: 接收符号功率由生成的 y 张量推得；路径损耗通过生成器选项 --path_loss 施加。}
+- key: iq
+  status: none
+  note: {en: 'The stored tensors are OFDM resource-grid symbols, not time-domain I/Q samples.', zh: 存储的张量是 OFDM 资源网格符号，而非时域 I/Q 采样。}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'The datasets consist of complex tensors x, h and y only.', zh: 数据集仅由复数张量 x、h、y 组成。}
+- key: depth
+  status: none
+  note: {en: 'The datasets consist of complex tensors x, h and y only.', zh: 数据集仅由复数张量 x、h、y 组成。}
+- key: lidar
+  status: none
+  note: {en: 'The datasets consist of complex tensors x, h and y only.', zh: 数据集仅由复数张量 x、h、y 组成。}
+- key: radar
+  status: none
+  note: {en: 'The datasets consist of complex tensors x, h and y only.', zh: 数据集仅由复数张量 x、h、y 组成。}
+- key: imu
+  status: none
+  note: {en: 'The datasets consist of complex tensors x, h and y only.', zh: 数据集仅由复数张量 x、h、y 组成。}
+- {key: time_series, status: unknown}
+- {key: multiuser, status: unknown}
+- {key: multibs, status: unknown}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: simulate
+  note: {en: UE speed is a generator parameter; the paper samples 0 to 15 m/s (up to about 54 km/h) in 5 m/s steps., zh: UE 速度为生成器参数；论文在 0 至 15 m/s（约 54 km/h）之间以 5 m/s 为步长取值。}
+- {key: dynamic_blockage, status: unknown}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: v2
+  date: '2023-11-13'
+  summary: {en: 'arXiv v2 revision: the text adds more SIMO-case analysis and an explicit out-of-distribution SNR evaluation next to in-distribution accuracy and spatial-correlation robustness.', zh: arXiv v2 修订：正文增加了更多 SIMO 情形的分析，并在同分布精度与空间相关性鲁棒性之外明确加入分布外信噪比评估。}
+  url: https://arxiv.org/abs/2306.13761
+- version: v1
+  date: '2023-06-23'
+  summary: {en: 'First arXiv version of the CeBed benchmark: Sionna-generated OFDM channel-estimation datasets across channel and system models, compared against ten estimators (seven deep, three classical).', zh: CeBed 基准的首个 arXiv 版本：基于 Sionna 生成的 OFDM 信道估计数据集，覆盖多种信道与系统模型，并比较十种估计器（七种深度模型、三种经典方法）。}
+  url: https://arxiv.org/abs/2306.13761

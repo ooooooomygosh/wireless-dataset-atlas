@@ -6,7 +6,6 @@ tasks: [network-traffic, radio-map]
 signals: [kpi, traffic]
 bands_ghz: [0.8, 1.8, 2.1, 2.6, 3.5]
 environment: [outdoor-urban, outdoor-suburban]
-size_gb: 0.75
 format: CSV, Parquet, GeoTIFF
 standard: LTE, 5G NR
 samples: 2,893,129 released records across the measurement tables
@@ -17,46 +16,155 @@ paper: doi:10.1038/s41597-026-08259-z
 used_in: []
 citing: []
 summary: {en: 'Georeferenced LTE and 5G NR drive-test measurements in Vienna, Austria, combining passive wideband scanner observations with active handset logs that include throughput and timing advance. The release also includes building and terrain models, and the measurement tables hold 2,893,129 records.', zh: '奥地利维也纳的地理参考 LTE 与 5G NR 路测数据，结合被动宽带扫描仪观测和主动手机日志（包括吞吐量与 timing advance）。发布内容还包括建筑物与地形模型，测量表共含 2,893,129 条记录。'}
-sources: ['https://zenodo.org/api/records/21372657', 'https://arxiv.org/abs/2603.02638', 'https://arxiv.org/html/2603.02638', 'https://www.nature.com/articles/s41597-026-08259-z', 'https://api.crossref.org/works?query.title=Vienna+4G%2F5G+Drive-Test+Dataset&rows=3&select=DOI,title,issued']
+sources: ['https://zenodo.org/api/records/21372657', 'https://arxiv.org/abs/2603.02638', 'https://arxiv.org/html/2603.02638', 'https://www.nature.com/articles/s41597-026-08259-z', 'https://api.crossref.org/works?query.title=Vienna+4G%2F5G+Drive-Test+Dataset&rows=3&select=DOI,title,issued', 'https://api.crossref.org/works/10.1038/s41597-026-08259-z', 'https://squid.nt.tuwien.ac.at/gitlab/vienna-4g-5g-dataset/vienna-4g5g-drive-test-dataset-code', 'https://arxiv.org/html/2603.02638v1', 'https://squid.nt.tuwien.ac.at/gitlab/vienna-4g-5g-dataset/vienna-4g5g-drive-test-dataset-code/-/raw/main/README.md']
 checked: '2026-11-06'
-overview: {en: 'The Vienna 4G/5G Drive-Test Dataset is a georeferenced LTE and 5G NR measurement release for Vienna, Austria. It was published by TU Wien with a 2026 arXiv preprint (arXiv:2603.02638) and an article with DOI 10.1038/s41597-026-08259-z. A car carried a passive wideband scanner, and handsets were logged in parallel, so the data show both the network side and the user side. Measurements cover urban and suburban areas and are aligned with time and GPS position in WGS84. For a subset of base stations the release gives estimated site locations, sector azimuths and antenna heights, and it includes building and terrain models of Vienna. The measurement tables hold 2,893,129 records in CSV and Parquet, and the city model is provided as GeoTIFF. The authors target radio map estimation, propagation modeling, digital-twin calibration, base station localization and ray-tracing calibration. The throughput fields are physical-layer shared-channel indicators, not application-layer throughput.',
-  zh: 'Vienna 4G/5G Drive-Test Dataset 是奥地利维也纳地理参考的 LTE 与 5G NR 测量数据，由 TU Wien 发布，对应 2026 年 arXiv 预印本（arXiv:2603.02638）以及 DOI 为 10.1038/s41597-026-08259-z 的文章。车顶安装被动宽带扫描仪，同时并行记录手机侧数据，因此同时包含网络侧与用户侧视角。测量覆盖城区与郊区，并按时间和 WGS84 的 GPS 位置对齐。发布内容包括部分基站的估计站址、扇区方位角与天线高度，以及维也纳的建筑物与地形模型。测量表共 2,893,129 条记录，以 CSV 与 Parquet 格式提供，城市模型为 GeoTIFF 栅格。作者面向的任务包括无线电地图估计、传播建模、数字孪生校准、基站定位与光线追踪校准。吞吐量字段为物理层共享信道指标，不是应用层吞吐量。'}
+overview: {en: 'The Vienna 4G/5G Drive-Test Dataset is a georeferenced LTE and 5G NR measurement release for Vienna, Austria, from TU Wien. It is described in a Scientific Data article (DOI 10.1038/s41597-026-08259-z) and in the arXiv preprint arXiv:2603.02638. A vehicle carried a rooftop passive wideband scanner, while three 5G-capable smartphones on the dashboard logged radio data in parallel, so the data show both the network side and the user side. Measurements were taken from June 2024 to March 2025 over about 100 km² of urban and suburban Vienna, and records are aligned with time and GPS position in WGS84 (EPSG:4326). For a representative subset of base stations, the release gives estimated site locations, sector azimuths and antenna heights, and it includes building and terrain models of Vienna at 1 m resolution. The measurement tables hold 2,893,129 records in CSV and Parquet, and the city model is provided as GeoTIFF rasters. The authors target radio map estimation, propagation
+    modeling, digital-twin calibration, base station localization and ray-tracing calibration, and the throughput fields are physical-layer shared-channel indicators rather than application-layer throughput.', zh: 'Vienna 4G/5G Drive-Test Dataset 是奥地利维也纳地理参考的 LTE 与 5G NR 测量数据，由 TU Wien 团队发布，对应 Scientific Data 文章（DOI 10.1038/s41597-026-08259-z）与 arXiv 预印本 arXiv:2603.02638。一辆车在车顶安装了被动宽带扫描仪，仪表盘上的三部支持 5G 的智能手机并行记录无线数据，因此数据同时包含网络侧与用户侧视角。测量于 2024 年 6 月至 2025 年 3 月进行，覆盖维也纳约 100 km² 的城区与郊区，记录按时间和 WGS84（EPSG:4326）的 GPS 位置对齐。对具有代表性的部分基站，发布内容给出估计站址、扇区方位角与天线高度，并包含分辨率为 1 m 的维也纳建筑物与地形模型。测量表共含 2,893,129 条记录，以 CSV 与 Parquet 格式提供，城市模型为 GeoTIFF 栅格。作者面向的任务包括无线电地图估计、传播建模、数字孪生校准、基站定位与光线追踪校准；吞吐量字段为物理层共享信道指标，而非应用层吞吐量。'}
 signal_details:
 - signal: kpi
-  text: {en: 'Per-cell radio KPIs: RSRP, RSRQ, RSSI and SINR, with PCI and channel number as cell identifiers. CINR is reported for LTE scanner data only, and other quality ratios are reported as SINR. The NR scanner data include beam-level observations. Handset radio-layer information is logged through the Qualcomm diagnostic interface.', zh: 各小区的无线 KPI：RSRP、RSRQ、RSSI 和 SINR，以 PCI 与信道号作为小区标识。CINR 仅用于 LTE 扫描仪数据，其余质量比率记为 SINR。NR 扫描数据包含波束级观测。手机侧无线层信息通过 Qualcomm diagnostic interface 记录。}
+  text: {en: 'Per-cell radio KPIs: RSRP, RSRQ, RSSI and SINR, identified by PCI and channel number. CINR is reported for LTE scanner data only, and other signal-quality ratios are stored as SINR. NR scanner data include beam-level observations. Handset radio-layer information is logged through the Qualcomm diagnostic interface.', zh: 各小区的无线 KPI：RSRP、RSRQ、RSSI 与 SINR，以 PCI 与信道号标识小区。CINR 仅出现在 LTE 扫描仪数据中，其他信号质量比值统一存为 SINR。NR 扫描数据包含波束级观测。手机侧无线层信息通过 Qualcomm diagnostic interface 记录。}
 - signal: traffic
-  text: {en: 'Connected-mode handset (UE) logs for LTE and 5G NR non-standalone (NSA) operation. Throughput is a physical-layer shared-channel indicator, and timing advance (TA) is recorded. In NSA mode, NR physical identifiers are not exposed, so the release provides cell_id_dummy and gnb_id_dummy where reliable estimates are available.', zh: LTE 与 5G NR 非独立组网（NSA）连接态的手机（UE）日志。吞吐量为物理层共享信道指标，同时记录 timing advance（TA）。NSA 模式下不暴露 NR 物理层标识，因此在可靠估计时提供 cell_id_dummy 与 gnb_id_dummy。}
+  text: {en: 'Handset (UE) logs for LTE and 5G NR non-standalone (NSA) operation, recorded while a speed-test app generated traffic. Throughput is the PDSCH or PUSCH physical-layer shared-channel indicator, and timing advance (TA) is recorded alongside it. In NSA mode, physical NR identifiers are not exposed, so cell_id_dummy and gnb_id_dummy are provided where reliable cell estimates exist.', zh: LTE 与 5G NR 非独立组网（NSA）下的手机（UE）日志，记录期间由测速应用产生流量。吞吐量为 PDSCH 或 PUSCH 的物理层共享信道指标，并同时记录 timing advance（TA）。NSA 模式下不暴露 NR 物理层标识，因此在存在可靠小区估计时提供 cell_id_dummy 与 gnb_id_dummy。}
 pipeline:
-  summary: {en: 'A rooftop scanner and handset logging record georeferenced LTE and 5G NR measurements, which are then combined with estimated cell descriptors and city models.', zh: 车顶扫描仪与手机日志记录带地理参考的 LTE 与 5G NR 测量，随后与估计的小区描述信息和城市模型结合。}
+  summary: {en: 'A rooftop scanner and dashboard-mounted handsets record georeferenced LTE and 5G NR measurements, which are then merged with estimated base station descriptors and a city model.', zh: 车顶扫描仪与仪表盘上的手机记录带地理参考的 LTE 与 5G NR 测量，随后与估计的基站描述信息和城市模型结合。}
   stages:
   - title: {en: Record passive scanner data, zh: 记录被动扫描数据}
-    detail: {en: 'A PCTEL IBflex scanning receiver, two OmniLOG PRO omnidirectional antennas on the car rooftop and a PCTEL GPS receiver are controlled by Nemo Outdoor software from Keysight on a notebook. The scanner monitors cellular signals in a wideband, technology-agnostic way and records multi-cell observations at each position.', zh: PCTEL IBflex 扫描接收机、车顶两根 OmniLOG PRO 全向天线以及 PCTEL GPS 接收机，由笔记本上的 Keysight Nemo Outdoor 软件控制和记录。扫描仪以宽带、与技术无关的方式监测蜂窝信号，并在每个位置记录多小区观测。}
+    detail: {en: 'A PCTEL IBflex scanning receiver with two OmniLOG PRO omnidirectional antennas on the car rooftop, and a PCTEL GPS receiver, are controlled by Keysight Nemo Outdoor software on a notebook. The scanner monitors cellular signals in a wideband, technology-agnostic way and records one or more cell observations at each georeferenced point.', zh: 车顶安装的 PCTEL IBflex 扫描接收机、两根 OmniLOG PRO 全向天线与 PCTEL GPS 接收机，由笔记本上的 Keysight Nemo Outdoor 软件控制。扫描仪以宽带、与技术无关的方式监测蜂窝信号，并在每个带地理参考的测量点记录一个或多个小区观测。}
     inputs:
     - {en: Cellular signals along the drive route, zh: 沿路线的蜂窝信号}
     - {en: GPS position, zh: GPS 位置}
     outputs:
     - {en: Scanner observations with per-cell metrics, zh: 含小区指标的扫描观测}
   - title: {en: Log handset radio and throughput data, zh: 记录手机无线与吞吐量数据}
-    detail: {en: 'Handsets in connected mode log radio-layer information in parallel through the Qualcomm diagnostic interface. The throughput fields are physical-layer shared-channel indicators, and timing advance is recorded alongside them.', zh: 连接态手机并行地通过 Qualcomm diagnostic interface 记录无线层信息。吞吐量字段为物理层共享信道指标，并与 timing advance 一同记录。}
+    detail: {en: 'Three 5G-capable smartphones on the dashboard connect to Nemo Outdoor and run the RTR-Netztest speed-test app in loop mode, which generates repeated traffic while the vehicle moves. Radio-layer information is logged in parallel through the Qualcomm diagnostic interface, and the throughput fields are PDSCH and PUSCH physical-layer indicators.', zh: 仪表盘上的三部支持 5G 的智能手机连接 Nemo Outdoor，并以循环模式运行 RTR-Netztest 测速应用，在车辆行驶时持续产生流量。无线层信息通过 Qualcomm diagnostic interface 并行记录，吞吐量字段为 PDSCH 与 PUSCH 的物理层指标。}
     inputs:
-    - {en: Handsets in connected mode, zh: 连接态手机}
+    - {en: Smartphones on the vehicle dashboard, zh: 车内仪表盘上的手机}
+    - {en: Speed-test traffic, zh: 测速产生的流量}
     outputs:
-    - {en: 'Handset logs with radio KPIs, throughput and TA', zh: 含无线 KPI、吞吐量和 TA 的手机日志}
+    - {en: 'Handset logs with radio KPIs, throughput and TA', zh: 含无线 KPI、吞吐量与 TA 的手机日志}
   - title: {en: Georeference and time-align records, zh: 地理参考与时间对齐}
-    detail: {en: 'Each measurement point carries a measurement ID, a timestamp and a GPS position in WGS84 (EPSG:4326). A point holds one or more cell observations, identified by PCI and channel number, and by cell, BS or sector IDs where available.', zh: '每个测量点包含 measurement ID、时间戳以及 WGS84（EPSG:4326）的 GPS 位置。每个点包含一个或多个小区观测，以 PCI 与信道号标识，可用时还包含 cell、BS 或 sector 标识。'}
+    detail: {en: 'Each measurement point carries a measurement ID, a timestamp and a GPS position in WGS84 (EPSG:4326). A point holds one or more cell observations, identified by PCI and channel number, and by cell, BS or sector IDs where available. The release applies no map-matching to the positions.', zh: '每个测量点包含 measurement ID、时间戳以及 WGS84（EPSG:4326）的 GPS 位置。每个点包含一个或多个小区观测，以 PCI 与信道号标识，可用时还包含 cell、BS 或 sector 标识。发布数据未对位置做地图匹配。'}
     inputs:
     - {en: Scanner and handset records, zh: 扫描与手机记录}
     outputs:
     - {en: Georeferenced measurement tables, zh: 带地理参考的测量表}
   - title: {en: Infer base station descriptors, zh: 推断基站描述信息}
-    detail: {en: 'For a representative subset of cells, site locations, sector orientations and antenna heights are estimated from the measurements, using timing-advance-based localization and signal-strength analysis. LTE measurements link to these descriptors through network-reported identifiers.', zh: 对具有代表性的部分小区，利用测量数据、基于 timing advance 的定位以及信号强度分析，估计站址、扇区朝向和天线高度。LTE 测量通过网络上报的标识与这些描述信息关联。}
+    detail: {en: 'For a representative subset of base stations, locations are estimated from timing-advance measurements with the method of Eller et al. (2022), with the search constrained to public entries of the Austrian transmitter register. Antenna heights were estimated with Google Earth Pro, and sector azimuths point from each estimated site to the RSRP-weighted centroid of the phone measurements. The LTE subset covers 50 base stations per operator, while the NR subset covers one operator and groups measurements by PCI.', zh: 对具有代表性的部分基站，利用 timing advance 测量并采用 Eller 等人（2022）的方法估计位置，搜索范围受奥地利公开发射站登记条目约束。天线高度借助 Google Earth Pro 估计，扇区方位角为各估计站址指向 RSRP 加权手机测量质心的方位。LTE 每个运营商选取 50 个基站，NR 仅覆盖一个运营商，并按 PCI 对测量分组。}
     inputs:
     - {en: Measurements with TA and signal strength, zh: 含 TA 与信号强度的测量}
+    - {en: Public Austrian transmitter register entries, zh: 奥地利公开发射站登记条目}
     outputs:
     - {en: 'Estimated site positions, azimuths and antenna heights', zh: 估计的站址、方位角与天线高度}
   - title: {en: Add the city model and package the release, zh: 加入城市模型并打包发布}
-    detail: {en: 'Building and terrain models of Vienna, released by the City of Vienna under CC BY 4.0, are provided as GeoTIFF rasters. Measurement and metadata tables are released as CSV and Parquet in four subdirectories: estimated cell information, phone measurements, scanner measurements and the city model.', zh: 维也纳建筑物与地形模型由维也纳市政府以 CC BY 4.0 许可发布，以 GeoTIFF 栅格提供。测量与元数据表以 CSV 和 Parquet 格式发布，分为估计小区信息、手机测量、扫描测量和城市模型四个子目录。}
+    detail: {en: 'Building and terrain models of Vienna, supplied by Stadtvermessung Wien, are stored as 1 m GeoTIFF rasters in EPSG:31287. Measurement and metadata tables are released as CSV and Parquet in four subdirectories: estimated cell information, phone measurements, scanner measurements and the city model.', zh: '由维也纳市测绘部门（Stadtvermessung Wien）提供的建筑物与地形模型，以 1 m 分辨率的 GeoTIFF 栅格存储，坐标系为 EPSG:31287。测量与元数据表以 CSV 和 Parquet 格式发布，分为估计小区信息、手机测量、扫描测量与城市模型四个子目录。'}
     inputs:
-    - {en: City of Vienna building and terrain data, zh: 维也纳市政府的建筑物与地形数据}
+    - {en: Building and terrain data from Stadtvermessung Wien, zh: Stadtvermessung Wien 提供的建筑物与地形数据}
     outputs:
-    - {en: Release archive Vienna-full-4G-5G-dataset-v1.0.5.zip, zh: 发布压缩包 Vienna-full-4G-5G-dataset-v1.0.5.zip}
+    - {en: Versioned Zenodo release (DOI 10.5281/zenodo.21372657), zh: 版本化 Zenodo 发布（DOI 10.5281/zenodo.21372657）}
+mobility: vehicle-mounted receiver, drive measurements
+facts:
+- label: {en: Campaign, zh: 测量活动}
+  text: {en: 'Drive tests ran on 18 measurement days between June 2024 and March 2025, with routes chosen for spatial coverage rather than repeated visits to the same locations.', zh: 路测分布在 2024 年 6 月至 2025 年 3 月的 18 个测量日，路线以空间覆盖为目标，并非为重复访问同一地点。}
+- label: {en: Coordinates, zh: 坐标}
+  text: {en: 'Positions are raw GPS in EPSG:4326 and are not map-matched; distance calculations should be done in EPSG:31287, the coordinate system of the city model. Against the nearest OpenStreetMap street the positioning RMSE is about 4 m.', zh: '位置为原始 GPS 数据，坐标为 EPSG:4326，且未经地图匹配；距离计算应在城市模型所用的 EPSG:31287 中进行。与最近的 OpenStreetMap 道路相比，定位 RMSE 约为 4 m。'}
+- label: {en: Azimuth, zh: 方位角}
+  text: {en: 'Azimuths are measured clockwise from geographic north, so 0 degrees points north.', zh: 方位角以地理北向为 0 度，按顺时针方向增加。}
+- label: {en: Timing, zh: 时间}
+  text: {en: 'Timestamps are UTC without timezone information, and reference-signal measurements have an effective granularity of about 500 ms.', zh: 时间戳为 UTC，不含时区信息；参考信号测量的有效时间粒度约为 500 ms。}
+- label: {en: Throughput, zh: 吞吐量}
+  text: {en: 'Many PDSCH and PUSCH samples are zero or near zero because the UE is not always scheduled. These samples were retained, so throughput studies need filtering.', zh: 由于 UE 并非在每个采样间隔都被调度，大量 PDSCH 与 PUSCH 样本为零或接近零。这些样本被保留，因此吞吐量分析需要筛选。}
+- label: {en: Localization accuracy, zh: 定位精度}
+  text: {en: 'For the validated LTE sites, base station localization RMSE is 38.55 m and the mean absolute circular azimuth error is 27.95 degrees. NR estimates were checked only for internal consistency, using timing-advance residuals.', zh: 对已验证的 LTE 站点，基站定位 RMSE 为 38.55 m，方位角平均绝对圆周误差为 27.95 度。NR 估计仅通过 timing advance 残差做了内部一致性检查。}
+- label: {en: Identifiers, zh: 标识符}
+  text: {en: 'In NSA mode, NR handset rows carry no physical cell or gNB identifier. cell_id_dummy and gnb_id_dummy are dataset-internal keys, not 3GPP identifiers, and may be null.', zh: NSA 模式下 NR 手机记录不含物理小区或 gNB 标识。cell_id_dummy 与 gnb_id_dummy 为数据集内部键，并非 3GPP 标识，可能为空。}
+limitations:
+- {en: 'Only one operator has 5G NR base station estimates, and NR handset rows lack physical cell identifiers in NSA mode.', zh: 仅有一个运营商具备 5G NR 基站估计结果，且 NSA 模式下 NR 手机记录缺少物理小区标识。}
+- {en: 'The raw Nemo Outdoor exports and campaign configurations are not released, so the processing scripts in the code repository cannot be run directly on the released data.', zh: 原始 Nemo Outdoor 导出文件与测量配置未公开，代码仓库中的处理脚本无法直接在发布数据上运行。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'The released tables hold scalar KPIs (RSRP, RSRQ, RSSI, SINR) and no complex channel estimates.', zh: 发布表中为标量 KPI（RSRP、RSRQ、RSSI、SINR），不含复数信道估计。}
+- key: cir
+  status: none
+  note: {en: 'The released tables contain no impulse response or power delay profile. LTE reported data list a delay spread, but no delay-spread column appears in the tables.', zh: 发布表中不含冲激响应或功率时延分布。LTE 报告数据中列有 delay spread，但表中没有对应列。}
+- key: paths
+  status: none
+  note: {en: 'The data hold per-cell KPIs only, with no per-path delays, angles or interaction records.', zh: 数据仅含小区级 KPI，不含逐径时延、角度或交互记录。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records are released., zh: 发布内容不含逐径交互记录。}
+- key: power
+  status: provided
+  note: {en: 'Per-cell RSRP, RSRQ and RSSI in dBm or dB, and pathloss_db estimated from the transmit reference power.', zh: 逐小区的 RSRP、RSRQ 和 RSSI（单位 dBm 或 dB），以及由发射参考功率估计的 pathloss_db。}
+- key: iq
+  status: none
+  note: {en: The released tables are KPIs and handset and scanner records. No raw I/Q samples are included., zh: 发布表为 KPI 以及手机和扫描仪记录，不含原始 I/Q 采样。}
+- key: beam_labels
+  status: provided
+  note: {en: NR rows carry beam_index and beam_type (serving or detected). LTE rows carry no beam labels., zh: NR 记录含 beam_index 与 beam_type（服务或检测）。LTE 记录不含波束标签。}
+- key: position
+  status: provided
+  note: {en: 'Raw GPS in EPSG:4326 without map matching. The RMSE against the nearest OpenStreetMap street is about 4 m.', zh: '原始 GPS 位置，坐标为 EPSG:4326，未做地图匹配。相对最近 OpenStreetMap 道路的 RMSE 约为 4 m。'}
+- key: geometry
+  status: provided
+  note: {en: 'Building and terrain models as 1 m GeoTIFF rasters in EPSG:31287.', zh: '建筑物与地形模型，为 1 m 分辨率的 GeoTIFF 栅格，坐标系为 EPSG:31287。'}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'The four released subdirectories hold cell estimates, handset and scanner tables and the city model. No images are included.', zh: 四个发布子目录为小区估计、手机和扫描仪测量表以及城市模型，不含图像。}
+- key: depth
+  status: none
+  note: {en: No depth images are released. The city model consists of height rasters., zh: 不含深度图像。城市模型为高度栅格。}
+- key: lidar
+  status: none
+  note: {en: No point clouds are in the released subdirectories. The city model is raster data., zh: 发布子目录中不含点云，城市模型为栅格数据。}
+- key: radar
+  status: none
+  note: {en: 'The data are passive scanner and handset KPIs, with no radar data.', zh: 数据为被动扫描仪和手机 KPI，不含雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are in the released subdirectories., zh: 发布子目录中不含惯性传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: Records carry UTC timestamps. Reference-signal measurements have an effective granularity of about 500 ms., zh: 记录带有 UTC 时间戳。参考信号测量的有效时间粒度约为 500 ms。}
+- key: multiuser
+  status: provided
+  note: {en: Three co-located 5G-capable handsets on the vehicle dashboard log in parallel., zh: 车内仪表盘上三部支持 5G 的手机并行记录，位置相同。}
+- key: multibs
+  status: provided
+  note: {en: The scanner records one or more cells per point. Base station estimates cover 50 LTE sites per operator and NR for one operator., zh: 扫描仪在每个测量点记录一个或多个小区。基站估计覆盖每个运营商 50 个 LTE 站点，NR 仅覆盖一个运营商。}
+- key: crossfreq
+  status: provided
+  note: {en: The wideband scanner observes LTE and NR carriers in several bands (0.8 to 3.5 GHz) at each point., zh: 宽带扫描仪在每个测量点同时观测多个频段（0.8 至 3.5 GHz）的 LTE 与 NR 载波。}
+- key: near_field
+  status: none
+  note: {en: The data are scalar received-power KPIs with no array channel., zh: 数据为标量接收功率 KPI，无阵列信道。}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: polarization
+  status: none
+  note: {en: The data are scalar KPIs with no polarimetric channel data., zh: 数据为标量 KPI，无极化信道数据。}
+- key: em_field
+  status: none
+  note: {en: The data are scalar KPIs. The release has no field components or antenna patterns., zh: 数据为标量 KPI，发布内容不含场分量或天线方向图。}
+versions:
+- version: '5'
+  date: '2026-09-11'
+  summary: {en: Version 5 (Zenodo 10.5281/zenodo.21372657) is the release described in the Scientific Data article and in arXiv v2. Both were published on 11 September 2026., zh: 第 5 版（Zenodo 10.5281/zenodo.21372657）是 Scientific Data 文章和 arXiv v2 所描述的发布版本。两者均于 2026 年 9 月 11 日发布。}
+  url: https://www.nature.com/articles/s41597-026-08259-z
+- version: '3'
+  date: '2026-03-03'
+  summary: {en: 'The arXiv v1 preprint, posted on 3 March 2026, describes version 3 (Zenodo 10.5281/zenodo.18338399). The release date of version 3 is not stated.', zh: arXiv v1 预印本于 2026 年 3 月 3 日发布，描述的是第 3 版（Zenodo 10.5281/zenodo.18338399）。第 3 版的发布日期未给出。}
+  url: https://arxiv.org/html/2603.02638v1

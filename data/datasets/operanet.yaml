@@ -5,7 +5,7 @@ organization: University of Bristol
 origin: measured
 tasks: [wireless-sensing, multimodal-sensing]
 signals: [csi, cir, radar]
-bands_ghz: []
+bands_ghz: [3.99, 4.49, 5]
 environment: [indoor]
 antennas: {tx: 3, rx: 3}
 subcarriers: 30
@@ -16,17 +16,17 @@ paper: doi:10.1038/s41597-022-01573-2
 used_in: []
 citing: ['doi:10.1109/jiot.2023.3344179', 'doi:10.1145/3715014.3722068']
 summary: {en: 'About 8 hours of annotated measurements from six participants performing six activities in two rooms, with WiFi CSI, passive WiFi radar, UWB channel impulse response and Kinect v2 skeleton data.', zh: 约 8 小时的标注测量数据，由 6 名参与者在两个房间中执行 6 项活动采集，包含 WiFi CSI、无源 WiFi 雷达、UWB CIR 以及 Kinect v2 骨骼数据。}
-sources: ['https://www.nature.com/articles/s41597-022-01573-2', 'https://arxiv.org/abs/2110.04239', 'https://api.figshare.com/v2/collections/5551209', 'https://api.figshare.com/v2/articles/16578428']
+sources: ['https://www.nature.com/articles/s41597-022-01573-2', 'https://arxiv.org/abs/2110.04239', 'https://api.figshare.com/v2/collections/5551209', 'https://api.figshare.com/v2/articles/16578428', 'https://arxiv.org/pdf/2110.04239', 'http://export.arxiv.org/api/query?id_list=2110.04239', 'https://api.crossref.org/works/10.1038/s41597-022-01573-2', 'https://api.figshare.com/v2/articles/16578431', 'https://api.figshare.com/v2/articles/16578299', 'https://api.figshare.com/v2/articles/16578251', 'https://api.figshare.com/v2/articles/16578203', 'https://api.figshare.com/v2/articles/16578245', 'https://api.figshare.com/v2/articles/16578191', 'https://api.figshare.com/v2/collections/5551209/versions', 'https://export.arxiv.org/api/query?id_list=2110.04239']
 checked: '2026-11-06'
 overview: {en: 'OPERAnet is a multimodal dataset for passive human activity recognition and localization, collected at the University of Bristol and described in a 2022 Scientific Data paper (doi:10.1038/s41597-022-01573-2). It contains about 8 hours of annotated measurements from six participants performing six daily activities in two rooms. The RF sensors are WiFi CSI receivers on Intel 5300 NICs, a passive WiFi radar (PWR) built on a software-defined radio, and two passive UWB systems that exchange channel impulse response (CIR) data, while a third UWB tag system provides ground-truth positions at 10 Hz. Kinect sensors add three-dimensional skeleton data. The monitoring areas are 2.46 m x 4.40 m in Room 1 and 4.06 m x 4.53 m in Room 2, and experiments exp001 to exp054 were run in Room 1 while exp055 to exp061 were run in Room 2. Each modality is a separate zip on a figshare collection, with one file per experiment in .mat or .csv format. The WiFi CSI and UWB files include a timestamp,
     activity label, experiment number, person ID, room number and ground-truth XY coordinates, and the localization runs add transmitter and receiver notes. The data are licensed CC0 1.0, and the Kinect files contain skeleton coordinates rather than images.', zh: 'OPERAnet 是一个用于被动式人体活动识别与定位的多模态数据集，由英国布里斯托大学采集，并在 2022 年 Scientific Data 论文中发表（doi:10.1038/s41597-022-01573-2）。数据包含约 8 小时的标注测量，由 6 名参与者在两个房间中执行 6 项日常活动。射频传感器包括基于 Intel 5300 网卡的 WiFi CSI 接收机、基于软件无线电的无源 WiFi 雷达（PWR），以及两套交换信道冲激响应（CIR）数据的无源 UWB 系统；另有第三套 UWB 标签系统以 10 Hz 提供真值位置。Kinect 传感器提供三维骨骼数据。Room 1 的监测区域为 2.46 m x 4.40 m，Room 2 为 4.06 m x 4.53 m；exp001 至 exp054 在 Room 1 中进行，exp055 至 exp061 在 Room 2 中进行。每种模态作为一个独立 zip 文件发布在 figshare 集合中，每个实验对应一个 .mat 或 .csv 文件。WiFi CSI 与 UWB 文件包含时间戳、活动标签、实验编号、人员 ID、房间编号与真值 XY 坐标，定位实验还附带发射机与接收机说明。数据采用 CC0 1.0 许可；Kinect 文件保存的是骨骼坐标，而非图像。'}
 signal_details:
 - signal: csi
-  text: {en: 'WiFi CSI from an Intel 5300 NIC, 30 OFDM subcarriers per packet, 3 transmit by 3 receive antennas, giving 270 complex values per packet. One row per received packet, with a millisecond timestamp in UTC+01. Receivers NUC1 and NUC2 capture packets injected by NUC3 in injector mode. The released files are .mat.', zh: 来自 Intel 5300 网卡的 WiFi CSI，每个数据包 30 个 OFDM 子载波，3 个发射天线乘 3 个接收天线，每个数据包共 270 个复数值。每行对应一个接收到的数据包，时间戳为毫秒级 UTC+01。接收机 NUC1 与 NUC2 以注入模式接收由 NUC3 注入的数据包。文件格式为 .mat。}
+  text: {en: 'WiFi CSI from an Intel 5300 NIC on 5 GHz channel 149, 30 OFDM subcarriers per packet, 3 transmit by 3 receive antennas, giving 270 complex values per packet. NUC3 injects packets at 1600 Hz and receivers NUC1 and NUC2 capture them in injector mode. One row per received packet, with a millisecond timestamp in UTC+01. The released files are .mat.', zh: 来自 Intel 5300 网卡的 WiFi CSI，工作于 5 GHz 信道 149，每个数据包 30 个 OFDM 子载波，3 个发射天线乘 3 个接收天线，每个数据包共 270 个复数值。NUC3 以 1600 Hz 注入数据包，接收机 NUC1 与 NUC2 以注入模式接收。每行对应一个接收到的数据包，时间戳为毫秒级 UTC+01。文件格式为 .mat。}
 - signal: cir
-  text: {en: 'UWB channel impulse response from Decawave chipsets. The accumulator holds 1016 samples at about 1.0016 ns per tap. System 1 uses the first 35 CIR samples and system 2 the first 50, giving sensing ranges of 10.5 m and 15 m. Each row is one received UWB packet, with raw complex CIR samples (cir1, cir2, ...), first-path and receive power in dBm, and tag coordinates logged at 10 Hz. The average packet rate of system 2 is about 195 Hz. Files are .csv.', zh: 来自 Decawave 芯片的 UWB 信道冲激响应（CIR）。累加器共 1016 个采样点，每个抽头约 1.0016 ns。系统 1 使用前 35 个 CIR 采样点，系统 2 使用前 50 个，对应感知距离分别为 10.5 m 与 15 m。每行对应一个接收到的 UWB 数据包，包含原始复数 CIR 采样（cir1、cir2 等）、首径功率与接收功率（dBm），以及以 10 Hz 记录的标签坐标。系统 2 的平均包速率约为 195 Hz。文件格式为 .csv。}
+  text: {en: 'UWB channel impulse response from Decawave chipsets. The accumulator holds 1016 samples at about 1.0016 ns per tap. System 1 uses the first 35 CIR samples and system 2 the first 50, giving sensing ranges of 10.5 m and 15 m. Each row is one received UWB packet, with raw complex CIR samples (cir1, cir2, ...), first-path and receive power in dBm, and tag coordinates from the active ground-truth system, which logs each tag at 10 Hz. The average packet rate of system 2 is about 195 Hz. Files are .csv.', zh: 来自 Decawave 芯片的 UWB 信道冲激响应（CIR）。累加器共 1016 个采样点，每个抽头约 1.0016 ns。系统 1 使用前 35 个 CIR 采样点，系统 2 使用前 50 个，对应感知距离分别为 10.5 m 与 15 m。每行对应一个接收到的 UWB 数据包，包含原始复数 CIR 采样（cir1、cir2 等）、首径功率与接收功率（dBm），以及主动真值系统提供的标签坐标（每个标签以 10 Hz 记录）。系统 2 的平均包速率约为 195 Hz。文件格式为 .csv。}
 - signal: radar
-  text: {en: 'Passive WiFi radar Doppler spectrograms from three surveillance channels (rx2, rx3, rx4) on a software-defined radio. NUC3 is the signal source, injecting packets at 1600 Hz, with a coherent processing interval of 1 s and 20 MHz sampling per channel. Each row holds one measurement from each of the three receivers, with PWR_ch1 and following spectrogram columns. Files are .mat.', zh: 基于软件无线电的无源 WiFi 雷达多普勒频谱图，来自三个监测通道（rx2、rx3、rx4）。NUC3 为信号源，注入速率为 1600 Hz，相干处理间隔 1 s，每通道采样率 20 MHz。每行包含三个接收机各一条测量，列名为 PWR_ch1 等。文件格式为 .mat。}
+  text: {en: 'Passive WiFi radar Doppler spectrograms from three surveillance channels (rx2, rx3, rx4) on a software-defined radio. NUC3 is the signal source, injecting packets at 1600 Hz, with a coherent processing interval of 1 s and 20 MHz sampling per channel, and the spectrograms are recorded at 10 Hz. Each row holds one measurement from each of the three receivers, with PWR_ch1 and following spectrogram columns. Files are .mat.', zh: 基于软件无线电的无源 WiFi 雷达多普勒频谱图，来自三个监测通道（rx2、rx3、rx4）。NUC3 为信号源，注入速率为 1600 Hz，相干处理间隔 1 s，每通道采样率 20 MHz，频谱图以 10 Hz 记录。每行包含三个接收机各一条测量，列名为 PWR_ch1 等。文件格式为 .mat。}
 pipeline:
   summary: {en: 'Four sensor types recorded during 61 numbered experiments in two rooms, and each stream was saved per experiment with its own labels.', zh: 四类传感器在两个房间内的 61 组编号实验中同时采集，每类数据按实验分别保存并附带各自的标签。}
   stages:
@@ -52,3 +52,104 @@ pipeline:
     - {en: Experiment labels and ground truth, zh: 实验标签与真值}
     outputs:
     - {en: 'Per-experiment .mat or .csv files, zipped per modality', zh: 按实验划分的 .mat 或 .csv 文件，按模态压缩}
+format: MAT, CSV
+size_gb: 77.1
+facts:
+- label: {en: Missing experiments, zh: 缺失的实验}
+  text: {en: 'PWR files omit exp001, exp019 and exp034 to exp054. Kinect files omit exp001, exp019, exp028 and exp034 to exp055.', zh: PWR 文件不包含 exp001、exp019 以及 exp034 至 exp054；Kinect 文件不包含 exp001、exp019、exp028 以及 exp034 至 exp055。}
+- label: {en: Time base, zh: 时间基准}
+  text: {en: 'CSI, PWR and Kinect timestamps are in milliseconds, given in UTC+01:00.', zh: 'CSI、PWR 与 Kinect 的时间戳为毫秒级，采用 UTC+01:00。'}
+- label: {en: UWB line-of-sight indicator, zh: UWB 视距指示}
+  text: {en: 'The manufacturer''s rule of thumb treats rx_pow_dbm minus fp_pow_dbm below 6 dB as likely line-of-sight, and above 10 dB as likely non-line-of-sight.', zh: 厂商给出的经验规则为：rx_pow_dbm 减去 fp_pow_dbm 小于 6 dB 时多为视距，大于 10 dB 时多为非视距。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: Intel 5300 WiFi CSI from a 3x3 MIMO link over 30 subcarriers (270 complex values per packet) in the 5 GHz band., zh: Intel 5300 WiFi CSI，来自 3x3 MIMO 链路，30 个子载波（每个数据包 270 个复数值），5 GHz 频段。}
+- key: cir
+  status: provided
+  note: {en: UWB CIR of 35 and 50 complex samples per packet for systems 1 and 2; WiFi CIR follows from CSI by IFFT., zh: UWB 系统 1 与系统 2 分别提供每个数据包 35 与 50 个复数 CIR 采样；WiFi CIR 可由 CSI 经 IFFT 得到。}
+- {key: paths, status: unknown}
+- key: interaction
+  status: none
+  note: {en: 'The release has no per-path interaction labels, and the CIR and CSI are not path-resolved.', zh: 发布数据无逐径交互标注，CIR 与 CSI 也未按路径分解。}
+- key: power
+  status: provided
+  note: {en: UWB first-path power (fp_pow_dbm) and receive power (rx_pow_dbm) in dBm are given per packet; no WiFi received-power field is listed., zh: UWB 每个数据包提供首径功率（fp_pow_dbm）与接收功率（rx_pow_dbm），单位 dBm；未列出 WiFi 接收功率字段。}
+- key: iq
+  status: none
+  note: {en: 'The released complex values are CSI and UWB CIR estimates, not raw I/Q samples.', zh: 发布的复数值为 CSI 与 UWB CIR 估计，而非原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: 'The release has no beam codebook, beam index or per-beam gain fields.', zh: 发布数据中无波束码本、波束索引或每波束增益字段。}
+- key: position
+  status: provided
+  note: {en: UWB tag xy coordinates for each tagged participant at up to 10 Hz; Kinect supplies 3D skeleton joints., zh: 每位佩戴标签的参与者提供 UWB 标签 xy 坐标，最高 10 Hz；Kinect 提供三维骨骼关节。}
+- key: geometry
+  status: none
+  note: {en: Monitoring-area sizes (2.46 x 4.40 m and 4.06 x 4.53 m) appear only in the paper text; no map or 3D files are released., zh: 监测区域尺寸（2.46 x 4.40 m 与 4.06 x 4.53 m）仅见于论文正文；未发布地图或三维文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are recorded., zh: 未记录材料参数。}
+- key: rgb
+  status: none
+  note: {en: The Kinect files contain skeleton joints only; RGB frames are not released., zh: Kinect 文件仅含骨骼关节数据；未发布 RGB 图像。}
+- key: depth
+  status: none
+  note: {en: Kinect depth frames are not released; only the skeleton joints are., zh: 未发布 Kinect 深度帧，仅发布骨骼关节。}
+- key: lidar
+  status: none
+  note: {en: LiDAR is not among the four released modalities., zh: LiDAR 不在发布的四类模态之列。}
+- key: radar
+  status: provided
+  note: {en: 'The passive WiFi radar output is Doppler spectrograms from three surveillance channels, not raw surveillance signals.', zh: 无源 WiFi 雷达的输出为三个监测通道的多普勒频谱图，而非原始监测信号。}
+- key: imu
+  status: none
+  note: {en: The release has no inertial measurement modality., zh: 发布数据中无惯性测量模态。}
+- key: time_series
+  status: provided
+  note: {en: 'Each packet and label carries a UTC timestamp in milliseconds, and the modalities are synchronized by NTP to under 20 ms.', zh: 每个数据包与标签带有毫秒级 UTC 时间戳，各模态通过 NTP 同步，同步误差小于 20 ms。}
+- key: multiuser
+  status: none
+  note: {en: 'Up to six people are present in crowd-counting run exp028, but each link carries one channel, not one per user.', zh: 人群计数实验 exp028 中最多 6 人同时在场，但每条链路只有一个信道，而非每用户一个信道。}
+- key: multibs
+  status: none
+  note: {en: 'The WiFi system has one transmitter (NUC3) and two receivers, not several base stations.', zh: WiFi 系统包含一个发射机（NUC3）与两个接收机，而非多个基站。}
+- key: crossfreq
+  status: provided
+  note: {en: WiFi CSI and UWB CIR are recorded in the same experiments on one NTP-synchronized clock., zh: WiFi CSI 与 UWB CIR 在同一批实验中采集，并使用同一 NTP 同步时钟。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'The targets sit, stand, walk, lie down and rotate their bodies; no speed of 30 km/h or more is stated.', zh: 目标为坐、站、走、躺下及转动身体等人体活动；未给出 30 km/h 或更高的速度。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: Moving people in the monitored area perturb the WiFi and UWB links; the release has no blockage labels., zh: 监测区域内移动的人员扰动 WiFi 与 UWB 链路；发布数据中无遮挡标注。}
+- key: reflection
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含于测量之中，未按径标注}
+- key: diffraction
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含于测量之中，未按径标注}
+- key: scattering
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含于测量之中，未按径标注}
+- key: transmission
+  status: provided
+  note: {en: 'inherent in the measurement, not labelled per path', zh: 包含于测量之中，未按径标注}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The released data are CSI, CIR, Doppler spectrograms and skeleton joints, with no field-level outputs.', zh: 发布数据为 CSI、CIR、多普勒频谱图与骨骼关节，无场级输出。}
+versions:
+- version: Sci. Data 9, 474 (2022)
+  date: '2022-08-03'
+  summary: {en: 'Data descriptor published in Scientific Data, covering the four modalities, file formats and synchronization (NTP, accuracy under 20 ms).', zh: 数据描述文章发表于 Scientific Data，涵盖四类模态、文件格式及同步方式（NTP，同步精度优于 20 ms）。}
+  url: https://www.nature.com/articles/s41597-022-01573-2
+- version: v1
+  date: '2022-08-01'
+  summary: {en: 'First Figshare release of the collection: WiFi CSI, passive WiFi radar, UWB CIR and Kinect skeleton files, with MATLAB and Python scripts.', zh: 数据集合在 Figshare 上的首次发布：包含 WiFi CSI、无源 WiFi 雷达、UWB CIR 与 Kinect 骨骼文件，并附 MATLAB 与 Python 脚本。}
+  url: https://doi.org/10.6084/m9.figshare.c.5551209.v1
+- version: arXiv v1
+  date: '2021-10-08'
+  summary: {en: 'Preprint describing the dataset and its four modalities, posted before the August 2022 Figshare release.', zh: 描述该数据集及其四类模态的预印本，发布于 2022 年 8 月 Figshare 数据发布之前。}
+  url: https://arxiv.org/abs/2110.04239

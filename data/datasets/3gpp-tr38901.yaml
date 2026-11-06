@@ -7,117 +7,220 @@ origin: statistical
 tasks: [channel-modeling, csi-feedback, channel-estimation]
 signals: [cir, paths]
 bands_ghz: []
-license: Not stated
+license: 'ETSI copyright notice: all rights reserved; reproduction requires ETSI written permission'
 access: {url: 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/', type: open}
 code: []
 paper: doi:10.1002/9781119471509.w5gref048
 used_in: []
 citing: ['doi:10.1109/jiot.2022.3190845', 'doi:10.1109/twc.2022.3207918', 'doi:10.1109/jiot.2022.3155773']
 summary: {en: 'A standardized stochastic channel generator for 0.5 to 100 GHz that defines CDL and TDL channel models, a map-based hybrid model and an ISAC channel model.', zh: 面向 0.5 至 100 GHz 的标准化随机信道生成器，定义了 CDL 与 TDL 信道模型、基于地图的混合信道模型以及 ISAC 信道模型。}
-sources: ['https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.02.00_60/tr_138901v190200p.pdf', 'https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3173', 'https://api.crossref.org/works/10.1002/9781119471509.w5gref048']
+sources: ['https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.02.00_60/tr_138901v190200p.pdf', 'https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3173', 'https://api.crossref.org/works/10.1002/9781119471509.w5gref048', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.05.00_60/tr_138901v190500p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.04.00_60/tr_138901v190400p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.03.00_60/tr_138901v190300p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/18.01.00_60/tr_138901v180100p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.01.00_60/tr_138901v190100p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/18.00.00_60/tr_138901v180000p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/17.01.00_60/tr_138901v170100p.pdf',
+  'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/17.00.00_60/tr_138901v170000p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/16.01.00_60/tr_138901v160100p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/15.00.00_60/tr_138901v150000p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/14.03.00_60/tr_138901v140300p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/14.02.00_60/tr_138901v140200p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/14.01.01_60/tr_138901v140101p.pdf', 'https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/14.00.00_60/tr_138901v140000p.pdf']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'The specification provides step-by-step layout, propagation-state, correlated-parameter, and channel-synthesis procedures; do not assume every “3GPP model” implementation supports all §7.6 mechanisms and §7.7 CDL/TDL models.', zh: 规范给出布局、传播状态、相关参数和信道合成的逐步过程；§7.6附加机制与§7.7 CDL/TDL不能默认全部由任意“3GPP模型”软件实现。}
+  summary: {en: 'TR 38.901 defines a 12-step generation procedure for the clause 7.5 cluster model. Clause 7.6 adds separately defined components, and the CDL and TDL models in clause 7.7 are tabulated link-level sets.', zh: TR 38.901 为第 7.5 节的簇模型定义了 12 步生成流程。第 7.6 节另行定义附加组件，第 7.7 节的 CDL 与 TDL 模型是表格化的链路级模型集合。}
+  scope: {en: 'Generation procedure of TR 38.901 V19.2.0, clauses 7.5 to 7.7.', zh: TR 38.901 V19.2.0 的生成流程，第 7.5 至 7.7 节。}
   stages:
-  - title: {en: 'Fix clauses, layout, and arrays', zh: 固定条款、布局与阵列}
-    detail: {en: 'Set the environment and coordinate system following §7.5 Step 1, specifying carrier frequency, bandwidth, and antennas; frequency applicability differs by scenario.', zh: 依据§7.5 Step1设置环境和坐标系统，给定载频、带宽与天线；不同场景有不同频率适用范围。}
+  - title: {en: 'Set environment, layout and arrays', zh: 设置环境、布局与阵列}
+    detail: {en: 'Step 1 sets the environment, network layout and antenna array parameters. Table 7.5-6 is split by scenario, and the frequency ranges differ between scenarios (for example RMa up to 7 GHz and SMa up to 24 GHz).', zh: 第 1 步设置环境、网络布局与天线阵列参数。表 7.5-6 按场景划分，不同场景的频率范围不同（例如 RMa 至 7 GHz，SMa 至 24 GHz）。}
     inputs:
-    - {en: Specification version and target scenario, zh: 规范版本与目标场景}
-    - {en: 'BS/UT positions, arrays, orientations, and velocities', zh: BS/UT位置、阵列、方向和速度}
+    - {en: Scenario and network layout, zh: 场景与网络布局}
     outputs:
-    - {en: Model instance with explicit clauses and input parameters, zh: 明确条款与输入参数的模型实例}
-    controls:
-    - {en: 'Researcher specifies: implementation name/version, scenario, frequency, arrays/polarization, and coordinates', zh: 研究者固定：实现名称/版本、场景、频率、阵列/极化及坐标}
-    checks:
-    - {en: Check zenith and elevation definitions, zh: 检查zenith与elevation定义}
-    - {en: List implemented and unimplemented additional clauses, zh: 列出已实现与未实现的附加条款}
-  - title: {en: Generate states and correlated large-scale parameters, zh: 产生状态和相关大尺度参数}
-    detail: {en: '§7.5 Steps 2–4 assign LOS/NLOS and indoor states, compute pathloss, then sample correlated DS, angular spreads, K-factor, and SF.', zh: §7.5 Steps2–4赋予LOS/NLOS和室内状态，计算pathloss，再抽样相关的DS、角扩展、K-factor和SF。}
+    - {en: Model instance with arrays and scenario parameters, zh: 含阵列与场景参数的模型实例}
+  - title: {en: Assign states and large-scale parameters, zh: 分配状态与大尺度参数}
+    detail: {en: 'Steps 2 to 4 assign LOS/NLOS states (Table 7.4.2-1), compute pathloss (Table 7.4.1-1), and generate correlated large-scale parameters: delay spread, angular spreads ASA, ASD, ZSA and ZSD, Ricean K-factor and shadow fading.', zh: 第 2 至 4 步依据表 7.4.2-1 分配 LOS/NLOS 状态，依据表 7.4.1-1 计算路径损耗，并生成相关的大尺度参数：时延扩展、角扩展 ASA、ASD、ZSA 与 ZSD、莱斯 K 因子和阴影衰落。}
     inputs:
     - {en: Scenario statistics and layout, zh: 场景统计与布局}
     outputs:
     - {en: Link propagation states and large-scale parameters, zh: 链路传播状态与大尺度参数}
-    controls:
-    - {en: 'Researcher specifies: state rules, loss/shadowing switches, correlation structure', zh: 研究者固定：状态规则、损耗/阴影开关、相关结构}
-    checks:
-    - {en: Distinguish the basic drop model from the spatial-consistency extension, zh: 区分基本drop模型与空间一致扩展}
-    - {en: Implement co-located sector sharing as specified, zh: 同址sector共享关系按规范实现}
   - title: {en: Generate small-scale parameters, zh: 产生小尺度参数}
-    detail: {en: 'Generate cluster delays, powers, and angles, perform ray coupling, then generate XPR and initial phases. Delays are not uniquely determined by a real city''s geometry.', zh: 生成簇时延、功率和角度，执行射线耦合，再生成XPR与初始相位。时延不是由一张真实城市几何图唯一确定。}
+    detail: {en: 'Steps 5 to 10 draw cluster delays from Table 7.5-6, set cluster powers from an exponential delay distribution, generate cluster arrival and departure angles, couple rays within clusters, generate cross-polarization power ratios and initial random phases. The two strongest clusters are split into three sub-clusters with power fractions 10/20, 6/20 and 4/20.', zh: 第 5 至 10 步依据表 7.5-6 抽取簇时延，按指数时延分布确定簇功率，生成簇的到达角与离开角，执行簇内射线耦合，并生成交叉极化功率比和初始随机相位。两个最强簇被分为三个子簇，功率比例为 10/20、6/20 和 4/20。}
     inputs:
     - {en: Large-scale parameters, zh: 大尺度参数}
-    - {en: Scenario cluster/ray parameter tables, zh: 场景簇/射线参数表}
+    - {en: Scenario cluster and ray parameter tables, zh: 场景簇与射线参数表}
     outputs:
-    - {en: 'Cluster/ray delays, powers, angles, and polarization parameters', zh: 簇/射线时延、功率、角度和极化参数}
-    controls:
-    - {en: 'Researcher specifies: random state, normalization, weak-cluster removal, and parameter-table version', zh: 研究者固定：随机状态、归一化、弱簇删除和参数表版本}
-    checks:
-    - {en: 'Check power normalization, angle conventions, and random coupling', zh: 检查功率归一化、角度约定与随机耦合}
-    - {en: Retain generated parameters for statistical checks, zh: 保留生成参数用于统计复核}
-  - title: {en: Synthesize channels and add selected extensions, zh: 合成信道并添加选定扩展}
-    detail: {en: 'Steps 11–12 generate complex coefficients for each element pair and apply pathloss/SF; enable spatial consistency, blockage, multifrequency, near-field, or nonstationarity models separately under their respective clauses.', zh: Steps11–12得到逐阵元对复系数并应用pathloss/SF；空间一致、blockage、多频、近场或非平稳模型按对应条款另行启用。}
-    inputs:
-    - {en: Ray parameters, zh: 射线参数}
-    - {en: Array field responses and motion, zh: 阵列场响应与运动}
+    - {en: 'Cluster and ray delays, powers, angles and polarization parameters', zh: 簇与射线的时延、功率、角度和极化参数}
+  - title: {en: Synthesize channel coefficients, zh: 合成信道系数}
+    detail: {en: 'Step 11 generates channel coefficients for each cluster and each transmit and receive element pair, and Step 12 applies pathloss and shadowing. Spatial consistency (7.6.3), blockage (7.6.4), multi-frequency correlation (7.6.5), near-field (7.6.13) and spatial non-stationarity (7.6.14) are separate clauses that are enabled under their own conditions.', zh: 第 11 步为每个簇及每对收发阵元生成信道系数，第 12 步施加路径损耗与阴影衰落。空间一致性（7.6.3）、阻挡（7.6.4）、多频率相关（7.6.5）、近场（7.6.13）与空间非平稳（7.6.14）是分别定义的条款，须依各自条件单独启用。}
     outputs:
-    - {en: CIR/complex coefficients generated by the implementation, zh: 实现生成的CIR/复系数}
-    - {en: State records for enabled extensions, zh: 所启用扩展的状态记录}
-    controls:
-    - {en: 'Researcher specifies: time sampling, extension clauses, and their parameters', zh: 研究者固定：时间采样、扩展条款及其参数}
-    - {en: 'For CDL/TDL, explicitly state use of §7.7 instead of claiming the complete layout-generation workflow', zh: CDL/TDL应明确使用§7.7而非声称执行完整布局生成链}
-    checks:
-    - {en: Validate individual clauses before combining them, zh: 先验证单条款再组合}
-    - {en: Check the software's claimed version against its implemented subset, zh: 检查软件宣称的版本与实际实现子集}
-  - title: {en: Calibrate the implementation and export task data, zh: 校准实现与导出任务数据}
-    detail: {en: 'Check statistical and implementation consistency, then convert outputs to CFR, waveforms, or network inputs; the specification itself does not provide ready-to-train samples.', zh: 研究者检验统计与实现一致性，再转CFR、波形或网络输入；规范文件本身不提供可直接训练的数据样本。}
-    inputs:
-    - {en: Software outputs, zh: 软件输出}
-    - {en: Specification calibration references or small analytical examples, zh: 规范校准参考或解析小例子}
-    outputs:
-    - {en: Calibration results, zh: 校准结果}
-    - {en: Researcher-generated data and configuration, zh: 研究者生成的数据与配置}
-    controls:
-    - {en: 'Researcher specifies: calibration scenario, error statistics, task normalization, and splits', zh: 研究者固定：校准场景、误差统计、任务归一化和切分}
-    checks:
-    - {en: Avoid counting pathloss multiple times across tools, zh: 避免多个工具重复计入pathloss}
-    - {en: Passing standards calibration does not establish on-site OTA calibration, zh: 不能把标准校准通过等同现场OTA校准}
-  scope: {en: Generation logic in TR 38.901 V19.2.0; execution requires a specific software implementation., zh: TR38.901 V19.2.0规范的生成逻辑；必须由具体软件实现执行。}
+    - {en: Channel coefficients for the enabled clauses, zh: 所启用条款对应的信道系数}
+  - title: {en: Use CDL and TDL models, zh: 使用 CDL 与 TDL 模型}
+    detail: {en: 'Clause 7.7 tabulates CDL-A to CDL-E and TDL-A to TDL-E. CDL models can be implemented through Steps 10 and 11 of clause 7.5, or generated from a TDL model using the spatial filter in clause 7.7.4.', zh: 第 7.7 节给出 CDL-A 至 CDL-E 与 TDL-A 至 TDL-E 的表格。CDL 模型可通过第 7.5 节第 10、11 步实现，也可利用第 7.7.4 节的空间滤波器由 TDL 模型生成。}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• PDF specification, formulas, and parameter tables; no fixed sample library', zh: • PDF规范、公式和参数表；不含固定样本库}
+  text: {en: PDF specification with formulas and parameter tables; the report contains no fixed sample library., zh: PDF 规范文件，包含公式与参数表；不含固定样本库。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Software-generated CIR/CFR, CDL/TDL waveforms, and system-evaluation data', zh: • 软件实现生成的CIR/CFR、CDL/TDL波形及系统评估数据}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• §7.5 generation steps were additionally reviewed in this round; §7.6/7.7 are cited within the previous verification scope; the full 164 pages were not read.
-
-      • Each dataset should identify the implementation and enabled clauses, rather than only state “3GPP 38.901”.', zh: '• 本轮补读§7.5生成步骤；§7.6/7.7按既有核验范围引用，未通读全164页。
-
-      • 每份数据应附实现与已启用条款，不仅写“3GPP38.901”。'}
+  text: {en: 'Software implementations of the model generate CIR/CFR, CDL/TDL waveforms and system-level evaluation data.', zh: 依据该模型的软件实现可生成 CIR/CFR、CDL/TDL 波形及系统级评估数据。}
+- label: {en: Edition, zh: 版本}
+  text: {en: 'V19.2.0 (2026-02), Release 19, 164 pages.', zh: V19.2.0（2026-02），Release 19，共 164 页。}
 technical_notes:
-- {en: 'Confirmed: §7.6.3 spatial consistency, §7.6.4 blockage, and §7.6.5 multifrequency correlation are separately defined components.', zh: 已确认：§7.6.3 空间一致性、§7.6.4 blockage、§7.6.5 多频相关是分别定义的组件。}
-- {en: 'Confirmed: V19.2 §7.6.13/14 contain near-field and spatial-nonstationarity model sections.', zh: 已确认：V19.2 §7.6.13/14 包含近场和空间非平稳模型章节。}
-- {en: 'Inference: a tool labeled 3GPP may implement only a subset of the specification; verification must list clauses rather than only the advertised version.', zh: 推断：标为 3GPP 的工具可能只实现规范子集；验证时须列条款而非仅标称版本。}
+- {en: 'Clauses 7.6.3 (spatial consistency), 7.6.4 (blockage) and 7.6.5 (multi-frequency correlation) are separately defined components.', zh: 第 7.6.3 节（空间一致性）、7.6.4 节（阻挡）与 7.6.5 节（多频率相关）是分别定义的组件。}
+- {en: V19.2.0 clauses 7.6.13 and 7.6.14 contain the near-field and spatial non-stationarity models., zh: V19.2.0 的第 7.6.13 与 7.6.14 节分别包含近场模型与空间非平稳模型。}
+- {en: Clause 7.6.4 defines blockage model A and blockage model B as separate subclauses., zh: 第 7.6.4 节分别定义阻挡模型 A 与阻挡模型 B 两个子条款。}
 limitations:
-- {en: 'The latest specification does not imply that MATLAB, Sionna, ns-3, or QuaDRiGa currently uses its parameter tables.', zh: 规范最新版不等于 MATLAB、Sionna、ns-3 或 QuaDRiGa 当前实际采用的参数表。}
-- {en: Randomly generating many CDL realizations does not create real-site data., zh: 自行随机生成大量 CDL realization 不形成真实站点数据。}
+- {en: The report contains no measured channel data; the CDL and TDL models are tabulated statistical models rather than recordings., zh: 报告不含实测信道数据；CDL 与 TDL 模型是表格化的统计模型，而非测量记录。}
 history:
-- {en: '2026-02: ETSI V19.2.0 / Release 19; not a dataset release date.', zh: 2026-02：ETSI V19.2.0 / Release 19；不是某数据集发布日期。}
+- {en: '2026-02: V19.2.0 (Release 19) published.', zh: 2026-02：发布 V19.2.0（Release 19）。}
+- {en: 'The ETSI directory lists V19.05.00 (last modified 2026-09-25), so V19.2.0 is not the latest listed version.', zh: ETSI 目录列出 V19.05.00（修改日期 2026-09-25），因此 V19.2.0 并非最新列出的版本。}
 usage:
-- {en: 'Select the report release, specific clauses, and a calibrated implementation.', zh: 选定报告 release、具体条款和已校准实现。}
-- {en: 'Explicitly set scenario, LOS, arrays, bandwidth, and spatial/cross-frequency correlation options.', zh: 显式设置场景、LOS、阵列、带宽及空间/跨频相关选项。}
-- {en: Check reference statistical distributions before running AI methods and simple baselines., zh: 先复核参考统计分布，再运行 AI 与简单 baseline。}
+- {en: 'Set the scenario, LOS/NLOS state, arrays and bandwidth in Steps 1 and 2 of clause 7.5.', zh: 在第 7.5 节第 1、2 步中设定场景、LOS/NLOS 状态、阵列与带宽。}
+- {en: 'Clause 7.6 components are enabled separately, each under its own clause.', zh: 第 7.6 节的组件须依各自条款单独启用。}
 provenance:
 - {en: Specified scenarios and statistical parameters, zh: 规范场景与统计参数}
 - {en: Specific software implementation and version, zh: 具体软件实现及版本}
 - {en: Random parameters and array/mobility configuration, zh: 随机参数与阵列/运动配置}
 - {en: CIR/CFR, zh: CIR/CFR}
 - {en: Link/system-level evaluation, zh: 链路/系统级评估}
-overview: {en: '3GPP TR 38.901, titled ''Study on channel model for frequencies from 0.5 to 100 GHz'', is a technical report of 3GPP RAN WG1, with RAN WG2, RAN WG3 and RAN WG4 as secondary groups. It defines channel models for the 0.5 to 100 GHz range and is intended to help evaluate physical layer techniques in 3GPP systems. The scope consolidates the findings of several study items, including channel models above 6 GHz, NR, indoor industrial scenarios, channel modelling for 7 to 24 GHz for NR, and ISAC. Clause 7.5 defines a cluster-based stochastic model in which large-scale parameters are drawn for each BS-UT link and the impulse response is built from clusters and rays. Two link-level sets are derived from it, CDL-A to CDL-E and TDL-A to TDL-E, each with a maximum bandwidth of 2 GHz. Further clauses define spatial consistency, blockage models A and B, multi-frequency correlation, near-field and spatial non-stationarity models. The document is an open ETSI PDF that contains equations
-    and parameter tables and no measured channel data. The ETSI and 3GPP terms cover the document itself and do not define a software implementation or a data licence.', zh: 3GPP TR 38.901《Study on channel model for frequencies from 0.5 to 100 GHz》是 3GPP RAN WG1 的技术报告，RAN WG2、RAN WG3 和 RAN WG4 为次要参与工作组。该报告定义 0.5 至 100 GHz 频段的信道模型，用于评估 3GPP 系统中的物理层技术。其范围汇总了多项研究项目的结论，包括 6 GHz 以上信道模型、NR、室内工业场景、面向 NR 的 7 至 24 GHz 信道建模以及 ISAC。第 7.5 节定义了基于簇的随机模型，大尺度参数按 BS-UT 链路生成，冲激响应由簇和射线构成。由此导出两组链路级模型：CDL-A 至 CDL-E 与 TDL-A 至 TDL-E，最大带宽均为 2 GHz。其余条款定义了空间一致性、阻挡模型 A 与 B、多频率相关性，以及近场和空间非平稳性模型。该文档为公开的 ETSI PDF，包含公式和参数表，不含实测信道数据。ETSI 和 3GPP 的条款适用于该文档本身，并不定义软件实现或数据许可。}
+overview: {en: '3GPP TR 38.901, titled ''Study on channel model for frequencies from 0.5 to 100 GHz'', is an ETSI technical report of 3GPP Release 19 (V19.2.0, 2026-02). It defines channel models for 0.5 to 100 GHz for evaluating physical-layer techniques in 3GPP systems. Its scope consolidates study items on channel models above 6 GHz, NR, indoor industrial scenarios, 7 to 24 GHz channel modelling for NR, and ISAC. Clause 7.5 defines a cluster-based stochastic model in which large-scale parameters are drawn for each BS-UT link and the impulse response is built from clusters and rays. Two tabulated link-level sets are derived from it: CDL-A to CDL-E (clause 7.7.1) and TDL-A to TDL-E (clause 7.7.2), each with a maximum bandwidth of 2 GHz. Further clauses define spatial consistency, blockage models A and B, multi-frequency correlation, near-field and spatial non-stationarity models. The document is a PDF of equations and parameter tables with no measured channel data, and it carries an ETSI
+    copyright notice reserving all rights.', zh: 3GPP TR 38.901《Study on channel model for frequencies from 0.5 to 100 GHz》是 3GPP Release 19 的 ETSI 技术报告（V19.2.0，2026-02）。该报告定义 0.5 至 100 GHz 的信道模型，用于评估 3GPP 系统中的物理层技术。其范围汇总了以下研究项目：6 GHz 以上信道模型、NR、室内工业场景、面向 NR 的 7 至 24 GHz 信道建模以及 ISAC。第 7.5 节定义了基于簇的随机模型：大尺度参数按 BS-UT 链路抽取，冲激响应由簇和射线构成。由此导出两组表格化链路级模型：CDL-A 至 CDL-E（第 7.7.1 节）和 TDL-A 至 TDL-E（第 7.7.2 节），最大带宽均为 2 GHz。其余条款定义了空间一致性、阻挡模型 A 与 B、多频率相关性，以及近场和空间非平稳性模型。该文件为包含公式和参数表的 PDF，不含实测信道数据，并附有 ETSI 版权声明，保留全部权利。}
 signal_details:
 - signal: cir
-  text: {en: 'Channel impulse response for each BS-UT link, given by equation (7.5-27) in clause 7.5 as a sum over clusters and rays. Cluster delays are drawn from the delay distribution in Table 7.5-6, and cluster powers follow an exponential delay distribution with a per-cluster shadowing term in dB. Each ray in a cluster carries power Pn/M, where M is the number of rays per cluster. CDL-A to CDL-E (clause 7.7.1) and TDL-A to TDL-E (clause 7.7.2) are tabulated link-level models for 0.5 to 100 GHz with a maximum bandwidth of 2 GHz.', zh: 每个 BS-UT 链路的信道冲激响应，由第 7.5 节式 (7.5-27) 给出，为各簇与各射线的求和。簇时延按表 7.5-6 中的时延分布抽取，簇功率采用指数时延分布，并含以 dB 计的每簇阴影项。簇内每条射线的功率为 Pn/M，其中 M 为每簇射线数。CDL-A 至 CDL-E（第 7.7.1 节）和 TDL-A 至 TDL-E（第 7.7.2 节）是面向 0.5 至 100 GHz 的表格化链路级模型，最大带宽为 2 GHz。}
+  text: {en: 'Channel impulse response for each BS-UT link, given by equation (7.5-27) in clause 7.5 as a sum over clusters and rays. Cluster delays are drawn from the delay distribution in Table 7.5-6, and cluster powers follow an exponential delay distribution with a per-cluster shadowing term in dB. CDL-A to CDL-E (clause 7.7.1) and TDL-A to TDL-E (clause 7.7.2) are tabulated link-level models for 0.5 to 100 GHz with a maximum bandwidth of 2 GHz.', zh: 每个 BS-UT 链路的信道冲激响应，由第 7.5 节式 (7.5-27) 给出，为各簇与各射线的求和。簇时延按表 7.5-6 中的时延分布抽取，簇功率采用指数时延分布，并含以 dB 计的每簇阴影项。CDL-A 至 CDL-E（第 7.7.1 节）和 TDL-A 至 TDL-E（第 7.7.2 节）是面向 0.5 至 100 GHz 的表格化链路级模型，最大带宽为 2 GHz。}
 - signal: paths
   text: {en: 'Path-level quantities per cluster: cluster delay and power, arrival and departure angles with their spreads (ASA, ASD, ZSA, ZSD), and ray offset angles within a cluster from Table 7.5-3. The two strongest clusters are split into three sub-clusters with power fractions 10/20, 6/20 and 4/20 and power-delay offsets 0, 1.28 and 2.56 as listed in Table 7.5-5.', zh: 每簇的路径级参数：簇时延和功率，到达角与离开角及其扩展量（ASA、ASD、ZSA、ZSD），以及簇内射线偏移角（表 7.5-3）。两个最强簇分为三个子簇，功率比例为 10/20、6/20 和 4/20，功率时延偏移为表 7.5-5 所列的 0、1.28 和 2.56。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: Channel coefficients are synthesized by a generator run (clauses 7.5 and 8); the report stores none., zh: 信道系数需由生成器运行合成（第 7.5 节与第 8 节）；报告中不存储任何系数。}
+- key: cir
+  status: simulate
+  note: {en: 'The CIR is the cluster-and-ray sum defined in clause 7.5, generated per link by software.', zh: CIR 为第 7.5 节定义的簇与射线求和，由软件按链路生成。}
+- key: paths
+  status: simulate
+  note: {en: 'Cluster delays, powers and angles are drawn per link from the clause 7.5 tables; no drawn values are stored.', zh: 簇时延、功率和角度依据第 7.5 节参数表按链路抽样；不存储抽样结果。}
+- key: interaction
+  status: simulate
+  note: {en: 'Per-path interaction points exist only in the map-based hybrid model (clause 8), which needs a user-supplied digitized map.', zh: 逐径交互点仅存在于基于地图的混合模型（第 8 节），需要用户提供数字化地图。}
+- key: power
+  status: simulate
+  note: {en: 'Pathloss, O2I penetration loss and shadow fading (clause 7.4) are computed by a generator run.', zh: 路径损耗、O2I 穿透损耗和阴影衰落（第 7.4 节）需由生成器运行计算。}
+- key: iq
+  status: simulate
+  note: {en: The report has no I/Q samples; baseband CDL/TDL waveforms are produced by implementations (clause 7.7)., zh: 报告不含 I/Q 采样；基带 CDL/TDL 波形由实现软件生成（第 7.7 节）。}
+- key: beam_labels
+  status: simulate
+  note: {en: Beam indices or per-beam gains need a generator run with a chosen array and codebook (clause 7.3)., zh: 波束索引或每波束增益需使用选定阵列和码本运行生成器得到（第 7.3 节）。}
+- key: position
+  status: simulate
+  note: {en: 'BS and UT positions are inputs to each generator run (clause 7.5 and clause 8, Step 2).', zh: BS 与 UT 位置是每次生成器运行的输入（第 7.5 节及第 8 节 Step 2）。}
+- key: geometry
+  status: none
+  note: {en: The report contains no map or 3D scene files; clause 8 requires the user to supply a digitized map., zh: 报告不含地图或三维场景文件；第 8 节要求用户自行提供数字化地图。}
+- key: materials
+  status: provided
+  note: {en: Contains O2I penetration-loss parameter tables by building and glass type (clause 7.4.3.1); permittivity and conductivity values are not supplied., zh: 包含按建筑与玻璃类型列出的 O2I 穿透损耗参数表（第 7.4.3.1 节）；不提供介电常数和电导率数值。}
+- key: rgb
+  status: none
+  note: {en: The report is a specification of equations and parameter tables with no sensor data., zh: 报告为包含公式和参数表的规范文件，不含传感器数据。}
+- key: depth
+  status: none
+  note: {en: The report is a specification of equations and parameter tables with no sensor data., zh: 报告为包含公式和参数表的规范文件，不含传感器数据。}
+- key: lidar
+  status: none
+  note: {en: The report is a specification of equations and parameter tables with no sensor data., zh: 报告为包含公式和参数表的规范文件，不含传感器数据。}
+- key: radar
+  status: simulate
+  note: {en: Sensing channels for targets with RCS are defined in clause 7.9 (ISAC) and produced by a generator run; no radar data are included., zh: 带 RCS 的感知目标信道在第 7.9 节（ISAC）中定义，需由生成器运行得到；不含雷达数据。}
+- key: imu
+  status: none
+  note: {en: The report is a specification of equations and parameter tables with no sensor data., zh: 报告为包含公式和参数表的规范文件，不含传感器数据。}
+- key: time_series
+  status: simulate
+  note: {en: Time sequences follow from the chosen time sampling and the time-varying Doppler model (clause 7.6.6); no sequence is stored., zh: 时间序列取决于所选的时间采样和时变多普勒模型（第 7.6.6 节）；不存储序列。}
+- key: multiuser
+  status: simulate
+  note: {en: 'The number of UTs is a generator input (clause 8, Step 2); no multi-user data are stored.', zh: UT 数量是生成器输入（第 8 节 Step 2）；不存储多用户数据。}
+- key: multibs
+  status: simulate
+  note: {en: 'The number of BSs is a generator input (clause 8, Step 2); no multi-BS sets are stored.', zh: BS 数量是生成器输入（第 8 节 Step 2）；不存储多基站数据集。}
+- key: crossfreq
+  status: simulate
+  note: {en: Multi-frequency correlation (clause 7.6.5) is a defined component enabled per run; no paired multi-band data are stored., zh: 多频相关（第 7.6.5 节）是可按运行启用的定义组件；不存储成对的多频段数据。}
+- key: near_field
+  status: simulate
+  note: {en: The near-field channel model is clause 7.6.13 of the V19.5.0 text., zh: 近场信道模型见 V19.5.0 文本第 7.6.13 节。}
+- key: high_mobility
+  status: simulate
+  note: {en: 'UT speed is a generator input; the study requirements list mobile speed up to 500 km/h, and in-car UTs are set to 40 km/h in clause 7.2.', zh: UT 速度是生成器输入；研究需求列出移动速度可达 500 km/h，第 7.2 节中车内 UT 设为 40 km/h。}
+- key: dynamic_blockage
+  status: simulate
+  note: {en: Blockage models A and B (clause 7.6.4) with moving blockers are generator options; no blocker trajectories are stored., zh: 带移动遮挡体的阻挡模型 A 与 B（第 7.6.4 节）为生成器选项；不存储遮挡体轨迹。}
+- key: reflection
+  status: simulate
+  note: {en: 'Reflection is cluster-based, plus an optional explicit ground-reflection model (clause 7.6.8); it is not labelled per path.', zh: 反射通过簇模型表示，并可选用显式地面反射模型（第 7.6.8 节）；不按径标注。}
+- key: diffraction
+  status: simulate
+  note: {en: 'Diffraction appears only in the deterministic ray tracing of the map-based model (clause 8), not in the cluster model.', zh: 绕射仅出现在基于地图模型（第 8 节）的确定性射线追踪中，簇模型中不包含。}
+- key: scattering
+  status: simulate
+  note: {en: Scattering enters through the cluster model (clause 7.5) and the map-based model (clause 8); it is not labelled per path., zh: 散射通过簇模型（第 7.5 节）和基于地图模型（第 8 节）体现；不按径标注。}
+- key: transmission
+  status: simulate
+  note: {en: Building and car penetration loss (clause 7.4.3) is applied as a loss term; no per-path transmission is stored., zh: 建筑与车辆穿透损耗（第 7.4.3 节）以损耗项形式施加；不存储逐径穿透信息。}
+- key: polarization
+  status: simulate
+  note: {en: XPR and polarized antenna models (clauses 7.3.2 and 7.5) are generated per ray; no polarimetric data are stored., zh: XPR 与极化天线模型（第 7.3.2 节及第 7.5 节）按射线生成；不存储极化测量数据。}
+- key: em_field
+  status: provided
+  note: {en: Antenna field patterns are given as parametric formulas and tables in clause 7.3; the report contains no sampled E-field data., zh: 天线场型以参数化公式和表格形式给出（第 7.3 节）；报告不含采样的电场数据。}
+versions:
+- version: V19.5.0
+  date: 2026-09
+  summary: {en: 'Correction of ZOD generation in the channel model (CR 0043, RAN#113).', zh: 修正信道模型中的 ZOD 生成（CR 0043，RAN#113）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.05.00_60/tr_138901v190500p.pdf
+- version: V19.4.0
+  date: 2026-07
+  summary: {en: 'Adds the ISAC reference channel model (CR 0039) and corrects the Rel-19 7-24 GHz model (CRs 0040, 0042).', zh: 新增 ISAC 参考信道模型（CR 0039），并修正 Rel-19 的 7-24 GHz 模型（CR 0040、0042）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.04.00_60/tr_138901v190400p.pdf
+- version: V19.3.0
+  date: 2026-04
+  summary: {en: Incorporates new ISAC channel-model agreements (CR 0038)., zh: 纳入新的 ISAC 信道模型协议（CR 0038）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.03.00_60/tr_138901v190300p.pdf
+- version: V19.2.0
+  date: 2026-02
+  summary: {en: 'Incorporates ISAC channel-model agreements (CRs 0031, 0033), adds the handheld UT polarized antenna model (CR 0032), adds UL/DL reciprocity modelling (CR 0035, category A) and corrects the Rel-19 7-24 GHz model (CR 0036).', zh: 纳入 ISAC 信道模型协议（CR 0031、0033），新增手持 UT 极化天线模型（CR 0032），新增 UL/DL 互易性建模（CR 0035，类别 A），并修正 Rel-19 的 7-24 GHz 模型（CR 0036）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.02.00_60/tr_138901v190200p.pdf
+- version: V18.1.0
+  date: 2026-02
+  summary: {en: Adds UL/DL reciprocity modelling to the Rel-18 report (CR 0034)., zh: 在 Rel-18 报告中新增 UL/DL 互易性建模（CR 0034）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/18.01.00_60/tr_138901v180100p.pdf
+- version: V19.1.0
+  date: 2025-10
+  summary: {en: Corrects the 7-24 GHz channel-model enhancements (CR 0028) and incorporates new ISAC channel-model agreements (CR 0029)., zh: 修正 7-24 GHz 信道模型增强（CR 0028），并纳入新的 ISAC 信道模型协议（CR 0029）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/19.01.00_60/tr_138901v190100p.pdf
+- version: V18.0.0
+  date: 2024-05
+  summary: {en: Rel-18 version created by the MCC update (SA#103); the change history lists no technical CR for this step., zh: 由 MCC 更新生成的 Rel-18 版本（SA#103）；变更历史中该步骤未列技术 CR。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/18.00.00_60/tr_138901v180000p.pdf
+- version: V17.1.0
+  date: 2024-01
+  summary: {en: 'Corrects the scaling of angles for the CDL model and a figure reference (CR 0025, RAN#102).', zh: 修正 CDL 模型的角度缩放及一处图号引用（CR 0025，RAN#102）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/17.01.00_60/tr_138901v170100p.pdf
+- version: V17.0.0
+  date: 2022-04
+  summary: {en: Rel-17 version created by the MCC update (SA#95-e); no technical CR is listed for this step., zh: 由 MCC 更新生成的 Rel-17 版本（SA#95-e）；该步骤未列技术 CR。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/17.00.00_60/tr_138901v170000p.pdf
+- version: V16.1.0
+  date: 2020-11
+  summary: {en: Adds the indoor industrial (IIoT) channel model; CR 0024 covers the remaining open issues in IIoT channel modelling (RAN#86)., zh: 新增室内工业（IIoT）信道模型；CR 0024 涵盖 IIoT 信道建模的剩余遗留问题（RAN#86）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/16.01.00_60/tr_138901v160100p.pdf
+- version: V15.0.0
+  date: 2018-07
+  summary: {en: Rel-15 version created by the MCC update (SA#80); no technical CR is listed for this step., zh: 由 MCC 更新生成的 Rel-15 版本（SA#80）；该步骤未列技术 CR。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/15.00.00_60/tr_138901v150000p.pdf
+- version: V14.3.0
+  date: 2018-01
+  summary: {en: 'Corrects the 3D-InH channel model (CR 0022, RAN#78).', zh: 修正 3D-InH 信道模型（CR 0022，RAN#78）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/14.03.00_60/tr_138901v140300p.pdf
+- version: V14.2.0
+  date: 2017-10
+  summary: {en: 'Rel-14 corrections from RAN#77: a formula in Annex A, cross-polarization power ratios, spatially consistent UT modelling and calibration results (CRs 0016, 0018 to 0020).', zh: RAN#77 的 Rel-14 修正：附录 A 中的一个公式、交叉极化功率比、空间一致的 UT 建模及校准结果（CR 0016、0018 至 0020）。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/14.02.00_60/tr_138901v140200p.pdf
+- version: V14.1.1
+  date: 2017-08
+  summary: {en: 'Rel-14 corrections from RAN#76 (CRs 0001 to 0015), including LOS probability, ZOD scaling, intra-cluster spreads, spatial consistency and the TDL spatial filter; plus an MCC change making the UMa LOS probability in Table 7.4-2 fully visible.', zh: RAN#76 的 Rel-14 修正（CR 0001 至 0015），包括 LOS 概率、ZOD 缩放、簇内扩展、空间一致性和 TDL 空间滤波器；并由 MCC 修改使表 7.4-2 中的 UMa LOS 概率完整可见。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/14.01.01_60/tr_138901v140101p.pdf
+- version: V14.0.0
+  date: 2017-05
+  summary: {en: 'First version under change control as Rel-14 (RAN#75, March 2017); covers 0.5 to 100 GHz, consolidating the above-6 GHz and NR study items.', zh: 首个纳入变更控制的 Rel-14 版本（RAN#75，2017 年 3 月）；覆盖 0.5 至 100 GHz，汇总 6 GHz 以上及 NR 研究项目的结论。}
+  url: https://www.etsi.org/deliver/etsi_tr/138900_138999/138901/14.00.00_60/tr_138901v140000p.pdf

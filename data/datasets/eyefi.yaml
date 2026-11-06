@@ -14,10 +14,10 @@ paper: doi:10.1109/dcoss49796.2020.00022
 used_in: []
 citing: ['doi:10.1109/tccn.2022.3222193', 'doi:10.1145/3560905.3567773', 'doi:10.1145/3715014.3724041']
 summary: {en: Intel 5300 WiFi CSI (30 subcarriers across 3 antennas per packet) recorded while people walk through a lab area and a kitchen area. Ceiling-camera position ground truth and SpotFi-estimated angle-of-arrival values are included., zh: 在实验室区域和厨房区域中行走的人员采集的 Intel 5300 WiFi CSI（每个数据包 30 个子载波、3 根天线）。数据包含天花板摄像头提供的位置真值以及 SpotFi 估计的 AoA 值。}
-sources: ['https://zenodo.org/record/3882104']
+sources: ['https://zenodo.org/record/3882104', 'https://zenodo.org/api/records/3882104', 'https://api.crossref.org/works/10.1109/dcoss49796.2020.00022', 'https://api.crossref.org/works/10.1145/3419016.3431488', 'https://api.datacite.org/dois/10.5281/zenodo.3882104', 'https://api.datacite.org/dois/10.5281/zenodo.7396485', 'https://api.datacite.org/dois/10.5281/zenodo.3882103']
 checked: '2026-11-06'
-overview: {en: 'EyeFi is a dataset of WiFi CSI and camera ground truth for human motion, published on Zenodo (record 3882104, version 1.0.0, June 6, 2020) under CC BY 4.0. Its paper, ''EyeFi: Fast Human Identification Through Vision and WiFi-based Trajectory Matching'', accompanies a DCOSS 2020 paper by Shiwei Fang, Tamzeed Islam, Sirajum Munir and Shahriar Nirjon of the University of North Carolina at Chapel Hill and Bosch Research and Technology Center. The data were recorded at the Bosch Research and Technology Center in Pittsburgh, PA, with an Intel 5300 WiFi NIC that captured CSI from packets sent by a Google Pixel 2 XL phone used as the access point. Each packet carries 30 subcarriers across 3 antennas, and the packet rate is about 20 to 25 packets per second. People walked in a lab area of 11.8 m by 8.74 m with 1, 2, 3, 5 or 10 people, and in a kitchen with strong reflectors such as metal refrigerators and dishwashers with 1 or 3 people. A ceiling-mounted camera at about 2.85 m gives
-    the (x, y) coordinates and a camera-based angle of arrival for each person, and SpotFi estimates angles of arrival from the CSI using 1 to 4 assumed paths. The files are HDF5 (.h5), grouped by scene and number of people, and the archive EyeFi_Dataset.zip is about 1.5 GB.', zh: 'EyeFi 是一个结合 WiFi CSI 与摄像头真值的人体运动数据集，发布于 Zenodo（record 3882104，版本 1.0.0，发布日期 2020 年 6 月 6 日），采用 CC BY 4.0 许可。数据集配套 DCOSS 2020 论文 “EyeFi: Fast Human Identification Through Vision and WiFi-based Trajectory Matching”，作者为 Shiwei Fang、Tamzeed Islam、Sirajum Munir 和 Shahriar Nirjon，单位为北卡罗来纳大学教堂山分校与 Bosch Research and Technology Center。数据采集于宾夕法尼亚州匹兹堡的 Bosch Research and Technology Center，使用 Intel 5300 WiFi 网卡采集 CSI，数据包由作为接入点的 Google Pixel 2 XL 手机发出。每个数据包包含 30 个子载波、3 根天线，包速率约为每秒 20 至 25 个。人员在 11.8 m × 8.74 m 的实验室区域中行走，人数为 1、2、3、5 或 10 人；厨房区域内有冰箱、洗碗机等金属强反射体，人数为 1 或 3 人。天花板安装的摄像头位于约 2.85 m 高度，为每位人员提供 (x, y) 坐标和基于摄像头的到达角；SpotFi 则基于 CSI 估计到达角，假设路径数为 1 至 4。文件为 HDF5（.h5）格式，按场景和人数分组；压缩包 EyeFi_Dataset.zip 约 1.5 GB。'}
+overview: {en: 'EyeFi is a dataset of WiFi CSI and camera ground truth for human motion, published on Zenodo (record 3882104, version 1.0.0, June 6, 2020) under CC BY 4.0. It was collected as part of the EyeFi project at the Bosch Research and Technology Center in Pittsburgh, PA, and is used in the DCOSS 2020 paper ''EyeFi: Fast Human Identification Through Vision and WiFi-based Trajectory Matching'' by Shiwei Fang, Tamzeed Islam, Sirajum Munir and Shahriar Nirjon. An Intel 5300 WiFi NIC captured CSI from packets sent by a Google Pixel 2 XL phone used as the access point. Each packet carries 30 subcarriers across 3 antennas, and the packet rate is about 20 to 25 packets per second. People walked in a lab area of 11.8 m by 8.74 m with 1, 2, 3, 5 or 10 people, and in a kitchen with strong reflectors such as metal refrigerators and dishwashers with 1 or 3 people. A ceiling-mounted camera at about 2.85 m gives the (x, y) coordinates and a camera-based angle of arrival for each person, and SpotFi
+    estimates angles of arrival from the CSI using 1 to 4 assumed paths. The files are HDF5 (.h5), grouped by scene and number of people, and the archive EyeFi_Dataset.zip is about 1.5 GB.', zh: 'EyeFi 是一个包含人体运动 WiFi CSI 与摄像头真值的数据集，发布于 Zenodo（record 3882104，版本 1.0.0，发布日期 2020 年 6 月 6 日），采用 CC BY 4.0 许可。数据采集于 Bosch Research and Technology Center（宾夕法尼亚州匹兹堡）的 EyeFi 项目，配套 DCOSS 2020 论文《EyeFi: Fast Human Identification Through Vision and WiFi-based Trajectory Matching》，作者为 Shiwei Fang、Tamzeed Islam、Sirajum Munir 和 Shahriar Nirjon。Intel 5300 WiFi 网卡采集的 CSI 来自作为接入点的 Google Pixel 2 XL 手机发出的数据包。每个数据包包含 30 个子载波、3 根天线，包速率约为每秒 20 至 25 个。人员在 11.8 m × 8.74 m 的实验室区域中行走，人数为 1、2、3、5 或 10 人；厨房区域内有冰箱、洗碗机等金属强反射体，人数为 1 或 3 人。天花板摄像头位于约 2.85 m 高度，为每位人员提供 (x, y) 坐标和基于摄像头的到达角；SpotFi 则基于 CSI 估计到达角，假设路径数为 1 至 4。文件为 HDF5（.h5）格式，按场景和人数分组；压缩包 EyeFi_Dataset.zip 约 1.5 GB。'}
 signal_details:
 - signal: csi
   text: {en: 'WiFi CSI from an Intel 5300 NIC in an Intel NUC, extracted with Linux CSI tools, with a Google Pixel 2 XL as the access point. Each csi_real and csi_imag record has 90 values, ordered by subcarrier then antenna, which is 30 subcarriers across 3 antennas. The packet rate is about 20 to 25 packets per second.', zh: 由 Intel NUC 中的 Intel 5300 网卡经 Linux CSI tools 提取的 WiFi CSI，接入点为 Google Pixel 2 XL。每条 csi_real 与 csi_imag 记录包含 90 个数值，按子载波后天线的顺序排列，即 30 个子载波、3 根天线。数据包速率约为每秒 20 至 25 个。}
@@ -51,3 +51,105 @@ pipeline:
     outputs:
     - {en: .h5 files, zh: .h5 文件}
     - {en: EyeFi_Dataset.zip (about 1.5 GB), zh: EyeFi_Dataset.zip（约 1.5 GB）}
+size_gb: 1.5
+antennas: {rx: 3}
+mobility: walking pedestrians
+facts:
+- label: {en: Labels, zh: 标签}
+  text: {en: 'obj_0 is always the person holding the phone, and the other people in the scene are obj_1 onward. Each person''s (x, y) coordinates come from the ceiling camera, and cam_aoa is the angle of arrival derived from those coordinates.', zh: 'obj_0 始终为手持手机的人员，场景中的其他人员依次为 obj_1 及之后。每位人员的 (x, y) 坐标来自天花板摄像头，cam_aoa 为由这些坐标推算出的到达角。'}
+- label: {en: Folders, zh: 文件夹}
+  text: {en: 'Files in one folder always have the same number of people in the scene, but the phone holder can differ. Separate files record different days or system reboots, which introduce different phase offsets.', zh: 同一文件夹内的文件，场景中人数相同，但手持手机的人员可能不同。不同文件对应不同日期或系统重启，重启会引入不同的相位偏移。}
+- label: {en: Training files, zh: 训练文件}
+  text: {en: 'The training folder holds shuffuled_train.h5, shuffuled_valid.h5 and shuffuled_test.h5, spelled this way in the archive. Their rows are randomly shuffled from 1_person_1.h5 and 1_person_2.h5 and contain no timestamps.', zh: 训练文件夹包含 shuffuled_train.h5、shuffuled_valid.h5 和 shuffuled_test.h5（压缩包中的拼写）。其数据行由 1_person_1.h5 和 1_person_2.h5 随机打乱得到，不含时间戳。}
+- label: {en: Training file layout, zh: 训练文件结构}
+  text: {en: 'Training files group rows by nPath-1 to nPath-4, each holding aoa, csi_imag, csi_real and spotfi datasets. This differs from the nPaths_x and obj_x layout of the other files.', zh: 训练文件按 nPath-1 至 nPath-4 分组，每组包含 aoa、csi_imag、csi_real 和 spotfi 数据集，与其他文件的 nPaths_x 与 obj_x 结构不同。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Intel 5300 CSI with 30 subcarriers and 3 antennas, stored as csi_real and csi_imag with 90 values per packet.', zh: Intel 5300 CSI，含 30 个子载波、3 根天线，以 csi_real 与 csi_imag 存储，每个数据包 90 个数值。}
+- key: cir
+  status: unknown
+  note: {en: Not stored; the sources do not state the subcarrier spacing needed to compute a time-domain response., zh: 未存储；来源未说明计算时域响应所需的子载波间隔。}
+- key: paths
+  status: provided
+  note: {en: 'SpotFi AoA for 1 to 4 assumed paths, with phase-offset variants; per-path delay, power and phase are not stored.', zh: 按 1 至 4 条假设路径给出的 SpotFi AoA，并含相位偏移变体；未存储逐路径时延、功率和相位。}
+- key: interaction
+  status: none
+  note: {en: 'Stored fields are CSI, SpotFi AoA, camera coordinates, cam_aoa and timestamps, with no per-path interaction labels.', zh: 存储字段为 CSI、SpotFi AoA、摄像头坐标、cam_aoa 与时间戳，不含逐路径交互标签。}
+- key: power
+  status: derivable
+  note: {en: Relative received power can be computed from the stored csi_real and csi_imag values; no RSSI field is stored., zh: 相对接收功率可由存储的 csi_real 与 csi_imag 计算；未存储 RSSI 字段。}
+- key: iq
+  status: none
+  note: {en: Only processed CSI is stored; no raw I/Q samples., zh: 仅存储处理后的 CSI，不含原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: The setup has one phone access point and one NIC; no beam indices or per-beam gains are stored., zh: 设置为一台手机接入点和一块网卡；未存储波束索引或逐波束增益。}
+- key: position
+  status: provided
+  note: {en: 'Per-person (x, y) coordinates from the ceiling camera; no height is stored.', zh: '天花板摄像头给出每人的 (x, y) 坐标，不含高度。'}
+- key: geometry
+  status: none
+  note: {en: Room sizes are given in text only; no 3D scene or map files are listed., zh: 房间尺寸仅以文字给出；未列出三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: Kitchen materials are described qualitatively; no material parameters are stored., zh: 厨房材料仅作定性描述；未存储材料参数。}
+- key: rgb
+  status: none
+  note: {en: The camera provides coordinates and cam_aoa; no image frames are listed., zh: 摄像头提供坐标与 cam_aoa；未列出图像帧。}
+- key: depth
+  status: none
+  note: {en: No depth data are listed., zh: 未列出深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data are listed., zh: 未列出激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar sensor or radar data are described., zh: 未描述雷达传感器或雷达数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data are listed., zh: 未列出 IMU 数据。}
+- key: time_series
+  status: provided
+  note: {en: Per-packet timestamps and chronologically ordered coordinates in the lab files; the training files have no timestamps., zh: 实验室文件含逐包时间戳及按时间排序的坐标；训练文件无时间戳。}
+- key: multiuser
+  status: none
+  note: {en: 'One phone-to-NIC link per sample; up to 10 people appear in a scene, but no per-user channels are stored.', zh: 每个样本为一条手机到网卡的链路；场景中最多 10 人，但不存储逐用户信道。}
+- key: multibs
+  status: none
+  note: {en: One access point and one NIC are described., zh: 仅描述一个接入点和一块网卡。}
+- key: crossfreq
+  status: none
+  note: {en: A single WiFi link is described; no paired multi-band data are described., zh: 仅描述单一 WiFi 链路，未描述成对的多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: Users are walking pedestrians; no speed of about 30 km/h or more is stated., zh: 用户为步行行人；来源未给出约 30 km/h 或以上的速度。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: Walking people move through the link during recording; blockage is not labelled., zh: 录制期间行走的人员穿过链路；未标注遮挡。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含在测量之中，未按路径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Only CSI and AoA values are stored; no field components or antenna patterns are included., zh: 仅存储 CSI 与 AoA 数值，不含场分量或天线方向图。}
+versions:
+- version: 2.0.0
+  date: '2022-12-04'
+  summary: {en: 'Second Zenodo version under the concept DOI 10.5281/zenodo.3882103, with its DOI created on 2022-12-04. The v1.0.0 description states that this version''s README gives the order of the 90 csi_real and csi_imag values, which the v1.0.0 README did not state clearly.', zh: 同一概念 DOI（10.5281/zenodo.3882103）下的第二个 Zenodo 版本，DOI 创建于 2022-12-04。v1.0.0 的描述称，该版本的 README 给出了 90 个 csi_real 与 csi_imag 数值的排列顺序，而 v1.0.0 的 README 对此说明不清。}
+  url: https://zenodo.org/record/7396485
+- version: 1.0.0
+  date: '2020-06-06'
+  summary: {en: 'First Zenodo version (record 3882104), issued 2020-06-06. It holds lab folders for 1, 2, 3, 5 and 10 people, kitchen folders for 1 and 3 people, and the shuffled training split, as listed in its description.', zh: 首个 Zenodo 版本（record 3882104），发布日期为 2020-06-06。包含实验室中 1、2、3、5、10 人的文件夹，厨房中 1 人和 3 人的文件夹，以及打乱顺序的训练划分，文件列表见其描述。}
+  url: https://zenodo.org/record/3882104

@@ -7,7 +7,7 @@ tasks: [localization]
 signals: [rssi]
 bands_ghz: []
 environment: [indoor]
-samples: 19,936 calibration and 1,111 validation/test samples
+samples: 19,937 training/reference and 1,111 validation/test samples
 format: CSV
 standard: WLAN
 license: CC BY 4.0
@@ -17,15 +17,15 @@ paper: doi:10.1109/IPIN.2014.7275492
 used_in: ['doi:10.1109/jiot.2024.3430087', 'doi:10.1109/jiot.2024.3386889', 'doi:10.1109/iccworkshops53468.2022.9814616']
 citing: ['doi:10.1109/jiot.2019.2940368', 'doi:10.1109/jsac.2023.3322766', 'doi:10.1109/infocom.2018.8485972']
 summary: {en: 'Wi-Fi RSSI fingerprints from WLAN access points in three buildings of Universitat Jaume I, with calibration and validation/test samples for multi-building, multi-floor indoor localization. The data were collected by more than 20 users.', zh: 来自 Universitat Jaume I 三座建筑的 WLAN RSSI 指纹数据，包含用于多建筑、多楼层室内定位的校准样本和验证/测试样本。数据由 20 多名用户采集。}
-sources: ['https://geotec.uji.es/?p=1782', 'https://archive.ics.uci.edu/ml/datasets/UJIIndoorLoc', 'https://api.crossref.org/works/10.1109/IPIN.2014.7275492']
+sources: ['https://geotec.uji.es/?p=1782', 'https://archive.ics.uci.edu/ml/datasets/UJIIndoorLoc', 'https://api.crossref.org/works/10.1109/IPIN.2014.7275492', 'https://archive.ics.uci.edu/dataset/310/uji+indoorloc']
 checked: '2026-11-06'
-overview: {en: 'UJIIndoorLoc is a WLAN fingerprint database for indoor localization in multi-building, multi-floor environments. The GEOTEC group at Universitat Jaume I created it in 2013 and published it at IPIN 2014 (Torres-Sospedra, Montoliu, Martinez-Uso, Avariento, Arnau). More than 20 users recorded the data with 25 Android devices in three buildings of the university, which cover 4 or more floors and almost 110,000 m2. Each sample holds RSSI values in dBm from 520 WAPs (WAP001 to WAP520), with values from -104 to 0, and the value 100 marks a WAP that was not detected. The calibration set has 19,936 samples and the validation/test set has 1,111 samples, and the validation samples carry user ID 0 (USER0000). Each row also stores longitude, latitude, floor, building ID, space ID, relative position, user ID, phone ID and a UNIX timestamp. The files contain RSSI fingerprints and these labels only.', zh: 'UJIIndoorLoc 是一个用于多建筑、多楼层室内定位的 WLAN 指纹数据库。Universitat Jaume I 的 GEOTEC 研究组于 2013 年创建该数据库，并于
-    2014 年在 IPIN 会议发表（Torres-Sospedra、Montoliu、Martinez-Uso、Avariento、Arnau）。20 多名用户使用 25 台 Android 设备，在该校三座建筑中采集数据，建筑覆盖 4 层及以上楼层，总面积近 110,000 m2。每个样本包含 520 个 WAP（WAP001 至 WAP520）的 RSSI 值，单位 dBm，取值范围 -104 至 0，数值 100 表示该 WAP 未被检测到。校准集包含 19,936 个样本，验证/测试集包含 1,111 个样本，验证样本的用户 ID 为 0（USER0000）。每行还保存经度、纬度、楼层、建筑 ID、空间 ID、相对位置、用户 ID、手机 ID 和 UNIX 时间戳。文件仅包含 RSSI 指纹及上述标签。'}
+overview: {en: 'UJIIndoorLoc is a WLAN fingerprint database for indoor localization in multi-building, multi-floor environments, hosted by the GEOTEC group at Universitat Jaume I. The database was created in 2013 and presented at IPIN 2014 by Torres-Sospedra et al. More than 20 users recorded the data with 25 Android devices in three buildings of the university, which have four or more floors and cover almost 110,000 m2. Each sample holds RSSI values in dBm from 520 WAPs (WAP001 to WAP520), integers from -104 to 0, and the value 100 marks a WAP that was not detected. The UCI release contains 19,937 training/reference samples in trainingData.csv and 1,111 validation/test samples in validationData.csv, and the validation samples carry user ID 0 (USER0000). Each row also stores longitude, latitude, floor, building ID, space ID, relative position, user ID, phone ID and a UNIX timestamp. The data are distributed as CSV files under the CC BY 4.0 license.', zh: 'UJIIndoorLoc 是一个用于多建筑、多楼层室内定位的 WLAN
+    指纹数据库，由 Universitat Jaume I 的 GEOTEC 团队托管。该数据库于 2013 年创建，并由 Torres-Sospedra 等人于 2014 年在 IPIN 会议上发表。20 多名用户使用 25 台 Android 设备，在该校三座建筑中采集数据，这些建筑有 4 层及以上楼层，总面积近 110,000 m2。每个样本包含 520 个 WAP（WAP001 至 WAP520）的 RSSI 值，单位为 dBm，取值为 -104 至 0 的整数，数值 100 表示该 WAP 未被检测到。UCI 发布版本中，trainingData.csv 包含 19,937 个训练/参考样本，validationData.csv 包含 1,111 个验证/测试样本，验证样本的用户 ID 为 0（USER0000）。每行还保存经度、纬度、楼层、建筑 ID、空间 ID、相对位置、用户 ID、手机 ID 和 UNIX 时间戳。数据以 CSV 文件分发，采用 CC BY 4.0 许可。'}
 signal_details:
 - signal: rssi
-  text: {en: 'WLAN received signal strength in dBm from 520 WAP attributes (WAP001 to WAP520), integer values from -104 (extremely poor signal) to 0. The value 100 means the WAP was not detected. The fingerprints were recorded with 25 Android devices (PhoneID 0 to 24) by more than 20 users.', zh: WLAN 接收信号强度，单位 dBm，来自 520 个 WAP 属性（WAP001 至 WAP520），为整数，范围从 -104（极差信号）到 0。数值 100 表示该 WAP 未被检测到。指纹由 20 多名用户使用 25 台 Android 设备（PhoneID 0 至 24）记录。}
+  text: {en: 'WLAN received signal strength in dBm from 520 WAP attributes (WAP001 to WAP520), integer values from -104 to 0, with 100 for a WAP that was not detected. The fingerprints were recorded with 25 Android devices (PhoneID 0 to 24) by more than 20 users.', zh: WLAN 接收信号强度，单位 dBm，来自 520 个 WAP 属性（WAP001 至 WAP520），为 -104 至 0 的整数；数值 100 表示该 WAP 未被检测到。指纹由 20 多名用户使用 25 台 Android 设备（PhoneID 0 至 24）记录。}
 pipeline:
-  summary: {en: 'Users recorded WLAN RSSI fingerprints with Android devices in three university buildings, labelled each sample with position and context fields, and split the samples into calibration and validation/test files.', zh: 用户使用 Android 设备在该校三座建筑中记录 WLAN RSSI 指纹，为每个样本标注位置与上下文字段，并将样本划分为校准文件和验证/测试文件。}
+  summary: {en: 'Users recorded WLAN RSSI fingerprints with Android devices in three university buildings, labelled each sample with position and context fields, and split the samples into training/reference and validation/test files.', zh: 用户使用 Android 设备在该校三座建筑中记录 WLAN RSSI 指纹，为每个样本标注位置与上下文字段，并将样本划分为训练/参考文件和验证/测试文件。}
   stages:
   - title: {en: Record WLAN fingerprints on Android devices, zh: 在 Android 设备上记录 WLAN 指纹}
     detail: {en: 'In 2013, more than 20 users recorded RSSI from WLAN access points in three UJI buildings with 25 Android devices. Each fingerprint holds one RSSI value per WAP, and undetected WAPs are coded as 100.', zh: 2013 年，20 多名用户使用 25 台 Android 设备在 UJI 三座建筑中记录 WLAN 接入点的 RSSI。每条指纹包含每个 WAP 的一个 RSSI 值，未检测到的 WAP 编码为 100。}
@@ -41,10 +41,102 @@ pipeline:
     - {en: Position and context information, zh: 位置与上下文信息}
     outputs:
     - {en: Labelled records, zh: 带标签记录}
-  - title: {en: Split into calibration and validation sets, zh: 划分校准集与验证集}
-    detail: {en: '19,936 calibration samples are stored in trainingData.csv (40.7 MB). 1,111 validation/test samples are stored in validationData.csv (2.3 MB), and these samples carry user ID 0 (USER0000).', zh: '19,936 个校准样本保存在 trainingData.csv（40.7 MB）中，1,111 个验证/测试样本保存在 validationData.csv（2.3 MB）中，这些验证样本的用户 ID 为 0（USER0000）。'}
+  - title: {en: Split into training and validation files, zh: 划分训练文件与验证文件}
+    detail: {en: 'trainingData.csv (40.7 MB) holds the training/reference samples. validationData.csv (2.3 MB) holds 1,111 validation/test samples, and these samples carry user ID 0 (USER0000).', zh: 'trainingData.csv（40.7 MB）保存训练/参考样本。validationData.csv（2.3 MB）保存 1,111 个验证/测试样本，这些样本的用户 ID 为 0（USER0000）。'}
     inputs:
     - {en: Labelled records, zh: 带标签记录}
     outputs:
     - {en: trainingData.csv, zh: trainingData.csv}
     - {en: validationData.csv, zh: validationData.csv}
+size_gb: 0.043
+facts:
+- label: {en: Validation user, zh: 验证用户}
+  text: {en: 'UserID 0 (USER0000) is the validation user in the UCI user table, and the validation file carries this ID.', zh: 用户 ID 0（USER0000）在 UCI 用户表中为验证用户，验证文件中的样本使用该 ID。}
+- label: {en: Undetected WAP, zh: 未检测到的 WAP}
+  text: {en: 'An undetected WAP has the value 100, which lies outside the -104 to 0 range of detected signals.', zh: 未检测到的 WAP 取值为 100，超出检测信号 -104 至 0 的范围。}
+- label: {en: Device table, zh: 设备表}
+  text: {en: 'PhoneID 0 to 24 identifies the 25 Android devices, and the UCI device table lists the model and Android version for each.', zh: PhoneID 0 至 24 对应 25 台 Android 设备，UCI 设备表列出了每台设备的型号和 Android 版本。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only RSSI values per access point are released; no complex channel data., zh: 仅发布每个接入点的 RSSI 值，不含复数信道数据。}
+- key: cir
+  status: none
+  note: {en: RSSI scalars only; no delay-domain data., zh: 仅有 RSSI 标量，不含时延域数据。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle or power records.', zh: 不含逐径时延、角度或功率记录。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records., zh: 不含逐径交互记录。}
+- key: power
+  status: provided
+  note: {en: 'RSSI in dBm from -104 to 0 for 520 WAPs, with 100 marking a WAP that was not detected.', zh: 520 个 WAP 的 RSSI 值（dBm，范围 -104 至 0），未检测到的 WAP 记为 100。}
+- key: iq
+  status: none
+  note: {en: No raw I/Q samples., zh: 不含原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains., zh: 不含波束索引或逐波束增益。}
+- key: position
+  status: provided
+  note: {en: 'Longitude, latitude, floor, building, space and relative-position labels for each record.', zh: 每条记录提供经度、纬度、楼层、建筑、空间及相对位置标签。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files; space IDs are categorical labels only., zh: 不含三维场景或地图文件，空间 ID 仅为类别标签。}
+- key: materials
+  status: none
+  note: {en: No material parameters., zh: 不含材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera images; WLAN fingerprints only., zh: 不含相机图像，仅有 WLAN 指纹。}
+- key: depth
+  status: none
+  note: {en: No depth data; WLAN fingerprints only., zh: 不含深度数据，仅有 WLAN 指纹。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data; WLAN fingerprints only., zh: 不含激光雷达数据，仅有 WLAN 指纹。}
+- key: radar
+  status: none
+  note: {en: No radar data; WLAN fingerprints only., zh: 不含雷达数据，仅有 WLAN 指纹。}
+- key: imu
+  status: none
+  note: {en: No IMU data; WLAN fingerprints only., zh: 不含惯性测量单元数据，仅有 WLAN 指纹。}
+- key: time_series
+  status: provided
+  note: {en: Each record has a UNIX timestamp; the sources do not describe continuous per-user sequences., zh: 每条记录带有 UNIX 时间戳；来源未描述按用户连续的序列。}
+- key: multiuser
+  status: none
+  note: {en: Records from more than 20 users are listed individually; the sources describe no simultaneous multi-user measurements., zh: 20 多名用户的记录逐条列出；来源未描述同时进行的多用户测量。}
+- key: multibs
+  status: provided
+  note: {en: 'Each record has RSSI from 520 WLAN access points across three buildings; these are access points, not cellular base stations.', zh: 每条记录包含三座建筑中 520 个 WLAN 接入点的 RSSI；这些是接入点，而非蜂窝基站。}
+- key: crossfreq
+  status: none
+  note: {en: Each record is one WLAN scan; no paired multi-band data is described., zh: 每条记录为一次 WLAN 扫描，来源未描述成对的多频段数据。}
+- key: near_field
+  status: none
+  note: {en: RSSI scalars only; no array or wavefield data., zh: 仅有 RSSI 标量，不含阵列或波场数据。}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量之中，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量之中，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量之中，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量之中，未按路径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Only RSSI values are released; no field-level outputs., zh: 仅发布 RSSI 值，不含场级输出。}
+versions:
+- version: '2014'
+  date: '2014-09-17'
+  summary: {en: 'First public release on the UCI Machine Learning Repository, with 19,937 training/reference and 1,111 validation/test WLAN RSSI fingerprints from three buildings, collected in 2013 by more than 20 users with 25 Android devices.', zh: 'UCI 机器学习仓库的首次公开发布，包含来自三座建筑的 19,937 条训练/参考和 1,111 条验证/测试 WLAN RSSI 指纹，数据于 2013 年由 20 多名用户使用 25 台 Android 设备采集。'}
+  url: https://archive.ics.uci.edu/dataset/310/uji+indoorloc

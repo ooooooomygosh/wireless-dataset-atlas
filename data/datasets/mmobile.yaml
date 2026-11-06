@@ -19,117 +19,158 @@ paper: doi:10.1145/3412060.3418433
 used_in: []
 citing: ['doi:10.1145/3452296.3472924', 'doi:10.1109/infocom53939.2023.10229065', 'doi:10.1109/jsac.2024.3413978']
 summary: {en: '28 GHz CSI measurements with 256 subcarriers at 240 kHz spacing, tagged by UE location and beam index, for indoor 2.5 m and 4.2 m and outdoor 10 m and 30 m gNB-UE links. The four configurations contain 129 UE locations in total.', zh: 28 GHz 信道状态信息（CSI）测量，包含 256 个子载波（子载波间隔 240 kHz），按用户位置和波束索引标注，覆盖室内 2.5 m 和 4.2 m、室外 10 m 和 30 m 的 gNB–UE 链路。四种配置共 129 个用户位置。}
-sources: ['https://github.com/ucsdwcsng/mMobile', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/README.md', 'https://api.github.com/repos/ucsdwcsng/mMobile/contents/dataset', 'https://api.crossref.org/works?query.title=mMobile+mobility+dataset&rows=3&select=DOI,title,issued']
+sources: ['https://github.com/ucsdwcsng/mMobile', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/README.md', 'https://api.github.com/repos/ucsdwcsng/mMobile/contents/dataset', 'https://api.crossref.org/works?query.title=mMobile+mobility+dataset&rows=3&select=DOI,title,issued', 'https://api.github.com/repos/ucsdwcsng/mMobile/contents', 'https://api.github.com/repos/ucsdwcsng/mMobile', 'https://api.github.com/repos/ucsdwcsng/mMobile/license', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/analyse_mmobile_data.m', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/cosineInterpolateCIR.m', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/dataset/indoor_2_5m_data.mat', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/dataset/indoor_4_2m_data.mat', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/dataset/outdoor_10m_data.mat', 'https://raw.githubusercontent.com/ucsdwcsng/mMobile/master/dataset/outdoor_30m_data.mat', 'https://api.crossref.org/works/10.1145/3412060.3418433',
+  'https://github.com/ucsdwcsng/mMobile/commits/master', 'https://github.com/ucsdwcsng/mMobile/releases', 'https://wcsng.ucsd.edu/mmobile/']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: A fixed gNB and mobile UE sweep transmit beams at discrete stopping positions. OFDM training yields each beam's effective complex frequency-domain channel; position geometry and the analysis script jointly define the data axes., zh: 固定gNB与移动UE在离散停靠位置进行发射波束扫描，OFDM训练得到每波束的等效复数频域信道；位置几何与分析脚本共同定义数据轴。}
+  summary: {en: 'A fixed gNB and a UE that steps through discrete positions on four links. At each position the transmit beam is scanned, and an OFDM sounder records a 256-entry complex channel estimate and a received-power value for every beam, saved in four MAT files.', zh: gNB 固定，UE 在四条链路上沿离散位置移动。每个位置扫描发射波束，OFDM 声探为每个波束记录 256 个复数信道估计值和一个接收功率值，保存在四个 MAT 文件中。}
+  scope: {en: 'Four official MAT files, analyse_mmobile_data.m and cosineInterpolateCIR.m from the GitHub repository (last push 2022-05-25), with the README; 28 GHz position-by-beam channels.', zh: GitHub 仓库中的四个官方 MAT 文件，以及 analyse_mmobile_data.m 和 cosineInterpolateCIR.m（最后一次推送为 2022-05-25），并参照 README；28 GHz 位置×波束信道。}
   stages:
-  - title: {en: Set up indoor/outdoor links and stopping positions, zh: 设置室内外链路与停靠位置}
-    detail: {en: 'Measure 21, 32, 31, and 45 positions on links of 2.5, 4.2, 10, and 30 m, respectively. The UE is measured at specified discrete positions; the deployment table and script provide relative movement directions and step sizes.', zh: 在2.5、4.2、10、30 m链路中分别测量21、32、31、45个位置。UE在指定离散位置采集，部署表与脚本给出相对移动方向和步长。}
-    inputs:
-    - {en: 'Fixed gNB, UE, and 28 GHz hardware', zh: 固定gNB、UE和28 GHz硬件}
-    - {en: 4 deployments and position step sizes, zh: 4种部署与位置步长}
+  - title: {en: Set up four links and discrete UE positions, zh: 设置四条链路与离散 UE 位置}
+    detail: {en: 'The gNB is fixed and the UE is placed at discrete positions on indoor 2.5 m and 4.2 m links and outdoor 10 m and 30 m links, with 21, 32, 31 and 45 positions respectively. Position resolution is 0.1, 0.1, 0.2 and 0.6 m. The outdoor 30 m link contains a blockage between 3.9 m and 4.8 m.', zh: gNB 固定，UE 放置于室内 2.5 m 与 4.2 m 链路及室外 10 m 与 30 m 链路的离散位置上，分别为 21、32、31 和 45 个位置。位置分辨率为 0.1、0.1、0.2 和 0.6 m。室外 30 m 链路在 3.9 m 至 4.8 m 之间存在遮挡。}
     outputs:
-    - {en: Deployment and position indices, zh: 部署和位置索引}
-    - {en: Relative geometry parameters, zh: 相对几何参数}
+    - {en: Position index for each link configuration, zh: 每种链路配置的位置索引}
     controls:
-    - {en: The Outdoor 30 m step is 0.6 m in the README and 0.3 m in the script; verify the original files, zh: Outdoor 30 m步长在README为0.6 m、脚本为0.3 m，需核实原文件}
-    checks:
-    - {en: 'Reproduction check: confirm the step-size version before calculating positions/angles from distance and direction', zh: 复现检查：先确认步长版本，再由距离和方向计算位置/角度}
-  - title: {en: Sweep beams sequentially at each position, zh: 在每个位置顺序扫描波束}
-    detail: {en: 'At each stopping position, acquire data sequentially with multiple transmit beams, making beam a conditioning axis of the channel array. Each beam observation is an effective link under a fixed front-end configuration.', zh: 每个停靠位置依次使用多个发射波束采集，使beam成为信道数组的一条条件轴。各beam观测来自固定前端配置下的等效链路。}
-    inputs:
-    - {en: Transmit-beam set, zh: 发射波束集合}
-    - {en: Radio link at the current position, zh: 当前位置的无线链路}
+    - {en: 'The outdoor 30 m step is 0.6 m in the README and 0.3 m in analyse_mmobile_data.m. The README gives movement directions of 90, 90, 90 and 120 degrees, while the script uses orientations of 0, 0, 0 and 30 degrees.', zh: 室外 30 m 的步长在 README 中为 0.6 m，在 analyse_mmobile_data.m 中为 0.3 m。README 给出的运动方向为 90、90、90、120 度，脚本中的朝向参数为 0、0、0、30 度。}
+  - title: {en: Scan transmit beams at each position, zh: 在每个位置扫描发射波束}
+    detail: {en: At each location the transmit beam is scanned and data are collected for every beam. The MAT arrays hold 31 beam indices per position., zh: 每个位置扫描发射波束并逐波束采集数据。MAT 数组中每个位置对应 31 个波束索引。}
     outputs:
-    - {en: Position×beam sounding observations, zh: 位置×beam的声探观测}
-    controls:
-    - {en: The public interface has no verified UE-motion acquisition timestamps; organize by measurement position, zh: 公开接口没有已核实的UE运动采集时间戳；依测量位置组织}
-    checks:
-    - {en: 'Reproduction check: keep codebook indices, transmit power, and gain settings consistent; record whether the environment changes during a sweep', zh: 复现检查：保持码本索引、发射功率与增益设置一致；记录扫描中环境是否变化}
-  - title: {en: Estimate frequency-domain channels from OFDM, zh: 由OFDM估计频域信道}
-    detail: {en: 'The sounder uses 256 subcarriers at 240 kHz spacing, estimating a complex frequency-domain channel for each beam and saving received power. The official script reads rssi and rx_h_est_vec from MAT files.', zh: 声探设置使用256子载波、240 kHz间隔，估计每波束的复数频域信道并保存接收功率。MAT中由官方脚本读取rssi和rx_h_est_vec。}
-    inputs:
-    - {en: 28 GHz OFDM signal, zh: 28 GHz OFDM信号}
-    - {en: Received samples for each beam, zh: 每波束接收样本}
+    - {en: Position-by-beam observations, zh: 位置×波束观测}
+  - title: {en: Estimate OFDM channels and received power, zh: 估计 OFDM 信道与接收功率}
+    detail: {en: 'The sounder uses 256 subcarriers at 240 kHz spacing, which the README states is consistent with the 5G NR numerology at FR2. Each position and beam yields a 256-entry complex estimate (rx_h_est_vec) and a received-power value (rssi).', zh: 声探使用 256 个子载波，间隔 240 kHz。README 称该参数与 FR2 的 5G NR 参数集一致。每个位置和波束得到一个 256 项复数估计值（rx_h_est_vec）和一个接收功率值（rssi）。}
     outputs:
-    - {en: beam-conditioned CFR, zh: beam-conditioned CFR}
-    - {en: Received power, zh: 接收功率}
-    controls:
-    - {en: The complex effective channel corresponds to the applied beam; hardware clock/calibration details require the specific acquisition documentation, zh: 复数等效信道对应已施加的波束；硬件时钟/校准细节需从具体采集资料补齐}
-    checks:
-    - {en: 'Reproduction check: inspect subcarriers and complex encoding, and verify consistent trends in received power and channel amplitude', zh: 复现检查：检查子载波和复数编码，验证功率与信道幅度趋势一致}
-  - title: {en: Reconstruct geometry and CIR views using the official script, zh: 用官方脚本重建几何与CIR视图}
-    detail: {en: 'The script reads data by position and beam, deriving relative angles from sampling steps, direction, and link distance. Frequency-domain channels are transformed or processed with cosineInterpolateCIR to form delay views. The script''s time_axis expresses propagation delay in ns.', zh: 脚本按位置和beam读取数据，用采样步长、方向与链路距离推导相对角度；频域信道经转换或cosineInterpolateCIR形成时延视图。脚本time_axis以ns表示传播时延。}
-    inputs:
-    - {en: 4 MAT files, zh: 4个MAT文件}
-    - {en: analyse_mmobile_data.m and interpolation functions, zh: analyse_mmobile_data.m及插值函数}
+    - {en: Complex channel estimate per beam (rx_h_est_vec), zh: 每波束复数信道估计（rx_h_est_vec）}
+    - {en: Received power per beam (rssi), zh: 每波束接收功率（rssi）}
+  - title: {en: Store one MAT file per link configuration, zh: 每种链路配置保存一个 MAT 文件}
+    detail: {en: 'The dataset folder holds indoor_2_5m_data.mat, indoor_4_2m_data.mat, outdoor_10m_data.mat and outdoor_30m_data.mat. Each file is in MATLAB 5.0 format and contains only rssi and rx_h_est_vec, with no timestamps or per-path fields.', zh: dataset 文件夹包含 indoor_2_5m_data.mat、indoor_4_2m_data.mat、outdoor_10m_data.mat 与 outdoor_30m_data.mat。每个文件为 MATLAB 5.0 格式，仅包含 rssi 与 rx_h_est_vec，不含时间戳或逐径字段。}
     outputs:
-    - {en: Position/angle-to-channel associations, zh: 位置/角度与信道关联}
-    - {en: CIR and analysis plots, zh: CIR及分析图}
-    controls:
-    - {en: Interpret propagation-delay and mobility-acquisition time axes separately, zh: 传播时延轴与移动采集时间轴分别解释}
-    checks:
-    - {en: 'Reproduction check: verify IFFT length, delay zero, and units; record interpolation parameters', zh: 复现检查：复核IFFT长度、时延零点和单位；记录插值参数}
-  - title: {en: Construct position holdouts and beam tasks, zh: 构建位置留出和波束任务}
-    detail: {en: 'Compute the best observed beam among candidates at the same position, then evaluate beam selection using region or complete-deployment holdouts. Compare position nearest neighbors, geometric directions, and fixed beams, reporting received-power loss.', zh: 从同一位置的候选beam中计算最佳观测波束，再做按区域或完整部署留出的选束实验。比较位置近邻、几何方向和固定beam，报告接收功率损失。}
-    inputs:
-    - {en: Per-position beam power or CFR, zh: 每位置的beam功率或CFR}
-    - {en: Verified geometry, zh: 已确认几何}
-    outputs:
-    - {en: Oracle beam within the candidate set, zh: 候选集合内的oracle beam}
-    - {en: Position/deployment-level splits, zh: 位置/部署级split}
-    controls:
-    - {en: 'When constructing motion sequences across positions, explicitly specify the motion model and sampling interval', zh: 跨位置构造运动序列时显式指定运动模型和采样间隔}
-    checks:
-    - {en: 'Reproduction check: inspect leakage between adjacent positions; provide separate noise and power assumptions when SE is needed', zh: 复现检查：检查相邻位置泄漏；需要SE时另给噪声和功率假设}
-  scope: {en: 4 official MAT measurement files and analyse_mmobile_data.m; 28 GHz position×beam channels., zh: 官方4个MAT测量文件与analyse_mmobile_data.m；28 GHz位置×beam信道。}
+    - {en: Four MAT files, zh: 四个 MAT 文件}
+  - title: {en: Interpolate and plot CIR with the official script, zh: 用官方脚本插值并绘制 CIR}
+    detail: {en: 'analyse_mmobile_data.m takes one position and one beam and passes the 256-entry vector through cosineInterpolateCIR, a raised-cosine upsampling by a factor of 8 with rolloff 0.25 and filter span 16 symbols. It plots the result against a time axis in ns, computed with a bandwidth of 240 kHz x 256 x 0.8, which assumes that 80% of the subcarriers carry data. The script also plots RSS over position and beam angle.', zh: analyse_mmobile_data.m 取一个位置和一个波束，将 256 项向量输入 cosineInterpolateCIR（上采样倍数 8，滚降系数 0.25，滤波器跨度 16 个符号的升余弦插值），并以 ns 为单位的时间轴绘图。时间轴按 240 kHz × 256 × 0.8 的带宽计算，即假设 80% 的子载波承载数据。脚本还绘制随位置和波束角变化的 RSS 图。}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• rssi and rx_h_est_vec from 4 MAT files
-
-      • Measurement layout and official analysis script', zh: '• 4个MAT的rssi和rx_h_est_vec
-
-      • 测量布局与官方分析脚本'}
+  text: {en: 'rssi (positions × 31) and rx_h_est_vec (positions × 31 × 256, complex) in each of the four MAT files.', zh: 四个 MAT 文件中各自包含 rssi（位置数 × 31）与 rx_h_est_vec（位置数 × 31 × 256，复数）。}
 - label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Relative positions/angles, CIR, and beam gains
-
-      • Spatial-holdout splits and sequences under an explicit motion model', zh: '• 相对位置/角度、CIR和波束收益
-
-      • 空间留出split与显式运动模型下的序列'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Hardware synchronization and calibration are not fully disclosed in the README/loading script read in this audit.
-
-      • Retain the conflicting 30 m deployment step sizes until resolved using the original data or an author clarification.', zh: '• 硬件同步与校准流程未在本轮已读README/加载脚本中完整披露。
-
-      • 保留30 m部署步长冲突，待原数据或作者说明解决。'}
+  text: {en: 'Distance axis (step × index) and a geometric angle per position, computed in analyse_mmobile_data.m, plus the cosine-interpolated vector and its delay axis in ns.', zh: analyse_mmobile_data.m 计算得到的每个位置的距离轴（步长 × 索引）与几何角度，以及插值后的向量及其以 ns 为单位的时延轴。}
 provenance:
 - {en: Real indoor/outdoor fixed gNB and mobile UE → transmit-beam sweeps at each position, zh: 真实室内外固定gNB与移动UE → 各位置发射波束扫描}
 - {en: OFDM sounding → complex frequency-domain channel for each beam → position/beam indices, zh: OFDM声探 → 每波束复数频域信道 → 位置/beam索引}
 technical_notes:
-- {en: 'Verified: beams are scanned sequentially at each position; the data are beam-conditioned channels.', zh: 已确认：各位置顺序扫描beam；数据是beam-conditioned信道。}
-- {en: 'Inference: effective channels from all beams cannot be directly combined into an uncalibrated raw antenna-element channel.', zh: 推断：不能直接把所有beam的等效信道拼成未校准的原始天线元素信道。}
+- {en: The official script treats each 256-entry rx_h_est_vec vector as a channel impulse response and labels its axis in ns., zh: 官方脚本将每个 256 项 rx_h_est_vec 向量视为信道冲激响应，并以 ns 标注其时间轴。}
 limitations:
-- {en: Random splits among a small number of adjacent positions can overstate generalization., zh: 少量相邻位置随机划分会夸大泛化。}
-- {en: A route with blockage is not a benchmark covering every LoS/NLoS mechanism., zh: 有遮挡路线不是覆盖所有LoS/NLoS机理的benchmark。}
-- {en: 'The official README and script specify Outdoor 30 m position steps of 0.6 m and 0.3 m, respectively; resolve this source conflict before using position labels.', zh: 官方README与脚本对Outdoor 30 m位置步长分别写0.6 m与0.3 m；使用位置标签前须核对这一来源冲突。}
+- {en: 'The README gives a 0.6 m position resolution for the outdoor 30 m link, while analyse_mmobile_data.m uses 0.3 m.', zh: README 给出室外 30 m 链路的位置分辨率为 0.6 m，而 analyse_mmobile_data.m 使用 0.3 m。}
+- {en: 'The MAT files contain no timestamps, so UE-motion acquisition times are not available; positions are indexed discretely.', zh: MAT 文件不含时间戳，因此没有 UE 运动采集时间；位置以离散索引标识。}
+- {en: 'The GitHub repository has no LICENSE file, and the GitHub API reports no license.', zh: GitHub 仓库没有 LICENSE 文件，GitHub API 也未报告许可证。}
 history:
-- {en: '2020: original ACM mmNets paper and data release.', zh: 2020：ACM mmNets原论文和数据发布。}
+- {en: '2020-09-25: mMobile paper published in the mmNets''20 proceedings; the MAT files were created in August 2020.', zh: 2020-09-25：mMobile 论文发表于 mmNets'20 论文集；MAT 文件创建于 2020 年 8 月。}
+- {en: '2022-05-25: last push to the GitHub repository.', zh: 2022-05-25：GitHub 仓库最后一次推送。}
 usage:
-- {en: Use the official analyse_mmobile_data.m to inspect channel dimensions for each position and beam., zh: 用官方 analyse_mmobile_data.m 检查每位置每beam信道维度。}
-- {en: Compute average subcarrier power for each beam at the same position; test with spatial-block holdouts., zh: 对同一位置各beam计算平均子载波功率；位置块留出测试。}
-- {en: Preserve measurement intervals and report temporal prediction horizons only when the time axis is known., zh: 保留测量间隔，只有已知时间轴时报告时间预测horizon。}
+- {en: 'Read rx_h_est_vec as (position, beam, subcarrier); analyse_mmobile_data.m indexes it as squeeze(rx_h_est_vec(loc, beamidx, :)).', zh: '将 rx_h_est_vec 按（位置、波束、子载波）读取；analyse_mmobile_data.m 中的索引方式为 squeeze(rx_h_est_vec(loc, beamidx, :))。'}
+- {en: 'The figures folder holds the script''s CIR and RSS plots for each of the four configurations, eight PNG files in total.', zh: figures 文件夹保存了脚本对四种配置输出的 CIR 与 RSS 图，共 8 个 PNG 文件。}
 field_notes:
 - label: {en: Paths, zh: 路径}
-  text: {en: 'This field denotes per-path angles at both ends and interaction records, which the public interface does not provide. CIR/PDP and delay-related representations can be computed; the script provides cosineInterpolateCIR, not direct geometric MPC interactions or complete AoA/AoD.', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。可计算CIR/PDP与时延相关表征；脚本提供cosineInterpolateCIR，不直接提供几何MPC交互或完整AoA/AoD。}
-- label: {en: RGB, zh: RGB}
-  text: {en: 'The public data directory contains 4 MAT channel files. figures contains analysis outputs, not synchronized camera-observation sequences.', zh: 公开数据目录为4个MAT信道文件；figures为分析输出图，不是同步相机观测序列。}
+  text: {en: 'The MAT files contain no per-path records (no path angles, delays or interaction types). The geometric angle computed by the script is derived from position and link geometry.', zh: MAT 文件不含逐径记录（无路径角度、时延或交互类型）。脚本计算的几何角度由位置与链路几何推导得到。}
+- label: {en: Camera, zh: 相机}
+  text: {en: The repository contains no camera or image data; the figures folder holds script outputs only., zh: 仓库不含相机或图像数据；figures 文件夹仅包含脚本输出。}
 - label: {en: Time, zh: 时间}
-  text: {en: The README and script read by discrete stopping positions and beam indices. The script's time_axis is in ns and denotes CIR propagation delay; UE-motion acquisition timestamps are not publicly provided., zh: README和脚本按离散停靠位置及beam索引读取；脚本time_axis单位ns表示CIR传播时延，没有公开的UE运动采集时间戳。}
-- label: {en: Position, zh: 位置}
-  text: {en: Relative positions/angles are computed from sampling steps and geometry. The Outdoor 30 m step is 0.6 m in the README and 0.3 m in the script; verify against the original data rather than silently choosing one value., zh: 相对位置/角度由采样步长和几何计算。Outdoor 30 m步长README写0.6 m，脚本写0.3 m，需向原数据核验，不能静默采用某一值。}
+  text: {en: 'The time axis in analyse_mmobile_data.m is a delay axis in ns derived from the bandwidth, not an acquisition time.', zh: analyse_mmobile_data.m 中的时间轴是由带宽推导出的以 ns 为单位的时延轴，并非采集时间。}
 overview: {en: 'mMobile is a 28 GHz channel measurement dataset from the University of California San Diego, described in a 2020 mmNets''20 paper. It contains full CSI measurements for a mobile user at four gNB-UE link configurations: indoor at 2.5 m (21 positions) and 4.2 m (32 positions), and outdoor at 10 m (31 positions) and 30 m (45 positions), 129 UE positions in total. At each position the transmit beam is scanned, so each record is tagged by UE location and beam index. The channel uses 256 subcarriers at 240 kHz spacing, which the authors state matches 5G NR numerology at FR2. The spatial resolutions are 0.1 m, 0.1 m, 0.2 m, and 0.6 m, and the 30 m outdoor configuration includes a blockage between 3.9 m and 4.8 m. The public GitHub repository holds the data in a dataset/ folder, with the MATLAB scripts analyse_mmobile_data.m and cosineInterpolateCIR.m.', zh: mMobile 是一个 28 GHz 信道测量数据集，由美国加州大学圣地亚哥分校发布，对应 2020 年 mmNets'20 论文。数据包含移动用户在四种 gNB–UE 链路配置下的完整 CSI 测量：室内 2.5 m（21 个位置）与 4.2
     m（32 个位置），室外 10 m（31 个位置）与 30 m（45 个位置），共 129 个 UE 位置。每个位置都扫描发射波束，因此每条记录按 UE 位置和波束索引标注。信道使用 256 个子载波，间隔 240 kHz，作者称其与 FR2 的 5G NR 参数集一致。空间分辨率分别为 0.1 m、0.1 m、0.2 m 和 0.6 m，其中 30 m 室外配置包含 3.9 m 至 4.8 m 之间的遮挡。公开的 GitHub 仓库将数据保存在 dataset/ 文件夹中，并附有 MATLAB 脚本 analyse_mmobile_data.m 和 cosineInterpolateCIR.m。}
 signal_details:
 - signal: csi
-  text: {en: 'Full channel (CSI) measurements at 28 GHz with 256 subcarriers at 240 kHz spacing. Each record is tagged by UE position and beam index, and the transmit beam is scanned at every position.', zh: 28 GHz 完整信道（CSI）测量，256 个子载波，间隔 240 kHz。每条记录按 UE 位置与波束索引标注，每个位置均扫描发射波束。}
+  text: {en: 'Full channel measurements at 28 GHz. Each position holds 31 beam-specific vectors of 256 complex values (rx_h_est_vec), with 240 kHz subcarrier spacing.', zh: 28 GHz 完整信道测量。每个位置包含 31 个按波束区分的向量，每个向量为 256 个复数值（rx_h_est_vec），子载波间隔 240 kHz。}
+- signal: rssi
+  text: {en: 'Received power for each position and beam, stored as a positions-by-31 array (rssi) in each MAT file.', zh: 每个位置和每个波束的接收功率，以每个 MAT 文件中的 positions × 31 数组（rssi）保存。}
+mobility: mobile UE at discrete positions on each link (21 to 45 positions, 0.1 to 0.6 m steps) with a fixed gNB
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex 28 GHz channel estimates (rx_h_est_vec) with 256 subcarriers at 240 kHz, per UE location and transmit beam; 129 locations in total.', zh: 28 GHz 复数信道估计（rx_h_est_vec），256 个子载波、240 kHz 间隔，按 UE 位置与发射波束给出；共 129 个位置。}
+- key: cir
+  status: derivable
+  note: {en: The released script plots the 256-element channel vector against a delay axis and interpolates it with cosineInterpolateCIR.m; no other transform is documented., zh: 发布的脚本将 256 个元素的信道向量按时延轴绘制，并用 cosineInterpolateCIR.m 插值；未记录其他变换。}
+- key: paths
+  status: none
+  note: {en: 'The script computes only a line-of-sight angle of departure from geometry; no per-path delay, angle or interaction list is released.', zh: 脚本仅根据几何计算视距出发角，未发布逐径时延、角度或交互列表。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records., zh: 没有逐径交互记录。}
+- key: power
+  status: provided
+  note: {en: RSS per UE location and beam index in the four MAT files (rssi)., zh: 四个 MAT 文件中按 UE 位置与波束索引给出的 RSS（rssi）。}
+- key: iq
+  status: none
+  note: {en: Released arrays are channel estimates and RSS; raw I/Q samples are not described., zh: 发布的数组为信道估计与 RSS；未描述原始 I/Q 采样。}
+- key: beam_labels
+  status: provided
+  note: {en: 'Each record carries a beam index, and RSS per beam gives per-beam gains.', zh: 每条记录带有波束索引，逐波束 RSS 给出逐波束增益。}
+- key: position
+  status: derivable
+  note: {en: Records carry a location index; metric positions along the track come from the step size. The outdoor 30 m step is 0.6 m in the README and 0.3 m in the script. No GPS., zh: 记录带有位置索引；沿轨迹的米制位置由步长推算。室外 30 m 步长在 README 中为 0.6 m，在脚本中为 0.3 m。无 GPS。}
+- key: geometry
+  status: none
+  note: {en: Link lengths and movement directions are tabulated in the README; no scene or map files are released., zh: README 列出链路长度与移动方向；不发布场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released; the 30 m blockage is described only by its distance range., zh: 不发布材料参数；30 m 遮挡仅以距离范围描述。}
+- key: rgb
+  status: none
+  note: {en: 'The figures folder holds analysis plots, not camera observations.', zh: figures 文件夹为分析图，而非相机观测。}
+- key: depth
+  status: none
+  note: {en: The public dataset folder holds only four MAT channel files., zh: 公开数据目录仅包含四个 MAT 信道文件。}
+- key: lidar
+  status: none
+  note: {en: The public dataset folder holds only four MAT channel files., zh: 公开数据目录仅包含四个 MAT 信道文件。}
+- key: radar
+  status: none
+  note: {en: The dataset is 28 GHz gNB-UE channel measurement with no radar sensing output., zh: 数据集为 28 GHz gNB–UE 信道测量，无雷达感知输出。}
+- key: imu
+  status: none
+  note: {en: No IMU data are released., zh: 未发布 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: 'Positions are ordered along the track, but UE-motion acquisition timestamps are not released.', zh: 位置沿轨迹有序，但未发布 UE 运动采集时间戳。}
+- key: multiuser
+  status: none
+  note: {en: One mobile UE per experiment with a fixed gNB; no simultaneous users., zh: 每次实验一个移动 UE、gNB 固定；无同时存在的多用户。}
+- key: multibs
+  status: none
+  note: {en: One fixed gNB per link configuration., zh: 每种链路配置仅一个固定 gNB。}
+- key: crossfreq
+  status: none
+  note: {en: Single 28 GHz band only., zh: 仅有 28 GHz 单一频段。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- key: dynamic_blockage
+  status: unknown
+  note: {en: The 30 m outdoor set has a blockage between 3.9 m and 4.8 m; the sources do not say whether the blocker moves., zh: 室外 30 m 配置在 3.9 至 4.8 m 处有遮挡；来源未说明遮挡物是否移动。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Released arrays are channel estimates and RSS; the antenna pattern measurements mentioned on the project page are not in the dataset folder., zh: 发布的数组为信道估计与 RSS；项目页提及的天线方向图测量不在数据目录中。}
+versions:
+- version: d8192cc
+  date: '2022-05-25'
+  summary: {en: 'Analysis script change, commit ''Add channel data squeeze before cosineInterpolateCIR function'': the channel vector is squeezed before the CIR interpolation call. The repository has no releases or tags.', zh: 分析脚本修改，提交说明为 'Add channel data squeeze before cosineInterpolateCIR function'：在调用 CIR 插值前对信道向量进行 squeeze。仓库无 release 或 tag。}
+  url: https://github.com/ucsdwcsng/mMobile/commit/d8192cc
+- version: mmNets'20
+  date: '2020-09-25'
+  summary: {en: 'Paper ''mMobile: Building a mmWave Testbed to Evaluate and Address Mobility Effects'' presented at mmNets''20; it introduces the testbed and the 28 GHz measurements in the dataset.', zh: '论文 ''mMobile: Building a mmWave Testbed to Evaluate and Address Mobility Effects'' 在 mmNets''20 发表，介绍测试平台及数据集中的 28 GHz 测量。'}
+  url: https://api.crossref.org/works/10.1145/3412060.3418433
+- version: first release
+  date: '2020-08-27'
+  summary: {en: First release commit ('first release') of the repository with the dataset folder and README. The same day added the figures and the CIR interpolation function (commit 9e9d920)., zh: 仓库首个发布提交（'first release'），包含数据目录与 README。同日加入图表与 CIR 插值函数（提交 9e9d920）。}
+  url: https://github.com/ucsdwcsng/mMobile/commit/1678e86

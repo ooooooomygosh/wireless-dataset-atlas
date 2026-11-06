@@ -5,7 +5,7 @@ import * as yaml from "js-yaml";
 import { taskSchema, type Dataset, type Task } from "../schema.ts";
 import en from "../i18n/en.json";
 import zh from "../i18n/zh.json";
-import { ORIGIN, SIGNAL, ENVIRONMENT, ACCESS, BAND, bandClass } from "../i18n/enums.ts";
+import { ORIGIN, SIGNAL, ENVIRONMENT, ACCESS, BAND, bandClass, CAPABILITY, SUPPORT, CAP_GROUP } from "../i18n/enums.ts";
 
 export type Lang = "en" | "zh";
 export const LANGS: Lang[] = ["en", "zh"];
@@ -15,7 +15,7 @@ export const t = (lang: Lang, key: string, vars: Record<string, string | number>
   (dict[lang][key] ?? dict.en[key] ?? key).replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
 
 export const label = (map: Record<string, { en: string; zh: string }>, id: string, lang: Lang) => map[id]?.[lang] ?? id;
-export const labels = { origin: ORIGIN, signal: SIGNAL, environment: ENVIRONMENT, access: ACCESS, band: BAND };
+export const labels = { origin: ORIGIN, signal: SIGNAL, environment: ENVIRONMENT, access: ACCESS, band: BAND, capability: CAPABILITY, support: SUPPORT, capGroup: CAP_GROUP };
 
 export interface Paper {
   title: string;

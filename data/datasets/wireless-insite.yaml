@@ -7,8 +7,8 @@ tasks: [channel-modeling, radio-map]
 signals: [paths, cir, pathloss]
 bands_ghz: []
 environment: []
-license: Commercial proprietary license
-access: {url: 'https://www.remcom.com/wireless-insite-propagation-software', type: request}
+license: Commercial license
+access: {url: 'https://www.remcom.com/wireless-insite-propagation-software', type: restricted}
 code: []
 sources: ['https://www.remcom.com/wireless-insite-propagation-software', 'https://www.remcom.com/wireless-insite-em-propagation-software/high-fidelity-ray-tracing']
 aliases: []
@@ -17,88 +17,45 @@ citing: []
 summary: {en: 'Commercial propagation-prediction software with X3D, fast-ray, and empirical models; also an upstream engine for several public wireless datasets. A software purchase does not provide the original project for a particular public scenario.', zh: 商业传播预测软件，包含 X3D、快速射线与经验模型；也是多个公开无线数据集的上游。购买软件不等于获得同一公开场景的原始项目。}
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Import geometry and materials, configure wireless devices and propagation mechanisms, solve paths/fields, and export channel results. A public dataset uses one particular fixed project configuration.', zh: 导入几何和材料，设置无线设备与传播机制，求得路径/场强后导出信道结果。公开数据集采用的是其中一个固定工程配置。}
+  summary: {en: 'Import geometry and materials, place transmitters and receivers with antenna patterns, solve paths and fields with X3D or another model, and export channel and communication results. Results depend on the edition and on the interaction mechanisms enabled in the project.', zh: 导入几何与材料，放置收发端并导入天线方向图，用 X3D 或其他模型求解路径与场强，并导出信道及通信结果。结果取决于版本以及工程中启用的相互作用机制。}
   stages:
-  - title: {en: Prepare the scene project, zh: 准备场景工程}
-    detail: {en: 'Create or import the propagation environment and check object topology, dimensions, and materials. The scene project determines which blocking and reflecting structures can be resolved.', zh: 建立或导入传播环境，并检查物体拓扑、尺寸和材料。场景工程决定可解析的遮挡与反射结构。}
+  - title: {en: Prepare the scene, zh: 准备场景}
+    detail: {en: 'Import city, indoor, terrain and foliage geometry (STL, DAE/KMZ, SHP, DXF, DEM, GeoTIFF and other formats), crop the scene and assign material properties. City geometry can be processed for building association, simplification and error checking.', zh: 导入城市、室内、地形和植被几何（STL、DAE/KMZ、SHP、DXF、DEM、GeoTIFF 等格式），裁剪场景并指定材料属性。城市几何可进行建筑关联、简化和错误检查。}
     inputs:
-    - {en: 'CAD/GIS, terrain, and buildings', zh: CAD/GIS、地形和建筑}
-    - {en: Materials and coordinate system, zh: 材料与坐标系统}
+    - {en: 'City, indoor, terrain and foliage data', zh: 城市、室内、地形与植被数据}
+    - {en: Material properties from the installed database or user libraries, zh: 内置材料库或用户材料库中的材料属性}
     outputs:
-    - {en: Wireless InSite scene project, zh: Wireless InSite场景工程}
-    controls:
-    - {en: 'Researcher specifies: scene boundaries, units, terrain/building simplification, and material sources', zh: 研究者固定：场景边界、单位、地形/建筑简化和材料来源}
-    checks:
-    - {en: Check missing buildings and floating/overlapping geometry, zh: 检查缺失建筑与悬空/重叠几何}
-    - {en: Separate unknown real materials from measured parameters, zh: 将实际材质未知项与已测参数分开}
-  - title: {en: Place Tx/Rx devices and antennas, zh: 放置Tx/Rx与天线}
-    detail: {en: 'Set carrier frequency, transmission conditions, and receiver sampling positions. Measured or simulated patterns can be used in link calculations.', zh: 设定载频、发射条件和接收采样位置；实测或仿真的方向图可进入无线链路计算。}
+    - {en: Scene with materials and cached geometry, zh: 带材料属性和几何缓存的场景}
+  - title: {en: 'Place transmitters, receivers and antennas', zh: 放置收发端与天线}
+    detail: {en: 'Define receiver points, trajectories, arcs, planar surfaces, and cylindrical or spherical surfaces. Import measured or simulated antenna patterns from XFdtd, Odyssey or MSI Planet, or convert other solver or measurement data into the standard 3D pattern format. MIMO arrays are built in the array builder.', zh: 定义接收点、轨迹、弧线、平面、柱面或球面接收集合。可导入 XFdtd、Odyssey 或 MSI Planet 的实测或仿真天线方向图，也可将其他求解器或测量数据转换为标准三维方向图格式。MIMO 阵列在阵列构建器中建立。}
     inputs:
-    - {en: Scene project, zh: 场景工程}
-    - {en: 'Tx/Rx positions or grids, and array patterns', zh: 收发位置或网格、阵列方向图}
+    - {en: Transmitter and receiver positions or grids, zh: 收发端位置或网格}
+    - {en: Antenna patterns, zh: 天线方向图}
     outputs:
-    - {en: Link set and antenna configuration, zh: 链路集合与天线配置}
+    - {en: Link set with antenna configuration, zh: 带天线配置的链路集合}
+  - title: {en: Select the propagation model, zh: 选择传播模型}
+    detail: {en: 'Choose X3D (CPU or GPU, exact path correction and adjacent path generation), the legacy Full 3D model (shooting-and-bouncing rays or Eigenray), the 2D vertical-plane model, or the fast ray-based and empirical models of the Professional edition. Enable reflection, transmission, diffraction, atmospheric absorption and diffuse scattering as the edition allows.', zh: 选择 X3D（支持 CPU 或 GPU、精确路径修正和邻近路径生成）、旧版 Full 3D 模型（弹跳射线法或 Eigenray）、二维垂直平面模型，或 Professional 版的快速射线与经验模型。在版本允许的范围内启用反射、透射、绕射、大气吸收和漫散射。}
     controls:
-    - {en: 'Researcher specifies: frequency, bandwidth, power, polarization, pose, and receiver-grid spacing', zh: 研究者固定：频率、带宽、功率、极化、姿态和接收网格间距}
-    checks:
-    - {en: Check pattern coordinates and position units, zh: 检查方向图坐标与位置单位}
-    - {en: Count receiver locations with no propagation paths, zh: 统计无传播路径的接收位置}
-  - title: {en: Select the model and interaction budget, zh: 选择模型与交互预算}
-    detail: {en: 'Select the solver and reflection, transmission, diffraction, absorption/scattering settings for the task. Record engine capabilities separately from the mechanisms actually enabled in a historical dataset.', zh: 按任务选择求解模型和反射、透射、绕射、吸收/散射配置。引擎支持的机制与某个历史数据集实际启用机制分别记录。}
-    inputs:
-    - {en: Link set, zh: 链路集合}
-    - {en: X3D or another propagation model, zh: X3D或其他传播模型}
+    - {en: 'Diffuse scattering model: Lambertian, Directive, Directive with Backscatter, or Degli-Esposti', zh: 漫散射模型：Lambertian、Directive、Directive with Backscatter 或 Degli-Esposti}
+  - title: {en: Run the solver with mobility and uncertainty, zh: 运行求解，包括移动与不确定性分析}
+    detail: {en: 'Compute paths, fields and powers. Release 4.0 models time-based movement of transceivers and objects. Monte Carlo analysis defines material properties, frequency and transmit power as distributions and propagates their uncertainty to received power and path loss.', zh: 计算路径、场强与功率。4.0 版本可模拟收发端与对象随时间的运动。蒙特卡洛分析可将材料属性、频率和发射功率定义为分布，并把它们的不确定性传递到接收功率和路径损耗。}
+    controls:
+    - {en: Partitioning of transmitters and receivers sets how many simulations run at once, zh: 收发端分区决定同时运行的仿真数量}
+  - title: {en: Export and evaluate communications, zh: 导出并评估通信指标}
+    detail: {en: 'Export received power, path loss, electric field, delay spread, angles, power delay profiles, complex impulse responses and H-matrices to ASCII or MATLAB format. The communications analyzer computes SINR, throughput, capacity, BER and coverage outages, and MIMO results can be exported to CSV.', zh: 将接收功率、路径损耗、电场、时延扩展、角度、功率时延分布、复冲激响应和 H 矩阵导出为 ASCII 或 MATLAB 格式。通信分析器计算 SINR、吞吐量、容量、误码率和覆盖中断，MIMO 结果可导出为 CSV。}
     outputs:
-    - {en: Reproducible solver task, zh: 可重复的求解任务}
-    controls:
-    - {en: 'Researcher specifies: maximum interactions, ray sampling, scattering model, and output truncation', zh: 研究者固定：最大交互次数、射线采样、散射模型和输出裁剪}
-    checks:
-    - {en: Check stability by increasing interactions or sampling, zh: 用增加交互/采样的对照检查结果稳定性}
-    - {en: Do not apply current 4.0 capabilities to the older O1 scenario, zh: 不要将当前4.0能力套用到旧O1场景}
-  - title: {en: Run static or moving scenes, zh: 运行静态或移动场景}
-    detail: {en: Run field and path calculations. Version 4.0 supports time-dependent mobility workflows; the project still defines trajectories and dynamic objects., zh: 运行场强和路径计算；4.0支持时间相关移动工作流，具体轨迹和动态对象仍由工程配置定义。}
-    inputs:
-    - {en: Solver task, zh: 求解任务}
-    - {en: Optional time-dependent device/object states, zh: 可选时间相关设备/对象状态}
-    outputs:
-    - {en: 'Paths, field strengths, powers, or complex impulse responses', zh: 路径、场强、功率或复冲激响应}
-    - {en: Time-series results after configuration, zh: 配置后得到的时序结果}
-    controls:
-    - {en: 'Researcher specifies: time step, trajectories, object IDs, and per-step solving strategy', zh: 研究者固定：时间步、轨迹、对象ID和每步求解策略}
-    checks:
-    - {en: Check pose/position consistency across snapshots, zh: 检查快照间姿态/位置一致}
-    - {en: 'Record failures, truncation, and empty links, not only successful samples', zh: 记录失败、截断与空链路，不只保存成功样本}
-  - title: {en: Export and task postprocessing, zh: 导出与任务后处理}
-    detail: {en: 'Export the required results, then convert them to formats such as DeepMIMO or compute beam/network labels for the task. Formats and fields depend on output settings.', zh: 导出所需结果，并按研究任务转换为DeepMIMO等格式或计算波束/网络标签；格式和字段取决于output设置。}
-    inputs:
-    - {en: Outputs at selected receiver points, zh: 所选接收点的输出}
-    - {en: Dataset-conversion or codebook/network-task scripts, zh: 数据集转换或码本/网络任务脚本}
-    outputs:
-    - {en: Exported path/CIR/MIMO results, zh: 导出的路径/CIR/MIMO结果}
-    - {en: Researcher-defined CSI and labels, zh: 研究者定义的CSI与标签}
-    controls:
-    - {en: 'Researcher specifies: export fields, phase/power units, array, and codebook', zh: 研究者固定：导出字段、相位/功率单位、阵列与码本}
-    checks:
-    - {en: 'Check path counts, total power, and units before and after export', zh: 核对导出前后路径数、总功率和单位}
-    - {en: Retain project parameters as well as training tensors, zh: 保留工程参数，不能只保留训练张量}
-  scope: {en: 'Commercial Wireless InSite production workflow; choose X3D, other models, and 4.0 time-dependent capabilities according to version.', zh: 商业Wireless InSite生成流程；X3D与其他模型及4.0时间动态能力需按版本选用。}
+    - {en: Exported channel files and communication metrics, zh: 导出的信道文件与通信指标}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Paths, field strengths, received powers, and CIR/MIMO results generated by the commercial solver', zh: • 商业求解器生成的路径、场强、接收功率与CIR/MIMO结果}
-- label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Standardized path library
-
-      • Beam labels, coverage thresholds, and communication utility', zh: '• 统一格式路径库
-
-      • beam标签、覆盖阈值和通信utility'}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
+  text: {en: 'Received power, path loss, electric field, delay spread, angles of arrival and departure, power delay profile, radiation hazard quantities, complex impulse responses and H-matrices; for MIMO, SINR, BER, throughput and capacity.', zh: 接收功率、路径损耗、电场、时延扩展、到达角与出发角、功率时延分布、辐射危害量、复冲激响应与 H 矩阵；MIMO 情形下还包括 SINR、BER、吞吐量和容量。}
+- label: {en: Editions, zh: 版本}
+  text: {en: 'Standard provides 2D and 3D ray tracing for urban, indoor and longer-range rural scenarios. Professional adds fast ray-based and empirical models, diffuse scattering and Engineered Electromagnetic Surfaces. MIMO adds the MIMO array builder, MIMO simulation optimization and throughput analysis on top of Professional.', zh: Standard 提供用于城市、室内和较远距离农村场景的二维与三维射线追踪。Professional 增加快速射线与经验模型、漫散射和工程电磁表面（EES）。MIMO 在 Professional 基础上增加 MIMO 阵列构建器、MIMO 仿真优化和吞吐量分析。}
+- label: {en: Geometry and terrain formats, zh: 几何与地形格式}
+  text: {en: 'Geometry formats include STL, DAE, KMZ, SHP and DXF. Terrain formats include DEM, DTED, JDEM, SDTS, ASCII grid and GeoTIFF.', zh: 几何格式包括 STL、DAE、KMZ、SHP 和 DXF；地形格式包括 DEM、DTED、JDEM、SDTS、ASCII Grid 和 GeoTIFF。}
+- label: {en: Licensing, zh: 授权}
+  text: {en: 'The product is sold through a request-pricing process, and one year of Remcom Professional Support is included with each purchase.', zh: 该产品通过申请报价方式销售，每次购买包含一年 Remcom Professional Support。}
 - label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• The commercial software was not installed or run. This describes official capabilities and configuration layers, not a reproduction performed by this atlas.
-
-      • All controls are parameters for researchers to fix, not claimed official defaults.', zh: '• 未安装或运行商业软件；上述是官方能力与配置层次，不是本图谱复现记录。
-
-      • controls均为需要研究者固定的参数，不宣称官方默认值。'}
+  text: {en: This record does not include a run of the commercial software., zh: 本条目不包含对该商业软件的运行记录。}
 provenance:
 - {en: CAD/GIS geometry and materials, zh: CAD/GIS 几何与材料}
 - {en: Select X3D or another propagation model, zh: 选择 X3D 或其他传播模型}
@@ -106,21 +63,21 @@ provenance:
 - {en: MIMO/beam and link postprocessing, zh: MIMO/波束与链路后处理}
 - {en: Export in the dataset format, zh: 按数据集格式导出}
 technical_notes:
-- {en: 'Confirmed: X3D includes reflection, transmission, diffraction, and atmospheric absorption; diffuse scattering depends on edition/configuration.', zh: 已确认：X3D 包含反射、透射、绕射、大气吸收；漫散射受产品版别/配置约束。}
-- {en: 'Confirmed: supports measured or simulated antenna patterns and several diffuse-scattering models.', zh: 已确认：支持实测或仿真的天线方向图及多种漫散射模型。}
-- {en: 'Inference: engine support for a mechanism does not establish that it was enabled when O1 was generated in 2019.', zh: 推断：引擎支持某机制不说明 2019 年 O1 生成时已启用。}
+- {en: 'The X3D description lists reflection, transmission, diffraction, atmospheric absorption and diffuse scattering; the versions table lists diffuse scattering under the Professional edition.', zh: X3D 说明列出反射、透射、绕射、大气吸收和漫散射；版本对比表将漫散射列为 Professional 版功能。}
+- {en: Calculations use measured or simulated 3D antenna patterns with full polarization and phase information., zh: 计算使用包含完整极化和相位信息的实测或仿真三维天线方向图。}
+- {en: 'Exact path correction moves shooting-and-bouncing ray paths so that they end at the exact receiver location, instead of at a collection sphere around the receiver.', zh: 精确路径修正使弹跳射线路径终止于精确的接收点位置，而不是接收点周围的收集球面。}
 limitations:
-- {en: Missing commercial-engine versions or parameters limit strict reproduction., zh: 商业引擎版本/参数缺失会限制严格复现。}
-- {en: Distinguish vendor capability statements from independent measurement validation., zh: 必须区分厂商能力说明与外部测量验证。}
+- {en: 'Diffuse scattering, Engineered Electromagnetic Surfaces and adjacent path generation are listed as Professional-edition capabilities, so the Standard edition does not provide them.', zh: 漫散射、工程电磁表面（EES）和邻近路径生成被列为 Professional 版功能，Standard 版不提供这些功能。}
+- {en: The cited sources are vendor product pages; they describe capabilities and do not report measurement validation., zh: 所引用的来源均为厂商产品页面，描述的是功能，不包含测量验证结果。}
 history:
-- {en: '2025-05-14: release 4.0 adds time-dependent mobile platforms, wideband RT, and related material/antenna features.', zh: 2025-05-14：4.0 发布，新增时间化移动平台、宽带 RT 和相关材料/天线功能。}
+- {en: Release 4.0 adds a mobility framework for time-based movement of transceivers and objects in a user-defined scene., zh: 4.0 版本新增移动框架，可在用户定义的场景中模拟收发端与对象随时间的运动。}
 usage:
-- {en: 'First confirm the software edition, version, and exportable fields.', zh: 先确认软件 edition、版本与可导出字段。}
-- {en: Establish single-link analytical calibration before enabling the specified interactions., zh: 建立单链路解析校准，再开启指定交互机制。}
-- {en: Export paths and the complete configuration; save link evaluations separately from RT results., zh: 导出路径与完整配置，将链路评估与 RT 结果分开保存。}
+- {en: 'Confirm the edition (Standard, Professional or MIMO) first, because diffuse scattering, EES, fast ray-based models and MIMO tools differ between editions.', zh: 先确认版本（Standard、Professional 或 MIMO），因为漫散射、EES、快速射线模型和 MIMO 工具在各版本之间有所不同。}
+- {en: MIMO capacity analysis uses multi-port S-parameters to capture mutual coupling between antenna elements., zh: MIMO 容量分析可使用多端口 S 参数描述天线单元之间的互耦。}
+- {en: 'Export channel results to ASCII or MATLAB format for post-processing, and export MIMO results to CSV.', zh: 信道结果可导出为 ASCII 或 MATLAB 格式用于后处理，MIMO 结果可导出为 CSV。}
 tools: [project-raymobtime-pipeline]
-overview: {en: 'Wireless InSite is a commercial propagation prediction suite from Remcom, based in State College, Pennsylvania. It combines 3D ray tracing (the X3D model and a legacy Full 3D model), fast ray-based methods and empirical models for outdoor, indoor, indoor-to-outdoor and outdoor-to-indoor applications. It predicts coverage, multipath channel characteristics and throughput for 5G, 6G and WiFi networks. The X3D model includes reflections, transmissions, diffractions and atmospheric absorption, and diffuse scattering depending on the edition; it places no restriction on geometry shape or transmitter and receiver height, and it supports frequencies up to 100 GHz. Outputs include received power, path loss, electric field, propagation paths, delay spread, angles of arrival and departure, power delay profile, complex impulse responses and MIMO results such as SINR and throughput, which can be exported to ASCII or MATLAB formats. Release 4.0 adds time-based mobility of transceivers
-    and objects. The product is sold in Standard, Professional and MIMO editions, and the capabilities differ by edition.', zh: Wireless InSite 是 Remcom 公司开发的商业无线传播预测软件套件，公司位于美国宾夕法尼亚州 State College。套件包括三维射线追踪（X3D 模型及旧版 Full 3D 模型）、快速射线方法以及经验模型，适用于室外、室内、室内到室外和室外到室内场景。它用于预测 5G、6G 和 WiFi 网络的覆盖、多径信道特性与吞吐量。X3D 模型包含反射、透射、绕射和大气吸收，根据版本还包含漫散射；对几何形状和收发端高度没有限制，频率最高支持 100 GHz。输出包括接收功率、路径损耗、电场、传播路径、时延扩展、到达角与出发角、功率时延分布、复冲激响应，以及 SINR、吞吐量等 MIMO 结果，可导出为 ASCII 或 MATLAB 格式。4.0 版本新增收发端与对象的时间相关移动功能。该产品以 Standard、Professional 和 MIMO 版本销售，各版本功能不同。}
+overview: {en: 'Wireless InSite is a commercial propagation prediction suite from Remcom, based in State College, Pennsylvania. It combines 3D ray tracing (the X3D model and the legacy Full 3D model) for indoor, urban and rural environments, including indoor-outdoor propagation, and the Professional edition adds fast ray-based and empirical models. It predicts coverage, multipath channel characteristics and throughput for 5G, 6G and WiFi networks. The X3D model includes reflections, transmissions, diffractions and atmospheric absorption, places no restriction on geometry shape or transmitter and receiver height, and supports frequencies up to 100 GHz; diffuse scattering depends on the edition. Outputs include received power, path loss, electric field, propagation paths, delay spread, angles of arrival and departure, power delay profile, complex impulse responses, and MIMO results such as SINR, BER and throughput, which can be exported to ASCII or MATLAB format. Release 4.0 adds time-based
+    mobility of transceivers and objects within a user-defined scene. The product is sold in Standard, Professional and MIMO editions, and the capabilities differ by edition.', zh: Wireless InSite 是 Remcom 公司开发的商业无线传播预测软件套件，公司位于美国宾夕法尼亚州 State College。套件包括三维射线追踪（X3D 模型及旧版 Full 3D 模型），适用于室内、城市、农村及室内外混合传播场景；Professional 版另含快速射线方法与经验模型。它用于预测 5G、6G 和 WiFi 网络的覆盖、多径信道特性与吞吐量。X3D 模型包含反射、透射、绕射和大气吸收，对几何形状及收发端高度没有限制，频率最高支持 100 GHz；漫散射取决于版本。输出包括接收功率、路径损耗、电场、传播路径、时延扩展、到达角与出发角、功率时延分布、复冲激响应，以及 SINR、BER、吞吐量等 MIMO 结果，并可导出为 ASCII 或 MATLAB 格式。4.0 版本新增用户定义场景中收发端与对象随时间移动的功能。该产品以 Standard、Professional 和 MIMO 版本销售，各版本功能不同。}
 signal_details:
 - signal: pathloss
   text: {en: 'The channel outputs include received power and path loss at each receiver point. The communications analysis adds SINR, throughput, capacity and bit error rate, and identifies coverage outages. Results can be plotted along routes or against frequency or time.', zh: 信道输出包括每个接收点的接收功率和路径损耗。通信分析另外给出 SINR、吞吐量、容量和误码率，并识别覆盖中断。结果可沿路线绘制，或随频率、时间变化绘制。}
@@ -128,3 +85,80 @@ signal_details:
   text: {en: 'Propagation paths are native solver outputs, computed from the scene geometry and the interactions enabled in the model. The X3D model corrects shooting-and-bouncing ray paths so that they end at the exact receiver location.', zh: 传播路径是求解器的原生输出，由场景几何和模型中启用的相互作用计算得到。X3D 模型对 SBR 射线路径进行修正，使其终止于精确的接收点位置。}
 - signal: cir
   text: {en: 'Complex impulse responses are native outputs. Calculations use 3D antenna patterns with full polarization and phase information, the tool generates time and frequency domain output, and results can be exported to ASCII or MATLAB format for post-processing.', zh: 复冲激响应是原生输出之一。计算使用包含完整极化和相位信息的三维天线方向图，工具可生成时域与频域输出，结果可导出为 ASCII 或 MATLAB 格式以便后处理。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: H-matrix output is listed for the MIMO edition; the solver also outputs complex impulse responses., zh: H 矩阵输出列于 MIMO 版本；求解器还输出复冲激响应。}
+- key: cir
+  status: simulate
+  note: {en: Complex impulse response with time and frequency domain output is a native solver output., zh: 复冲激响应（含时域与频域输出）是求解器的原生输出。}
+- key: paths
+  status: simulate
+  note: {en: Propagation paths are native solver outputs computed from the scene and enabled interactions., zh: 传播路径是求解器的原生输出，由场景与已启用的相互作用计算得到。}
+- {key: interaction, status: unknown}
+- key: power
+  status: simulate
+  note: {en: Received power and path loss are output at each receiver point., zh: 每个接收点输出接收功率与路径损耗。}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- key: geometry
+  status: simulate
+  note: {en: 'Scene geometry (STL, DAE, KMZ, SHP, DXF, DEM, GeoTIFF) is imported by the user as solver input.', zh: 场景几何（STL、DAE、KMZ、SHP、DXF、DEM、GeoTIFF）由用户导入，作为求解器输入。}
+- key: materials
+  status: provided
+  note: {en: A built-in material database is installed with the software; user-defined materials are also supported., zh: 软件自带内置材料库；也支持用户自定义材料。}
+- key: rgb
+  status: none
+  note: {en: A ray-tracing solver with no camera outputs is described., zh: 描述的是射线追踪求解器，不含相机输出。}
+- key: depth
+  status: none
+  note: {en: A ray-tracing solver with no depth outputs is described., zh: 描述的是射线追踪求解器，不含深度输出。}
+- key: lidar
+  status: none
+  note: {en: A ray-tracing solver with no LiDAR outputs is described., zh: 描述的是射线追踪求解器，不含激光雷达输出。}
+- key: radar
+  status: none
+  note: {en: Radar simulation is a separate product (WaveFarer) and not part of Wireless InSite., zh: 雷达仿真是独立产品（WaveFarer），不属于 Wireless InSite。}
+- key: imu
+  status: none
+  note: {en: No motion sensor data is described., zh: 未描述运动传感器数据。}
+- key: time_series
+  status: simulate
+  note: {en: Release 4.0 time-based mobility and dynamic scenarios produce results versus time; sequences require running the solver., zh: 4.0 版本的时间相关移动与动态场景可输出随时间变化的结果；序列需通过运行求解器得到。}
+- key: multiuser
+  status: simulate
+  note: {en: Several transmitters and receivers can be placed in one scene; the number used is set by the user., zh: 同一场景可放置多个收发端，使用数量由用户设置。}
+- key: multibs
+  status: simulate
+  note: {en: 'Multiple transmitters are supported, with strongest base-to-mobile output.', zh: 支持多个发射端，并输出最强基站到移动台的结果。}
+- key: crossfreq
+  status: simulate
+  note: {en: 'Frequency sweeps on the same scene are supported, with band-dependent material tables.', zh: 支持对同一场景进行频率扫描，并提供随频段变化的材料表。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- key: dynamic_blockage
+  status: simulate
+  note: {en: Dynamic scenario modelling of moving vehicles and pedestrians captures fading over time., zh: 对移动车辆与行人的动态场景建模，可捕捉随时间变化的衰落。}
+- key: reflection
+  status: simulate
+  note: {en: X3D includes reflections; the enabled mechanisms are set per project., zh: X3D 包含反射；各机制是否启用由工程设置。}
+- key: diffraction
+  status: simulate
+  note: {en: X3D includes diffractions; the enabled mechanisms are set per project., zh: X3D 包含绕射；各机制是否启用由工程设置。}
+- key: scattering
+  status: simulate
+  note: {en: Diffuse scattering is a Professional-edition feature., zh: 漫散射为 Professional 版功能。}
+- key: transmission
+  status: simulate
+  note: {en: X3D includes transmissions; the enabled mechanisms are set per project., zh: X3D 包含透射；各机制是否启用由工程设置。}
+- key: polarization
+  status: simulate
+  note: {en: Antenna patterns with full polarization and phase information are used; cross-polarization is output for diffuse scattering., zh: 计算使用包含完整极化与相位信息的天线方向图；漫散射输出含交叉极化。}
+- key: em_field
+  status: simulate
+  note: {en: Electric field magnitude and phase are native outputs., zh: 电场幅度与相位为原生输出。}
+versions:
+- version: '4.0'
+  summary: {en: Release 4.0 adds a mobility framework for time-based movement of transceivers and objects in a user-defined scene. The release date is not stated on the fetched page., zh: 4.0 版本新增移动框架，可在用户定义的场景中模拟收发端与对象随时间的运动。获取的页面未给出发布日期。}
+  url: https://www.remcom.com/wireless-insite-propagation-software

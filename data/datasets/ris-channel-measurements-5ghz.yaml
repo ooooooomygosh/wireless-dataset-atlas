@@ -9,37 +9,38 @@ bands_ghz: [5]
 environment: [lab]
 size_gb: 1.21
 format: MAT
-license: CC BY 4.0
+license: Creative Commons Attribution
 access: {url: 'https://ieee-dataport.org/documents/comprehensive-dataset-ris-based-channel-measurements-5ghz-band', type: restricted}
 code: ['https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset']
 paper: doi:10.1109/vtc2023-spring57618.2023.10200973
 used_in: []
 citing: ['doi:10.1109/ojcoms.2024.3363423', 'doi:10.1109/tap.2025.3569392', 'doi:10.1109/ojcoms.2025.3572723']
 summary: {en: 'S21 channel measurements at 5 GHz with an RIS prototype in an anechoic chamber, covering stationary specular and non-specular geometries, a rotating stage, and RIS states set by greedy and model-based algorithms.', zh: 在 5 GHz 频段使用 RIS 原型，于无回声暗室中进行 S21 信道测量，包括固定的镜面与非镜面反射几何布置、旋转台场景，以及由贪心算法和基于模型的算法设定的 RIS 状态。}
-sources: ['https://ieee-dataport.org/documents/comprehensive-dataset-ris-based-channel-measurements-5ghz-band', 'https://doi.org/10.21227/zzx0-tp88', 'https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset', 'https://api.crossref.org/works/10.1109/VTC2023-Spring57618.2023.10200973']
+sources: ['https://ieee-dataport.org/documents/comprehensive-dataset-ris-based-channel-measurements-5ghz-band', 'https://doi.org/10.21227/zzx0-tp88', 'https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset', 'https://api.crossref.org/works/10.1109/VTC2023-Spring57618.2023.10200973', 'https://raw.githubusercontent.com/RUB-DCS/RIS-S21-Measurement-Dataset/master/README.md', 'https://raw.githubusercontent.com/RUB-DCS/RIS-S21-Measurement-Dataset/master/documentation/ResultsFileFormat.md', 'https://raw.githubusercontent.com/RUB-DCS/RIS-S21-Measurement-Dataset/master/documentation/SetupAndConfiguration.md', 'https://raw.githubusercontent.com/RUB-DCS/RIS-S21-Measurement-Dataset/master/documentation/Hardware.md', 'https://raw.githubusercontent.com/RUB-DCS/RIS-S21-Measurement-Dataset/master/documentation/RISswitchingStateOptimization.md', 'https://raw.githubusercontent.com/RUB-DCS/RIS-S21-Measurement-Dataset/master/documentation/Geometries.md', 'https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset/commits/master',
+  'https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset/releases', 'https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset/commit/05ba13e', 'https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset/commit/c5d2fe7']
 checked: '2026-11-06'
-overview: {en: 'This dataset holds S21 channel measurements at 5 GHz with an RIS prototype. It is provided by Ruhr University Bochum and TH Cologne, released in 2023 under CC BY 4.0 (doi:10.21227/zzx0-tp88, v1.0), and the citation is Tewes et al., VTC2023-Spring. The measured geometries are stationary arrangements with specular and non-specular reflection angles, plus a scenario in which the RIS sits on a rotary stage. The RIS switching states are set by a greedy algorithm, a single-element switching approach, and a model-based approach that uses exact knowledge of the setup geometry. Each set of states was optimized once to maximize and once to minimize the received power. The abstract reports up to 20 dB more received power than a reference plate. The release is a single 1.21 GB zip archive (dataset_v1.0.zip) of MAT files, with MATLAB scripts and documentation on GitHub.', zh: '该数据集包含使用 RIS 原型在 5 GHz 频段的 S21 信道测量，由波鸿鲁尔大学（Ruhr University Bochum）与科隆应用技术大学（TH Cologne）提供，于 2023 年以 CC BY 4.0
-    发布（doi:10.21227/zzx0-tp88，v1.0），引用文献为 Tewes 等人的 VTC2023-Spring 论文。测量几何包括具有镜面与非镜面反射角的固定布置，以及 RIS 安装在旋转台上的场景。RIS 开关状态由贪心算法、单元件切换方法和基于模型的方法设定，其中基于模型的方法使用几何结构的精确信息。每组状态分别以最大化和最小化接收功率进行优化。摘要报告相比参考板，接收功率最多提高 20 dB。数据以单个 1.21 GB 的 zip 压缩包（dataset_v1.0.zip）发布，内含 MAT 文件，MATLAB 脚本与文档位于 GitHub。'}
+overview: {en: 'This dataset holds S21 channel measurements over the 5.0 to 6.0 GHz band with an RIS prototype. It is provided by Ruhr University Bochum and TH Cologne and released in 2023 under the Creative Commons Attribution license (doi:10.21227/zzx0-tp88, v1.0); the citation is Tewes et al., VTC2023-Spring. The measurements were taken in an anechoic chamber at 31 geometry IDs (00 to 30): 18 non-specular, 9 specular and 4 rotating-stage. In three rotating-stage geometries the RIS is rotated from -90 to 90 degrees on the stage, and in the fourth the transmit antenna sits on the stage. The RIS switching states are set by a greedy algorithm, a single-element switching approach, and a model-based approach that uses exact knowledge of the setup geometry. Each set of states was optimized once to maximize and once to minimize the received power. The abstract reports up to 20 dB more received power than a reference plate. The measured data are a single 1.21 GB zip archive (dataset_v1.0.zip)
+    of MAT files, and the MATLAB scripts and documentation are in a GitHub repository.', zh: '该数据集包含 RIS 原型在 5.0 至 6.0 GHz 频段上的 S21 信道测量，由波鸿鲁尔大学（Ruhr University Bochum）与科隆应用技术大学（TH Cologne）提供，于 2023 年以 Creative Commons Attribution 许可发布（doi:10.21227/zzx0-tp88，v1.0）；引用文献为 Tewes 等人的 VTC2023-Spring 论文。测量在无回声暗室中进行，几何编号为 00 至 30，共 31 组：非镜面反射 18 组，镜面反射 9 组，旋转台 4 组。在三组旋转台几何中，RIS 在台上从 -90 度旋转到 90 度；第四组中，发射天线位于旋转台上。RIS 开关状态由贪心算法、单元件切换方法和基于模型的方法设定，其中基于模型的方法使用几何结构的精确信息。每组状态分别以最大化和最小化接收功率进行优化。摘要报告相比参考板，接收功率最多提高 20 dB。测量数据为单个 1.21 GB 的 zip 压缩包（dataset_v1.0.zip），内含 MAT 文件；MATLAB 脚本与文档位于 GitHub 仓库。'}
 signal_details:
 - signal: csi
-  text: {en: 'S21 channel measurements in the 5 GHz band, with an RIS prototype in stationary and rotating-stage geometries. Stored as MAT files. The archive includes the measured data, the optimized RIS switching states, the MATLAB scripts and the GitHub documentation.', zh: 使用 RIS 原型在 5 GHz 频段测得的 S21 信道测量，包括固定几何与旋转台几何。数据存储为 MAT 文件。压缩包包含测量数据、优化后的 RIS 开关状态、MATLAB 脚本以及 GitHub 文档。}
+  text: {en: 'S21 channel measurements over 5.0 to 6.0 GHz with 201 frequency points, one MAT file per geometry. Each file holds the S21 results, the 16 x 16 binary RIS switching states that produced them, and four reference measurements (no RIS, metal plate, all elements off, all elements on).', zh: 在 5.0 至 6.0 GHz 频段上测得的 S21 信道响应，共 201 个频点，每个几何布置对应一个 MAT 文件。每个文件包含 S21 结果、产生这些结果的 16 x 16 二值 RIS 开关状态，以及四组参考测量（无 RIS、金属板、全部单元关闭、全部单元开启）。}
 pipeline:
-  summary: {en: 'An RIS prototype is placed in measured geometries, RIS states are chosen by three algorithms, S21 is measured for each arrangement, and the results are packaged as MAT files.', zh: RIS 原型被放置于测量几何中，RIS 状态由三种算法选定，对每种布置测量 S21，结果打包为 MAT 文件。}
+  summary: {en: 'An RIS prototype is placed in measured geometries, RIS states are chosen by three approaches, S21 is measured for each arrangement with a VNA, and the results are packaged as MAT files.', zh: RIS 原型被放置于各测量几何中，RIS 状态由三种方法选定，每种布置用矢量网络分析仪测量 S21，结果打包为 MAT 文件。}
   stages:
   - title: {en: Geometry setup, zh: 几何布置}
-    detail: {en: 'Antennas and the RIS prototype are placed in stationary arrangements with specular or non-specular reflection angles. In one scenario the RIS is mounted on a rotary stage. The setup, hardware and geometries are documented on GitHub.', zh: 天线与 RIS 原型被放置于具有镜面或非镜面反射角的固定布置中。在一个场景中，RIS 安装在旋转台上。设置、硬件和几何结构记录于 GitHub。}
+    detail: {en: 'Transmit and receive antennas and the RIS prototype are placed in the geometries listed in the geometry table, with specular or non-specular reflection angles. In the rotating-stage scenario the RIS is rotated from -90 to 90 degrees in 5 degree steps in three geometries, and the transmit antenna sits on the stage in the fourth. The setup, hardware and geometries are documented on GitHub.', zh: 发射与接收天线以及 RIS 原型按几何表中的布置放置，反射角为镜面或非镜面。旋转台场景中，有三组为 RIS 以 5 度步长从 -90 度旋转到 90 度，第四组为发射天线位于旋转台上。设置、硬件与几何结构记录于 GitHub。}
     inputs:
-    - {en: RIS prototype at 5 GHz, zh: 5 GHz 的 RIS 原型}
+    - {en: 'RIS prototype, 16 x 16 binary unit cells with 5.375 GHz centre frequency', zh: RIS 原型，16 x 16 二值单元，中心频率 5.375 GHz}
     outputs:
-    - {en: Stationary and rotating-stage geometries, zh: 固定与旋转台几何布置}
+    - {en: Geometry IDs 00 to 30, zh: 几何编号 00 至 30}
   - title: {en: RIS state selection, zh: RIS 状态选择}
-    detail: {en: 'Switching states are chosen by a greedy algorithm, by single-element switching, and by a model-based approach that uses exact knowledge of the setup geometry. Each set of states is optimized once to maximize and once to minimize the received power.', zh: 开关状态由贪心算法、单元件切换以及使用几何结构精确信息的基于模型方法选定。每组状态分别以最大化和最小化接收功率进行优化。}
+    detail: {en: 'Switching states are chosen by a greedy algorithm, by single-element switching, and by a model-based approach that uses exact knowledge of the setup geometry. The two iterative methods converge through measurements, while the geometric method needs no extra measurements. Each set of states is optimized once to maximize and once to minimize the received power.', zh: 开关状态由贪心算法、单元件切换以及使用几何结构精确信息的基于模型方法选定。两种迭代方法依靠测量逐步收敛，几何方法无需额外测量。每组状态分别以最大化和最小化接收功率进行优化。}
     inputs:
     - {en: Setup geometry, zh: 布置几何}
     outputs:
     - {en: Optimized RIS switching states, zh: 优化后的 RIS 开关状态}
   - title: {en: S21 measurement, zh: S21 测量}
-    detail: {en: The S21 channel response is measured for each geometric arrangement with the RIS in the selected states. The measurement configuration is described in the GitHub documentation., zh: 对每种几何布置，在所选 RIS 状态下测量 S21 信道响应。测量配置见 GitHub 文档。}
+    detail: {en: 'For each geometry and each set of RIS switching states, S21 is measured with a PicoVNA 106 from 5.0 to 6.0 GHz at 201 frequency points, port 1 at 0 dBm, between two A-Info LB-187-15 horn antennas. The VNA is calibrated with a SOLT kit at the TX antenna and LNA connectors, so the LNA and antenna gains are part of the stored S21.', zh: 对每个几何布置和每组 RIS 开关状态，使用 PicoVNA 106 在 5.0 至 6.0 GHz、201 个频点上测量 S21，端口 1 功率为 0 dBm，收发为两副 A-Info LB-187-15 喇叭天线。VNA 使用 SOLT 校准套件在发射天线与 LNA 接口处校准，因此 LNA 与天线增益包含在存储的 S21 中。}
     inputs:
     - {en: Geometries and RIS switching states, zh: 几何布置与 RIS 开关状态}
     outputs:
@@ -50,3 +51,114 @@ pipeline:
     - {en: S21 measurement data, zh: S21 测量数据}
     outputs:
     - {en: dataset_v1.0.zip with MAT files, zh: 包含 MAT 文件的 dataset_v1.0.zip}
+samples: 31 geometry IDs (00 to 30), each with S21 over 201 frequency points
+mobility: stationary; rotating-stage geometries
+facts:
+- label: {en: Geometry table, zh: 几何表}
+  text: {en: 'The geometry table lists IDs 00 to 30: 18 non-specular, 9 specular and 4 rotating-stage geometries.', zh: 几何表列出编号 00 至 30：非镜面反射 18 组，镜面反射 9 组，旋转台 4 组。}
+- label: {en: Chamber and calibration, zh: 暗室与校准}
+  text: {en: 'Measurements were taken in a fully anechoic chamber (7 x 13.5 x 6 m) at Ruhr University Bochum, with a 2 m rotating stage. Calibration is referenced to the TX antenna and LNA connectors, so their gains are included in S21.', zh: 测量在波鸿鲁尔大学的全消声暗室（7 x 13.5 x 6 m）中进行，配有直径 2 m 的旋转台。校准参考面位于发射天线与 LNA 接口，因此二者的增益计入 S21。}
+- label: {en: RIS prototype, zh: RIS 原型}
+  text: {en: '16 x 16 array of binary-switchable unit cells, centre frequency 5.375 GHz, 400 mm x 320 mm.', zh: 16 x 16 二值可切换单元阵列，中心频率 5.375 GHz，尺寸 400 mm x 320 mm。}
+- label: {en: Reference measurements, zh: 参考测量}
+  text: {en: 'Each geometry includes four reference S21 measurements: without RIS, with a metal plate of RIS size, with all RIS elements off, and with all elements on.', zh: 每个几何布置包含四组参考 S21 测量：无 RIS、与 RIS 同尺寸的金属板、RIS 全部单元关闭、RIS 全部单元开启。}
+- label: {en: File layout, zh: 文件结构}
+  text: {en: 'One MAT file per geometry, stored in the folders specular, nonSpecular and rotatingStage and named by the two-digit geometry ID. Specular and non-specular files hold freqPoints, geometry, patterns, results, reference and convergence variables.', zh: 每个几何布置对应一个 MAT 文件，按 specular、nonSpecular、rotatingStage 文件夹存放，文件名为两位几何编号。specular 与 nonSpecular 文件包含 freqPoints、geometry、patterns、results、reference 与 convergence 变量。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex S21 (amplitude and phase) at 201 frequency points from 5 to 6 GHz, for each RIS state and geometry.', zh: 每个 RIS 状态与几何布置下的复数 S21（幅度与相位），5 至 6 GHz 内 201 个频点。}
+- key: cir
+  status: derivable
+  note: {en: An inverse DFT of the 201-point S21 sweep gives the CIR; the CIR is not stored., zh: 对 201 点 S21 扫频做逆离散傅里叶变换即可得到 CIR，数据中未存储 CIR。}
+- key: paths
+  status: none
+  note: {en: 'The .mat files hold S21, reference, pattern and geometry fields only; no per-path parameters.', zh: .mat 文件仅包含 S21、参考测量、状态与几何字段，不含逐径参数。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction records are released., zh: 未发布逐径交互记录。}
+- key: power
+  status: derivable
+  note: {en: Path gain is 20 log10 |S21| dB with 0 dBm at port 1; received power is not stored as a separate field., zh: 路径增益为 20 log10 |S21| dB，端口 1 功率为 0 dBm；接收功率未作为单独字段存储。}
+- key: iq
+  status: none
+  note: {en: VNA frequency-domain S21 only; no time-domain baseband I/Q samples., zh: 仅有 VNA 频域 S21，无时域基带 I/Q 采样。}
+- key: beam_labels
+  status: provided
+  note: {en: 'Each measurement carries its 16x16 binary RIS switching state; these are configuration labels, not beam indices.', zh: 每次测量附带 16x16 二值 RIS 开关状态；这些是配置标签，而非波束索引。}
+- key: position
+  status: provided
+  note: {en: 'Antenna distance, azimuth and elevation relative to the RIS per geometry ID; no GPS or user coordinates.', zh: 每个几何编号给出天线相对 RIS 的距离、方位角与仰角；无 GPS 或用户坐标。}
+- key: geometry
+  status: none
+  note: {en: Setup geometry is stored as numeric parameters only; no 3D scene or map files., zh: 几何布置仅以数值参数存储，无三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released; RIS hardware specifications appear only in text documentation., zh: 未发布材料参数；RIS 硬件规格仅见于文字文档。}
+- key: rgb
+  status: none
+  note: {en: RF-only dataset; no camera data., zh: 仅含射频数据，无相机数据。}
+- key: depth
+  status: none
+  note: {en: RF-only dataset; no depth data., zh: 仅含射频数据，无深度数据。}
+- key: lidar
+  status: none
+  note: {en: RF-only dataset; no LiDAR data., zh: 仅含射频数据，无 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: RF-only dataset; no radar sensing data., zh: 仅含射频数据，无雷达感知数据。}
+- key: imu
+  status: none
+  note: {en: RF-only dataset; no IMU data., zh: 仅含射频数据，无 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: No timestamps. The rotating-stage scenarios are RIS angle sweeps from -90 to 90 degrees in 5 degree steps., zh: 无时间戳。旋转台场景为 RIS 角度扫描，范围 -90 至 90 度，步长 5 度。}
+- key: multiuser
+  status: none
+  note: {en: One transmit and one receive antenna per measurement., zh: 每次测量使用一个发射天线与一个接收天线。}
+- key: multibs
+  status: none
+  note: {en: Single transmit-receive link; no multi-base-station data., zh: 单一收发链路，无多基站数据。}
+- key: crossfreq
+  status: none
+  note: {en: Single 5 to 6 GHz sweep; no paired multi-band data., zh: 单一 5 至 6 GHz 扫频，无成对多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: All setups are static; the rotating stage is an angle sweep with no stated speed., zh: 所有布置均为静止；旋转台为角度扫描，文档未给出速度。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Measurements are made in an anechoic chamber; the released scenarios contain no moving blockers., zh: 测量在无回声暗室中进行；发布的场景中无移动遮挡物。}
+- key: reflection
+  status: provided
+  note: {en: 'The RIS reflection is the measured mechanism in specular and non-specular geometries; inherent in the measurement, not labelled per path.', zh: RIS 反射是镜面与非镜面几何布置下的测量机理；包含于测量之中，未按路径标注。}
+- key: diffraction
+  status: none
+  note: {en: The anechoic chamber is built to prevent multipath propagation., zh: 无回声暗室用于抑制多径传播。}
+- key: scattering
+  status: none
+  note: {en: The anechoic chamber is built to prevent multipath propagation., zh: 无回声暗室用于抑制多径传播。}
+- {key: transmission, status: unknown}
+- key: polarization
+  status: none
+  note: {en: Linearly polarized horn antennas; no polarimetric data., zh: 线极化喇叭天线，无极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: Only S21 values are released; no E-field components or antenna patterns., zh: 仅发布 S21 数值，无电场分量或天线方向图。}
+versions:
+- version: GitHub commit 05ba13e
+  date: '2023-06-08'
+  summary: {en: GitHub README updated with the IEEE DataPort download link., zh: GitHub README 更新，改为 IEEE DataPort 下载链接。}
+  url: https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset/commit/05ba13e
+- version: IEEE DataPort last update
+  date: '2023-05-04'
+  summary: {en: IEEE DataPort record last updated. The same day the GitHub README switched the citation to the VTC2023-Spring paper., zh: IEEE DataPort 条目最后更新。同日 GitHub README 的引用改为 VTC2023-Spring 论文。}
+  url: https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset/commit/c5d2fe7
+- version: IEEE DataPort record (DOI 10.21227/zzx0-tp88)
+  date: '2023-02-20'
+  summary: {en: 'Dataset record created on IEEE DataPort with the *.mat measurement files (S21 sweeps, RIS switching states, geometries and rotating-stage scenarios).', zh: 在 IEEE DataPort 创建数据集条目，包含 *.mat 测量文件（S21 扫频、RIS 开关状态、几何布置与旋转台场景）。}
+  url: https://ieee-dataport.org/documents/comprehensive-dataset-ris-based-channel-measurements-5ghz-band
+- version: GitHub Initial Commit
+  date: '2023-01-20'
+  summary: {en: 'Companion GitHub repository created with the first commit, followed the same day by documentation updates for the file format, geometries, setup and RIS switching-state optimization.', zh: 创建配套 GitHub 仓库并提交首个版本，同日更新了文件格式、几何布置、测量设置与 RIS 开关状态优化等文档。}
+  url: https://github.com/RUB-DCS/RIS-S21-Measurement-Dataset/commits/master

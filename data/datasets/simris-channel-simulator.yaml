@@ -7,17 +7,18 @@ tasks: [ris]
 signals: [csi]
 bands_ghz: [28, 73]
 environment: [indoor, outdoor-urban]
-license: GPL-2.0
+license: GNU General Public License, Version 2
 access: {url: 'https://github.com/ifyildirim/SimRIS-Channel-Simulator', type: open}
 code: ['https://github.com/ifyildirim/SimRIS-Channel-Simulator']
 paper: arxiv:2006.00468
 used_in: ['doi:10.1109/tcomm.2021.3113954']
 citing: ['doi:10.1109/jproc.2022.3186087', 'doi:10.1109/ojcoms.2021.3050119']
 summary: {en: 'MATLAB generator of RIS channel matrices using Monte Carlo simulation. Scenarios are indoor hotspot and urban microcellular at 28 and 73 GHz, with ULA and UPA terminal arrays.', zh: 基于 MATLAB 的 RIS 信道矩阵生成器，采用 Monte Carlo 仿真生成。场景为室内热点和城市微蜂窝，频率为 28 GHz 和 73 GHz，终端阵列为 ULA 和 UPA。}
-sources: ['https://github.com/ifyildirim/SimRIS-Channel-Simulator', 'https://arxiv.org/abs/2006.00468', 'https://api.github.com/repos/ifyildirim/SimRIS-Channel-Simulator/license']
+sources: ['https://github.com/ifyildirim/SimRIS-Channel-Simulator', 'https://arxiv.org/abs/2006.00468', 'https://api.github.com/repos/ifyildirim/SimRIS-Channel-Simulator/license', 'https://raw.githubusercontent.com/ifyildirim/SimRIS-Channel-Simulator/master/README.md', 'https://raw.githubusercontent.com/ifyildirim/SimRIS-Channel-Simulator/master/LICENSE', 'https://raw.githubusercontent.com/ifyildirim/SimRIS-Channel-Simulator/main/SimRIS_GUI.m', 'https://raw.githubusercontent.com/ifyildirim/SimRIS-Channel-Simulator/main/SimRIS_v18.m', 'https://github.com/ifyildirim/SimRIS-Channel-Simulator/tree/main', 'https://arxiv.org/pdf/2006.00468', 'https://raw.githubusercontent.com/ifyildirim/SimRIS-Channel-Simulator/main/README.md', 'https://github.com/ifyildirim/SimRIS-Channel-Simulator/releases', 'https://github.com/ifyildirim/SimRIS-Channel-Simulator/releases/tag/v2.0.0', 'https://github.com/ifyildirim/SimRIS-Channel-Simulator/releases/tag/v2.0.1', 'https://github.com/ifyildirim/SimRIS-Channel-Simulator/tags',
+  'https://github.com/ifyildirim/SimRIS-Channel-Simulator/commits/main', 'https://arxiv.org/abs/2006.00468v1', 'https://arxiv.org/html/2006.00468v1', 'https://arxiv.org/html/2006.00468v2']
 checked: '2026-11-06'
-overview: {en: 'SimRIS Channel Simulator is an open-source MATLAB tool that generates channel matrices for reconfigurable intelligent surface (RIS)-assisted links by Monte Carlo simulation. It was developed at Koc University CoreLab, is described in the LATINCOM 2020 paper and arXiv:2006.00468, and the current version is v2.0 under GPLv2. It supports two scenarios, indoor hotspot and urban microcellular, at 28 GHz and 73 GHz, with uniform linear arrays (ULA) or uniform planar arrays (UPA) at the terminals. All parameters, including the scenario, frequency, array type and the sizes N, Nt, Nr and Nsym, are selected in the GUI. The output is the channel matrices H (N x Nt x Nsym), G (Nr x N x Nsym) and D (Nr x Nt x Nsym), which stay in the MATLAB workspace or export as a .mat file. The model covers LOS probability, array response, path loss, shadowing and environmental factors. The repository requires the MATLAB Parallel Computing Toolbox and contains only the GUI script and its files, with
-    no channel data.', zh: 'SimRIS Channel Simulator 是开源的 MATLAB 工具，通过 Monte Carlo 仿真生成可重构智能表面（RIS）辅助链路的信道矩阵。该工具由 Koc University CoreLab 开发，相关论文为 LATINCOM 2020 与 arXiv:2006.00468，当前版本为 v2.0，采用 GPLv2 许可。工具支持 28 GHz 和 73 GHz 两个频段下的室内热点与城市微蜂窝两种场景，终端采用均匀线阵（ULA）或均匀面阵（UPA）。场景、频率、阵列类型，以及 N、Nt、Nr、Nsym 的规模均在 GUI 中选择。输出为信道矩阵 H（N x Nt x Nsym）、G（Nr x N x Nsym）和 D（Nr x Nt x Nsym），可保留在 MATLAB 工作区中，或导出为 .mat 文件。模型涵盖 LOS 概率、阵列响应、路径损耗、阴影衰落和环境因素。运行需要 MATLAB Parallel Computing Toolbox。仓库仅包含 GUI 脚本及相关文件，不含信道数据。'}
+overview: {en: 'SimRIS Channel Simulator is an open-source MATLAB tool that generates channel matrices for reconfigurable intelligent surface (RIS)-assisted links by Monte Carlo simulation. It was developed at Koc University CoreLab and is described in the LATINCOM 2020 paper and arXiv:2006.00468. The current release is v2.0, licensed under GPLv2. It supports two scenarios, indoor hotspot and urban microcellular, at 28 GHz and 73 GHz, with uniform linear arrays (ULA) or uniform planar arrays (UPA) at the terminals. The scenario, frequency, array type and the sizes N, Nt, Nr and Nsym are selected in the GUI. The output is the channel matrices H (N x Nt x Nsym), G (Nr x N x Nsym) and D (Nr x Nt x Nsym), which stay in the MATLAB workspace or export as a .mat file. The model covers LOS probability, array response, path loss, shadowing and environmental factors. The repository holds the GUI script and its files with no channel data, and it requires the MATLAB Parallel Computing Toolbox; the SimRIS_v18
+    function that the GUI calls is not in the repository.', zh: 'SimRIS Channel Simulator 是一个开源 MATLAB 工具，通过 Monte Carlo 仿真为可重构智能表面（RIS）辅助链路生成信道矩阵。该工具由 Koc University CoreLab 开发，相关论文为 LATINCOM 2020 与 arXiv:2006.00468。当前版本为 v2.0，采用 GPLv2 许可。工具支持 28 GHz 和 73 GHz 两个频段下的室内热点与城市微蜂窝两种场景，终端采用均匀线阵（ULA）或均匀面阵（UPA）。场景、频率、阵列类型，以及 N、Nt、Nr 和 Nsym 的规模均在 GUI 中选择。输出为信道矩阵 H（N x Nt x Nsym）、G（Nr x N x Nsym）和 D（Nr x Nt x Nsym），可保留在 MATLAB 工作区中，或导出为 .mat 文件。模型涵盖 LOS 概率、阵列响应、路径损耗、阴影衰落和环境因素。仓库包含 GUI 脚本及其相关文件，不含信道数据，运行需要 MATLAB Parallel Computing Toolbox；GUI 调用的 SimRIS_v18 函数不在仓库中。'}
 signal_details:
 - signal: csi
   text: {en: 'Channel matrices for each of the Nsym channel realizations: H (N x Nt x Nsym), G (Nr x N x Nsym) and D (Nr x Nt x Nsym). The matrices are available in the MATLAB workspace, and the Save as button exports them to a .mat file.', zh: 每个信道实现（共 Nsym 个）对应的信道矩阵：H（N x Nt x Nsym）、G（Nr x N x Nsym）和 D（Nr x Nt x Nsym）。矩阵保存在 MATLAB 工作区中，Save as 按钮可将其导出为 .mat 文件。}
@@ -25,7 +26,7 @@ pipeline:
   summary: {en: 'A MATLAB GUI takes the scenario and array settings, and a Monte Carlo loop then generates the channel matrices for each realization.', zh: MATLAB GUI 接收场景与阵列设置，随后通过 Monte Carlo 循环为每次信道实现生成信道矩阵。}
   stages:
   - title: {en: Scenario and parameter selection, zh: 场景与参数选择}
-    detail: {en: 'The user runs SimRIS_GUI.m in MATLAB and selects the frequency (28 GHz or 73 GHz), the scenario (indoor hotspot or urban microcellular), the terminal array (ULA or UPA), N (number of transmit reflectors), Nt, Nr and Nsym. The Parallel Computing Toolbox is required.', zh: 用户在 MATLAB 中运行 SimRIS_GUI.m，选择频率（28 GHz 或 73 GHz）、场景（室内热点或城市微蜂窝）、终端阵列（ULA 或 UPA）、N（发射反射体数量）、Nt、Nr 和 Nsym。运行需要 Parallel Computing Toolbox。}
+    detail: {en: 'The user runs SimRIS_GUI.m in MATLAB and selects the frequency (28 GHz or 73 GHz), the scenario (indoor hotspot or urban microcellular), the terminal array (ULA or UPA), N (number of RIS elements), Nt, Nr and Nsym. The Parallel Computing Toolbox is required.', zh: 用户在 MATLAB 中运行 SimRIS_GUI.m，选择频率（28 GHz 或 73 GHz）、场景（室内热点或城市微蜂窝）、终端阵列（ULA 或 UPA）、N（RIS 单元数）、Nt、Nr 和 Nsym。运行需要 Parallel Computing Toolbox。}
     inputs:
     - {en: 'Scenario, frequency and array settings', zh: 场景、频率与阵列设置}
     - {en: 'Sizes N, Nt, Nr and Nsym', zh: 规模参数 N、Nt、Nr 与 Nsym}
@@ -38,7 +39,7 @@ pipeline:
     outputs:
     - {en: Random channel variables, zh: 随机信道变量}
   - title: {en: 'Path loss, LOS probability and array response', zh: 路径损耗、视距概率与阵列响应}
-    detail: {en: 'Path loss and LOS probability follow the 5G channel model, with a close-in free-space reference distance and a frequency-dependent path-loss exponent. Array responses a(φ, θ) depend on azimuth and elevation angles, and each RIS element has a controllable amplitude and phase.', zh: '路径损耗与视距概率采用 5G 信道模型，使用近距离自由空间参考距离与随频率变化的路径损耗指数。阵列响应 a(φ, θ) 取决于方位角与俯仰角，每个 RIS 单元具有可控的幅度与相位。'}
+    detail: {en: 'Path loss follows the 5G close-in reference-distance model with a frequency-dependent path-loss exponent. The LOS probability is computed with a method that accounts for the RIS height. Array responses a(φ, θ) depend on azimuth and elevation angles, and each RIS element has a controllable magnitude and phase.', zh: '路径损耗采用 5G 近距离参考距离模型，路径损耗指数随频率变化。视距概率采用考虑 RIS 高度的方法计算。阵列响应 a(φ, θ) 取决于方位角与俯仰角，每个 RIS 单元具有可控的幅度与相位。'}
     inputs:
     - {en: Scenario and frequency, zh: 场景与频率}
     outputs:
@@ -55,3 +56,114 @@ pipeline:
     - {en: Channel components per realization, zh: 每次实现的信道分量}
     outputs:
     - {en: 'H, G, D channel matrices (.mat)', zh: H、G、D 信道矩阵（.mat）}
+format: MAT
+facts:
+- label: {en: Coordinate convention, zh: 坐标约定}
+  text: {en: The Tx lies in the yz plane. The RIS lies in the xz plane for Scenario 1 (side wall) or in the yz plane for Scenario 2 (opposite wall)., zh: 发射端位于 yz 平面。场景 1（侧墙）中 RIS 位于 xz 平面，场景 2（对面墙）中 RIS 位于 yz 平面。}
+- label: {en: Terminal heights and cell radius, zh: 终端高度与小区半径}
+  text: {en: 'The paper gives Tx heights of 2 to 3 m indoors and 3 to 20 m outdoors, and cell radii below 75 m indoors and 100 m outdoors.', zh: 论文给出的发射端高度室内为 2 至 3 m，室外为 3 至 20 m；小区半径室内应小于 75 m，室外应小于 100 m。}
+technical_notes:
+- {en: 'The GUI checks that N, Nt and Nr each have an integer square root, but its error message says they must be an even power of 2.', zh: GUI 检查 N、Nt 与 Nr 的平方根是否为整数，但其错误提示写的是必须为 2 的偶数次幂。}
+- {en: 'The GUI flags inputs outside typical ranges, such as Tx heights above 3 m indoors or above 20 m outdoors.', zh: GUI 会对超出典型范围的输入给出提示，例如室内发射端高度超过 3 m 或室外超过 20 m。}
+limitations:
+- {en: 'The repository does not contain SimRIS_v18.m, the function that SimRIS_GUI.m calls for each realization, so the channel computation can be checked only against the paper.', zh: 仓库中没有 SimRIS_GUI.m 在每次实现中调用的 SimRIS_v18.m 函数，因此信道计算只能对照论文核对。}
+usage:
+- {en: 'The README asks that research publications using the code cite the LATINCOM 2020 paper and the IEEE TCOM 2021 paper (doi:10.1109/tcomm.2021.3113954).', zh: 'README 要求使用本代码的研究成果引用原始论文，包括 LATINCOM 2020 论文和 IEEE TCOM 2021 论文（doi:10.1109/tcomm.2021.3113954）。'}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: 'Running the GUI produces channel matrices H (N x Nt x Nsym), G (Nr x N x Nsym) and D (Nr x Nt x Nsym); the repository ships no channel data.', zh: 运行 GUI 后生成信道矩阵 H（N x Nt x Nsym）、G（Nr x N x Nsym）和 D（Nr x Nt x Nsym）；仓库不包含信道数据。}
+- key: cir
+  status: none
+  note: {en: The outputs are channel matrices only; the paper lists delay spread as future work., zh: 输出仅为信道矩阵；论文将时延扩展列为未来工作。}
+- key: paths
+  status: none
+  note: {en: 'Per-path parameters are used inside the model, but the outputs are channel matrices only.', zh: 逐径参数在模型内部使用，但输出仅为信道矩阵。}
+- key: interaction
+  status: none
+  note: {en: 'Interacting objects act as scatterers in the model, but the outputs carry no per-path interaction labels.', zh: 模型中的交互物体作为散射体参与计算，但输出不含逐径交互标注。}
+- key: power
+  status: derivable
+  note: {en: 'Received power follows from the matrix entries, for example |H|^2; path-loss values are not output.', zh: 接收功率可由矩阵元素推导，例如 |H|^2；路径损耗值不作为输出。}
+- key: iq
+  status: none
+  note: {en: 'The model outputs channel matrices, not raw I/Q samples.', zh: 模型输出信道矩阵，而非原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: The outputs carry no beam indices or per-beam gains., zh: 输出不包含波束索引或逐波束增益。}
+- key: position
+  status: none
+  note: {en: 'Tx, Rx and RIS locations are GUI inputs; the outputs are the H, G and D matrices only.', zh: Tx、Rx 与 RIS 位置是 GUI 输入；输出仅为 H、G、D 矩阵。}
+- key: geometry
+  status: none
+  note: {en: The 3D geometry is set by GUI parameters; the repository has no scene or map files., zh: 三维几何由 GUI 参数设定；仓库中没有场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters appear in the outputs or the repository., zh: 输出与仓库中均不包含材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera data are generated or released., zh: 不生成也不发布相机数据。}
+- key: depth
+  status: none
+  note: {en: No depth data are generated or released., zh: 不生成也不发布深度数据。}
+- key: lidar
+  status: none
+  note: {en: No lidar data are generated or released., zh: 不生成也不发布激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: No radar data are generated or released., zh: 不生成也不发布雷达数据。}
+- key: imu
+  status: none
+  note: {en: No inertial sensor data are generated or released., zh: 不生成也不发布惯性传感器数据。}
+- key: time_series
+  status: none
+  note: {en: The Nsym realizations are Monte Carlo draws with no timestamps; time-varying fading is listed as future work., zh: Nsym 个实现为 Monte Carlo 抽样，不含时间戳；时变衰落被列为未来工作。}
+- key: multiuser
+  status: none
+  note: {en: 'The model covers one Tx, one Rx and one RIS link.', zh: 模型覆盖一个发射端、一个接收端与一个 RIS 的链路。}
+- key: multibs
+  status: none
+  note: {en: The model covers a single link through the RIS; no multiple base stations are described., zh: 模型覆盖经 RIS 的单条链路；未描述多个基站。}
+- key: crossfreq
+  status: none
+  note: {en: 'The frequency is chosen per run (28 or 73 GHz) and realizations are Monte Carlo draws, so no paired multi-band same-position output is described.', zh: 频率在每次运行时选定（28 GHz 或 73 GHz），实现为 Monte Carlo 抽样，未描述成对的同位置多频段输出。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'The paper lists fast fading as future work, and Doppler appears only as motivation in the introduction.', zh: 论文将快衰落列为未来工作，Doppler 仅在引言中作为研究背景出现。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: simulate
+  note: {en: The RIS re-radiates the captured signal according to plate-scattering theory; this path is produced only by running the generator., zh: RIS 依据平板散射理论再辐射所接收的信号；该路径仅在运行生成器后得到。}
+- key: diffraction
+  status: none
+  note: {en: No diffraction term appears in the model., zh: 模型中没有绕射项。}
+- key: scattering
+  status: simulate
+  note: {en: Scattering by the RIS elements and by interacting objects is modelled; the channels are obtained by running the generator., zh: 模型包含 RIS 单元及交互物体的散射；信道需运行生成器获得。}
+- key: transmission
+  status: none
+  note: {en: The model has no penetration or refraction term., zh: 模型没有穿透或折射项。}
+- key: polarization
+  status: none
+  note: {en: No polarization dependence is described., zh: 未描述极化相关性。}
+- key: em_field
+  status: none
+  note: {en: The outputs are channel matrices; element gains enter the model but are not output as field or pattern data., zh: 输出为信道矩阵；单元增益参与模型计算，但不作为场或方向图数据输出。}
+versions:
+- version: v2.0.1
+  date: '2023-08-08'
+  summary: {en: 'Latest release. Its release note repeats the v2.0 feature list: MIMO terminals with ULA or UPA arrays, indoor and outdoor scenarios (InH, UMi), and GUI refinements. The note does not list the changes from v2.0.0; they are in the compare link v2.0.0...v2.0.1.', zh: 最新版本。发布说明重复了 v2.0 的功能列表：采用 ULA 或 UPA 阵列的 MIMO 终端、室内与室外场景（InH、UMi）以及 GUI 改进。说明中未列出相对 v2.0.0 的变化，变化见比较链接 v2.0.0...v2.0.1。}
+  url: https://github.com/ifyildirim/SimRIS-Channel-Simulator/releases/tag/v2.0.1
+- version: v2.0.0
+  date: '2023-08-07'
+  summary: {en: 'Tagged release titled ''SimRIS Channel Simulator v2.0'', with the same release note: MIMO terminals with ULA or UPA arrays, indoor and outdoor scenarios (InH, UMi), and GUI refinements.', zh: 标题为 'SimRIS Channel Simulator v2.0' 的标记版本，发布说明相同：采用 ULA 或 UPA 阵列的 MIMO 终端、室内与室外场景（InH、UMi）以及 GUI 改进。}
+  url: https://github.com/ifyildirim/SimRIS-Channel-Simulator/releases/tag/v2.0.0
+- version: arXiv v2
+  date: '2020-08-30'
+  summary: {en: 'Revised arXiv version. Its GUI figure is labelled SimRIS Channel Simulator v1.0, and the text covers Monte Carlo channel generation for InH and UMi at 28 and 73 GHz.', zh: 修订后的 arXiv 版本。其 GUI 图标注为 SimRIS Channel Simulator v1.0，正文涵盖 28 GHz 与 73 GHz 下 InH 与 UMi 场景的 Monte Carlo 信道生成。}
+  url: https://arxiv.org/abs/2006.00468v2
+- version: arXiv v1
+  date: '2020-05-31'
+  summary: {en: 'First arXiv version of the RIS channel model and the SimRIS simulator, with the GUI and the InH and UMi scenarios at 28 and 73 GHz.', zh: RIS 信道模型与 SimRIS 仿真器的首个 arXiv 版本，包含 GUI 以及 28 GHz 与 73 GHz 下的 InH 和 UMi 场景。}
+  url: https://arxiv.org/abs/2006.00468v1

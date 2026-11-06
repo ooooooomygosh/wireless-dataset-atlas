@@ -19,109 +19,170 @@ paper: doi:10.1109/TVT.2023.3340447
 used_in: []
 citing: ['doi:10.1109/twc.2025.3537766', 'doi:10.1109/jiot.2025.3560358', 'doi:10.1109/tccn.2025.3587802']
 summary: {en: 'CSI estimated from pilot sequences sent by a drone flying several trajectories on the KU Leuven campus, received at a base station with an 8×8 rectangular patch array on a parking lot. The dataset is distributed as a 15.8 GB ZIP file.', zh: 无人机在 KU Leuven 校园内沿若干轨迹飞行并发送导频序列，停车场上 8×8 矩形贴片天线阵列的基站据此估计信道状态信息（CSI）。数据集以 15.8 GB 的 ZIP 文件分发。}
-sources: ['https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi%3A10.48804%2F0IMQDF', 'https://rdr.kuleuven.be/api/datasets/:persistentId/?persistentId=doi:10.48804/0IMQDF', 'https://api.crossref.org/works/10.1109/TVT.2023.3340447']
+sources: ['https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi%3A10.48804%2F0IMQDF', 'https://rdr.kuleuven.be/api/datasets/:persistentId/?persistentId=doi:10.48804/0IMQDF', 'https://api.crossref.org/works/10.1109/TVT.2023.3340447', 'https://rdr.kuleuven.be/api/datasets/:persistentId/versions/:latest/files?persistentId=doi:10.48804/0IMQDF', 'https://rdr.kuleuven.be/api/access/datafile/119635', 'https://rdr.kuleuven.be/api/access/datafile/119650', 'https://rdr.kuleuven.be/api/access/datafile/119647', 'https://rdr.kuleuven.be/api/access/datafile/119645', 'https://rdr.kuleuven.be/api/access/datafile/119646', 'https://api.openalex.org/works/doi:10.1109/TVT.2023.3340447', 'https://arxiv.org/pdf/2310.06579', 'https://rdr.kuleuven.be/api/datasets/:persistentId/versions?persistentId=doi:10.48804/0IMQDF', 'https://arxiv.org/abs/2310.06579']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: A UAV flies over the campus and transmits uplink pilots; a sky-facing 8×8 array estimates the channel. GPS and acquisition settings accompany the BIN/CSV data and are read with official Python scripts., zh: UAV在校园飞行并发送上行pilot，朝天的8×8阵列估计信道；GPS与采集设置随BIN/CSV数据发布，由官方Python脚本读取。}
-  stages:
-  - title: {en: Deploy the ground array and define UAV trajectories, zh: 部署地面阵列与UAV航迹}
-    detail: {en: The ground-based 64-antenna rectangular array points skyward while the UAV follows actual flight trajectories. The current public record specifies a 2.610 GHz carrier., zh: 地面64天线矩形阵列朝向空中，UAV沿实际航迹飞行。当前公开记录的载频为2.610 GHz。}
-    inputs:
-    - {en: Campus environment and flight routes, zh: 校园场景和飞行路线}
-    - {en: Ground-based 8×8 patch array and a single UAV transmitter, zh: 地面8×8 patch阵列与单UAV发射机}
-    outputs:
-    - {en: Actual flights and array deployment, zh: 真实飞行和阵列部署}
-    - {en: Trajectory/file identity, zh: 航迹/文件身份}
-    controls:
-    - {en: 'Use the parameters and files corresponding to RDR V3, preserving array orientation.', zh: 使用RDR V3对应参数和文件，保留阵列朝向}
-    checks:
-    - {en: 'Reproduction check: verify antenna coordinates, the GPS coordinate reference, and the altitude definition.', zh: 复现检查：核对天线坐标、GPS坐标基准与高度定义}
-  - title: {en: Transmit pilots and estimate array channels, zh: 发送pilot并估计阵列信道}
-    detail: {en: 'The base station estimates the complex UAV-to-array channel using uplink pilots. Measurements include actual propagation effects as well as attitude, antenna directivity, and RF-chain effects.', zh: 基站用上行pilot估计UAV至阵列的复数信道，测量包含实际传播及姿态、天线方向性和射频链影响。}
-    inputs:
-    - {en: UAV uplink training signals, zh: UAV上行训练信号}
-    - {en: Receive observations from 64 array channels, zh: 64路阵列接收观测}
-    outputs:
-    - {en: Array CSI varying over the flight, zh: 随飞行变化的阵列CSI}
-    controls:
-    - {en: The reviewed data record does not fully specify clock distribution or residual calibration errors; reproduction requires reading the parameters included in the package., zh: 已读数据记录未完整披露时钟分配和标定残差，复现需读取包内参数}
-    checks:
-    - {en: 'Reproduction check: inspect faulty antennas, amplitude/phase jumps, SNR, and sampling intervals first; record hardware gain changes.', zh: 复现检查：先检查坏天线、幅相跳变、SNR与采样间隔；记录硬件增益变化}
-  - title: {en: 'Release CSI, GPS, and loading code', zh: 发布CSI、GPS与读取代码}
-    detail: {en: 'The records are organized as BIN channels, CSV labels/logs, and Python loading code. Associations between current positions and channel records are recovered from the data records and loading scripts.', zh: 原始记录以BIN信道、CSV标签/日志和Python读取代码组织。当前位置与信道记录的关联按数据记录及读取脚本恢复。}
-    inputs:
-    - {en: Channel estimates, zh: 信道估计}
-    - {en: GPS and acquisition parameters, zh: GPS和采集参数}
-    outputs:
-    - {en: BIN complex channels, zh: BIN复数信道}
-    - {en: CSV positioning/log records, zh: CSV定位/日志}
-    - {en: Python reader, zh: Python reader}
-    controls:
-    - {en: The current portal lists 43 files totaling 15.8 GB; the file count is not the trajectory count., zh: 当前门户43个文件、集合15.8 GB；文件数不代表轨迹数}
-    checks:
-    - {en: 'Reproduction check: verify BIN dtype, endianness, axis order, and CSV time correspondence; inspect missing GPS samples and altitude anomalies.', zh: 复现检查：验证BIN dtype、endianness、轴顺序和CSV时间对应；核查GPS缺测与高度异常}
-  - title: {en: Construct tasks using complete flights, zh: 按完整飞行构建任务}
-    detail: {en: 'For positioning or prediction experiments, group by flight/run before constructing history windows and future targets. Beam tasks require explicit antenna coordinates and a codebook; first calculate oracle gains from the measured channels.', zh: 定位或预测实验先按飞行/run分组，再建立历史窗口和未来目标。波束任务需要显式给出阵列坐标与码本，先用实测信道计算oracle收益。}
-    inputs:
-    - {en: 'CSI, GPS, time, and flight identity', zh: CSI、GPS、时间与飞行身份}
-    outputs:
-    - {en: Flight-level splits, zh: 飞行级split}
-    - {en: Prediction windows or derived beam gains, zh: 预测窗口或派生beam收益}
-    controls:
-    - {en: 'Keep GPS interpolation, normalization, and target construction causal; extensions from single-UAV observations to multiuser settings require separate assumptions.', zh: GPS插值、归一化和目标构造保持因果；单UAV观测的多用户扩展另设假设}
-    checks:
-    - {en: 'Reproduction check: inspect future-GPS leakage, adjacent windows crossing splits, and repeated acquisitions along the same route.', zh: 复现检查：检查未来GPS泄漏、相邻窗口跨split及同一路线重复采集}
+  summary: {en: 'A UAV flies over the campus and sends uplink pilots, and a sky-facing 8×8 array at the base station estimates the channel. The release provides BIN channels, CSV flight logs and two Python scripts that combine them.', zh: UAV在校园上空飞行并发送上行导频，基站处朝向天空的8×8阵列估计信道。发布内容包括BIN信道、CSV飞行日志以及将二者结合的两个Python脚本。}
   scope: {en: KU Leuven RDR V3 air-to-ground CSI from a single UAV to a 64-antenna ground base station., zh: KU Leuven RDR V3单UAV到64天线地面基站的空地CSI。}
+  stages:
+  - title: {en: Place the array and fly the UAV, zh: 部署阵列并飞行UAV}
+    detail: {en: 'A base station on the ESAT parking lot uses an 8×8 rectangular patch array pointing towards the sky. A drone flew several trajectories over the KU Leuven campus. In the analysis paper''s campaign, the BS array was 11 m high, the UAV flew at 8, 11 and 24 m, and the flight speed was 1.5 m/s.', zh: ESAT停车场的基站采用朝向天空的8×8矩形贴片阵列。无人机在KU Leuven校园上空飞行了多条轨迹。分析论文的测量中，基站阵列高11 m，无人机飞行高度为8、11和24 m，飞行速度为1.5 m/s。}
+    outputs:
+    - {en: Flight trajectories and array deployment, zh: 飞行轨迹与阵列部署}
+  - title: {en: Transmit pilots and estimate the channel, zh: 发送导频并估计信道}
+    detail: {en: 'The UAV transmits an LTE-compliant OFDM sounding signal built from a Zadoff-Chu sequence, and the paper logs CSI every 1 ms. The base station uses 32 USRPs with two channels each to serve 64 patch antennas, with one 10 MHz GPS-disciplined oscillator reference distributed through octo-clock splitters. The OFDM signal has 100 subcarriers at 180 kHz spacing, 18 MHz in total, at a 2.610 GHz carrier.', zh: UAV发送由Zadoff-Chu序列构成的、符合LTE标准的OFDM探测信号，论文中每1 ms记录一次CSI。基站使用32个USRP（每个两路通道）服务64个贴片天线，并由一个10 MHz GPS驯服振荡器经octo-clock分配器提供参考时钟。OFDM信号包含100个子载波，间隔180 kHz，总带宽18 MHz，载频为2.610 GHz。}
+    inputs:
+    - {en: UAV uplink sounding signal, zh: UAV上行探测信号}
+    - {en: Receive observations from 64 array elements, zh: 64个阵元的接收观测}
+    outputs:
+    - {en: Array CSI that varies along the flight, zh: 随飞行变化的阵列CSI}
+  - title: {en: Log GPS and align it with channels, zh: 记录GPS并与信道对齐}
+    detail: {en: 'The UAV GPS was logged every 10 ms in the paper''s campaign. The released CSV logs contain time in milliseconds, UTC datetime, latitude, longitude, height and speed, with height in feet and speed in mph. prepare_data.py converts height and speed to metric units and linearly interpolates GPS to the channel sampling times of each measurement.', zh: 分析论文的测量中，UAV的GPS每10 ms记录一次。发布的CSV日志包含毫秒时间、UTC时间、纬度、经度、高度和速度，其中高度单位为英尺，速度单位为mph。prepare_data.py将高度与速度换算为公制单位，并将GPS线性插值到每次测量的信道采样时刻。}
+    inputs:
+    - {en: GPS and drone telemetry, zh: GPS与无人机遥测}
+    outputs:
+    - {en: CSV flight logs and GPS aligned to each BIN measurement, zh: CSV飞行日志及与每个BIN测量对齐的GPS}
+  - title: {en: Store CSI as BIN tensors, zh: 以BIN张量存储CSI}
+    detail: {en: 'Each BIN file holds one measurement as big-endian signed 16-bit values scaled by 2^-8. binary_interpreter.py reads it into a complex tensor of shape (symbols, antennas, users, subcarriers), which for these files is (S, 64, 1, 100). The file name carries the start time and acquisition settings.', zh: '每个BIN文件保存一次测量，内容为大端有符号16位整数并乘以2^-8。binary_interpreter.py将其读取为复数张量，形状为（符号数, 天线数, 用户数, 子载波数），对这些文件即（S, 64, 1, 100）。文件名包含开始时间与采集设置。'}
+    inputs:
+    - {en: Channel estimates from the sounder, zh: 探测器输出的信道估计}
+    outputs:
+    - {en: 'BIN complex channels, CSV logs and Python readers', zh: BIN复数信道、CSV日志与Python读取脚本}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• BIN channel data
+  text: {en: '• BIN channel data (14 measurement files)
 
-      • CSV GPS/acquisition records
+      • CSV GPS, time and drone-metric logs (23 files)
 
-      • Official Python loading scripts', zh: '• BIN信道数据
+      • Python scripts binary_interpreter.py and prepare_data.py', zh: '• BIN信道数据（14个测量文件）
 
-      • CSV GPS/采集记录
+      • CSV的GPS、时间与无人机指标日志（23个文件）
 
-      • 官方Python读取脚本'}
-- label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Angle/spatial-correlation estimates
-
-      • Fixed-codebook responses and beam labels
-
-      • Flight-level prediction samples and splits', zh: '• 角度/空间相关估计
-
-      • 固定码本响应与beam标签
-
-      • 飞行级预测样本与split'}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Verify clocking, calibration, and GPS association accuracy from the files/code during the first load; do not infer an error bound from the term “real-time.”
-
-      • This review verified the data record and format; no BIN samples were read.', zh: '• 时钟、校准及GPS关联精度应在首次加载时从文件/代码核实，不据“实时”一词补出误差界。
-
-      • 本轮确认数据记录与格式，未读取BIN样本。'}
+      • Python脚本binary_interpreter.py与prepare_data.py'}
+- label: {en: Combined records, zh: 合并记录}
+  text: {en: '• prepare_data.py selects the GPS rows inside each measurement''s time window and pairs them with that channel file, after converting feet to metres and mph to m/s.', zh: • prepare_data.py在每次测量的时间窗口内选取GPS记录，与对应信道文件配对，并将英尺换算为米、mph换算为m/s。}
+- label: {en: Requirements, zh: 依赖环境}
+  text: {en: '• The README says the scripts were written for Python 3.8.10. requirements.txt pins numpy 1.23.3, pandas 1.5.2, scipy 1.9.1 and tqdm 4.64.1; plotting also needs matplotlib 3.6.0 and Cartopy 0.21.1.', zh: • README称脚本基于Python 3.8.10编写。requirements.txt固定了numpy 1.23.3、pandas 1.5.2、scipy 1.9.1与tqdm 4.64.1；绘图还需要matplotlib 3.6.0与Cartopy 0.21.1。}
 provenance:
 - {en: UAV trajectories on the KU Leuven campus → uplink pilot transmission, zh: KU Leuven校园UAV航迹 → 上行pilot发送}
 - {en: Sky-facing 8×8 antenna array reception → channel estimation, zh: 8×8天线阵列朝天接收 → 信道估计}
 - {en: 'CSI, GPS, and acquisition parameters → bin/csv files and loading scripts', zh: CSI、GPS和采集参数 → bin/csv及读取脚本}
 technical_notes:
-- {en: 'Verified: actual flights and an 8×8 rectangular patch array at a single base station.', zh: 已确认：真实飞行与单基站8×8矩形patch阵列。}
-- {en: 'Inference: actual attitude and hardware variations affect the channel; position changes must be distinguished from antenna directivity effects.', zh: 推断：真实姿态与硬件变化会进入信道，需区分位置变化和天线方向性影响。}
+- {en: 'Confirmed: the base station array is a uniform rectangular array of 8×8 patch elements (64 elements), as stated in the release and in the analysis paper.', zh: 已确认：基站阵列为8×8矩形贴片均匀阵列（64个阵元），与发布说明及分析论文一致。}
+- {en: 'Confirmed: the paper''s sounder uses 32 USRPs with two channels each and one 10 MHz GPS-disciplined oscillator reference distributed through octo-clock splitters.', zh: 已确认：论文测量系统使用32个USRP（每个两路通道），并由一个10 MHz GPS驯服振荡器经octo-clock分配器提供参考时钟。}
+- {en: 'The paper''s campaign used a base-station receive gain of 15 dB. The release also contains g30.0 files, so the gain must be read from each file name.', zh: 论文测量的基站接收增益为15 dB。发布数据还包含g30.0文件，因此需从各文件名读取增益。}
+- {en: Each BIN file is read as big-endian signed 16-bit values scaled by 2^-8. Odd-indexed values form the real part and even-indexed values the imaginary part (binary_interpreter.py)., zh: 每个BIN文件按大端有符号16位整数读取并乘以2^-8。奇数位为实部，偶数位为虚部（binary_interpreter.py）。}
 limitations:
-- {en: Random frame splits within the same flight can cause leakage., zh: 同一flight随机帧拆分易泄漏。}
-- {en: A single fixed BS does not directly test generalization to unseen BSs., zh: 固定单BS不能直接验证unseen-BS泛化。}
-- {en: The generic pop-up text on the RDR website does not establish that this dataset is restricted; the actual file table marks the files as Public., zh: RDR网页通用弹窗文本不是该数据真的受限；实际文件表标Public。}
+- {en: 'The release covers one fixed base station, so it contains no unseen-base-station test condition.', zh: 发布数据仅包含一个固定基站，因此不含未见基站的测试条件。}
+- {en: 'Every BIN file has one user layer (l1), so the release contains no multi-user channel tensors.', zh: 所有BIN文件均为一个用户层（l1），因此发布数据不含多用户信道张量。}
+- {en: 'The 2022 and 2023 files differ in symbol count, subsample rate and gain (for example s40000 with sr1 and g15.0 against s50000 with sr2 and g30.0), so the files are not uniform.', zh: 2022年与2023年文件在符号数、子采样率与增益上不同（例如s40000、sr1、g15.0与s50000、sr2、g30.0），因此文件并不一致。}
 history:
-- {en: '2023-06-22: first public RDR record.', zh: 2023-06-22：RDR首次公开记录。}
-- {en: '2024: original analysis paper in TVT.', zh: 2024：TVT原始分析论文。}
-- {en: '2026-11-05: the portal lists V3.0. Some files have a publication date of 2026-10-02; this is not inferred to be the release date of the entire version.', zh: 2026-11-05：门户标V3.0；部分文件发布日期2026-10-02，未推断为全版本发布日期。}
+- {en: '2023-06-22: first public record in the KU Leuven RDR (publication date).', zh: 2023-06-22：首次在KU Leuven RDR公开（发布日期）。}
+- {en: '2024-05: the analysis paper was published in IEEE TVT, volume 73, issue 5 (Crossref).', zh: 2024年5月：分析论文发表于IEEE TVT第73卷第5期（据Crossref）。}
+- {en: '2026-10-02: version 3.0 was released on the portal; some files keep the 2023-06-22 publication date.', zh: 2026-10-02：门户发布3.0版；部分文件保留2023-06-22的发布日期。}
 usage:
-- {en: 'Read the official Python instructions first, verify the n64 and frequency fields for each file, then associate the GPS records.', zh: 先读取官方Python说明，核对每文件n64和频率字段，再关联GPS。}
-- {en: 'Preserve flight/run groups; compare persistence, a constant-velocity position baseline, and the oracle beam.', zh: 保留flight/run分组；比較persistence、恒速位置基线与oracle beam。}
+- {en: Read README.txt and the two scripts before parsing; the README defines the file-name fields., zh: 解析前先阅读README.txt与两个脚本；README定义了文件名字段。}
+- {en: 'Read BIN files with binary_interpreter.py (read_channel_file), and align them with the CSV logs by time using prepare_data.py.', zh: 使用binary_interpreter.py（read_channel_file）读取BIN文件，并用prepare_data.py按时间与CSV日志对齐。}
+- {en: Downloads require a guestbook. The portal offers the whole release as a 15.8 GB ZIP or as individual files., zh: 下载需填写guestbook。门户提供整包15.8 GB的ZIP，也可单独下载各文件。}
+- {en: Cite the dataset in the form shown on its dataset page; the license is CC BY-NC 4.0., zh: 按数据集页面给出的格式引用；许可为CC BY-NC 4.0。}
 field_notes:
 - label: {en: Paths, zh: 路径}
-  text: {en: 'This field refers to per-path angles at both link ends and interaction records, which the public interface does not provide. Angles, spatial correlation, and related parameters can be estimated from complex array channels. The release record does not directly supply per-path geometric interaction ground truth; estimates depend on array calibration and channel dimensions.', zh: 本栏指逐径双端角度/交互记录，公开接口不提供。可基于复数阵列信道估计角度/空间相关等参数；发布记录没有直接给出逐路径几何交互真值，估计结果取决于阵列标定和信道维度。}
-overview: {en: 'The MaMIMO-UAV 3D Channel State Information dataset was released by Colpaert, Thys, Cui and Pollin of KU Leuven (ESAT) through the KU Leuven Research Data Repository, with a publication date of 22 June 2023. The related paper, 3D Non-Stationary Channel Measurement and Analysis for MaMIMO-UAV Communications, appeared in IEEE Transactions on Vehicular Technology in 2024. A base station on the parking lot in front of the ESAT building uses an 8×8 rectangular patch array pointing towards the sky. A drone flew several trajectories on the KU Leuven campus while transmitting pilot sequences, and the channel between the drone and the base station is estimated from those pilots. File names carry dates from 21 June 2022 and 16 March 2023. The release contains 43 public files, distributed as a 15.8 GB ZIP archive, in BIN data, CSV and Python code formats. The dataset is licensed under CC BY-NC 4.0, and access requires a guestbook.', zh: MaMIMO-UAV 3D 信道状态信息数据集由 KU Leuven（ESAT）的 Colpaert、Thys、Cui
-    和 Pollin 通过 KU Leuven 研究数据存储库发布，发布日期为 2023 年 6 月 22 日。相关论文 3D Non-Stationary Channel Measurement and Analysis for MaMIMO-UAV Communications 发表于 2024 年的 IEEE Transactions on Vehicular Technology。ESAT 大楼前停车场的基站使用 8×8 矩形贴片阵列，阵面朝向天空。无人机在 KU Leuven 校园内沿若干轨迹飞行并发送导频序列，无人机与基站之间的信道由这些导频估计得到。文件名中包含的日期为 2022 年 6 月 21 日和 2023 年 3 月 16 日。数据集共 43 个公开文件，以 15.8 GB 的 ZIP 压缩包分发，格式为 BIN 数据、CSV 和 Python 代码。数据采用 CC BY-NC 4.0 许可，访问需填写 guestbook。}
+  text: {en: 'The release has no per-path delays, angles or interaction records. It supplies channel tensors, GPS and flight logs, and scripts.', zh: 发布数据不含逐径时延、角度或交互记录；仅提供信道张量、GPS与飞行日志及脚本。}
+- label: {en: Geometry, zh: 几何}
+  text: {en: 'In the analysis paper''s campaign, the BS array was 11 m high and the UAV flew at 8, 11 and 24 m, at a constant 1.5 m/s along a straight line.', zh: 分析论文的测量中，基站阵列高11 m，无人机以8、11和24 m的高度、恒定1.5 m/s沿直线飞行。}
+overview: {en: 'The MaMIMO-UAV 3D Channel State Information dataset was released by Colpaert, Thys, Cui and Pollin of KU Leuven (ESAT) through the KU Leuven Research Data Repository, with a publication date of 22 June 2023. A base station on the parking lot in front of the ESAT building has an 8×8 rectangular patch array of 64 elements pointing towards the sky. A drone flew several trajectories over the KU Leuven campus while transmitting pilot sequences, and the channel between the drone and the base station is estimated from those pilots. The release contains 43 public files: 14 BIN channel measurements recorded on 21 June 2022 and 16 March 2023, 23 CSV flight logs with GPS and drone metrics, two Python scripts, two figures, a README and a requirements file. The full download is a 15.8 GB ZIP, and access requires filling in a guestbook. The dataset is licensed under CC BY-NC 4.0. The analysis paper, 3D Non-Stationary Channel Measurement and Analysis for MaMIMO-UAV Communications, appeared
+    in IEEE Transactions on Vehicular Technology in 2024.', zh: MaMIMO-UAV 3D信道状态信息数据集由KU Leuven（ESAT）的Colpaert、Thys、Cui和Pollin通过KU Leuven研究数据存储库发布，发布日期为2023年6月22日。ESAT大楼前停车场的基站设有64个阵元的8×8矩形贴片阵列，阵面朝向天空。无人机在KU Leuven校园内沿若干轨迹飞行并发送导频序列，无人机与基站之间的信道由这些导频估计得到。数据集共43个文件：14个BIN信道测量（记录日期为2022年6月21日和2023年3月16日）、23个含GPS与无人机指标的CSV飞行日志、2个Python脚本、2张图，以及README和依赖文件。完整下载为15.8 GB的ZIP包，访问需填写guestbook。数据采用CC BY-NC 4.0许可。相关分析论文《3D Non-Stationary Channel Measurement and Analysis for MaMIMO-UAV Communications》于2024年发表于IEEE Transactions on Vehicular Technology。}
 signal_details:
 - signal: csi
-  text: {en: 'Channel estimated from pilot sequences transmitted by the drone and received at the base station, which has an 8×8 rectangular patch array of 64 elements. Data files are BIN; the file names contain n64, s40000, s50000 or s80000, sr1 or sr2, f2.610G, and g15.0 or g30.0. The record does not define these name fields.', zh: 由无人机发送的导频序列估计得到，基站接收端为 8×8 矩形贴片阵列，共 64 个阵元。数据文件为 BIN 格式，文件名中包含 n64、s40000、s50000 或 s80000、sr1 或 sr2、f2.610G、g15.0 或 g30.0。记录中未定义这些文件名字段。}
+  text: {en: 'Channel estimates from uplink pilot sequences sent by the drone and received by a base station with an 8×8 rectangular patch array of 64 elements. Each BIN file is one measurement with a tensor of shape S×M×N×F: S captured channels, M = 64 antennas, N users, F = 100 subcarriers. File names encode the start time, antenna count (n64), user layers (l1 means one user), captured symbols (s), subsample rate (sr1 = 0.5 ms, sr2 = 1 ms), center frequency (f2.610G) and receive gain in dB (g15.0 or g30.0).', zh: 由无人机发送的上行导频序列估计得到的信道，基站接收端为8×8矩形贴片阵列，共64个阵元。每个BIN文件为一次测量，张量形状为S×M×N×F：S为采集的信道数，M = 64个天线，N为用户数，F = 100个子载波。文件名包含开始时间、天线数（n64）、用户层（l1表示1个用户）、采集符号数（s）、子采样率（sr1 = 0.5 ms，sr2 = 1 ms）、中心频率（f2.610G）以及接收增益（dB，g15.0或g30.0）。}
+bandwidth_mhz: 18
+subcarriers: 100
+samples: 14 BIN channel measurements and 23 CSV flight logs
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Complex channel tensors per BIN file, shaped S x 64 x 1 x 100 (64 BS antennas, one user layer, 100 subcarriers).', zh: 每个BIN文件为复信道张量，形状为S×64×1×100（64个基站天线、一个用户层、100个子载波）。}
+- {key: cir, status: unknown}
+- key: paths
+  status: none
+  note: {en: 'The README lists no per-path delays, angles or interaction records; the release holds channel tensors, GPS logs and scripts.', zh: README未列出逐径时延、角度或交互记录；发布内容包括信道张量、GPS日志与脚本。}
+- key: interaction
+  status: none
+  note: {en: The release contains no per-path interaction records., zh: 发布内容不含逐径交互记录。}
+- key: power
+  status: derivable
+  note: {en: prepare_data.py computes power as the sum of |H|^2 over antennas and subcarriers; no power field is stored., zh: prepare_data.py将功率计算为各天线与子载波上|H|^2之和；数据中未存储功率字段。}
+- key: iq
+  status: none
+  note: {en: 'The BIN files hold channel estimates from pilots, not raw receiver I/Q samples.', zh: BIN文件保存由导频得到的信道估计，而非原始接收I/Q采样。}
+- key: beam_labels
+  status: derivable
+  note: {en: Beam labels are not stored; they can be computed from the 64-element channel tensors with a chosen codebook., zh: 数据中未存储波束标签；可用所选码本由64阵元信道张量计算。}
+- key: position
+  status: provided
+  note: {en: 'UAV latitude, longitude and height come from the CSV logs and are aligned to each measurement by prepare_data.py.', zh: UAV的纬度、经度与高度来自CSV日志，由prepare_data.py与每次测量对齐。}
+- key: geometry
+  status: none
+  note: {en: The release has no 3D scene or map files; its only campus figure is a trajectory plot., zh: 发布内容没有三维场景或地图文件；仅有一张校园轨迹图。}
+- key: materials
+  status: none
+  note: {en: The release has no material parameters., zh: 发布内容不含材料参数。}
+- key: rgb
+  status: none
+  note: {en: The release has no camera images., zh: 发布内容不含相机图像。}
+- key: depth
+  status: none
+  note: {en: The release has no depth data., zh: 发布内容不含深度数据。}
+- key: lidar
+  status: none
+  note: {en: The release has no lidar data., zh: 发布内容不含激光雷达数据。}
+- key: radar
+  status: none
+  note: {en: The release has no radar data., zh: 发布内容不含雷达数据。}
+- {key: imu, status: unknown}
+- key: time_series
+  status: provided
+  note: {en: 'Each BIN file is an ordered sequence of S channels at 0.5 ms (sr1) or 1 ms (sr2) spacing, with the start time in the file name.', zh: 每个BIN文件是按0.5 ms（sr1）或1 ms（sr2）间隔排列的S个信道的有序序列，起始时间在文件名中。}
+- key: multiuser
+  status: none
+  note: {en: 'Every BIN file has one user layer (l1), so the release holds one UAV.', zh: 每个BIN文件仅有一个用户层（l1），因此发布内容只包含一架UAV。}
+- key: multibs
+  status: none
+  note: {en: The release covers one fixed base station., zh: 发布内容仅覆盖一个固定基站。}
+- key: crossfreq
+  status: none
+  note: {en: Only the 2.610 GHz band is recorded., zh: 仅记录了2.610 GHz频段。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'The analysis paper''s campaign speed is 1.5 m/s (Table I), far below 30 km/h.', zh: 分析论文测量中的速度为1.5 m/s（表I），远低于30 km/h。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The release holds channel estimates and logs only, with no field-level outputs.', zh: 发布内容仅包含信道估计与日志，无场级输出。}
+versions:
+- version: '3.0'
+  date: '2026-10-02'
+  summary: {en: 'Adds 8 BIN channel files and 16 CSV flight logs recorded on 2022-06-21 and 2022-06-22, bringing the release to 14 BIN and 23 CSV files (43 public files).', zh: 新增2022-06-21记录的8个BIN信道文件以及2022-06-21与2022-06-22记录的16个CSV飞行日志，发布内容增至14个BIN文件与23个CSV文件（共43个公开文件）。}
+  url: https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi%3A10.48804%2F0IMQDF
+- version: '2.0'
+  date: '2026-07-14'
+  summary: {en: 'The public file list is identical to version 1.0 (19 files), and the portal records no version note.', zh: 公开文件列表与1.0版相同（19个文件），门户未记录版本说明。}
+  url: https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi%3A10.48804%2F0IMQDF
+- version: '1.0'
+  date: '2023-06-22'
+  summary: {en: 'First public release: 6 BIN channel files recorded on 2023-03-16 with receive gain 30 dB, 7 CSV flight logs, README, two Python scripts and two figures.', zh: 首个公开版本：包含2023-03-16记录的6个BIN信道文件（接收增益30 dB）、7个CSV飞行日志、README、两个Python脚本与两张图。}
+  url: https://rdr.kuleuven.be/dataset.xhtml?persistentId=doi%3A10.48804%2F0IMQDF

@@ -7,101 +7,53 @@ tasks: [channel-modeling, radio-map]
 signals: [pathloss, paths, cir]
 bands_ghz: []
 environment: []
-license: Commercial proprietary license
-access: {url: 'https://2025.help.altair.com/2025/winprop/topics/winprop/user_guide/introduction/overview_winprop_c.htm', type: request}
+license: Altair Units based licensing system
+access: {url: 'https://2025.help.altair.com/2025/winprop/topics/winprop/user_guide/introduction/overview_winprop_c.htm', type: restricted}
 code: []
-sources: ['https://2025.help.altair.com/2025/winprop/topics/winprop/user_guide/introduction/overview_winprop_c.htm']
+sources: ['https://2025.help.altair.com/2025/winprop/topics/winprop/user_guide/introduction/overview_winprop_c.htm', 'https://2025.help.altair.com/2025/winprop/topics/winprop/user_guide/propagation_methods/intro_methods_winprop_c.htm', 'https://2025.help.altair.com/2025/winprop/topics/winprop/user_guide/proman/intro_proman_winprop_c.htm', 'https://2025.help.altair.com/2025/winprop/topics/winprop/user_guide/workflow/intro_workflow_winprop_c.htm', 'https://2025.help.altair.com/2025/winprop/topics/winprop/master/release_notes_winprop.htm']
 aliases: []
 used_in: []
 citing: []
 summary: {en: 'A collection of propagation and wireless-network-planning tools. DPM, SRT, IRT, and empirical models produce different levels of output. The older RadioMapSeer configuration does not represent all current WinProp capabilities.', zh: 传播与无线网络规划工具集合；DPM、SRT、IRT 与经验模型产生不同层次输出。RadioMapSeer 使用的旧配置不能代表 WinProp 当前全部能力。}
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Generate propagation predictions from geometry databases and wireless settings, then export grids or paths. Model and acceleration settings directly affect data fidelity.', zh: 从几何数据库与无线配置生成传播预测，再输出栅格或路径结果。模型与加速设置直接影响数据保真度。}
+  summary: {en: 'Build the geometry, assign antenna patterns, solve propagation in ProMan, and derive network results as post-processing. Model choice sets the accuracy and computation cost of the outputs.', zh: 依次建立几何、导入天线方向图、在 ProMan 中求解传播，并将网络结果作为后处理得到。模型选择决定输出的精度与计算成本。}
   stages:
-  - title: {en: Build the environment database, zh: 建立环境数据库}
-    detail: {en: 'Import or edit the propagation environment so sites, materials, and prediction regions share consistent geometry.', zh: 导入或编辑传播环境，使站点、材料与预测区域使用统一几何。}
+  - title: {en: Build the geometry, zh: 建立几何}
+    detail: {en: 'Create building data in WallMan, tunnel geometry in TuMan, or import a terrain profile into ProMan for rural and suburban scenes. Vector databases carry building heights; pixel databases carry elevations and optional land usage.', zh: 在 WallMan 中创建建筑数据，在 TuMan 中创建隧道几何，或将地形剖面导入 ProMan 用于农村与郊区场景。矢量数据库包含建筑高度；像素数据库包含高程和可选土地利用。}
     inputs:
-    - {en: Building/indoor geometry and terrain, zh: 建筑/室内几何、地形}
-    - {en: Materials and geographic coordinates, zh: 材料和地理坐标}
+    - {en: 'Building, tunnel or terrain data', zh: 建筑、隧道或地形数据}
     outputs:
-    - {en: Scene database for propagation solving, zh: 供传播求解使用的场景数据库}
-    controls:
-    - {en: 'Researcher specifies: 2.5D/3D representation, resolution, building heights, and materials', zh: 研究者固定：2.5D/3D表示、分辨率、建筑高度和材料}
-    checks:
-    - {en: Check consistent terrain/building height references, zh: 检查地形/建筑高度基准一致}
-    - {en: Retain original geometry and simplification rules, zh: 保留原始几何与简化规则}
-  - title: {en: Set sites and prediction grids, zh: 设置站点和预测网格}
-    detail: {en: 'Specify carrier frequency, antennas, transmit power, and receiver prediction plane/height.', zh: 指定载频、天线、发射功率和接收预测平面/高度。}
+    - {en: 'Pixel, 2.5D vector or 3D vector database', zh: 像素、2.5D 矢量或 3D 矢量数据库}
+  - title: {en: Generate antenna patterns, zh: 生成天线方向图}
+    detail: {en: Produce the antenna pattern with Feko or AMan and import it into the project. Linear and circular antenna configurations are supported., zh: 用 Feko 或 AMan 生成天线方向图并导入工程，支持线性和圆形天线配置。}
     inputs:
-    - {en: Scene database, zh: 场景数据库}
-    - {en: 'Tx positions, antennas, and target region', zh: Tx位置、天线与目标区域}
+    - {en: Antenna design, zh: 天线设计}
     outputs:
-    - {en: Site and receiver-grid definitions, zh: 站点与接收栅格定义}
-    controls:
-    - {en: 'Researcher specifies: band, polarization, antenna orientation, grid spacing, and Tx count', zh: 研究者固定：频段、极化、天线方向、网格间距和Tx数量}
-    checks:
-    - {en: Check the pixel-to-meter mapping, zh: 检查像素到米的映射}
-    - {en: Do not treat images for different transmitters as a joint network result at one instant, zh: 避免把不同Tx图像误认为同一个时刻的联合网络结果}
-  - title: {en: Select propagation and acceleration models, zh: 选择传播模型与加速}
-    detail: {en: Choose a dominant-path or ray-tracing model. SRT can accelerate computation using neighboring pixels' path classes and a coarser calculation resolution., zh: 选择主导路径或射线追踪模型；SRT可用邻近像素路径类和较低计算分辨率加速。}
+    - {en: 3D antenna pattern, zh: 三维天线方向图}
+  - title: {en: Select the propagation model, zh: 选择传播模型}
+    detail: {en: 'Choose empirical or semi-empirical models (calibratable with measurements), 3D ray tracing, the standard ray tracing model (SRT), or the urban dominant path model (DPM). The choice depends on the application, its accuracy requirement and the computational budget.', zh: 在经验或半经验模型（可用测量校准）、三维射线追踪、标准射线追踪模型（SRT）或城市主导路径模型（DPM）之间选择。选择取决于应用、精度要求和计算预算。}
     inputs:
-    - {en: Sites/grid, zh: 站点/网格}
-    - {en: 'DPM, SRT, IRT, or another model', zh: DPM、SRT、IRT或其他模型}
+    - {en: Geometry database and site definitions, zh: 几何数据库与站点定义}
+  - title: {en: Solve the propagation project, zh: 求解传播工程}
+    detail: {en: 'ProMan computes path loss, delay and angular spread, LOS/NLOS status, directional channel impulse response, angular profile and propagation paths. SRT can be solved with parallel MPI processes.', zh: ProMan 计算路径损耗、时延扩展与角度扩展、LOS/NLOS 状态、定向信道冲激响应、角度谱和传播路径。SRT 可使用并行 MPI 进程求解。}
     outputs:
-    - {en: Model and accuracy/runtime settings, zh: 模型及精度/运行成本设置}
-    controls:
-    - {en: 'Researcher specifies: model, reflection/diffraction budget, preprocessing, and acceleration options', zh: 研究者固定：模型、反射/绕射预算、预处理和加速选项}
-    checks:
-    - {en: Distinguish DPM dominant-path outputs from complete multipath outputs, zh: 区分DPM主导路径与完整多径输出}
-    - {en: Record tile/grid and path limits; "WinProp" alone is insufficient, zh: 记录tile/栅格与路径限制，不能仅写WinProp}
-  - title: {en: Solve and save physical results, zh: 求解并保存物理结果}
-    detail: {en: Compute predictions such as propagation loss/received power. Detailed path or CIR outputs depend on the selected model and output configuration., zh: 计算传播损耗/接收功率等预测；是否输出详细路径或CIR依所选模型和输出配置。}
-    inputs:
-    - {en: Complete solver settings, zh: 完整求解设置}
+    - {en: Propagation results per receiver location, zh: 各接收位置的传播结果}
+  - title: {en: Run network planning or batch jobs, zh: 运行网络规划或批处理}
+    detail: {en: Network planning is post-processing of the propagation results and yields coverage maps and capacity results. WinPropCLI runs projects in batch mode and can be used with queuing systems; the C API integrates WinProp into other tools., zh: 网络规划是传播结果的后处理，输出覆盖图和容量结果。WinPropCLI 以批处理方式运行工程，可接入队列系统；C 语言 API 可将 WinProp 集成到其他工具中。}
     outputs:
-    - {en: Propagation-prediction grids, zh: 传播预测栅格}
-    - {en: Paths/CIR when supported by the configuration, zh: 配置支持时的路径/CIR}
-    controls:
-    - {en: 'Researcher specifies: output quantity, dB definition, no-coverage encoding, and receiver height', zh: 研究者固定：输出量、dB定义、无覆盖编码和接收高度}
-    checks:
-    - {en: Check whether transmit power is already included in the output, zh: 核对发射功率是否已计入结果}
-    - {en: 'Distinguish zeros, missing data, and threshold-clipped pixels', zh: 区分零、无数据与被阈值裁剪的像素}
-  - title: {en: Create a dataset or evaluate the network, zh: 制作数据集或网络评价}
-    detail: {en: Encode floating-point maps as arrays/images or use them in planning metrics. Retain the physical-value-to-pixel conversion before training., zh: 将浮点地图编码为数组/图像，或接入规划指标；训练前保留物理值到像素的转换。}
-    inputs:
-    - {en: Physical results and grid metadata, zh: 物理结果与网格元数据}
-    - {en: Researcher-defined quantization/splitting rules, zh: 研究者定义的量化/切分规则}
-    outputs:
-    - {en: Map dataset, zh: 地图数据集}
-    - {en: 'Coverage, interference, or planning labels', zh: 覆盖、干扰或规划标签}
-    controls:
-    - {en: 'Researcher specifies: clipping range, quantization precision, and map/site splits', zh: 研究者固定：裁剪范围、量化精度、地图/站点划分}
-    checks:
-    - {en: A single power map cannot recover complex CSI, zh: 不能由单一功率图恢复复数CSI}
-    - {en: Separate high-fidelity simulation references from measured ground truth, zh: 高精度仿真参照与真实测量ground truth分开}
-  scope: {en: 'WinProp propagation/planning workflow; select DPM, SRT, or IRT and record the dataset''s specific configuration separately.', zh: WinProp传播/规划工作流；DPM、SRT和IRT分别选择，数据集的具体配置另记。}
+    - {en: Coverage maps and capacity results, zh: 覆盖图与容量结果}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Model-generated propagation-prediction grids
-
-      • Optional paths/CIR and planning results', zh: '• 按模型生成的传播预测栅格
-
-      • 可选路径/CIR与规划结果'}
-- label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Normalized PNG/array maps
-
-      • Coverage/outage and multisite power-domain decisions', zh: '• 归一化PNG/数组地图
-
-      • coverage/outage及多站功率域决策'}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• See the RadioMapSeer and RadioMapMotion cards for their propagation models, dynamic processing, and encodings.
-
-      • The 2026 pulse-radar capability is not a field already included in existing radio-map packages.', zh: '• RadioMapSeer、RadioMapMotion各自的传播模型、动态处理和编码方式见对应卡片。
-
-      • 2026 pulse radar能力不是既有无线地图包自带字段。'}
+  text: {en: 'Path loss, delay spread and angular spread, LOS/NLOS status, directional channel impulse response, angular profile and propagation paths.', zh: 路径损耗、时延扩展与角度扩展、LOS/NLOS 状态、定向信道冲激响应、角度谱和传播路径。}
+- label: {en: Network outputs, zh: 网络输出}
+  text: {en: 'Coverage maps (cell assignment, best server, active set, channel quality, received power, SINR) and capacity results (throughput, maximum data rates, packet delays, QoS).', zh: 覆盖图（小区分配、最佳服务小区、active set、信道质量、接收功率、SINR）以及容量结果（吞吐量、最大数据速率、分组时延、QoS）。}
+- label: {en: Database types, zh: 数据库类型}
+  text: {en: Pixel databases store elevations and optional land usage per pixel and are typical for rural and suburban scenarios. 2.5D vector databases store building footprints with heights for urban scenarios. 3D vector databases store flat polygons with arbitrary orientation for indoor and small outdoor scenarios., zh: 像素数据库按像素存储高程和可选土地利用，常用于农村与郊区场景。2.5D 矢量数据库以多边形轮廓及高度描述城市建筑。3D 矢量数据库以任意朝向的平面多边形描述室内及小型室外场景。}
+- label: {en: Antenna input, zh: 天线输入}
+  text: {en: 'Antenna patterns can be imported from Feko, and AMan generates, edits and analyzes single antennas.', zh: 天线方向图可从 Feko 导入，AMan 用于生成、编辑和分析单个天线。}
+- label: {en: Interfaces, zh: 接口}
+  text: {en: 'WinPropCLI runs projects without the GUI on Windows and Linux and can be used with queuing systems such as PBS, Torque, LSF and GridEngine. A C API is provided for integration.', zh: WinPropCLI 可在 Windows 和 Linux 上无图形界面运行工程，可用于 PBS、Torque、LSF、GridEngine 等队列系统。同时提供用于集成的 C 语言 API。}
 provenance:
 - {en: 2.5D/3D geometry and terrain, zh: 2.5D/3D 几何、地形}
 - {en: DPM/IRT/SRT/empirical propagation models, zh: DPM/IRT/SRT/经验传播模型}
@@ -109,20 +61,18 @@ provenance:
 - {en: Planning or link calculations, zh: 规划或链路计算}
 - {en: User-exported data, zh: 用户导出数据}
 technical_notes:
-- {en: 'Confirmed: DPM''s dominant-path approach is not equivalent to full multipath SRT.', zh: 已确认：DPM 主导路径方法不等同完整多径 SRT。}
-- {en: 'Confirmed: SRT can accelerate computation using neighboring pixels'' path classes or reduced resolution; record these settings.', zh: 已确认：SRT 可使用邻近像素路径类或降低分辨率加速，需记录这些选项。}
-- {en: 'Confirmed: the 2026 release notes add pulse radar and support for multiple bistatic RCS interactions.', zh: 已确认：2026 发布说明新增 pulse radar 和多次 bistatic RCS 交互支持。}
+- {en: 'The Methods page lists empirical and semi-empirical models (calibration with measurements possible), 3D ray tracing, and the dominant path model (DPM). The ProMan page names the standard ray tracing model (SRT).', zh: 方法页面列出经验与半经验模型（可用测量校准）、三维射线追踪和主导路径模型（DPM）。ProMan 页面将标准射线追踪模型称为 SRT。}
+- {en: Several methods are fully three-dimensional and compute all rays in 3D; others consider only the vertical plane., zh: 部分方法为完全三维方法，在三维空间中计算所有射线；其他方法仅考虑垂直平面。}
 limitations:
-- {en: DPM-versus-IRT map differences include model-approximation differences and should not be described as measured domain differences., zh: DPM 与 IRT 地图差异同时包含模型近似差异，不能称为真实实测域差异。}
-- {en: 'Distinguish 2D footprints, 2.5D buildings, and complete 3D meshes.', zh: 二维 footprint、2.5D 建筑与完整三维 mesh 必须区分。}
-history:
-- {en: '2026: official release notes describe SRT acceleration, pulse radar, and bistatic RCS improvements.', zh: 2026：官方 release notes 列出 SRT 加速、pulse radar 与 bistatic RCS 改进。}
+- {en: Methods that focus on the vertical plane do not compute rays in three dimensions., zh: 仅关注垂直平面的方法不在三维空间中计算射线。}
+history: []
 usage:
-- {en: Decide whether the task needs power maps or complex multipath before choosing a model., zh: 选择模型前先决定需要功率图还是复数多径。}
-- {en: 'Fix buildings/materials, grids, interaction limits, and acceleration settings.', zh: 固定建筑/材料、网格、交互上限与加速选项。}
-- {en: Save project files and definitions of exported variables; retain the power-to-image conversion separately., zh: 保存项目文件和导出变量定义；单独保留功率到图像的转换。}
-overview: {en: 'Altair WinProp is a commercial suite of tools for wireless propagation and radio network planning, published by Altair Engineering. The documentation covers radio links from satellite to terrestrial and from rural through urban to indoor scenarios. The suite includes the ProMan propagation models and network planners, the WallMan, TuMan and AMan editors for building, tunnel and antenna data, and a command-line interface (WinPropCLI) and API for batch runs. Prediction methods are empirical and semi-empirical models (calibration with measurements is possible), 3D ray tracing, and the urban dominant path model (DPM). Geometry is supplied as a pixel database for rural or suburban areas, a 2.5D vector database of buildings with heights for urban areas, or a 3D vector database of polygons for indoor and small outdoor scenes. Outputs include path loss, delay and angular spread, LOS/NLOS status, directional channel impulse response, angular profile and propagation paths, and coverage
-    and capacity results derived from them.', zh: Altair WinProp 是 Altair Engineering 发布的商业无线传播与无线网络规划工具套件。文档涵盖从卫星到地面、从农村、城市到室内的无线链路。套件包括 ProMan 传播模型与网络规划模拟器，用于建筑、隧道和天线数据的 WallMan、TuMan、AMan 编辑工具，以及用于批处理的命令行接口（WinPropCLI）和 API。预测方法包括经验模型与半经验模型（可用测量数据校准）、三维射线追踪以及城市主导路径模型（DPM）。几何数据可采用用于农村或郊区的像素数据库、用于城市且带高度信息的 2.5D 矢量数据库，或用于室内及小型室外场景的三维矢量数据库。输出包括路径损耗、时延扩展与角度扩展、LOS/NLOS 状态、定向信道冲激响应、角度谱和传播路径，并由此计算覆盖与容量结果。}
+- {en: 'Select the propagation model for the application: the Methods page notes that models differ in assumptions, prediction accuracy and computational resources.', zh: 按应用选择传播模型：方法页面指出，各模型在假设、预测精度和计算资源方面存在差异。}
+- {en: 'Geometry comes from WallMan (vector building data and time-variant object motion), TuMan (tunnels), or a terrain profile imported into ProMan for rural and suburban scenarios.', zh: 几何数据来自 WallMan（矢量建筑数据及随时间变化的对象运动）、TuMan（隧道）或导入 ProMan 的地形剖面（农村与郊区场景）。}
+- {en: Antenna patterns are produced in Feko or AMan and imported into the project., zh: 天线方向图由 Feko 或 AMan 生成，并导入工程。}
+- {en: 'Batch runs use WinPropCLI, and SRT can be solved with parallel MPI processes.', zh: 批量运行可使用 WinPropCLI，SRT 可用并行 MPI 进程求解。}
+overview: {en: 'Altair WinProp is a commercial suite of tools for wireless propagation and radio network planning, published by Altair Engineering. Its documentation covers radio links from satellite to terrestrial and from rural through urban to indoor scenarios. ProMan contains the propagation models and network planners for various air interfaces, while WallMan, TuMan and AMan are editors for building, tunnel and antenna data. Prediction methods include empirical and semi-empirical models that can be calibrated with measurements, rigorous 3D ray tracing, and the urban dominant path model (DPM). Geometry is supplied as a pixel database for rural or suburban areas, a 2.5D vector database of buildings with heights for urban areas, or a 3D vector database of polygons for indoor and small outdoor scenes. Outputs include path loss, delay and angular spread, LOS/NLOS status, directional channel impulse response, angular profile, propagation paths, and coverage and capacity results derived from
+    them. The WinProp command line interface (WinPropCLI) runs projects in batch mode, and a C API supports integration into other tools.', zh: Altair WinProp 是 Altair Engineering 发布的商业无线传播与无线网络规划工具套件。其文档涵盖从卫星到地面、从农村、城市到室内的无线链路。ProMan 包含面向各类空口的传播模型与网络规划模拟器，WallMan、TuMan 和 AMan 则分别是建筑、隧道和天线数据的编辑工具。预测方法包括可用测量数据校准的经验与半经验模型、严格的三维射线追踪，以及城市主导路径模型（DPM）。几何数据可采用用于农村或郊区的像素数据库、用于城市且带高度信息的建筑 2.5D 矢量数据库，或用于室内及小型室外场景的三维多边形矢量数据库。输出包括路径损耗、时延扩展与角度扩展、LOS/NLOS 状态、定向信道冲激响应、角度谱、传播路径，以及由此得到的覆盖与容量结果。WinProp 命令行接口（WinPropCLI）可批量运行工程，C 语言 API 则支持与其他工具集成。}
 signal_details:
 - signal: pathloss
   text: {en: 'Path loss is predicted for each receiver location. For urban scenarios the documented methods are the COST 231 extended Walfisch-Ikegami model, an empirical vertical-plane model with knife-edge diffraction, the urban dominant path model (DPM) and a 3D ray-tracing model. Delay spread and angular spread can be computed in the same analysis.', zh: 为每个接收位置预测路径损耗。城市场景的文档化方法包括 COST 231 扩展 Walfisch-Ikegami 模型、带刀刃绕射的经验垂直平面模型、城市 DPM 以及三维射线追踪模型。同一分析中还可计算时延扩展和角度扩展。}
@@ -130,3 +80,65 @@ signal_details:
   text: {en: 'Propagation paths are listed among the outputs. Several methods are fully three-dimensional and compute all rays in 3D, while others consider only the vertical plane.', zh: 传播路径列于输出之中。部分方法为完全三维方法，在三维空间中计算所有射线；其他方法仅考虑垂直平面。}
 - signal: cir
   text: {en: 'The directional channel impulse response is one of the outputs. Linear and circular antenna configurations are taken into account in the propagation analysis, and antenna patterns can be imported from sources including Feko.', zh: 定向信道冲激响应是输出之一。线性和圆形等天线配置在传播分析中一并计算，天线方向图可从 Feko 等来源导入。}
+capabilities:
+- key: csi
+  status: simulate
+  note: {en: The native complex output is the directional channel impulse response; MIMO at both base station and mobile station can be set up in a time-variant scenario., zh: 原生复数输出为定向信道冲激响应；可在时变场景中设置基站与移动台两端的 MIMO。}
+- key: cir
+  status: simulate
+  note: {en: Directional channel impulse response is a native output of the propagation analysis., zh: 定向信道冲激响应是传播分析的原生输出。}
+- key: paths
+  status: simulate
+  note: {en: Propagation paths are listed among the outputs of the analysis., zh: 传播路径列于分析输出之中。}
+- {key: interaction, status: unknown}
+- key: power
+  status: simulate
+  note: {en: Path loss is predicted for each receiver location; received power appears in network planning results., zh: 为每个接收位置预测路径损耗；接收功率见于网络规划结果。}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- {key: position, status: unknown}
+- key: geometry
+  status: simulate
+  note: {en: 'Building, tunnel and terrain databases are created in WallMan, TuMan or imported into ProMan; they are project inputs.', zh: 建筑、隧道与地形数据库在 WallMan、TuMan 中创建或导入 ProMan；它们是工程输入。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: No image sensor data is stated among the outputs., zh: 输出中未列出图像传感器数据。}
+- key: depth
+  status: none
+  note: {en: No depth data is stated among the outputs., zh: 输出中未列出深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR or point-cloud data is stated among the outputs., zh: 输出中未列出激光雷达或点云数据。}
+- key: radar
+  status: simulate
+  note: {en: Radar cross section patterns from Feko can be imported for automotive radar simulations., zh: 可导入 Feko 计算的雷达截面方向图，用于汽车雷达仿真。}
+- key: imu
+  status: none
+  note: {en: No motion sensor data is stated among the outputs., zh: 输出中未列出运动传感器数据。}
+- key: time_series
+  status: simulate
+  note: {en: Time-variant scenarios and dynamic network simulators are documented; the sequence requires running the project., zh: 文档记载了时变场景与动态网络仿真器；时间序列需通过运行工程得到。}
+- key: multiuser
+  status: simulate
+  note: {en: 'Static, Monte-Carlo and dynamic network simulators with location-dependent traffic are available.', zh: 提供静态、蒙特卡洛与动态网络仿真器，并支持随位置变化的业务量。}
+- key: multibs
+  status: simulate
+  note: {en: Multi-cell network planning is post-processing of the propagation results., zh: 多小区网络规划是传播结果的后处理。}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- {key: reflection, status: unknown}
+- key: diffraction
+  status: simulate
+  note: {en: Knife-edge diffraction is part of the empirical vertical-plane model for urban scenarios., zh: 刀口绕射是城市场景经验垂直平面模型的组成部分。}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: '2025'
+  date: '2025'
+  summary: {en: 'Altair WinProp 2025 documentation edition, covering ProMan propagation models, WallMan, TuMan, AMan, WinPropCLI and the C API. The linked release notes page lists Altair Feko releases from 2023 to 2025 and gives no WinProp-specific version list.', zh: Altair WinProp 2025 文档版，涵盖 ProMan 传播模型、WallMan、TuMan、AMan、WinPropCLI 与 C API。其链接的发布说明页面列出的是 2023 至 2025 年的 Altair Feko 版本，未给出 WinProp 专属版本列表。}
+  url: https://2025.help.altair.com/2025/winprop/topics/winprop/user_guide/introduction/overview_winprop_c.htm

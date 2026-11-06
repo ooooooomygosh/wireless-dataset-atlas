@@ -14,13 +14,13 @@ paper: doi:10.3390/data3010003
 used_in: []
 citing: ['doi:10.1109/twc.2021.3052606', 'doi:10.1109/tmc.2020.3017176', 'doi:10.1109/jiot.2019.2932464']
 summary: {en: 'The dataset contains 103,584 Wi-Fi RSS fingerprints, mainly from one Android smartphone, collected over 25 months on two floors of a university library building and organized into collection campaigns. MATLAB scripts for loading and filtering the data are included.', zh: '数据集包含103,584条Wi-Fi RSS指纹，主要由一部Android智能手机采集，历时25个月，覆盖大学图书馆建筑的两层楼，并按采集批次组织。数据集同时包含用于加载和过滤数据的MATLAB脚本。'}
-sources: ['https://zenodo.org/records/3748719', 'https://zenodo.org/records/1066041', 'https://api.crossref.org/works/10.3390/data3010003']
+sources: ['https://zenodo.org/records/3748719', 'https://zenodo.org/records/1066041', 'https://api.crossref.org/works/10.3390/data3010003', 'https://zenodo.org/api/records/3748719', 'https://zenodo.org/api/records/1066041', 'https://api.semanticscholar.org/graph/v1/paper/DOI:10.3390/data3010003?fields=title,abstract,year,venue', 'https://zenodo.org/api/records/3748719/versions', 'https://zenodo.org/api/records/1309317', 'https://zenodo.org/api/records/1478083']
 checked: '2026-11-06'
-overview: {en: 'The UJI Long-Term Wi-Fi Fingerprinting dataset is a Wi-Fi RSS database for indoor positioning, produced at Universitat Jaume I. The Zenodo citation request names G. M. Mendoza-Silva, P. Richter, J. Torres-Sospedra, E. S. Lohan and J. Huerta, and the first version was published in 2017. A trained professional collected the measurements with mainly one Android smartphone, at fixed positions and directions in the library building of Universitat Jaume I, on two floors. At each position the professional took several consecutive fingerprints, which allows the study of short-term signal variation. In each monthly campaign, one training dataset type and five test dataset types were recorded at the same positions and directions, which allows the study of long-term variation. The current version 2.2 contains 103,584 fingerprints over 25 months, and the first version had 63,504 fingerprints over 15 months. The archive is 6.5 MB and includes MATLAB scripts that load and filter the data,
-    and it is released under the MIT license.', zh: 'UJI Long-Term Wi-Fi Fingerprinting 数据集是一个用于室内定位的 Wi-Fi RSS 数据库，由 Universitat Jaume I 制作。Zenodo 引用说明列出的作者为 G. M. Mendoza-Silva、P. Richter、J. Torres-Sospedra、E. S. Lohan 和 J. Huerta，首个版本发布于 2017 年。测量由一名经过培训的专业人员主要使用一部 Android 智能手机，在 Universitat Jaume I 图书馆建筑的两层楼中，于固定位置和固定朝向完成。在每个位置上，该人员连续采集多条指纹，可用于研究短期信号变化。每个月的采集中，训练集类型一种、测试集类型五种，均在相同位置和朝向上采集，可用于研究长期信号变化。当前 2.2 版包含 103,584 条指纹，历时 25 个月；首个版本包含 63,504 条指纹，历时 15 个月。压缩包大小为 6.5 MB，包含用于加载和过滤数据的 MATLAB 脚本，采用 MIT 许可。'}
+overview: {en: 'The UJI Long-Term Wi-Fi Fingerprinting dataset is a Wi-Fi RSS database for indoor positioning, hosted on Zenodo and collected in the library building of Universitat Jaume I. A trained professional collected the measurements with mainly one Android smartphone at fixed positions and directions on two floors of the building. At each position the professional took several consecutive fingerprints, which is intended for studying short-term signal variation. Each dataset is the result of one collection campaign, and each dataset type was measured at the same positions and directions every month, which supports the study of long-term signal variation. Version 2.2 contains 103,584 fingerprints over 25 months, and version 1 contains 63,504 fingerprints over 15 months. The archive is 6.5 MB, released under the MIT license, and includes MATLAB scripts that load and filter the data.', zh: 'UJI Long-Term Wi-Fi Fingerprinting 数据集是一个用于室内定位的 Wi-Fi RSS 数据库，托管于 Zenodo，采集地点为 Universitat Jaume
+    I 的图书馆建筑。经过培训的专业人员主要使用一部 Android 智能手机，在建筑两层楼的固定位置和固定朝向上完成采集。在每个位置上，该人员连续采集多条指纹，用于研究短期信号变化。每个数据集是一次采集批次的结果，每种数据集类型每月都在相同位置和朝向上采集，可用于研究长期信号变化。2.2 版包含 103,584 条指纹，历时 25 个月；第一版包含 63,504 条指纹，历时 15 个月。压缩包大小为 6.5 MB，采用 MIT 许可，包含用于加载和过滤数据的 MATLAB 脚本。'}
 signal_details:
 - signal: rssi
-  text: {en: 'Wi-Fi RSS fingerprints. Version 1 was collected with a Samsung Galaxy S3, and version 2.2 adds a Samsung Galaxy A5 (2017) for the final campaign. Version 2.2 holds 103,584 fingerprints, organized into datasets by collection campaign.', zh: 'Wi-Fi RSS 指纹。第一版使用 Samsung Galaxy S3 采集，2.2 版在最后一次采集中加入 Samsung Galaxy A5（2017）。2.2 版共 103,584 条指纹，按采集批次组织为数据集。'}
+  text: {en: 'Wi-Fi RSS fingerprints. Version 1 used a Samsung Galaxy S3 over 15 months. Version 2 adds 10 months, and its final campaign (month 25) used a Samsung Galaxy A5 (2017). Version 2.2 holds 103,584 fingerprints, organized into datasets by collection campaign.', zh: 'Wi-Fi RSS 指纹。第一版使用 Samsung Galaxy S3 采集，历时 15 个月。第二版增加 10 个月的数据，其最后一次采集（第 25 个月）使用 Samsung Galaxy A5（2017）。2.2 版共 103,584 条指纹，按采集批次组织为数据集。'}
 pipeline:
   summary: {en: Fingerprints were collected at fixed positions and directions in repeated monthly campaigns and organized into training and test datasets., zh: 在固定位置和朝向上，经多次按月采集的指纹被组织为训练集和测试集。}
   stages:
@@ -31,7 +31,7 @@ pipeline:
     outputs:
     - {en: Consecutive RSS fingerprints per position, zh: 每个位置的连续 RSS 指纹}
   - title: {en: Monthly campaigns, zh: 按月采集}
-    detail: {en: 'Each month yields one training dataset type and five test dataset types. Version 1 covers 15 months, and version 2 adds 10 months, for 25 months in total. The Samsung Galaxy A5 (2017) was used in the final campaign.', zh: 每个月采集一种训练集类型和五种测试集类型。第一版覆盖 15 个月，第二版增加 10 个月，共 25 个月。最后一次采集使用了 Samsung Galaxy A5（2017）。}
+    detail: {en: 'The 2018 paper describes one training dataset type and five test dataset types for each monthly campaign. Version 1 covers 15 months, and version 2 adds 10 months, for 25 months in total. The final campaign used a Samsung Galaxy A5 (2017).', zh: 2018 年论文描述，每次按月采集包含一种训练数据集类型和五种测试数据集类型。第一版覆盖 15 个月，第二版增加 10 个月，共 25 个月。最后一次采集使用了 Samsung Galaxy A5（2017）。}
     inputs:
     - {en: Monthly fingerprint sets, zh: 每月的指纹集合}
     outputs:
@@ -42,3 +42,101 @@ pipeline:
     - {en: Dataset archive (zip), zh: 数据集压缩包（zip）}
     outputs:
     - {en: Filtered training and test data, zh: 过滤后的训练和测试数据}
+size_gb: 0.0065
+facts:
+- label: {en: Campaign structure, zh: 采集批次结构}
+  text: {en: Each dataset is the result of one collection campaign., zh: 每个数据集都是一次采集批次的结果。}
+- label: {en: Same positions every month, zh: 每月相同位置}
+  text: {en: 'Each dataset type was measured at the same positions and directions in every month, which allows long-term signal variation to be compared.', zh: 每种数据集类型每月都在相同位置和朝向上采集，因此可以比较长期信号变化。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no complex channel data are released., zh: 仅提供 Wi-Fi RSS 指纹，不提供复数信道数据。}
+- key: cir
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no impulse response is released., zh: 仅提供 Wi-Fi RSS 指纹，不提供信道冲激响应。}
+- key: paths
+  status: none
+  note: {en: RSS fingerprints carry no per-path parameters., zh: RSS 指纹不包含逐径参数。}
+- key: interaction
+  status: none
+  note: {en: RSS fingerprints carry no per-path interaction information., zh: RSS 指纹不包含逐径交互信息。}
+- key: power
+  status: provided
+  note: {en: 'Wi-Fi RSS fingerprints; 103,584 in v2.2.', zh: 'Wi-Fi RSS 指纹；2.2 版共 103,584 条。'}
+- key: iq
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no raw I/Q samples are released., zh: 仅提供 Wi-Fi RSS 指纹，不提供原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no beam measurements are described., zh: 仅提供 Wi-Fi RSS 指纹，未描述任何波束测量。}
+- key: position
+  status: provided
+  note: {en: 'Fixed reference positions and facing directions, with bookshelf-local coordinates in the supporting material.', zh: 固定的参考位置与朝向；补充材料中给出书架的局部坐标。}
+- {key: geometry, status: unknown}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: The archive is described as a Wi-Fi measurement database with MATLAB scripts and bookshelf coordinates., zh: 该压缩包被描述为 Wi-Fi 测量数据库，附 MATLAB 脚本和书架坐标。}
+- key: depth
+  status: none
+  note: {en: The archive is described as a Wi-Fi measurement database with MATLAB scripts and bookshelf coordinates., zh: 该压缩包被描述为 Wi-Fi 测量数据库，附 MATLAB 脚本和书架坐标。}
+- key: lidar
+  status: none
+  note: {en: The archive is described as a Wi-Fi measurement database with MATLAB scripts and bookshelf coordinates., zh: 该压缩包被描述为 Wi-Fi 测量数据库，附 MATLAB 脚本和书架坐标。}
+- key: radar
+  status: none
+  note: {en: The archive is described as a Wi-Fi measurement database with MATLAB scripts and bookshelf coordinates., zh: 该压缩包被描述为 Wi-Fi 测量数据库，附 MATLAB 脚本和书架坐标。}
+- key: imu
+  status: none
+  note: {en: The archive is described as a Wi-Fi measurement database with MATLAB scripts and bookshelf coordinates., zh: 该压缩包被描述为 Wi-Fi 测量数据库，附 MATLAB 脚本和书架坐标。}
+- key: time_series
+  status: provided
+  note: {en: 'Monthly campaigns repeat the same positions over 25 months, with one dataset per campaign.', zh: 每月的采集在相同位置重复进行，共 25 个月，每次采集对应一个数据集。}
+- key: multiuser
+  status: none
+  note: {en: 'Each campaign has one collector, and no simultaneous users are described.', zh: 每次采集由一人完成，未描述同时存在的多个用户。}
+- key: multibs
+  status: provided
+  note: {en: 'Each fingerprint is a Wi-Fi RSS vector over access points, not cellular base stations.', zh: 每个指纹是接入点（而非蜂窝基站）上的 Wi-Fi RSS 向量。}
+- {key: crossfreq, status: unknown}
+- key: near_field
+  status: none
+  note: {en: RSS fingerprints carry no array or antenna model., zh: RSS 指纹不包含阵列或天线模型。}
+- key: high_mobility
+  status: none
+  note: {en: Measurements are taken at fixed positions and fixed facing directions; no speed is reported., zh: 测量在固定位置和固定朝向上进行；未报告速度。}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 由测量本身包含，未按径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Wi-Fi RSS fingerprints only; no field-level outputs are described., zh: 仅提供 Wi-Fi RSS 指纹，未描述任何场级输出。}
+versions:
+- version: '2.2'
+  date: '2020-04-11'
+  summary: {en: 'Zenodo release of UJI_LIB_DB_v2.2.zip (6.47 MB); the record keeps the 25-month, 103,584-fingerprint description of v2.0 and v2.1 and does not state what changed.', zh: '以 UJI_LIB_DB_v2.2.zip（6.47 MB）发布于 Zenodo；记录沿用 2.0 和 2.1 版的 25 个月、103,584 条指纹描述，未说明相对 2.1 的改动。'}
+  url: https://zenodo.org/records/3748719
+- version: '2.1'
+  date: '2018-11-06'
+  summary: {en: 'Zenodo release of UJI_LIB_DB_v2.1.zip with the same 25-month, 103,584-fingerprint description as v2.0; the record does not state what changed from 2.0.', zh: '以 UJI_LIB_DB_v2.1.zip 发布于 Zenodo，描述与 2.0 版相同（25 个月，103,584 条指纹）；记录未说明相对 2.0 的改动。'}
+  url: https://zenodo.org/records/1478083
+- version: '2.0'
+  date: '2018-08-17'
+  summary: {en: 'Extends the collection to 25 months and 103,584 fingerprints; V1 covered 15 months and 63,504 fingerprints.', zh: '将采集期延长至 25 个月，指纹数增至 103,584 条；V1 版覆盖 15 个月，共 63,504 条指纹。'}
+  url: https://zenodo.org/records/1309317
+- version: V1
+  date: '2017-11-24'
+  summary: {en: 'First Zenodo release (UJI_LIB_DB.zip): 63,504 fingerprints over 15 months from one Android smartphone at two floors of the library, with MATLAB loading and filtering scripts.', zh: '首个 Zenodo 版本（UJI_LIB_DB.zip）：在图书馆两层楼采集的 63,504 条指纹，历时 15 个月，使用一部 Android 智能手机，附 MATLAB 加载与过滤脚本。'}
+  url: https://zenodo.org/records/1066041

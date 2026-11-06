@@ -7,7 +7,7 @@ tasks: [modulation-classification]
 signals: [iq]
 bands_ghz: []
 environment: []
-samples: 5 million synthetically-generated samples from 53 signal classes
+samples: about 6.5 million examples in four sub-datasets (1M clean training, 106k clean validation, 5.3M impaired training, 106k impaired validation); the abstract states 5 million
 license: MIT
 access: {url: 'https://github.com/torchdsp/torchsig', type: open}
 code: ['https://github.com/torchdsp/torchsig']
@@ -15,7 +15,7 @@ paper: arxiv:2207.09918
 used_in: []
 citing: ['doi:10.1109/lcomm.2024.3474519', 'doi:10.1109/icmlcn64995.2025.11140224']
 summary: {en: 'Synthetic I/Q samples from 53 signal classes, 5 million samples in total, generated with the TorchSig toolkit and including selected channel impairments.', zh: 来自 53 类信号的合成 I/Q 样本，共 500 万个样本，由 TorchSig 工具包生成，并包含经过选择的信道损伤。}
-sources: ['https://arxiv.org/abs/2207.09918', 'https://arxiv.org/html/2207.09918v1', 'https://github.com/torchdsp/torchsig']
+sources: ['https://arxiv.org/abs/2207.09918', 'https://arxiv.org/html/2207.09918v1', 'https://github.com/torchdsp/torchsig', 'https://raw.githubusercontent.com/TorchDSP/torchsig/main/README.md', 'https://raw.githubusercontent.com/TorchDSP/torchsig/main/LICENSE.md', 'https://github.com/TorchDSP/torchsig/releases', 'https://github.com/TorchDSP/torchsig/releases/tag/v2.2.0', 'https://github.com/TorchDSP/torchsig/releases/tag/v2.1.1', 'https://github.com/TorchDSP/torchsig/releases/tag/v2.1.0', 'https://github.com/TorchDSP/torchsig/releases/tag/v2.0.0', 'https://github.com/TorchDSP/torchsig/releases/tag/v1.1.0', 'https://github.com/TorchDSP/torchsig/releases/tag/v1.0.0', 'https://github.com/TorchDSP/torchsig/releases/tag/v1.0.0-beta', 'https://github.com/TorchDSP/torchsig/releases/tag/v0.6.0', 'https://pypi.org/pypi/torchsig/json']
 checked: '2026-11-06'
 overview: {en: 'Sig53 is a synthetic I/Q dataset of 53 signal classes for radio-frequency signal classification, introduced in arXiv:2207.09918 in 2022 by Luke Boegner et al., together with the TorchSig toolkit. The abstract states 5 million samples. Section 3 lists four sub-datasets (clean training 1M, clean validation 106k, impaired training 5.3M, impaired validation 106k) and describes the total as over 6 million examples. The 53 classes come from six modulation families: ASK, PAM, PSK, QAM, FSK and OFDM. Each example is 4096 complex-valued I/Q samples. The clean sets contain signals with minimal impairments, and the impaired sets add randomized pulse shaping, AWGN at Es/N0 uniformly distributed from -2 to 30 dB, and six further channel effects. All samples are synthetically generated, and the paper''s experiments use ConvNets and Transformers for classification. The TorchSig toolkit, released under the MIT license, can regenerate the dataset or create variants, including on-the-fly generation
     during training.', zh: 'Sig53 是用于射频信号分类的合成 I/Q 数据集，包含 53 类信号，由 Luke Boegner 等人于 2022 年在 arXiv:2207.09918 发布，并附带生成工具 TorchSig。摘要称共 500 万个样本；第 3 节列出四个子数据集（干净训练集 100 万、干净验证集 10.6 万、受损训练集 530 万、受损验证集 10.6 万），并称总数超过 600 万个样本。53 类信号来自六个调制族：ASK、PAM、PSK、QAM、FSK 与 OFDM。每个样本为 4096 个复数 I/Q 采样。干净集中的信号损伤最少；受损集额外加入随机脉冲成形、Es/N0 在 -2 至 30 dB 间均匀分布的 AWGN，以及另外六种信道效应。全部样本为合成生成，论文实验采用 ConvNet 与 Transformer 进行分类。TorchSig 以 MIT 许可发布，可重新生成该数据集或创建变体，并支持训练时即时生成数据。'}
@@ -57,3 +57,122 @@ pipeline:
     outputs:
     - {en: Saved dataset on disk, zh: 磁盘上保存的数据集}
     - {en: Iterable dataset for training, zh: 用于训练的可迭代数据集}
+facts:
+- label: {en: Sub-datasets, zh: 子数据集}
+  text: {en: 'Clean training 1M examples, clean validation 106k, impaired training 5.3M and impaired validation 106k. Training and validation examples are stored as separate sub-datasets.', zh: 干净训练集 100 万个样本，干净验证集 10.6 万，受损训练集 530 万，受损验证集 10.6 万。训练样本与验证样本分为独立的子数据集。}
+- label: {en: Class names, zh: 类别名称}
+  text: {en: 'Figure 3 shows one example per modulation family under names such as 4 ASK, 8 PAM, 16 PSK, 32 QAM-Cross, 2 FSK and OFDM-256.', zh: 图 3 为每个调制族各展示一个示例，类别名称如 4 ASK、8 PAM、16 PSK、32 QAM-Cross、2 FSK 与 OFDM-256。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: Examples are complex I/Q waveforms; no channel matrices are described., zh: 样本为复数 I/Q 波形；文中未描述信道矩阵。}
+- key: cir
+  status: none
+  note: {en: Only I/Q waveforms are released; the Rayleigh fading taps are not described as stored output., zh: 仅发布 I/Q 波形；瑞利衰落抽头未被描述为输出数据。}
+- key: paths
+  status: none
+  note: {en: 'No per-path delay, angle, power or phase fields are described.', zh: 文中未描述逐径时延、角度、功率或相位字段。}
+- key: interaction
+  status: none
+  note: {en: No geometric scene or per-path interaction type is modelled., zh: 未建模几何场景，也不含逐径交互类型。}
+- {key: power, status: unknown}
+- key: iq
+  status: provided
+  note: {en: 'Complex baseband I/Q, 4096 samples per example, real and imaginary parts as two channels; synthetic.', zh: 复数基带 I/Q，每个样本 4096 个采样，实部与虚部作为两个通道；为合成数据。}
+- key: beam_labels
+  status: none
+  note: {en: Labels are modulation or signal classes; no beam indices or per-beam gains., zh: 标签为调制或信号类别；无波束索引或逐波束增益。}
+- key: position
+  status: simulate
+  note: {en: 'The released I/Q set has no positions; TorchSig v2.2.0 adds a geolocation stack, so positions require regenerating data with the toolkit.', zh: 发布的 I/Q 数据集不含位置；TorchSig v2.2.0 新增地理位置模块，因此位置需使用该工具重新生成数据。}
+- key: geometry
+  status: none
+  note: {en: No 3D scene or map files are released., zh: 不发布三维场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 不发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: The release contains synthetic RF I/Q examples only., zh: 发布内容仅为合成的射频 I/Q 样本。}
+- key: depth
+  status: none
+  note: {en: The release contains synthetic RF I/Q examples only., zh: 发布内容仅为合成的射频 I/Q 样本。}
+- key: lidar
+  status: none
+  note: {en: The release contains synthetic RF I/Q examples only., zh: 发布内容仅为合成的射频 I/Q 样本。}
+- key: radar
+  status: none
+  note: {en: LFM-Radar is one waveform class; no radar echoes or sensing measurements are released., zh: LFM-Radar 仅为一种波形类别；不发布雷达回波或感知测量数据。}
+- key: imu
+  status: none
+  note: {en: The release contains synthetic RF I/Q examples only., zh: 发布内容仅为合成的射频 I/Q 样本。}
+- key: time_series
+  status: provided
+  note: {en: Each example is an ordered 4096-sample complex sequence; no wall-clock timestamps are described., zh: 每个样本为有序的 4096 点复数序列；文中未描述实际时间戳。}
+- {key: multiuser, status: unknown}
+- {key: multibs, status: unknown}
+- key: crossfreq
+  status: none
+  note: {en: 'The examples have no positions, so no paired multi-band measurements of the same positions exist.', zh: 样本不含位置信息，因此不存在同一位置的成对多频段测量。}
+- key: near_field
+  status: none
+  note: {en: The examples are single-channel baseband waveforms with no array or spatial propagation model., zh: 样本为单通道基带波形，不含阵列或空间传播模型。}
+- {key: high_mobility, status: unknown}
+- key: dynamic_blockage
+  status: none
+  note: {en: 'The impairment set has phase, time, frequency, fading, IQ imbalance and resampling effects, with no moving blockers.', zh: 损伤集包含相位、时间、频率、衰落、IQ 不平衡与重采样效应，不含移动遮挡体。}
+- key: reflection
+  status: none
+  note: {en: No ray geometry is modelled; the impairments do not include specular reflection., zh: 未建模射线几何；损伤中不含镜面反射。}
+- key: diffraction
+  status: none
+  note: {en: No ray geometry is modelled; diffraction is not among the impairments., zh: 未建模射线几何；损伤中不含绕射。}
+- key: scattering
+  status: provided
+  note: {en: 'Rayleigh fading (2 to 20 taps) is applied to 50% of impaired examples as a statistical model, not labelled per path.', zh: 瑞利衰落（2 至 20 个抽头）以统计模型施加于 50% 的受损样本，未按路径标注。}
+- key: transmission
+  status: none
+  note: {en: Penetration or refraction is not modelled., zh: 未建模穿透或折射。}
+- key: polarization
+  status: none
+  note: {en: A single complex baseband signal per example; no polarization is modelled., zh: 每个样本为单一复数基带信号；未建模极化。}
+- key: em_field
+  status: none
+  note: {en: 'The release contains I/Q waveforms, with no field-level or antenna-pattern outputs.', zh: 发布内容为 I/Q 波形，不含场量或天线方向图输出。}
+versions:
+- version: TorchSig v2.2.0
+  date: '2026-08-31'
+  summary: {en: 'Adds a geolocation stack, a config-based Lightning DataModule, multi-label classification and new signal builders for LoRa, GSM, 802.11a, Zigbee, Bluetooth LE, ADS-B, DVBS2, LMR and cellular, with transform and dataset fixes.', zh: 新增地理位置模块、基于配置的 Lightning DataModule、多标签分类，以及 LoRa、GSM、802.11a、Zigbee、Bluetooth LE、ADS-B、DVBS2、LMR 与蜂窝信号的新构建器，并修复变换与数据集流程中的问题。}
+  url: https://github.com/TorchDSP/torchsig/releases/tag/v2.2.0
+- version: TorchSig v2.1.1
+  date: '2026-04-27'
+  summary: {en: 'Removes Rust code, fixes dataset writing and incorrect bounding boxes, adds dataset statistics, and publishes the package on PyPI.', zh: 移除 Rust 代码，修复数据集写入与错误的边界框，新增数据集统计，并将软件包发布到 PyPI。}
+  url: https://github.com/TorchDSP/torchsig/releases/tag/v2.1.1
+- version: TorchSig v2.1.0
+  date: '2026-02-10'
+  summary: {en: 'Restructures DatasetMetadata, renames SignalBuilder to BaseSignalGenerator, merges StaticDataset and CustomDataset, removes bundled models and upgrades to numpy 2.', zh: 重构 DatasetMetadata，将 SignalBuilder 更名为 BaseSignalGenerator，合并 StaticDataset 与 CustomDataset，移除内置模型，并升级到 numpy 2。}
+  url: https://github.com/TorchDSP/torchsig/releases/tag/v2.1.0
+- version: TorchSig v2.0.0
+  date: '2025-09-03'
+  summary: {en: 'Major structural change with a v1.1.0 to v2.0.0 migration guide. Adds custom datasets, unified narrowband and wideband transforms, clock jitter and drift, HDF5 in place of Zarr, a reproducible WorkerSeedingDataLoader, and an MIT license.', zh: 重大结构性变更，附 v1.1.0 至 v2.0.0 迁移指南。新增自定义数据集、统一的窄带与宽带变换、时钟抖动与漂移，以 HDF5 替代 Zarr，新增可复现的 WorkerSeedingDataLoader，并采用 MIT 许可。}
+  url: https://github.com/TorchDSP/torchsig/releases/tag/v2.0.0
+- version: TorchSig v1.1.0
+  date: '2025-04-29'
+  summary: {en: 'Signal generation bug fixes and optimizations, remaining transforms implemented, Zarr dataset-writing optimizations, YAML config files included in the package, and a dataset reproducibility fix.', zh: 信号生成的缺陷修复与优化，补全剩余变换，Zarr 数据集写入优化，YAML 配置文件纳入软件包，并修复数据集可复现性问题。}
+  url: https://github.com/TorchDSP/torchsig/releases/tag/v1.1.0
+- version: TorchSig v1.0.0
+  date: '2025-03-04'
+  summary: {en: Stable release following v1.0.0-beta. Adds min_num_signals to the generate scripts and fixes the synthetic spectrogram notebook., zh: 在 v1.0.0-beta 之后的稳定版本。为 generate 脚本新增 min_num_signals 参数，并修复合成频谱图示例 notebook。}
+  url: https://github.com/TorchDSP/torchsig/releases/tag/v1.0.0
+- version: TorchSig v1.0.0-beta
+  date: '2025-02-19'
+  summary: {en: 'Almost entirely new version, not backward compatible. Adds DatasetMetadata with YAML configuration, Official Narrowband and Wideband datasets, NewDataset and StaticDataset classes, and new signal classes.', zh: 几乎完全重写的版本，不向后兼容。新增基于 YAML 配置的 DatasetMetadata、官方 Narrowband 与 Wideband 数据集、NewDataset 与 StaticDataset 类，以及新的信号类。}
+  url: https://github.com/TorchDSP/torchsig/releases/tag/v1.0.0-beta
+- version: TorchSig v0.6.0
+  date: '2024-10-21'
+  summary: {en: 'Signal set grows from 53 to 61 classes, adding FM, AM-DSB, AM-DSB-SC, AM-LSB, AM-USB, Chirp Spread Spectrum, LFM-Data and LFM-Radar. The Sig53 dataset is renamed to Narrowband and the WidebandSig53 dataset to Wideband.', zh: 信号类别从 53 增至 61，新增 FM、AM-DSB、AM-DSB-SC、AM-LSB、AM-USB、Chirp Spread Spectrum、LFM-Data 与 LFM-Radar。Sig53 数据集更名为 Narrowband，WidebandSig53 更名为 Wideband。}
+  url: https://github.com/TorchDSP/torchsig/releases/tag/v0.6.0
+- version: arXiv v1
+  date: '2022-07-20'
+  summary: {en: 'First and only arXiv version of arXiv:2207.09918, titled Large Scale Radio Frequency Signal Classification. It introduces Sig53 with 53 synthetic signal classes, stated as 5 million samples, and the TorchSig toolkit.', zh: 'arXiv:2207.09918 的唯一版本，标题为 Large Scale Radio Frequency Signal Classification。论文提出包含 53 类合成信号、摘要称 500 万样本的 Sig53 数据集，以及 TorchSig 工具包。'}
+  url: https://arxiv.org/abs/2207.09918v1

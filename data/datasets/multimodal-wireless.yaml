@@ -13,7 +13,7 @@ paper: arxiv:2511.03220
 used_in: []
 citing: []
 summary: {en: 'Simulated CARLA driving scenes with Sionna ray-traced channel data, synchronized with LiDAR, RGB and depth camera, IMU, radar and GNSS sensors at 100 Hz. The release contains 161,400 frames across 4 virtual towns, 16 communication scenarios and 3 weather conditions.', zh: '基于CARLA和Sionna仿真的驾驶场景数据，包含Sionna射线追踪信道数据，并与LiDAR、RGB与深度相机、IMU、雷达和GNSS传感器同步，采样率为100 Hz。数据共161,400帧，覆盖4个虚拟城镇、16种通信场景和3种天气条件。'}
-sources: ['https://arxiv.org/abs/2511.03220', 'https://le-liang.github.io/mmw/', 'https://le-liang.github.io/mmw/download.html', 'https://github.com/le-liang/Multimodal-Wireless']
+sources: ['https://arxiv.org/abs/2511.03220', 'https://le-liang.github.io/mmw/', 'https://le-liang.github.io/mmw/download.html', 'https://github.com/le-liang/Multimodal-Wireless', 'https://arxiv.org/html/2511.03220v2', 'https://le-liang.github.io/mmw/data-collection.html', 'https://le-liang.github.io/mmw/scenarios.html', 'https://raw.githubusercontent.com/le-liang/Multimodal-Wireless/main/README.md', 'https://raw.githubusercontent.com/le-liang/Multimodal-Wireless/main/LICENSE', 'https://github.com/le-liang/Multimodal-Wireless/releases/tag/v1.1.0', 'https://github.com/le-liang/Multimodal-Wireless/releases/tag/v1.0.0', 'https://le-liang.github.io/mmw/tutorials.html', 'https://arxiv.org/abs/2511.03220v1', 'https://arxiv.org/abs/2511.03220v2']
 checked: '2026-11-06'
 overview: {en: 'Multimodal-Wireless is a simulated dataset for multimodal sensing and communication in vehicular scenes, described in arXiv:2511.03220 (first version November 2025, revised February 2026). The scenes are generated in the CARLA simulator (version 0.9.15), and the channel data are computed by Sionna ray tracing. RGB camera, depth camera, LiDAR, radar and IMU streams, together with the CSI, are sampled at 100 Hz and temporally aligned. The release contains 161,400 frames across four virtual towns (Town03, Town05, Town07 and Town10), 16 communication scenarios and three weather conditions (sunny, rainy and foggy). The sunny folder holds channel-data and sensor-data subfolders, and the rainy and foggy folders hold data for their conditions; a Blender_Towns folder provides Blender versions of the CARLA towns for replay. The authors demonstrate beam prediction with a multimodal large language model, and the abstract lists communication and collaborative perception as applications.
     The data are simulated only, with no real-world measurements, and the channel model covers line-of-sight paths and first-order reflections.', zh: 'Multimodal-Wireless 是一个面向车联网多模态感知与通信研究的仿真数据集，见 arXiv:2511.03220（2025 年 11 月首版，2026 年 2 月修订）。场景由 CARLA 仿真器（版本 0.9.15）生成，信道数据由 Sionna 光线追踪计算。RGB 相机、深度相机、LiDAR、雷达和 IMU 的数据流与 CSI 以 100 Hz 采样，并在时间上对齐。发布数据共 161,400 帧，覆盖 4 个虚拟城镇（Town03、Town05、Town07、Town10）、16 种通信场景和 3 种天气条件（晴天、雨天、雾天）。晴天目录包含信道数据与传感器数据两个子目录，雨天和雾天目录分别存放对应天气的数据；Blender_Towns 目录提供 CARLA 城镇的 Blender 版本，用于回放。论文以多模态大语言模型演示了波束预测，摘要列出的应用还包括协同感知与通信。数据仅为仿真结果，不含实测数据；信道模型仅包含视距路径和一阶反射。'}
@@ -30,8 +30,10 @@ signal_details:
   text: {en: '2,000 points per sample, 100 m range, 30° vertical and 110° horizontal field of view, mounted on the RSU, at 100 Hz.', zh: '每个样本 2,000 点，测距 100 m，垂直视场角 30°，水平视场角 110°，安装于 RSU，采样率 100 Hz。'}
 - signal: imu
   text: {en: Mounted on CAVs at 100 Hz. Gyroscope noise has mean 0.001 rad/s and standard deviation 0.002 rad/s; accelerometer noise has standard deviation 0.1 m/s²., zh: 安装于 CAV，采样率 100 Hz。陀螺仪噪声均值 0.001 rad/s，标准差 0.002 rad/s；加速度计噪声标准差 0.1 m/s²。}
+- signal: gps
+  text: {en: 'GNSS estimates are stored in the YAML metadata of each CAV with a noise model: altitude standard deviation 0.005 m, latitude and longitude standard deviation 1e-5° (a 2 to 5 m localization bias), heading standard deviation 0.1° and speed standard deviation 0.2 m/s.', zh: 每辆 CAV 的 YAML 元数据中保存 GNSS 位置估计，噪声模型为：高度标准差 0.005 m，经纬度标准差 1e-5°（对应 2 至 5 m 定位偏差），航向标准差 0.1°，速度标准差 0.2 m/s。}
 pipeline:
-  summary: {en: 'CARLA scenarios produce sensor streams and a per-frame YAML file, Blender rebuilds the first-frame scene, and Sionna ray tracing computes the channel for each frame.', zh: CARLA 场景生成传感器数据流与逐帧 YAML 文件，Blender 重建首帧场景，Sionna 光线追踪为每一帧计算信道。}
+  summary: {en: 'CARLA produces sensor streams and a per-frame YAML file, Blender places the dynamic actors of each frame in the static town and exports a Sionna scene, and Sionna ray tracing computes the channel for each frame.', zh: CARLA 生成传感器数据流与逐帧 YAML 文件，Blender 将每一帧的动态对象放入静态城镇并导出为 Sionna 场景，Sionna 光线追踪为每一帧计算信道。}
   stages:
   - title: {en: CARLA scenario simulation, zh: CARLA 场景仿真}
     detail: {en: 'carla_main.py runs a scenario defined in a configuration file in CARLA 0.9.15 at a fixed 100 Hz frame rate. Each scenario lasts 8 to 13 s with 3 to 4 CAVs and one RSU, giving 800 to 1,300 frames per CAV. The run writes five sensor data streams (RGB, depth, LiDAR, radar and IMU) together with a YAML file of all frames.', zh: 'carla_main.py 在 CARLA 0.9.15 中运行配置文件定义的场景，帧率固定为 100 Hz。每个场景持续 8 至 13 s，包含 3 至 4 辆 CAV 和 1 个 RSU，每辆 CAV 得到 800 至 1,300 帧。运行结果为五类传感器数据流（RGB、深度、LiDAR、雷达和 IMU）以及包含所有帧的 YAML 文件。'}
@@ -41,15 +43,15 @@ pipeline:
     - {en: sensor streams, zh: 传感器数据流}
     - {en: per-frame YAML, zh: 逐帧 YAML}
   - title: {en: Scene reconstruction in Blender, zh: Blender 场景重建}
-    detail: {en: 'Blender 4.3.2 with the Mitsuba (.xml) add-on and PyYAML rebuilds the first frame of the scenario from the YAML file. The CARLA town geometry was exported from Unreal Engine 4.26, and Blender_Towns provides Blender versions of the towns.', zh: Blender 4.3.2 配合 Mitsuba (.xml) 插件与 PyYAML，根据 YAML 文件重建场景的首帧。CARLA 城镇几何由 Unreal Engine 4.26 导出，Blender_Towns 目录提供各城镇的 Blender 版本。}
+    detail: {en: 'Blender 4.3.2 with the Mitsuba (.xml) add-on and PyYAML builds the static town from CARLA geometry exported from Unreal Engine 4.26 and assigns radio materials to buildings, ground and vehicles. For each frame, the script places the vehicles and RSUs from the YAML poses and exports the frame as a self-contained Sionna scene. The Blender_Towns folder provides Blender versions of the towns.', zh: Blender 4.3.2 配合 Mitsuba (.xml) 插件与 PyYAML，根据 Unreal Engine 4.26 导出的 CARLA 城镇几何建立静态场景，并为建筑、地面和车辆分配无线电材料。对每一帧，脚本依据 YAML 中的位姿放置车辆与 RSU，并将该帧导出为独立的 Sionna 场景。Blender_Towns 目录提供各城镇的 Blender 版本。}
     inputs:
     - {en: YAML of all frames, zh: 全部帧的 YAML}
     outputs:
-    - {en: first-frame scene, zh: 首帧场景}
+    - {en: one Sionna scene per frame, zh: 每帧一个 Sionna 场景}
   - title: {en: Ray-traced channel generation in Sionna, zh: Sionna 光线追踪信道生成}
-    detail: {en: 'Sionna (version 0.19.2 cited in the paper) loads the first-frame scene, moves the vehicle objects for each frame and computes the multipath components with 10^6 rays, maximum reflection order 1 and vertically polarized dipole antennas. Version 1.1.0 keeps the static scene and updates vehicle poses frame by frame, which the authors report as 20 times faster with about 95% less total time.', zh: Sionna（论文引用版本为 0.19.2）加载首帧场景，逐帧移动车辆对象，并以 10^6 条射线、最大反射阶数 1、垂直极化偶极子天线计算多径分量。1.1.0 版本保留静态场景并逐帧更新车辆位姿，作者报告总耗时降低约 95%，速度提升 20 倍。}
+    detail: {en: 'Sionna 0.19.2, the version cited in the paper, loads the scene of each frame and computes the multipath components with 10^6 rays, maximum reflection order 1 and vertically polarized dipole antennas. In the accelerated pipeline of release v1.1.0 of the code repository, the static scene is kept and only the vehicle poses are updated frame by frame; the authors report about 20 times faster generation and roughly 95% less total time for the same workload.', zh: Sionna 0.19.2（论文引用版本）加载每一帧的场景，以 10^6 条射线、最大反射阶数 1 和垂直极化偶极子天线计算多径分量。代码仓库 v1.1.0 版本的加速流程保留静态场景，仅逐帧更新车辆位姿；作者报告，在相同工作量下生成速度提升约 20 倍，总耗时减少约 95%。}
     inputs:
-    - {en: first-frame scene and per-frame vehicle poses, zh: 首帧场景与逐帧车辆位姿}
+    - {en: scene of each frame and vehicle poses, zh: 每帧场景与车辆位姿}
     outputs:
     - {en: 'per-path AoD, AoA, delay and complex gain', zh: 逐路径 AoD、AoA、时延与复增益}
   - title: {en: Optional CSI synthesis from path parameters, zh: 由路径参数合成 CSI（可选）}
@@ -64,3 +66,136 @@ pipeline:
     - {en: 'CSI, sensor streams and YAML', zh: CSI、传感器数据流与 YAML}
     outputs:
     - {en: weather-specific folders, zh: 按天气划分的目录}
+bands_ghz: [4.9, 28]
+subcarriers: 1024
+format: PNG, PCD, NPY, YAML, JSON
+mobility: 'vehicular: CAVs are mobile users and RSUs are base stations'
+organization: Southeast University; Purple Mountain Laboratories; University of California, Santa Cruz; Imperial College London
+facts:
+- label: {en: Scenario coverage, zh: 场景覆盖}
+  text: {en: 'The 16 scenarios are 5 in Town03, 5 in Town05, 2 in Town07 (rural) and 4 in Town10. Each scenario has 3 or 4 CAVs and one RSU.', zh: 16 个场景分布为：Town03 5 个，Town05 5 个，Town07（乡村）2 个，Town10 4 个。每个场景包含 3 或 4 辆 CAV 和 1 个 RSU。}
+- label: {en: Beam-prediction split, zh: 波束预测数据划分}
+  text: {en: 'The beam-prediction case study uses sunny-weather data with 43,040 training and 5,380 validation samples. It predicts 10 future time steps (100 ms) from 40 past steps (400 ms) of beam indices, LiDAR and RGB data.', zh: '波束预测案例使用晴天数据，训练集 43,040 个样本，验证集 5,380 个样本。模型以过去 40 个时间步（400 ms）的波束索引、LiDAR 与 RGB 数据预测未来 10 个时间步（100 ms）的波束。'}
+- label: {en: Ground material by weather, zh: 按天气划分的地面材料}
+  text: {en: 'The ground is assigned ITU very dry or medium dry ground in sunny conditions and ITU wet ground in rainy and foggy conditions, with three ground materials defined at 28 GHz.', zh: 晴天场景地面分别设为 ITU 极干与中等干燥地面，雨天和雾天场景地面设为 ITU 湿润地面；28 GHz 下共定义三种地面材料。}
+- label: {en: Angle coordinate systems, zh: 角度坐标系}
+  text: {en: 'AoD and AoA are provided both in the local coordinate system of each planar array, which is defined in the y-z plane in Sionna, and in the global coordinate system (GCS).', zh: AoD 与 AoA 同时以各平面阵列的局部坐标系（Sionna 中阵列定义在 y-z 平面）和全局坐标系（GCS）两种形式提供。}
+- label: {en: File layout, zh: 文件结构}
+  text: {en: Each scenario folder holds one folder per agent (cav_N and rsu_N). Frames are numbered with six digits and share a frame number across modalities. Channel files end in _paths.npy and contain the downlink from the RSU to the CAV., zh: 每个场景目录下按智能体分为 cav_N 与 rsu_N 子目录。帧号为六位数字，各模态通过相同帧号对齐。信道文件以 _paths.npy 结尾，记录从 RSU 到 CAV 的下行信道。}
+technical_notes:
+- {en: 'Channel data are stored as raw per-path parameters (complex gain, delay and four angles), so the subcarrier grid is chosen when CSI is synthesized rather than being fixed in the release.', zh: 信道数据以逐路径原始参数（复增益、时延与四个角度）形式保存，子载波网格在合成 CSI 时确定，而非在发布数据中固定。}
+- {en: 'Release v1.1.0 of the code repository changes the generation pipeline. The authors state that the pipeline update does not change the channel results, and that the differences from the original release come only from a bug fix, with a mean channel NMSE of −19.3 dB.', zh: 代码仓库的 v1.1.0 版本改变了生成流程。作者称流程更新本身不改变信道结果，与原始版本的差异仅来自一处缺陷修复，信道的平均 NMSE 为 −19.3 dB。}
+limitations:
+- {en: 'Only line-of-sight paths and first-order reflections are stored, so higher-order reflections are absent from the channel data.', zh: 仅保存视距路径与一阶反射，信道数据中不包含高阶反射。}
+- {en: 'The data are simulated, with no real-world measurements.', zh: 数据均为仿真生成，不包含实测数据。}
+- {en: LiDAR data under rainy and foggy conditions require the post-processing described in the paper., zh: 雨天和雾天的 LiDAR 数据需要论文中描述的后处理。}
+capabilities:
+- key: csi
+  status: derivable
+  note: {en: The frequency response is computed from the stored path gains and delays with the method in the paper (Eq. 1); subcarrier settings are chosen by the user., zh: 频域响应由已存储的路径增益与时延按论文方法（式 1）计算；子载波参数由用户设定。}
+- key: cir
+  status: derivable
+  note: {en: 'The impulse response is the sum of the stored path gains placed at their delays; the release stores paths, not sampled impulse responses.', zh: 冲激响应由已存储的路径增益按其时延叠加得到；发布数据存储的是路径而非采样后的冲激响应。}
+- key: paths
+  status: provided
+  note: {en: 'Per-path complex gain matrix, delay, and AoD/AoA in local and global frames, for LoS and first-order reflections only.', zh: 每条路径的复增益矩阵、时延，以及局部与全局坐标系下的 AoD/AoA，仅包含 LoS 与一阶反射路径。}
+- key: interaction
+  status: unknown
+  note: {en: 'The paper collects LoS and first-order reflection events, but the sources do not describe a per-path interaction label or surface identity in the release.', zh: 论文采集了 LoS 与一阶反射事件，但来源未说明发布数据中是否包含逐路径的交互类型标签或反射面标识。}
+- key: power
+  status: derivable
+  note: {en: 'Path power and received power follow from the stored complex gains; no RSSI, beam power or path loss field is stored.', zh: 路径功率与接收功率可由已存储的复增益计算；数据中不存储 RSSI、波束功率或路径损耗字段。}
+- key: iq
+  status: none
+  note: {en: The channel is path-level; no transmitted waveform or I/Q samples are released or generated., zh: 信道为路径级数据；不发布也不生成发射波形或 I/Q 采样。}
+- key: beam_labels
+  status: derivable
+  note: {en: 'Optimal beam indices are found by exhaustive search over a 64-beam DFT codebook from the stored paths, as in the paper''s beam prediction case.', zh: 最优波束索引可由已存储的路径，在 64 波束 DFT 码本上穷举搜索得到，与论文中的波束预测案例一致。}
+- key: position
+  status: provided
+  note: {en: CAV GNSS estimates with simulated noise are in the per-frame metadata., zh: 每帧元数据中包含带仿真噪声的 CAV GNSS 位置估计。}
+- key: geometry
+  status: provided
+  note: {en: Blender-format mirrors of all CARLA towns are in the Blender_Towns folder., zh: Blender_Towns 文件夹提供所有 CARLA 城镇的 Blender 格式副本。}
+- key: materials
+  status: unknown
+  note: {en: The paper lists material assignments (Table IV) and ground permittivity and conductivity (Table VI); the sources do not say whether these are in the released files., zh: 论文给出材料分配（表 IV）与地面介电常数、电导率（表 VI）；来源未说明这些参数是否包含在发布文件中。}
+- key: rgb
+  status: provided
+  note: {en: 'CAVs have four 640×480 cameras (front, rear, left, right); the RSU has one forward camera.', zh: CAV 配有四个 640×480 相机（前、后、左、右）；RSU 配有一个前向相机。}
+- key: depth
+  status: provided
+  note: {en: 'The RSU has one forward depth camera, 640×480; CAVs have no depth camera.', zh: RSU 配有一个前向深度相机，分辨率 640×480；CAV 无深度相机。}
+- key: lidar
+  status: provided
+  note: {en: 64-channel LiDAR with 120 m range and about 30k points per sample on CAVs and the RSU; adverse-weather LiDAR data come from specific post-processing., zh: CAV 与 RSU 均配有 64 线 LiDAR，探测距离 120 m，每样本约 3 万点；恶劣天气下的 LiDAR 数据经特定后处理得到。}
+- key: radar
+  status: provided
+  note: {en: 'RSU only: about 2k points per sample, 100 m range, 110° horizontal and 30° vertical FOV.', zh: 仅 RSU：每样本约 2 千点，探测距离 100 m，水平视场 110°，垂直视场 30°。}
+- key: imu
+  status: provided
+  note: {en: 'CAV IMU with noise model: accelerometer std 0.1 m/s², gyroscope std 0.002 rad/s.', zh: CAV IMU 带噪声模型：加速度计标准差 0.1 m/s²，陀螺仪标准差 0.002 rad/s。}
+- key: time_series
+  status: provided
+  note: {en: 'Frames at 100 Hz, 800 to 1,300 frames per CAV per scenario, aligned across modalities by frame number.', zh: '100 Hz 帧序列，每个场景每个 CAV 800 至 1,300 帧，各模态按帧号对齐。'}
+- key: multiuser
+  status: provided
+  note: {en: 'Three to four CAVs per scenario, each with its own V2I channel paths in the same frame.', zh: 每个场景 3 至 4 辆 CAV，同一帧中每辆 CAV 均有各自的 V2I 信道路径。}
+- key: multibs
+  status: none
+  note: {en: 'Each scenario has one RSU, so there is no multi-BS set.', zh: 每个场景仅一个 RSU，不存在多基站数据集。}
+- key: crossfreq
+  status: unknown
+  note: {en: Table V lists 28 GHz and 4.9 GHz carriers; the sources do not state that both bands are released for the same positions., zh: 表 V 列出 28 GHz 与 4.9 GHz 载频；来源未说明两个频段是否针对相同位置同时发布。}
+- key: near_field
+  status: unknown
+  note: {en: Arrays range from 1×4 to 8×8 elements; the sources do not describe spherical-wave modelling., zh: 阵列规模为 1×4 至 8×8 阵元；来源未说明是否采用球面波建模。}
+- key: high_mobility
+  status: unknown
+  note: {en: The sources give no vehicle speed; scenario durations are 8 to 13 s., zh: 来源未给出车辆速度；场景时长为 8 至 13 秒。}
+- key: dynamic_blockage
+  status: provided
+  note: {en: 'Other vehicles are placed per frame as metal objects in the Sionna scene (Table IV), so their blockage is modelled by ray tracing.', zh: 其他车辆逐帧作为金属物体放入 Sionna 场景（表 IV），因此其遮挡由射线追踪建模。}
+- key: reflection
+  status: provided
+  note: {en: First-order specular reflections only (maximum reflection order 1)., zh: 仅包含一阶镜面反射（最大反射阶数为 1）。}
+- key: diffraction
+  status: none
+  note: {en: Not in the ray-tracing configuration (Table V); only LoS and first-order reflections are collected., zh: 不在射线追踪配置中（表 V）；仅采集 LoS 与一阶反射。}
+- key: scattering
+  status: none
+  note: {en: Not in the ray-tracing configuration (Table V); only LoS and first-order reflections are collected., zh: 不在射线追踪配置中（表 V）；仅采集 LoS 与一阶反射。}
+- key: transmission
+  status: none
+  note: {en: Not in the ray-tracing configuration (Table V); only LoS and first-order reflections are collected., zh: 不在射线追踪配置中（表 V）；仅采集 LoS 与一阶反射。}
+- key: polarization
+  status: none
+  note: {en: Single vertical polarization with dipole antennas (Table V); no polarimetric data., zh: 单一垂直极化，天线为偶极子（表 V）；无极化测量数据。}
+- key: em_field
+  status: none
+  note: {en: 'The channel is path-level (complex gains, delays, angles); no field-level outputs are described.', zh: 信道为路径级数据（复增益、时延、角度）；未描述任何场级输出。}
+versions:
+- version: v1.1.0
+  date: '2026-10-23'
+  summary: {en: 'Accelerated generation pipeline: the static scene is reused and dynamic vehicle poses are updated frame by frame in Sionna RT, about 20x faster with about 95% less total time for the same workload. Fixes issue #1; the generated channels otherwise match v1.0.0, and the fix changes them by a mean NMSE of -19.3 dB.', zh: '加速生成流程：在 Sionna RT 中复用静态场景并逐帧更新动态车辆位姿，同一工作量约快 20 倍，总耗时减少约 95%。修复 issue #1；除该修复外生成的信道与 v1.0.0 一致，修复造成的信道差异为平均 NMSE -19.3 dB。'}
+  url: https://github.com/le-liang/Multimodal-Wireless/releases/tag/v1.1.0
+- version: v1.0.0
+  date: '2026-10-23'
+  summary: {en: Original generation pipeline. The release stores the original version of the generation code., zh: 原始生成流程。该版本保存数据集生成代码的原始版本。}
+  url: https://github.com/le-liang/Multimodal-Wireless/releases/tag/v1.0.0
+- version: arXiv v2
+  date: '2026-02-11'
+  summary: {en: Revised paper. The abstract describes the channel modality as CSI and states that all modalities are sampled at 100 Hz; the v1 abstract describes a communication channel and gives no sampling rate., zh: 论文修订版。摘要将信道模态描述为 CSI，并说明所有模态以 100 Hz 采样；v1 摘要将其描述为通信信道，未给出采样率。}
+  url: https://arxiv.org/abs/2511.03220v2
+- version: Nov. 23, 2025
+  date: '2025-11-23'
+  summary: {en: Channel data augmented with additional AoD and AoA values in the local coordinate system of the planar arrays., zh: 信道数据新增基于平面阵列局部坐标系的 AoD 与 AoA 值。}
+  url: https://le-liang.github.io/mmw/download.html
+- version: Nov. 17, 2025
+  date: '2025-11-17'
+  summary: {en: Dataset updated. The download page gives no list of changes for this update., zh: 数据集更新。下载页未列出本次更新的具体变更。}
+  url: https://le-liang.github.io/mmw/download.html
+- version: arXiv v1
+  date: '2025-11-05'
+  summary: {en: 'First arXiv version. The abstract describes about 160,000 frames across four towns, sixteen communication scenarios and three weather conditions.', zh: '首个 arXiv 版本。摘要描述数据包含约 160,000 帧，覆盖四个虚拟城镇、十六种通信场景和三种天气条件。'}
+  url: https://arxiv.org/abs/2511.03220v1

@@ -6,23 +6,23 @@ organization: School of Software, Tsinghua University
 origin: measured
 tasks: [wireless-sensing]
 signals: [rssi, csi]
-bands_ghz: []
+bands_ghz: [5.825]
 environment: [indoor]
 samples: 258K hand-gesture instances
-license: CC BY 4.0
+license: Creative Commons Attribution
 access: {url: 'https://ieee-dataport.org/open-access/widar30-wifi-based-activity-recognition-dataset', type: registration}
 code: []
 paper: doi:10.1145/3307334.3326081
 used_in: ['doi:10.1109/jiot.2021.3064890', 'doi:10.1109/jiot.2025.3554228']
 citing: ['doi:10.1145/3372224.3380900', 'doi:10.1145/3384419.3430735', 'doi:10.1145/3485730.3485937']
 summary: {en: 'Commodity Wi-Fi RSSI and CSI recordings of hand gestures, with 258K instances totalling 8,620 minutes across 75 domains. Doppler frequency shift (DFS) and body-coordinate velocity profile (BVP) features are included.', zh: '商用 Wi-Fi 采集的手势 RSSI 与 CSI 记录，共 258K 个手势实例，总时长 8,620 分钟，覆盖 75 个域。数据中包含多普勒频移（DFS）与身体坐标速度分布（BVP）特征。'}
-sources: ['https://ieee-dataport.org/open-access/widar30-wifi-based-activity-recognition-dataset', 'http://tns.thss.tsinghua.edu.cn/widar3.0/index.html', 'https://api.crossref.org/works/10.1145/3307334.3326081']
+sources: ['https://ieee-dataport.org/open-access/widar30-wifi-based-activity-recognition-dataset', 'http://tns.thss.tsinghua.edu.cn/widar3.0/index.html', 'https://api.crossref.org/works/10.1145/3307334.3326081', 'http://tns.thss.tsinghua.edu.cn/widar3.0/data/MobiSys19_Widar3.0_paper.pdf', 'https://doi.org/10.21227/7znf-qp86']
 checked: '2026-11-06'
-overview: {en: 'Widar 3.0 is a measured Wi-Fi dataset of hand gestures from the School of Software, Tsinghua University. The authors released it on IEEE DataPort in 2020 (DOI 10.21227/7znf-qp86) and describe the method in the MobiSys 2019 paper Zero-Effort Cross-Domain Gesture Recognition with Wi-Fi. The release has 258K gesture instances totalling 8,620 minutes from 75 domains, where a domain is defined by environment, position and orientation. The data include commodity Wi-Fi RSSI and CSI, plus Doppler frequency shift (DFS) and body-coordinate velocity profile (BVP) features derived from CSI. The MobiSys experiments used one transmitter and six receivers with Intel 5300 NICs, and 16 volunteers performed six gestures: push and pull, sweep, clap, slide, draw circle and draw zigzag. CSI files are grouped in CSI_YYYYMMDD archives, with date folders and one subfolder per user. The authors report that seven .dat files are empty because of packet loss, and they recommend skipping them when loading
-    the data. The IEEE DataPort page states that access requires a subscription.', zh: 'Widar 3.0 是清华大学软件学院发布的商用 Wi-Fi 手势实测数据集。作者于 2020 年在 IEEE DataPort 发布该数据（DOI 10.21227/7znf-qp86），并在 MobiSys 2019 论文 Zero-Effort Cross-Domain Gesture Recognition with Wi-Fi 中描述了方法。发布版包含 258K 个手势实例，总时长 8,620 分钟，覆盖 75 个域，域由环境、位置与朝向确定。数据包含商用 Wi-Fi 的 RSSI 与 CSI，并附有由 CSI 导出的多普勒频移（DFS）与身体坐标速度分布（BVP）特征。MobiSys 论文的实验使用 1 个发射端和 6 个接收端，网卡为 Intel 5300；16 名志愿者执行 6 种手势：推拉、扫动、拍手、滑动、画圆与画 Zigzag。CSI 文件按 CSI_YYYYMMDD 压缩包组织，包内为日期文件夹，每个日期文件夹下再按用户分子文件夹。作者报告其中 7 个 .dat 文件因丢包而为空，建议读取时跳过。IEEE DataPort 页面标注访问需要订阅。'}
+overview: {en: 'Widar 3.0 is a measured Wi-Fi dataset of hand gestures from the School of Software, Tsinghua University. The authors released it on IEEE DataPort in 2020 (DOI 10.21227/7znf-qp86) and describe the method in the MobiSys 2019 paper Zero-Effort Cross-Domain Gesture Recognition with Wi-Fi. The release has 258K gesture instances totalling 8,620 minutes from 75 domains, where a domain is defined by environment, position and orientation. The data include commodity Wi-Fi RSSI and CSI, plus Doppler frequency shift (DFS) and body-coordinate velocity profile (BVP) features derived from CSI. The MobiSys experiments used one transmitter and six receivers with Intel 5300 NICs, and 16 volunteers performed six gestures: push and pull, sweep, clap, slide, draw circle and draw zigzag. CSI files are grouped in CSI_YYYYMMDD archives, with date folders and one subfolder per user. The authors report that seven .dat files are empty because of packet loss and recommend skipping them when loading
+    the data. The IEEE DataPort page says the files are available to logged-in users with a free account, but it also says the dataset requires an IEEE DataPort subscription.', zh: 'Widar 3.0 是清华大学软件学院发布的基于商用 Wi-Fi 的手势实测数据集。作者于 2020 年在 IEEE DataPort 发布该数据（DOI 10.21227/7znf-qp86），方法描述见 MobiSys 2019 论文 Zero-Effort Cross-Domain Gesture Recognition with Wi-Fi。发布版包含 258K 个手势实例，总时长 8,620 分钟，覆盖 75 个域，域由环境、位置与朝向确定。数据包含商用 Wi-Fi 的 RSSI 与 CSI，并附有由 CSI 导出的多普勒频移（DFS）与身体坐标速度分布（BVP）特征。MobiSys 论文的实验使用 1 个发射端和 6 个接收端，网卡为 Intel 5300；16 名志愿者执行 6 种手势：推拉、扫动、拍手、滑动、画圆与画 Zigzag。CSI 文件按 CSI_YYYYMMDD 压缩包组织，包内为日期文件夹，每个日期文件夹下再按用户分子文件夹。作者报告其中 7 个 .dat 文件因丢包而为空，建议读取时跳过。IEEE DataPort 页面称数据文件向登录的免费账户用户开放，同时写明该数据集需要 IEEE DataPort 订阅。'}
 signal_details:
 - signal: rssi
-  text: {en: RSSI is recorded by commodity Wi-Fi NICs in the same captures as CSI. The IEEE DataPort abstract lists RSSI and CSI as the two RF data types in the dataset., zh: RSSI 由商用 Wi-Fi 网卡与 CSI 同时采集。IEEE DataPort 摘要将 RSSI 与 CSI 列为数据集中的两类射频数据。}
+  text: {en: 'RSSI is collected from commodity Wi-Fi NICs, and the IEEE DataPort abstract lists RSSI and CSI as the two RF data types in the dataset.', zh: RSSI 由商用 Wi-Fi 网卡采集，IEEE DataPort 摘要将 RSSI 与 CSI 列为数据集中的两类射频数据。}
 - signal: csi
   text: {en: 'CSI is logged by Intel 5300 NICs running the Linux CSI Tool in monitor mode on channel 165 at 5.825 GHz. The transmitter uses one antenna and broadcasts 1,000 packets per second. Each receiver uses three antennas placed in a line. Devices are held at 110 cm. Each receiver-antenna stream has 30 subcarriers. The paper also down-samples the CSI to 750, 500 and 250 Hz in a transmission-rate experiment.', zh: 'CSI 由 Intel 5300 网卡通过 Linux CSI Tool 记录，网卡工作在监听模式，信道 165，中心频率 5.825 GHz。发射端使用一根天线，每秒广播 1,000 个数据包。每个接收端使用排成一列的三根天线。设备高度为 110 cm。每个接收端与天线组合的数据流包含 30 个子载波。论文还在传输速率实验中将 CSI 降采样至 750 Hz、500 Hz 和 250 Hz。'}
 pipeline:
@@ -32,7 +32,7 @@ pipeline:
     detail: {en: 'Mini-desktops with Intel 5300 NICs and the Linux CSI Tool log CSI in monitor mode on channel 165 (5.825 GHz). The transmitter broadcasts 1,000 packets per second. The paper''s deployment uses six receivers, and the method needs at least three.', zh: '装有 Intel 5300 网卡的迷你主机通过 Linux CSI Tool，在监听模式下于信道 165（5.825 GHz）记录 CSI。发射端每秒广播 1,000 个数据包。论文的部署使用 6 个接收端，方法要求至少 3 个。'}
     inputs:
     - {en: Volunteer gestures in a 2 m x 2 m sensing area, zh: 志愿者在 2 m x 2 m 感知区域内做手势}
-    - {en: Ground-truth position and orientation of the user, zh: 用户的真值位置与朝向}
+    - {en: User position and orientation (ground truth in most experiments), zh: 用户位置与朝向（多数实验为真值）}
     outputs:
     - {en: Per-receiver CSI logs, zh: 各接收端的 CSI 日志}
   - title: {en: Remove offsets and segment the CSI, zh: 去除偏移并对 CSI 分段}
@@ -55,8 +55,112 @@ pipeline:
     outputs:
     - {en: BVP series, zh: BVP 序列}
   - title: {en: 'Release CSI, DFS and BVP files', zh: 发布 CSI、DFS 与 BVP 文件}
-    detail: {en: 'The public release contains CSI, DFS and BVP data for 258K instances over 75 domains. The Tsinghua site also provides the BVP extraction code, the model code and the model parameters.', zh: 公开发布包含 258K 个实例、75 个域的 CSI、DFS 与 BVP 数据。清华网站还提供 BVP 提取代码、模型代码和模型参数。}
+    detail: {en: 'The public release contains CSI, DFS and BVP data for 258K instances over 75 domains. The Tsinghua site provides CSI, DFS and BVP extraction code and a deep-learning gesture recognition model.', zh: 公开发布包含 258K 个实例、75 个域的 CSI、DFS 与 BVP 数据。清华网站提供 CSI、DFS 与 BVP 提取代码，以及一个深度学习手势识别模型。}
     inputs:
     - {en: 'Sanitized CSI, DFS profiles and BVP series', zh: 净化后的 CSI、DFS 轮廓与 BVP 序列}
     outputs:
     - {en: Archives on IEEE DataPort and the Tsinghua site, zh: IEEE DataPort 与清华网站上的数据压缩包}
+antennas: {tx: 1, rx: 18}
+subcarriers: 30
+format: DAT (CSI); MAT (DFS, BVP)
+facts:
+- label: {en: Domains, zh: 域}
+  text: {en: 'The 75 domains come from 3 indoor environments, each with 5 positions and 5 orientations.', zh: 75 个域来自 3 个室内环境，每个环境包含 5 个位置与 5 个朝向。}
+- label: {en: File naming, zh: 文件命名}
+  text: {en: 'CSI files are named id-a-b-c-d-rx.dat, with rx from r1 to r6 for the six receivers. DFS and BVP files are named id-a-b-c-d.mat, where a is the room, b the position, c the orientation and d the instance.', zh: CSI 文件命名为 id-a-b-c-d-rx.dat，其中 rx 从 r1 到 r6 对应六个接收端；DFS 与 BVP 文件命名为 id-a-b-c-d.mat，其中 a 为房间、b 为位置、c 为朝向、d 为实例编号。}
+- label: {en: Array shapes, zh: 数组形状}
+  text: {en: 'Each DFS file is a 6 x 121 x T array over Doppler bins from -60 to 60 Hz, and each BVP file is a 20 x 20 x T array whose two 20-value axes are x and y velocity. T is the number of consecutive timestamps.', zh: 每个 DFS 文件为 6 x 121 x T 数组，覆盖 -60 至 60 Hz 的多普勒频点；每个 BVP 文件为 20 x 20 x T 数组，两个 20 维分别对应 x 与 y 方向速度。T 为连续采样时间戳的数量。}
+- label: {en: Ground truth, zh: 真值}
+  text: {en: BVP needs the user's location and orientation. The paper records ground truth for most experiments and separately tests the effect of location and orientation errors., zh: BVP 计算需要用户的位置与朝向。论文在多数实验中记录真值，并单独测试位置与朝向误差的影响。}
+limitations:
+- {en: 'The experiments assume only the gesture performer is in the 2 m x 2 m sensing area, because other moving entities add noisy reflections that degrade the DFS profiles.', zh: 实验假设感知区域内只有手势执行者，因为其他运动物体会带来噪声反射，使 DFS 轮廓的质量下降。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'Raw CSI logs from Intel 5300 NICs on channel 165 at 5.825 GHz: one transmitter, six receivers with three antennas each, 30 subcarriers.', zh: Intel 5300 网卡采集的原始 CSI 日志，信道 165，载频 5.825 GHz：1 个发射机、6 个接收机，每个接收机 3 根天线，30 个子载波。}
+- key: cir
+  status: derivable
+  note: {en: A coarse CIR follows from the 30-subcarrier CSI by inverse Fourier transform over the subcarrier grid., zh: 由 30 个子载波的 CSI 经子载波维度的逆傅里叶变换可得到粗略 CIR。}
+- key: paths
+  status: none
+  note: {en: 'Only CSI, DFS and BVP are released, with no per-path delay, angle or power.', zh: 仅发布 CSI、DFS 与 BVP，不含逐路径的时延、角度或功率。}
+- key: interaction
+  status: none
+  note: {en: Measured data with no per-path or per-surface interaction information., zh: 实测数据，不含逐路径或逐表面的交互信息。}
+- key: power
+  status: provided
+  note: {en: RSSI from commodity Wi-Fi NICs is released alongside CSI., zh: 商用 Wi-Fi 网卡采集的 RSSI 与 CSI 一同发布。}
+- key: iq
+  status: none
+  note: {en: 'Intel 5300 NICs log CSI through the Linux CSI Tool, and the release contains no raw I/Q samples.', zh: Intel 5300 网卡通过 Linux CSI Tool 记录 CSI，发布内容中不含原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: Gesture labels only; the single transmitter defines no beam set., zh: 仅有手势标签；单个发射机不定义波束集合。}
+- key: position
+  status: provided
+  note: {en: 'Each file name carries discrete room, position and orientation indices, with 5 positions and 5 orientations per room; these are indices, not coordinates.', zh: 每个文件名包含房间、位置与朝向的离散索引，每个房间 5 个位置、5 个朝向；这些是索引而非坐标。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files are released; the 2 m by 2 m sensing area is described only in text., zh: 未发布场景或地图文件；2 m × 2 m 的感知区域仅以文字描述。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'RF-only release: the RF data types are RSSI and CSI, and no image data are described.', zh: 仅为射频数据发布，射频数据类型为 RSSI 与 CSI，未描述任何图像数据。}
+- key: depth
+  status: none
+  note: {en: The release contains no depth data., zh: 发布内容不含深度数据。}
+- key: lidar
+  status: none
+  note: {en: The release contains no LiDAR data., zh: 发布内容不含 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: Wi-Fi sensing only; the release has no radar sensor data., zh: 仅为 Wi-Fi 感知，发布内容不含雷达传感器数据。}
+- key: imu
+  status: none
+  note: {en: The release contains no inertial sensor data., zh: 发布内容不含惯性传感器数据。}
+- key: time_series
+  status: provided
+  note: {en: CSI logs and the DFS and BVP files are ordered over consecutive timestamps., zh: CSI 日志以及 DFS、BVP 文件均按连续时间戳排列。}
+- key: multiuser
+  status: none
+  note: {en: 'One performer is in the sensing area at a time, so each instance has one user.', zh: 感知区域内同一时间只有一名执行者，因此每个实例对应一名用户。}
+- key: multibs
+  status: none
+  note: {en: One transmitter; the six receivers observe one link set and are not separate base stations., zh: 一个发射机；六个接收机观测同一组链路，并非独立的基站。}
+- key: crossfreq
+  status: none
+  note: {en: Single channel 165 at 5.825 GHz; no multi-band data., zh: 仅信道 165、5.825 GHz，无多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: none
+  note: {en: 'Performers gesture at fixed positions, and no user speed is stated.', zh: 执行者在固定位置做手势，文中未给出用户速度。}
+- key: dynamic_blockage
+  status: none
+  note: {en: The experiments assume the performer is the only moving entity in the sensing area., zh: 实验假设感知区域内只有手势执行者在运动。}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the indoor measurement, not labelled per path.', zh: 室内实测中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the indoor measurement, not labelled per path.', zh: 室内实测中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the indoor measurement, not labelled per path; body scattering carries the gesture signal.', zh: 室内实测中固有存在，未按路径标注；人体散射承载手势信号。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the indoor measurement, not labelled per path.', zh: 室内实测中固有存在，未按路径标注。}
+- {key: polarization, status: unknown}
+- {key: em_field, status: unknown}
+versions:
+- version: 2021/5
+  date: 2021-05
+  summary: {en: 'Deep-learning gesture recognition model added to the Widar3 data package, per the project site news.', zh: 按项目网站公告，基于深度学习的手势识别模型加入 Widar3 数据包。}
+  url: http://tns.thss.tsinghua.edu.cn/widar3.0/index.html
+- version: 2021/3
+  date: 2021-03
+  summary: {en: 'Gait recognition dataset added to the Widar3 data package, per the project site news.', zh: 按项目网站公告，步态识别数据集加入 Widar3 数据包。}
+  url: http://tns.thss.tsinghua.edu.cn/widar3.0/index.html
+- version: IEEE DataPort
+  date: '2020-12-27'
+  summary: {en: 'First public release on IEEE DataPort with CSI, DFS and BVP files; the project site announced availability in 2021/1.', zh: 首次公开发布于 IEEE DataPort，包含 CSI、DFS 与 BVP 文件；项目网站于 2021/1 公告数据已可获取。}
+  url: https://ieee-dataport.org/open-access/widar30-wifi-based-activity-recognition-dataset

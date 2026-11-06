@@ -9,14 +9,14 @@ signals: [csi, rssi]
 bands_ghz: []
 environment: [indoor]
 format: MAT (HDF5)
-license: UCSD DLoc Dataset user license agreement (non-commercial research and educational use only)
+license: DLoc Dataset User License Agreement (non-commercial research and educational purposes only)
 access: {url: 'https://github.com/ucsdwcsng/DLoc_pt_code/blob/main/wild.md', type: registration}
 code: ['https://github.com/ucsdwcsng/DLoc_pt_code']
 paper: doi:10.1145/3372224.3380894
 used_in: ['doi:10.1145/3495243.3560546', 'doi:10.1145/3452296.3472911', 'doi:10.1109/tnet.2022.3196806']
 citing: ['doi:10.1145/3570361.3592527', 'doi:10.1109/tvt.2023.3243912', 'doi:10.1109/jiot.2022.3214211']
 summary: {en: 'The dataset contains 4D complex WiFi channel matrices (datapoints x frequency x antennas x access points), RSSI values and XY location labels from indoor setups in two UCSD buildings. It also provides 2D heatmap features used by the DLoc network.', zh: 该数据集包含四维复数WiFi信道矩阵（数据点 x 频率 x 天线 x 接入点）、RSSI值以及XY位置标签，采集自加州大学圣地亚哥分校两栋建筑的室内场景。另提供DLoc网络所用的二维热图特征。}
-sources: ['https://github.com/ucsdwcsng/DLoc_pt_code/blob/main/wild.md', 'https://raw.githubusercontent.com/ucsdwcsng/DLoc_pt_code/main/README.md', 'https://forms.gle/6mvdGq9Nw69Tnhn99', 'https://wcsng.ucsd.edu/dloc/']
+sources: ['https://github.com/ucsdwcsng/DLoc_pt_code/blob/main/wild.md', 'https://raw.githubusercontent.com/ucsdwcsng/DLoc_pt_code/main/README.md', 'https://forms.gle/6mvdGq9Nw69Tnhn99', 'https://wcsng.ucsd.edu/dloc/', 'https://raw.githubusercontent.com/ucsdwcsng/CSI_to_DLocFeatures/main/README.md', 'https://api.crossref.org/works/10.1145/3372224.3380894', 'https://raw.githubusercontent.com/ucsdwcsng/DLoc_pt_code/main/wild.md', 'https://github.com/ucsdwcsng/DLoc_pt_code/releases', 'https://github.com/ucsdwcsng/DLoc_pt_code/tags', 'https://github.com/ucsdwcsng/DLoc_pt_code/commits/main', 'https://github.com/ucsdwcsng/CSI_to_DLocFeatures/releases', 'https://www.kaggle.com/competitions/wildv2/data']
 checked: '2026-11-06'
 overview: {en: 'WILD (Wireless Indoor Localization Dataset) provides WiFi channel measurements with XY location labels from indoor setups at UC San Diego. The WCSNG group released it in June 2020 with the DLoc paper (Ayyalasomayajula et al., MobiCom 2020), and a second version followed through a Kaggle competition in December 2022. The eight setups are five in Jacobs Hall (ground floor, 18 m x 8 m, 4 APs, 1500 sq. ft. environment, recorded 28 July and 16 August 2019) and three in Atkinson Hall (ground floor, 8 m x 5 m, 3 APs, 500 sq. ft. environment, recorded 16, 18 and 22 July 2019). Each setup has a channels_<setup>.mat file with complex channel matrices, RSSI and XY labels, and a features_<setup>.mat file with heatmap inputs for the DLoc network. Split-index files reproduce the DLoc partitions. The downloads are password-protected and are released after accepting terms through a form.', zh: WILD（Wireless Indoor Localization Dataset）提供加州大学圣地亚哥分校（UCSD）室内场景的 WiFi 信道测量数据，附带 XY 位置标签。WCSNG
     团队于 2020 年 6 月随 DLoc 论文（Ayyalasomayajula 等，MobiCom 2020）发布该数据集，2022 年 12 月通过 Kaggle 竞赛发布第二版。八个采集场景中，Jacobs Hall 有五个（地面层，18 m × 8 m，4 个 AP，环境面积 1500 sq. ft.，采集日期为 2019 年 7 月 28 日和 8 月 16 日），Atkinson Hall 有三个（地面层，8 m × 5 m，3 个 AP，环境面积 500 sq. ft.，采集日期为 2019 年 7 月 16、18 和 22 日）。每个场景对应一个 channels_<setup>.mat 文件，包含复数信道矩阵、RSSI 和 XY 标签；另有一个 features_<setup>.mat 文件，包含 DLoc 网络使用的热图输入。划分索引文件用于复现 DLoc 的数据划分。下载需要密码，须先通过条款表单获取。}
@@ -25,3 +25,107 @@ signal_details:
   text: {en: 'Complex WiFi channel matrices in channels_<setup>.mat (HDF5), shaped datapoints x frequency x antennas x access points. opt.freq holds the subcarrier frequencies and opt.lambda their wavelengths; ant_sep gives the antenna separation used on all APs. The ap cell array lists the [n_ant x 2] XY positions of each AP''s antennas, ap_aoa gives the rotation added to each AP''s AoA, and d1 and d2 are the sampled x and y axes. features_<setup>.mat holds 4D heatmap features with and without time offsets, and labels_gaussian_2d holds the target heatmaps.', zh: 'HDF5 格式的 channels_<setup>.mat 中保存复数 WiFi 信道矩阵，维度为 数据点 × 频率 × 天线 × 接入点（datapoints × frequency × antennas × AP）。opt.freq 为子载波频率向量，opt.lambda 为对应波长，ant_sep 为所有 AP 使用的天线间距。ap 为元胞数组，给出每个 AP 各天线的 [n_ant × 2] XY 坐标；ap_aoa 为每个 AP 加在 AoA 上的旋转量；d1 与 d2 为采样的 x 轴与 y 轴。features_<setup>.mat 含有带时间偏移与不带时间偏移的 4D 热图特征，labels_gaussian_2d 为目标热图。'}
 - signal: rssi
   text: {en: 'RSSI matrix of shape datapoints x access points, stored in the same channels_<setup>.mat file as the channel matrix, with one value per AP per datapoint.', zh: RSSI 矩阵，维度为 数据点 × 接入点（datapoints × AP），与信道矩阵保存在同一个 channels_<setup>.mat 文件中，每个数据点每个 AP 一个值。}
+pipeline:
+  summary: {en: 'In the DLoc project, the MapFind platform maps indoor spaces while collecting wireless channel data with location labels. The channel matrices are stored per setup, converted into 2D heatmap features with MATLAB code, and partitioned with the released split-index files.', zh: DLoc 项目中，MapFind 平台在室内空间内建图并同时采集带位置标签的无线信道数据。信道矩阵按场景保存，经 MATLAB 代码转换为二维热图特征，并使用发布的划分索引文件进行数据划分。}
+  stages:
+  - title: {en: Map the space and collect channel data with MapFind, zh: 使用 MapFind 建图并采集信道数据}
+    detail: {en: 'MapFind is an autonomous platform that maps an indoor environment while collecting wireless channel data. The data it collects serve as DLoc training data, and the platform constructs location-tagged maps of the environment.', zh: MapFind 是一个自主平台，可在采集无线信道数据的同时对室内环境建图。它采集的数据用作 DLoc 的训练数据，并构建带位置标签的环境地图。}
+    inputs:
+    - {en: Indoor space to be mapped, zh: 待建图的室内空间}
+    outputs:
+    - {en: Location-tagged channel data and an environment map, zh: 带位置标签的信道数据与环境地图}
+  - title: {en: Store channel matrices with XY labels, zh: 保存带 XY 标签的信道矩阵}
+    detail: {en: 'Each setup is stored as channels_<setup>.mat in HDF5 format. It holds a 4D complex channel matrix (datapoints x frequency x antennas x access points), RSSI per access point, XY labels for each datapoint, and the antenna geometry of every AP.', zh: 每个场景以 HDF5 格式保存为 channels_<setup>.mat。文件包含四维复数信道矩阵（数据点 x 频率 x 天线 x 接入点）、每个接入点的 RSSI、每个数据点的 XY 标签，以及各 AP 的天线几何信息。}
+    inputs:
+    - {en: Channel data and XY position of each datapoint, zh: 每个数据点的信道数据与 XY 位置}
+    outputs:
+    - {en: channels_<setup>.mat, zh: channels_<setup>.mat}
+  - title: {en: Convert channels into heatmap features and targets, zh: 将信道转换为热图特征与目标}
+    detail: {en: 'The open-source MATLAB code CSI_to_DLocFeatures (runMe.m) generates features from the channel matrices. Each features_<setup>.mat file holds 4D heatmap features with and without time offsets, and labels_gaussian_2d holds the target image for each datapoint on the d1 by d2 grid.', zh: 开源 MATLAB 代码 CSI_to_DLocFeatures（runMe.m）从信道矩阵生成特征。每个 features_<setup>.mat 文件包含带时间偏移与不带时间偏移的四维热图特征，labels_gaussian_2d 则为每个数据点在 d1 乘 d2 网格上的目标图像。}
+    inputs:
+    - {en: channels_<setup>.mat, zh: channels_<setup>.mat}
+    outputs:
+    - {en: features_<setup>.mat with labels_gaussian_2d, zh: features_<setup>.mat 与 labels_gaussian_2d}
+  - title: {en: Apply the released split indices, zh: 应用发布的划分索引}
+    detail: {en: data_split_ids_<dataset>.mat stores MATLAB indices for field-of-view and non-field-of-view train and test sets. data_split_ids_<dataset>_space_gen.mat stores train_idx and test_idx for the space-generalisation split. Applying these indices reproduces the DLoc partitions., zh: data_split_ids_<dataset>.mat 保存视场内与视场外训练集和测试集的 MATLAB 索引。data_split_ids_<dataset>_space_gen.mat 保存空间泛化划分的 train_idx 与 test_idx。使用这些索引即可复现 DLoc 的数据划分。}
+    inputs:
+    - {en: Dataset .mat files, zh: 数据集 .mat 文件}
+    outputs:
+    - {en: Train and test index sets, zh: 训练与测试索引集}
+facts:
+- label: {en: Coordinate labels, zh: 坐标标签}
+  text: {en: 'Each datapoint has an XY label, stored as an n_datapoints by 2 matrix. The variables d1 and d2 give the sampled x and y axes of the space.', zh: 每个数据点带有一个 XY 标签，以 n_datapoints 乘 2 的矩阵保存。变量 d1 与 d2 给出该空间采样的 x 轴与 y 轴。}
+- label: {en: Environments, zh: 环境类型}
+  text: {en: 'The Jacobs Hall setups are high-multipath and non-line-of-sight, with 1500 sq. ft. of space. The Atkinson Hall setups are line-of-sight based, with 500 sq. ft. of space. Jacobs Hall has five setups and Atkinson Hall has three.', zh: Jacobs Hall 的场景为高多径、非视距环境，面积为 1500 sq. ft.。Atkinson Hall 的场景以视距为主，面积为 500 sq. ft.。Jacobs Hall 共 5 个场景，Atkinson Hall 共 3 个场景。}
+- label: {en: Furniture and reflectors, zh: 家具与反射板}
+  text: {en: 'The setups jacobs_Aug16_1 and jacobs_Aug16_3 have extra furniture placed at random. jacobs_Aug16_4_ref adds a large aluminium reflector board, and July22_2_ref adds two reflectors.', zh: jacobs_Aug16_1 与 jacobs_Aug16_3 场景中随机摆放了额外家具。jacobs_Aug16_4_ref 增加了一块大型铝制反射板，July22_2_ref 增加了两块反射板。}
+- label: {en: File layout, zh: 文件结构}
+  text: {en: 'Each setup has one channels_<setup>.mat and one features_<setup>.mat file. The setups are jacobs_Jul28, jacobs_Jul28_2, jacobs_Aug16_1, jacobs_Aug16_3, jacobs_Aug16_4_ref, July16, July18 and July22_2_ref.', zh: 每个场景各有一个 channels_<setup>.mat 与一个 features_<setup>.mat 文件。场景名称包括 jacobs_Jul28、jacobs_Jul28_2、jacobs_Aug16_1、jacobs_Aug16_3、jacobs_Aug16_4_ref、July16、July18 和 July22_2_ref。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: '4D complex channel matrices in channels_<setup>.mat, shaped datapoints x frequency x antennas x APs.', zh: channels_<setup>.mat 中的四维复数信道矩阵，维度为 数据点 x 频率 x 天线 x AP。}
+- {key: cir, status: unknown}
+- {key: paths, status: unknown}
+- {key: interaction, status: unknown}
+- key: power
+  status: provided
+  note: {en: 'RSSI per AP, stored as a datapoints x APs matrix.', zh: 每个 AP 的 RSSI，以 数据点 x AP 矩阵存储。}
+- {key: iq, status: unknown}
+- {key: beam_labels, status: unknown}
+- key: position
+  status: provided
+  note: {en: One 2D XY label per datapoint., zh: 每个数据点一个二维 XY 标签。}
+- key: geometry
+  status: unknown
+  note: {en: AP antenna XY positions and the grid axes d1 and d2 are stored; no 3D scene or map file is listed., zh: 存储 AP 天线的 XY 位置及网格坐标轴 d1、d2；未列出三维场景或地图文件。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: 'The released variables are channels, RSSI, labels, opt, ap, ap_aoa, d1 and d2; no image data.', zh: 发布的变量为 channels、RSSI、labels、opt、ap、ap_aoa、d1 和 d2，不含图像数据。}
+- key: depth
+  status: none
+  note: {en: Not among the released variables., zh: 不在发布的变量之中。}
+- key: lidar
+  status: none
+  note: {en: Not among the released variables., zh: 不在发布的变量之中。}
+- key: radar
+  status: none
+  note: {en: Not among the released variables., zh: 不在发布的变量之中。}
+- key: imu
+  status: none
+  note: {en: Not among the released variables., zh: 不在发布的变量之中。}
+- {key: time_series, status: unknown}
+- {key: multiuser, status: unknown}
+- key: multibs
+  status: provided
+  note: {en: 'Three APs in the Atkinson setups and four APs in the Jacobs setups, stored together in each channels file.', zh: Atkinson 场景为 3 个 AP，Jacobs 场景为 4 个 AP，均存储在同一个 channels 文件中。}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 测量中固有存在，未按路径标注。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: No field-level outputs are listed; the release holds channel matrices and RSSI., zh: 未列出场级输出；发布内容为信道矩阵和 RSSI。}
+versions:
+- version: 2nd version (Kaggle)
+  date: 2022-12
+  summary: {en: 'Second version of the WILD dataset, released through a Kaggle competition. The update note does not list the changes relative to the first release.', zh: WILD 数据集第二版，通过 Kaggle 竞赛发布。更新说明未列出相对首个版本的变更内容。}
+  url: https://www.kaggle.com/competitions/wildv2/data
+- version: First release
+  date: '2020-06-20'
+  summary: {en: First release of the location-labelled WiFi CSI data and the feature data used in DLoc., zh: 首次发布带位置标签的 WiFi CSI 数据及 DLoc 所用的特征数据。}
+  url: https://raw.githubusercontent.com/ucsdwcsng/DLoc_pt_code/main/wild.md

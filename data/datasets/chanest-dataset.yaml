@@ -18,16 +18,17 @@ paper: doi:10.3390/telecom7030065
 used_in: []
 citing: []
 summary: {en: 'Simulated OFDM grids of 612 subcarriers by 14 symbols with DM-RS Type 2 pilots at 7 GHz over TDL-A to TDL-E channels, with SNR from -10 to 30 dB. Each sample stores least-squares estimates with 2-D interpolation as input and the perfect channel as label, for SISO and MIMO configurations.', zh: 在 7 GHz 频段、采用 DM-RS Type 2 导频的仿真 OFDM 资源网格（612 个子载波、14 个符号），信道模型为 TDL-A 至 TDL-E，信噪比为 -10 至 30 dB。每个样本以带二维插值的最小二乘估计作为输入，以理想信道作为标签，支持 SISO 与 MIMO 配置。}
-sources: ['https://data.mendeley.com/datasets/8w3zjj8hzc/1', 'https://github.com/obydelion/ChanEst-Dataset-Generation', 'https://api.crossref.org/works/10.3390/telecom7030065']
+sources: ['https://data.mendeley.com/datasets/8w3zjj8hzc/1', 'https://github.com/obydelion/ChanEst-Dataset-Generation', 'https://api.crossref.org/works/10.3390/telecom7030065', 'https://raw.githubusercontent.com/obydelion/ChanEst-Dataset-Generation/main/README.md', 'https://raw.githubusercontent.com/obydelion/ChanEst-Dataset-Generation/main/Generate_6G_CE_Dataset2.m', 'https://github.com/obydelion/ChanEst-Dataset-Generation/releases', 'https://github.com/obydelion/ChanEst-Dataset-Generation/tags', 'https://github.com/obydelion/ChanEst-Dataset-Generation/commits/main']
 checked: '2026-11-06'
-overview: {en: 'ChanEst is a simulated OFDM channel-estimation dataset for deep-learning-based channel estimation in 6G, published on Mendeley Data as version 1 on 12 February 2026 by researchers at Edge Hill University, Sheffield Hallam University and Asia Pacific University of Technology and Innovation. It is described in Okoyeigbo et al., Telecom 2026, volume 7, issue 3 (doi:10.3390/telecom7030065). The data are generated in MATLAB with the 6G Exploration Library and the 5G Toolbox: a DM-RS-only waveform passes through a 3GPP TDL channel, AWGN is added, and the receiver computes least-squares estimates at the pilots followed by 2-D linear interpolation. Each sample pairs this interpolated estimate (X_input) with the perfect OFDM channel response from the same realization (Y_label). The grid has 612 subcarriers and 14 OFDM symbols at 7 GHz with 60 kHz spacing, DM-RS Type 2 pilots, TDL-A to TDL-E channels, SNR from -10 to 30 dB, delay spread from 10 to 2000 ns and Doppler shift from 5 to
-    5000 Hz, for SISO and MIMO configurations. The files are compressed MATLAB v7.3 (.mat) and HDF5 (.h5) files that hold the real-valued tensors, per-sample metadata (SNR, Doppler, delay spread, TDL profile and seed) and configuration structures. The dataset contains simulated channels only.', zh: 'ChanEst 是一个面向 6G 深度学习信道估计的仿真 OFDM 信道估计数据集，于 2026 年 2 月 12 日以第 1 版发布在 Mendeley Data 上，作者来自 Edge Hill University、Sheffield Hallam University 和 Asia Pacific University of Technology and Innovation。数据集对应 Okoyeigbo 等人发表于 Telecom 2026 年第 7 卷第 3 期的论文（doi:10.3390/telecom7030065）。数据使用 MATLAB 的 6G Exploration Library 与 5G Toolbox 生成：仅含 DM-RS 的波形经过 3GPP TDL 信道，叠加 AWGN，接收端在导频处计算最小二乘（LS）估计，再进行二维线性插值。每个样本将插值后的估计（X_input）与同一实现的理想 OFDM 信道响应（Y_label）配对。资源网格为 612 个子载波、14 个 OFDM 符号，载频 7 GHz，子载波间隔 60 kHz，采用 DM-RS Type 2 导频，信道为 TDL-A 至 TDL-E，信噪比为 -10 至 30 dB，时延扩展为 10 至 2000 ns，多普勒频移为 5 至 5000 Hz，支持 SISO 与 MIMO 配置。文件为压缩的 MATLAB v7.3（.mat）与 HDF5（.h5）格式，包含实值张量、逐样本元数据（SNR、多普勒频移、时延扩展、TDL 模型与随机种子）以及配置结构体。数据集仅包含仿真信道。'}
+overview: {en: 'ChanEst is a simulated OFDM channel-estimation dataset for deep-learning-based channel estimation in 6G, published on Mendeley Data as version 1 on 12 February 2026 by researchers at Edge Hill University, Sheffield Hallam University and Asia Pacific University of Technology and Innovation. It is described in Okoyeigbo et al., Telecom 2026, volume 7, issue 3 (doi:10.3390/telecom7030065). The data are generated in MATLAB with the 6G Exploration Library and the 5G Toolbox: PDSCH DM-RS pilots are inserted into an OFDM grid, the grid passes through a 3GPP TDL channel with AWGN added, and the receiver computes least-squares estimates at the pilots followed by 2-D linear interpolation. Each sample pairs this interpolated estimate (X_input) with the perfect OFDM channel response from the same realization (Y_label). The grid has 612 subcarriers and 14 OFDM symbols at 7 GHz with 60 kHz spacing, DM-RS Type 2 pilots, TDL-A to TDL-E channels, SNR from -10 to 30 dB, delay spread from 10
+    to 2000 ns and Doppler shift from 5 to 5000 Hz. The generator supports SISO and 2x2 or 4x4 MIMO configurations. The files are compressed MATLAB v7.3 (.mat) and HDF5 (.h5) files that hold the real-valued tensors, per-sample metadata (SNR, Doppler, delay spread, TDL profile and seed) and configuration structures. The dataset contains simulated channels only.', zh: 'ChanEst 是一个面向 6G 深度学习信道估计的仿真 OFDM 信道估计数据集，于 2026 年 2 月 12 日以第 1 版发布在 Mendeley Data 上，作者来自 Edge Hill University、Sheffield Hallam University 和 Asia Pacific University of Technology and Innovation。数据集对应 Okoyeigbo 等人发表于 Telecom 2026 年第 7 卷第 3 期的论文（doi:10.3390/telecom7030065）。数据使用 MATLAB 的 6G Exploration Library 与 5G Toolbox 生成：将 PDSCH DM-RS 导频插入 OFDM 资源网格，网格经过 3GPP TDL 信道并叠加 AWGN，接收端在导频处计算最小二乘（LS）估计，再进行二维线性插值。每个样本将插值后的估计（X_input）与同一实现的理想 OFDM 信道响应（Y_label）配对。资源网格为 612 个子载波、14 个 OFDM 符号，载频 7 GHz，子载波间隔 60 kHz，采用 DM-RS Type 2 导频，信道为 TDL-A 至 TDL-E，信噪比为 -10 至 30 dB，时延扩展为 10 至 2000 ns，多普勒频移为 5 至 5000 Hz。生成器支持 SISO 以及 2x2、4x4 MIMO 配置。文件为压缩的
+    MATLAB v7.3（.mat）与 HDF5（.h5）格式，包含实值张量、逐样本元数据（信噪比、多普勒频移、时延扩展、TDL 模型与随机种子）以及配置结构体。数据集仅包含仿真信道。'}
 signal_details:
 - signal: csi
-  text: {en: 'Real-valued tensors with real and imaginary parts stacked. X_input holds least-squares channel estimates at the pilot positions after 2-D linear interpolation (the receiver view). Y_label holds the perfect OFDM grid channel response (the target). Both have shape [K x L x C x N] with C = 2 x NTx x NRx; the dataset page does not define K, L and N. The grid is 612 subcarriers by 14 OFDM symbols at a 7 GHz carrier (FR3) with 60 kHz subcarrier spacing and 51 resource blocks. Pilots are DM-RS Type 2 per 3GPP TS 38.211. Channels are TDL-A to TDL-E, with SNR from -10 to 30 dB, delay spread from 10 to 2000 ns and Doppler shift from 5 to 5000 Hz, for SISO and MIMO.', zh: '实值张量，实部与虚部堆叠。X_input 为导频位置处的最小二乘信道估计经二维线性插值后的结果（接收端视角）。Y_label 为理想的 OFDM 网格信道响应（训练目标）。两者形状均为 [K x L x C x N]，其中 C = 2 x NTx x NRx；数据页面未定义 K、L 和 N。网格为 612 个子载波、14 个 OFDM 符号，载频 7 GHz（FR3），子载波间隔 60 kHz，共 51 个资源块。导频为符合 3GPP TS 38.211 的 DM-RS Type 2。信道为 TDL-A 至 TDL-E，信噪比为 -10 至 30 dB，时延扩展为 10 至 2000 ns，多普勒频移为 5 至 5000 Hz，支持
-      SISO 与 MIMO。'}
+  text: {en: 'Real-valued tensors with real and imaginary parts stacked. X_input holds least-squares channel estimates at the pilot positions after 2-D linear interpolation (the receiver view). Y_label holds the perfect OFDM grid channel response (the target). Both have shape [K x L x C x N] with C = 2 x NTx x NRx, where K is the number of subcarriers, L the number of OFDM symbols and N the number of samples. The grid is 612 subcarriers by 14 OFDM symbols at a 7 GHz carrier (FR3) with 60 kHz subcarrier spacing and 51 resource blocks. Pilots are DM-RS Type 2 per 3GPP TS 38.211. Channels are TDL-A to TDL-E, with SNR from -10 to 30 dB, delay spread from 10 to 2000 ns and Doppler shift from 5 to 5000 Hz.', zh: '实值张量，实部与虚部堆叠。X_input 为导频位置处的最小二乘信道估计经二维线性插值后的结果（接收端视角）。Y_label 为理想的 OFDM 网格信道响应（训练目标）。两者形状均为 [K x L x C x N]，其中 C = 2 x NTx x NRx，K 为子载波数，L 为 OFDM 符号数，N 为样本数。网格为 612 个子载波、14 个 OFDM 符号，载频 7 GHz（FR3），子载波间隔 60 kHz，共 51 个资源块。导频为符合 3GPP TS 38.211 的 DM-RS Type 2。信道为 TDL-A 至 TDL-E，信噪比为 -10 至
+      30 dB，时延扩展为 10 至 2000 ns，多普勒频移为 5 至 5000 Hz。'}
 pipeline:
-  summary: {en: 'MATLAB simulations generate DM-RS pilot grids over 3GPP TDL channels, and receiver-side least-squares estimates paired with perfect channel responses form each sample.', zh: MATLAB 仿真在 3GPP TDL 信道上生成 DM-RS 导频网格，接收端的最小二乘估计与理想信道响应配对，构成每个样本。}
+  summary: {en: 'MATLAB simulations insert DM-RS pilots into OFDM grids and pass them through 3GPP TDL channels; receiver-side least-squares estimates, interpolated across the grid, paired with perfect channel responses form each sample.', zh: MATLAB 仿真将 DM-RS 导频插入 OFDM 网格并通过 3GPP TDL 信道；接收端经网格插值的最小二乘估计与理想信道响应配对，构成每个样本。}
   stages:
   - title: {en: Resource grid and pilots, zh: 资源网格与导频}
     detail: {en: 'The generator runs in MATLAB R2024a or later with the 6G Exploration Library and the 5G Toolbox. PDSCH DM-RS pilots are inserted into an OFDM grid of 612 subcarriers and 14 symbols, using DM-RS Type 2 per 3GPP TS 38.211, 60 kHz subcarrier spacing and 51 resource blocks.', zh: 生成器在 MATLAB R2024a 或更高版本中运行，需要 6G Exploration Library 与 5G Toolbox。PDSCH DM-RS 导频被插入 612 个子载波、14 个符号的 OFDM 网格，采用符合 3GPP TS 38.211 的 DM-RS Type 2、60 kHz 子载波间隔和 51 个资源块。}
@@ -42,14 +43,97 @@ pipeline:
     outputs:
     - {en: received OFDM grid, zh: 接收 OFDM 网格}
   - title: {en: Receiver estimation, zh: 接收端估计}
-    detail: {en: 'The receiver demodulates the grid, extracts the DM-RS pilots and computes least-squares estimates at the pilot positions. It then applies 2-D time-frequency linear interpolation to produce the dense-grid input X_input.', zh: 接收端对网格进行解调，提取 DM-RS 导频并在导频位置计算最小二乘估计，随后进行二维时频线性插值，得到稠密网格输入 X_input。}
+    detail: {en: The receiver extracts the DM-RS pilots and computes least-squares estimates at the pilot positions. It then applies 2-D time-frequency linear interpolation to produce the dense-grid input X_input., zh: 接收端提取 DM-RS 导频并在导频位置计算最小二乘估计，随后进行二维时频线性插值，得到稠密网格输入 X_input。}
     inputs:
     - {en: received OFDM grid, zh: 接收 OFDM 网格}
     outputs:
     - {en: interpolated estimate X_input, zh: 插值估计 X_input}
   - title: {en: 'Labels, metadata and storage', zh: 标签、元数据与存储}
-    detail: {en: 'The perfect OFDM grid channel response from the same realization is stored as the label Y_label. A fixed random seed makes generation deterministic, and each sample records SNR, Doppler, delay spread, speed, TDL profile and, for MIMO, correlation settings. Tensors and metadata are saved as MATLAB v7.3 (.mat) and HDF5 (.h5) files.', zh: 同一实现的理想 OFDM 网格信道响应被存为标签 Y_label。固定随机种子保证生成过程可复现；每个样本记录信噪比、多普勒频移、时延扩展、速度、TDL 模型，MIMO 情形下还记录相关性设置。张量与元数据以 MATLAB v7.3（.mat）和 HDF5（.h5）文件保存。}
+    detail: {en: 'The perfect OFDM grid channel response from the same realization is stored as the label Y_label. The generator seeds its random number generator with a configured value, and each sample records its own seed, so generation is reproducible. Each sample also records SNR, Doppler, delay spread, speed, TDL profile and, for MIMO, the correlation setting. Tensors and metadata are saved as MATLAB v7.3 (.mat) and HDF5 (.h5) files.', zh: 同一实现的理想 OFDM 网格信道响应被存为标签 Y_label。生成器以配置的种子初始化随机数生成器，并为每个样本记录其种子，因此生成过程可复现。每个样本还记录信噪比、多普勒频移、时延扩展、速度、TDL 模型，MIMO 情形下还记录相关性设置。张量与元数据以 MATLAB v7.3（.mat）和 HDF5（.h5）文件保存。}
     inputs:
     - {en: X_input and Y_label tensors, zh: X_input 与 Y_label 张量}
     outputs:
     - {en: .mat and .h5 dataset files, zh: .mat 与 .h5 数据集文件}
+facts:
+- label: {en: Tensor packing, zh: 张量打包}
+  text: {en: linkIndex = (tx-1) x NRx + rx; the real part of link linkIndex is at channel index 2 x (linkIndex - 1) + 1 and the imaginary part at the next index., zh: linkIndex = (tx-1) x NRx + rx；链路 linkIndex 的实部位于通道索引 2 x (linkIndex - 1) + 1，虚部位于其后一个索引。}
+- label: {en: Normalization, zh: 归一化}
+  text: {en: Normalization is not stored in the files; it is applied during training when needed., zh: 文件中不保存归一化参数，需要时在训练阶段进行归一化。}
+- label: {en: Default configuration, zh: 默认配置}
+  text: {en: 'The generator default is SISO with one transmit and one receive antenna, and the random seed is 42.', zh: 生成器默认配置为 SISO（1 根发射天线、1 根接收天线），随机种子为 42。}
+capabilities:
+- key: csi
+  status: provided
+  note: {en: 'X_input and Y_label tensors on a 612 x 14 grid at 7 GHz, with real and imaginary parts stacked; the sources do not state the antenna configuration of the released files (generator default is SISO).', zh: 7 GHz 下 612 x 14 网格的 X_input 与 Y_label 张量，实部与虚部堆叠；来源未说明发布文件的天线配置（生成器默认 SISO）。}
+- key: cir
+  status: derivable
+  note: {en: 'Not stored; the generator''s quick-look code (localEffectivePDP_fftEmbed) computes a power delay profile by IFFT of the perfect channel response, and the same transform gives the CIR.', zh: 未存储；生成器的快速检查代码（localEffectivePDP_fftEmbed）对理想信道响应做 IFFT 计算功率时延分布，同一变换可得到 CIR。}
+- key: paths
+  status: none
+  note: {en: 'Channels come from the nrTDLChannel statistical model; per-path delays, angles, powers and phases are not stored.', zh: 信道由 nrTDLChannel 统计模型生成；未存储逐径时延、角度、功率与相位。}
+- key: interaction
+  status: none
+  note: {en: 'Statistical 3GPP TDL profiles with no scene geometry, so no interaction points or surfaces are recorded.', zh: 采用统计型 3GPP TDL 模型，无场景几何，因此不记录交互点或交互面。}
+- key: power
+  status: derivable
+  note: {en: Received power and path loss follow from |H|^2 of the stored csi tensors; SNR is stored per sample., zh: 接收功率与路径损耗可由已存储 csi 张量的 |H|^2 推出；信噪比按样本存储。}
+- key: iq
+  status: none
+  note: {en: Only frequency-domain grid tensors are released; time-domain waveforms are not stored., zh: 仅发布频域网格张量，未存储时域波形。}
+- key: beam_labels
+  status: none
+  note: {en: 'No beam indices, codebooks or per-beam gains appear in the released tensors or logs.', zh: 发布的张量与日志中无波束索引、码本或逐波束增益。}
+- key: position
+  status: none
+  note: {en: 'Per-sample logs hold SNR, Doppler, delay spread, speed, TDL profile and seed, with no user position or GPS.', zh: 逐样本日志包含信噪比、多普勒频移、时延扩展、速度、TDL 模型与种子，无用户位置或 GPS。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files are released; the channel is a statistical TDL model., zh: 未发布场景或地图文件；信道为统计型 TDL 模型。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released; the channel is a statistical TDL model., zh: 未发布材料参数；信道为统计型 TDL 模型。}
+- key: rgb
+  status: none
+  note: {en: Simulated channel tensors only; no images are released., zh: 仅有仿真信道张量，未发布图像。}
+- key: depth
+  status: none
+  note: {en: Simulated channel tensors only; no depth data are released., zh: 仅有仿真信道张量，未发布深度数据。}
+- key: lidar
+  status: none
+  note: {en: Simulated channel tensors only; no point clouds are released., zh: 仅有仿真信道张量，未发布点云。}
+- key: radar
+  status: none
+  note: {en: Simulated channel tensors only; no radar data are released., zh: 仅有仿真信道张量，未发布雷达数据。}
+- key: imu
+  status: none
+  note: {en: Simulated channel tensors only; no inertial data are released., zh: 仅有仿真信道张量，未发布惯性数据。}
+- key: time_series
+  status: none
+  note: {en: Each sample is an independent realization with its own seed; the 14 symbols lie within one slot and are not a sequence of snapshots., zh: 每个样本为独立实现并有各自种子；14 个符号位于同一时隙内，并非快照序列。}
+- key: multiuser
+  status: none
+  note: {en: 'Each sample is one link; MIMO means NTx x NRx antennas, not several users.', zh: 每个样本为一条链路；MIMO 指 NTx x NRx 根天线，而非多个用户。}
+- key: multibs
+  status: none
+  note: {en: Each sample is one link to one transmitter; no multi-BS sets are described., zh: 每个样本为到单一发射端的一条链路；未描述多基站数据集。}
+- key: crossfreq
+  status: none
+  note: {en: Single 7 GHz carrier; no paired multi-band data., zh: 单一 7 GHz 载波，无成对多频段数据。}
+- {key: near_field, status: unknown}
+- key: high_mobility
+  status: provided
+  note: {en: 'Doppler shift of 5 to 5000 Hz at 7 GHz, with speed logged per sample; this implies speeds up to about 214 m/s.', zh: 7 GHz 下多普勒频移为 5 至 5000 Hz，并按样本记录速度；由此推算速度可达约 214 m/s。}
+- {key: dynamic_blockage, status: unknown}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: 'The output is the channel response only; no field-level quantities, antenna patterns or E-field components are released.', zh: 输出仅为信道响应，未发布场量、天线方向图或电场分量。}
+versions:
+- version: Version 1
+  date: '2026-02-12'
+  summary: {en: 'The first and only listed version: ChanEst simulated OFDM channel-estimation tensors (X_input, Y_label) with per-sample logs, released on Mendeley Data as .mat and .h5 files under CC BY 4.0.', zh: 首个也是目前唯一列出的版本：ChanEst 仿真 OFDM 信道估计张量（X_input、Y_label）及逐样本日志，以 .mat 与 .h5 文件在 Mendeley Data 上以 CC BY 4.0 发布。}
+  url: https://data.mendeley.com/datasets/8w3zjj8hzc/1

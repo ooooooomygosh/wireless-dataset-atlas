@@ -4,7 +4,7 @@ const root = document.getElementById("browser")!;
 const rows = [...document.querySelectorAll<HTMLElement>("#view-table tbody tr")];
 const cardOf = new Map<string, HTMLElement>();
 document.querySelectorAll<HTMLElement>("#view-cards .card").forEach((c) => cardOf.set(c.dataset.id!, c));
-const KEYS = ["task", "origin", "signal", "band", "environment", "access", "code"] as const;
+const KEYS = ["task", "origin", "signal", "band", "environment", "access", "cap", "code"] as const;
 type Key = (typeof KEYS)[number];
 const facetEl = (k: Key) => root.querySelector<HTMLElement>(`.facet[data-facet="${k}"]`)!;
 const qEl = document.getElementById("q") as HTMLInputElement;

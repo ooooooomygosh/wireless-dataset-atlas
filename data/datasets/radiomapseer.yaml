@@ -13,100 +13,50 @@ paper: arxiv:2212.11777
 used_in: []
 citing: ['doi:10.1109/twc.2023.3273202', 'doi:10.1109/tccn.2024.3502492', 'doi:10.1109/twc.2024.3457431']
 summary: {en: 'Simulated radio maps of path loss, received signal strength and time of arrival over dense urban areas modeled on actual city layouts. The main download is about 3 GB.', zh: 基于真实城市布局建模的密集城区仿真无线电地图，包括路径损耗、接收信号强度（RSS）和到达时间（ToA）。主下载包约 3 GB。}
-sources: ['https://radiomapseer.github.io/', 'https://arxiv.org/abs/2212.11777']
+sources: ['https://radiomapseer.github.io/', 'https://arxiv.org/abs/2212.11777', 'https://arxiv.org/pdf/2212.11777', 'https://ieee-dataport.org/documents/dataset-pathloss-and-toa-radio-maps-localization-application', 'https://raw.githubusercontent.com/RonLevie/RadioUNet/master/README.md', 'https://drive.google.com/file/d/1PTaPpLOKraVCRZU_Tzev4D5ZO32tpqMO/view', 'https://arxiv.org/abs/2212.11777v1', 'https://arxiv.org/abs/2212.11777v2', 'https://arxiv.org/abs/2212.11777v3', 'https://arxiv.org/abs/2212.11777v4', 'https://arxiv.org/html/2212.11777v1', 'https://arxiv.org/html/2212.11777v2', 'https://arxiv.org/html/2212.11777v3', 'https://arxiv.org/html/2212.11777v4']
 checked: '2026-11-06'
 pipeline:
-  summary: {en: 'Urban maps and Tx positions enter WinProp; DPM or IRT generates pathloss/ToA grids, which are then encoded as images. Model fidelity and image encoding are two separate processing stages.', zh: 城市地图和Tx位置进入WinProp，DPM或IRT生成路径损耗/ToA栅格，再编码成图像。模型保真度和图像编码是两层独立加工。}
+  summary: {en: 'City maps from OpenStreetMap and transmitter positions are simulated with WinProp in DPM, IRT2 and IRT4 modes. Pathloss grids are encoded as 256 × 256 PNG images. The with-car variants and the ToA and localization products are separate derived packages.', zh: 基于 OpenStreetMap 的城市地图和发射机位置，使用 WinProp 的 DPM、IRT2 与 IRT4 模式进行仿真。路径损耗栅格被编码为 256 × 256 的 PNG 图像。含车版本以及 ToA 和定位产品作为独立的派生数据包发布。}
+  scope: {en: 'The original RadioMapSeer.zip (about 3 GB, pathloss maps), the RadioLocSeer and RadioToASeer localization packages, the IRT2HighRes and IRT4HighRes packages and the RadioMap3DSeer package are separate downloads.', zh: 原始 RadioMapSeer.zip（约 3 GB，路径损耗图）、RadioLocSeer 与 RadioToASeer 定位数据包、IRT2HighRes 与 IRT4HighRes 高精度数据包以及 RadioMap3DSeer 三维数据包均为独立下载。}
   stages:
-  - title: {en: Prepare maps and transmitter positions, zh: 准备地图与发射机位置}
-    detail: {en: 'Build maps and propagation regions, setting building heights, antenna heights, and frequencies for the specific package.', zh: 建立地图及传播区域，按具体包设置建筑高度、天线高度和频率。}
+  - title: {en: Build city maps and transmitter positions, zh: 构建城市地图与发射机位置}
+    detail: {en: 'City maps from OpenStreetMap for six cities give 701 maps of 256 × 256 m. In the 2D sets, 80 transmitters per map sit at street level, 1.5 m above ground, within the central 150 × 150 m area. In the 3D set, transmitters sit close to the edges of rooftops of buildings at least five stories (16.5 m) tall; the area is enlarged to 230 × 230 m when the centre lacks such buildings.', zh: 从 OpenStreetMap 获取六个城市的地图，形成 701 幅 256 × 256 m 的城市地图。二维数据集中，每幅地图的 80 个发射机位于街道高度（离地 1.5 m），并限于中心 150 × 150 m 区域内。三维数据集中，发射机位于至少五层（16.5 m）建筑的屋顶边缘附近；若中心缺少此类建筑，则将范围扩大到 230 × 230 m。}
     inputs:
-    - {en: 'Building footprints, roads, and optional vehicles', zh: 建筑footprint、道路和可选车辆}
-    - {en: Tx positions per map, zh: 每图Tx位置}
+    - {en: City maps from OpenStreetMap, zh: OpenStreetMap 城市地图}
     outputs:
-    - {en: Maps/masks, zh: 地图/掩码}
-    - {en: Tx coordinates and scene configuration, zh: Tx坐标和场景配置}
-    controls:
-    - {en: 'Researcher specifies: 2D/3D package, coordinate scale, building/antenna heights', zh: 研究者固定：2D/3D包、坐标尺度、建筑/天线高度}
-    - {en: Verify the 701/700 map count against the downloaded package, zh: 701/700地图口径按下载包核验}
-    checks:
-    - {en: Retain a shared map ID for all Tx positions on the same map, zh: 同地图各Tx保留共同map ID}
-    - {en: 'Record geometry, frequency, and antenna configurations separately for 3D and 2D versions', zh: 3D与2D版本的几何、频率和天线配置分别记录}
-  - title: {en: Select DPM or IRT solver settings, zh: 选择DPM或IRT求解配置}
-    detail: {en: 'Compute propagation with DPM, IRT2, or IRT4; original IRT uses 100 m tiles and later high-accuracy versions use 10 m tiles.', zh: 分别用DPM、IRT2或IRT4计算传播；原始IRT使用100m tile，后续高精度版本用10m tile。}
+    - {en: 'Building, road and transmitter images with matching polygon JSON files', zh: 建筑、道路与发射机图像及对应的多边形 JSON 文件}
+  - title: {en: Run WinProp propagation models, zh: 运行 WinProp 传播模型}
+    detail: {en: 'DPM is run for all 701 maps with 80 transmitters each. IRT with a maximum of 2 interactions (IRT2) uses the same 80 transmitters per map. IRT with a maximum of 4 interactions (IRT4) uses 2 transmitters per map, 1,402 simulations in total. The original IRT uses 100 m tiles for building and car segments; the 3D set uses a maximum of 2 interactions and 10 m tiles.', zh: '对全部 701 幅地图，以每幅 80 个发射机运行 DPM。最多 2 次交互的 IRT（IRT2）同样使用每幅地图 80 个发射机。最多 4 次交互的 IRT（IRT4）每幅地图仅 2 个发射机，共 1,402 次仿真。原始 IRT 对建筑与车辆段采用 100 m tile；三维数据集采用最多 2 次交互与 10 m tile。'}
     inputs:
-    - {en: Environment maps, zh: 环境地图}
-    - {en: WinProp model and interaction/acceleration parameters, zh: WinProp模型和交互/加速参数}
+    - {en: City maps and transmitter positions, zh: 城市地图与发射机位置}
+    - {en: WinProp model settings, zh: WinProp 模型设置}
     outputs:
-    - {en: Solver jobs labeled by model, zh: 按模型标记的求解任务}
-    controls:
-    - {en: 'Researcher specifies: DPM/IRT level, tile size, propagation parameters, and grid', zh: 研究者固定：DPM/IRT级别、tile、传播参数和网格}
-    - {en: Original IRT4 covers only a smaller Tx subset, zh: 原始IRT4仅为较小Tx子集}
-    checks:
-    - {en: Separate model differences from map differences, zh: 将模型差异与地图差异分开}
-    - {en: 'Preserve the identities of the original package and later, more realistic simulation packages', zh: 保留原始包和后续更真实模拟包的身份}
-  - title: {en: Solve pathloss and optional ToA, zh: 求解路径损耗及可选ToA}
-    detail: {en: Generate propagation maps from each Tx to all locations; ToA is available only in corresponding extensions. Vehicle-inclusive 2D versions correct the propagation maps using the DPM difference with/without vehicles., zh: 生成每个Tx到各位置的传播图；ToA仅在相应扩展提供。含车2D版本使用DPM有车/无车差值修正相应传播图。}
+    - {en: 'Pathloss simulations labelled by model (DPM, IRT2, IRT4)', zh: 按模型（DPM、IRT2、IRT4）标记的路径损耗仿真结果}
+  - title: {en: Add the effect of cars, zh: 加入车辆影响}
+    detail: {en: 'For the with-car versions, 100 cars of 2 × 5 × 1.5 m are placed per map along or across roads, or as many as the roads can hold. DPM is run with and without the cars, the difference is multiplied by 0.5, and the result is added to each model''s pathloss map.', zh: 含车版本中，每幅地图沿道路或垂直道路放置 100 辆尺寸为 2 × 5 × 1.5 m 的车辆（道路长度不足时放置最多可容纳的数量）。分别运行有车与无车的 DPM，取差值并乘以 0.5，再加到各模型的路径损耗图上。}
     inputs:
-    - {en: Solver task, zh: 求解任务}
-    - {en: Receiver grid, zh: 接收栅格}
+    - {en: DPM runs with and without cars, zh: 有车与无车的 DPM 结果}
     outputs:
-    - {en: Floating-point pathloss grids, zh: 浮点pathloss栅格}
-    - {en: ToA or vehicle-inclusive maps provided by the corresponding package, zh: 相应包提供的ToA或含车地图}
-    controls:
-    - {en: 'Paper processing: multiply the vehicle-induced difference by 0.5 and add it to the corresponding map', zh: 论文处理：含车差值乘0.5后加入对应地图}
-    - {en: 'Researcher specifies: output quantity, no-coverage values, and thresholds', zh: 研究者固定：输出量、无覆盖值与阈值}
-    checks:
-    - {en: Indicate whether vehicles are represented by synthetic corrections or independent RT for each model, zh: 标记车辆是修正合成还是逐模型独立RT}
-    - {en: Use IRT4 as a simulation reference, zh: IRT4作为模拟参照使用}
-  - title: {en: Encode images and auxiliary masks, zh: 编码图像与辅助掩码}
-    detail: {en: 'Clip and scale propagation quantities to grayscale as specified by the package, and pair them with map masks.', zh: 按包规定将传播量裁剪、缩放为灰度图，并与地图掩码配对。}
+    - {en: With-car pathloss maps for each model, zh: 各模型的含车路径损耗图}
+  - title: {en: Encode pathloss as gray-level images, zh: 将路径损耗编码为灰度图像}
+    detail: {en: 'Pathloss below a minimum threshold is truncated, and the range from that threshold to the dataset maximum is scaled to gray levels 0 to 255, so higher pathgain has higher gray levels. The analytic truncation thresholds are -147 dB for 2D and -111 dB for 3D. Maps are saved as PNG images.', zh: 低于最小阈值的路径损耗被截断，截断值至数据集最大值之间的范围被缩放为 0 至 255 灰度，路径增益越高灰度越大。二维解析截断阈值为 -147 dB，三维为 -111 dB。结果以 PNG 图像保存。}
     inputs:
-    - {en: Physical grids, zh: 物理栅格}
-    - {en: Building/road/Tx-position masks, zh: 建筑/道路/Tx位置掩码}
+    - {en: Pathloss grids in dB, zh: 以 dB 表示的路径损耗栅格}
     outputs:
-    - {en: PNG/array training samples, zh: PNG/数组训练样本}
-    - {en: Mapping between physical values and pixels, zh: 物理值与像素的映射}
-    controls:
-    - {en: 'Researcher specifies: dB range, quantization, thresholds, and pixel coordinates', zh: 研究者固定：dB范围、量化、阈值与像素坐标}
-    checks:
-    - {en: Check whether normalization is invertible and which ranges are clipped, zh: 检查归一化是否可逆及被裁剪范围}
-    - {en: Restore a consistent physical quantity before comparing models, zh: 模型比较先还原到一致物理量}
-  - title: {en: Define map-estimation and downstream tasks, zh: 定义地图估计与下游任务}
-    detail: {en: 'Build sparse-to-dense map estimation, localization, or coverage tasks; group by map to control leakage from shared geometry.', zh: 研究者建立稀疏到稠密地图估计、定位或覆盖任务；以地图分组控制共享几何泄漏。}
+    - {en: 256 × 256 PNG pathloss images, zh: 256 × 256 的 PNG 路径损耗图像}
+  - title: {en: Derive ToA and localization packages, zh: 生成 ToA 与定位数据包}
+    detail: {en: 'RadioToASeer uses DPM simulations of the 99 RadioLocSeer test maps, with 80 transmitters each, and gives the ToA of the dominant path. RadioLocSeer uses radio maps estimated by RadioUNet for the same 99 held-out maps; RadioUNet was trained on DPM maps of 602 city maps, and the RadioLocSeer maps are truncated at -127 dB.', zh: RadioToASeer 基于 RadioLocSeer 的 99 幅测试地图，对每幅图的 80 个发射机做 DPM 仿真，给出主导路径的 ToA。RadioLocSeer 使用 RadioUNet 对同一 99 幅保留测试地图的估计结果；RadioUNet 以 602 幅城市地图的 DPM 图训练，RadioLocSeer 的地图截断于 -127 dB。}
     inputs:
-    - {en: 'Images, Tx positions, and optional sparse measurement points', zh: 图像、Tx和可选稀疏测量点}
-    - {en: Train/test map IDs, zh: 训练/测试map ID}
+    - {en: DPM simulations of the 99 test maps and RadioUNet estimates, zh: 99 幅测试地图的 DPM 仿真与 RadioUNet 估计}
     outputs:
-    - {en: Estimation/localization samples, zh: 估计/定位样本}
-    - {en: Map errors and coverage-decision results, zh: 地图误差及覆盖决策结果}
-    controls:
-    - {en: 'Researcher specifies: sampling-point visibility, splits, noise, and thresholds', zh: 研究者固定：采样点可见性、切分、噪声和阈值}
-    checks:
-    - {en: Random Tx splits within the same map must be labeled as tests on seen maps, zh: 同图不同Tx随机划分需标为已见地图测试}
-    - {en: Power maps support corresponding power-domain decisions; complex CSI requires separate generation, zh: 功率地图只支持相应功率域决策，复CSI需另生成}
-  scope: {en: 'Distinguish original RadioMapSeer, Pathloss/ToA, and 3D IRT extensions by package.', zh: 原始RadioMapSeer与Pathloss/ToA、3D IRT扩展按包区分。}
+    - {en: ToA values (RadioToASeer) and localization radio maps (RadioLocSeer), zh: ToA 数值（RadioToASeer）与定位无线电地图（RadioLocSeer）}
 facts:
 - label: {en: Native outputs, zh: 原生输出}
-  text: {en: '• Precomputed pathloss maps and map masks
-
-      • ToA/3D IRT maps from the specified extensions', zh: '• 预计算路径损耗图和地图掩码
-
-      • 指定扩展的ToA/3D IRT地图'}
-- label: {en: Derived outputs, zh: 派生输出}
-  text: {en: '• Sparse-observation samples
-
-      • Localization, coverage/outage, and power-domain planning labels', zh: '• 稀疏观测样本
-
-      • 定位、coverage/outage和功率域规划标签'}
-- label: {en: What the researcher controls, zh: 研究者可控范围}
-  text: {en: controls and checks identify settings to fix or verify when reproducing or using the data. Values explicitly labeled as paper settings come from the cited source; other items are not official defaults., zh: controls和checks是复现/使用时需要固定或验证的项目；其中明确标注论文配置的数值来自原来源，其余不代表官方默认。}
-- label: {en: Reproduction notes, zh: 复现说明}
-  text: {en: '• Official website and extension paper reviewed; the approximately 3 GB original package was not downloaded.
-
-      • Use the selected package and loader to determine exact encoding ranges, map counts, and Tx subsets.', zh: '• 已读官网与扩展论文，未下载约3GB原始包。
-
-      • 具体编码范围、地图数量与Tx子集以使用的包和loader为准。'}
+  text: {en: 'Pathloss PNG maps with building, road, car and transmitter images; building and car polygons and transmitter coordinates in JSON; height-encoded building images in the 3D package.', zh: 路径损耗 PNG 图，以及建筑、道路、车辆与发射机图像；建筑与车辆多边形和发射机坐标以 JSON 保存；三维数据包另有高度编码的建筑图像。}
+- label: {en: Localization split, zh: 定位数据划分}
+  text: {en: 'RadioUNet is trained on 602 city maps; the remaining 99 maps form RadioLocSeer, with 80 transmitters per map and 7,920 estimated radio maps per simulation setting.', zh: 'RadioUNet 在 602 幅城市地图上训练；其余 99 幅地图构成 RadioLocSeer，每幅地图 80 个发射机，每种仿真设置共 7,920 幅估计无线电地图。'}
+- label: {en: Building variants, zh: 建筑变体}
+  text: {en: 'Each city map also appears with one to four randomly removed buildings, with six random draws per city map.', zh: 每幅城市地图还有移除 1 至 4 栋随机建筑的版本，每幅城市地图有六组随机抽取。}
 provenance:
 - {en: Urban building footprints and Tx positions, zh: 城市建筑 footprint 与 Tx 位置}
 - {en: WinProp DPM/IRT2/IRT4, zh: WinProp DPM/IRT2/IRT4}
@@ -114,25 +64,135 @@ provenance:
 - {en: Scalar/image encoding and building masks, zh: 标量/图像编码与建筑掩码}
 - {en: RadioUNet-style tasks, zh: RadioUNet 类任务}
 technical_notes:
-- {en: 'Supported by the literature: DPM/IRT2 are coarse models; the IRT4 subset provides a finer simulation reference.', zh: 文献支持：DPM/IRT2 为粗模型，IRT4 子集用于更精细模拟对照。}
-- {en: 'Confirmed: the official website explicitly describes later IRT2/IRT4 versions as more realistic than older versions and also provides 3D IRT2.', zh: 已确认：官网明确后续 IRT2/IRT4 比旧版更真实，并另有 3D IRT2。}
-- {en: 'Inference: IRT4 remains a simulation reference and must not be labeled real measurement ground truth.', zh: 推断：IRT4 仍是模拟参照，不能标作真实测量 ground truth。}
-- {en: 'Supported by the literature: original IRT uses 100 m tiles, while later high-accuracy versions use 10 m tiles; 2D vehicle-inclusive versions add 0.5 times the DPM difference with/without vehicles to the corresponding propagation maps, rather than independently rerunning vehicles for every IRT model.', zh: 文献支持：原始 IRT tile 为100 m，后续高精度版本为10 m；2D含车版本由DPM有车/无车差值乘0.5后加到对应传播图，并非每种IRT均独立重跑车辆。}
+- {en: 'The original IRT simulations use 100 m tiles; the IRT2HighRes and IRT4HighRes sets use 10 m tiles, which give finer reflection patterns.', zh: 原始 IRT 仿真使用 100 m tile；IRT2HighRes 与 IRT4HighRes 使用 10 m tile，反射图案更细。}
+- {en: The car variants add a corrected DPM effect to each model's map; the car effect is not separately ray-traced for each IRT model., zh: 含车版本是将 DPM 的车辆影响修正量加到各模型的地图上，并非为每种 IRT 模型单独做光线追踪。}
+- {en: The 3D building heights span 6.6 to 19.8 m and are quantized to 255 levels in the height-encoded images., zh: 三维数据集的建筑高度范围为 6.6 至 19.8 m，在高度编码图像中量化为 255 个等级。}
 limitations:
-- {en: Randomly splitting different Tx positions from the same map shares building layouts., zh: 同地图不同 Tx 的随机拆分会共享建筑布局。}
-- {en: Converting normalized grayscale to pathloss in dB requires the original mapping; grayscale cannot directly serve as absolute power., zh: 归一化灰度与 dB 路径损耗需要原转换关系，不能直接作绝对功率。}
-- {en: 3D at 3.5 GHz and 2D at 5.9 GHz also differ in antenna heights and building settings; they are not controlled cross-frequency pairs., zh: 3D 3.5 GHz 与 2D 5.9 GHz 同时改变天线高度和建筑设置，不是受控跨频配对。}
+- {en: 'Transmitters on the same map share one building layout, so random splits over transmitter positions keep the geometry of the training maps.', zh: 同一地图上的发射机共享同一建筑布局，因此按发射机位置随机划分会让训练与测试样本共享几何结构。}
+- {en: 'Gray levels are a truncated and normalized transform of pathloss; converting them back to dB requires the truncation threshold and the maximum pathloss from the paper, and gray levels are not absolute power.', zh: 灰度值是经过截断与归一化的路径损耗变换；转换回 dB 需要论文中的截断阈值与最大路径损耗，灰度值本身不是绝对功率。}
+- {en: 'The 2D set at 5.9 GHz and the 3D set at 3.5 GHz also differ in transmitter height, building heights, bandwidth and noise figure, so they do not form a controlled frequency comparison.', zh: 二维集（5.9 GHz）与三维集（3.5 GHz）在发射机高度、建筑高度、带宽和噪声系数上也不同，因此不构成受控的跨频率比较。}
 history:
-- {en: '2019: the RadioUNet preprint provides the original data reference.', zh: 2019：RadioUNet 预印本公开原始数据线索。}
-- {en: 'Later: the official website links the Pathloss/ToA data paper and upgraded IRT/3D data.', zh: 后续：官网链接 Pathloss/ToA 数据论文与升级 IRT/3D 数据。}
+- {en: '2019: the RadioMapSeer maps were first used in the RadioUNet work (arXiv 1911.09002).', zh: 2019 年：RadioMapSeer 地图首次用于 RadioUNet 工作（arXiv 1911.09002）。}
+- {en: 'October 2022: the pathloss and ToA radio map datasets were created on IEEE DataPort (created 7 October 2022).', zh: 2022 年 10 月：路径损耗与 ToA 无线电地图数据集在 IEEE DataPort 创建（创建日期为 2022 年 10 月 7 日）。}
+- {en: 'Later: the higher-accuracy IRT2 and IRT4 sets and the 3D set were added to IEEE DataPort.', zh: 后续：高精度 IRT2 与 IRT4 数据集及三维数据集加入 IEEE DataPort。}
 usage:
-- {en: Select the original or an extension package and read its corresponding data paper., zh: 选定原始或扩展包，读取对应数据论文。}
-- {en: 'Keep map IDs separated, then compare DPM and IRT labels.', zh: 保持 map ID 隔离，再比较 DPM 与 IRT 标签。}
-- {en: 'Report errors in dB or a restored physical scale, specifying image encoding and clipping.', zh: 报告以 dB 或恢复尺度定义的误差，列出图像编码和 clipping。}
-overview: {en: 'RadioMapSeer is a simulated image dataset of radio maps over dense urban areas, described by Yapar, Levie, Kutyniok and Caire in arXiv 2212.11777 (2022). The maps are based on real city maps of six cities: Ankara, Berlin, Glasgow, Ljubljana, London and Tel Aviv. The dataset contains 701 maps of 256 × 256 m at 1 m per pixel, with 80 transmitter positions per map for the full 2D and 3D sets; the IRT4 subset has 2 transmitters per map, giving 1,402 samples. Simulations use the WinProp ray tracer with the DPM, IRT2 and IRT4 models, at 5.9 GHz for the 2D maps and 3.5 GHz for the 3D rooftop maps. The dataset description covers pathloss, received signal strength (RSS) and time-of-arrival (ToA) maps, and the main download is about 3 GB on Google Drive. More realistic IRT2 and IRT4 datasets and a 3D IRT2 dataset are published on IEEE DataPort, and the data are licensed under CC BY 4.0.', zh: 'RadioMapSeer 是一个密集城市区域无线电地图的仿真图像数据集，由 Yapar、Levie、Kutyniok 和 Caire 在 arXiv 2212.11777（2022）中介绍。地图基于安卡拉、柏林、格拉斯哥、卢布尔雅那、伦敦和特拉维夫六个城市的真实城市地图。数据集包含
-    701 幅地图，每幅为 256 × 256 m，分辨率 1 m/像素；二维和三维完整集中每幅地图有 80 个发射机位置，IRT4 子集每幅地图有 2 个发射机，共 1,402 个样本。仿真使用 WinProp 射线追踪器，采用 DPM、IRT2 和 IRT4 模型，二维地图载频为 5.9 GHz，三维屋顶地图载频为 3.5 GHz。数据集说明涵盖路径损耗、接收信号强度（RSS）和到达时间（ToA）地图，主下载包约 3 GB，托管于 Google Drive。IEEE DataPort 上发布了更贴近实际的 IRT2 和 IRT4 数据集以及三维 IRT2 数据集，数据采用 CC BY 4.0 许可。'}
+- {en: 'Select the package first: the original RadioMapSeer, the high-resolution IRT sets, the 3D set or the localization packages.', zh: 先选择数据包：原始 RadioMapSeer、高精度 IRT 数据集、三维数据集或定位数据包。}
+- {en: IEEE DataPort recommends IRT2HighRes.zip over the IRT2 simulations inside RadioMapSeer.zip., zh: IEEE DataPort 建议使用 IRT2HighRes.zip，而不是 RadioMapSeer.zip 中的 IRT2 仿真。}
+- {en: Each 2D model is provided with and without cars on the roads; use the variant that matches the experiment., zh: 每种二维模型都提供有车与无车两个版本，应选用与实验设置一致的版本。}
+- {en: 'Pathloss below the analytic truncation (-147 dB in 2D, -111 dB in 3D) maps to gray level 0. Pathloss below the noise-floor threshold (-127 dB in 2D, -104 dB in 3D) gives received power under the noise floor and should be excluded.', zh: 低于解析截断阈值（二维 -147 dB，三维 -111 dB）的路径损耗对应灰度 0。低于噪声底阈值（二维 -127 dB，三维 -104 dB）的路径损耗使接收功率低于噪声底，应当剔除。}
+overview: {en: 'RadioMapSeer is a simulated dataset of pathloss radio maps over dense urban areas, described by Yapar, Levie, Kutyniok and Caire in arXiv 2212.11777 (2022). It contains 701 city maps of 256 × 256 m at 1 m per pixel, taken from OpenStreetMap for six cities: Ankara, Berlin, Glasgow, Ljubljana, London and Tel Aviv. The DPM and IRT2 models use 80 transmitter positions per map, and the IRT4 subset uses 2 per map, giving 1,402 simulations. The WinProp ray tracer runs at 5.9 GHz for the 2D maps and 3.5 GHz for the 3D rooftop maps. The main package of about 3 GB holds pathloss maps as PNG images, and received signal strength follows from pathloss and the transmit power. ToA maps for 99 city maps are in the RadioToASeer package on IEEE DataPort, which also hosts the more realistic IRT2 and IRT4 sets with 10 m tiles and the 3D set. The data are licensed under CC BY 4.0.', zh: 'RadioMapSeer 是一个密集城市区域路径损耗无线电地图的仿真数据集，由 Yapar、Levie、Kutyniok 和 Caire 在 arXiv 2212.11777（2022）中介绍。数据包含 701
+    幅城市地图，每幅为 256 × 256 m、分辨率 1 m/像素，城市地图取自 OpenStreetMap，覆盖安卡拉、柏林、格拉斯哥、卢布尔雅那、伦敦和特拉维夫。DPM 与 IRT2 模型每幅地图使用 80 个发射机位置，IRT4 子集每幅地图使用 2 个，共 1,402 次仿真。WinProp 射线追踪器的载频为二维地图 5.9 GHz、三维屋顶地图 3.5 GHz。约 3 GB 的主数据包以 PNG 图像保存路径损耗地图，接收信号强度可由路径损耗与发射功率推算。99 幅城市地图的 ToA 地图位于 IEEE DataPort 的 RadioToASeer 数据包中；该平台还提供更贴近实际的 IRT2 与 IRT4 数据集（10 m tile）以及三维数据集。数据采用 CC BY 4.0 许可。'}
 signal_details:
 - signal: pathloss
-  text: {en: 'Pathloss maps of 256 × 256 pixels at 1 m per pixel, one map per transmitter position. Simulated with WinProp DPM, IRT2 or IRT4 (no software version given), using 23 dBm Tx power and isotropic antennas. Tx height is 1.5 m for the 2D maps and 3 m above rooftop for the 3D maps. Saved as PNG images, with pathloss truncated and scaled to gray levels 0–255. The original IRT uses 100 m tiles; the higher-accuracy versions use 10 m tiles.', zh: 路径损耗地图，256 × 256 像素，每像素 1 m，每个发射机位置对应一幅地图。二维地图 Tx 高度为 1.5 m，三维地图为屋顶以上 3 m。以 PNG 图像保存，路径损耗经截断并缩放为 0–255 灰度等级。原始 IRT 使用 100 m tile，高精度版本使用 10 m tile。}
+  text: {en: 'Pathloss maps of 256 × 256 pixels at 1 m per pixel, one per transmitter position and model (DPM, IRT2, IRT4). Simulations use 23 dBm transmit power, isotropic antennas and 1.5 m receiver height. In the 2D maps the transmitters sit at street level, 1.5 m above ground; in the 3D maps they sit 3 m above the rooftop. Pathloss is truncated and scaled to gray levels 0 to 255 and saved as PNG. The original IRT uses 100 m tiles; the higher-accuracy IRT2 and IRT4 sets use 10 m tiles.', zh: 路径损耗地图，每幅 256 × 256 像素、分辨率 1 m/像素，按发射机位置与模型（DPM、IRT2、IRT4）各有一幅。仿真使用 23 dBm 发射功率、各向同性天线和 1.5 m 接收机高度。二维地图中发射机位于街道高度，离地 1.5 m；三维地图中发射机位于屋顶以上 3 m。路径损耗经截断并缩放为 0 至 255 灰度等级，以 PNG 图像保存。原始 IRT 使用 100 m tile，高精度 IRT2 与 IRT4 数据集使用 10 m tile。}
 - signal: rssi
-  text: {en: 'Simulated received signal strength (RSS) maps, listed alongside the pathloss maps in the dataset description (arXiv 2212.11777). The sources opened give no separate RSS file format or units.', zh: 仿真接收信号强度（RSS）地图，与路径损耗地图一同列于数据集说明（arXiv 2212.11777）。}
+  text: {en: 'The paper defines received signal strength as (P_Rx) dB = PL + (P_Tx) dB. After inverting the gray-level scaling, RSS follows from the pathloss maps and the 23 dBm transmit power in Table I.', zh: 论文将接收信号强度定义为 (P_Rx)dB = PL + (P_Tx)dB。在还原灰度缩放后，RSS 可由路径损耗地图结合表 I 中 23 dBm 的发射功率推算。}
+bands_ghz: [5.9, 3.5]
+format: PNG images and JSON polygons; IEEE DataPort also lists MAT and NPY files
+samples: 56,080 simulations per DPM or IRT2 model (701 maps x 80 Tx); 1,402 IRT4 simulations
+capabilities:
+- key: csi
+  status: none
+  note: {en: Only pathloss PNG maps are released; no complex channel data., zh: 仅发布路径损耗 PNG 地图，无复数信道数据。}
+- key: cir
+  status: none
+  note: {en: 'Only the ToA of the dominant path is released, not an impulse response.', zh: 仅发布主导路径的 ToA，未发布冲激响应。}
+- key: paths
+  status: provided
+  note: {en: 'Only the dominant-path ToA (RadioToASeer, 99 maps) is released; no angles, power or phase.', zh: 仅发布主导路径的 ToA（RadioToASeer，99 幅地图）；无角度、功率或相位。}
+- key: interaction
+  status: none
+  note: {en: 'Only the simulator setting (maximum 2 or 4 interactions) is recorded, not per-path interaction data.', zh: 仅记录仿真设置（最多 2 或 4 次交互），未记录逐径交互数据。}
+- key: power
+  status: provided
+  note: {en: Pathloss as gray-level PNG; dB values need the truncation threshold and maximum from the paper. RSS follows from pathloss and the 23 dBm transmit power., zh: 路径损耗以灰度 PNG 发布；还原为 dB 值需要论文中的截断阈值与最大值。RSS 可由路径损耗与 23 dBm 发射功率推算。}
+- key: iq
+  status: none
+  note: {en: No I/Q samples are released., zh: 未发布 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam indices or per-beam gains are released., zh: 未发布波束索引或逐波束增益。}
+- key: position
+  status: provided
+  note: {en: Tx coordinates for 80 transmitters per map in JSON; Rx positions for localization in the RadioLocSeer .mat and .npy files., zh: 每幅地图 80 个发射机的坐标以 JSON 发布；定位用接收机位置见 RadioLocSeer 的 .mat 与 .npy 文件。}
+- key: geometry
+  status: provided
+  note: {en: 'Building, road and car polygons in JSON; the 3D set adds building images with height-encoded pixel values.', zh: 建筑、道路与车辆多边形以 JSON 发布；三维集另有建筑高度编码的像素图像。}
+- key: materials
+  status: none
+  note: {en: 'All buildings share one generic material property, and no material parameters are released.', zh: 所有建筑采用同一通用材料属性，未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: No camera images are released., zh: 未发布相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth sensor data; building heights are encoded in map images for the 3D set., zh: 无深度传感器数据；三维集的建筑高度编码在地图图像中。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data are released., zh: 未发布 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar sensor data are released., zh: 未发布雷达传感器数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data are released., zh: 未发布 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: Each map is a static simulation without timestamps., zh: 每幅地图为静态仿真，无时间戳。}
+- key: multiuser
+  status: derivable
+  note: {en: Pathloss at several pixels of one map can be read as several users' large-scale gains; no per-user channel or fading is released., zh: 同一地图中多个像素的路径损耗可读作多个用户的大尺度增益；未发布逐用户信道或衰落。}
+- key: multibs
+  status: provided
+  note: {en: '80 transmitter maps per city map share one geometry, each stored as its own map; they are not combined into one multi-BS tensor.', zh: 每幅城市地图的 80 个发射机地图共享同一几何，各自存为独立地图，未合并为多基站张量。}
+- key: crossfreq
+  status: none
+  note: {en: 'The 2D sets are at 5.9 GHz with street-level transmitters; the 3D set is at 3.5 GHz with rooftop transmitters, so the positions are not paired.', zh: 二维集为 5.9 GHz 且发射机位于街道高度；三维集为 3.5 GHz 且发射机位于屋顶，两者位置不成对。}
+- key: near_field
+  status: none
+  note: {en: 'Isotropic antennas; the simulations model pathloss only, with no array.', zh: 天线为各向同性，仿真仅建模路径损耗，无阵列。}
+- key: high_mobility
+  status: none
+  note: {en: Transmitters and receivers are static in each simulation; no moving users are simulated., zh: 每次仿真中发射机与接收机均为静态；未仿真移动用户。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Cars are placed as static snapshots and their effect is added as a DPM correction; there are no moving blockers., zh: 车辆以静态快照放置，其影响以 DPM 修正量叠加；无移动遮挡体。}
+- key: reflection
+  status: provided
+  note: {en: Reflection is included in the DPM (single reflection) and IRT2 and IRT4 simulations; not labelled per path., zh: 反射包含于 DPM（单次反射）以及 IRT2、IRT4 仿真中；未按径标注。}
+- key: diffraction
+  status: provided
+  note: {en: Diffraction is included in the DPM and IRT2 and IRT4 simulations; not labelled per path., zh: 绕射包含于 DPM 以及 IRT2、IRT4 仿真中；未按径标注。}
+- key: scattering
+  status: none
+  note: {en: Only reflection and diffraction are described for the DPM and IRT simulations., zh: DPM 与 IRT 仿真中仅描述了反射与绕射。}
+- key: transmission
+  status: none
+  note: {en: Penetration through buildings is not among the described propagation mechanisms., zh: 穿透建筑未列入所述传播机制。}
+- key: polarization
+  status: none
+  note: {en: Isotropic antennas and scalar pathloss outputs; no polarimetric data., zh: 天线为各向同性，输出为标量路径损耗；无极化数据。}
+- key: em_field
+  status: none
+  note: {en: Outputs are scalar pathloss values; no field components or antenna patterns., zh: 输出为标量路径损耗值；无场分量或天线方向图。}
+versions:
+- version: arXiv v4
+  date: '2024-09-16'
+  summary: {en: 'Revision v4 adds the IEEE DataPort URL and DOI, and renames the 3D section to ''The RadioMap3DSeer Dataset'' (v1: ''3D Dataset'').', zh: 修订版 v4 增加 IEEE DataPort 网址与 DOI，并将三维章节更名为 'The RadioMap3DSeer Dataset'（v1 为 '3D Dataset'）。}
+  url: https://arxiv.org/abs/2212.11777v4
+- version: arXiv v3
+  date: '2024-09-12'
+  summary: {en: Revision v3 updates the reference list to journal versions and edits wording., zh: 修订版 v3 将参考文献更新为期刊版本，并修改措辞。}
+  url: https://arxiv.org/abs/2212.11777v3
+- version: arXiv v2
+  date: '2023-09-04'
+  summary: {en: Revision v2 removes the statement that transmitters are at least 20 m apart and edits wording., zh: 修订版 v2 删除了发射机相隔至少 20 m 的说明，并修改措辞。}
+  url: https://arxiv.org/abs/2212.11777v2
+- version: arXiv v1
+  date: '2022-11-18'
+  summary: {en: 'First arXiv posting of the dataset paper, describing the 2D RadioMapSeer maps (DPM, IRT2 and IRT4, with 10 m tiles in the higher-accuracy sets), RadioLocSeer, RadioToASeer and the 3D dataset at 3.5 GHz.', zh: 数据集论文首次发布于 arXiv，描述二维 RadioMapSeer 地图（DPM、IRT2、IRT4；高精度集采用 10 m tile）、RadioLocSeer、RadioToASeer 以及 3.5 GHz 三维数据集。}
+  url: https://arxiv.org/abs/2212.11777v1
+- version: DataPort 2022-10-07
+  date: '2022-10-07'
+  summary: {en: IEEE DataPort record created (DOI 10.21227/0gtx-6v30) for the pathloss and ToA radio map dataset., zh: IEEE DataPort 数据集记录创建（DOI 10.21227/0gtx-6v30），收录路径损耗与 ToA 无线电地图数据集。}
+  url: https://ieee-dataport.org/documents/dataset-pathloss-and-toa-radio-maps-localization-application

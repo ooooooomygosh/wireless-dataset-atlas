@@ -17,10 +17,116 @@ paper: doi:10.1109/vtcfall.2019.8891543
 used_in: []
 citing: ['doi:10.1109/mcom.004.2200723']
 summary: {en: 'Channel impulse response recordings of a vehicle-to-vehicle link at about 60 GHz with 8 GHz bandwidth, with two oncoming cars on a campus road. The data consists of almost 1000 CIR recordings in MAT files.', zh: 两辆相向行驶汽车在校园道路上的车对车链路信道冲激响应（CIR）记录，中心频率约60 GHz，带宽8 GHz。数据为MAT文件，共近1000条CIR记录。}
-sources: ['https://ieee-dataport.org/documents/v2v-mmwave-channel-measurements', 'https://api.crossref.org/works/10.1109/vtcfall.2019.8891543']
+sources: ['https://ieee-dataport.org/documents/v2v-mmwave-channel-measurements', 'https://api.crossref.org/works/10.1109/vtcfall.2019.8891543', 'https://api.datacite.org/dois/10.21227/cfvn-hp41', 'https://api.openalex.org/works/doi:10.1109/vtcfall.2019.8891543']
 checked: '2026-11-06'
 overview: {en: 'The V2V Millimeter-Wave Channel Measurements at 56-64 GHz dataset holds channel impulse response (CIR) recordings of a vehicle-to-vehicle link, from Brno University of Technology. The campaign used a center frequency of about 60 GHz and 8 GHz of bandwidth. The scenario is two oncoming cars on a two-lane road on the campus of the university. The data consist of two independent runs with 468 CIR realizations each, almost 1,000 recordings in total, stored in run1.mat and run2.mat with a time vector in t.MAT. The related paper, Vehicle-to-Vehicle Millimeter-Wave Channel Measurements at 56-64 GHz, was presented at VTC2019-Fall. The archive is 113.6 MB under CC BY 4.0 and requires an IEEE DataPort subscription.', zh: 56-64 GHz V2V 毫米波信道测量数据集包含一条车对车（V2V）链路的信道冲激响应（CIR）记录，由布尔诺理工大学（Brno University of Technology）提供。中心频率约 60 GHz，带宽 8 GHz。场景为校园双车道道路上两辆相向行驶的汽车。数据包含两次独立测量，每次 468 条 CIR 实现，共近 1000 条记录，分别存于 run1.mat 与 run2.mat，时间向量存于 t.MAT。相关论文为 Vehicle-to-Vehicle Millimeter-Wave Channel Measurements
     at 56-64 GHz，发表于 VTC2019-Fall。压缩包为 113.6 MB，许可协议为 CC BY 4.0，访问需要 IEEE DataPort 订阅。}
 signal_details:
 - signal: cir
-  text: {en: 'Channel impulse response realizations, 468 per run, from two runs, stored as MAT files run1.mat and run2.mat, with a time vector in t.MAT. Center frequency about 60 GHz with 8 GHz bandwidth, as stated on the data page.', zh: 信道冲激响应（CIR）实现，每次测量 468 条，共两次测量，以 MAT 文件 run1.mat 与 run2.mat 存储，时间向量存于 t.MAT。中心频率约 60 GHz，带宽 8 GHz。}
+  text: {en: 'Channel impulse response realizations, 468 per run and almost 1000 in total, stored as MAT files run1.mat and run2.mat, with a time vector in t.MAT. Center frequency around 60 GHz with 8 GHz bandwidth.', zh: 信道冲激响应（CIR）实现，每次测量 468 条，共近 1000 条，以 MAT 文件 run1.mat 与 run2.mat 存储，时间向量存于 t.MAT。中心频率约 60 GHz，带宽 8 GHz。}
+pipeline:
+  summary: {en: Two cars pass each other on a campus road while a correlative time-domain channel sounder records channel impulse responses. The recordings are released as MAT files with a time vector., zh: 两辆汽车在校园道路上相向通过，同时由相关型时域信道探测仪记录信道冲激响应。记录以 MAT 文件发布，并附带时间向量。}
+  stages:
+  - title: {en: Measurement campaign, zh: 测量活动}
+    detail: {en: The campaign records several passes of two oncoming cars on a two-lane road on the Brno University of Technology campus. It consists of two independent runs., zh: 测量活动记录布尔诺理工大学校园双车道道路上两辆相向汽车的多次通过，共两次独立测量。}
+    inputs:
+    - {en: two vehicles on a two-lane campus road, zh: 校园双车道道路上的两辆车}
+  - title: {en: Channel sounding, zh: 信道探测}
+    detail: {en: A correlative time-domain channel sounder operating around 60 GHz with 8 GHz of bandwidth records the channel during the passes., zh: 工作在约 60 GHz、带宽 8 GHz 的相关型时域信道探测仪在车辆通过期间记录信道。}
+    outputs:
+    - {en: channel impulse response recordings, zh: 信道冲激响应记录}
+  - title: {en: CIR realizations, zh: CIR 实现}
+    detail: {en: 'Each run contributes 468 CIR realizations, giving almost 1000 CIR recordings in total.', zh: 每次测量产生 468 条 CIR 实现，共近 1000 条 CIR 记录。}
+    outputs:
+    - {en: 468 CIR realizations per run, zh: 每次测量 468 条 CIR 实现}
+  - title: {en: Packaging, zh: 数据打包}
+    detail: {en: 'The data are stored as run1.mat and run2.mat, with a time vector in t.MAT. An example MATLAB plotting script, V2V_CIR_show.m, is included.', zh: 数据存为 run1.mat 与 run2.mat，时间向量存于 t.MAT。随数据附带一个示例 MATLAB 绘图脚本 V2V_CIR_show.m。}
+    outputs:
+    - {en: 'run1.mat, run2.mat and t.MAT', zh: run1.mat、run2.mat 与 t.MAT}
+facts:
+- label: {en: Reference analysis, zh: 参考论文分析}
+  text: {en: 'The related paper evaluates RMS delay spread as a function of received power, temporal decorrelation of the channel impulse response, and the Pearson correlation coefficient as a function of received power.', zh: 相关论文分析了 RMS 时延扩展随接收功率的变化、信道冲激响应的时间去相关性，以及 Pearson 相关系数随接收功率的变化。}
+- label: {en: Licence identifier, zh: 许可证标识}
+  text: {en: 'DataCite lists Creative Commons Attribution 4.0 International for DOI 10.21227/cfvn-hp41, while the IEEE DataPort page reads Creative Commons Attribution.', zh: DataCite 为 DOI 10.21227/cfvn-hp41 列出的许可是 Creative Commons Attribution 4.0 International，而 IEEE DataPort 页面写的是 Creative Commons Attribution。}
+capabilities:
+- {key: csi, status: unknown}
+- key: cir
+  status: provided
+  note: {en: '468 CIR realizations per run in two runs, almost 1000 in total, stored in run1.mat and run2.mat.', zh: 两次测量各 468 条 CIR 实现，共近 1000 条，存于 run1.mat 与 run2.mat。}
+- key: paths
+  status: none
+  note: {en: 'Only CIR realizations are released; per-path delays, angles and powers are not extracted.', zh: 仅发布 CIR 实现，未提取每径时延、角度与功率。}
+- key: interaction
+  status: none
+  note: {en: No per-path interaction or geometry data are released., zh: 未发布每径交互或几何数据。}
+- key: power
+  status: derivable
+  note: {en: 'Received power per CIR realization follows from the stored impulse responses, as in the reference paper analysis; it is not stored as a separate field.', zh: 每条 CIR 实现的接收功率可由所存冲激响应计算，与参考论文的分析一致；数据中未单独存储该字段。}
+- key: iq
+  status: none
+  note: {en: Only processed CIR realizations and a time vector are listed; no raw I/Q samples., zh: 仅列出处理后的 CIR 实现与时间向量，无原始 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam or antenna-pattern labels; a single link is measured., zh: 无波束或天线方向图标签；仅测量单条链路。}
+- key: position
+  status: none
+  note: {en: No vehicle positions or GPS data are released; only a time vector., zh: 未发布车辆位置或 GPS 数据，仅有时间向量。}
+- key: geometry
+  status: none
+  note: {en: No scene or map files are released., zh: 未发布场景或地图文件。}
+- key: materials
+  status: none
+  note: {en: No material parameters are released., zh: 未发布材料参数。}
+- key: rgb
+  status: none
+  note: {en: The release contains only CIR MAT files and a time vector., zh: 发布内容仅为 CIR 的 MAT 文件与时间向量。}
+- key: depth
+  status: none
+  note: {en: The release contains only CIR MAT files and a time vector., zh: 发布内容仅为 CIR 的 MAT 文件与时间向量。}
+- key: lidar
+  status: none
+  note: {en: The release contains only CIR MAT files and a time vector., zh: 发布内容仅为 CIR 的 MAT 文件与时间向量。}
+- key: radar
+  status: none
+  note: {en: The release contains only CIR MAT files and a time vector., zh: 发布内容仅为 CIR 的 MAT 文件与时间向量。}
+- key: imu
+  status: none
+  note: {en: The release contains only CIR MAT files and a time vector., zh: 发布内容仅为 CIR 的 MAT 文件与时间向量。}
+- key: time_series
+  status: provided
+  note: {en: 468 ordered CIR snapshots per run with a time vector in t.MAT., zh: 每次测量 468 个有序 CIR 快照，时间向量位于 t.MAT。}
+- key: multiuser
+  status: none
+  note: {en: One V2V link between two cars; no simultaneous channels for several users., zh: 仅有两车之间的一条 V2V 链路，无多用户同时信道。}
+- key: multibs
+  status: none
+  note: {en: No base stations; the link is vehicle to vehicle., zh: 无基站，链路为车对车。}
+- key: crossfreq
+  status: none
+  note: {en: Single band around 60 GHz with 8 GHz bandwidth; no paired multi-band data., zh: 仅约 60 GHz 频段、8 GHz 带宽，无配对多频段数据。}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- key: reflection
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量本身，未按路径标注。}
+- key: diffraction
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量本身，未按路径标注。}
+- key: scattering
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量本身，未按路径标注。}
+- key: transmission
+  status: provided
+  note: {en: 'Inherent in the measurement, not labelled per path.', zh: 包含于测量本身，未按路径标注。}
+- key: polarization
+  status: none
+  note: {en: No polarimetric channel data are listed in the release., zh: 发布内容中未列出极化信道数据。}
+- key: em_field
+  status: none
+  note: {en: Only channel impulse responses are released; no field-level outputs., zh: 仅发布信道冲激响应，无场强类输出。}
+versions:
+- version: '2022'
+  date: '2022-10-30'
+  summary: {en: 'Dataset record created on IEEE DataPort with run1.mat, run2.mat, the t.MAT time vector and the V2V_CIR_show.m plotting script under CC BY 4.0. The record shows no later update.', zh: 数据集记录于 IEEE DataPort 创建，包含 run1.mat、run2.mat、时间向量 t.MAT 与绘图脚本 V2V_CIR_show.m，许可为 CC BY 4.0。记录未显示之后的更新。}
+  url: https://ieee-dataport.org/documents/v2v-mmwave-channel-measurements
