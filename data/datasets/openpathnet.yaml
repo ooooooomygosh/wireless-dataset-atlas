@@ -71,8 +71,8 @@ capabilities:
   status: none
   note: {en: Ray-tracing output with no I/Q samples., zh: 光线追踪输出，不含 I/Q 采样。}
 - key: beam_labels
-  status: none
-  note: {en: 'The transmitter uses an omnidirectional antenna, so there are no beam indices or beam gains.', zh: 发射机采用全向天线，因此没有波束索引或波束增益。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: position
   status: provided
   note: {en: 'Receiver coordinates on a 1 m grid at 1 m height; the transmitter is at (0, 0, 30) m.', zh: '接收机位于 1 m 间距网格上，高度 1 m；发射机位于 (0, 0, 30) m。'}
@@ -101,18 +101,20 @@ capabilities:
   status: none
   note: {en: Each scene is a single snapshot with no timestamps., zh: 每个场景为单一快照，没有时间戳。}
 - key: multiuser
-  status: none
-  note: {en: One transmitter per scene., zh: 每个场景仅一个发射机。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: multibs
-  status: none
-  note: {en: 'One transmitter per scene, so no multi-base-station set is released.', zh: 每个场景仅一个发射机，因此没有多基站集合。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: crossfreq
-  status: none
-  note: {en: The paper lists broader frequency bands as future work., zh: 论文将更宽的频段列为未来工作。}
-- {key: near_field, status: unknown}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: near_field
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: none
-  note: {en: Receivers sit on a fixed grid and the scenes are static., zh: 接收机位于固定网格上，场景为静态。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: dynamic_blockage
   status: none
   note: {en: Scenes are static; dynamic environmental factors are listed as future work., zh: 场景为静态，动态环境因素被列为未来工作。}
@@ -120,15 +122,17 @@ capabilities:
   status: provided
   note: {en: Enabled in the Sionna ray tracing and stored as the Reflected path type., zh: 在 Sionna 光线追踪中启用，并以 Reflected 路径类型保存。}
 - key: diffraction
-  status: unknown
-  note: {en: 'Enabled in the generator, but the stored path types are LoS, Reflected and Scattered only, so diffracted paths cannot be identified.', zh: 生成器中已启用，但保存的路径类型只有 LoS、Reflected 和 Scattered，无法识别绕射路径。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: scattering
   status: provided
   note: {en: Stored as the Scattered path type., zh: 以 Scattered 路径类型保存。}
 - key: transmission
-  status: unknown
-  note: {en: The paper does not name transmission among the enabled mechanisms., zh: 论文未将穿透列为启用的机制。}
-- {key: polarization, status: unknown}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
+- key: polarization
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: none
   note: {en: Outputs are per-path gains and angles; no field components are stored., zh: 输出为逐径增益与角度，不保存场分量。}

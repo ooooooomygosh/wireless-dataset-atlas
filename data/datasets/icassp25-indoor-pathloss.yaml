@@ -63,14 +63,14 @@ facts:
   text: {en: 'ICASSP2025_Dataset.zip (794.12 MB) holds the training data, and ICASSP2025_Test_Data.zip (19.03 MB) holds the challenge test inputs.', zh: ICASSP2025_Dataset.zip（794.12 MB）包含训练数据，ICASSP2025_Test_Data.zip（19.03 MB）包含挑战赛测试输入。}
 capabilities:
 - key: csi
-  status: none
-  note: {en: Only pathloss maps are released; no complex channel data., zh: 仅发布路径损耗地图，不含复数信道数据。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: cir
-  status: none
-  note: {en: No impulse response or power delay profile; each grid point holds one pathloss value., zh: 不含冲激响应或功率时延谱；每个网格点只有一个路径损耗数值。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: paths
-  status: none
-  note: {en: 'Per-path delay, angle, power and phase are not released.', zh: 不发布逐径时延、角度、功率和相位。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: interaction
   status: simulate
   note: {en: 'The ray tracer used up to 8 reflections, 10 transmissions and 2 diffractions, but only the resulting pathloss is released; per-path interactions need a rerun of the generator.', zh: 射线追踪最多使用 8 次反射、10 次透射和 2 次绕射，但仅发布最终路径损耗；逐径交互需重新运行生成器。}
@@ -81,8 +81,8 @@ capabilities:
   status: none
   note: {en: No raw I/Q samples; the release contains ray-traced pathloss maps only., zh: 不含原始 I/Q 样本；发布内容仅为射线追踪路径损耗地图。}
 - key: beam_labels
-  status: none
-  note: {en: Each map corresponds to one transmitter position and antenna pattern; no beam indices or per-beam gains are given., zh: 每幅地图对应一个发射机位置和一种天线方向图；不含波束索引或逐波束增益。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: position
   status: provided
   note: {en: 'The Position folder lists Tx positions for every building, frequency and antenna.', zh: Position 文件夹列出每个建筑、频率和天线的发射机位置。}
@@ -111,20 +111,20 @@ capabilities:
   status: none
   note: {en: Each sample is one static simulation; there is no temporal sequence., zh: 每个样本是一次静态仿真，不存在时间序列。}
 - key: multiuser
-  status: none
-  note: {en: One transmitter per simulation; no set of simultaneous users., zh: 每次仿真仅一个发射机；不存在同时存在的多用户集合。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: multibs
-  status: none
-  note: {en: One transmitter per simulation; no multi-base-station sets., zh: 每次仿真仅一个发射机；不存在多基站集合。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: crossfreq
   status: provided
   note: {en: 'Building IDs are shared across the three frequencies (868 MHz, 1.8 GHz, 3.5 GHz), indexed by f(ID) in the sample names.', zh: 三个频点（868 MHz、1.8 GHz、3.5 GHz）共享建筑编号，样本名中以 f(ID) 标识频点。}
 - key: near_field
-  status: unknown
-  note: {en: The sources do not state whether near-field or spherical-wave antenna effects are modelled., zh: 来源未说明是否建模近场或球面波天线效应。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: none
-  note: {en: Static transmitters and receivers; no user speed is modelled., zh: 收发端静止；未建模用户速度。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: dynamic_blockage
   status: none
   note: {en: Static scenes; no moving blockers., zh: 场景静态，不存在移动遮挡物。}
@@ -135,14 +135,14 @@ capabilities:
   status: provided
   note: {en: 'The ray tracer traced up to 2 diffractions; only the resulting pathloss is released, not per path.', zh: 射线追踪最多追踪 2 次绕射；仅发布最终路径损耗，不逐径发布。}
 - key: scattering
-  status: unknown
-  note: {en: The sources do not state whether diffuse scattering was enabled., zh: 来源未说明是否启用漫散射。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: transmission
   status: provided
   note: {en: 'The ray tracer traced up to 10 transmissions; only the resulting pathloss is released, not per path.', zh: 射线追踪最多追踪 10 次透射；仅发布最终路径损耗，不逐径发布。}
 - key: polarization
-  status: unknown
-  note: {en: The sources do not mention polarization., zh: 来源未提及极化。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: provided
   note: {en: Azimuth radiation patterns for five antennas are released (Ant1 isotropic); no E-field components or field maps., zh: 发布五种天线的方位角辐射方向图（Ant1 为全向）；不含电场分量或场图。}

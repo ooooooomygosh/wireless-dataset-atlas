@@ -70,10 +70,14 @@ capabilities:
 - key: csi
   status: provided
   note: {en: 'Intel 5300 Wi-Fi CSI on 9 links (1 Tx antenna, 3 Rx with 3 antennas each), 30 subcarriers per link, 200 packets per second; reshaped to 1000 × 270 per 5 s sample.', zh: Intel 5300网卡的Wi-Fi CSI，共9条链路（1根Tx天线，3台Rx各3根天线），每条链路30个子载波，200包/秒；每个5秒样本重排为1000 × 270。}
-- {key: cir, status: unknown}
+- key: cir
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - {key: paths, status: unknown}
 - {key: interaction, status: unknown}
-- {key: power, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Computed as the squared channel magnitude of the provided channel data., zh: 由所提供信道数据的幅度平方计算得到。}
 - key: iq
   status: unknown
   note: {en: 'Raw mmWave ADC frames appear in the processing pipeline, but the raw mmWave download is listed as expired.', zh: 处理流程中出现毫米波原始ADC帧，但原始毫米波数据的下载链接标注为已失效。}

@@ -65,7 +65,9 @@ capabilities:
 - key: csi
   status: provided
   note: {en: '4D complex channel matrices in channels_<setup>.mat, shaped datapoints x frequency x antennas x APs.', zh: channels_<setup>.mat 中的四维复数信道矩阵，维度为 数据点 x 频率 x 天线 x AP。}
-- {key: cir, status: unknown}
+- key: cir
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - {key: paths, status: unknown}
 - {key: interaction, status: unknown}
 - key: power

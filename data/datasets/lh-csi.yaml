@@ -149,7 +149,9 @@ capabilities:
 - key: csi
   status: provided
   note: {en: The 15 released zero-shot test tensors (2.74 GB in total) contain complex CSI; the full 78-subset corpus is not public., zh: 已发布的15个零样本测试张量（共2.74 GB）包含复CSI；78个子集的完整语料未公开。}
-- {key: cir, status: unknown}
+- key: cir
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - key: paths
   status: none
   note: {en: 'The released tensors hold CSI only; per-path data would come from the upstream DeepMIMO or PKU-RT assets, which are not in this release.', zh: 已发布张量仅包含CSI；逐径数据需从上游DeepMIMO或PKU-RT资产获取，这些资产不在本次发布中。}

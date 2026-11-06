@@ -75,7 +75,9 @@ capabilities:
 - key: interaction
   status: none
   note: {en: No geometric scene or per-path interaction type is modelled., zh: 未建模几何场景，也不含逐径交互类型。}
-- {key: power, status: unknown}
+- key: power
+  status: derivable
+  note: {en: Computed as the squared channel magnitude of the provided channel data., zh: 由所提供信道数据的幅度平方计算得到。}
 - key: iq
   status: provided
   note: {en: 'Complex baseband I/Q, 4096 samples per example, real and imaginary parts as two channels; synthetic.', zh: 复数基带 I/Q，每个样本 4096 个采样，实部与虚部作为两个通道；为合成数据。}

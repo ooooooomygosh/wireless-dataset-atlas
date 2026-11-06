@@ -102,7 +102,9 @@ capabilities:
 - key: csi
   status: provided
   note: {en: 'Complex channel tensors per BIN file, shaped S x 64 x 1 x 100 (64 BS antennas, one user layer, 100 subcarriers).', zh: 每个BIN文件为复信道张量，形状为S×64×1×100（64个基站天线、一个用户层、100个子载波）。}
-- {key: cir, status: unknown}
+- key: cir
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - key: paths
   status: none
   note: {en: 'The README lists no per-path delays, angles or interaction records; the release holds channel tensors, GPS logs and scripts.', zh: README未列出逐径时延、角度或交互记录；发布内容包括信道张量、GPS日志与脚本。}

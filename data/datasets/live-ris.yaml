@@ -5,7 +5,7 @@ year: 2026
 organization: Ruhr University Bochum
 origin: measured
 tasks: [ris, channel-modeling]
-signals: [csi]
+signals: [pathloss]
 bands_ghz: [5.385]
 bandwidth_mhz: 650
 environment: [indoor, lab, uav]

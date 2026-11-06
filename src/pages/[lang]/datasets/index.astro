@@ -3,6 +3,8 @@ import type { GetStaticPaths } from "astro";
 import Base from "../../../layouts/Base.astro";
 import DatasetTable from "../../../components/DatasetTable.astro";
 import DatasetCards from "../../../components/DatasetCards.astro";
+import { obtainable, provided } from "../../../lib/caps.ts";
+import { CAPABILITIES } from "../../../schema.ts";
 import { allDatasets, tasks, t, label, labels, bandClasses, LANGS, type Lang } from "../../../lib/data.ts";
 
 export const getStaticPaths = (() => LANGS.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
@@ -16,7 +18,8 @@ const facets = [
   { key: "band", title: t(lang, "filter.band"), opts: ["sub7", "mid", "mmwave", "subthz"].filter((b) => ds.some((d) => bandClasses(d).includes(b))).map((o) => [o, label(labels.band, o, lang)] as const) },
   { key: "environment", title: t(lang, "filter.environment"), opts: uniq((d) => d.environment).map((o) => [o, label(labels.environment, o, lang)] as const) },
   { key: "access", title: t(lang, "filter.access"), opts: uniq((d) => [d.access.type]).map((o) => [o, label(labels.access, o, lang)] as const) },
-  { key: "cap", title: t(lang, "filter.provides"), opts: Object.keys(labels.capability).filter((k) => ds.some((d) => d.capabilities.some((c) => c.key === k && (c.status === "provided" || c.status === "derivable")))).map((o) => [o, label(labels.capability, o, lang)] as const) },
+  { key: "cap", title: t(lang, "filter.provides"), opts: CAPABILITIES.filter((k) => ds.some((d) => obtainable(d, k))).map((o) => [o, label(labels.capability, o, lang)] as const) },
+  { key: "capd", title: t(lang, "filter.provided"), opts: CAPABILITIES.filter((k) => ds.some((d) => provided(d, k))).map((o) => [o, label(labels.capability, o, lang)] as const) },
 ];
 ---
 <Base lang={lang} nav="datasets" title={t(lang, "nav.datasets")}>

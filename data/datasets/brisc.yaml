@@ -5,7 +5,7 @@ year: 2026
 organization: University of Padova; University of Brescia and CNIT
 origin: measured
 tasks: [ris]
-signals: [csi, iq]
+signals: [csi]
 bands_ghz: [5.53]
 bandwidth_mhz: 80
 subcarriers: 242
@@ -82,8 +82,8 @@ capabilities:
   status: none
   note: {en: 'The receiver records IQ for offline processing, but the release lists CSI and metadata only.', zh: 接收机记录了 IQ 用于离线处理，但发布内容仅列出 CSI 与元数据。}
 - key: beam_labels
-  status: none
-  note: {en: No beam codebook or per-beam gain is released; the RIS configuration ID is stored per frame., zh: 未发布波束码本或逐波束增益；每帧存储 RIS 配置编号。}
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: provided
   note: {en: 'Nine transmitter positions on a 3 by 3 grid, identified by file index only; no coordinates are stated.', zh: 发射机位于 3×3 网格的 9 个位置，仅以文件索引标识；来源未给出坐标。}

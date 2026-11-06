@@ -129,8 +129,8 @@ capabilities:
   status: none
   note: {en: 'Released quantities are channel transfer functions, impulse responses and MPCs; raw I/Q samples are not described.', zh: 发布的量为信道传递函数、冲激响应与 MPC；未描述原始 I/Q 采样数据。}
 - key: beam_labels
-  status: unknown
-  note: {en: The sources describe no beam labels or beam codebook., zh: 来源未描述波束标签或波束码本。}
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: provided
   note: {en: Time-synchronized GPS position for each snapshot along the drive routes., zh: 沿驾驶路线的每个快照均有时间同步的 GPS 位置。}

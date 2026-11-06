@@ -70,8 +70,8 @@ capabilities:
   status: none
   note: {en: No per-path interaction data are released., zh: 不提供逐路径交互数据。}
 - key: power
-  status: none
-  note: {en: 'Signals are normalized to unit power and mixtures are scaled to a target SINR, so absolute received power is not kept.', zh: 信号归一化为单位功率，混合信号按目标 SINR 缩放，因此绝对接收功率未保留。}
+  status: derivable
+  note: {en: Computed as the squared channel magnitude of the provided channel data., zh: 由所提供信道数据的幅度平方计算得到。}
 - key: iq
   status: provided
   note: {en: 'Complex baseband samples in SigMF cf32_le (complex64) recordings at 25 MHz for EMISignal1, CommSignal2 and CommSignal3, and 61.44 MHz for CommSignal5G1.', zh: SigMF cf32_le（complex64）格式的复数基带采样：EMISignal1、CommSignal2 与 CommSignal3 录制带宽为 25 MHz，CommSignal5G1 为 61.44 MHz。}

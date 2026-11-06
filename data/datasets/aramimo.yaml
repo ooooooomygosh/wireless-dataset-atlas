@@ -75,7 +75,9 @@ capabilities:
 - key: csi
   status: provided
   note: {en: 'Raw CSI pilot captures of 512 values each, covering 42 base-station antennas and 2 reference antennas.', zh: 原始 CSI 导频采集，每次 512 个数值，覆盖 42 根基站天线和 2 根参考天线。}
-- {key: cir, status: unknown}
+- key: cir
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - {key: paths, status: unknown}
 - {key: interaction, status: unknown}
 - key: power
@@ -84,7 +86,9 @@ capabilities:
 - key: iq
   status: provided
   note: {en: 'IQ samples of the uplink pilots at the base-station antennas, stored in HDF5.', zh: 基站天线上行导频的 IQ 样本，以 HDF5 存储。}
-- {key: beam_labels, status: unknown}
+- key: beam_labels
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - {key: position, status: unknown}
 - key: geometry
   status: provided

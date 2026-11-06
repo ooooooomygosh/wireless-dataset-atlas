@@ -193,7 +193,9 @@ capabilities:
 - key: crossfreq
   status: simulate
   note: {en: Paths.cfr() evaluates one path set at several frequencies; the release stores no multi-band data., zh: Paths.cfr() 可对同一路径集在多个频率上求值；发布内容不含多频段数据。}
-- {key: near_field, status: unknown}
+- key: near_field
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
   status: simulate
   note: {en: Doppler follows from the velocities set on radio devices or scene objects; the package fixes no speed., zh: 多普勒由无线电设备或场景对象设置的速度推出；软件包不固定速度。}

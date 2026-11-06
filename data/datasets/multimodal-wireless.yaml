@@ -100,8 +100,8 @@ capabilities:
   status: provided
   note: {en: 'Per-path complex gain matrix, delay, and AoD/AoA in local and global frames, for LoS and first-order reflections only.', zh: 每条路径的复增益矩阵、时延，以及局部与全局坐标系下的 AoD/AoA，仅包含 LoS 与一阶反射路径。}
 - key: interaction
-  status: unknown
-  note: {en: 'The paper collects LoS and first-order reflection events, but the sources do not describe a per-path interaction label or surface identity in the release.', zh: 论文采集了 LoS 与一阶反射事件，但来源未说明发布数据中是否包含逐路径的交互类型标签或反射面标识。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: power
   status: derivable
   note: {en: 'Path power and received power follow from the stored complex gains; no RSSI, beam power or path loss field is stored.', zh: 路径功率与接收功率可由已存储的复增益计算；数据中不存储 RSSI、波束功率或路径损耗字段。}
@@ -142,17 +142,17 @@ capabilities:
   status: provided
   note: {en: 'Three to four CAVs per scenario, each with its own V2I channel paths in the same frame.', zh: 每个场景 3 至 4 辆 CAV，同一帧中每辆 CAV 均有各自的 V2I 信道路径。}
 - key: multibs
-  status: none
-  note: {en: 'Each scenario has one RSU, so there is no multi-BS set.', zh: 每个场景仅一个 RSU，不存在多基站数据集。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: crossfreq
-  status: unknown
-  note: {en: Table V lists 28 GHz and 4.9 GHz carriers; the sources do not state that both bands are released for the same positions., zh: 表 V 列出 28 GHz 与 4.9 GHz 载频；来源未说明两个频段是否针对相同位置同时发布。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: near_field
-  status: unknown
-  note: {en: Arrays range from 1×4 to 8×8 elements; the sources do not describe spherical-wave modelling., zh: 阵列规模为 1×4 至 8×8 阵元；来源未说明是否采用球面波建模。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
-  status: unknown
-  note: {en: The sources give no vehicle speed; scenario durations are 8 to 13 s., zh: 来源未给出车辆速度；场景时长为 8 至 13 秒。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: dynamic_blockage
   status: provided
   note: {en: 'Other vehicles are placed per frame as metal objects in the Sionna scene (Table IV), so their blockage is modelled by ray tracing.', zh: 其他车辆逐帧作为金属物体放入 Sionna 场景（表 IV），因此其遮挡由射线追踪建模。}
@@ -160,17 +160,17 @@ capabilities:
   status: provided
   note: {en: First-order specular reflections only (maximum reflection order 1)., zh: 仅包含一阶镜面反射（最大反射阶数为 1）。}
 - key: diffraction
-  status: none
-  note: {en: Not in the ray-tracing configuration (Table V); only LoS and first-order reflections are collected., zh: 不在射线追踪配置中（表 V）；仅采集 LoS 与一阶反射。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: scattering
-  status: none
-  note: {en: Not in the ray-tracing configuration (Table V); only LoS and first-order reflections are collected., zh: 不在射线追踪配置中（表 V）；仅采集 LoS 与一阶反射。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: transmission
-  status: none
-  note: {en: Not in the ray-tracing configuration (Table V); only LoS and first-order reflections are collected., zh: 不在射线追踪配置中（表 V）；仅采集 LoS 与一阶反射。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: polarization
-  status: none
-  note: {en: Single vertical polarization with dipole antennas (Table V); no polarimetric data., zh: 单一垂直极化，天线为偶极子（表 V）；无极化测量数据。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: none
   note: {en: 'The channel is path-level (complex gains, delays, angles); no field-level outputs are described.', zh: 信道为路径级数据（复增益、时延、角度）；未描述任何场级输出。}

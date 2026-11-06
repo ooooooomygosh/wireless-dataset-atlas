@@ -321,3 +321,4 @@ details.io-box[open] summary { margin-bottom: 8px; }
 .cap.simulate .capmark { border-style: dashed; border-color: var(--c-ray-tracing); }
 .cap.none { opacity: .62; } .cap.none .capmark { border-color: var(--ink-3); background: linear-gradient(45deg, transparent 44%, var(--ink-3) 44% 56%, transparent 56%); }
 .capgroup + .capgroup { margin-top: 14px; }
+.chart h4 { margin: 14px 0 6px; font-size: 13px; color: var(--ink-2); } .chart .seg { margin-bottom: 4px; }

@@ -110,8 +110,8 @@ signal_details:
   text: {en: 'Processed WiFi CSI tensors, source-specific. UT-HAR: 1 x 250 x 90. NTU-HAR and NTU-HumanID: 3 x 114 x 500, read from CSIamp in .mat files; the loader also accepts CSIphase. Widar: BVP of 22 x 20 x 20 from numeric CSV files. Normalisation differs by source: UT-HAR scales each loaded array by its own minimum and maximum; NTU-Fi uses (x - 42.3199) / 4.9802; Widar uses (x - 0.0025) / 0.0119.', zh: 各数据源处理后的 WiFi CSI 张量。UT-HAR：1 x 250 x 90。NTU-HAR 与 NTU-HumanID：3 x 114 x 500，从 .mat 文件中的 CSIamp 读取；加载器也可选 CSIphase。Widar：由数值 CSV 文件得到的 22 x 20 x 20 BVP。归一化因数据源而异：UT-HAR 对每个加载的数组按其自身最小值与最大值缩放；NTU-Fi 使用 (x - 42.3199) / 4.9802；Widar 使用 (x - 0.0025) / 0.0119。}
 capabilities:
 - key: csi
-  status: none
-  note: {en: The NTU-Fi and UT-HAR arrays are CSI amplitude and Widar files are BVP; the loaders return no complex CSI array., zh: NTU-Fi 与 UT-HAR 数组为 CSI 幅度，Widar 文件为 BVP；加载器不返回复数 CSI 数组。}
+  status: provided
+  note: {en: NTU-Fi and UT-HAR arrays are CSI amplitude; Widar files are BVP. No complex CSI array., zh: NTU-Fi 与 UT-HAR 数组为 CSI 幅度，Widar 文件为 BVP；不含复数 CSI 数组。}
 - key: cir
   status: none
   note: {en: 'The released tensors are CSI amplitude or BVP, with no impulse response or power delay profile.', zh: 发布的张量为 CSI 幅度或 BVP，不含冲激响应或功率时延分布。}

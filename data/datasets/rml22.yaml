@@ -82,8 +82,8 @@ capabilities:
   status: none
   note: {en: 'Synthetic signal generation with no propagation geometry, so no interaction points exist.', zh: 合成信号生成，不含传播几何，因此不存在交互点。}
 - key: power
-  status: none
-  note: {en: 'Each frame is normalised by the sum of its magnitudes, so absolute received power is not retained; SNR is the only level label.', zh: 每帧除以幅度之和进行归一化，绝对接收功率未被保留；SNR 是唯一的电平标签。}
+  status: derivable
+  note: {en: Computed as the squared channel magnitude of the provided channel data., zh: 由所提供信道数据的幅度平方计算得到。}
 - key: iq
   status: provided
   note: {en: '2000 frames per modulation and SNR, each 2 x 128 float32 (real and imaginary parts), in the RML22 pickle distributed through the Google Drive link in the README.', zh: 每种调制、每个 SNR 含 2000 帧，每帧为 2 x 128 的 float32（实部与虚部），包含于 RML22 pickle 文件中，通过 README 中的 Google Drive 链接发布。}

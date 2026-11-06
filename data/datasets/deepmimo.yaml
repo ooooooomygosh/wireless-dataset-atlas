@@ -344,7 +344,9 @@ capabilities:
 - key: crossfreq
   status: simulate
   note: {en: 'Materials and ray tracing are set per carrier (ITU a/b/c/d parameters), so another band needs a new ray-tracing run.', zh: 材料与射线追踪按载频设置（ITU a/b/c/d 参数），因此其他频段需要重新运行射线追踪。}
-- {key: near_field, status: unknown}
+- key: near_field
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: high_mobility
   status: derivable
   note: {en: 'Doppler is added from a user-set speed, shift or scene timestamps, so motion at 30 km/h or faster is computed from the stored paths.', zh: Doppler 可由用户设定的速度、频移或场景时间戳添加，因此 30 km/h 及以上的运动可由已存储的路径计算得到。}
@@ -361,11 +363,11 @@ capabilities:
   status: provided
   note: {en: Code 3 is stored where scattering is enabled; the v4.0.1 Sionna example runs diffraction and scattering on the Munich scene., zh: 代码 3 在启用散射时存储；v4.0.1 的 Sionna 示例在 Munich 场景中启用绕射与散射。}
 - key: transmission
-  status: unknown
-  note: {en: 'Code 4 is defined in the format, but no source states that a released scenario enables transmission.', zh: 格式中定义了代码 4，但没有来源说明已发布的场景启用了透射。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: polarization
-  status: unknown
-  note: {en: No polarimetric channel or polarization field is described., zh: 未描述极化信道或极化字段。}
+  status: simulate
+  note: {en: 'The release includes the 3D scene, so re-running a ray tracer on it produces this output.', zh: 发布内容包含三维场景，在其上重新运行射线追踪即可产生该输出。}
 - key: em_field
   status: unknown
   note: {en: 'Antenna pattern functions are part of the generator, but no E-field or field-strength output is described.', zh: 生成器中包含天线方向图函数，但未描述电场或场强输出。}

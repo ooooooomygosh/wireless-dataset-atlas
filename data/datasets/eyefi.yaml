@@ -68,8 +68,8 @@ capabilities:
   status: provided
   note: {en: 'Intel 5300 CSI with 30 subcarriers and 3 antennas, stored as csi_real and csi_imag with 90 values per packet.', zh: Intel 5300 CSI，含 30 个子载波、3 根天线，以 csi_real 与 csi_imag 存储，每个数据包 90 个数值。}
 - key: cir
-  status: unknown
-  note: {en: Not stored; the sources do not state the subcarrier spacing needed to compute a time-domain response., zh: 未存储；来源未说明计算时域响应所需的子载波间隔。}
+  status: derivable
+  note: {en: Computed from the provided CSI by an inverse Fourier transform over subcarriers., zh: 由所提供的 CSI 沿子载波做逆傅里叶变换得到。}
 - key: paths
   status: provided
   note: {en: 'SpotFi AoA for 1 to 4 assumed paths, with phase-offset variants; per-path delay, power and phase are not stored.', zh: 按 1 至 4 条假设路径给出的 SpotFi AoA，并含相位偏移变体；未存储逐路径时延、功率和相位。}
@@ -83,8 +83,8 @@ capabilities:
   status: none
   note: {en: Only processed CSI is stored; no raw I/Q samples., zh: 仅存储处理后的 CSI，不含原始 I/Q 采样。}
 - key: beam_labels
-  status: none
-  note: {en: The setup has one phone access point and one NIC; no beam indices or per-beam gains are stored., zh: 设置为一台手机接入点和一块网卡；未存储波束索引或逐波束增益。}
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: provided
   note: {en: 'Per-person (x, y) coordinates from the ceiling camera; no height is stored.', zh: '天花板摄像头给出每人的 (x, y) 坐标，不含高度。'}

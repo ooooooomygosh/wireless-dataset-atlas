@@ -72,7 +72,9 @@ capabilities:
 - key: iq
   status: none
   note: {en: Only frequency-domain S21 traces are released; no time-domain I/Q samples are included., zh: 仅发布频域 S21 迹线，不包含时域 I/Q 采样。}
-- {key: beam_labels, status: unknown}
+- key: beam_labels
+  status: derivable
+  note: {en: Computed by projecting the provided channels onto a beam codebook for the stated array., zh: 将所提供信道投影到对应阵列的波束码本上得到。}
 - key: position
   status: provided
   note: {en: 'Antenna positions in m, in room coordinates, for each Rx position and far-field factor, with rotation matrices to local array coordinates.', zh: 每个接收位置和远场因子下的天线位置（单位 m，房间坐标系），并提供从房间坐标到阵列局部坐标的旋转矩阵。}

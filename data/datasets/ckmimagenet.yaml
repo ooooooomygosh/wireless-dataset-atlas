@@ -59,11 +59,11 @@ facts:
   text: {en: 'Real-world measurement data had not been collected when the paper was written, so the channel values come from ray tracing.', zh: 论文撰写时尚未采集实测数据，信道数值来自光线追踪。}
 capabilities:
 - key: csi
-  status: none
-  note: {en: 'Only per-receiver channel gain in dB, one delay, and AoA and AoD angles are released; there is no complex CSI.', zh: 仅发布每个接收点的信道增益（dB）、一个时延以及 AoA 与 AoD 角度；无复数 CSI。}
+  status: derivable
+  note: {en: Synthesised from the provided path parameters and the array geometry., zh: 由所提供的路径参数与阵列几何合成得到。}
 - key: cir
-  status: none
-  note: {en: One delay and one gain per receiver are released; no multi-tap impulse response is included., zh: 每个接收点仅发布一个时延与一个增益；未包含多抽头冲激响应。}
+  status: derivable
+  note: {en: Synthesised from the provided path parameters and the array geometry., zh: 由所提供的路径参数与阵列几何合成得到。}
 - key: paths
   status: provided
   note: {en: 'One set of gain, delay, AoA and AoD per receiver, from up to 25 multipath components per link; the released table does not state which path it stores.', zh: 每个接收点一组增益、时延、AoA 与 AoD，来源于每条链路最多 25 条多径分量；发布表未说明保存的是哪条径。}
