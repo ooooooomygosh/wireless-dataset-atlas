@@ -9,7 +9,7 @@
 面向无线通信机器学习的公开数据集与数据生成器目录。每个条目链接到数据本身、数据集论文、可用的代码，以及使用该数据集的研究。
 
 <!-- stats:start -->
-136 个数据集 · 19 类任务 · 461 篇论文
+150 个数据集 · 19 类任务 · 485 篇论文
 <!-- stats:end -->
 
 ## 任务
@@ -17,14 +17,14 @@
 <!-- tasks:start -->
 | 任务 | 数据集数 |
 | --- | ---: |
-| [信道建模与生成](https://wireless-dataset-atlas.vercel.app/zh/tasks/channel-modeling/) | 31 |
+| [信道建模与生成](https://wireless-dataset-atlas.vercel.app/zh/tasks/channel-modeling/) | 33 |
 | [波束管理](https://wireless-dataset-atlas.vercel.app/zh/tasks/beam-management/) | 18 |
 | [信道估计](https://wireless-dataset-atlas.vercel.app/zh/tasks/channel-estimation/) | 10 |
 | [CSI 反馈与压缩](https://wireless-dataset-atlas.vercel.app/zh/tasks/csi-feedback/) | 6 |
 | [信道预测](https://wireless-dataset-atlas.vercel.app/zh/tasks/channel-prediction/) | 6 |
 | [DoA / AoA 估计](https://wireless-dataset-atlas.vercel.app/zh/tasks/doa-estimation/) | 4 |
-| [定位与指纹](https://wireless-dataset-atlas.vercel.app/zh/tasks/localization/) | 23 |
-| [无线电地图与路径损耗预测](https://wireless-dataset-atlas.vercel.app/zh/tasks/radio-map/) | 15 |
+| [定位与指纹](https://wireless-dataset-atlas.vercel.app/zh/tasks/localization/) | 24 |
+| [无线电地图与路径损耗预测](https://wireless-dataset-atlas.vercel.app/zh/tasks/radio-map/) | 29 |
 | [MIMO 检测与预编码](https://wireless-dataset-atlas.vercel.app/zh/tasks/mimo-detection/) | 3 |
 | [调制与信号分类](https://wireless-dataset-atlas.vercel.app/zh/tasks/modulation-classification/) | 7 |
 | [射频指纹与设备识别](https://wireless-dataset-atlas.vercel.app/zh/tasks/rf-fingerprinting/) | 7 |

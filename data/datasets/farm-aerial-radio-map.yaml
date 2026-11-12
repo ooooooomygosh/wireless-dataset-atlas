@@ -1,0 +1,160 @@
+id: farm-aerial-radio-map
+name: FARM Aerial Radio Map (ARM)
+year: 2026
+organization: Shijian Gao et al.
+origin: ray-tracing
+tasks: [radio-map]
+signals: [rssi]
+bands_ghz: [2.1, 2.6, 3.3, 3.5, 4.9, 5.9, 7.1]
+environment: [outdoor-urban]
+samples: 'The README table lists a volume of 15,000 per group for 13 groups (D1 to D10, P1, F1 and A1). The repository tree holds 68 scene archives and 639 unpacked .npy files.'
+format: 'NumPy .npy arrays inside per-scene .tar.gz archives, with a tx_positions_512.csv file per scene'
+size_gb: 57.34
+mobility: Static
+license: MIT
+access: {url: 'https://huggingface.co/datasets/jliang097/FARM_training_test', type: open}
+code: []
+paper: arxiv:2604.17362
+used_in: []
+citing: []
+summary: {en: 'Ray-traced aerial radio maps from ARM-Omni at 2.1 to 7.1 GHz, with receiver heights up to 150 m and 30, 60 and 120 degree and isotropic antenna patterns, for training and evaluating the FARM model.', zh: '由 ARM-Omni 光线追踪生成的低空无线电地图，频率 2.1 至 7.1 GHz，接收高度最高 150 m，包含 30 度、60 度、120 度波束与全向天线方向图，用于 FARM 模型的训练与评估。'}
+overview: {en: 'The FARM Aerial Radio Map (ARM) dataset is released on Hugging Face with the FARM paper (arXiv:2604.17362). It was generated with ARM-Omni, which uses the TensorFlow-based ray tracer Sionna RT. The paper collects 130 urban scenes from OpenStreetMap. It builds a 3D urban environment from building footprints and elevation data and derives a height map at 1 m resolution for each 1000 m x 1000 m area. For each scenario, 100 transmitter positions are sampled with a grid-based strategy. The README lists 13 groups: D1 to D10, P1, F1 and A1. The carriers are 2.1, 2.6, 3.3, 3.5, 4.9, 5.9 and 7.1 GHz. The maximum receiver height is 100 to 150 m. The antenna patterns are 30 degree, 60 degree, 120 degree and isotropic. Most groups use a 512 x 512 map grid, and P1 uses 256 x 256. Each file holds one volume of shape 1 x 30 x 512 x 512, with 30 receiver height layers and one radio-map channel. The values are received signal strength (RSS) encoded as uint8. The no-signal threshold of -120 dB corresponds to the value 130. Building pixels have the value 0 in every layer. Each scene is stored as one .tar.gz archive. After extraction, the .npy files are named by transmitter, yaw, frequency and antenna pattern, and tx_positions_512.csv gives the transmitter locations. The paper reports about 26.4 million radio maps for the complete pipeline. The repository holds a subset of these, and the README states that a fuller ARM-Omni release is planned.', zh: 'FARM 空中无线电地图（ARM）数据集与 FARM 论文（arXiv:2604.17362）一同发布于 Hugging Face。数据由 ARM-Omni 生成，使用基于 TensorFlow 的射线追踪器 Sionna RT。论文从 OpenStreetMap 收集了 130 个城市场景，涵盖居住区、商业区和混合用途街区。论文依据建筑轮廓与高程数据构建三维城市环境，并为每个 1000 m x 1000 m 区域生成分辨率为 1 m 的高度图。每个场景采用基于网格的方法采样 100 个发射机位置。README 列出 13 个数据组：D1 至 D10、P1、F1 和 A1。载频为 2.1、2.6、3.3、3.5、4.9、5.9 和 7.1 GHz，最大接收高度为 100 至 150 m。天线方向图包括 30 度、60 度、120 度波束和全向天线。多数数据组使用 512 x 512 地图网格，P1 使用 256 x 256。每个文件保存一个形状为 1 x 30 x 512 x 512 的张量，包含 30 个接收高度层和一个无线电地图通道。数值为接收信号强度（RSS），以 uint8 编码。-120 dB 的无信号阈值对应像素值 130，建筑像素在各层的值均为 0。每个场景存为一个 .tar.gz 压缩包。解压后的 .npy 文件按发射机、偏航角、频率和天线方向图命名，tx_positions_512.csv 给出发射机位置。论文称完整流程共生成约 2640 万张无线电地图。本仓库仅包含其中一部分，README 称后续计划发布更完整的 ARM-Omni 数据。'}
+pipeline:
+  summary: {en: 'ARM-Omni builds 3D urban scenes from OpenStreetMap footprints and elevation, samples transmitter sites on a grid, runs Sionna RT for each transmission configuration, and encodes the RSS volumes as uint8 .npy files in per-scene archives.', zh: 'ARM-Omni 依据 OpenStreetMap 的建筑轮廓与高程构建三维城市场景，以网格方式采样发射机站点，对每种发射配置运行 Sionna RT，并将 RSS 体数据以 uint8 .npy 文件形式存入各场景的压缩包。'}
+  stages:
+  - title: {en: Build urban environments, zh: 构建城市环境}
+    detail: {en: 'The paper collects 130 diverse urban scenes from OpenStreetMap. Building footprints and elevation data form a 3D urban environment, and a height map at 1 m resolution is generated for each 1000 m x 1000 m area.', zh: '论文从 OpenStreetMap 收集了 130 个多样的城市场景。建筑轮廓与高程数据构成三维城市环境，并为每个 1000 m x 1000 m 区域生成分辨率为 1 m 的高度图。'}
+    inputs:
+    - {en: OpenStreetMap building footprints, zh: OpenStreetMap 建筑轮廓}
+    - {en: Elevation data, zh: 高程数据}
+    outputs:
+    - {en: 3D urban environments, zh: 三维城市环境}
+  - title: {en: Select transmitter sites, zh: 选择发射机站点}
+    detail: {en: 'For each scenario, 100 transmitter positions are sampled with a grid-based strategy to ensure spatial diversity.', zh: '每个场景采用基于网格的策略采样 100 个发射机位置，以保证空间多样性。'}
+    inputs:
+    - {en: 3D urban environments, zh: 三维城市环境}
+    outputs:
+    - {en: Transmitter positions in tx_positions_512.csv, zh: tx_positions_512.csv 中的发射机位置}
+  - title: {en: Ray-trace RSS volumes, zh: 光线追踪 RSS 体数据}
+    detail: {en: 'Sionna RT runs for diverse transmission configurations, including frequency, antenna pattern and transmitter yaw. The paper states that reflections, diffractions and material-specific propagation are considered when computing RSS at each receiver voxel.', zh: 'Sionna RT 针对多种发射配置运行，包括频率、天线方向图与发射机偏航角。论文称，计算每个接收体素的 RSS 时考虑了反射、绕射及材料相关的传播特性。'}
+    inputs:
+    - {en: Urban environments and transmitter positions, zh: 城市环境与发射机位置}
+    outputs:
+    - {en: RSS volume per receiver voxel over 30 height layers, zh: 每个接收体素在 30 个高度层上的 RSS 体数据}
+  - title: {en: Encode and package scenes, zh: 编码并打包场景}
+    detail: {en: 'Values are stored as uint8, with the -120 dB no-signal threshold mapped to 130 and building pixels set to 0. Each scene is packed as a .tar.gz archive. After extraction, files are arranged as frequency and antenna-pattern folders.', zh: '数值以 uint8 存储，-120 dB 无信号阈值映射为 130，建筑像素置为 0。每个场景打包为一个 .tar.gz 压缩包，解压后按频率与天线方向图文件夹组织。'}
+    inputs:
+    - {en: RSS volumes, zh: RSS 体数据}
+    outputs:
+    - {en: Scene archives and tx_positions_512.csv, zh: 场景压缩包与 tx_positions_512.csv}
+capabilities:
+- key: csi
+  status: none
+  note: {en: 'The release holds RSS radio maps. No channel matrices are described.', zh: '发布内容为 RSS 无线电地图，文档未描述信道矩阵。'}
+- key: cir
+  status: none
+  note: {en: No impulse response or delay profile is described., zh: 文档未描述冲激响应或时延分布。}
+- key: paths
+  status: none
+  note: {en: Only ARM radio-map tensors are described., zh: 文档仅描述 ARM 无线电地图张量。}
+- key: interaction
+  status: none
+  note: {en: Only ARM radio-map tensors are described., zh: 文档仅描述 ARM 无线电地图张量。}
+- key: power
+  status: provided
+  note: {en: 'RSS radio maps for 30 receiver height layers, encoded as uint8 with a -120 dB no-signal threshold.', zh: '30 个接收高度层的 RSS 无线电地图，以 uint8 编码，-120 dB 为无信号阈值。'}
+- key: iq
+  status: none
+  note: {en: No waveform data., zh: 无波形数据。}
+- key: beam_labels
+  status: none
+  note: {en: 'No beam labels are described. The antenna pattern is a simulation setting.', zh: '文档未描述波束标签，天线方向图为仿真设置。'}
+- key: position
+  status: provided
+  note: {en: 'Transmitter positions are in tx_positions_512.csv for each scene. Receiver positions are pixels of the 512 x 512 grid.', zh: '每个场景的发射机位置位于 tx_positions_512.csv 中，接收位置为 512 x 512 网格的像素。'}
+- key: geometry
+  status: derivable
+  note: {en: 'Building occupancy is stored as value 0 in each height-layer radio map.', zh: '建筑占用以每个高度层无线电地图中的 0 值表示。'}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: No camera images., zh: 无相机图像。}
+- key: depth
+  status: none
+  note: {en: No depth data., zh: 无深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data., zh: 无 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar data., zh: 无雷达数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data., zh: 无 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: 'Each map is a static snapshot per transmitter, yaw and frequency.', zh: '每张地图为单个发射机、偏航角与频率下的静态快照。'}
+- key: multiuser
+  status: none
+  note: {en: Maps are generated per transmitter., zh: 地图按发射机逐一生成。}
+- key: multibs
+  status: none
+  note: {en: Each map describes one transmitter., zh: 每张地图对应一个发射机。}
+- key: crossfreq
+  status: provided
+  note: {en: 'Each scene folder has frequency subfolders, so one scene is mapped at several carriers.', zh: '每个场景文件夹下包含多个频率子文件夹，同一场景在多个载频下成图。'}
+- key: near_field
+  status: none
+  note: {en: No near-field output is described., zh: 文档未描述近场输出。}
+- key: high_mobility
+  status: none
+  note: {en: Static maps., zh: 静态地图。}
+- key: dynamic_blockage
+  status: none
+  note: {en: 'Static scenes. No moving blockers are described.', zh: '静态场景，文档未描述移动遮挡体。'}
+- key: reflection
+  status: none
+  note: {en: 'Included in the RSS values. Not released as a separate output.', zh: '已计入 RSS 数值，未单独发布。'}
+- key: diffraction
+  status: none
+  note: {en: 'Included in the RSS values. Not released as a separate output.', zh: '已计入 RSS 数值，未单独发布。'}
+- key: scattering
+  status: none
+  note: {en: Not released as a separate output., zh: 未单独发布。}
+- key: transmission
+  status: none
+  note: {en: Not released as a separate output., zh: 未单独发布。}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Only RSS maps are released., zh: 仅发布 RSS 地图。}
+versions:
+- version: arXiv v3
+  date: '2026-06-20'
+  summary: {en: 'Latest arXiv revision of the FARM paper, last revised on 20 June 2026.', zh: 'FARM 论文的最新 arXiv 修订版（v3），最后修订于 2026 年 6 月 20 日。'}
+  url: https://arxiv.org/abs/2604.17362
+- version: arXiv v1
+  date: '2026-04-19'
+  summary: {en: 'First arXiv submission of the FARM paper.', zh: 'FARM 论文的首次 arXiv 提交。'}
+  url: https://arxiv.org/abs/2604.17362
+limitations:
+- {en: 'The repository tree has no files for P1, F1, D7, D8 or D9, although the README table lists these groups.', zh: '仓库文件树中没有 P1、F1、D7、D8、D9 的文件，但 README 表格列出了这些数据组。'}
+- {en: 'D6 is present only as unpacked .npy files for scenes 52 and 53. Only freq21 and freq33 folders appear, while the README lists 3.5 GHz for D6.', zh: 'D6 仅以解压后的 .npy 文件形式存在，涉及场景 52 与 53，且只出现 freq21 与 freq33 文件夹，而 README 列出 D6 含 3.5 GHz。'}
+- {en: 'The README gives a volume of 15,000 per group. The repository does not state how this maps to files.', zh: 'README 给出每组体量为 15,000，但仓库未说明该数字与文件的对应关系。'}
+- {en: 'The release holds RSS maps only. Path-level outputs and the 3D scene files are not described.', zh: '发布内容仅含 RSS 地图，文档未描述路径级输出与三维场景文件。'}
+- {en: 'Sionna RT version, the material settings and the metric grid spacing of the 512 x 512 maps are not stated in the sources.', zh: '来源未说明 Sionna RT 版本、材料设置以及 512 x 512 地图的实际网格间距。'}
+- {en: 'The README states that a fuller ARM-Omni release is planned.', zh: 'README 称计划在后续版本中发布更完整的 ARM-Omni 数据。'}
+technical_notes:
+- {en: 'Scene IDs are not continuous across dataset groups. Use the extracted folder names as the authoritative scene IDs.', zh: '场景编号在各数据组之间不连续，应以解压后的文件夹名作为场景编号。'}
+facts:
+- label: {en: File naming, zh: 文件命名}
+  text: {en: 'Files follow <dataset>/<scene_id>/<frequency>/<antenna_pattern>/tx<ID>_yaw<VALUE>.npy, for example D1/7/freq59/iso/tx45_yaw0.npy. The README does not define the frequency codes.', zh: '文件路径格式为 <dataset>/<scene_id>/<frequency>/<antenna_pattern>/tx<ID>_yaw<VALUE>.npy，例如 D1/7/freq59/iso/tx45_yaw0.npy。README 未定义频率代码。'}
+sources:
+- https://arxiv.org/abs/2604.17362
+- https://arxiv.org/html/2604.17362
+- https://huggingface.co/datasets/jliang097/FARM_training_test
+- https://huggingface.co/datasets/jliang097/FARM_training_test/raw/main/README.md
+- https://huggingface.co/api/datasets/jliang097/FARM_training_test
+- https://huggingface.co/api/datasets/jliang097/FARM_training_test/tree/main?recursive=true
+- https://huggingface.co/api/datasets/jliang097/FARM_training_test/tree/main/D6?recursive=true
+checked: '2026-11-12'

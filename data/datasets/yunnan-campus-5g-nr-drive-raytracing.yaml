@@ -1,0 +1,266 @@
+id: yunnan-campus-5g-nr-drive-raytracing
+name: Campus-scale 5G NR drive-test, 3D geometry and ray-tracing dataset (Chenggong Campus, Yunnan)
+year: 2026
+organization: Yunnan University
+origin: measured
+tasks:
+- radio-map
+signals:
+- rssi
+- kpi
+bands_ghz:
+- 2.565
+bandwidth_mhz: 100
+environment:
+- outdoor
+- vehicular
+samples: 14,355 raw drive-test records in 12 sessions; 27 per-station radio maps and joint best-server maps
+format: CSV (measurements), PLY (terrain and buildings), NPZ (radio maps with provenance masks), PNG images, Python scripts
+mobility: Vehicle drive tests on campus roads; radio maps are static
+standard: 5G NR Standalone (SA), n41
+license: CC BY 4.0
+access:
+  url: https://data.mendeley.com/datasets/7gs87p73sg/3
+  type: open
+code:
+- https://doi.org/10.5281/zenodo.23207414
+paper: doi:10.1016/j.dib.2026.113364
+used_in: []
+citing: []
+summary:
+  en: Twelve 5G NR n41 drive-test sessions on a mountainous campus, with Sionna RT radio maps for 27 base stations and a joint best-server RSRP map calibrated to the measurements.
+  zh: 山地校园内 12 次 5G NR n41 路测数据，提供 27 个基站的 Sionna RT 无线地图，以及经实测校准的联合最优服务小区 RSRP 地图。
+overview:
+  en: 'The dataset covers 5G NR radio propagation on the Chenggong Campus of Yunnan University in Kunming, China, a mountainous campus. Twelve drive-test sessions were recorded by a vehicle-mounted Android terminal running Cellular-Pro on vehicle-accessible roads. The network is a China Mobile 5G SA cell on n41 at 2.565 GHz, with 100 MHz bandwidth and 273 resource blocks. The raw CSV files hold 14,355 records with time, WGS84 position, vehicle speed, ARFCN, PCI, gNodeB ID, SS-RSRP, SS-RSRQ and SS-SINR, along with the PCIs and RSRP values detected at the same time. Twenty-seven physical base stations and 79 PCIs were verified in the field. A DEM-derived terrain mesh and a simplified 3D building model are released as PLY files in a shared Blender-local frame. The radio maps were computed with Sionna RT 1.2.2 using the same settings as calibration: maximum depth 5, diffraction and edge diffraction enabled, terrain as itu_wet_ground and buildings as itu_concrete. Each base station has a 512 x 512 m map on a nominal 1 m grid. The joint best-server map covers 4000 x 3000 m and is released in raw and calibration-adjusted versions, with RSRP, PCI, station and sector per cell. Nine trajectories were used for calibration and three for held-out evaluation. On 2,380 held-out cells, the calibration-adjusted joint map gives an RMSE of 12.06 dB and an MAE of 9.89 dB. The Mendeley Data record is under CC BY 4.0. The Zenodo record holds the processing and application code.'
+  zh: 该数据集记录了中国昆明云南大学呈贡校区（山地校园）的 5G NR 无线传播情况。车载 Android 终端运行 Cellular-Pro，在可通车道路上完成 12 次路测。网络为中国移动 n41 频段的 5G SA 小区，载频 2.565 GHz，带宽 100 MHz，273 个资源块。原始 CSV 文件共 14,355 条记录，包含时间、WGS84 位置、车速、ARFCN、PCI、gNodeB ID、SS-RSRP、SS-RSRQ 与 SS-SINR，并给出同一时刻检测到的多个 PCI 及其 RSRP 值。27 个物理基站与 79 个 PCI 经实地核验。由 DEM 生成的地形网格与简化三维建筑模型以 PLY 格式发布，采用统一的 Blender 本地坐标系。无线地图由 Sionna RT 1.2.2 计算，与校准所用设置一致：最大深度 5，启用绕射与边缘绕射，地面材料为 itu_wet_ground，建筑材料为 itu_concrete。每个基站提供 512 x 512 m 的地图，名义网格为 1 m。联合最优服务小区地图覆盖 4000 x 3000 m，提供原始与校准后两个版本，每个栅格给出 RSRP、PCI、物理基站与扇区。9 条轨迹用于校准，3 条轨迹留作评估。在 2,380 个留出栅格上，校准后的联合地图 RMSE 为 12.06 dB，MAE 为 9.89 dB。Mendeley Data 记录采用 CC BY 4.0 许可，Zenodo 记录提供处理与应用代码。
+pipeline:
+  summary:
+    en: Drive-test RSRP is aligned to a Blender scene, station parameters are fitted with Sionna RT on nine trajectories, and per-station and joint radio maps are exported and checked on three held-out trajectories.
+    zh: 路测 RSRP 与 Blender 场景对齐，用 9 条轨迹通过 Sionna RT 拟合基站参数，导出逐站与联合无线地图，并在 3 条留出轨迹上检验。
+  stages:
+  - title:
+      en: Drive tests and station verification
+      zh: 路测与站点核验
+    detail:
+      en: An Android terminal running Cellular-Pro recorded 12 sessions on vehicle-accessible campus roads in 5G SA mode on the China Mobile n41 network. The 27 physical base stations and 79 PCIs were verified by field survey.
+      zh: 使用运行 Cellular-Pro 的 Android 终端，在中国移动 n41 网络的 5G SA 模式下沿校园可通车道路完成 12 次路测。27 个物理基站与 79 个 PCI 经实地勘测核验。
+    inputs:
+    - en: Cellular-Pro radio logs
+      zh: Cellular-Pro 无线日志
+    - en: Field survey of base stations
+      zh: 基站实地勘测
+    outputs:
+    - en: Raw CSV files (14,355 records)
+      zh: 原始 CSV 文件（14,355 条记录）
+    - en: Station and PCI reference
+      zh: 基站与 PCI 参考表
+  - title:
+      en: Spatial alignment and scene build
+      zh: 空间对齐与场景构建
+    detail:
+      en: WGS84 coordinates are projected to EPSG:3857 and then translated to a Blender-local origin. The receiver height is set to DEM plus 1.5 m. Each PCI and RSRP pair in the multi-cell lists becomes a separate observation.
+      zh: WGS84 坐标先投影到 EPSG:3857，再平移至 Blender 本地原点。接收机高度取 DEM 加 1.5 m。多小区列表中的每组 PCI 与 RSRP 拆分为独立观测。
+    inputs:
+    - en: WGS84 measurements, DEM, 3D campus model
+      zh: WGS84 测量、DEM、校园三维模型
+    outputs:
+    - en: Terrain and building PLY meshes, PCI-RSRP table
+      zh: 地形与建筑 PLY 网格，PCI-RSRP 表
+  - title:
+      en: Station parameter calibration
+      zh: 基站参数校准
+    detail:
+      en: Nine calibration trajectories fit the station parameters in Sionna RT 1.2.2. The search covers antenna height from 20 to 35 m above ground, a shared carrier power from 50 to 55 dBm, azimuth offset in 5 degree steps, and downtilt from -15 to +15 degrees. Height, azimuth and downtilt are frozen after calibration. The network power offset of 3.535361 dB is selected by leave-one-trajectory-out validation on the calibration trajectories.
+      zh: 九条校准轨迹在 Sionna RT 1.2.2 中拟合基站参数。搜索范围包括相对地面 20 至 35 m 的天线高度、50 至 55 dBm 的共享载波功率、步长 5 度的方位偏移，以及 -15 至 +15 度的下倾角。校准稳定后，高度、方位与下倾角被固定。网络功率偏移 3.535361 dB 由校准轨迹上的留一轨迹验证选定。
+    inputs:
+    - en: Calibration trajectories (9)
+      zh: 校准轨迹（9 条）
+    outputs:
+    - en: Calibrated station parameters
+      zh: 校准后的基站参数
+    controls:
+    - en: Maximum depth 5; diffraction and edge diffraction on
+      zh: 最大深度 5；启用绕射与边缘绕射
+  - title:
+      en: Radio-map generation and evaluation
+      zh: 无线地图生成与评估
+    detail:
+      en: Per-station maps cover a 512 x 512 m window on a nominal 1 m grid. The joint best-server map covers 4000 x 3000 m, in raw and calibration-adjusted versions. Three held-out trajectories give 2,380 matched cells, with RMSE 12.06 dB and MAE 9.89 dB.
+      zh: 逐站地图覆盖 512 x 512 m 窗口，名义网格为 1 m。联合最优服务小区地图覆盖 4000 x 3000 m，提供原始与校准后两个版本。三条留出轨迹给出 2,380 个匹配栅格，RMSE 为 12.06 dB，MAE 为 9.89 dB。
+    outputs:
+    - en: Per-station NPZ maps, joint maps, provenance masks, held-out tables
+      zh: 逐站 NPZ 地图、联合地图、来源掩码与留出评估表
+    checks:
+    - en: Held-out trajectories are not used for fitting.
+      zh: 留出轨迹不参与拟合。
+technical_notes:
+- en: 'Provenance codes: 0 is missing or invalid, 1 is the original Sionna RT value, 2 is a measurement-filled value, and 3 is the Sionna RT value after the calibration-only residual layer.'
+  zh: 来源编码：0 表示缺失或无效，1 表示原始 Sionna RT 值，2 表示实测填充值，3 表示经校准残差层修正后的 Sionna RT 值。
+capabilities:
+- key: csi
+  status: none
+  note:
+    en: Only SS-RSRP, SS-RSRQ and SS-SINR are measured; no CSI.
+    zh: 仅测量 SS-RSRP、SS-RSRQ 与 SS-SINR，无 CSI。
+- key: cir
+  status: none
+  note:
+    en: No channel impulse response is released.
+    zh: 未发布信道冲激响应。
+- key: paths
+  status: none
+  note:
+    en: No path-level output; the ray-tracing products are radio maps.
+    zh: 无路径级输出，射线追踪产品为无线地图。
+- key: interaction
+  status: none
+  note:
+    en: No path interaction data are released.
+    zh: 未发布路径交互数据。
+- key: power
+  status: provided
+  note:
+    en: Measured SS-RSRP, plus Sionna RT RSRP maps per station and for the joint best-server map.
+    zh: 实测 SS-RSRP，以及每个基站和联合最优服务小区的 Sionna RT RSRP 地图。
+- key: iq
+  status: none
+  note:
+    en: No raw I/Q samples.
+    zh: 无原始 I/Q 采样。
+- key: beam_labels
+  status: none
+  note:
+    en: No beam labels; the transmit array is a generic directional model.
+    zh: 无波束标签；发射阵列为通用定向模型。
+- key: position
+  status: provided
+  note:
+    en: WGS84 latitude and longitude in the CSV files; Blender-local coordinates in the processed files.
+    zh: CSV 文件含 WGS84 经纬度，处理后文件含 Blender 本地坐标。
+- key: geometry
+  status: provided
+  note:
+    en: DEM-derived terrain mesh (ground.ply) and simplified building mesh (ynu_chenggong_campus-001.ply).
+    zh: 由 DEM 生成的地形网格（ground.ply）与简化建筑网格（ynu_chenggong_campus-001.ply）。
+- key: materials
+  status: provided
+  note:
+    en: 'Material names only: itu_wet_ground for terrain and itu_concrete for buildings.'
+    zh: 仅给出材料名称：地面为 itu_wet_ground，建筑为 itu_concrete。
+- key: rgb
+  status: none
+  note:
+    en: No camera images.
+    zh: 无相机图像。
+- key: depth
+  status: none
+  note:
+    en: No depth data.
+    zh: 无深度数据。
+- key: lidar
+  status: none
+  note:
+    en: No LiDAR data.
+    zh: 无 LiDAR 数据。
+- key: radar
+  status: none
+  note:
+    en: No radar data.
+    zh: 无雷达数据。
+- key: imu
+  status: none
+  note:
+    en: No IMU data.
+    zh: 无 IMU 数据。
+- key: time_series
+  status: provided
+  note:
+    en: Each drive-test record has a measurement time; the radio maps are static.
+    zh: 每条路测记录含测量时间；无线地图为静态。
+- key: multiuser
+  status: none
+  note:
+    en: One receiver per drive test; no multi-user data.
+    zh: 每次路测仅一个接收端，无多用户数据。
+- key: multibs
+  status: provided
+  note:
+    en: 27 physical base stations and 79 PCIs, with per-station maps and multi-cell PCI-RSRP lists.
+    zh: 27 个物理基站与 79 个 PCI，含每站地图及多小区 PCI-RSRP 列表。
+- key: crossfreq
+  status: none
+  note:
+    en: Single band at 2.565 GHz (n41).
+    zh: 仅 2.565 GHz（n41）单一频段。
+- key: near_field
+  status: none
+  note:
+    en: Maps use a 1 m grid; no near-field modelling is described.
+    zh: 地图为 1 m 网格，未描述近场建模。
+- key: high_mobility
+  status: provided
+  note:
+    en: Vehicle speed is recorded in each drive-test record; the speed range is not stated.
+    zh: 每条路测记录含车速；未说明速度范围。
+- key: dynamic_blockage
+  status: none
+  note:
+    en: Static scene; no dynamic obstacles are modelled.
+    zh: 场景为静态，未建模动态障碍物。
+- key: reflection
+  status: simulate
+  note:
+    en: Sionna RT, maximum depth 5, run on the released meshes reproduces it.
+    zh: 在发布的网格上以最大深度 5 运行 Sionna RT 可复现。
+- key: diffraction
+  status: simulate
+  note:
+    en: Diffraction and edge diffraction are enabled in the Sionna RT settings.
+    zh: Sionna RT 设置中已启用绕射与边缘绕射。
+- key: scattering
+  status: unknown
+- key: transmission
+  status: unknown
+- key: polarization
+  status: simulate
+  note:
+    en: The transmit array uses VH polarization in the Sionna RT settings.
+    zh: Sionna RT 设置中发射阵列采用 VH 极化。
+- key: em_field
+  status: none
+  note:
+    en: Only received power is released, not field values.
+    zh: 仅发布接收功率，不含场值。
+versions:
+- version: Mendeley Data v3
+  date: '2026-10-12'
+  summary:
+    en: Version 3 of the Mendeley Data record, published 12 October 2026. This record was read at this version.
+    zh: Mendeley Data 记录第 3 版，2026 年 10 月 12 日发布。本记录据此版本撰写。
+  url: https://data.mendeley.com/datasets/7gs87p73sg/3
+- version: Zenodo code v2
+  date: '2026-10-07'
+  summary:
+    en: Processing and application code (campus_5g_radio_map_code.zip, 533.0 kB), archived in Zenodo.
+    zh: 处理与应用代码（campus_5g_radio_map_code.zip，533.0 kB），存档于 Zenodo。
+  url: https://doi.org/10.5281/zenodo.23207414
+- version: Data in Brief article
+  date: 2026-08
+  summary:
+    en: Data descriptor in Data in Brief, DOI 10.1016/j.dib.2026.113364; print issue August 2026.
+    zh: 《Data in Brief》数据描述论文，DOI 10.1016/j.dib.2026.113364，印刷期为 2026 年 8 月。
+  url: https://doi.org/10.1016/j.dib.2026.113364
+limitations:
+- en: The dataset covers one operator, one band and one campus, with 12 vehicle sessions.
+  zh: 数据仅覆盖一家运营商、一个频段和一个校园，共 12 次车载路测。
+- en: Measurement-filled maps write measured values into simulated cells. The paper says they are for completion studies and should not be used as independent simulation labels.
+  zh: 测量填充图将实测值写入仿真栅格。论文称其用于补全研究，不应作为独立的仿真标签使用。
+- en: The building model is a simplified mass model. No CityGML level of detail is assigned.
+  zh: 建筑模型为简化体量模型，未标注 CityGML 细节层次。
+sources:
+- https://api.openalex.org/works/doi:10.1016/j.dib.2026.113364
+- https://api.crossref.org/works/10.1016/j.dib.2026.113364
+- https://pmc.ncbi.nlm.nih.gov/articles/PMC13734997/
+- https://data.mendeley.com/datasets/7gs87p73sg/3
+- https://doi.org/10.5281/zenodo.23207414
+checked: '2026-11-12'

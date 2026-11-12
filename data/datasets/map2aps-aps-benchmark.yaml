@@ -1,0 +1,104 @@
+id: map2aps-aps-benchmark
+name: 'Map2APS'
+aliases: ['Map2APS benchmark']
+year: 2026
+organization: UNIC-Lab
+origin: ray-tracing
+tasks: [radio-map]
+signals: [beam-power]
+environment: [outdoor-urban]
+samples: 'About 2.55 million Tx–Rx samples from 51 equal-height urban maps, with 100 transmitter and 500 receiver locations per map; the held-out test set has 249,993 samples'
+format: 'NPY raw APS arrays, JSON building files per map, NPZ preprocessed samples'
+mobility: 'Static maps'
+license: 'Not stated'
+access: {url: 'https://pan.baidu.com/s/1GHPOfXYwvDfO1zmtPpc0yw?pwd=p7sz', type: open}
+code: ['https://github.com/UNIC-Lab/aps-data']
+paper: arxiv:2605.14989
+used_in: []
+citing: []
+summary:
+  en: 'A benchmark that predicts 180-bin angle power spectra from urban building maps and Tx/Rx positions. Labels come from intelligent ray-tracing records over 51 equal-height urban maps and about 2.55 million Tx–Rx samples.'
+  zh: 基于智能射线追踪记录构建的基准，由城市建筑图与收发位置预测 180 个角度分箱的功率谱。数据覆盖 51 个等高城市地图，约 255 万组收发样本。
+overview:
+  en: 'Map2APS is a benchmark for predicting the angle power spectrum (APS) of a Tx–Rx link from a rasterized urban map and the transmitter and receiver positions. The release covers 51 urban maps in which all buildings have the same height. Each map has 100 transmitter locations and 500 receiver locations, giving about 2.55 million samples. The labels come from intelligent ray tracing (IRT). For each Tx–Rx pair, the path records (delay, arrival angle and linear received power) are aggregated with a sinc delay kernel and an array-response kernel into a 180-bin APS over [-180°, 180°) at 2° resolution, keeping the dominant directional energy in each bin. The model input is a three-channel 256 × 256 condition image: a binary building map plus Gaussian heatmaps at the transmitter and the receiver. Maps 0 to 45 are used for training and model development. Maps 46 to 50 form a held-out test set with no map overlap, and the test set contains 249,993 samples. The raw APS arrays are stored as aps_*.npy files in per-map folders, and building layouts are stored as one JSON file per map. The repository preprocessing script writes NPZ samples that hold a normalised 180-element APS vector (aps_norm) and the 3 × 256 × 256 condition image (cond_img).'
+  zh: 'Map2APS 是一个基准，用于由城市栅格地图和收发机位置预测收发链路的角度功率谱（APS）。数据覆盖 51 个城市地图，每个地图中所有建筑高度相同。每个地图有 100 个发射位置和 500 个接收位置，共约 255 万个样本。标签来自智能射线追踪（IRT）：对每个收发对，将路径记录（时延、到达角和线性接收功率）经 sinc 时延核与阵列响应核聚合，得到覆盖 [-180°, 180°) 的 180 点 APS，角度分辨率为 2°，每个角度分箱保留主导方向能量。模型输入为三通道 256 × 256 条件图像，包括二值建筑图以及发射端和接收端的高斯热图。地图 0 至 45 用于训练和模型开发，地图 46 至 50 作为无地图重叠的留出测试集，测试集含 249,993 个样本。原始 APS 数组以 aps_*.npy 文件存放于各地图文件夹，建筑布局为每张地图一个 JSON 文件。仓库中的预处理脚本输出 NPZ 样本，包含归一化的 180 维 APS 向量（aps_norm）与 3 × 256 × 256 条件图像（cond_img）。训练目标为归一化后的 180 维向量，因此模型学习的是相对方向谱形状与主导峰结构，而非绝对功率。基准在同一交叉地图划分下比较多类回归模型，评价指标包括 MAE、PSNR、NMSE、余弦相似度、谱角、峰值位置误差以及主导方向命中率与召回率，并报告每个样本的推理延迟。'
+capabilities:
+  - {key: csi, status: none, note: {en: 'The release holds APS labels and building images, not CSI.', zh: 发布内容为 APS 标签与建筑图像，不含 CSI。}}
+  - {key: cir, status: none, note: {en: 'No impulse response is released; delays enter only the APS label construction.', zh: 未发布冲激响应；时延仅用于构建 APS 标签。}}
+  - {key: paths, status: unknown}
+  - {key: interaction, status: unknown}
+  - {key: power, status: provided, note: {en: 'A 180-bin angle power spectrum for each Tx–Rx pair, as raw NPY arrays and normalised NPZ samples.', zh: '每个收发对提供一个 180 点角度功率谱，原始为 NPY 数组，归一化后为 NPZ 样本。'}}
+  - {key: iq, status: none, note: {en: No waveform data., zh: 无波形数据。}}
+  - {key: beam_labels, status: derivable, note: {en: 'The best arrival direction of each link is the argmax of its APS. No beam codebook is defined.', zh: '每条链路的最强到达方向可由 APS 的最大值位置得到，数据中未定义波束码本。'}}
+  - {key: position, status: derivable, note: {en: 'Tx and Rx positions are the peaks of the Gaussian heatmap channels in the condition image.', zh: '收发位置为条件图像中高斯热图通道的峰值像素。'}}
+  - {key: geometry, status: provided, note: {en: 'Building layouts per map in JSON files, and a binary building channel in each 256 × 256 condition image.', zh: '每张地图的建筑布局以 JSON 文件提供，每张 256 × 256 条件图像含二值建筑通道。'}}
+  - {key: materials, status: unknown}
+  - {key: rgb, status: none, note: {en: No images of the scene., zh: 无场景图像。}}
+  - {key: depth, status: none, note: {en: 'All buildings share one height, and no depth data are released.', zh: '所有建筑高度相同，未发布深度数据。'}}
+  - {key: lidar, status: none, note: {en: No LiDAR data., zh: 无 LiDAR 数据。}}
+  - {key: radar, status: none, note: {en: No radar data., zh: 无雷达数据。}}
+  - {key: imu, status: none, note: {en: No IMU data., zh: 无 IMU 数据。}}
+  - {key: time_series, status: none, note: {en: 'Static maps; each sample is one Tx–Rx pair with no time axis.', zh: '静态地图；每个样本为一个无时间维的收发对。'}}
+  - {key: multiuser, status: none, note: {en: 'Each sample is a single Tx–Rx pair.', zh: '每个样本为单个收发对。'}}
+  - {key: multibs, status: none, note: {en: 'Each sample has one transmitter.', zh: '每个样本含一个发射端。'}}
+  - {key: crossfreq, status: unknown}
+  - {key: near_field, status: unknown}
+  - {key: high_mobility, status: none, note: {en: Static maps., zh: 静态地图。}}
+  - {key: dynamic_blockage, status: none, note: {en: Static scenes., zh: 静态场景。}}
+  - {key: reflection, status: unknown}
+  - {key: diffraction, status: unknown}
+  - {key: scattering, status: unknown}
+  - {key: transmission, status: unknown}
+  - {key: polarization, status: unknown}
+  - {key: em_field, status: none, note: {en: 'Only angle power spectra are released, with no field components.', zh: '仅发布角度功率谱，不含场分量。'}}
+pipeline:
+  summary:
+    en: 'Intelligent ray tracing gives path-level records for each Tx–Rx pair on equal-height urban maps. These records are aggregated into 180-bin APS labels, which are normalised and packed with the condition image into training samples.'
+    zh: 智能射线追踪为等高城市地图上的每个收发对给出路径级记录。这些记录被聚合为 180 维 APS 标签，再经归一化后与条件图像一同打包为训练样本。
+  stages:
+    - title: {en: Build maps and Tx/Rx locations, zh: 构建地图与收发位置}
+      detail: {en: 'Each of 51 equal-height urban maps has 100 transmitter and 500 receiver locations, giving about 2.55 million Tx–Rx pairs under the same IRT settings.', zh: '51 个等高城市地图各有 100 个发射位置和 500 个接收位置，同一 IRT 设置下共约 255 万个收发对。'}
+      inputs: [{en: Urban building maps, zh: 城市建筑地图}]
+      outputs: [{en: Tx–Rx pair list per map, zh: 每张地图的收发对列表}]
+    - title: {en: Run intelligent ray tracing, zh: 运行智能射线追踪}
+      detail: {en: 'The IRT simulator outputs path-level records, each with delay, arrival angle and linear received power.', zh: 'IRT 仿真器为每条路径输出一条记录，包含时延、到达角和线性接收功率。'}
+      inputs: [{en: Map and Tx/Rx pair, zh: 地图与收发对}]
+      outputs: [{en: Path-level records per Tx–Rx pair, zh: 每个收发对的路径级记录}]
+    - title: {en: Aggregate into 180-bin APS labels, zh: 聚合为 180 维 APS 标签}
+      detail: {en: 'Path contributions are combined with a sinc-based delay kernel and an array-response kernel over N antenna elements. Each 2° angle bin keeps the maximum over delay.', zh: '路径贡献经基于 sinc 的时延核和 N 阵元的阵列响应核合成，每个 2° 角度分箱取时延维度上的最大值。'}
+      inputs: [{en: Path records, zh: 路径记录}]
+      outputs: [{en: 180-bin APS per Tx–Rx pair, zh: 每个收发对的 180 维 APS}]
+      controls: [{en: 'Bandwidth-related sampling rate f_s and antenna spacing normalised by wavelength', zh: '与带宽相关的采样率 f_s 及以波长归一化的阵元间距'}]
+    - title: {en: Normalise, split and pack samples, zh: 归一化、划分并打包样本}
+      detail: {en: 'Each dB-domain APS is shifted by its sample maximum, converted to linear power and standardised with dataset-level statistics. Maps 0–45 form the training set and maps 46–50 the held-out test set. data/preprocess.py with --aps_norm std writes NPZ samples.', zh: '每个 dB 域 APS 减去样本内最大值，转换为线性功率，并用数据集级统计量标准化。地图 0–45 为训练集，地图 46–50 为留出测试集。data/preprocess.py 配合 --aps_norm std 写出 NPZ 样本。'}
+      inputs: [{en: APS labels and building maps, zh: APS 标签与建筑地图}]
+      outputs: [{en: 'NPZ samples with aps_norm (180) and cond_img (3 × 256 × 256)', zh: '含 aps_norm（180 维）与 cond_img（3 × 256 × 256）的 NPZ 样本'}]
+facts:
+  - label: {en: Reference baseline, zh: 参考基线}
+    text: {en: 'MS-AReg reaches a cosine similarity of 0.948, a peak location error of 1.20° and an inference latency of 0.101 ms per sample on the 249,993-sample test set.', zh: 'MS-AReg 在 249,993 个样本的测试集上取得余弦相似度 0.948、峰值位置误差 1.20° 与每样本 0.101 ms 的推理延迟。'}
+  - label: {en: Dominant peaks, zh: 主导峰}
+    text: {en: 'About 75% of held-out samples contain at most two dominant peaks, with 2.28 dominant peaks per sample on average.', zh: '约 75% 的留出样本至多含两个主导峰，平均每个样本 2.28 个主导峰。'}
+technical_notes:
+  - {en: 'The preprocessing script takes --aps_norm std. The shift, linear conversion and standardisation in the paper are applied before training, so the normalised target differs from the raw APS arrays.', zh: '预处理脚本使用 --aps_norm std 参数。论文中的减最大值、线性转换与标准化在训练前完成，因此归一化目标不同于原始 APS 数组。'}
+limitations:
+  - {en: 'Only equal-height buildings are modelled, so building height variation is absent from the benchmark.', zh: '仅建模等高建筑，基准中不含建筑高度变化。'}
+  - {en: 'The paper does not state the carrier frequency, bandwidth or antenna array size, so the APS labels cannot be tied to a band or array.', zh: '论文未说明载频、带宽与天线阵列规模，因此 APS 标签无法对应到具体频段或阵列。'}
+  - {en: 'The dataset licence is not stated. The code repository reports no licence on GitHub.', zh: '数据集许可未说明；代码仓库在 GitHub 上未显示许可证。'}
+  - {en: 'The data are hosted on Baidu Netdisk behind the extraction code p7sz. The files were not downloaded, so the file layout is taken from the README.', zh: '数据托管于百度网盘，提取码为 p7sz。未下载文件，文件结构依据仓库 README。'}
+versions:
+  - version: 'arXiv v2'
+    date: '2026-10-12'
+    summary: {en: 'Revised preprint of the Map2APS paper.', zh: 'Map2APS 论文修订预印本。'}
+    url: https://arxiv.org/abs/2605.14989v2
+  - version: 'arXiv v1'
+    date: '2026-05-14'
+    summary: {en: 'First preprint of the Map2APS paper.', zh: 'Map2APS 论文首个预印本。'}
+    url: https://arxiv.org/abs/2605.14989v1
+sources:
+  - https://arxiv.org/abs/2605.14989
+  - https://arxiv.org/html/2605.14989v2
+  - https://github.com/UNIC-Lab/aps-data
+  - https://github.com/UNIC-Lab/aps-data/tree/main
+  - https://api.github.com/repos/UNIC-Lab/aps-data
+  - https://pan.baidu.com/s/1GHPOfXYwvDfO1zmtPpc0yw
+checked: '2026-11-12'

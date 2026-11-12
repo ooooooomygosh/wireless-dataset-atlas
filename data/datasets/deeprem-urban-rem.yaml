@@ -1,0 +1,134 @@
+id: deeprem-urban-rem
+name: DeepREM Urban REMs dataset
+aliases: [DeepREM]
+year: 2022
+organization: Andrea Chaves-Villota, Carlos A. Viteri-Mera
+origin: simulation
+tasks: [radio-map]
+signals: [rssi]
+environment: [outdoor-urban]
+samples: '1,800 RSRP maps (CSV, four transmitters), 1,800 base-station coverage maps (CSV) and 1,800 single-transmitter RSRP maps (ASCII), 200 per area for nine areas; the second version adds 400 maps'
+format: 'CSV and ASCII (.asc) files in Urban_REMs_dataset.rar; TestRSRPDataset.zip'
+size_gb: 0.88
+license: Creative Commons Attribution 4.0 International
+access: {url: 'https://zenodo.org/records/7839447', type: open}
+code: []
+paper: doi:10.1109/access.2023.3277248
+used_in: ["doi:10.1109/jiot.2025.3628860"]
+citing: ["doi:10.1109/twc.2024.3397964","doi:10.1109/jsac.2025.3584499","doi:10.1109/lwc.2025.3528512"]
+summary: {en: 'Simulated urban radio environment maps of RSRP and base-station coverage for nine Colombian and US cities at 10 m resolution, built with Intelligent Ray-Tracing and used for estimating maps from sparse measurements.', zh: '基于 Intelligent Ray-Tracing 仿真的城市无线电环境地图，包含九个哥伦比亚与美国城市的 RSRP 与基站覆盖图，分辨率 10 m，用于从稀疏测量估计无线电环境地图。'}
+overview: {en: 'DeepREM Urban REMs is a set of simulated radio environment maps for urban areas. It accompanies the DeepREM paper in IEEE Access (2023). Each map covers an area from 2290 x 3670 m to 3810 x 5160 m at 10 m resolution. The areas are sampled from seven Colombian cities (Armenia, Bogota, Cali, Ibague, Manizales, Medellin and Pasto) and two US cities (Columbus and Washington). The simulations use Intelligent Ray-Tracing with topographic and building vector database information. The release contains RSRP maps in dBm for four transmitters, base-station coverage maps that give the serving transmitter ID from 1 to 4 at each point, and single-transmitter RSRP maps in ASCII format. The README states 1,800 files per map type and 200 maps per area. Transmitter parameters for each area (longitude, latitude, frequency, power and height) are in an Information folder of nine CSV files. The main archive, Urban_REMs_dataset.rar, is about 830 MB, and TestRSRPDataset.zip is about 53 MB. The second Zenodo version adds 400 REMs for four new areas (Barranquilla, Bucaramanga, Popayan and North Pasto), 100 per area. The paper estimates RSRP and coverage from sparse measurements with U-Net and CGAN models, and an interactive application tests both models on this dataset or on user-supplied REMs. The data are licensed under CC BY 4.0.', zh: 'DeepREM 城市无线电环境地图（Urban REMs）是一组城市区域的仿真无线电环境地图，随 IEEE Access 2023 年发表的 DeepREM 论文发布。每幅地图覆盖 2290 x 3670 m 至 3810 x 5160 m 的区域，分辨率为 10 m。区域取自七个哥伦比亚城市（Armenia、Bogota、Cali、Ibague、Manizales、Medellin、Pasto）和两个美国城市（Columbus、Washington）。仿真采用 Intelligent Ray-Tracing 传播模型，输入为地形与建筑矢量数据库信息。发布内容包括：以 dBm 表示的四发射机 RSRP 地图；给出各点服务发射机编号（1 至 4）的基站覆盖图；以及 ASCII 格式的单发射机 RSRP 地图。README 称每类数据共 1,800 个文件，每个区域 200 幅地图。每个区域的发射机参数（经度、纬度、频率、功率与高度）保存在 Information 文件夹的九个 CSV 文件中。主压缩包 Urban_REMs_dataset.rar 约 830 MB，TestRSRPDataset.zip 约 53 MB。第二版在四个新区域（Barranquilla、Bucaramanga、Popayan、North Pasto）中新增 400 幅地图，每个区域 100 幅。论文以 U-Net 与 CGAN 两种模型从稀疏测量估计 RSRP 与覆盖，并提供交互式应用，用于以本数据集或用户提供的 REM 测试两种模型的预测效果。数据采用 CC BY 4.0 许可。'}
+pipeline:
+  summary: {en: 'Coverage areas from nine cities are simulated with Intelligent Ray-Tracing and exported as RSRP and base-station coverage maps. The second version adds four areas.', zh: '九个城市的覆盖区域使用 Intelligent Ray-Tracing 仿真，并导出为 RSRP 与基站覆盖地图。第二版新增四个区域。'}
+  stages:
+  - title: {en: Select urban coverage areas, zh: 选取城市覆盖区域}
+    detail: {en: 'Areas of 2290 x 3670 m to 3810 x 5160 m are sampled from seven Colombian cities and two US cities.', zh: '从七个哥伦比亚城市和两个美国城市中选取 2290 x 3670 m 至 3810 x 5160 m 的区域。'}
+    inputs:
+    - {en: Topographic and building vector database information, zh: 地形与建筑矢量数据库信息}
+    outputs:
+    - {en: Coverage areas at 10 m resolution, zh: 10 m 分辨率的覆盖区域}
+  - title: {en: Run Intelligent Ray-Tracing simulations, zh: 运行 Intelligent Ray-Tracing 仿真}
+    detail: {en: 'Coverage is simulated with Intelligent Ray-Tracing as the propagation model over the topography and buildings of each area.', zh: '以 Intelligent Ray-Tracing 为传播模型，基于各区域的地形与建筑进行覆盖仿真。'}
+    inputs:
+    - {en: Topographic and building data, zh: 地形与建筑数据}
+    - {en: Transmitter parameters per area, zh: 各区域的发射机参数}
+    outputs:
+    - {en: RSRP values in dBm for four transmitters, zh: 四个发射机的 RSRP 数值（dBm）}
+  - title: {en: Export RSRP and coverage maps, zh: 导出 RSRP 与覆盖地图}
+    detail: {en: 'RSRP maps are stored as CSV files for four transmitters and as ASCII files for one transmitter. Base-station coverage maps give the serving transmitter ID from 1 to 4 at each point. Files are grouped by area, 200 per area.', zh: 'RSRP 地图以 CSV 保存四发射机版本，以 ASCII 保存单发射机版本。基站覆盖图给出各点的服务发射机编号（1 至 4）。文件按区域分组，每个区域 200 个。'}
+    outputs:
+    - {en: 'CSV RSRP and coverage files, ASCII single-transmitter RSRP files and nine transmitter parameter files', zh: 'CSV 格式的 RSRP 与覆盖文件、ASCII 格式的单发射机 RSRP 文件以及九个发射机参数文件'}
+  - title: {en: Add second-version areas and interactive app, zh: 加入第二版区域与交互式应用}
+    detail: {en: 'The second version adds 400 REMs over four new areas, 100 per area. An interactive Streamlit application tests the U-Net and CGAN models on the dataset or on user-supplied REMs.', zh: '第二版在四个新区域中新增 400 幅 REM，每个区域 100 幅。交互式 Streamlit 应用可用本数据集或用户提供的 REM 测试 U-Net 与 CGAN 模型。'}
+    outputs:
+    - {en: 'Second-version REMs for Barranquilla, Bucaramanga, Popayan and North Pasto', zh: '巴兰基亚、布卡拉曼加、波帕扬与北帕斯托的第二版 REM'}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The release holds coverage maps only., zh: 发布内容仅为覆盖地图。}
+- key: cir
+  status: none
+  note: {en: The release holds coverage maps only., zh: 发布内容仅为覆盖地图。}
+- key: paths
+  status: none
+  note: {en: No path-level output is released., zh: 未发布路径级输出。}
+- key: interaction
+  status: none
+  note: {en: No path-level output is released., zh: 未发布路径级输出。}
+- key: power
+  status: provided
+  note: {en: 'RSRP maps in dBm: CSV for four transmitters, ASCII for one transmitter.', zh: '以 dBm 表示的 RSRP 地图：四发射机版本为 CSV，单发射机版本为 ASCII。'}
+- key: iq
+  status: none
+  note: {en: No I/Q samples are released., zh: 未发布 I/Q 采样。}
+- key: beam_labels
+  status: none
+  note: {en: No beam data., zh: 无波束数据。}
+- key: position
+  status: provided
+  note: {en: Transmitter longitude, latitude, frequency, power and height per area, in nine CSV files., zh: 每个区域的发射机经度、纬度、频率、功率与高度，保存于九个 CSV 文件。}
+- key: geometry
+  status: none
+  note: {en: The topography and building database are simulation inputs and are not listed in the release., zh: 地形与建筑数据库作为仿真输入使用，发布文件列表中未包含。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: No images of the scene., zh: 无场景图像。}
+- key: depth
+  status: none
+  note: {en: No depth data., zh: 无深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data., zh: 无 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar data., zh: 无雷达数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data., zh: 无 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: Maps are simulated snapshots with no time index., zh: 地图为仿真快照，无时间索引。}
+- key: multiuser
+  status: none
+  note: {en: The maps give coverage at each point; no per-user data are released., zh: 地图给出各点的覆盖值，未发布逐用户数据。}
+- key: multibs
+  status: provided
+  note: {en: 'Each RSRP map covers four transmitters, and base-station coverage gives the serving transmitter ID from 1 to 4.', zh: '每幅 RSRP 地图包含四个发射机，基站覆盖图给出 1 至 4 的服务发射机编号。'}
+- {key: crossfreq, status: unknown}
+- key: near_field
+  status: none
+  note: {en: The maps are coverage maps at 10 m resolution; no near-field output is released., zh: 地图为 10 m 分辨率的覆盖地图，未发布近场输出。}
+- key: high_mobility
+  status: none
+  note: {en: Static coverage maps., zh: 静态覆盖地图。}
+- key: dynamic_blockage
+  status: none
+  note: {en: No time-resolved blockage data are released., zh: 未发布随时间变化的遮挡数据。}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Outputs are scalar RSRP and coverage values., zh: 输出为标量 RSRP 与覆盖值。}
+versions:
+- version: Zenodo 7839447 (second version)
+  date: '2023-04-18'
+  summary: {en: 'Adds 400 REMs over four new areas, 100 per area: Barranquilla, Bucaramanga, Popayan and North Pasto.', zh: '新增四个区域共 400 幅 REM，每个区域 100 幅：Barranquilla、Bucaramanga、Popayan 与 North Pasto。'}
+  url: https://zenodo.org/records/7839447
+- version: Zenodo 7091115 (first version)
+  date: '2022-10-11'
+  summary: {en: 'Urban REMs record with Urban_REMs_dataset.rar and README for nine cities.', zh: '城市 REM 记录，包含九个城市的 Urban_REMs_dataset.rar 与 README。'}
+  url: https://zenodo.org/records/7091115
+- version: IEEE Access
+  date: '2023'
+  summary: {en: 'Journal article DeepREM: Deep-Learning-Based Radio Environment Map Estimation From Sparse Measurements, IEEE Access vol. 11, pp. 48697-48714.', zh: '期刊论文《DeepREM: Deep-Learning-Based Radio Environment Map Estimation From Sparse Measurements》，IEEE Access 第 11 卷，第 48697-48714 页。'}
+  url: https://doi.org/10.1109/access.2023.3277248
+limitations:
+- {en: 'The README in both Zenodo records lists only the nine original areas and does not describe the 400 maps added in the second version.', zh: '两个 Zenodo 记录中的 README 只列出最初的九个区域，未说明第二版新增的 400 幅地图。'}
+- {en: 'The README gives the Washington file range as 01700 to 01799, which covers 100 files, while it states 200 maps per area.', zh: 'README 给出的 Washington 文件范围为 01700 至 01799，共 100 个文件，但同时称每个区域 200 幅地图。'}
+- {en: 'The sources read do not describe the ray-tracing settings or the material properties.', zh: '所读来源未说明射线追踪设置与材料属性。'}
+sources: ['https://zenodo.org/records/7839447', 'https://zenodo.org/api/records/7839447', 'https://zenodo.org/api/records/7839447/versions', 'https://zenodo.org/api/records/7839447/files/README.txt/content', 'https://zenodo.org/api/records/7091115', 'https://api.crossref.org/works/10.1109/access.2023.3277248']
+checked: '2026-11-12'

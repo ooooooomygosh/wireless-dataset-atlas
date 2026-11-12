@@ -1,0 +1,165 @@
+id: radiomap-pce
+name: RadioMap-PCE
+year: 2026
+organization: Tianqi Mao
+origin: ray-tracing
+tasks: [radio-map]
+signals: [pathloss]
+bands_ghz: [5.9]
+environment: [outdoor-urban]
+samples: '28,000 map-transmitter samples in 1,400 scenes. The 256-scale subset has 1,000 scenes and 20,000 samples; each larger scale has 100 scenes and 2,000 samples.'
+format: 'Single-channel 8-bit PNG images, JSON building polygons and transmitter coordinates, CSV indexes and JSON metadata'
+size_gb: 0.73
+mobility: Static
+license: 'Creative Commons Attribution 4.0 International (CC BY 4.0) for the original contributions; building data contain OpenStreetMap content under the Open Database License (ODbL) 1.0'
+access: {url: 'https://zenodo.org/records/23043997', type: open}
+code: []
+paper: doi:10.5281/zenodo.23043997
+used_in: []
+citing: []
+summary: {en: 'Multiscale simulated radio maps of 1,400 urban scenes at 1 m per pixel. Channel-gain labels from WinProp DPM at 5.9 GHz cover five grid sizes from 256 to 1024 pixels.', zh: '1,400 个城市场景的多尺度仿真无线地图，分辨率 1 m/像素。信道增益标签由 WinProp DPM 在 5.9 GHz 下生成，覆盖 256 至 1024 像素的五种网格尺寸。'}
+overview: {en: 'RadioMap-PCE is a simulated radio-map dataset for physical coverage extrapolation. Version 1.0.0 was published on Zenodo on 2026-09-30 and accompanies the ScaleProp manuscript. It contains 1,400 urban scenes and 28,000 map-transmitter samples at a fixed resolution of 1 m per pixel. Five native square grids are provided, with sides of 256, 384, 512, 768 and 1024 pixels, which correspond to physical domains of 256 m to 1024 m. The 256-scale subset has 1,000 scenes and 20,000 samples, and each larger scale has 100 scenes and 2,000 samples. Each scene has 20 transmitter configurations, placed on a 4 x 5 stratified grid in valid free space with a minimum separation of 8 m. Building geometry comes from OpenStreetMap and is processed into building polygons and a building mask. The channel-gain labels are generated with the Dominant Path Model in Altair WinProp, at a carrier frequency of 5.9 GHz, a transmit power of 23 dBm, transmitter and receiver heights of 1.5 m, and a building height of 25 m. Each sample has three images of the same size: a building occupancy image, a single-transmitter location image and a gain image. The archive for the 1024 scale is 224 MB, and the six archives total about 731 MB. The metadata archive holds a sample index, scene metadata, frozen map-wise splits and simulation settings.', zh: 'RadioMap-PCE 是面向物理覆盖外推的仿真无线地图数据集。1.0.0 版本于 2026 年 9 月 30 日在 Zenodo 发布，与 ScaleProp 论文稿件配套。数据集包含 1,400 个城市场景和 28,000 个地图—发射机样本，固定分辨率为 1 m/像素。提供五种原生方形网格，边长分别为 256、384、512、768 和 1024 像素，对应 256 m 至 1024 m 的物理区域。256 尺度子集含 1,000 个场景、20,000 个样本，其余每个尺度含 100 个场景、2,000 个样本。每个场景有 20 种发射机配置，布置在有效自由空间中的 4 × 5 分层网格上，最小间距 8 m。建筑几何来自 OpenStreetMap，经处理后得到建筑多边形与建筑掩膜。信道增益标签由 Altair WinProp 的 Dominant Path Model 生成，载频 5.9 GHz，发射功率 23 dBm，收发高度 1.5 m，建筑高度 25 m。每个样本包含三张尺寸相同的图像，分别为建筑占用图、单发射机位置图和增益图。1024 尺度的压缩包为 224 MB，六个压缩包合计约 731 MB。该数据集用于在保持空间分辨率不变的前提下，评估模型在更大物理区域上的覆盖外推能力。各尺度之间不做空间配对，样本以 (size, map_id, tx_id) 标识，场景以 (size, map_id) 标识。元数据压缩包包含样本索引、场景元数据、冻结的按地图划分的数据集划分以及仿真参数。'}
+pipeline:
+  summary: {en: 'Building footprints from OpenStreetMap are processed into per-scene geometry. WinProp DPM computes channel gain for 20 transmitters per scene. Gain values are clipped and quantized into 8-bit PNG images, and the frozen splits and archives are assembled from these outputs.', zh: '由 OpenStreetMap 获取的建筑轮廓被处理为每个场景的几何数据。WinProp DPM 为每个场景的 20 个发射机计算信道增益。增益值经截断与量化后存为 8 位 PNG 图像，冻结的划分与压缩包由这些输出组装而成。'}
+  stages:
+  - title: {en: Prepare building geometry, zh: 准备建筑几何}
+    detail: {en: 'Building geometries originate from OpenStreetMap and undergo window selection and geometric preprocessing. The 256-scale scenes include Berlin, Hamburg, Taipei, Luxembourg, London, Glasgow and Tel Aviv. The larger scales use Berlin, Hamburg, Taipei and Luxembourg.', zh: '建筑几何来自 OpenStreetMap，经过窗口选择与几何预处理。256 尺度场景包括柏林、汉堡、台北、卢森堡、伦敦、格拉斯哥和特拉维夫；更大尺度使用柏林、汉堡、台北和卢森堡。'}
+    inputs:
+    - {en: OpenStreetMap building data, zh: OpenStreetMap 建筑数据}
+    outputs:
+    - {en: Processed building polygons and building mask PNG, zh: 处理后的建筑多边形与建筑掩膜 PNG}
+  - title: {en: Place transmitters, zh: 布置发射机}
+    detail: {en: 'Each scene has 20 transmitter configurations. They are placed with a 4 x 5 spatial stratification in valid free space, with a minimum separation of 8 m. Transmitter and receiver heights are both 1.5 m.', zh: '每个场景有 20 种发射机配置，布置在有效自由空间中的 4 × 5 分层网格上，最小间距 8 m。收发高度均为 1.5 m。'}
+    inputs:
+    - {en: Building mask, zh: 建筑掩膜}
+    outputs:
+    - {en: Transmitter coordinates per scene in JSON, zh: 每个场景的发射机坐标（JSON）}
+  - title: {en: Simulate channel gain, zh: 仿真信道增益}
+    detail: {en: 'Channel gain is computed with the Dominant Path Model in Altair WinProp on the native grids, at 5.9 GHz, a transmit power of 23 dBm and a building height of 25 m. Native default DPM settings are used, and the internal DPM parameters were not overridden.', zh: '在原生网格上使用 Altair WinProp 的 Dominant Path Model 计算信道增益，载频 5.9 GHz，发射功率 23 dBm，建筑高度 25 m。采用 DPM 原生默认设置，未覆盖内部 DPM 参数。'}
+    inputs:
+    - {en: Building geometry, zh: 建筑几何}
+    - {en: Transmitter coordinates, zh: 发射机坐标}
+    outputs:
+    - {en: Channel gain in dB per sample, zh: 每个样本的信道增益（dB）}
+    controls:
+    - {en: 'Simulation parameters are recorded in simulation_parameters.json.', zh: '仿真参数记录于 simulation_parameters.json。'}
+  - title: {en: Encode gain images, zh: 编码增益图像}
+    detail: {en: 'The gain is defined as P_rx,dBm minus P_tx,dBm. It is clipped to [-147.0, -47.84] dB, normalized, and stored as an 8-bit PNG. Building pixels are set to 0. Clipping and quantization are irreversible.', zh: '增益定义为 P_rx,dBm 减 P_tx,dBm。增益截断至 [-147.0, -47.84] dB，归一化后以 8 位 PNG 存储，建筑像素置为 0。截断与量化不可逆。'}
+    inputs:
+    - {en: Channel gain in dB, zh: 信道增益（dB）}
+    outputs:
+    - {en: Gain PNG per sample, zh: 每个样本的增益 PNG}
+  - title: {en: Freeze splits and package archives, zh: 冻结划分并打包压缩包}
+    detail: {en: 'Splits are map-wise. All 20 transmitters of a scene belong to the same split. The main test protocol is named unified_test_1800_20260919, and the split-selection seed is 123. The release has five scale archives and one metadata archive.', zh: '数据集划分以地图为单位，同一场景的 20 个发射机属于同一划分。主测试协议名为 unified_test_1800_20260919，划分选择种子为 123。发布内容包括五个尺度压缩包和一个元数据压缩包。'}
+    inputs:
+    - {en: Encoded images and geometry, zh: 编码后的图像与几何数据}
+    outputs:
+    - {en: Scale archives, metadata archive, splits.json and cases.csv, zh: 尺度压缩包、元数据压缩包、splits.json 与 cases.csv}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The release holds channel-gain maps only., zh: 发布内容仅含信道增益地图。}
+- key: cir
+  status: none
+  note: {en: No impulse response or delay profile is released., zh: 未发布冲激响应或时延分布。}
+- key: paths
+  status: none
+  note: {en: No path-level output is released., zh: 未发布路径级输出。}
+- key: interaction
+  status: none
+  note: {en: No path-level output is released., zh: 未发布路径级输出。}
+- key: power
+  status: provided
+  note: {en: 'Channel-gain maps (g_dB = P_rx - P_tx) at five grid sizes, stored as 8-bit PNG. Quantization is irreversible.', zh: '信道增益地图（g_dB = P_rx - P_tx），共五种网格尺寸，以 8 位 PNG 存储，量化不可逆。'}
+- key: iq
+  status: none
+  note: {en: No waveform data., zh: 无波形数据。}
+- key: beam_labels
+  status: none
+  note: {en: No beam data., zh: 无波束数据。}
+- key: position
+  status: provided
+  note: {en: 'Transmitter coordinates are in antenna/{map_id}.json. Receiver positions are pixels on a 1 m grid.', zh: '发射机坐标位于 antenna/{map_id}.json 中，接收位置为 1 m 网格上的像素。'}
+- key: geometry
+  status: provided
+  note: {en: Processed building polygons and building masks for each scene., zh: 每个场景提供处理后的建筑多边形与建筑掩膜。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: No images of the scene., zh: 无场景图像。}
+- key: depth
+  status: none
+  note: {en: No depth data., zh: 无深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data., zh: 无 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar data., zh: 无雷达数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data., zh: 无 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: Static maps., zh: 静态地图。}
+- key: multiuser
+  status: none
+  note: {en: Each sample has one transmitter., zh: 每个样本仅含一个发射机。}
+- key: multibs
+  status: none
+  note: {en: 'Each sample has one transmitter; each scene has 20 transmitter configurations.', zh: '每个样本仅含一个发射机，每个场景有 20 种发射机配置。'}
+- key: crossfreq
+  status: none
+  note: {en: Single carrier at 5.9 GHz., zh: 仅有 5.9 GHz 单一载频。}
+- key: near_field
+  status: none
+  note: {en: Single carrier; no near-field output., zh: 单一载频，无近场输出。}
+- key: high_mobility
+  status: none
+  note: {en: Static maps., zh: 静态地图。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Static scenes., zh: 静态场景。}
+- key: reflection
+  status: none
+  note: {en: Only the channel-gain label is released., zh: 仅发布信道增益标签。}
+- key: diffraction
+  status: none
+  note: {en: Only the channel-gain label is released., zh: 仅发布信道增益标签。}
+- key: scattering
+  status: none
+  note: {en: Only the channel-gain label is released., zh: 仅发布信道增益标签。}
+- key: transmission
+  status: none
+  note: {en: Only the channel-gain label is released., zh: 仅发布信道增益标签。}
+- key: polarization
+  status: none
+  note: {en: No polarization dimension in the release., zh: 发布内容无极化维度。}
+- key: em_field
+  status: none
+  note: {en: Only path gain is released., zh: 仅发布路径增益。}
+versions:
+- version: 1.0.0
+  date: '2026-09-30'
+  summary: {en: 'Zenodo release with 1,400 scenes, 28,000 samples, five scale archives and one metadata archive.', zh: 'Zenodo 发布版本，含 1,400 个场景、28,000 个样本、五个尺度压缩包和一个元数据压缩包。'}
+  url: https://zenodo.org/records/23043998
+limitations:
+- {en: 'The building data contain OpenStreetMap content under ODbL 1.0, which has a separate license scope from the CC BY 4.0 original contributions.', zh: '建筑数据包含 ODbL 1.0 许可的 OpenStreetMap 内容，其许可范围与 CC BY 4.0 许可的原始内容不同。'}
+- {en: 'The release does not record the WinProp build version or the OpenStreetMap snapshot date.', zh: '发布内容未记录 WinProp 版本号或 OpenStreetMap 数据快照日期。'}
+- {en: 'Gain values are clipped to [-147, -47.84] dB and quantized to 8 bits. The original values cannot be recovered.', zh: '增益值截断至 [-147, -47.84] dB 并量化为 8 位，无法恢复原始数值。'}
+- {en: 'Under the benchmark protocol, learned predictors do not use 1024-scale labels for training, adaptation, validation or model selection.', zh: '按基准协议，学习型预测器不得使用 1024 尺度标签进行训练、适配、验证或模型选择。'}
+- {en: 'The ScaleProp implementation is planned for public release after the associated article is published.', zh: 'ScaleProp 实现计划在相关论文发表后公开。'}
+technical_notes:
+- {en: 'The release was accumulated across several production runs, and no single generation seed is asserted.', zh: '发布数据由多次生成运行累积而成，未声明单一生成种子。'}
+facts:
+- label: {en: Sample identity, zh: 样本标识}
+  text: {en: 'Use (size, map_id, tx_id) as the sample identity and (size, map_id) as the scene identity. The scales are not spatially paired, so the same map_id at different scales does not refer to the same region.', zh: '样本标识为 (size, map_id, tx_id)，场景标识为 (size, map_id)。各尺度之间不存在空间配对，不同尺度上相同的 map_id 不对应同一区域。'}
+- label: {en: Gain encoding, zh: 增益编码}
+  text: {en: 'Decode a pixel u with y = u / 255 and g_dB ≈ -147.0 + 99.16 y. Building pixels have value 0 and must be identified with the building image.', zh: '像素值 u 的解码方式为 y = u / 255，g_dB ≈ -147.0 + 99.16 y。建筑像素值为 0，需结合建筑图像加以区分。'}
+sources:
+- https://zenodo.org/records/23043997
+- https://zenodo.org/api/records/23043997
+- https://zenodo.org/api/records/23043998/files/README.md/content
+- https://doi.org/10.5281/zenodo.23043997
+- https://api.openalex.org/works/doi:10.5281/zenodo.23043997
+checked: '2026-11-12'

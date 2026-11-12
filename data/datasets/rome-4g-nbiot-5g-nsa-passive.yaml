@@ -1,0 +1,83 @@
+id: rome-4g-nbiot-5g-nsa-passive
+name: 4G, NB-IoT and 5G NSA network measurements (Rome)
+year: 2023
+organization: Konstantinos Kousias et al.
+origin: measured
+tasks: [radio-map]
+signals: [rssi, kpi]
+environment: [indoor, outdoor]
+size_gb: 2.56
+format: 'Five CSV files (4G, NB-IoT and 5G passive; Speedtest and online gaming active) and one PDF feature description'
+mobility: 'Indoor static, outdoor walking and outdoor driving (active tests)'
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/records/8224889', type: open}
+code: []
+paper: doi:10.1109/mcom.011.2200707
+used_in: []
+citing: ["doi:10.1109/ojcoms.2024.3499370","doi:10.1109/mcom.001.2400340","doi:10.1109/tmlcn.2025.3564239"]
+summary: {en: 'Geo-tagged passive scanner records and active Speedtest and online gaming tests on 4G, NB-IoT and 5G NSA networks in Rome, collected over seven weeks. The CSV files total about 2.6 GB.', zh: '2023 年在罗马采集的 4G、NB-IoT 与 5G NSA 网络被动与主动测量数据，含地理标签与无线指标，CSV 合计约 2.6 GB。'}
+overview:
+  en: 'The dataset holds network measurements collected over seven weeks in Rome, Italy, on the infrastructure of two mobile network operators, anonymized as Op1 and Op2. It covers LTE (4G), NB-IoT and 5G New Radio in non-standalone mode. The passive part has one CSV file per technology: 4G passive measurements, NB-IoT passive measurements and 5G passive measurements. Each record carries a UTC timestamp, UE GPS latitude, longitude and altitude, moving speed, carrier frequency, EARFCN, MNC, band, PCI, cell identity, eNodeB ID, and radio fields such as RSRP, RSRQ, SINR and received power. Cell GPS positions with positioning error margins are given for 4G and NB-IoT only. The 5G file holds SS-RSRP and PSS-RSRP values, SSB beam identifiers and the number of detected SSB beams. It is the largest file, at about 2.2 GB. The active part has two CSV files. The Speedtest file reports downlink and uplink throughput with packet metrics. The online gaming file reports round-trip time, packet delay variation and an interactivity score. Each active session is labelled with one of three mobility scenarios: indoor static, outdoor walking or outdoor driving. The UE mode field records whether 5G was enabled or disabled. The five CSV files total about 2.6 GB and come with a PDF description of all fields.'
+  zh: '该数据集包含 2023 年在意大利罗马采集的七周网络测量数据，测量在两家移动运营商的基础设施上进行，运营商以 Op1 与 Op2 匿名表示。数据覆盖 4G LTE、NB-IoT 与 5G NR（非独立组网）。被动测量部分按技术分为三个 CSV 文件：4G、NB-IoT 与 5G。每条记录包含 UTC 时间戳、UE 的 GPS 经纬度与海拔、移动速度、载频、EARFCN、MNC、频段、PCI、小区标识、eNodeB ID，以及 RSRP、RSRQ、SINR 与接收功率等无线指标。小区 GPS 位置及定位误差仅见于 4G 与 NB-IoT。5G 文件含 SS-RSRP 与 PSS-RSRP、SSB 波束标识以及检测到的 SSB 波束数，是最大的文件，约 2.2 GB。主动测量部分包含两个 CSV 文件：Speedtest 文件记录上下行吞吐量与分组指标；在线游戏文件记录往返时延、分组时延变化与交互分数。每个主动测试会话标注一种移动场景：室内静止、户外步行或户外驾车。UE 模式字段记录 5G 功能开启或关闭。五个 CSV 文件合计约 2.6 GB，并附带全部字段说明的 PDF 文件。字段说明中，标注星号的字段仅适用于 4G 与 NB-IoT；5G 数据涵盖 SS、DMRS、RS、PBCH、PSS 与 SS-PBCH 等不同类型的 5G 信号。'
+pipeline:
+  summary: {en: 'Passive scanner records and active Speedtest and online gaming sessions are logged on operator networks, anonymized and released as CSV files with a feature description.', zh: '在运营商网络上记录被动扫描数据与主动 Speedtest、在线游戏会话，经匿名化后以 CSV 文件及字段说明形式发布。'}
+  stages:
+  - title: {en: Log passive measurements, zh: 记录被动测量}
+    detail: {en: 'Each passive record holds time, UE GPS position, speed, carrier and cell identifiers, and radio fields for LTE, NB-IoT and 5G NR.', zh: '每条被动记录包含时间、UE 的 GPS 位置、速度、载波与小区标识，以及 LTE、NB-IoT 与 5G NR 的无线指标。'}
+    inputs:
+    - {en: 'Operator 4G, NB-IoT and 5G NSA networks', zh: 运营商 4G、NB-IoT 与 5G NSA 网络}
+    outputs:
+    - {en: '4G, NB-IoT and 5G passive measurement CSV files', zh: 4G、NB-IoT 与 5G 被动测量 CSV 文件}
+  - title: {en: Run active tests, zh: 执行主动测试}
+    detail: {en: 'Speedtest sessions log downlink and uplink throughput and packet metrics. Online gaming sessions log round-trip time, packet delay variation and an interactivity score. Each session carries a mobility scenario.', zh: 'Speedtest 会话记录上下行吞吐量与分组指标；在线游戏会话记录往返时延、分组时延变化与交互分数。每个会话标注移动场景。'}
+    inputs:
+    - {en: 'Operator networks in indoor static, outdoor walking and outdoor driving scenarios', zh: 室内静止、户外步行与户外驾车场景下的运营商网络}
+    outputs:
+    - {en: 'Speedtest and online gaming CSV files', zh: Speedtest 与在线游戏 CSV 文件}
+    controls:
+    - {en: 'UE mode (5G-enabled or 5G-disabled) recorded per measurement', zh: 每次测量记录 UE 模式（5G 开启或关闭）}
+  - title: {en: Anonymize and package, zh: 匿名化与打包发布}
+    detail: {en: 'Operators are labelled Op1 and Op2. The files are published on Zenodo under CC BY 4.0 with a PDF listing every feature.', zh: '运营商以 Op1 与 Op2 标注。文件以 CC BY 4.0 许可发布于 Zenodo，并附列出全部字段的 PDF。'}
+    outputs:
+    - {en: Zenodo record with five CSV files and a description PDF, zh: 包含五个 CSV 文件与字段说明 PDF 的 Zenodo 记录}
+capabilities:
+- {key: csi, status: none, note: {en: 'No channel state information in the release.', zh: '发布内容不含信道状态信息。'}}
+- {key: cir, status: none, note: {en: 'No impulse response data.', zh: '无冲激响应数据。'}}
+- {key: paths, status: none, note: {en: 'No multipath parameters.', zh: '无多径参数。'}}
+- {key: interaction, status: none, note: {en: 'No path interaction data.', zh: '无路径交互数据。'}}
+- {key: power, status: provided, note: {en: 'RSRP and received power in dBm for 4G and NB-IoT; SS-RSRP for 5G.', zh: '4G 与 NB-IoT 提供 RSRP 与接收功率（dBm），5G 提供 SS-RSRP。'}}
+- {key: iq, status: none, note: {en: 'No raw I/Q samples.', zh: '无原始 I/Q 样本。'}}
+- {key: beam_labels, status: provided, note: {en: 'Serving SSB beam index and number of detected SSB beams for 5G.', zh: '提供 5G 服务 SSB 波束索引与检测到的 SSB 波束数。'}}
+- {key: position, status: provided, note: {en: 'UE GPS latitude, longitude and altitude per record; cell GPS positions for 4G and NB-IoT.', zh: '每条记录提供 UE 的 GPS 经纬度与海拔；4G 与 NB-IoT 另提供小区 GPS 位置。'}}
+- {key: geometry, status: none, note: {en: 'No scene or building data.', zh: '无场景或建筑数据。'}}
+- {key: materials, status: none, note: {en: 'No material parameters.', zh: '无材料参数。'}}
+- {key: rgb, status: none, note: {en: 'No images.', zh: '无图像。'}}
+- {key: depth, status: none, note: {en: 'No depth data.', zh: '无深度数据。'}}
+- {key: lidar, status: none, note: {en: 'No LiDAR data.', zh: '无 LiDAR 数据。'}}
+- {key: radar, status: none, note: {en: 'No radar data.', zh: '无雷达数据。'}}
+- {key: imu, status: none, note: {en: 'No IMU data.', zh: '无 IMU 数据。'}}
+- {key: time_series, status: provided, note: {en: 'Each record carries a UTC timestamp.', zh: '每条记录带 UTC 时间戳。'}}
+- {key: multiuser, status: none, note: {en: 'No multi-user sets.', zh: '无多用户数据集合。'}}
+- {key: multibs, status: provided, note: {en: 'Records carry PCI, cell identity and eNodeB ID; the number of cells per eNB is a field.', zh: '记录含 PCI、cell identity 与 eNodeB ID，并含每个 eNB 的小区数字段。'}}
+- {key: crossfreq, status: unknown}
+- {key: near_field, status: none, note: {en: 'No near-field data.', zh: '无近场数据。'}}
+- {key: high_mobility, status: provided, note: {en: 'Speed field in km/h in passive records; outdoor driving scenario in active tests.', zh: '被动记录含以 km/h 计的速度字段；主动测试含户外驾车场景。'}}
+- {key: dynamic_blockage, status: none, note: {en: 'No blockage labels.', zh: '无遮挡标签。'}}
+- {key: reflection, status: provided, note: {en: 'Over-the-air measurement, inherent in the measurement.', zh: '空口测量，属测量固有内容。'}}
+- {key: diffraction, status: provided, note: {en: 'Over-the-air measurement, inherent in the measurement.', zh: '空口测量，属测量固有内容。'}}
+- {key: scattering, status: provided, note: {en: 'Over-the-air measurement, inherent in the measurement.', zh: '空口测量，属测量固有内容。'}}
+- {key: transmission, status: provided, note: {en: 'Over-the-air measurement, inherent in the measurement.', zh: '空口测量，属测量固有内容。'}}
+- {key: polarization, status: none, note: {en: 'No polarization data.', zh: '无极化数据。'}}
+- {key: em_field, status: none, note: {en: 'Only received power is released, no field values.', zh: '仅发布接收功率，不含场值。'}}
+versions:
+- version: '1.0'
+  date: '2023-08-08'
+  summary: {en: 'Zenodo release 1.0 with the passive and active measurement files and the feature description.', zh: 'Zenodo 1.0 版，包含被动与主动测量文件及字段说明。'}
+  url: 'https://zenodo.org/records/8224890'
+limitations:
+- {en: 'Records are geo-tagged point measurements, not a gridded radio map.', zh: '记录为带地理标签的点测量，并非栅格化的无线电地图。'}
+- {en: 'Passive and active files use different schemas, and several passive fields exist only for 4G and NB-IoT.', zh: '被动与主动文件字段结构不同，多项被动字段仅适用于 4G 与 NB-IoT。'}
+- {en: 'Coverage is one city, Rome.', zh: '数据仅覆盖罗马一座城市。'}
+provenance: []
+sources: ['https://zenodo.org/api/records/8224889', 'https://zenodo.org/api/records/8224890/files/description.pdf/content', 'https://api.openalex.org/works/doi:10.1109/mcom.011.2200707', 'https://api.crossref.org/works/10.1109/mcom.011.2200707']
+checked: '2026-11-12'

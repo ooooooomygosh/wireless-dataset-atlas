@@ -1,0 +1,134 @@
+id: indoor-lidar-wifi-rssi-radio-map
+name: An Indoor Radio Mapping Dataset Combining 3D Point Clouds and RSSI
+year: 2025
+organization: "Jožef Stefan Institute; Jožef Stefan International Postgraduate School; Shibaura Institute of Technology"
+origin: measured
+tasks: [radio-map]
+signals: [rssi, lidar]
+bands_ghz: [2.4]
+environment: [indoor]
+samples: "20 setups on a 53-point grid; 1,027 RSSI samples (1,060 expected)"
+format: "PLY point clouds, CSV and HDF5 RSSI files, Python toolbox"
+mobility: Static
+size_gb: 0.01
+license: "Creative Commons Attribution 4.0 International"
+access: {url: 'https://zenodo.org/records/20411480', type: open}
+paper: arxiv:2511.00494
+used_in: []
+citing: ["doi:10.1109/iccspa69228.2026.11600889"]
+summary:
+  en: "LiDAR point clouds of an office and a corridor, with Wi-Fi RSSI measured at 2.4 GHz from 20 single-AP setups, including empty and occupied scenarios, and a Python toolbox. The latest archive is about 10.8 MB."
+  zh: "办公室与走廊的 LiDAR 点云，以及 20 组单接入点的 2.4 GHz Wi-Fi RSSI 测量，涵盖空场与有人办公两种场景，并附 Python 工具箱。最新压缩包约 10.8 MB。"
+overview:
+  en: "The dataset pairs 3D LiDAR point clouds of an indoor site with Wi-Fi RSSI measured from a single access point. The site is an open-plan office with an adjacent corridor and elevator hall. The point clouds were captured with Livox Avia and Velodyne (now Ouster) VLP-16 sensors: six Avia stations around the office, and three Avia and two VLP-16 stations along the hallway. The office and corridor scans are released as separate raw PLY files, together with a combined file registered manually on the wall they share. The clouds contain XYZ coordinates only, with no downsampling or outlier filtering. RSSI was measured with a TP-Link TL-WR841N access point operating at 2.4 GHz and mounted at 1.2 m, and an Android smartphone held at 1.5 m running the Wi-Fi Analyzer app. The measurement grid has 53 points spaced 2 m apart. The dataset has 20 setups: setups 1 to 12 with an empty office, and setups 13 to 20 with 7 to 10 occupants working. Four occupied-scenario access point positions repeat empty-office ones. The paper reports 1,027 RSSI samples out of 1,060 expected, because of weak signals at distant points and occasional human error. The README states an access point transmit power of 20 dBm. The HDF5 file holds the RSSI on a 28 × 30 raster at 1 m resolution, with only the 53 measured cells populated. The CSV keeps all Wi-Fi Analyzer fields. The toolbox includes loaders, Open3D-based crop and registration tools, and a notebook that fits log-distance path-loss models per setup."
+  zh: "该数据集将室内场地的三维 LiDAR 点云与单个接入点测得的 Wi-Fi RSSI 配对。场地为开放式办公室，相邻为走廊与电梯厅。点云由 Livox Avia 与 Velodyne（现为 Ouster）VLP-16 传感器采集：办公室周围设六个 Avia 站点，走廊沿线设三个 Avia 站点与两个 VLP-16 站点。办公室与走廊的扫描数据分别以原始 PLY 文件发布，另附一份在两者共用墙面处手动配准的合并点云。点云仅包含 XYZ 坐标，未做降采样与离群点滤波。RSSI 由 TP-Link TL-WR841N 接入点测量，工作于 2.4 GHz，安装高度 1.2 m；测量端为 Android 智能手机，手持高度 1.5 m，运行 Wi-Fi Analyzer 应用。测量网格含 53 个点，间距 2 m。数据集包含 20 组设置：第 1 至 12 组为空场办公室，第 13 至 20 组为 7 至 10 人正常办公的场景。有人场景中的四个接入点位置与空场位置重复，便于对比。论文报告实际获得 1,027 个 RSSI 样本，应为 1,060 个，缺失部分由远处信号弱及人为误差造成。README 给出接入点发射功率为 20 dBm。HDF5 文件以 1 m 分辨率的 28 × 30 栅格保存 RSSI，仅 53 个实测栅格有值。CSV 保留 Wi-Fi Analyzer 的全部字段，包括时间戳、信道频率与到接入点的估计距离。工具箱包含数据加载函数、基于 Open3D 的裁剪与配准工具，以及按组拟合对数距离路径损耗模型的示例笔记本。"
+pipeline:
+  summary:
+    en: "LiDAR stations capture and merge point clouds of the office and corridor. RSSI is measured on a 53-point grid for each of 20 access point placements, then compiled into CSV and HDF5 files with a Python toolbox."
+    zh: "LiDAR 站点采集办公室与走廊的点云并合并；每个接入点位置在 53 点网格上测量 RSSI，随后由 Python 工具箱整理为 CSV 与 HDF5 文件。"
+  stages:
+    - title: {en: "Scan the office and corridor with LiDAR", zh: "用 LiDAR 扫描办公室与走廊"}
+      detail:
+        en: "Livox Avia and VLP-16 sensors are placed at fixed stations: six Avia stations around the office, and three Avia and two VLP-16 stations in the hallway. Each sensor streams raw points to an NVIDIA Jetson Nano edge device."
+        zh: "Livox Avia 与 VLP-16 传感器布设在固定站点：办公室周围六个 Avia 站点，走廊三个 Avia 站点与两个 VLP-16 站点。每个传感器将原始点流传输至 NVIDIA Jetson Nano 边缘设备。"
+      inputs:
+        - {en: "LiDAR stations in the office and the hallway", zh: "办公室与走廊的 LiDAR 站点"}
+      outputs:
+        - {en: "Raw point clouds for the office and the corridor", zh: "办公室与走廊的原始点云"}
+    - title: {en: "Register the point clouds", zh: "配准点云"}
+      detail:
+        en: "The office and corridor clouds are aligned manually by selecting corresponding points on the wall they share, which gives a combined point cloud. The released scans are not downsampled or filtered."
+        zh: "办公室与走廊点云通过在共用墙面上手动选取对应点进行配准，得到合并点云。发布的扫描数据未经降采样或滤波。"
+      inputs:
+        - {en: "Office and corridor point clouds", zh: "办公室与走廊点云"}
+      outputs:
+        - {en: "Combined registered PLY point cloud", zh: "配准后的合并 PLY 点云"}
+    - title: {en: "Measure RSSI on the grid", zh: "在网格上测量 RSSI"}
+      detail:
+        en: "A TP-Link TL-WR841N access point at 2.4 GHz is placed at 1.2 m at one of 20 positions. An Android smartphone at 1.5 m records RSSI at 53 grid points spaced 2 m apart, using the Wi-Fi Analyzer app. Setups 1 to 12 are measured in an empty office; setups 13 to 20 with 7 to 10 people working."
+        zh: "TP-Link TL-WR841N 接入点工作于 2.4 GHz，安装在 20 个位置之一，高度 1.2 m。Android 智能手机在 1.5 m 高度，使用 Wi-Fi Analyzer 应用记录 53 个间距 2 m 的网格点上的 RSSI。第 1 至 12 组在空场办公室测量，第 13 至 20 组在 7 至 10 人办公时测量。"
+      inputs:
+        - {en: "Access point placements on the measurement grid", zh: "测量网格上的接入点位置"}
+      outputs:
+        - {en: "Per-measurement RSSI readings with setup identifiers", zh: "带设置编号的逐次 RSSI 读数"}
+      controls:
+        - {en: "Access point transmit power 20 dBm", zh: "接入点发射功率 20 dBm"}
+    - title: {en: "Compile RSSI into CSV and HDF5", zh: "将 RSSI 整理为 CSV 与 HDF5"}
+      detail:
+        en: "The raw readings are stored in CSV with all Wi-Fi Analyzer fields. The HDF5 file holds the RSSI matrix, setup labels, access point locations and measurement indices. Missing values are filled by linear interpolation in the paper's visualisations, and the toolbox offers other interpolation methods."
+        zh: "原始读数以 CSV 保存，保留 Wi-Fi Analyzer 的全部字段。HDF5 文件保存 RSSI 矩阵、设置标签、接入点位置与测量点索引。论文图中缺失值采用线性插值填充，工具箱另提供其他插值方法。"
+      outputs:
+        - {en: "RSSI_raw_data.csv and an HDF5 RSSI file", zh: "RSSI_raw_data.csv 与 HDF5 格式的 RSSI 文件"}
+capabilities:
+  - {key: csi, status: none, note: {en: "RSSI only; no channel state information.", zh: "仅含 RSSI，无信道状态信息。"}}
+  - {key: cir, status: none, note: {en: "RSSI only; no impulse response.", zh: "仅含 RSSI，无冲激响应。"}}
+  - {key: paths, status: none, note: {en: "No path-level output.", zh: "无路径级输出。"}}
+  - {key: interaction, status: none, note: {en: "No path-level output.", zh: "无路径级输出。"}}
+  - {key: power, status: provided, note: {en: "Wi-Fi RSSI in dBm at 53 grid points per setup.", zh: "每组设置在 53 个网格点上的 Wi-Fi RSSI（dBm）。"}}
+  - {key: iq, status: none, note: {en: "No raw I/Q samples.", zh: "无原始 I/Q 样本。"}}
+  - {key: beam_labels, status: none, note: {en: "No beam data.", zh: "无波束数据。"}}
+  - {key: position, status: derivable, note: {en: "Grid points are 2 m apart; the LiDAR sensor positions are tabulated.", zh: "网格点间距 2 m；LiDAR 传感器位置以表格给出。"}}
+  - {key: geometry, status: provided, note: {en: "Office, corridor and combined 3D point clouds.", zh: "办公室、走廊及合并的三维点云。"}}
+  - {key: materials, status: unknown}
+  - {key: rgb, status: none, note: {en: "No images.", zh: "无图像。"}}
+  - {key: depth, status: none, note: {en: "No depth data.", zh: "无深度数据。"}}
+  - {key: lidar, status: provided, note: {en: "Raw XYZ point clouds from Livox Avia and VLP-16 sensors.", zh: "来自 Livox Avia 与 VLP-16 传感器的原始 XYZ 点云。"}}
+  - {key: radar, status: none, note: {en: "No radar data.", zh: "无雷达数据。"}}
+  - {key: imu, status: none, note: {en: "No IMU data.", zh: "无 IMU 数据。"}}
+  - {key: time_series, status: none, note: {en: "Each setup is a set of static grid measurements, not a time series.", zh: "每组设置为静态网格测量，非时间序列。"}}
+  - {key: multiuser, status: none, note: {en: "One access point per setup.", zh: "每组设置仅一个接入点。"}}
+  - {key: multibs, status: none, note: {en: "One access point per setup.", zh: "每组设置仅一个接入点。"}}
+  - {key: crossfreq, status: none, note: {en: "Single band at 2.4 GHz.", zh: "仅 2.4 GHz 单一频段。"}}
+  - {key: near_field, status: unknown}
+  - {key: high_mobility, status: none, note: {en: "Static measurement points.", zh: "静态测量点。"}}
+  - {key: dynamic_blockage, status: provided, note: {en: "Empty and occupied scenarios per setup; not time-resolved.", zh: "每组设置区分空场与有人两种场景；非时间分辨。"}}
+  - {key: reflection, status: provided, note: {en: "Inherent in the measurement.", zh: "蕴含于测量之中。"}}
+  - {key: diffraction, status: provided, note: {en: "Inherent in the measurement.", zh: "蕴含于测量之中。"}}
+  - {key: scattering, status: provided, note: {en: "Inherent in the measurement.", zh: "蕴含于测量之中。"}}
+  - {key: transmission, status: provided, note: {en: "Inherent in the measurement.", zh: "蕴含于测量之中。"}}
+  - {key: polarization, status: unknown}
+  - {key: em_field, status: none, note: {en: "Only RSSI is released.", zh: "仅发布 RSSI。"}}
+versions:
+  - version: "Data in Brief"
+    date: "2026-06-09"
+    summary:
+      en: "Journal article describing the dataset, published in Data in Brief."
+      zh: "期刊论文，描述本数据集，发表于 Data in Brief。"
+    url: https://doi.org/10.1016/j.dib.2026.112959
+  - version: "Zenodo v3"
+    summary:
+      en: "Current Zenodo record with README.md, pcd_rssi_toolbox.zip (10.8 MB), requirements.txt and SHA256SUMS.txt."
+      zh: "当前 Zenodo 版本，包含 README.md、pcd_rssi_toolbox.zip（10.8 MB）、requirements.txt 与 SHA256SUMS.txt。"
+    url: https://zenodo.org/records/20411480
+  - version: "Zenodo v2"
+    summary:
+      en: "Zenodo record with the dataset archive (10.0 MB), pcd_rssi_toolbox.zip (10.8 MB) and README.md."
+      zh: "Zenodo 记录，包含数据压缩包（10.0 MB）、pcd_rssi_toolbox.zip（10.8 MB）与 README.md。"
+    url: https://zenodo.org/records/17804464
+  - version: "Zenodo v1"
+    date: "2025-07-02"
+    summary:
+      en: "Initial Zenodo release with the dataset archive (10.0 MB)."
+      zh: "首次 Zenodo 发布，数据压缩包为 10.0 MB。"
+    url: https://zenodo.org/records/15791300
+limitations:
+  - en: "Only one access point at 2.4 GHz was measured."
+    zh: "仅测量了一个 2.4 GHz 接入点。"
+  - en: "The site is one office with an adjacent corridor and elevator hall."
+    zh: "场地为一间办公室，相邻走廊与电梯厅。"
+  - en: "Missing values at distant points leave 1,027 of the 1,060 expected RSSI samples."
+    zh: "远处测点的缺失数据使 1,060 个预期 RSSI 样本中仅有 1,027 个。"
+  - en: "Each setup is a static set of grid measurements, so the data do not describe changes over time."
+    zh: "每组设置为静态网格测量，数据不描述随时间的变化。"
+sources:
+  - https://zenodo.org/records/15791300
+  - https://zenodo.org/records/20411480
+  - https://zenodo.org/api/records/15791300
+  - https://zenodo.org/api/records/15791300/versions
+  - https://zenodo.org/api/records/17804464
+  - https://zenodo.org/api/records/20411480
+  - https://zenodo.org/records/20411480/files/README.md
+  - https://arxiv.org/html/2511.00494
+  - https://export.arxiv.org/api/query?id_list=2511.00494
+  - https://api.crossref.org/works/10.1016/j.dib.2026.112959
+checked: '2026-11-12'
