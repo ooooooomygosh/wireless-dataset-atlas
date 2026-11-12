@@ -9,7 +9,7 @@
 A catalog of public datasets and data generators for machine learning in wireless communications. Each entry links to the data, the dataset paper, code where it exists, and studies that use the dataset.
 
 <!-- stats:start -->
-135 datasets · 19 tasks · 457 papers
+136 datasets · 19 tasks · 461 papers
 <!-- stats:end -->
 
 ## Tasks
@@ -24,7 +24,7 @@ A catalog of public datasets and data generators for machine learning in wireles
 | [Channel prediction](https://wireless-dataset-atlas.vercel.app/en/tasks/channel-prediction/) | 6 |
 | [DoA / AoA estimation](https://wireless-dataset-atlas.vercel.app/en/tasks/doa-estimation/) | 4 |
 | [Localization and fingerprinting](https://wireless-dataset-atlas.vercel.app/en/tasks/localization/) | 23 |
-| [Radio map and path-loss prediction](https://wireless-dataset-atlas.vercel.app/en/tasks/radio-map/) | 14 |
+| [Radio map and path-loss prediction](https://wireless-dataset-atlas.vercel.app/en/tasks/radio-map/) | 15 |
 | [MIMO detection and precoding](https://wireless-dataset-atlas.vercel.app/en/tasks/mimo-detection/) | 3 |
 | [Modulation and signal classification](https://wireless-dataset-atlas.vercel.app/en/tasks/modulation-classification/) | 7 |
 | [RF fingerprinting](https://wireless-dataset-atlas.vercel.app/en/tasks/rf-fingerprinting/) | 7 |

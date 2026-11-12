@@ -1,0 +1,108 @@
+id: spectrumnet
+name: SpectrumNet
+aliases: [FDRadiomap]
+year: 2024
+organization: Shuhang Zhang et al.
+origin: simulation
+tasks: [radio-map]
+signals: [pathloss]
+bands_ghz: [0.15, 1.5, 1.7, 3.5, 22]
+environment: [outdoor-urban, outdoor-suburban, rural]
+samples: Over 300,000 radio map images from about 15,300 real-world areas; 128 x 128 pixels at 10 m, covering 1.28 km x 1.28 km
+format: PNG radio maps, JPG visualisations, NPZ terrain and building data
+mobility: Static
+license: Not stated
+access: {url: 'https://github.com/ShuhangZhang/FDRadiomap', type: open}
+code: []
+paper: doi:10.1109/tccn.2024.3502492
+used_in: ["doi:10.1109/tccn.2025.3575481"]
+citing: ["doi:10.1109/comst.2026.3651702","doi:10.1109/tvt.2026.3675123","doi:10.1109/mcom.001.2500124"]
+summary: {en: 'Multiband 3D radio maps from ray tracing over 11 terrain types and 3 climate zones, at heights of 1.5, 30 and 200 m and five carrier frequencies from 150 MHz to 22 GHz.', zh: 基于射线追踪的多频段三维无线地图，涵盖 11 种地形与 3 种气候带，高度为 1.5、30、200 m，载频共五个，从 150 MHz 到 22 GHz。}
+overview: {en: 'SpectrumNet is a radio map benchmark built for generative models. Each sample covers a 1.28 km x 1.28 km area at 10 m resolution (128 x 128 pixels). Areas come from real geography with building heights taken from OpenStreetMap and completed manually with Google Maps. The paper names five bands (150 MHz, 1.5, 1.7, 3.5 and 22 GHz), three heights (1.5, 30 and 200 m), 11 terrain scenarios (dense urban, ordinary urban, rural, suburban, mountainous, forest, desert, grassland, island, ocean, lake) and 3 climate scenarios (tropics, subtropics, temperate), with weather effects following ITU recommendations. Each area holds one NPZ file with terrain and building data, five JPG visualisations and fifteen PNG radio maps, one per band and height. The paper does not name the ray-tracing software. The authors state that the sample count will grow in later versions.', zh: SpectrumNet 是为生成式模型构建的无线地图基准。每个样本覆盖 1.28 km x 1.28 km 区域，分辨率 10 m（128 x 128 像素）。区域取自真实地理，建筑高度来自 OpenStreetMap 并用 Google
+    Maps 人工补全。论文给出五个频段（150 MHz、1.5、1.7、3.5、22 GHz）、三个高度（1.5、30、200 m）、11 种地形（密集城区、普通城区、乡村、郊区、山地、森林、沙漠、草原、岛屿、海洋、湖泊）和 3 种气候（热带、亚热带、温带），天气影响依据 ITU 建议。每个区域包含一个存放地形与建筑数据的 NPZ 文件、五张 JPG 可视化图和十五张 PNG 无线地图（每个频段与高度各一张）。论文未说明所用射线追踪软件。作者表示后续版本会增加样本数。}
+capabilities:
+- key: csi
+  status: none
+  note: {en: The release holds radio maps only., zh: 发布内容仅含无线地图。}
+- key: cir
+  status: none
+  note: {en: The release holds radio maps only., zh: 发布内容仅含无线地图。}
+- key: paths
+  status: none
+  note: {en: No path-level output is released., zh: 未发布路径级输出。}
+- key: interaction
+  status: none
+  note: {en: No path-level output is released., zh: 未发布路径级输出。}
+- key: power
+  status: provided
+  note: {en: 'Path-gain radio maps at three heights and five bands, as PNG images.', zh: 三个高度、五个频段的路径增益无线地图（PNG 图像）。}
+- key: iq
+  status: none
+  note: {en: No waveform data., zh: 无波形数据。}
+- key: beam_labels
+  status: none
+  note: {en: No beam data., zh: 无波束数据。}
+- key: position
+  status: derivable
+  note: {en: Positions are image pixels on a 10 m grid; the transmitter placement is encoded in the file name., zh: 位置为 10 m 网格上的像素；发射机布置编码在文件名中。}
+- key: geometry
+  status: provided
+  note: {en: Terrain and building information per area in one NPZ file., zh: 每个区域一个 NPZ 文件，包含地形与建筑信息。}
+- {key: materials, status: unknown}
+- key: rgb
+  status: none
+  note: {en: No images of the scene., zh: 无场景图像。}
+- key: depth
+  status: none
+  note: {en: No depth data., zh: 无深度数据。}
+- key: lidar
+  status: none
+  note: {en: No LiDAR data., zh: 无 LiDAR 数据。}
+- key: radar
+  status: none
+  note: {en: No radar data., zh: 无雷达数据。}
+- key: imu
+  status: none
+  note: {en: No IMU data., zh: 无 IMU 数据。}
+- key: time_series
+  status: none
+  note: {en: Static maps., zh: 静态地图。}
+- key: multiuser
+  status: none
+  note: {en: Maps describe one transmitter placement at a time., zh: 每张地图对应一种发射机布置。}
+- {key: multibs, status: unknown}
+- key: crossfreq
+  status: provided
+  note: {en: 'The same area is mapped at 150 MHz, 1.5, 1.7, 3.5 and 22 GHz.', zh: 同一区域在 150 MHz、1.5、1.7、3.5 与 22 GHz 下成图。}
+- key: near_field
+  status: none
+  note: {en: Maps are coarse (10 m cells); no near-field modelling., zh: 地图分辨率为 10 m，不含近场建模。}
+- key: high_mobility
+  status: none
+  note: {en: Static maps., zh: 静态地图。}
+- key: dynamic_blockage
+  status: none
+  note: {en: Static scenes., zh: 静态场景。}
+- {key: reflection, status: unknown}
+- {key: diffraction, status: unknown}
+- {key: scattering, status: unknown}
+- {key: transmission, status: unknown}
+- {key: polarization, status: unknown}
+- key: em_field
+  status: none
+  note: {en: Only path gain is released., zh: 仅发布路径增益。}
+versions:
+- version: IEEE TCCN
+  date: 2025-04
+  summary: {en: Journal version in IEEE Transactions on Cognitive Communications and Networking (DOI 10.1109/TCCN.2024.3502492)., zh: 期刊版本，发表于 IEEE Transactions on Cognitive Communications and Networking（DOI 10.1109/TCCN.2024.3502492）。}
+  url: https://doi.org/10.1109/tccn.2024.3502492
+- version: arXiv v1
+  date: '2024-08-09'
+  summary: {en: Preprint introducing the dataset with three baseline methods., zh: 预印本，介绍数据集并给出三种基线方法。}
+  url: https://arxiv.org/abs/2408.15252
+limitations:
+- {en: The licence is not stated on the repository or in the paper., zh: 仓库与论文均未说明许可。}
+- {en: 'The repository README names RadioMaps.zip and Terrain&BuildingInformation.zip, while the repository lists per-scenario zip files; the full set is linked from a Google Drive file.', zh: 仓库 README 提到 RadioMaps.zip 与 Terrain&BuildingInformation.zip，而仓库中列出的是按场景划分的 zip；完整数据通过 Google Drive 链接提供。}
+- {en: The ray-tracing software and the material settings are not named in the paper., zh: 论文未说明射线追踪软件与材料设置。}
+sources: ['https://arxiv.org/abs/2408.15252', 'https://arxiv.org/html/2408.15252v1', 'https://github.com/ShuhangZhang/FDRadiomap', 'https://doi.org/10.1109/tccn.2024.3502492']
+checked: '2026-11-12'
