@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2
+
+- Added SpectrumNet (multiband 3D radio maps, IEEE TCCN 2025).
+
 ## 2.1.1
 
 - The task and data-type matrix now counts what can be obtained: provided, derivable by a standard transform, or produced by the generator or by a ray tracer on the released 3D scene. A toggle switches to directly provided data only.
