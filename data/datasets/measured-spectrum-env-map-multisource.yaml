@@ -1,0 +1,251 @@
+id: measured-spectrum-env-map-multisource
+name: Measured spectrum environment map dataset with multi-radiation sources in urban scenarios
+year: 2025
+organization: Nanjing University of Aeronautics and Astronautics
+origin: measured
+tasks:
+- radio-map
+signals:
+- spectrum
+- rssi
+bands_ghz:
+- 0.03
+- 0.115
+- 2
+environment:
+- outdoor-urban
+samples: Three 80 × 105 grids, one per frequency, at 1 m × 1 m resolution, with per-point CSV measurements.
+format: CSV (raw measurements), MAT (80 × 105 tensors), PDF (guide manual)
+size_gb: 0.35
+mobility: Mobile receiver on a pre-defined path at constant speed; transmitters at fixed positions
+license: CC BY 4.0
+access:
+  url: https://data.mendeley.com/datasets/9wfy8pcxdb
+  type: open
+code: []
+paper: doi:10.1016/j.dib.2025.111909
+used_in: []
+citing: ["doi:10.1109/ojcoms.2026.3714834"]
+summary:
+  en: Measured received signal strength maps of an 80 m × 105 m urban area with three radiation sources, at 30 MHz, 115 MHz and 2 GHz, on a 1 m grid.
+  zh: 在 80 m × 105 m 城市区域内实测的接收信号强度地图，包含三个辐射源，频点为 30 MHz、115 MHz 和 2 GHz，网格间距 1 m。
+overview:
+  en: 'The dataset holds measured received signal strength for an urban area of 80 m × 105 m with three radiation sources. The grid spacing is 1 m, so each map has 80 × 105 cells. Maps are given at three frequencies: 30 MHz, 115 MHz and 2 GHz. A receiver with a spectrum analyser and a GPS module traverses the area along a pre-defined path at constant speed, without repeating a path. Each measurement point carries longitude, latitude, altitude and time. The three radiation sources use isotropic antennas. The raw measurements are CSV files, one per frequency. Each row holds a unique identifier, a task number, a timestamp, the coordinates, the start, end and step frequency of the scan, the number of frequency points, and the signal strength in dBm. The same signal strength is also given as three MAT files, one per frequency, each holding an 80 × 105 double-precision tensor in dBm. The release includes a guide manual in PDF. The total size of the files is about 348 MB. The sources do not name the receiver model or describe its calibration.'
+  zh: 该数据集给出一个 80 m × 105 m 城市区域内三个辐射源的实测接收信号强度。网格间距为 1 m，每幅地图为 80 × 105 个网格点。数据覆盖三个频点：30 MHz、115 MHz 和 2 GHz。接收系统由频谱分析仪和 GPS 模块组成，以恒定速度沿预定路径遍历区域，路径不重复。每个测量点包含经度、纬度、高度和时间。三个辐射源采用各向同性天线。原始测量数据为 CSV 文件，每个频点一个。每行包含唯一标识、任务编号、时间戳、坐标、扫描的起止频率与频率步进、频点数量以及以 dBm 表示的信号强度。同样的信号强度也以三个 MAT 文件给出，每个频点一个，每个文件包含一个 80 × 105 的双精度张量，单位为 dBm。发布内容另含一份 PDF 格式的指南手册。文件总大小约 348 MB。来源未说明接收机型号及其校准方法。Mendeley 页面列出的类别为信道建模、电磁频谱与热图。第 2 版的 Mendeley 发布包含三个 CSV 文件、三个 MAT 文件和一份 PDF 指南手册。CSV 文件保留每个测量点的原始坐标与时间，便于按扫描顺序还原数据。数据集说明列出三篇相关文献，分别涉及无人机三维频谱实时测绘系统、考虑信道阴影的三维无线电环境地图稀疏贝叶斯构建，以及动态频谱环境中的时变无线电地图重建。数据集说明称其可用于频谱地图补全算法验证、无线信道建模、深度学习信号预测以及 Wi-Fi 与蜂窝网络优化。
+pipeline:
+  summary:
+    en: Three radiation sources are deployed in an 80 m × 105 m area and scanned by one receiver. The raw scans are released as CSV files and gridded into MAT tensors.
+    zh: 在 80 m × 105 m 区域内布设三个辐射源，由一台接收机扫描。原始扫描结果以 CSV 文件发布，并整理为 MAT 张量。
+  stages:
+  - title:
+      en: Deploy sources and scan the area
+      zh: 布设辐射源并扫描区域
+    detail:
+      en: Three signal transmission systems are deployed in turn at designated positions in the area. A receiver traverses the area along a pre-defined path at constant speed, without path repetition, and records signal strength with a spectrum analyser and a GPS module.
+      zh: 在区域内指定位置依次布设三套信号发射系统。接收机以恒定速度沿预定路径遍历区域且路径不重复，使用频谱分析仪与 GPS 模块记录信号强度。
+    inputs:
+    - en: Three signal transmission systems with isotropic antennas
+      zh: 三套采用各向同性天线的信号发射系统
+    - en: Receiver with spectrum analyser and GPS module
+      zh: 配有频谱分析仪与 GPS 模块的接收机
+    outputs:
+    - en: Spectrum scans with coordinates and time
+      zh: 带坐标与时间的频谱扫描结果
+  - title:
+      en: Store raw scans as CSV
+      zh: 将原始扫描结果存为 CSV
+    detail:
+      en: 'Each row holds a unique identifier, a task number, a timestamp, longitude, latitude, altitude, the start, end and step frequency, the number of frequency points and the signal strength in dBm. The release has one CSV file per frequency: 30 MHz, 115 MHz and 2 GHz.'
+      zh: 每行包含唯一标识、任务编号、时间戳、经度、纬度、高度、起止频率与频率步进、频点数量以及以 dBm 表示的信号强度。发布内容每个频点一个 CSV 文件：30 MHz、115 MHz 和 2 GHz。
+    inputs:
+    - en: Scan records from the receiver
+      zh: 接收机的扫描记录
+    outputs:
+    - en: Raw CSV measurement files
+      zh: 原始 CSV 测量文件
+  - title:
+      en: Arrange signal strength as 80 × 105 tensors
+      zh: 将信号强度整理为 80 × 105 张量
+    detail:
+      en: The signal strength at each of the three frequencies is arranged on the 1 m × 1 m grid of the measured area. The result is three double-precision tensors of 80 × 105 values in dBm, saved as MAT files.
+      zh: 将三个频点的信号强度按 1 m × 1 m 的测量网格排列，得到三个双精度的 80 × 105 张量，单位为 dBm，以 MAT 文件保存。
+    inputs:
+    - en: Raw CSV measurement files
+      zh: 原始 CSV 测量文件
+    outputs:
+    - en: Three MAT tensors, one per frequency
+      zh: 三个 MAT 张量，每个频点一个
+    controls:
+    - en: Grid of 1 m × 1 m cells
+      zh: 1 m × 1 m 的网格单元
+  - title:
+      en: Release on Mendeley Data
+      zh: 在 Mendeley Data 发布
+    detail:
+      en: The CSV files, the MAT tensors and a guide manual in PDF are released as version 1 on 29 April 2025 and version 2 on 1 May 2025, under CC BY 4.0. The dataset is described in a Data in Brief article.
+      zh: CSV 文件、MAT 张量与 PDF 指南手册于 2025 年 4 月 29 日以第 1 版发布，并于 2025 年 5 月 1 日发布第 2 版，许可为 CC BY 4.0。数据集同时在 Data in Brief 论文中介绍。
+    inputs:
+    - en: CSV files, MAT tensors and guide manual
+      zh: CSV 文件、MAT 张量与指南手册
+    outputs:
+    - en: Mendeley Data dataset with DOI 10.17632/9wfy8pcxdb.2
+      zh: DOI 为 10.17632/9wfy8pcxdb.2 的 Mendeley Data 数据集
+capabilities:
+- key: csi
+  status: none
+  note:
+    en: The release holds received signal strength only.
+    zh: 发布内容仅含接收信号强度。
+- key: cir
+  status: none
+  note:
+    en: No impulse response in the release.
+    zh: 发布内容不含冲激响应。
+- key: paths
+  status: none
+  note:
+    en: No path-level output.
+    zh: 无路径级输出。
+- key: interaction
+  status: none
+  note:
+    en: No path-level output.
+    zh: 无路径级输出。
+- key: power
+  status: provided
+  note:
+    en: Received signal strength in dBm on a 1 m grid at 30 MHz, 115 MHz and 2 GHz.
+    zh: 以 dBm 表示的接收信号强度，1 m 网格，频点为 30 MHz、115 MHz 和 2 GHz。
+- key: iq
+  status: none
+  note:
+    en: No raw I/Q samples.
+    zh: 无原始 I/Q 样本。
+- key: beam_labels
+  status: none
+  note:
+    en: No beam data.
+    zh: 无波束数据。
+- key: position
+  status: provided
+  note:
+    en: Longitude, latitude and altitude for each measurement.
+    zh: 每次测量的经度、纬度与高度。
+- key: geometry
+  status: none
+  note:
+    en: No scene geometry in the release.
+    zh: 发布内容不含场景几何。
+- key: materials
+  status: none
+  note:
+    en: No material data.
+    zh: 无材料数据。
+- key: rgb
+  status: none
+  note:
+    en: No images of the scene.
+    zh: 无场景图像。
+- key: depth
+  status: none
+  note:
+    en: No depth data.
+    zh: 无深度数据。
+- key: lidar
+  status: none
+  note:
+    en: No LiDAR data.
+    zh: 无 LiDAR 数据。
+- key: radar
+  status: none
+  note:
+    en: No radar data.
+    zh: 无雷达数据。
+- key: imu
+  status: none
+  note:
+    en: No IMU data.
+    zh: 无 IMU 数据。
+- key: time_series
+  status: derivable
+  note:
+    en: Each measurement has a timestamp, so the scan can be ordered in time.
+    zh: 每次测量带有时间戳，可按时间排序。
+- key: multiuser
+  status: none
+  note:
+    en: No multi-user data.
+    zh: 无多用户数据。
+- key: multibs
+  status: unknown
+- key: crossfreq
+  status: provided
+  note:
+    en: The same area is measured at 30 MHz, 115 MHz and 2 GHz.
+    zh: 同一区域在 30 MHz、115 MHz 与 2 GHz 下测量。
+- key: near_field
+  status: unknown
+- key: high_mobility
+  status: unknown
+- key: dynamic_blockage
+  status: unknown
+- key: reflection
+  status: provided
+  note:
+    en: Inherent in the measurement.
+    zh: 测量结果中已包含。
+- key: diffraction
+  status: provided
+  note:
+    en: Inherent in the measurement.
+    zh: 测量结果中已包含。
+- key: scattering
+  status: provided
+  note:
+    en: Inherent in the measurement.
+    zh: 测量结果中已包含。
+- key: transmission
+  status: provided
+  note:
+    en: Inherent in the measurement.
+    zh: 测量结果中已包含。
+- key: polarization
+  status: unknown
+- key: em_field
+  status: none
+  note:
+    en: Only received signal strength is released.
+    zh: 仅发布接收信号强度。
+versions:
+- version: Data in Brief
+  date: 2025-07
+  summary:
+    en: Data article in Data in Brief, volume 62, describing the dataset.
+    zh: Data in Brief 第 62 卷上的数据论文，介绍该数据集。
+  url: https://doi.org/10.1016/j.dib.2025.111909
+- version: '2'
+  date: '2025-05-01'
+  summary:
+    en: Current version on Mendeley Data (DOI 10.17632/9wfy8pcxdb.2). The sources do not describe the changes from version 1.
+    zh: Mendeley Data 上的当前版本（DOI 10.17632/9wfy8pcxdb.2）。来源未说明相对第 1 版的变化。
+  url: https://data.mendeley.com/datasets/9wfy8pcxdb
+- version: '1'
+  date: '2025-04-29'
+  summary:
+    en: First version on Mendeley Data.
+    zh: Mendeley Data 上的第 1 版。
+  url: https://data.mendeley.com/datasets/9wfy8pcxdb
+limitations:
+- en: The sources do not name the receiver model, the antennas or the calibration procedure.
+  zh: 来源未说明接收机型号、天线及校准方法。
+- en: The sources do not give the transmitter positions or transmit powers.
+  zh: 来源未给出发射机位置或发射功率。
+- en: All data come from one 80 m × 105 m urban area.
+  zh: 全部数据来自同一个 80 m × 105 m 的城市区域。
+sources:
+- https://data.mendeley.com/datasets/9wfy8pcxdb
+- https://data.mendeley.com/public-api/datasets/9wfy8pcxdb
+- https://doi.org/10.1016/j.dib.2025.111909
+- https://api.crossref.org/works/10.1016/j.dib.2025.111909
+- https://api.openalex.org/works/doi:10.1016/j.dib.2025.111909
+checked: '2026-11-12'

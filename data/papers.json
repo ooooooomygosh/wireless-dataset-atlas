@@ -597,6 +597,22 @@
   "url": "https://arxiv.org/abs/2510.12996",
   "fetched": "2026-11-05"
  },
+ "arxiv:2511.00494": {
+  "title": "An indoor radio mapping dataset combining 3D point clouds and RSSI",
+  "authors": [
+   "Ljupcho Milosheski",
+   "Kuon Akiyama",
+   "Blaž Bertalanič",
+   "Jernej Hribar",
+   "Ryoichi Shinkuma"
+  ],
+  "venue": "Data in Brief",
+  "year": 2026,
+  "cited_by": 5,
+  "oa": "W4415937819",
+  "url": "https://arxiv.org/abs/2511.00494",
+  "fetched": "2026-11-12"
+ },
  "arxiv:2511.03220": {
   "title": "Multimodal-Wireless: A Large-Scale Dataset for Sensing and Communication",
   "authors": [
@@ -670,6 +686,67 @@
   "oa": "W7128606718",
   "url": "https://arxiv.org/abs/2602.09115",
   "fetched": "2026-11-05"
+ },
+ "arxiv:2602.11950": {
+  "title": "Radio Map Prediction from Noisy Environment Information and Sparse Observations",
+  "authors": [
+   "Fabian Jaensch",
+   "Çağkan Yapar",
+   "Giuseppe Caire",
+   "Begüm Demir"
+  ],
+  "venue": "arXiv (Cornell University)",
+  "year": 2026,
+  "cited_by": 5,
+  "oa": "W7128793707",
+  "url": "https://arxiv.org/abs/2602.11950",
+  "fetched": "2026-11-12"
+ },
+ "arxiv:2604.17362": {
+  "title": "FARM: Foundational Aerial Radio Map for Intelligent Low-Altitude Networking",
+  "authors": [
+   "Shijian Gao",
+   "Jiahui Liang",
+   "Yifeng Yuan",
+   "Wencheng Lu",
+   "Guobin Shen",
+   "Liuqing Yang"
+  ],
+  "venue": "arXiv (Cornell University)",
+  "year": 2026,
+  "cited_by": 6,
+  "oa": "W7155041050",
+  "url": "https://arxiv.org/abs/2604.17362",
+  "fetched": "2026-11-12"
+ },
+ "arxiv:2604.22056": {
+  "title": "Learning coverage- and power-optimal transmitter placement from city maps: A comparative study of direct and indirect neural approaches",
+  "authors": [
+   "Çağkan Yapar"
+  ],
+  "venue": "Computer Communications",
+  "year": 2026,
+  "cited_by": 0,
+  "oa": "W7167900858",
+  "url": "https://arxiv.org/abs/2604.22056",
+  "fetched": "2026-11-12"
+ },
+ "arxiv:2605.14989": {
+  "title": "Map2APS: A Physically Grounded Benchmark for Direct Angle Power Spectrum Prediction from Urban Geometry",
+  "authors": [
+   "Junxi Huang",
+   "Xiucheng Wang",
+   "Nan Cheng",
+   "Kailong Wang",
+   "Ruijin Sun",
+   "Zhisheng Yin"
+  ],
+  "venue": "arXiv (Cornell University)",
+  "year": 2026,
+  "cited_by": 2,
+  "oa": "W7161258803",
+  "url": "https://arxiv.org/abs/2605.14989",
+  "fetched": "2026-11-12"
  },
  "arxiv:2606.02102": {
   "title": "Spectrum Anomaly Detection in OFDMA Systems: Simulation Framework and Benchmark Dataset",
@@ -754,6 +831,20 @@
   "oa": "W7214804827",
   "url": "https://arxiv.org/abs/2609.34993",
   "fetched": "2026-11-05"
+ },
+ "arxiv:2610.06356": {
+  "title": "Channel Knowledge Maps for FR3 UAV Base Stations: Dataset and ML-based Modeling",
+  "authors": [
+   "Guillem Moreno Garcia",
+   "Sergi Abadal",
+   "Evgenii A. Vinogradov"
+  ],
+  "venue": "arXiv (Cornell University)",
+  "year": 2026,
+  "cited_by": 0,
+  "oa": "W7220736460",
+  "url": "https://arxiv.org/abs/2610.06356",
+  "fetched": "2026-11-12"
  },
  "arxiv:2611.00332": {
   "title": "Dataset and Experimental Testbed for Deep Learning-Based Bluetooth Device Fingerprinting",
@@ -894,6 +985,59 @@
   "oa": "W4393071581",
   "url": "https://doi.org/10.1016/j.dib.2024.110356",
   "fetched": "2026-11-05"
+ },
+ "doi:10.1016/j.dib.2024.111146": {
+  "title": "A multi-device and multi-operator dataset from mobile network coverage on Android devices",
+  "authors": [
+   "Vandermi João da Silva",
+   "Gabriel Tavares",
+   "Carlos Alberto Oliveira de Freitas",
+   "Felipe Maklouf Coelho",
+   "Chavdar Ivanov",
+   "Raimundo Barreto",
+   "Rosiane de Freitas"
+  ],
+  "venue": "Data in Brief",
+  "year": 2024,
+  "cited_by": 3,
+  "oa": "W4404437778",
+  "url": "https://doi.org/10.1016/j.dib.2024.111146",
+  "fetched": "2026-11-12"
+ },
+ "doi:10.1016/j.dib.2025.111909": {
+  "title": "Measured spectrum environment map dataset with multi-radiation sources in urban scenarios",
+  "authors": [
+   "Haotian Zou",
+   "Qiuming Zhu",
+   "Qianhao Gao",
+   "Jie Wang",
+   "Zhipeng Lin",
+   "Yang Huang",
+   "Qihui Wu",
+   "Weizhi Zhong"
+  ],
+  "venue": "Data in Brief",
+  "year": 2025,
+  "cited_by": 2,
+  "oa": "W4412494923",
+  "url": "https://doi.org/10.1016/j.dib.2025.111909",
+  "fetched": "2026-11-12"
+ },
+ "doi:10.1016/j.dib.2026.113364": {
+  "title": "A campus-scale 5G NR radio propagation dataset integrating drive-test measurements, 3D environmental geometry, and ray tracing",
+  "authors": [
+   "Jiafeng Sun",
+   "Tong Yang",
+   "Qi Chen",
+   "Jingjing Yang",
+   "Ming Huang"
+  ],
+  "venue": "Data in Brief",
+  "year": 2026,
+  "cited_by": 0,
+  "oa": "W7222809898",
+  "url": "https://doi.org/10.1016/j.dib.2026.113364",
+  "fetched": "2026-11-12"
  },
  "doi:10.1016/j.patter.2023.100703": {
   "title": "SenseFi: A library and benchmark on deep-learning-empowered WiFi human sensing",
@@ -1073,6 +1217,19 @@
   "oa": "W3215597239",
   "url": "https://doi.org/10.1109/access.2021.3140146",
   "fetched": "2026-11-05"
+ },
+ "doi:10.1109/access.2023.3277248": {
+  "title": "DeepREM: Deep-Learning-Based Radio Environment Map Estimation From Sparse Measurements",
+  "authors": [
+   "Andrea Cháves-Villota",
+   "Carlos A. Viteri-Mera"
+  ],
+  "venue": "IEEE Access",
+  "year": 2023,
+  "cited_by": 64,
+  "oa": "W4377000128",
+  "url": "https://doi.org/10.1109/access.2023.3277248",
+  "fetched": "2026-11-12"
  },
  "doi:10.1109/access.2025.3617323": {
   "title": "Generating Measurement-Based Synthetic Received Signal Power Data for 6G Sub-Terahertz Research With Micromobility and Blockage",
@@ -1286,6 +1443,30 @@
   "oa": "W4392399567",
   "url": "https://doi.org/10.1109/comst.2024.3372083",
   "fetched": "2026-11-05"
+ },
+ "doi:10.1109/comst.2026.3651702": {
+  "title": "Toward Edge General Intelligence With Agentic AI and Agentification: Concepts, Technologies, and Future Directions",
+  "authors": [
+   "Ruichen Zhang",
+   "Guangyuan Liu",
+   "Yinqiu Liu",
+   "Changyuan Zhao",
+   "Jiacheng Wang",
+   "Yunting Xu",
+   "Dusit Tao Niyato",
+   "Jiawen Kang",
+   "Yonghui Li",
+   "Shiwen Mao",
+   "Sumei Sun",
+   "Xuemin Shen",
+   "Dong Hwan Kim"
+  ],
+  "venue": "IEEE Communications Surveys & Tutorials",
+  "year": 2026,
+  "cited_by": 115,
+  "oa": "W7123361055",
+  "url": "https://doi.org/10.1109/comst.2026.3651702",
+  "fetched": "2026-11-12"
  },
  "doi:10.1109/cvpr52733.2024.00185": {
   "title": "Dynamic Inertial Poser (DynaIP): Part-Based Motion Dynamics Learning for Enhanced Human Pose Estimation with Sparse Inertial Sensors",
@@ -1692,6 +1873,22 @@
   "oa": "W4221155501",
   "url": "https://doi.org/10.1109/iccworkshops53468.2022.9814616",
   "fetched": "2026-11-05"
+ },
+ "doi:10.1109/iccworkshops63917.2026.11586209": {
+  "title": "3DCKM: A Large-Scale Multiband 3D Channel Knowledge Map Dataset for Low-Altitude Corridors",
+  "authors": [
+   "Chenyang Zhou",
+   "Xinyue Jiang",
+   "Tong Li",
+   "Zhu Xiao",
+   "Jie Zhang"
+  ],
+  "venue": "IEEE International Conference on Communications workshops",
+  "year": 2026,
+  "cited_by": 0,
+  "oa": "W7168363003",
+  "url": "https://doi.org/10.1109/iccworkshops63917.2026.11586209",
+  "fetched": "2026-11-12"
  },
  "doi:10.1109/iccworkshops63917.2026.11586300": {
   "title": "Joint Channel and CFO Estimation From Beam-Swept Synchronization Signal Under Strong Inter-Cell Interference",
@@ -3818,6 +4015,26 @@
   "url": "https://doi.org/10.1109/mcom.001.2400761",
   "fetched": "2026-11-05"
  },
+ "doi:10.1109/mcom.001.2500124": {
+  "title": "Hallucination in Generative AI-Enabled Wireless Communications: Concepts, Issues, and Solutions",
+  "authors": [
+   "Xudong WANG",
+   "Jiacheng Wang",
+   "Lei Feng",
+   "Dusit Niyato",
+   "Ruichen Zhang",
+   "Jiawen Kang",
+   "Zehui Xiong",
+   "Hongyang Du",
+   "Shiwen Mao"
+  ],
+  "venue": "IEEE Communications Magazine",
+  "year": 2026,
+  "cited_by": 13,
+  "oa": "W7135094856",
+  "url": "https://doi.org/10.1109/mcom.001.2500124",
+  "fetched": "2026-11-12"
+ },
  "doi:10.1109/mcom.002.2200028": {
   "title": "Multimodality in mmWave MIMO Beam Selection Using Deep Learning: Datasets and Challenges",
   "authors": [
@@ -3955,6 +4172,26 @@
   "oa": "W4379382376",
   "url": "https://doi.org/10.1109/mcom.006.2200730",
   "fetched": "2026-11-05"
+ },
+ "doi:10.1109/mcom.011.2200707": {
+  "title": "A Large-Scale Dataset of 4G, NB-IoT, and 5G Non-Standalone Network Measurements",
+  "authors": [
+   "Konstantinos Kousias",
+   "Mohammad Rajiullah",
+   "Giuseppe Caso",
+   "Usman Ali",
+   "Özgü Alay",
+   "Anna Brunström",
+   "Luca De Nardis",
+   "Marco Neri",
+   "Maria‐Gabriella Di Benedetto"
+  ],
+  "venue": "IEEE Communications Magazine",
+  "year": 2023,
+  "cited_by": 49,
+  "oa": "W4386412335",
+  "url": "https://doi.org/10.1109/mcom.011.2200707",
+  "fetched": "2026-11-12"
  },
  "doi:10.1109/mcom.101.2001120": {
   "title": "Intelligence and Learning in O-RAN for Data-Driven NextG Cellular Networks",
@@ -4654,6 +4891,21 @@
   "oa": "W4410393387",
   "url": "https://doi.org/10.1109/tccn.2025.3570469",
   "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tccn.2025.3575481": {
+  "title": "Effective Non-Gaussian Noise Removal of 3D Radio Maps Through Correntropy-Based Nonlocal Tensor Ring Decomposition",
+  "authors": [
+   "Chunmei Li",
+   "Zheng Dou",
+   "Yun Lin",
+   "Yabin Zhang"
+  ],
+  "venue": "IEEE Transactions on Cognitive Communications and Networking",
+  "year": 2025,
+  "cited_by": 0,
+  "oa": "W4410949910",
+  "url": "https://doi.org/10.1109/tccn.2025.3575481",
+  "fetched": "2026-11-12"
  },
  "doi:10.1109/tccn.2025.3587802": {
   "title": "Hierarchical Channel Estimation for Near-Field Spatial Non-Stationary Channels: A Pre-Selection and Multi-Level Dynamic Threshold Strategy",
@@ -5902,6 +6154,23 @@
   "oa": "W7123357176",
   "url": "https://doi.org/10.1109/tvt.2026.3651637",
   "fetched": "2026-11-05"
+ },
+ "doi:10.1109/tvt.2026.3675123": {
+  "title": "Stability-Guaranteed Redundant Transmission Scheduling Over Gilbert–Elliot Channels for Remote State Estimation: A Deep Reinforcement Learning Approach",
+  "authors": [
+   "Zengwang Jin",
+   "Fanglue Shan",
+   "Bomin Mao",
+   "Yanyan Hu",
+   "Pei Xiao",
+   "Changyin Sun"
+  ],
+  "venue": "IEEE Transactions on Vehicular Technology",
+  "year": 2026,
+  "cited_by": 27,
+  "oa": "W7139095807",
+  "url": "https://doi.org/10.1109/tvt.2026.3675123",
+  "fetched": "2026-11-12"
  },
  "doi:10.1109/twc.2011.060811.102120": {
   "title": "Resource Sharing Optimization for Device-to-Device Communication Underlaying Cellular Networks",
@@ -7379,6 +7648,23 @@
   "url": "https://doi.org/10.3390/data4010012",
   "fetched": "2026-11-05"
  },
+ "doi:10.3390/s23094266": {
+  "title": "Positioning by Multicell Fingerprinting in Urban NB-IoT Networks",
+  "authors": [
+   "Luca De Nardis",
+   "Giuseppe Caso",
+   "Özgü Alay",
+   "Marco Neri",
+   "Anna Brunström",
+   "Maria‐Gabriella Di Benedetto"
+  ],
+  "venue": "Sensors",
+  "year": 2023,
+  "cited_by": 14,
+  "oa": "W4367054632",
+  "url": "https://doi.org/10.3390/s23094266",
+  "fetched": "2026-11-12"
+ },
  "doi:10.3390/telecom7030065": {
   "title": "ChanEst Dataset: A Reconfigurable Framework and Benchmark for Deep Learning–Based 6G Channel Estimation",
   "authors": [
@@ -7411,6 +7697,18 @@
   "oa": "W7133231333",
   "url": "https://doi.org/10.52202/075280-2739",
   "fetched": "2026-11-05"
+ },
+ "doi:10.5281/zenodo.23043997": {
+  "title": "RadioMap-PCE: A Multiscale Radio Map Dataset for Physical Coverage Extrapolation",
+  "authors": [
+   "Tianqi Mao"
+  ],
+  "venue": "Zenodo (CERN European Organization for Nuclear Research)",
+  "year": 2026,
+  "cited_by": 0,
+  "oa": "W7214720261",
+  "url": "https://doi.org/10.5281/zenodo.23043997",
+  "fetched": "2026-11-12"
  },
  "doi:10.6028/jres.124.038": {
   "title": "RF Dataset of Incumbent Radar Signals in the 3.5GHz CBRS Band",

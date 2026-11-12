@@ -1,0 +1,87 @@
+id: nbiot-coverage-oslo-rome
+name: Outdoor NB-IoT coverage and channel information data in urban environments
+year: 2023
+organization: Luca De Nardis et al.
+origin: measured
+tasks: [radio-map, localization]
+signals: [rssi, cir]
+environment: [outdoor-urban]
+size_gb: 0.047
+format: 'Zip archive with CSV raw data per campaign, MATLAB .mat workspaces per city, and MATLAB scripts'
+license: CC BY 4.0
+access: {url: 'https://zenodo.org/records/7674299', type: open}
+code: []
+paper: doi:10.3390/s23094266
+used_in: []
+citing: ["doi:10.1109/mcom.011.2200707","doi:10.1109/tvt.2024.3515159"]
+summary: {en: 'Geo-tagged NB-IoT scans from a Rohde and Schwarz TSMA6 scanner in 7 Oslo and 6 Rome campaigns, with RF values and CIR maximum delay per NPCI and eNodeB, plus estimated eNodeB positions. The archive is about 47 MB.', zh: '使用 Rohde and Schwarz TSMA6 扫描仪在奥斯陆 7 次、罗马 6 次测量活动中采集的带地理标签 NB-IoT 扫描数据，含每个 NPCI 与 eNodeB 的射频值及 CIR 最大时延，并附 eNodeB 估计位置。压缩包约 47 MB。'}
+overview:
+  en: 'The dataset holds NB-IoT network scans collected in two outdoor urban settings, Oslo in Norway and Rome in Italy. A Rohde and Schwarz TSMA6 mobile network scanner recorded 7 campaigns in Oslo and 6 in Rome. Each raw coverage row is geo-tagged and gives the NB-IoT Physical Cell Identifier (NPCI), operator, country code, eNodeB ID, RSSI, SINR, RSRP and RSRQ, with a time stamp and GPS information. A second raw file per campaign gives channel impulse response (CIR) statistics for each NPCI, including the maximum delay. Processed data are stored per city in MATLAB workspace (.mat) files. Each data point is identified by a latitude and longitude pair and holds RF and CIR maximum-delay measurements for each NPCI, operator and eNodeB combination detected at that point. Estimated eNodeB positions are given as one CSV file per city. For Rome, the release adds a script that interpolates missing data in the original measurements and a second MATLAB workspace with the interpolated data. MATLAB scripts and a function regenerate the processed data from the raw CSV files of each city. The data are distributed as one zip archive of about 47 MB, with CSV and MATLAB formats.'
+  zh: '该数据集包含在两个户外城市环境中采集的 NB-IoT 网络扫描数据，城市分别为挪威奥斯陆与意大利罗马。测量使用 Rohde and Schwarz TSMA6 移动网络扫描仪，奥斯陆共 7 次测量活动，罗马共 6 次。每条原始覆盖记录均带地理标签，包含时间戳、GPS 信息、NB-IoT 物理小区标识（NPCI）、运营商、国家码、eNodeB ID，以及 RSSI、SINR、RSRP 与 RSRQ。每次测量还附有一个信道冲激响应（CIR）统计文件，给出各 NPCI 的 CIR 统计量，包括最大时延。处理后的数据按城市以 MATLAB 工作区（.mat）文件保存。每个数据点由一组经纬度标识，记录该点检测到的每个 NPCI、运营商与 eNodeB 组合的射频测量值与 CIR 最大时延。各城市的 eNodeB 估计位置以 CSV 文件提供。罗马数据另附一个缺失数据插值脚本，以及一个含插值结果的 MATLAB 工作区。MATLAB 脚本与函数可由各城市的原始 CSV 文件重新生成处理后的数据。数据以一个约 47 MB 的 zip 压缩包发布，格式为 CSV 与 MATLAB。原始数据按每次测量活动分文件存放，处理结果按城市分别保存。CIR 统计文件中每行为一条 NPCI 检测记录，包含时间戳、GPS 信息、网络字段（NPCI、运营商、国家码、eNodeB-ID）与 CIR 统计量。'
+pipeline:
+  summary: {en: 'Raw NB-IoT scans from each campaign are grouped by location into MATLAB workspaces per city. eNodeB positions are released as CSV, and Rome adds interpolated data.', zh: '各次测量的原始 NB-IoT 扫描数据按位置归并为每个城市的 MATLAB 工作区。eNodeB 位置以 CSV 发布，罗马数据另含插值结果。'}
+  stages:
+  - title: {en: Scan NB-IoT campaigns, zh: 进行 NB-IoT 扫描测量}
+    detail: {en: 'A Rohde and Schwarz TSMA6 scanner records NB-IoT cells during 7 campaigns in Oslo and 6 in Rome. Each coverage row is geo-tagged and carries NPCI, operator, country code, eNodeB ID, RSSI, SINR, RSRP and RSRQ. A separate file per campaign carries the CIR statistics for each NPCI.', zh: 'Rohde and Schwarz TSMA6 扫描仪在奥斯陆 7 次、罗马 6 次测量活动中记录 NB-IoT 小区。每条覆盖记录带地理标签，包含 NPCI、运营商、国家码、eNodeB ID、RSSI、SINR、RSRP 与 RSRQ。每次测量另有单独文件，给出各 NPCI 的 CIR 统计量。'}
+    inputs:
+    - {en: 'NB-IoT signals in Oslo and Rome', zh: '奥斯陆与罗马的 NB-IoT 信号'}
+    outputs:
+    - {en: 'NB-IoT_coverage_C<X>.csv and NB-IoT_RefSig_cir_C<X>.csv for each campaign', zh: '每次测量一组 NB-IoT_coverage_C<X>.csv 与 NB-IoT_RefSig_cir_C<X>.csv'}
+  - title: {en: Group measurements by location, zh: 按位置归并测量数据}
+    detail: {en: 'A MATLAB script groups entries by latitude and longitude. Each data point holds the RF and CIR maximum-delay values for every NPCI, operator and eNodeB combination detected there.', zh: 'MATLAB 脚本按纬度与经度归并记录。每个数据点保存该点检测到的每个 NPCI、运营商与 eNodeB 组合的射频值与 CIR 最大时延。'}
+    inputs:
+    - {en: 'Raw CSV files of each campaign', zh: '各次测量的原始 CSV 文件'}
+    outputs:
+    - {en: 'Processed MATLAB workspace (.mat) for each city', zh: '每个城市一个处理后的 MATLAB 工作区（.mat）'}
+    controls:
+    - {en: 'MATLAB script and function supplied with the release', zh: '发布包附带 MATLAB 脚本与函数'}
+  - title: {en: Estimate eNodeB positions, zh: 估计 eNodeB 位置}
+    detail: {en: 'Estimated eNodeB positions are released as one CSV file per city.', zh: '每个城市的 eNodeB 估计位置以一个 CSV 文件发布。'}
+    outputs:
+    - {en: 'eNodeB position CSV for each city', zh: '每个城市一个 eNodeB 位置 CSV 文件'}
+  - title: {en: Interpolate Rome data, zh: 插值罗马数据}
+    detail: {en: 'A script interpolates missing data in the original Rome measurements. The interpolated values are released as a second MATLAB workspace. The rationale and procedure are given in De Nardis et al., Sensors 2023.', zh: '脚本对罗马原始测量中缺失的数据进行插值。插值结果以第二个 MATLAB 工作区发布。插值依据与步骤见 De Nardis 等人，Sensors 2023。'}
+    inputs:
+    - {en: 'Original Rome MATLAB workspace', zh: '罗马原始 MATLAB 工作区'}
+    outputs:
+    - {en: 'Interpolated Rome MATLAB workspace', zh: '罗马插值后的 MATLAB 工作区'}
+capabilities:
+- {key: csi, status: none, note: {en: 'No CSI. The CIR file holds maximum-delay statistics only.', zh: '无 CSI。CIR 文件仅含最大时延统计量。'}}
+- {key: cir, status: provided, note: {en: 'CIR statistics only: maximum delay per NPCI. No full impulse response.', zh: '仅提供 CIR 统计量：每个 NPCI 的最大时延，不含完整冲激响应。'}}
+- {key: paths, status: none, note: {en: 'No multipath parameters.', zh: '无多径参数。'}}
+- {key: interaction, status: none, note: {en: 'No path interaction data.', zh: '无路径交互数据。'}}
+- {key: power, status: provided, note: {en: 'RSRP, RSRQ, RSSI and SINR per NPCI and measurement point.', zh: '按 NPCI 与测量点提供 RSRP、RSRQ、RSSI 与 SINR。'}}
+- {key: iq, status: none, note: {en: 'No raw I/Q samples.', zh: '无原始 I/Q 样本。'}}
+- {key: beam_labels, status: none, note: {en: 'No beam data.', zh: '无波束数据。'}}
+- {key: position, status: provided, note: {en: 'Geo-tagged measurement points and estimated eNodeB positions per city.', zh: '带地理标签的测量点，以及每个城市的 eNodeB 估计位置。'}}
+- {key: geometry, status: none, note: {en: 'No scene or building data.', zh: '无场景或建筑数据。'}}
+- {key: materials, status: none, note: {en: 'No material parameters.', zh: '无材料参数。'}}
+- {key: rgb, status: none, note: {en: 'No images.', zh: '无图像。'}}
+- {key: depth, status: none, note: {en: 'No depth data.', zh: '无深度数据。'}}
+- {key: lidar, status: none, note: {en: 'No LiDAR data.', zh: '无 LiDAR 数据。'}}
+- {key: radar, status: none, note: {en: 'No radar data.', zh: '无雷达数据。'}}
+- {key: imu, status: none, note: {en: 'No IMU data.', zh: '无 IMU 数据。'}}
+- {key: time_series, status: provided, note: {en: 'Each detected NPCI entry carries a time stamp.', zh: '每条检测到的 NPCI 记录带时间戳。'}}
+- {key: multiuser, status: none, note: {en: 'No multi-user data.', zh: '无多用户数据。'}}
+- {key: multibs, status: provided, note: {en: 'Several NPCI and eNodeB IDs per point, with eNodeB positions.', zh: '每个测量点含多个 NPCI 与 eNodeB ID，并附 eNodeB 位置。'}}
+- {key: crossfreq, status: none, note: {en: 'NB-IoT only; no other technology.', zh: '仅含 NB-IoT，无其他制式。'}}
+- {key: near_field, status: none, note: {en: 'No near-field data.', zh: '无近场数据。'}}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: none, note: {en: 'No blockage labels.', zh: '无遮挡标签。'}}
+- {key: reflection, status: provided, note: {en: 'Over-the-air measurement, inherent in the measurement.', zh: '空口测量，属测量固有内容。'}}
+- {key: diffraction, status: provided, note: {en: 'Over-the-air measurement, inherent in the measurement.', zh: '空口测量，属测量固有内容。'}}
+- {key: scattering, status: provided, note: {en: 'Over-the-air measurement, inherent in the measurement.', zh: '空口测量，属测量固有内容。'}}
+- {key: transmission, status: provided, note: {en: 'Over-the-air measurement, inherent in the measurement.', zh: '空口测量，属测量固有内容。'}}
+- {key: polarization, status: none, note: {en: 'No polarization data.', zh: '无极化数据。'}}
+- {key: em_field, status: none, note: {en: 'No field values; RF measurements only.', zh: '无场值，仅有射频测量。'}}
+versions:
+- version: 'Zenodo 7674299'
+  date: '2023-02-24'
+  summary: {en: 'Zenodo release with NB-IoT_dataset.zip, covering Oslo and Rome.', zh: 'Zenodo 发布版本，包含覆盖奥斯陆与罗马的 NB-IoT_dataset.zip。'}
+  url: 'https://zenodo.org/records/7674299'
+limitations:
+- {en: 'Only the maximum delay of the CIR is released, not the full impulse response.', zh: '仅发布 CIR 的最大时延，不含完整冲激响应。'}
+- {en: 'Only NB-IoT is covered, with no 4G or 5G scans.', zh: '仅覆盖 NB-IoT，不含 4G 或 5G 扫描。'}
+- {en: 'Rome includes interpolated values in a separate workspace; the interpolation procedure is described in De Nardis et al. (2023).', zh: '罗马数据的插值结果单独存放于另一个工作区文件；插值方法见 De Nardis 等人（2023）。'}
+sources: ['https://zenodo.org/api/records/7674299', 'https://api.openalex.org/works/doi:10.3390/s23094266', 'https://api.crossref.org/works/10.3390/s23094266']
+checked: '2026-11-12'

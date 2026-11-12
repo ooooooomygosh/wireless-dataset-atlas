@@ -1,0 +1,120 @@
+id: indoor-wireless-insite-radio-maps
+name: Indoor Environments and Ray-Tracing Data
+year: 2026
+organization: "Technische Universität Berlin; University of Southern California"
+origin: ray-tracing
+tasks: [radio-map]
+signals: [pathloss]
+bands_ghz: [5.92]
+environment: [indoor]
+samples: "18,005 ground-truth radio maps from 3,601 base environments with five transmitters each; ten noisy copies per base environment"
+format: "Raster images (32 × 32 pixels), Wireless InSite projects, model weights and logs"
+mobility: Static
+size_gb: 27.8
+license: "Creative Commons Attribution 4.0 International"
+access: {url: 'https://zenodo.org/records/18631406', type: open}
+code: ['https://github.com/fabja19/RML_indoor', 'https://github.com/fabja19/WI_indoor_projects']
+paper: arxiv:2602.11950
+used_in: []
+citing: []
+summary:
+  en: "Synthetic indoor room environments simulated in Wireless InSite at 5.92 GHz, with 32 × 32 pixel path-loss radio maps, ten noisy copies per environment and the Wireless InSite projects. Three archives total about 27.8 GB under CC BY 4.0."
+  zh: "基于 Wireless InSite 射线追踪仿真的合成室内房间环境，载频 5.92 GHz，包含 32 × 32 像素的路径损耗无线地图、每个环境十份带噪副本以及 Wireless InSite 工程文件。三个压缩包合计约 27.8 GB，许可为 CC BY 4.0。"
+overview:
+  en: "The dataset contains 3,601 synthetic indoor base environments, each a room with walls and objects such as chairs, tables, heating radiators and lamps. Walls and objects are polygons extruded to 3D, and each object has a material type whose permittivity and conductivity are sampled from ranges taken from the literature and ITU standards. Five transmitters are placed in each environment. Wireless InSite produces one ground-truth radio map per transmitter, giving 18,005 samples. The carrier frequency is 5.92 GHz and the transmit power is 0 dBm. Receivers sit at 1 m height on a 30 cm grid. The simulations consider up to three reflections, three transmissions and one diffraction per path. Path loss ranges from -71 dBm to -12 dBm and is scaled linearly to [0, 1] for training. The processed radio maps have a fixed size of 32 × 32 pixels, and locations outside the rooms are set to zero and excluded from the loss. Each base environment has ten noisy copies in which object and transmitter positions shift by 0.5 m on average and the material properties are perturbed. The paper slices each environment at several heights and rasterises the slices, using binary, class-based or material-property encodings, together with one-hot transmitter height maps and distance maps. The release has three archives: dataset_publication.zip (7.1 GB, environment encodings and radio maps), project_files.zip (20.0 GB, Wireless InSite projects) and indoor_ckpts.zip (686 MB, model weights and logs)."
+  zh: "该数据集包含 3,601 个合成室内基础环境，每个环境为一个房间，内有墙体和椅子、桌子、暖气片、灯具等物体。墙体与物体在二维平面上以多边形表示，并沿高度方向拉伸为三维结构。每个物体具有一种材料类型，其介电常数与电导率取自文献和 ITU 标准给出的范围。每个环境放置五个发射机，Wireless InSite 对每个发射机生成一张真值无线地图，共计 18,005 个样本。载频为 5.92 GHz，发射功率为 0 dBm。接收机位于 1 m 高度，按 30 cm 网格排布。仿真考虑每条路径最多三次反射、三次透射和一次绕射。路径损耗范围为 -71 dBm 至 -12 dBm，训练时线性缩放至 [0, 1]。处理后的无线地图固定为 32 × 32 像素，房间外的位置置零且不计入损失。每个基础环境有十份带噪副本，物体与发射机位置平均偏移 0.5 m，材料参数随之扰动。论文将每个环境在多个高度切片并栅格化，采用二值、分类或材料属性三种编码，并配有独热编码的发射机高度图与距离图。每个基础环境的十份带噪副本均附有对应的栅格图像，可用于训练与评估。发布内容包含三个压缩包：dataset_publication.zip（7.1 GB，环境编码与无线地图）、project_files.zip（20.0 GB，Wireless InSite 工程文件）以及 indoor_ckpts.zip（686 MB，模型权重与日志）。"
+pipeline:
+  summary:
+    en: "Synthetic rooms are written as Wireless InSite projects, simulated with ray tracing at 5.92 GHz, augmented with noisy copies, and rasterised into 32 × 32 radio maps and environment encodings."
+    zh: "合成房间先写成 Wireless InSite 工程文件，以 5.92 GHz 进行射线追踪仿真，再生成带噪副本，最后栅格化为 32 × 32 无线地图与环境编码。"
+  stages:
+    - title: {en: "Generate base room environments", zh: "生成基础房间环境"}
+      detail:
+        en: "A code framework places walls and objects as polygons in the x-y plane, extrudes them to 3D and prevents overlaps. Each object gets a material type with permittivity and conductivity sampled from ranges taken from the literature and ITU standards. The framework produces 3,601 base environments."
+        zh: "代码框架在 x-y 平面内以多边形放置墙体与物体，沿高度方向拉伸为三维结构，并避免物体重叠。每个物体分配一种材料类型，其介电常数与电导率取自文献与 ITU 标准的范围。共生成 3,601 个基础环境。"
+      inputs:
+        - {en: "Object types such as chairs, tables, heating radiators and lamps", zh: "椅子、桌子、暖气片、灯具等物体类型"}
+        - {en: "Material parameter ranges from the literature and ITU standards", zh: "文献与 ITU 标准给出的材料参数范围"}
+      outputs:
+        - {en: "Environment files readable by Wireless InSite", zh: "可被 Wireless InSite 读取的环境文件"}
+    - title: {en: "Simulate ray-traced radio maps", zh: "射线追踪仿真无线地图"}
+      detail:
+        en: "Wireless InSite produces one ground-truth radio map per transmitter, with five transmitters per environment and 18,005 maps in total. Receivers sit at 1 m height on a 30 cm grid. Simulations consider up to three reflections, three transmissions and one diffraction per path."
+        zh: "Wireless InSite 对每个发射机生成一张真值无线地图，每个环境五个发射机，共 18,005 张地图。接收机位于 1 m 高度，按 30 cm 网格排布。仿真考虑每条路径最多三次反射、三次透射和一次绕射。"
+      inputs:
+        - {en: "Wireless InSite projects with transmitter positions", zh: "含发射机位置的 Wireless InSite 工程"}
+      outputs:
+        - {en: "Path-loss grids at 5.92 GHz, one per transmitter", zh: "5.92 GHz 路径损耗栅格，每个发射机一张"}
+      controls:
+        - {en: "Carrier 5.92 GHz; transmit power 0 dBm", zh: "载频 5.92 GHz；发射功率 0 dBm"}
+    - title: {en: "Create noisy environment copies", zh: "生成带噪环境副本"}
+      detail:
+        en: "Each base environment has ten noisy copies. Object positions and transmitter locations shift by 0.5 m on average, and electromagnetic material properties are perturbed. The copies are used for training with simulated noise as data augmentation."
+        zh: "每个基础环境生成十份带噪副本。物体位置与发射机位置平均偏移 0.5 m，电磁材料参数随之扰动。这些副本用于模拟噪声数据增强的训练。"
+      outputs:
+        - {en: "Ten noisy environment copies per base environment, with raster images", zh: "每个基础环境十份带噪环境副本及其栅格图像"}
+    - title: {en: "Rasterise and package the release", zh: "栅格化并打包发布"}
+      detail:
+        en: "Path-loss maps are processed to a fixed 32 × 32 pixel size, with cells outside the rooms set to zero. Environment slices and transmitter encodings are stored as raster inputs. The release packs the encodings and radio maps into dataset_publication.zip, the Wireless InSite projects into project_files.zip, and the model checkpoints and logs into indoor_ckpts.zip."
+        zh: "路径损耗图被处理为固定的 32 × 32 像素，房间外的栅格置零。环境切片与发射机编码以栅格输入形式保存。发布时，编码与无线地图打包为 dataset_publication.zip，Wireless InSite 工程为 project_files.zip，模型权重与日志为 indoor_ckpts.zip。"
+      outputs:
+        - {en: "dataset_publication.zip, project_files.zip, indoor_ckpts.zip", zh: "dataset_publication.zip、project_files.zip、indoor_ckpts.zip"}
+capabilities:
+  - {key: csi, status: none, note: {en: "The release holds radio maps only.", zh: "发布内容仅含无线地图。"}}
+  - {key: cir, status: none, note: {en: "The release holds radio maps only.", zh: "发布内容仅含无线地图。"}}
+  - {key: paths, status: unknown}
+  - {key: interaction, status: unknown}
+  - {key: power, status: provided, note: {en: "Path-loss radio maps at 32 × 32 pixels, one per transmitter.", zh: "32 × 32 像素的路径损耗无线地图，每个发射机一张。"}}
+  - {key: iq, status: none, note: {en: "No waveform data.", zh: "无波形数据。"}}
+  - {key: beam_labels, status: none, note: {en: "No beam data.", zh: "无波束数据。"}}
+  - {key: position, status: derivable, note: {en: "Transmitter positions are in the encoded inputs; receiver positions follow the 30 cm simulation grid.", zh: "发射机位置位于编码输入中；接收机位置由 30 cm 仿真网格确定。"}}
+  - {key: geometry, status: provided, note: {en: "Environment slices and Wireless InSite 3D projects are released.", zh: "发布环境切片与 Wireless InSite 三维工程。"}}
+  - {key: materials, status: provided, note: {en: "Material properties are set in the released Wireless InSite projects.", zh: "材料属性设置在已发布的 Wireless InSite 工程中。"}}
+  - {key: rgb, status: none, note: {en: "No images of the scene.", zh: "无场景图像。"}}
+  - {key: depth, status: none, note: {en: "No depth data.", zh: "无深度数据。"}}
+  - {key: lidar, status: none, note: {en: "No LiDAR data.", zh: "无 LiDAR 数据。"}}
+  - {key: radar, status: none, note: {en: "No radar data.", zh: "无雷达数据。"}}
+  - {key: imu, status: none, note: {en: "No IMU data.", zh: "无 IMU 数据。"}}
+  - {key: time_series, status: none, note: {en: "Static scenes.", zh: "静态场景。"}}
+  - {key: multiuser, status: none, note: {en: "One transmitter per radio map.", zh: "每张无线地图对应一个发射机。"}}
+  - {key: multibs, status: none, note: {en: "One transmitter per radio map.", zh: "每张无线地图对应一个发射机。"}}
+  - {key: crossfreq, status: none, note: {en: "Single carrier at 5.92 GHz.", zh: "仅 5.92 GHz 单一载频。"}}
+  - {key: near_field, status: unknown}
+  - {key: high_mobility, status: none, note: {en: "Static scenes.", zh: "静态场景。"}}
+  - {key: dynamic_blockage, status: none, note: {en: "Static scenes.", zh: "静态场景。"}}
+  - {key: reflection, status: simulate, note: {en: "Ray tracing with up to three reflections on the released Wireless InSite projects.", zh: "在已发布的 Wireless InSite 工程上进行射线追踪，最多三次反射。"}}
+  - {key: diffraction, status: simulate, note: {en: "Ray tracing with one diffraction on the released Wireless InSite projects.", zh: "在已发布的 Wireless InSite 工程上进行射线追踪，最多一次绕射。"}}
+  - {key: scattering, status: unknown}
+  - {key: transmission, status: simulate, note: {en: "Ray tracing with up to three transmissions on the released Wireless InSite projects.", zh: "在已发布的 Wireless InSite 工程上进行射线追踪，最多三次透射。"}}
+  - {key: polarization, status: unknown}
+  - {key: em_field, status: none, note: {en: "Only path-loss maps are released.", zh: "仅发布路径损耗图。"}}
+versions:
+  - version: "v1"
+    date: "2026-02-13"
+    summary:
+      en: "Initial Zenodo release with dataset_publication.zip, project_files.zip and indoor_ckpts.zip."
+      zh: "首次 Zenodo 发布，包含 dataset_publication.zip、project_files.zip 与 indoor_ckpts.zip。"
+    url: https://zenodo.org/records/18631406
+  - version: "arXiv v1"
+    date: "2026-02-12"
+    summary:
+      en: "Preprint of the paper that introduces the dataset."
+      zh: "预印本，介绍本数据集的论文。"
+    url: https://arxiv.org/abs/2602.11950
+limitations:
+  - en: "The three archives total 27.8 GB, and project_files.zip alone is 20.0 GB."
+    zh: "三个压缩包合计 27.8 GB，其中 project_files.zip 即达 20.0 GB。"
+  - en: "The paper's scope is single-room scenarios at 5.92 GHz."
+    zh: "论文的研究范围为单房间场景，载频 5.92 GHz。"
+  - en: "The paper states that propagation path data are published, but the Zenodo file descriptions do not list path data."
+    zh: "论文称发布了传播路径数据，但 Zenodo 的文件说明中未列出路径数据。"
+  - en: "The real-world measurements used for validation in the paper are not among the three archives."
+    zh: "论文用于验证的实测数据不在三个压缩包之中。"
+sources:
+  - https://zenodo.org/records/18631406
+  - https://zenodo.org/api/records/18631406
+  - https://zenodo.org/api/records/18631406/versions
+  - https://arxiv.org/html/2602.11950
+  - https://export.arxiv.org/api/query?id_list=2602.11950
+  - https://github.com/fabja19/RML_indoor
+checked: '2026-11-12'

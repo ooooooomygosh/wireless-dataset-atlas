@@ -1,0 +1,101 @@
+id: 3dckm-low-altitude
+name: '3DCKM: multiband 3D channel knowledge map dataset for low-altitude corridors'
+aliases: ['3DCKM']
+year: 2025
+organization: 'Chenyang Zhou et al.'
+origin: simulation
+tasks: [radio-map, channel-modeling]
+signals: [pathloss, paths]
+bands_ghz: [0.9, 2.6, 3.5, 5, 41]
+environment: [outdoor-urban, uav]
+samples: '820 tiles of 256 m x 256 m at 1 m resolution, 20 altitude layers from 1 m to 100 m, about 2,000 transmitters'
+size_gb: 43
+format: 'NPZ channel and environment matrices, TXT multipath logs'
+mobility: Static
+license: 'Not stated'
+access: {url: 'https://drive.google.com/drive/folders/1qVRvR847noCDPFYs3oZ7_vBibmiLEwc1?usp=sharing', type: open}
+code: []
+used_in: []
+citing: []
+paper: doi:10.1109/iccworkshops63917.2026.11586209
+summary: {en: 'Multiband 3D channel knowledge maps for urban Beijing low-altitude corridors. 820 tiles of 256 m at 1 m resolution, 20 altitude layers from 1 to 100 m, and five bands from 900 MHz to 41 GHz.', zh: '面向北京城区低空走廊的多频段三维信道知识地图。820 个 256 m 地块，分辨率 1 m，20 个高度层（1–100 m），五个频段，从 900 MHz 到 41 GHz。'}
+overview: {en: '3DCKM is a channel knowledge map dataset for air-ground links in low-altitude corridors. The release covers 820 urban tiles of 256 m x 256 m at 1 m resolution, described in the README as urban Beijing. Across the tiles there are about 2,000 transmitters in total. Every transmitter is mapped at 20 altitude layers from 1 m to 100 m and at five frequencies: 900 MHz, 2.6 GHz, 3.5 GHz, 5 GHz and 41 GHz. File names encode the region (R), transmitter (T), height layer (h) and frequency (f). R001_T01_h01_f03.npz is region 1, transmitter 1, 1 m height and 3.5 GHz. The data/npz folder holds six matrices on the same 1 m grid: path loss in dB (passloss.npz), delay (delay.npz), azimuth of arrival (aoa.npz), azimuth of departure (aod.npz), zenith of arrival (zoa.npz) and zenith of departure (zod.npz). The data/txt folder holds multipath logs for each simulation case, with path index, delay in ns, power in dB, azimuth and zenith angles, and polarization or phase where available. The environment folder holds building height (building.npz), base-station locations and indices (bs.npz) and vegetation (tree.npz). These maps are co-registered with the channel data. The total size is about 43 GB. The data are on Google Drive as 3DCKM.zip.', zh: '3DCKM 是面向低空走廊空地链路的信道知识地图数据集。发布内容覆盖 820 个城区地块，每块 256 m × 256 m，分辨率 1 m，README 注明区域为北京城区。地块之间合计约 2,000 个发射机。每个地块对应一个区域编号（R001 为第一个 256 m × 256 m 地块）。每个发射机在 20 个高度层（1 m 至 100 m）和五个频点（900 MHz、2.6 GHz、3.5 GHz、5 GHz、41 GHz）下建图。文件名编码区域（R）、发射机（T）、高度层（h）与频点（f），例如 R001_T01_h01_f03.npz 表示第 1 区域、第 1 个发射机、1 m 高度、3.5 GHz。data/npz 文件夹包含六个同一 1 m 网格上的矩阵：以 dB 表示的路径损耗（passloss.npz）、时延（delay.npz）、到达方位角（aoa.npz）、离开方位角（aod.npz）、到达天顶角（zoa.npz）和离开天顶角（zod.npz）。data/txt 文件夹为每个仿真工况提供多径日志，记录路径序号、以 ns 表示的时延、以 dB 表示的功率、方位角与天顶角，并在可用时记录极化或相位信息。environment 文件夹包含建筑高度（building.npz）、基站位置与编号（bs.npz）以及植被（tree.npz）地图，与信道数据对齐。数据总量约 43 GB，托管于 Google Drive，文件为 3DCKM.zip。'}
+signal_details: []
+pipeline:
+  summary: {en: 'Beijing urban tiles get aligned environment maps. Channel matrices and multipath logs are then produced per transmitter, altitude layer and band, and packaged as one archive on Google Drive.', zh: '北京城区地块先生成对齐的环境地图。随后按发射机、高度层与频段生成信道矩阵与多径日志，最后打包为 Google Drive 上的一个压缩包。'}
+  stages:
+    - title: {en: 'Tiling and environment maps', zh: '地块划分与环境地图'}
+      detail: {en: 'The urban area is cut into 820 tiles of 256 m x 256 m at 1 m resolution. Building height, base-station and vegetation maps are stored per tile.', zh: '城区被划分为 820 个 256 m × 256 m 的地块，分辨率 1 m。建筑高度、基站与植被地图按地块存储。'}
+      inputs: [{en: 'Urban area of Beijing', zh: '北京城区范围'}]
+      outputs: [{en: 'building.npz, bs.npz and tree.npz per tile', zh: '每个地块的 building.npz、bs.npz 与 tree.npz'}]
+    - title: {en: 'Base-station indexing', zh: '基站编号'}
+      detail: {en: 'Base-station locations are marked in bs.npz with indices within each region. Where several base stations overlap, the highest index is shown.', zh: '基站位置记录于 bs.npz，并在各区域内编号。多个基站重叠时，显示编号最大者。'}
+      inputs: [{en: 'Base-station positions per region', zh: '各区域的基站位置'}]
+      outputs: [{en: 'Base-station index map (bs.npz)', zh: '基站编号图（bs.npz）'}]
+    - title: {en: 'Channel matrices', zh: '信道矩阵'}
+      detail: {en: 'For each transmitter, altitude layer (20 layers, 1 m to 100 m) and band (900 MHz to 41 GHz), path loss, delay, azimuth and zenith angles of arrival and departure are stored on the 1 m grid.', zh: '对每个发射机、高度层（20 层，1 m 至 100 m）与频段（900 MHz 至 41 GHz），在 1 m 网格上存储路径损耗、时延，以及到达与离开的方位角、天顶角。'}
+      inputs: [{en: 'Environment maps and transmitter positions', zh: '环境地图与发射机位置'}]
+      outputs: [{en: 'passloss.npz, delay.npz, aoa.npz, aod.npz, zoa.npz, zod.npz', zh: 'passloss.npz、delay.npz、aoa.npz、aod.npz、zoa.npz、zod.npz'}]
+      controls: [{en: 'Five bands: 900 MHz, 2.6, 3.5, 5 and 41 GHz', zh: '五个频段：900 MHz、2.6、3.5、5 与 41 GHz'}, {en: 'Twenty altitude layers, 1 m to 100 m', zh: '20 个高度层，1 m 至 100 m'}]
+    - title: {en: 'Multipath logs and packaging', zh: '多径日志与打包'}
+      detail: {en: 'Path-level records for each simulation case are written as text logs. Files are named by region, transmitter, height and frequency and distributed as 3DCKM.zip on Google Drive.', zh: '每个仿真工况的逐径记录写为文本日志。文件按区域、发射机、高度与频点命名，并以 3DCKM.zip 形式在 Google Drive 上发布。'}
+      outputs: [{en: 'data/txt logs', zh: 'data/txt 日志'}, {en: '3DCKM.zip', zh: '3DCKM.zip'}]
+capabilities:
+  - {key: csi, status: none, note: {en: 'The release holds no CSI.', zh: '发布内容不含 CSI。'}}
+  - {key: cir, status: derivable, note: {en: 'Per-path delay and power in the TXT logs give an impulse response by a standard transform.', zh: 'TXT 日志中的逐径时延与功率，可通过标准变换得到冲激响应。'}}
+  - {key: paths, status: provided, note: {en: 'Per-path delay, power, AoA, AoD, ZoA and ZoD in the TXT logs.', zh: 'TXT 日志含逐径时延、功率、AoA、AoD、ZoA 与 ZoD。'}}
+  - {key: interaction, status: unknown}
+  - {key: power, status: provided, note: {en: 'Path loss in dB per grid cell in passloss.npz.', zh: 'passloss.npz 中为逐栅格的路径损耗（dB）。'}}
+  - {key: iq, status: none, note: {en: 'No waveform data.', zh: '无波形数据。'}}
+  - {key: beam_labels, status: none, note: {en: 'No beam data.', zh: '无波束数据。'}}
+  - {key: position, status: derivable, note: {en: 'Grid position on a 1 m grid. The region index is encoded in file names.', zh: '1 m 网格上的栅格位置，区域索引编码在文件名中。'}}
+  - {key: geometry, status: provided, note: {en: 'Building height and vegetation maps per tile in environment/.', zh: 'environment/ 中每个地块提供建筑高度与植被地图。'}}
+  - {key: materials, status: unknown}
+  - {key: rgb, status: none, note: {en: 'No image data.', zh: '无图像数据。'}}
+  - {key: depth, status: none, note: {en: 'No depth data.', zh: '无深度数据。'}}
+  - {key: lidar, status: none, note: {en: 'No LiDAR data.', zh: '无 LiDAR 数据。'}}
+  - {key: radar, status: none, note: {en: 'No radar data.', zh: '无雷达数据。'}}
+  - {key: imu, status: none, note: {en: 'No IMU data.', zh: '无 IMU 数据。'}}
+  - {key: time_series, status: none, note: {en: 'Static maps per altitude layer, with no time dimension.', zh: '按高度层的静态地图，无时间维度。'}}
+  - {key: multiuser, status: none, note: {en: 'Each file is one transmitter. No multi-user set.', zh: '每个文件对应一个发射机，无多用户集合。'}}
+  - {key: multibs, status: provided, note: {en: 'About 2,000 transmitters, indexed per region, each with its own maps.', zh: '约 2000 个发射机，按区域编号，每个发射机有独立地图。'}}
+  - {key: crossfreq, status: provided, note: {en: 'Five bands for the same region, transmitter and height.', zh: '同一区域、发射机与高度下共五个频段。'}}
+  - {key: near_field, status: unknown}
+  - {key: high_mobility, status: none, note: {en: 'Static maps. No mobility.', zh: '静态地图，无移动。'}}
+  - {key: dynamic_blockage, status: none, note: {en: 'No time-varying blockage.', zh: '无时变遮挡。'}}
+  - {key: reflection, status: unknown}
+  - {key: diffraction, status: unknown}
+  - {key: scattering, status: unknown}
+  - {key: transmission, status: unknown}
+  - {key: polarization, status: unknown}
+  - {key: em_field, status: none, note: {en: 'No field values are released.', zh: '发布内容无场值。'}}
+versions:
+  - version: 'ICC Workshops 2026 paper'
+    date: '2026-05-24'
+    summary: {en: 'Paper in the 2026 IEEE ICC Workshops proceedings introducing the dataset.', zh: '论文，发表于 2026 IEEE ICC Workshops 会议论文集，介绍该数据集。'}
+    url: https://doi.org/10.1109/iccworkshops63917.2026.11586209
+  - version: 'GitHub repository'
+    date: '2025-10-23'
+    summary: {en: 'Dataset documentation repository. Data files were first uploaded on 2025-10-20. The README was last updated on 2025-10-23.', zh: '数据集说明仓库。数据文件于 2025-10-20 首次上传，README 最后更新于 2025-10-23。'}
+    url: https://github.com/zcy2002zcy/3DCKM-datasets
+provenance: []
+technical_notes:
+  - {en: 'Each pixel is a 1 m x 1 m ground cell. All environment matrices share the same grid as the channel matrices.', zh: '每个像素为 1 m × 1 m 的地面单元，所有环境矩阵与信道矩阵共用同一网格。'}
+  - {en: 'File names use h01 for 1 m up to h20 for 100 m, and f01 to f05 for 900 MHz, 2.6, 3.5, 5 and 41 GHz.', zh: '文件名中 h01 表示 1 m，h20 表示 100 m；f01 至 f05 分别表示 900 MHz、2.6、3.5、5 与 41 GHz。'}
+facts: []
+variants: []
+limitations:
+  - {en: 'The repository has no licence file, so the licence is not stated.', zh: '仓库无许可证文件，许可未说明。'}
+  - {en: 'The GitHub repository holds only the README. The data are on Google Drive.', zh: 'GitHub 仓库仅含 README，数据位于 Google Drive。'}
+  - {en: 'The README does not name the simulation tool or its settings, such as antenna and material parameters.', zh: 'README 未说明仿真工具及天线、材料等参数。'}
+  - {en: 'The abstract lists terrain features and material properties. The README describes building, base-station and vegetation maps only, and names three material types without parameter values.', zh: '摘要提到地形特征与材料属性。README 仅描述建筑、基站与植被地图，材料只列出三种类型名称，无参数值。'}
+  - {en: 'The repository has no tagged releases.', zh: '该仓库无标签发布版本。'}
+history: []
+usage: []
+field_notes: []
+tutorials: []
+tools: []
+materials: []
+paper_summary: []
+sources: ['https://api.crossref.org/works/10.1109/iccworkshops63917.2026.11586209', 'https://api.openalex.org/works/doi:10.1109/iccworkshops63917.2026.11586209', 'https://github.com/zcy2002zcy/3DCKM-datasets', 'https://api.github.com/repos/zcy2002zcy/3DCKM-datasets', 'https://api.github.com/repos/zcy2002zcy/3DCKM-datasets/commits', 'https://api.github.com/repos/zcy2002zcy/3DCKM-datasets/contents', 'https://raw.githubusercontent.com/zcy2002zcy/3DCKM-datasets/main/README.md', 'https://drive.google.com/drive/folders/1qVRvR847noCDPFYs3oZ7_vBibmiLEwc1?usp=sharing']
+checked: '2026-11-12'

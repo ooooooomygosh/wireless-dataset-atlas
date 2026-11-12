@@ -1,0 +1,100 @@
+id: fr3-uxnb-ckm-uav
+name: 'FR3 UxNB channel knowledge map dataset (UAV base stations)'
+aliases: ['FR3 UxNB CKM']
+year: 2026
+organization: 'Guillem Moreno Garcia et al.'
+origin: ray-tracing
+tasks: [radio-map, channel-modeling]
+signals: [pathloss, paths]
+bands_ghz: [7.125]
+environment: [outdoor-urban, outdoor-suburban, uav]
+samples: '16,180 CKM samples of 513 x 513 pixels at 1 m, from 3,236 urban layouts in 66 cities, with five UxNB heights per layout'
+size_gb: 2.7
+format: 'One labelled .h5 file (CKM_Dataset_270326_labeled.h5)'
+mobility: Static
+license: 'Creative Commons Attribution 4.0 International'
+access: {url: 'https://zenodo.org/records/21839567', type: open}
+code: ['https://github.com/unworthyzeus/CKMAttenuationPriors']
+paper: arxiv:2610.06356
+used_in: []
+citing: []
+summary: {en: 'Channel knowledge maps for UAV base stations at 7.125 GHz, with UxNB heights up to 500 m. Ray-traced attenuation, delay spread and angular spread over 3,236 urban layouts in 66 cities.', zh: '面向搭载基站无人机（UxNB）的 7.125 GHz 信道知识地图，UxNB 高度最高 500 m。基于 66 座城市 3,236 个城区布局的射线追踪，给出衰减、时延扩展与角度扩展。'}
+overview: {en: 'The dataset holds 16,180 channel knowledge map samples for UAV base stations (UxNB) at 7.125 GHz. Each sample is a 513 x 513 grid at 1 m resolution, and the UxNB sits at the grid centre. The 3,236 urban layouts come from 66 cities. Building data are taken from GlobalBuildingAtlas, and 3D-GloBFP fills in cities that GlobalBuildingAtlas does not cover. Each layout is assigned to one of three ITU urban topologies (suburban, urban or dense urban) from building coverage, building density in buildings per km2, and mean building height. The topology split is 7,435 suburban, 7,350 urban and 1,395 dense urban samples. Each layout is paired with five UxNB heights from 10 m to 500 m. The channel layers are a visibility mask (LOS or NLOS), attenuation in dB, RMS delay spread in ns and RMS angular spread in degrees. In-building cells carry a fill value and are masked in training and evaluation. The environment layers are a building height map in metres and a binary building occupancy mask. Metadata per sample holds the transmitter height and the topology class. The channels come from deterministic ray tracing in MATLAB (SiteViewer and RT) with isotropic antennas and two ray interactions. The paper defines a split of 10,840 training, 2,750 validation and 2,590 test samples, with no city shared between splits. The release is one labelled .h5 file of about 2.7 GB.', zh: '该数据集包含 16,180 个搭载基站的无人机（UxNB）信道知识地图样本，载频为 7.125 GHz。每个样本是 513 × 513 的栅格，分辨率 1 m，UxNB 位于栅格中心。3,236 个城区布局取自 66 座城市。建筑数据优先取自 GlobalBuildingAtlas，该库未覆盖的城市以 3D-GloBFP 补充。每个布局依据建筑覆盖率、建筑密度（每平方公里建筑数）和平均建筑高度，归入 ITU 三类城市拓扑之一：郊区、城区或密集城区。三类样本数分别为 7,435、7,350 和 1,395。每个布局配有五个 UxNB 高度，范围为 10 m 至 500 m。同一布局的五个样本共用相同的建筑数据，仅发射机高度不同。信道层包括视距（LOS）与非视距（NLOS）掩码、以 dB 表示的衰减、以 ns 表示的 RMS 时延扩展，以及以度表示的 RMS 角度扩展。建筑内部单元带有填充值，训练与评估时需屏蔽。环境层包括以米为单位的建筑高度图和二值建筑占据掩码。每个样本的元数据包括发射机高度和拓扑类别。信道由 MATLAB 的 SiteViewer 与 RT 功能进行确定性射线追踪得到，天线为各向同性，射线交互次数设为 2。论文划分为 10,840 个训练样本、2,750 个验证样本和 2,590 个测试样本，各划分之间不共享城市。发布内容为一个带标签的 .h5 文件，约 2.7 GB。'}
+signal_details: []
+pipeline:
+  summary: {en: 'Building layouts from global 3D building datasets are rasterised to 513 x 513 grids. Deterministic ray tracing at 7.125 GHz then gives the channel layers for five UxNB heights. The samples are packed into one labelled file.', zh: '取自全球三维建筑数据集的城区布局被栅格化为 513 × 513 的网格。随后在 7.125 GHz 下对五个 UxNB 高度进行确定性射线追踪，生成信道层，最后将样本打包为一个带标签的文件。'}
+  stages:
+    - title: {en: 'Layout extraction', zh: '布局提取'}
+      detail: {en: 'City layouts are taken from GlobalBuildingAtlas, with 3D-GloBFP as the backup source, across 3,236 locations in 66 cities. Each layout is rasterised into a building height map and a binary occupancy mask.', zh: '从 GlobalBuildingAtlas 提取城区布局，该库未覆盖的城市以 3D-GloBFP 补充，共 66 座城市、3,236 处位置。每个布局被栅格化为建筑高度图和二值占据掩码。'}
+      inputs: [{en: 'GlobalBuildingAtlas building polygons and heights', zh: 'GlobalBuildingAtlas 建筑多边形与高度'}, {en: '3D-GloBFP footprints and heights (backup)', zh: '3D-GloBFP 建筑轮廓与高度（备用）'}]
+      outputs: [{en: 'Building height map in metres', zh: '以米为单位的建筑高度图'}, {en: 'Binary building occupancy mask', zh: '二值建筑占据掩码'}]
+    - title: {en: 'Topology tagging', zh: '拓扑标注'}
+      detail: {en: 'Each layout is assigned to one ITU urban topology (suburban, urban or dense urban) from building coverage, building density and mean building height.', zh: '依据建筑覆盖率、建筑密度和平均建筑高度，将每个布局归入 ITU 城市拓扑之一：郊区、城区或密集城区。'}
+      inputs: [{en: 'Building height map and occupancy mask', zh: '建筑高度图与占据掩码'}]
+      outputs: [{en: 'Topology class per sample', zh: '每个样本的拓扑类别'}]
+    - title: {en: 'Ray-tracing simulation', zh: '射线追踪仿真'}
+      detail: {en: 'Deterministic ray tracing in MATLAB (SiteViewer and RT) at 7.125 GHz. The UxNB sits at the grid centre at five heights from 10 m to 500 m. Receivers are at ground level in all non-building cells.', zh: '在 MATLAB 的 SiteViewer 与 RT 功能中进行 7.125 GHz 确定性射线追踪。UxNB 位于栅格中心，高度取五个值，范围 10 m 至 500 m。接收机位于地面，建筑外的所有单元均布设接收机。'}
+      inputs: [{en: 'Layout raster and UxNB heights', zh: '布局栅格与 UxNB 高度'}]
+      outputs: [{en: 'Visibility mask (LOS or NLOS)', zh: '可见性掩码（LOS 或 NLOS）'}, {en: 'Attenuation in dB', zh: '以 dB 表示的衰减'}, {en: 'RMS delay spread in ns and RMS angular spread in degrees', zh: '以 ns 表示的 RMS 时延扩展与以度表示的 RMS 角度扩展'}]
+      controls: [{en: 'Carrier 7.125 GHz', zh: '载频 7.125 GHz'}, {en: 'Isotropic antennas', zh: '各向同性天线'}, {en: 'Two ray interactions', zh: '射线交互次数为 2'}]
+    - title: {en: 'Packaging and split', zh: '打包与划分'}
+      detail: {en: 'Channel and environment layers are stored per sample with transmitter height and topology class as metadata, in one labelled .h5 file. The paper defines a split of 10,840, 2,750 and 2,590 samples, with no city shared between splits.', zh: '信道层与环境层按样本存储，元数据包括发射机高度与拓扑类别，全部存入一个带标签的 .h5 文件。论文划分为 10,840、2,750 和 2,590 个样本，各划分之间不共享城市。'}
+      outputs: [{en: 'CKM_Dataset_270326_labeled.h5 (2.7 GB)', zh: 'CKM_Dataset_270326_labeled.h5（2.7 GB）'}]
+capabilities:
+  - {key: csi, status: none, note: {en: 'The release holds no CSI.', zh: '发布内容不含 CSI。'}}
+  - {key: cir, status: none, note: {en: 'Only RMS delay spread is stored, with no impulse response.', zh: '仅存储 RMS 时延扩展，不含冲激响应。'}}
+  - {key: paths, status: provided, note: {en: 'RMS delay and angular spread per cell. No per-path parameters.', zh: '逐栅格的 RMS 时延扩展与角度扩展，无逐径参数。'}}
+  - {key: interaction, status: none, note: {en: 'No path interaction data. The two-interaction limit is a simulation setting.', zh: '无路径交互数据。交互次数 2 为仿真设置。'}}
+  - {key: power, status: provided, note: {en: 'Attenuation in dB per cell at 7.125 GHz.', zh: '7.125 GHz 下以 dB 表示的逐栅格衰减。'}}
+  - {key: iq, status: none, note: {en: 'No waveform data.', zh: '无波形数据。'}}
+  - {key: beam_labels, status: none, note: {en: 'No beam data.', zh: '无波束数据。'}}
+  - {key: position, status: derivable, note: {en: 'Positions are grid indices on a 1 m grid, with the UxNB at the centre.', zh: '位置为 1 m 网格上的栅格索引，UxNB 位于中心。'}}
+  - {key: geometry, status: provided, note: {en: 'Building height map and occupancy mask per sample.', zh: '每个样本含建筑高度图与占据掩码。'}}
+  - {key: materials, status: unknown}
+  - {key: rgb, status: none, note: {en: 'No image data.', zh: '无图像数据。'}}
+  - {key: depth, status: none, note: {en: 'No depth data.', zh: '无深度数据。'}}
+  - {key: lidar, status: none, note: {en: 'No LiDAR data.', zh: '无 LiDAR 数据。'}}
+  - {key: radar, status: none, note: {en: 'No radar data.', zh: '无雷达数据。'}}
+  - {key: imu, status: none, note: {en: 'No IMU data.', zh: '无 IMU 数据。'}}
+  - {key: time_series, status: none, note: {en: 'Each sample is a static snapshot.', zh: '每个样本为静态快照。'}}
+  - {key: multiuser, status: none, note: {en: 'One UxNB per sample.', zh: '每个样本一个 UxNB。'}}
+  - {key: multibs, status: none, note: {en: 'One UxNB per sample.', zh: '每个样本一个 UxNB。'}}
+  - {key: crossfreq, status: none, note: {en: 'Single frequency, 7.125 GHz.', zh: '仅一个频点，7.125 GHz。'}}
+  - {key: near_field, status: unknown}
+  - {key: high_mobility, status: none, note: {en: 'UxNB positions are static. No mobility.', zh: 'UxNB 位置静止，无移动。'}}
+  - {key: dynamic_blockage, status: none, note: {en: 'No time-varying blockage.', zh: '无时变遮挡。'}}
+  - {key: reflection, status: simulate, note: {en: 'The release has no per-path data. Ray tracing on the building maps can produce reflections.', zh: '发布内容无逐径数据。对建筑高度图进行射线追踪可得到反射。'}}
+  - {key: diffraction, status: unknown}
+  - {key: scattering, status: unknown}
+  - {key: transmission, status: unknown}
+  - {key: polarization, status: unknown}
+  - {key: em_field, status: none, note: {en: 'No field values are released.', zh: '发布内容无场值。'}}
+versions:
+  - version: 'arXiv v1'
+    date: '2026-10-05'
+    summary: {en: 'Preprint describing the dataset and a height-aware attenuation model.', zh: '预印本，介绍数据集与高度感知衰减模型。'}
+    url: https://arxiv.org/abs/2610.06356
+  - version: 'Zenodo v1'
+    date: '2026-08-07'
+    summary: {en: 'Dataset release with 16,180 samples in one 2.7 GB labelled .h5 file, under CC BY 4.0.', zh: '数据集发布，含 16,180 个样本，为一个 2.7 GB 的带标签 .h5 文件，许可为 CC BY 4.0。'}
+    url: https://zenodo.org/records/21839568
+provenance: []
+technical_notes:
+  - {en: 'The companion repository CKMAttenuationPriors (MIT) includes a frozen attenuation model and evaluation scripts that read an HDF5 copy of this dataset. The dataset is not included in that repository.', zh: '配套代码仓库 CKMAttenuationPriors（MIT 许可）包含冻结的衰减模型与评估脚本，脚本读取本数据集的 HDF5 副本。数据集本身不包含在该仓库中。'}
+  - {en: 'In-building cells carry a fill value and must be masked in training and evaluation.', zh: '建筑内部单元带有填充值，训练与评估时须屏蔽。'}
+facts: []
+variants: []
+limitations:
+  - {en: 'The Zenodo record gives no internal layout for the .h5 file, so the field names and array order are not documented there.', zh: 'Zenodo 记录未给出 .h5 文件的内部结构，字段名与数组顺序均未在该页说明。'}
+  - {en: 'The paper does not give material parameters for the ray tracing.', zh: '论文未给出射线追踪所用的材料参数。'}
+  - {en: 'The paper does not list which cities come from GlobalBuildingAtlas and which from 3D-GloBFP.', zh: '论文未逐城列出建筑数据分别来自 GlobalBuildingAtlas 还是 3D-GloBFP。'}
+  - {en: 'The Zenodo citation marks the paper as under review.', zh: 'Zenodo 引用信息中，论文标注为审稿中。'}
+history: []
+usage: []
+field_notes: []
+tutorials: []
+tools: []
+materials: []
+paper_summary: []
+sources: ['https://zenodo.org/records/21839567', 'https://zenodo.org/api/records/21839567', 'https://arxiv.org/abs/2610.06356', 'https://arxiv.org/html/2610.06356', 'https://raw.githubusercontent.com/unworthyzeus/CKMAttenuationPriors/main/README.md', 'https://api.github.com/repos/unworthyzeus/CKMAttenuationPriors']
+checked: '2026-11-12'

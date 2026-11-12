@@ -1,0 +1,108 @@
+id: optimal-radio-maps-deployments
+name: 'Dataset of Optimal Radio Maps and Deployments'
+aliases: ['RadioMapSeer-Deployment']
+year: 2026
+organization: 'Çağkan Yapar'
+origin: simulation
+tasks: [radio-map]
+signals: [rssi, kpi]
+environment: [outdoor-urban]
+samples: '167,525 urban building scenarios of 256 × 256 m; split 134,020 training, 16,752 validation and 16,753 test city maps'
+format: '8-bit and 16-bit PNG radio maps and score maps, CSV best-transmitter table and top-500 ranking CSV files, JSON normalisation metadata'
+license: 'Creative Commons Attribution'
+access: {url: 'https://ieee-dataport.org/documents/dataset-optimal-radio-maps-and-deployments', type: restricted}
+code: ['https://github.com/CagkanYapar/Deployment1Tx']
+paper: arxiv:2604.22056
+used_in: []
+citing: []
+summary:
+  en: 'Predicted received-power maps and optimal single-transmitter placements for 167,525 urban building scenarios, produced by a learned propagation model trained on ray-tracing data. Each scenario has coverage-optimal and power-optimal labels.'
+  zh: 基于射线追踪数据训练的学习型传播模型，为 167,525 个城市建筑场景给出预测的接收功率图与单发射机最优布置。每个场景同时提供覆盖最优和功率最优两组标签。
+overview:
+  en: 'This dataset gives optimal single-transmitter placements for 167,525 urban building scenarios, each 256 × 256 m. For each scenario, the transmitter is searched over free-space pixels in the central 150 × 150 m region, about 10,000 to 18,000 candidates per map. The received-power radio maps are produced by SAIPP-Net, a UNet-based model trained on the IRT4 subset of RadioMapSeer, which provides ray-traced pathloss maps for urban areas. The release gives two optimal placements per scenario, one maximising coverage and one maximising average received power. For each placement it includes the predicted received-power map and the binary coverage map. It also includes two score maps over the feasible region, one for power and one for coverage, stored as normalised images. The release also lists the top-500 transmitter locations per building for each objective. Building maps are 256 × 256 binary images. The power maps are 8-bit images, and the average score maps are 16-bit images for higher precision. The main archive is 12.1 GB, the top-500 ranking archive is 2.7 GB and the buildings archive is 400.18 MB. The authors split the scenarios with a fixed seed of 42 into 80 percent training, 10 percent validation and 10 percent test. The dataset is served from IEEE DataPort, where a subscription is required to download the files. The code repository provides training and evaluation code for the heatmap-based and score-map-based models.'
+  zh: 该数据集为 167,525 个城市建筑场景给出单发射机的最优布置，每个场景为 256 × 256 m。对每个场景，发射机在中心 150 × 150 m 区域的自由空间像素中搜索，每张地图约 10,000 至 18,000 个候选位置。接收功率图由 SAIPP-Net 生成，该模型为基于 UNet 的网络，训练于 RadioMapSeer 的 IRT4 子集，后者提供城市区域的射线追踪路径损耗图。每个场景发布两个最优布置，分别以覆盖最大化和平均接收功率最大化为目标。对每个布置，数据集包含预测的接收功率图与二值覆盖图。另有两张覆盖整个可行区域的得分图，分别对应功率与覆盖，以归一化图像存储。每个建筑还给出两种目标下的前 500 个发射位置排名。建筑图为 256 × 256 的二值图像。功率图为 8 位图像，平均得分图为 16 位图像以保证精度。主要压缩包为 12.1 GB，前 500 排名压缩包为 2.7 GB，建筑压缩包为 400.18 MB。作者以固定随机种子 42 将场景划分为 80% 训练集、10% 验证集与 10% 测试集。数据通过 IEEE DataPort 发布，下载文件需要订阅。论文基于该数据集比较了热图法与得分图法两类学习方法，并讨论覆盖与功率两个目标之间的权衡。代码仓库提供热图法与得分图法全部模型的训练与评估代码。两种目标下的布置各自对应一组预测图与覆盖图，便于直接比较同一建筑在两种目标下的布置效果。'
+capabilities:
+  - {key: csi, status: none, note: {en: 'Only received-power and coverage maps are released.', zh: '仅发布接收功率图与覆盖图。'}}
+  - {key: cir, status: none, note: {en: 'No impulse response is released.', zh: '未发布冲激响应。'}}
+  - {key: paths, status: none, note: {en: 'No path-level output is released.', zh: '未发布路径级输出。'}}
+  - {key: interaction, status: none, note: {en: 'No path-level output is released.', zh: '未发布路径级输出。'}}
+  - {key: power, status: provided, note: {en: 'Predicted received-power maps for each optimal placement, as 8-bit PNG images, plus 16-bit average score maps.', zh: '每个最优布置的预测接收功率图（8 位 PNG），以及 16 位平均得分图。'}}
+  - {key: iq, status: none, note: {en: No waveform data., zh: 无波形数据。}}
+  - {key: beam_labels, status: none, note: {en: 'No beam labels are released.', zh: '未发布波束标签。'}}
+  - {key: position, status: provided, note: {en: 'Best transmitter coordinates per building in a merged CSV, and top-500 ranked positions per building in CSV files.', zh: '每个建筑的最优发射机坐标见合并 CSV，每个建筑的前 500 排名位置见 CSV 文件。'}}
+  - {key: geometry, status: provided, note: {en: 'Binary 256 × 256 city maps are the model input; a buildings archive of 400.18 MB is listed on the release page.', zh: '256 × 256 二值城市图为模型输入；发布页列出大小为 400.18 MB 的建筑压缩包。'}}
+  - {key: materials, status: none, note: {en: No material parameters are released.', zh: '未发布材料参数。'}}
+  - {key: rgb, status: none, note: {en: No images of the scene.', zh: '无场景图像。'}}
+  - {key: depth, status: none, note: {en: No depth data.', zh: '无深度数据。'}}
+  - {key: lidar, status: none, note: {en: No LiDAR data.', zh: '无 LiDAR 数据。'}}
+  - {key: radar, status: none, note: {en: No radar data.', zh: '无雷达数据。'}}
+  - {key: imu, status: none, note: {en: No IMU data.', zh: '无 IMU 数据。'}}
+  - {key: time_series, status: none, note: {en: 'Static scenarios without timestamps.', zh: '静态场景，无时间戳。'}}
+  - {key: multiuser, status: none, note: {en: 'One transmitter per scenario.', zh: '每个场景一个发射机。'}}
+  - {key: multibs, status: none, note: {en: 'One transmitter per scenario.', zh: '每个场景一个发射机。'}}
+  - {key: crossfreq, status: unknown}
+  - {key: near_field, status: unknown}
+  - {key: high_mobility, status: none, note: {en: Static scenarios., zh: 静态场景。}}
+  - {key: dynamic_blockage, status: none, note: {en: Static building maps., zh: 静态建筑图。}}
+  - {key: reflection, status: unknown}
+  - {key: diffraction, status: unknown}
+  - {key: scattering, status: unknown}
+  - {key: transmission, status: unknown}
+  - {key: polarization, status: unknown}
+  - {key: em_field, status: none, note: {en: 'Scalar received power only.', zh: '仅有标量接收功率。'}}
+pipeline:
+  summary:
+    en: 'City maps from OpenStreetMap are evaluated exhaustively with SAIPP-Net at every free candidate position. The optimal placements and score maps are then exported as images and CSV files for each building.'
+    zh: 对 OpenStreetMap 城市图中的每个可行候选位置，使用 SAIPP-Net 穷举评估。随后为每个建筑导出最优布置、得分图与 CSV 排名文件。
+  stages:
+    - title: {en: Prepare city maps and candidate positions, zh: 准备城市图与候选位置}
+      detail: {en: 'Each city map is a 256 × 256 binary image of building and free-space pixels, built from OpenStreetMap. Candidates are the free pixels in the central 150 × 150 region, about 10,000 to 18,000 per map.', zh: '每张城市图为 256 × 256 的二值图，像素表示建筑或自由空间，数据源自 OpenStreetMap。候选位置为中心 150 × 150 区域内的自由空间像素，每张地图约 10,000 至 18,000 个。'}
+      inputs: [{en: OpenStreetMap city maps, zh: OpenStreetMap 城市图}]
+      outputs: [{en: Binary city map and candidate list, zh: 二值城市图与候选位置列表}]
+    - title: {en: Predict received-power maps with SAIPP-Net, zh: 用 SAIPP-Net 预测接收功率图}
+      detail: {en: 'For each candidate, SAIPP-Net predicts a received-power map from the city map and the transmitter. Predicted pixel values map to dBm with P_rx = 60 · p / 255 − 84, with a 23 dBm transmit power. The full run uses about 1.67 billion SAIPP-Net inferences.', zh: '对每个候选位置，SAIPP-Net 由城市图与发射机位置预测接收功率图。预测像素值按 P_rx = 60 · p / 255 − 84 转换为 dBm，发射功率为 23 dBm。全部数据共进行约 16.7 亿次 SAIPP-Net 推理。'}
+      inputs: [{en: City map and candidate transmitter, zh: 城市图与候选发射机}]
+      outputs: [{en: Predicted received-power map per candidate, zh: 每个候选位置的预测接收功率图}]
+    - title: {en: Select optimal placements and score maps, zh: 选取最优布置与得分图}
+      detail: {en: 'Average coverage and average received power are computed over the same central free-space region. The power-optimal and coverage-optimal positions are the candidates that maximise each objective, and the score maps store the per-pixel objective values.', zh: '在同一中心自由空间区域上计算平均覆盖与平均接收功率。功率最优与覆盖最优位置分别为使对应目标最大的候选位置，得分图记录每个像素的目标值。'}
+      inputs: [{en: Predicted maps for all candidates, zh: 所有候选位置的预测图}]
+      outputs: [{en: Optimal positions and two score maps, zh: 最优位置与两张得分图}]
+    - title: {en: Export images, rankings and metadata, zh: 导出图像、排名与元数据}
+      detail: {en: 'The release stores normalised score maps, best-transmitter images, predicted power and binary coverage maps, the merged best-transmitter CSV, and top-500 ranking CSV files per building. The file normalization_metadata.json holds the reconstruction parameters.', zh: '发布内容包括归一化得分图、最优发射机图像、预测功率图与二值覆盖图、合并的最优发射机 CSV，以及每个建筑的前 500 排名 CSV。normalization_metadata.json 保存重建参数。'}
+      inputs: [{en: Predicted maps and score maps, zh: 预测图与得分图}]
+      outputs: [{en: PNG images, CSV files and JSON metadata, zh: PNG 图像、CSV 文件与 JSON 元数据}]
+facts:
+  - label: {en: Dual objectives, zh: 双目标权衡}
+    text: {en: 'Coverage-optimal placement sacrifices 13.86% of received power, while power-optimal placement sacrifices 5.50% of coverage.', zh: '覆盖最优布置损失 13.86% 的接收功率，功率最优布置损失 5.50% 的覆盖。'}
+  - label: {en: Optimal placement distance, zh: 最优位置距离}
+    text: {en: 'The average distance between power-optimal and coverage-optimal positions is 36.18 ± 24.12 pixels.', zh: '功率最优与覆盖最优位置之间的平均距离为 36.18 ± 24.12 像素。'}
+technical_notes:
+  - {en: 'Received power in dBm is P_rx = 60 · p / 255 − 84 for pixel value p in 0 to 255, so 0 maps to −84 dBm and 255 maps to −24 dBm. The coverage threshold is −84 dBm.', zh: '像素值 p（0 至 255）对应的接收功率为 P_rx = 60 · p / 255 − 84 dBm，0 对应 −84 dBm，255 对应 −24 dBm。覆盖阈值为 −84 dBm。'}
+limitations:
+  - {en: 'The radio maps are SAIPP-Net predictions, not ray-tracing outputs. The values inherit the model error, and the paper states that exhaustive ray-tracing labelling is out of reach at this scale.', zh: '无线电地图为 SAIPP-Net 预测值，并非射线追踪输出，数值继承模型误差。论文指出，在此规模下穷举射线追踪标注不可行。'}
+  - {en: 'Candidate transmitters are restricted to the central 150 × 150 m region, where the underlying model was trained. Positions outside this region are not covered.', zh: '候选发射机限于中心 150 × 150 m 区域，即底层模型的训练范围，区域外的位置未覆盖。'}
+  - {en: 'Downloads on IEEE DataPort require a subscription. The files were not downloaded.', zh: 'IEEE DataPort 下载需要订阅，未下载文件。'}
+versions:
+  - version: 'arXiv v3'
+    date: '2026-07-03'
+    summary: {en: 'Third version of the paper introducing RadioMapSeer-Deployment.', zh: '介绍 RadioMapSeer-Deployment 的论文第三版。'}
+    url: https://arxiv.org/abs/2604.22056v3
+  - version: 'arXiv v2'
+    date: '2026-05-06'
+    summary: {en: 'Second version of the paper.', zh: '论文第二版。'}
+    url: https://arxiv.org/abs/2604.22056v2
+  - version: 'arXiv v1'
+    date: '2026-04-23'
+    summary: {en: 'First version of the paper.', zh: '论文首个版本。'}
+    url: https://arxiv.org/abs/2604.22056v1
+  - version: 'IEEE DataPort record'
+    date: '2026-04-19'
+    summary: {en: 'Dataset record created on IEEE DataPort with DOI 10.21227/wjwa-th03.', zh: '数据集在 IEEE DataPort 创建记录，DOI 为 10.21227/wjwa-th03。'}
+    url: https://doi.org/10.21227/wjwa-th03
+sources:
+  - https://arxiv.org/abs/2604.22056
+  - https://arxiv.org/html/2604.22056v3
+  - https://ieee-dataport.org/documents/dataset-optimal-radio-maps-and-deployments
+  - https://doi.org/10.21227/wjwa-th03
+  - https://github.com/CagkanYapar/Deployment1Tx
+checked: '2026-11-12'

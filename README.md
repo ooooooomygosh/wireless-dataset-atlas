@@ -9,7 +9,7 @@
 A catalog of public datasets and data generators for machine learning in wireless communications. Each entry links to the data, the dataset paper, code where it exists, and studies that use the dataset.
 
 <!-- stats:start -->
-136 datasets · 19 tasks · 461 papers
+150 datasets · 19 tasks · 485 papers
 <!-- stats:end -->
 
 ## Tasks
@@ -17,14 +17,14 @@ A catalog of public datasets and data generators for machine learning in wireles
 <!-- tasks:start -->
 | Task | Datasets |
 | --- | ---: |
-| [Channel modeling and generation](https://wireless-dataset-atlas.vercel.app/en/tasks/channel-modeling/) | 31 |
+| [Channel modeling and generation](https://wireless-dataset-atlas.vercel.app/en/tasks/channel-modeling/) | 33 |
 | [Beam management](https://wireless-dataset-atlas.vercel.app/en/tasks/beam-management/) | 18 |
 | [Channel estimation](https://wireless-dataset-atlas.vercel.app/en/tasks/channel-estimation/) | 10 |
 | [CSI feedback and compression](https://wireless-dataset-atlas.vercel.app/en/tasks/csi-feedback/) | 6 |
 | [Channel prediction](https://wireless-dataset-atlas.vercel.app/en/tasks/channel-prediction/) | 6 |
 | [DoA / AoA estimation](https://wireless-dataset-atlas.vercel.app/en/tasks/doa-estimation/) | 4 |
-| [Localization and fingerprinting](https://wireless-dataset-atlas.vercel.app/en/tasks/localization/) | 23 |
-| [Radio map and path-loss prediction](https://wireless-dataset-atlas.vercel.app/en/tasks/radio-map/) | 15 |
+| [Localization and fingerprinting](https://wireless-dataset-atlas.vercel.app/en/tasks/localization/) | 24 |
+| [Radio map and path-loss prediction](https://wireless-dataset-atlas.vercel.app/en/tasks/radio-map/) | 29 |
 | [MIMO detection and precoding](https://wireless-dataset-atlas.vercel.app/en/tasks/mimo-detection/) | 3 |
 | [Modulation and signal classification](https://wireless-dataset-atlas.vercel.app/en/tasks/modulation-classification/) | 7 |
 | [RF fingerprinting](https://wireless-dataset-atlas.vercel.app/en/tasks/rf-fingerprinting/) | 7 |

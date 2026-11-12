@@ -1,0 +1,118 @@
+id: android-coverage-manaus
+name: Multi-device, multi-operator mobile network coverage dataset (Amazon region)
+year: 2024
+organization: Federal University of Amazonas (UFAM)
+origin: measured
+tasks: [radio-map]
+signals: [rssi, kpi]
+environment: [outdoor]
+samples: '736,974 rows and 33 columns in the complete database'
+format: CSV
+mobility: 'On foot, by river and by land'
+license: 'CC BY 4.0'
+access: {url: 'https://data.mendeley.com/datasets/tjg9426ykr/2', type: open}
+code: ['https://swperfi-project.github.io/Pages-dev/ArmdNetworkDataCollector-app/']
+paper: doi:10.1016/j.dib.2024.111146
+used_in: []
+citing: ["doi:10.1109/wcnc65185.2026.11555074"]
+summary:
+  en: 'Smartphone measurements of 4G LTE and 5G NSA radio parameters with GPS coordinates, collected on foot, by river and by land in the Amazonas state, Brazil. The database has 736,974 rows and 33 columns, organised by city and region.'
+  zh: '在巴西亚马孙州步行、乘船与车辆采集的智能手机测量数据，包含 4G LTE 与 5G NSA 无线参数及 GPS 坐标。数据库共 736,974 行、33 列，按城市与区域整理。'
+overview:
+  en: 'The dataset holds smartphone measurements of mobile radio parameters in the Amazonas state of Brazil, collected by the SWPERFI project between August 2023 and April 2024. The complete database has 736,974 rows and 33 columns. Each row carries a timestamp, GPS latitude and longitude, the network type (2G, 3G, 4G or 5G NSA), an anonymised operator code, and radio variables: dBm, RSRP, RSSI, RSRQ, SNR, CQI, ASU level, PCI, CI, EARFCN, band, frequency, and downlink and uplink bandwidth in Kbps. Six smartphones with chips from two operators on 4G LTE and 5G NSA were used. Measurements were taken on foot, by river and by land in the metropolitan area of Manaus, the middle Solimões River and the middle Amazonas River, covering nine cities on the Amazon and Negro rivers. The release is split into ten city datasets, such as df_anonymizedManaus.csv and df_anonymizedItacoatiara.csv, and the paper groups them into three regions. The data are CSV files. The release includes Jupyter scripts that load the data, draw histograms, and build heat maps based on RSRP, RSRQ and CQI.'
+  zh: '该数据集包含巴西亚马孙州智能手机采集的移动网络无线参数，采集工作由 SWPERFI 项目于 2023 年 8 月至 2024 年 4 月间完成。完整数据库共 736,974 行、33 列。每行包含时间戳、GPS 纬度与经度、网络类型（2G、3G、4G 或 5G NSA）、经匿名化处理的运营商编码，以及无线变量：dBm、RSRP、RSSI、RSRQ、SNR、CQI、ASU 级别、PCI、CI、EARFCN、频段、频率，以及下行与上行带宽（Kbps）。使用了六部智能手机，接入两家运营商的 4G LTE 与 5G NSA 网络。采集方式包括步行、乘船与车辆，覆盖马瑙斯都会区、Solimões 河中游和 Amazonas 河中游，涉及亚马孙河与内格罗河沿岸的九个城市。发布版本分为十个城市数据集，如 df_anonymizedManaus.csv 与 df_anonymizedItacoatiara.csv，论文将其归为三个区域。数据为 CSV 格式。发布内容包含 Jupyter 脚本，用于加载数据、绘制直方图，并基于 RSRP、RSRQ 与 CQI 生成热力图。'
+pipeline:
+  summary:
+    en: 'The Armadeira app logs radio variables on Android phones during field trips and uploads daily CSV files. The authors filter and anonymise the data, then release it organised by city and region.'
+    zh: 'Armadeira 应用在野外测量时于 Android 手机上记录无线变量，每日生成 CSV 文件并上传。作者对数据进行筛选与匿名化，然后按城市与区域整理发布。'
+  stages:
+  - title: {en: Survey trips, zh: 野外测量}
+    detail:
+      en: 'Six smartphones with chips from the two main regional operators were carried on foot, by river and by land along rivers and roads that give access to the selected sites. The campaign ran from August 2023 to April 2024.'
+      zh: '六部智能手机装有当地两家主要运营商的 SIM 卡，随人员步行、乘船或乘车，沿河流与道路前往选定地点。测量时段为 2023 年 8 月至 2024 年 4 月。'
+    inputs:
+    - {en: Smartphones on 4G LTE and 5G NSA, zh: 支持 4G LTE 与 5G NSA 的智能手机}
+    outputs:
+    - {en: Field measurements, zh: 现场测量数据}
+  - title: {en: Log and upload on Android, zh: Android 端记录与上传}
+    detail:
+      en: 'The Armadeira app, written in Kotlin for Android, reads variables exposed by the Android OS APIs and writes them to a CSV file. Each day, the device sends the file to the cloud and deletes the local copy.'
+      zh: 'Armadeira 应用使用 Kotlin 为 Android 编写，读取 Android 系统 API 暴露的变量并写入 CSV 文件。每日采集结束后，手机将文件上传至云端并删除本地副本。'
+    inputs:
+    - {en: Android OS API variables, zh: Android 系统 API 变量}
+    - {en: GPS position, zh: GPS 位置}
+    outputs:
+    - {en: Daily CSV file per device, zh: 每台设备每日一个 CSV 文件}
+  - title: {en: Post-process and anonymise, zh: 后处理与匿名化}
+    detail:
+      en: 'The authors post-process the collected data with data science techniques and filter the result. Device models are replaced by numbers from one to six, and operator names are replaced by integer codes.'
+      zh: '作者使用数据科学方法对采集数据进行后处理并筛选。设备型号替换为 1 至 6 的编号，运营商替换为整数编码。'
+    inputs:
+    - {en: Daily CSV files, zh: 每日 CSV 文件}
+    outputs:
+    - {en: Filtered and anonymised database, zh: 筛选并匿名化后的数据库}
+    controls:
+    - {en: Device model coded as 1 to 6, zh: 设备型号编码为 1 至 6}
+    - {en: Network operator coded as integer, zh: 运营商编码为整数}
+  - title: {en: Organise by city and release, zh: 按城市整理与发布}
+    detail:
+      en: 'The database is separated by city and by location, with ten city datasets from nine cities. The paper groups them into the Manaus metropolitan area, the middle Solimões River and the middle Amazonas River. The release on Mendeley Data includes the network_dataset and src folders and the Armadeira app.'
+      zh: '数据库按城市与地点拆分，共十个城市数据集，来自九个城市。论文将其归为马瑙斯都会区、Solimões 河中游与 Amazonas 河中游三个区域。Mendeley Data 发布内容包含 network_dataset 与 src 文件夹以及 Armadeira 应用。'
+    inputs:
+    - {en: Filtered database, zh: 筛选后的数据库}
+    outputs:
+    - {en: City CSV files, zh: 城市 CSV 文件}
+    - {en: Jupyter loading and plotting scripts, zh: Jupyter 加载与绘图脚本}
+capabilities:
+- {key: csi, status: none, note: {en: 'No channel state information is released; the variables are received power and quality indicators.', zh: '不含信道状态信息，变量为接收功率与质量指标。'}}
+- {key: cir, status: none, note: {en: No impulse response or delay profile is released., zh: '不含冲激响应或时延分布。'}}
+- {key: paths, status: none, note: {en: No multipath parameters are released., zh: 不含多径参数。}}
+- {key: interaction, status: none, note: {en: No path interaction data are released., zh: 不含路径交互信息。}}
+- {key: power, status: provided, note: {en: 'Received power per record in dBm, with RSRP and RSSI in dBm.', zh: '每条记录提供以 dBm 表示的接收功率，包括 RSRP 与 RSSI。'}}
+- {key: iq, status: none, note: {en: No raw I/Q samples are released., zh: 不含原始 I/Q 采样。}}
+- {key: beam_labels, status: none, note: {en: No beam labels are released., zh: 不含波束标签。}}
+- {key: position, status: provided, note: {en: GPS latitude and longitude for each record., zh: 每条记录含 GPS 纬度与经度。}}
+- {key: geometry, status: none, note: {en: No scene geometry or building data are released., zh: 不含场景几何或建筑数据。}}
+- {key: materials, status: unknown}
+- {key: rgb, status: none, note: {en: No images are released., zh: 不含图像。}}
+- {key: depth, status: none, note: {en: No depth data are released., zh: 不含深度数据。}}
+- {key: lidar, status: none, note: {en: No LiDAR data are released., zh: 不含 LiDAR 数据。}}
+- {key: radar, status: none, note: {en: No radar data are released., zh: 不含雷达数据。}}
+- {key: imu, status: none, note: {en: No IMU variables appear in the data dictionary., zh: 数据字典中无 IMU 变量。}}
+- {key: time_series, status: provided, note: {en: Each record has a date and time stamp., zh: 每条记录带有日期与时间戳。}}
+- {key: multiuser, status: none, note: {en: Each record comes from one smartphone., zh: 每条记录来自单部智能手机。}}
+- {key: multibs, status: none, note: {en: 'Only the serving cell is recorded for each record (PCI and CI).', zh: '每条记录仅记录服务小区（PCI 与 CI）。'}}
+- {key: crossfreq, status: none, note: {en: Each record reports the band of the serving cell only., zh: 每条记录仅报告服务小区的频段。}}
+- {key: near_field, status: unknown}
+- {key: high_mobility, status: unknown}
+- {key: dynamic_blockage, status: unknown}
+- {key: reflection, status: provided, note: {en: Inherent in the measurement., zh: 实测数据中固有存在。}}
+- {key: diffraction, status: provided, note: {en: Inherent in the measurement., zh: 实测数据中固有存在。}}
+- {key: scattering, status: provided, note: {en: Inherent in the measurement., zh: 实测数据中固有存在。}}
+- {key: transmission, status: provided, note: {en: Inherent in the measurement., zh: 实测数据中固有存在。}}
+- {key: polarization, status: unknown}
+- {key: em_field, status: none, note: {en: Only received power and quality indicators are released., zh: 仅发布接收功率与质量指标。}}
+versions:
+- version: v2
+  date: '2024-07-16'
+  summary: {en: 'Current Mendeley Data version, published 16 July 2024. It describes the network_dataset and src folders and the Armadeira app.', zh: '当前的 Mendeley Data 版本，发布于 2024 年 7 月 16 日。描述中包含 network_dataset 与 src 文件夹以及 Armadeira 应用。'}
+  url: https://data.mendeley.com/datasets/tjg9426ykr/2
+- version: v1
+  date: '2024-07-15'
+  summary: {en: 'First Mendeley Data version, published 15 July 2024.', zh: '首个 Mendeley Data 版本，发布于 2024 年 7 月 15 日。'}
+  url: https://data.mendeley.com/datasets/tjg9426ykr/1
+- version: Data in Brief article
+  date: '2024-11-16'
+  summary: {en: 'Data article in Data in Brief, volume 57 (December 2024), describing the dataset.', zh: 'Data in Brief 数据论文，第 57 卷（2024 年 12 月），介绍该数据集。'}
+  url: https://doi.org/10.1016/j.dib.2024.111146
+limitations:
+- {en: 'Samples follow the rivers and roads used to reach the selected sites, so areas away from these routes are not sampled.', zh: '样本沿通往选定地点的河流与道路采集，远离这些路线的区域没有样本。'}
+- {en: 'Device models and operators are anonymised as numbers, so brands and operators cannot be identified.', zh: '设备型号与运营商已匿名化为编号，无法识别品牌与运营商。'}
+- {en: 'The data page describes per-device CSV files named by device ID and timestamp, while the paper describes files split by city and region. The file layout was not checked against the download.', zh: '数据页描述的是以设备编号与时间戳命名的按设备 CSV 文件，论文描述的则是按城市与区域拆分的文件。文件结构未与下载内容核对。'}
+sources:
+- 'https://data.mendeley.com/datasets/tjg9426ykr/2'
+- 'https://data.mendeley.com/datasets/tjg9426ykr/1'
+- 'https://api.crossref.org/works/10.1016/j.dib.2024.111146'
+- 'https://api.openalex.org/works/doi:10.1016/j.dib.2024.111146'
+- 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11647131/'
+checked: '2026-11-12'

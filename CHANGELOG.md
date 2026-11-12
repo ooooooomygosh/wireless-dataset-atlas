@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0
+
+- Added 14 radio-map datasets: SpectrumNet was added earlier in 2.1.2; this release adds RadioMap-PCE, FARM, FR3 UxNB CKM, 3DCKM, DeepREM, Map2APS, optimal radio maps and deployments, Rome 4G/NB-IoT/5G passive measurements, Oslo and Rome NB-IoT coverage, Manaus mobile coverage, Yunnan campus 5G drive test, two indoor radio-map sets and a measured multi-source spectrum map set.
+- Each new record has the 28-item capability matrix, a pipeline and a version history.
+
 ## 2.1.2
 
 - Added SpectrumNet (multiband 3D radio maps, IEEE TCCN 2025).
